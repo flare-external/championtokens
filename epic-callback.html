@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Verifying Epic Games Account — Champion Tokens</title>
+  <link rel="stylesheet" href="css/style.css"/>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background: #121212;
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      text-align: center;
+      padding: 24px;
+    }
+    .callback-box {
+      max-width: 440px;
+      padding: 36px 28px;
+      background: #1e1e1e;
+      border: 1px solid #333;
+      border-radius: var(--radius-xl);
+      box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+    }
+  </style>
+</head>
+<body>
+  <div class="callback-box">
+    <svg class="epic-logo" style="width:48px;height:54px;margin-bottom:16px;" viewBox="0 0 44 50" fill="currentColor">
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M22 0L0 5.2V39.4L22 50L44 39.4V5.2L22 0ZM37.8 35.8L22 43.4L6.2 35.8V9.2L22 5.4L37.8 9.2V35.8Z" fill="#fff"/>
+      <path d="M12.5 14H31.5V18.5H18V22.5H29.5V27H18V31.5H31.5V36H12.5V14Z" fill="#fff"/>
+    </svg>
+    <h2 id="status-title" style="font-size:1.4rem;font-weight:900;margin-bottom:8px;">Verifying with Epic Games…</h2>
+    <p id="status-desc" style="font-size:0.875rem;color:var(--text-muted);margin-bottom:20px;">
+      Exchanging authorization code with Epic Games Account Services.
+    </p>
+    <div class="spinner" id="spinner" style="margin:0 auto;"></div>
+    <div id="error-actions" style="display:none;margin-top:20px;">
+      <a href="profile" class="btn btn-outline btn-sm">Return to Profile</a>
+    </div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="js/firebase-config.js"></script>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const code = urlParams.get('code');
+    const error = urlParams.get('error');
+    const errorDesc = urlParams.get('error_description');
+
+    if (error) {
+      document.getElementById('status-title').textContent = 'Epic Sign-in Failed';
+      document.getElementById('status-desc').textContent = errorDesc || error;
+      document.getElementById('spinner').style.display = 'none';
+      document.getElementById('error-actions').style.display = 'block';
+    } else if (!code) {
+      document.getElementById('status-title').textContent = 'No Code Received';
+      document.getElementById('status-desc').textContent = 'No authorization code returned from Epic Games.';
+      document.getElementById('spinner').style.display = 'none';
+      document.getElementById('error-actions').style.display = 'block';
+    } else {
+      // Exchange code
+      auth.onAuthStateChanged(async (user) => {
+        if (!user) {
+          document.getElementById('status-title').textContent = 'Session Expired';
+          document.getElementById('status-desc').textContent = 'Please log in to Champion Tokens first before linking Epic Games.';
+          document.getElementById('spinner').style.display = 'none';
+          document.getElementById('error-actions').style.display = 'block';
+          return;
+        }
+
+        try {
+          const redirectUri = `${window.location.origin}/epic-callback`;
+          const res = await fetch('/.netlify/functions/epicAuth', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              code,
+              redirectUri,
+              uid: user.uid,
+            }),
+          });
+
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.error || 'Failed to exchange Epic token');
+
+          document.getElementById('status-title').textContent = 'Epic Account Linked!';
+          document.getElementById('status-desc').textContent = `Successfully linked as "${data.epicUsername}". Redirecting…`;
+
+          setTimeout(() => {
+            window.location.href = 'profile';
+          }, 1500);
+
+        } catch (err) {
+          console.error(err);
+          document.getElementById('status-title').textContent = 'Verification Failed';
+          document.getElementById('status-desc').textContent = err.message;
+          document.getElementById('spinner').style.display = 'none';
+          document.getElementById('error-actions').style.display = 'block';
+        }
+      });
+    }
+  </script>
+</body>
+</html>

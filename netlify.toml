@@ -48,6 +48,11 @@
   status = 200
 
 [[redirects]]
+  from   = "/epic-callback"
+  to     = "/epic-callback.html"
+  status = 200
+
+[[redirects]]
   from   = "/callback"
   to     = "/callback.html"
   status = 200

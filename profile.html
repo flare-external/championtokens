@@ -218,7 +218,7 @@
               <span class="chip chip-success">Connected & Verified</span>
             </div>
             <div style="display:flex;gap:8px;">
-              <button class="btn btn-outline btn-sm" onclick="openEpicAuthPopup()">
+              <button class="btn btn-outline btn-sm" onclick="signInWithEpic()">
                 <i data-lucide="refresh-cw"></i> Sync / Re-login
               </button>
               <button class="btn btn-danger btn-sm" onclick="handleUnlinkEpic()">
@@ -229,9 +229,9 @@
       } else {
         el.innerHTML = `
           <p style="font-size:0.875rem;color:var(--text-muted);margin-bottom:16px;">
-            <strong style="color:var(--gold-bright);">Required to play:</strong> Click below to log in with your Epic Games account and link your Fortnite username.
+            <strong style="color:var(--gold-bright);">Required to play:</strong> Sign in with your official Epic Games account to link your verified Fortnite username.
           </p>
-          <button class="btn btn-epic" onclick="openEpicAuthPopup()" style="display:inline-flex;align-items:center;gap:12px;padding:12px 24px;font-weight:800;font-size:0.95rem;">
+          <button class="btn btn-epic" onclick="signInWithEpic()" style="display:inline-flex;align-items:center;gap:12px;padding:12px 24px;font-weight:800;font-size:0.95rem;">
             <svg class="epic-logo" viewBox="0 0 44 50" fill="currentColor">
               <path fill-rule="evenodd" clip-rule="evenodd" d="M22 0L0 5.2V39.4L22 50L44 39.4V5.2L22 0ZM37.8 35.8L22 43.4L6.2 35.8V9.2L22 5.4L37.8 9.2V35.8Z"/>
               <path d="M12.5 14H31.5V18.5H18V22.5H29.5V27H18V31.5H31.5V36H12.5V14Z"/>
