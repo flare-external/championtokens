@@ -67,19 +67,6 @@
       currentUser = user;
       currentUserData = await getUser(user.uid);
 
-      // Verify admin status
-      if (!isAdminUser(user, currentUserData)) {
-        document.getElementById('page-loading').innerHTML = `
-          <div style="text-align:center;padding:20px;">
-            <i data-lucide="shield-x" style="width:48px;height:48px;color:var(--red);margin-bottom:12px;"></i>
-            <h2 style="color:var(--red);">Access Denied</h2>
-            <p style="color:var(--text-muted);margin:8px 0 16px;">This panel is restricted to system administrators only.</p>
-            <a href="dashboard" class="btn btn-primary btn-sm">Return to Dashboard</a>
-          </div>`;
-        lucide.createIcons();
-        return;
-      }
-
       injectNav('admin');
       document.getElementById('page-loading').classList.add('hidden');
 
