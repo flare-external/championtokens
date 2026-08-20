@@ -129,358 +129,6 @@
     <span>Loading profile…</span>
   </div>
 
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
-  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
-  <script src="js/firebase-config.js"></script>
-  <script src="js/auth.js"></script>
-  <script src="js/db.js"></script>
-  <script src="js/nav.js"></script>
-
-  <script>
-    let currentUser = null;
-    let targetUid = null;
-    let currentUserData = null;
-    let isViewingSelf = true;
-
-    requireAuth().then(async (user) => {
-      currentUser = user;
-      injectNav('profile');
-
-      const urlParams = new URLSearchParams(window.location.search);
-      targetUid = urlParams.get('uid') || user.uid;
-      isViewingSelf = targetUid === user.uid;
-
-      if (!isViewingSelf) {
-        document.getElementById('signout-section').style.display = 'none';
-      }
-
-      // Real-time target user data
-      db.collection('users').doc(targetUid).onSnapshot(async (snap) => {
-        document.getElementById('page-loading').classList.add('hidden');
-        if (snap.exists) {
-          currentUserData = snap.data();
-          renderProfile(currentUserData);
-          renderEpicSection(currentUserData);
-          try {
-            await loadUserTeam(targetUid);
-          } catch (e) {
-            console.warn('loadUserTeam error:', e);
-            renderTeamSection(null);
-          }
-        } else {
-          showToast('User profile not found', 'error');
-        }
-      }, (err) => {
-        console.warn('User profile snapshot error:', err);
-        document.getElementById('page-loading').classList.add('hidden');
-      });
-
-      // Transactions
-      if (isViewingSelf) {
-        try {
-          const txs = await getUserTransactions(user.uid, 20);
-          renderTransactions(txs);
-        } catch (e) {
-          renderTransactions([]);
-        }
-      } else {
-        document.getElementById('tx-card').style.display = 'none';
-      }
-
-      // Match history
-      subscribeUserMatches(targetUid, (matches) => {
-        renderMatchHistory(matches.slice(0, 10));
-      });
-    }).catch(err => {
-      console.error('Profile auth error:', err);
-      document.getElementById('page-loading').classList.add('hidden');
-    });
-
-    function renderProfile(data) {
-      const img  = document.getElementById('profile-avatar-img');
-      const icon = document.getElementById('profile-avatar-icon');
-      if (data.photoURL) {
-        img.src = data.photoURL;
-        img.style.display = 'block';
-        icon.style.display = 'none';
-      }
-
-      document.getElementById('profile-name').textContent = data.displayName || 'Champion';
-
-      // Show Discord username & ID instead of email
-      const discordId = data.discordId || targetUid.replace('discord:', '');
-      const discordHandle = data.discordUsername ? `@${data.discordUsername}` : (data.displayName || 'user');
-      document.getElementById('profile-discord-tag').textContent = discordHandle;
-      document.getElementById('profile-discord-id').textContent = `Discord ID: ${discordId}`;
-
-      document.getElementById('profile-tokens').textContent  = formatTokens(data.tokens ?? 10.00);
-      document.getElementById('profile-earned').textContent  = formatTokens(data.totalEarned ?? 10.00);
-      document.getElementById('profile-spent').textContent   = formatTokens(data.totalSpent ?? 0.00);
-      document.getElementById('profile-played').textContent  = data.matchesPlayed ?? 0;
-      document.getElementById('profile-won').textContent     = data.matchesWon ?? 0;
-
-      const wr = data.matchesPlayed > 0
-        ? Math.round((data.matchesWon / data.matchesPlayed) * 100) + '%'
-        : '0%';
-      document.getElementById('profile-winrate').textContent = wr;
-
-      if (data.createdAt) {
-        const d = data.createdAt.toDate();
-        document.getElementById('profile-since').textContent =
-          'Member since ' + d.toLocaleDateString('en-US', { year:'numeric', month:'short', day:'numeric' });
-      }
-    }
-
-    // ── Epic Games Account Section ────────────────────────────
-    function renderEpicSection(data) {
-      const el = document.getElementById('epic-content');
-      if (!isViewingSelf) {
-        if (data.epicUsername) {
-          el.innerHTML = `
-            <div style="display:flex;align-items:center;gap:12px;">
-              <span class="epic-badge-connected">
-                <svg class="epic-official-svg" viewBox="0 0 24 28">
-                  <path fill-rule="evenodd" clip-rule="evenodd" d="M12 0L0 3.75V21.84L12 28L24 21.84V3.75L12 0ZM20.8 19.86L12 24.38L3.2 19.86V5.89L12 3.14L20.8 5.89V19.86Z" fill="#38bdf8"/>
-                  <path d="M6.5 8H17.5V10.5H9.5V13H16.5V15.5H9.5V18H17.5V20.5H6.5V8Z" fill="#38bdf8"/>
-                </svg>
-                ${data.epicUsername}
-              </span>
-              <span class="chip chip-success">Verified Epic Account</span>
-            </div>`;
-        } else {
-          el.innerHTML = `<span style="color:var(--text-muted);font-size:0.875rem;">No Epic Games account linked yet.</span>`;
-        }
-        lucide.createIcons();
-        return;
-      }
-
-      if (data.epicUsername) {
-        el.innerHTML = `
-          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;">
-            <div style="display:flex;align-items:center;gap:12px;">
-              <span class="epic-badge-connected">
-                <svg class="epic-official-svg" viewBox="0 0 24 28">
-                  <path fill-rule="evenodd" clip-rule="evenodd" d="M12 0L0 3.75V21.84L12 28L24 21.84V3.75L12 0ZM20.8 19.86L12 24.38L3.2 19.86V5.89L12 3.14L20.8 5.89V19.86Z" fill="#38bdf8"/>
-                  <path d="M6.5 8H17.5V10.5H9.5V13H16.5V15.5H9.5V18H17.5V20.5H6.5V8Z" fill="#38bdf8"/>
-                </svg>
-                ${data.epicUsername}
-              </span>
-              <span class="chip chip-success">Connected & Verified</span>
-            </div>
-            <div style="display:flex;gap:8px;">
-              <button class="btn btn-outline btn-sm" onclick="signInWithEpic()">
-                <i data-lucide="refresh-cw"></i> Re-Sync
-              </button>
-              <button class="btn btn-danger btn-sm" onclick="handleUnlinkEpic()">
-                <i data-lucide="unlink"></i> Unlink (2.00 Tokens Fee)
-              </button>
-            </div>
-          </div>`;
-      } else {
-        el.innerHTML = `
-          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;">
-            <div>
-              <div style="font-weight:700;color:#fff;font-size:0.95rem;">Connect Epic Games / Fortnite</div>
-              <div style="font-size:0.8125rem;color:var(--text-muted);margin-top:2px;">
-                Required to create and join matches. Verifies your official Fortnite display name.
-              </div>
-            </div>
-            <button class="btn btn-epic" onclick="signInWithEpic()" style="display:inline-flex;align-items:center;gap:10px;padding:11px 22px;">
-              <svg class="epic-official-svg" viewBox="0 0 24 28">
-                <path fill-rule="evenodd" clip-rule="evenodd" d="M12 0L0 3.75V21.84L12 28L24 21.84V3.75L12 0ZM20.8 19.86L12 24.38L3.2 19.86V5.89L12 3.14L20.8 5.89V19.86Z" fill="#fff"/>
-                <path d="M6.5 8H17.5V10.5H9.5V13H16.5V15.5H9.5V18H17.5V20.5H6.5V8Z" fill="#fff"/>
-              </svg>
-              Sign In with Epic Games
-            </button>
-          </div>`;
-      }
-      lucide.createIcons();
-    }
-
-    async function handleUnlinkEpic() {
-      if (!confirm('Unlinking your Epic Games account costs 2.00 Tokens ($2.00). Are you sure you want to unlink?')) return;
-      try {
-        await unlinkEpicAccount(currentUser.uid);
-        showToast('Epic Games account unlinked (-2.00 tokens fee deducted)', 'success');
-      } catch (err) {
-        showToast(err.message, 'error');
-      }
-    }
-
-    // ── Teams Section ────────────────────────────────────────
-    async function loadUserTeam(uid) {
-      const team = await getUserTeam(uid);
-      renderTeamSection(team);
-    }
-
-    function renderTeamSection(team) {
-      const el = document.getElementById('team-content');
-      if (!team) {
-        el.innerHTML = isViewingSelf ? `
-          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
-            <div style="font-size:0.875rem;color:var(--text-muted);">
-              Create or join a squad team to play <strong>2v2 Duos</strong> and <strong>3v3 Squads</strong> matches.
-            </div>
-            <div style="display:flex;gap:10px;">
-              <button class="btn btn-primary btn-sm" onclick="openCreateTeamModal()"><i data-lucide="plus"></i> Create Team</button>
-              <button class="btn btn-outline btn-sm" onclick="openJoinTeamModal()"><i data-lucide="log-in"></i> Join with Code</button>
-            </div>
-          </div>` : `<span style="color:var(--text-muted);font-size:0.875rem;">Not currently on any squad team.</span>`;
-      } else {
-        const isOwner = team.ownerUid === currentUser?.uid;
-        const membersHTML = (team.members || []).map(m => `
-          <div class="team-member-chip">
-            <span style="font-weight:700;font-size:0.85rem;color:#fff;">${m.displayName}</span>
-            ${m.isLeader || m.uid === team.ownerUid ? '<span class="badge" style="background:var(--gold-dim);color:var(--gold-bright);font-size:0.65rem;padding:1px 6px;">LEADER</span>' : ''}
-          </div>
-        `).join('');
-
-        el.innerHTML = `
-          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:12px;">
-            <div style="display:flex;align-items:center;gap:10px;">
-              <span class="badge" style="background:var(--purple);color:#fff;font-size:0.8rem;padding:4px 10px;">[${team.tag}]</span>
-              <span style="font-size:1.15rem;font-weight:900;color:#fff;">${team.name}</span>
-            </div>
-            ${isViewingSelf ? `
-              <div style="display:flex;gap:8px;align-items:center;">
-                <span class="match-code-badge" title="Team Invite Code" onclick="copyTeamCode('${team.code}')" style="cursor:pointer;">
-                  <i data-lucide="hash"></i>${team.code} <span style="font-size:0.7rem;opacity:0.7;">(Copy)</span>
-                </span>
-                <button class="btn btn-danger btn-sm" onclick="handleLeaveTeam('${team.id}')">
-                  <i data-lucide="log-out"></i> ${isOwner ? 'Disband' : 'Leave'}
-                </button>
-              </div>` : ''}
-          </div>
-          <div style="font-size:0.8rem;color:var(--text-muted);">Roster (${team.members?.length || 1}/6 Players):</div>
-          <div class="team-roster-grid">${membersHTML}</div>`;
-      }
-      lucide.createIcons();
-    }
-
-    function copyTeamCode(code) {
-      if (navigator.clipboard) {
-        navigator.clipboard.writeText(code).then(() => showToast(`Team Code "${code}" copied to clipboard! Share it with teammates.`, 'info'));
-      }
-    }
-
-    async function handleLeaveTeam(teamId) {
-      if (!confirm('Are you sure you want to leave or disband this team?')) return;
-      try {
-        await leaveTeam(teamId, currentUser.uid);
-        showToast('You left the team', 'success');
-        await loadUserTeam(currentUser.uid);
-      } catch (err) {
-        showToast(err.message, 'error');
-      }
-    }
-
-    function openCreateTeamModal() { document.getElementById('create-team-modal').classList.add('open'); }
-    function closeCreateTeamModal() { document.getElementById('create-team-modal').classList.remove('open'); }
-    function openJoinTeamModal() { document.getElementById('join-team-modal').classList.add('open'); }
-    function closeJoinTeamModal() { document.getElementById('join-team-modal').classList.remove('open'); }
-
-    async function submitCreateTeam(e) {
-      e.preventDefault();
-      const name = document.getElementById('team-name-input').value.trim();
-      const tag  = document.getElementById('team-tag-input').value.trim().toUpperCase();
-      const btn = document.getElementById('submit-team-btn');
-      btn.disabled = true;
-      try {
-        await createTeam(currentUserData || currentUser, { name, tag });
-        showToast(`Team "${name}" created!`, 'success');
-        closeCreateTeamModal();
-        await loadUserTeam(currentUser.uid);
-      } catch (err) {
-        showToast(err.message, 'error');
-      } finally {
-        btn.disabled = false;
-      }
-    }
-
-    async function submitJoinTeam(e) {
-      e.preventDefault();
-      const code = document.getElementById('join-team-input').value.trim().toUpperCase();
-      const btn = document.getElementById('submit-join-team-btn');
-      btn.disabled = true;
-      try {
-        await joinTeamByCode(code, currentUserData || currentUser);
-        showToast('Joined team successfully!', 'success');
-        closeJoinTeamModal();
-        await loadUserTeam(currentUser.uid);
-      } catch (err) {
-        showToast(err.message, 'error');
-      } finally {
-        btn.disabled = false;
-      }
-    }
-
-    function renderTransactions(txs) {
-      const el = document.getElementById('tx-list');
-      if (!txs.length) {
-        el.innerHTML = `<div class="empty-state"><i data-lucide="inbox"></i><p>No transactions recorded yet</p></div>`;
-        lucide.createIcons();
-        return;
-      }
-      el.innerHTML = txs.map(tx => {
-        const isCredit = tx.amount > 0;
-        return `
-          <div class="tx-item">
-            <div class="tx-icon ${isCredit ? 'tx-icon--credit' : 'tx-icon--debit'}">
-              <i data-lucide="${isCredit ? 'trending-up' : 'trending-down'}"></i>
-            </div>
-            <div class="tx-info">
-              <div class="tx-desc">${tx.description || txTypeLabel(tx.type)}</div>
-              <div class="tx-time">${formatTime(tx.timestamp)}</div>
-            </div>
-            <div class="tx-amount ${isCredit ? 'tx-amount--credit' : 'tx-amount--debit'}">
-              ${isCredit ? '+' : ''}${formatTokens(tx.amount)} Tokens
-            </div>
-          </div>`;
-      }).join('');
-      lucide.createIcons();
-    }
-
-    function renderMatchHistory(matches) {
-      const el = document.getElementById('match-history');
-      if (!matches.length) {
-        el.innerHTML = `<div class="empty-state"><i data-lucide="swords"></i><p>No matches played yet</p></div>`;
-        lucide.createIcons();
-        return;
-      }
-      el.innerHTML = matches.map(m => {
-        const isWinner = m.winner?.uid === targetUid;
-        const isHost   = m.createdBy === targetUid;
-        const size     = m.size || '1v1';
-        const mode     = m.mode || 'Realistic';
-        const winPrize = Math.round(Number(m.prizePool || m.wager) * 0.90 * 100) / 100;
-
-        return `
-          <div class="mh-card">
-            <div style="flex:1;min-width:0;">
-              <div style="font-weight:700;font-size:0.95rem;">${m.title || `${size} ${mode}`}</div>
-              <div style="font-size:0.78rem;color:var(--text-muted);margin-top:2px;">
-                <span class="badge ${sizeColor(size)}" style="padding:1px 8px;font-size:0.7rem;">${size}</span>
-                <span class="badge ${modeColor(mode)}" style="padding:1px 8px;font-size:0.7rem;">${mode}</span>
-                · ${formatTokens(m.wager)} wager · ${formatTime(m.createdAt)}
-                ${isHost ? ' · <span style="color:var(--gold-bright);font-weight:700;">Host</span>' : ''}
-              </div>
-            </div>
-            <div style="text-align:right;flex-shrink:0;">
-              ${m.status === 'completed'
-                ? isWinner
-                  ? `<div style="color:var(--green);font-weight:800;">+${formatTokens(winPrize)} Tokens</div><div style="font-size:0.75rem;color:var(--green);">Victory!</div>`
-                  : `<div style="color:var(--red);font-weight:700;">-${formatTokens(m.wager)} Tokens</div><div style="font-size:0.75rem;color:var(--text-muted);">Defeat</div>`
-                : `<span class="badge badge-${m.status}">${m.status.replace('_',' ')}</span>`
-              }
-            </div>
-          </div>`;
-      }).join('');
-      lucide.createIcons();
-    }
-  </script>
-
   <main class="page-wrap">
     <!-- Clean Profile Hero -->
     <div class="profile-hero-card">
@@ -619,5 +267,392 @@
       </form>
     </div>
   </div>
+
+  <!-- Core Scripts (Placed after DOM elements) -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script src="js/firebase-config.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/db.js"></script>
+  <script src="js/nav.js"></script>
+
+  <script>
+    let currentUser = null;
+    let targetUid = null;
+    let currentUserData = null;
+    let isViewingSelf = true;
+
+    document.addEventListener('DOMContentLoaded', () => {
+      requireAuth().then(async (user) => {
+        currentUser = user;
+        injectNav('profile');
+
+        const urlParams = new URLSearchParams(window.location.search);
+        targetUid = urlParams.get('uid') || user.uid;
+        isViewingSelf = targetUid === user.uid;
+
+        const signoutSec = document.getElementById('signout-section');
+        if (signoutSec && !isViewingSelf) {
+          signoutSec.style.display = 'none';
+        }
+
+        // Real-time target user data
+        db.collection('users').doc(targetUid).onSnapshot(async (snap) => {
+          const loadingEl = document.getElementById('page-loading');
+          if (loadingEl) loadingEl.classList.add('hidden');
+
+          if (snap.exists) {
+            currentUserData = snap.data();
+            renderProfile(currentUserData);
+            renderEpicSection(currentUserData);
+            try {
+              await loadUserTeam(targetUid);
+            } catch (e) {
+              console.warn('loadUserTeam notice:', e);
+              renderTeamSection(null);
+            }
+          } else {
+            showToast('User profile not found', 'error');
+            renderEpicSection({});
+            renderTeamSection(null);
+          }
+        }, (err) => {
+          console.warn('User profile snapshot error:', err);
+          const loadingEl = document.getElementById('page-loading');
+          if (loadingEl) loadingEl.classList.add('hidden');
+          renderEpicSection({});
+          renderTeamSection(null);
+        });
+
+        // Transactions
+        if (isViewingSelf) {
+          try {
+            const txs = await getUserTransactions(user.uid, 20);
+            renderTransactions(txs);
+          } catch (e) {
+            renderTransactions([]);
+          }
+        } else {
+          const txCard = document.getElementById('tx-card');
+          if (txCard) txCard.style.display = 'none';
+        }
+
+        // Match history
+        subscribeUserMatches(targetUid, (matches) => {
+          renderMatchHistory(matches.slice(0, 10));
+        });
+      }).catch(err => {
+        console.error('Profile auth error:', err);
+        const loadingEl = document.getElementById('page-loading');
+        if (loadingEl) loadingEl.classList.add('hidden');
+      });
+    });
+
+    function renderProfile(data) {
+      if (!data) return;
+      const img  = document.getElementById('profile-avatar-img');
+      const icon = document.getElementById('profile-avatar-icon');
+      if (img && icon && data.photoURL) {
+        img.src = data.photoURL;
+        img.style.display = 'block';
+        icon.style.display = 'none';
+      }
+
+      const nameEl = document.getElementById('profile-name');
+      if (nameEl) nameEl.textContent = data.displayName || 'Champion';
+
+      const tagEl = document.getElementById('profile-discord-tag');
+      const idEl  = document.getElementById('profile-discord-id');
+      const discordId = data.discordId || (targetUid || '').replace('discord:', '');
+      const discordHandle = data.discordUsername ? `@${data.discordUsername}` : (data.displayName || 'user');
+      if (tagEl) tagEl.textContent = discordHandle;
+      if (idEl) idEl.textContent = `Discord ID: ${discordId}`;
+
+      const tokEl = document.getElementById('profile-tokens');
+      const earnEl = document.getElementById('profile-earned');
+      const spentEl = document.getElementById('profile-spent');
+      const playedEl = document.getElementById('profile-played');
+      const wonEl = document.getElementById('profile-won');
+      const wrEl = document.getElementById('profile-winrate');
+
+      if (tokEl) tokEl.textContent = formatTokens(data.tokens ?? 10.00);
+      if (earnEl) earnEl.textContent = formatTokens(data.totalEarned ?? 10.00);
+      if (spentEl) spentEl.textContent = formatTokens(data.totalSpent ?? 0.00);
+      if (playedEl) playedEl.textContent = data.matchesPlayed ?? 0;
+      if (wonEl) wonEl.textContent = data.matchesWon ?? 0;
+
+      const wr = (data.matchesPlayed || 0) > 0
+        ? Math.round(((data.matchesWon || 0) / data.matchesPlayed) * 100) + '%'
+        : '0%';
+      if (wrEl) wrEl.textContent = wr;
+
+      const sinceEl = document.getElementById('profile-since');
+      if (sinceEl && data.createdAt) {
+        const d = data.createdAt.toDate();
+        sinceEl.textContent =
+          'Member since ' + d.toLocaleDateString('en-US', { year:'numeric', month:'short', day:'numeric' });
+      }
+      if (window.lucide) lucide.createIcons();
+    }
+
+    // ── Epic Games Account Section ────────────────────────────
+    function renderEpicSection(data) {
+      const el = document.getElementById('epic-content');
+      if (!el) return;
+
+      if (!isViewingSelf) {
+        if (data && data.epicUsername) {
+          el.innerHTML = `
+            <div style="display:flex;align-items:center;gap:12px;">
+              <span class="epic-badge-connected">
+                <svg class="epic-official-svg" viewBox="0 0 24 28">
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M12 0L0 3.75V21.84L12 28L24 21.84V3.75L12 0ZM20.8 19.86L12 24.38L3.2 19.86V5.89L12 3.14L20.8 5.89V19.86Z" fill="#38bdf8"/>
+                  <path d="M6.5 8H17.5V10.5H9.5V13H16.5V15.5H9.5V18H17.5V20.5H6.5V8Z" fill="#38bdf8"/>
+                </svg>
+                ${data.epicUsername}
+              </span>
+              <span class="chip chip-success">Verified Epic Account</span>
+            </div>`;
+        } else {
+          el.innerHTML = `<span style="color:var(--text-muted);font-size:0.875rem;">No Epic Games account linked yet.</span>`;
+        }
+        if (window.lucide) lucide.createIcons();
+        return;
+      }
+
+      if (data && data.epicUsername) {
+        el.innerHTML = `
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;">
+            <div style="display:flex;align-items:center;gap:12px;">
+              <span class="epic-badge-connected">
+                <svg class="epic-official-svg" viewBox="0 0 24 28">
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M12 0L0 3.75V21.84L12 28L24 21.84V3.75L12 0ZM20.8 19.86L12 24.38L3.2 19.86V5.89L12 3.14L20.8 5.89V19.86Z" fill="#38bdf8"/>
+                  <path d="M6.5 8H17.5V10.5H9.5V13H16.5V15.5H9.5V18H17.5V20.5H6.5V8Z" fill="#38bdf8"/>
+                </svg>
+                ${data.epicUsername}
+              </span>
+              <span class="chip chip-success">Connected & Verified</span>
+            </div>
+            <div style="display:flex;gap:8px;">
+              <button class="btn btn-outline btn-sm" onclick="signInWithEpic()">
+                <i data-lucide="refresh-cw"></i> Re-Sync
+              </button>
+              <button class="btn btn-danger btn-sm" onclick="handleUnlinkEpic()">
+                <i data-lucide="unlink"></i> Unlink (2.00 Tokens Fee)
+              </button>
+            </div>
+          </div>`;
+      } else {
+        el.innerHTML = `
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;">
+            <div>
+              <div style="font-weight:700;color:#fff;font-size:0.95rem;">Connect Epic Games / Fortnite</div>
+              <div style="font-size:0.8125rem;color:var(--text-muted);margin-top:2px;">
+                Required to create and join matches. Verifies your official Fortnite display name.
+              </div>
+            </div>
+            <button class="btn btn-epic" onclick="signInWithEpic()" style="display:inline-flex;align-items:center;gap:10px;padding:11px 22px;">
+              <svg class="epic-official-svg" viewBox="0 0 24 28">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M12 0L0 3.75V21.84L12 28L24 21.84V3.75L12 0ZM20.8 19.86L12 24.38L3.2 19.86V5.89L12 3.14L20.8 5.89V19.86Z" fill="#fff"/>
+                <path d="M6.5 8H17.5V10.5H9.5V13H16.5V15.5H9.5V18H17.5V20.5H6.5V8Z" fill="#fff"/>
+              </svg>
+              Sign In with Epic Games
+            </button>
+          </div>`;
+      }
+      if (window.lucide) lucide.createIcons();
+    }
+
+    async function handleUnlinkEpic() {
+      if (!confirm('Unlinking your Epic Games account costs 2.00 Tokens ($2.00). Are you sure you want to unlink?')) return;
+      try {
+        await unlinkEpicAccount(currentUser.uid);
+        showToast('Epic Games account unlinked (-2.00 tokens fee deducted)', 'success');
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
+    }
+
+    // ── Teams Section ────────────────────────────────────────
+    async function loadUserTeam(uid) {
+      try {
+        const team = await getUserTeam(uid);
+        renderTeamSection(team);
+      } catch (e) {
+        renderTeamSection(null);
+      }
+    }
+
+    function renderTeamSection(team) {
+      const el = document.getElementById('team-content');
+      if (!el) return;
+
+      if (!team) {
+        el.innerHTML = isViewingSelf ? `
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+            <div style="font-size:0.875rem;color:var(--text-muted);">
+              Create or join a squad team to play <strong>2v2 Duos</strong> and <strong>3v3 Squads</strong> matches.
+            </div>
+            <div style="display:flex;gap:10px;">
+              <button class="btn btn-primary btn-sm" onclick="openCreateTeamModal()"><i data-lucide="plus"></i> Create Team</button>
+              <button class="btn btn-outline btn-sm" onclick="openJoinTeamModal()"><i data-lucide="log-in"></i> Join with Code</button>
+            </div>
+          </div>` : `<span style="color:var(--text-muted);font-size:0.875rem;">Not currently on any squad team.</span>`;
+      } else {
+        const isOwner = team.ownerUid === currentUser?.uid;
+        const membersHTML = (team.members || []).map(m => `
+          <div class="team-member-chip">
+            <span style="font-weight:700;font-size:0.85rem;color:#fff;">${m.displayName}</span>
+            ${m.isLeader || m.uid === team.ownerUid ? '<span class="badge" style="background:var(--gold-dim);color:var(--gold-bright);font-size:0.65rem;padding:1px 6px;">LEADER</span>' : ''}
+          </div>
+        `).join('');
+
+        el.innerHTML = `
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:12px;">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <span class="badge" style="background:var(--purple);color:#fff;font-size:0.8rem;padding:4px 10px;">[${team.tag}]</span>
+              <span style="font-size:1.15rem;font-weight:900;color:#fff;">${team.name}</span>
+            </div>
+            ${isViewingSelf ? `
+              <div style="display:flex;gap:8px;align-items:center;">
+                <span class="match-code-badge" title="Team Invite Code" onclick="copyTeamCode('${team.code}')" style="cursor:pointer;">
+                  <i data-lucide="hash"></i>${team.code} <span style="font-size:0.7rem;opacity:0.7;">(Copy)</span>
+                </span>
+                <button class="btn btn-danger btn-sm" onclick="handleLeaveTeam('${team.id}')">
+                  <i data-lucide="log-out"></i> ${isOwner ? 'Disband' : 'Leave'}
+                </button>
+              </div>` : ''}
+          </div>
+          <div style="font-size:0.8rem;color:var(--text-muted);">Roster (${team.members?.length || 1}/6 Players):</div>
+          <div class="team-roster-grid">${membersHTML}</div>`;
+      }
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function copyTeamCode(code) {
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(code).then(() => showToast(`Team Code "${code}" copied to clipboard! Share it with teammates.`, 'info'));
+      }
+    }
+
+    async function handleLeaveTeam(teamId) {
+      if (!confirm('Are you sure you want to leave or disband this team?')) return;
+      try {
+        await leaveTeam(teamId, currentUser.uid);
+        showToast('You left the team', 'success');
+        await loadUserTeam(currentUser.uid);
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
+    }
+
+    function openCreateTeamModal() { document.getElementById('create-team-modal').classList.add('open'); }
+    function closeCreateTeamModal() { document.getElementById('create-team-modal').classList.remove('open'); }
+    function openJoinTeamModal() { document.getElementById('join-team-modal').classList.add('open'); }
+    function closeJoinTeamModal() { document.getElementById('join-team-modal').classList.remove('open'); }
+
+    async function submitCreateTeam(e) {
+      e.preventDefault();
+      const name = document.getElementById('team-name-input').value.trim();
+      const tag  = document.getElementById('team-tag-input').value.trim().toUpperCase();
+      const btn = document.getElementById('submit-team-btn');
+      btn.disabled = true;
+      try {
+        await createTeam(currentUserData || currentUser, { name, tag });
+        showToast(`Team "${name}" created!`, 'success');
+        closeCreateTeamModal();
+        await loadUserTeam(currentUser.uid);
+      } catch (err) {
+        showToast(err.message, 'error');
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
+    async function submitJoinTeam(e) {
+      e.preventDefault();
+      const code = document.getElementById('join-team-input').value.trim().toUpperCase();
+      const btn = document.getElementById('submit-join-team-btn');
+      btn.disabled = true;
+      try {
+        await joinTeamByCode(code, currentUserData || currentUser);
+        showToast('Joined team successfully!', 'success');
+        closeJoinTeamModal();
+        await loadUserTeam(currentUser.uid);
+      } catch (err) {
+        showToast(err.message, 'error');
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
+    function renderTransactions(txs) {
+      const el = document.getElementById('tx-list');
+      if (!el) return;
+      if (!txs.length) {
+        el.innerHTML = `<div class="empty-state"><i data-lucide="inbox"></i><p>No transactions recorded yet</p></div>`;
+        if (window.lucide) lucide.createIcons();
+        return;
+      }
+      el.innerHTML = txs.map(tx => {
+        const isCredit = tx.amount > 0;
+        return `
+          <div class="tx-item">
+            <div class="tx-icon ${isCredit ? 'tx-icon--credit' : 'tx-icon--debit'}">
+              <i data-lucide="${isCredit ? 'trending-up' : 'trending-down'}"></i>
+            </div>
+            <div class="tx-info">
+              <div class="tx-desc">${tx.description || txTypeLabel(tx.type)}</div>
+              <div class="tx-time">${formatTime(tx.timestamp)}</div>
+            </div>
+            <div class="tx-amount ${isCredit ? 'tx-amount--credit' : 'tx-amount--debit'}">
+              ${isCredit ? '+' : ''}${formatTokens(tx.amount)} Tokens
+            </div>
+          </div>`;
+      }).join('');
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function renderMatchHistory(matches) {
+      const el = document.getElementById('match-history');
+      if (!el) return;
+      if (!matches.length) {
+        el.innerHTML = `<div class="empty-state"><i data-lucide="swords"></i><p>No matches played yet</p></div>`;
+        if (window.lucide) lucide.createIcons();
+        return;
+      }
+      el.innerHTML = matches.map(m => {
+        const isWinner = m.winner?.uid === targetUid;
+        const isHost   = m.createdBy === targetUid;
+        const size     = m.size || '1v1';
+        const mode     = m.mode || 'Realistic';
+        const winPrize = Math.round(Number(m.prizePool || m.wager) * 0.90 * 100) / 100;
+
+        return `
+          <div class="mh-card">
+            <div style="flex:1;min-width:0;">
+              <div style="font-weight:700;font-size:0.95rem;">${m.title || `${size} ${mode}`}</div>
+              <div style="font-size:0.78rem;color:var(--text-muted);margin-top:2px;">
+                <span class="badge ${sizeColor(size)}" style="padding:1px 8px;font-size:0.7rem;">${size}</span>
+                <span class="badge ${modeColor(mode)}" style="padding:1px 8px;font-size:0.7rem;">${mode}</span>
+                · ${formatTokens(m.wager)} wager · ${formatTime(m.createdAt)}
+                ${isHost ? ' · <span style="color:var(--gold-bright);font-weight:700;">Host</span>' : ''}
+              </div>
+            </div>
+            <div style="text-align:right;flex-shrink:0;">
+              ${m.status === 'completed'
+                ? isWinner
+                  ? `<div style="color:var(--green);font-weight:800;">+${formatTokens(winPrize)} Tokens</div><div style="font-size:0.75rem;color:var(--green);">Victory!</div>`
+                  : `<div style="color:var(--red);font-weight:700;">-${formatTokens(m.wager)} Tokens</div><div style="font-size:0.75rem;color:var(--text-muted);">Defeat</div>`
+                : `<span class="badge badge-${m.status}">${m.status.replace('_',' ')}</span>`
+              }
+            </div>
+          </div>`;
+      }).join('');
+      if (window.lucide) lucide.createIcons();
+    }
+  </script>
 </body>
 </html>
