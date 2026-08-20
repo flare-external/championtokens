@@ -260,7 +260,29 @@
     }
 
     function setWager(val) {
-      document.getElementById('wager-input').value = val.toFixed(2);
+      const num = parseFloat(val) || 0.50;
+      document.getElementById('wager-input').value = num.toFixed(2);
+      const slider = document.getElementById('wager-slider');
+      if (slider) slider.value = num <= 25.00 ? num : 25.00;
+      const valDisp = document.getElementById('slider-val-display');
+      if (valDisp) valDisp.textContent = `$${num.toFixed(2)}`;
+      updateCreatePreview();
+    }
+
+    function syncSlider(val) {
+      const num = parseFloat(val) || 0.50;
+      document.getElementById('wager-input').value = num.toFixed(2);
+      const valDisp = document.getElementById('slider-val-display');
+      if (valDisp) valDisp.textContent = `$${num.toFixed(2)}`;
+      updateCreatePreview();
+    }
+
+    function syncInput(val) {
+      const num = parseFloat(val) || 0.50;
+      const slider = document.getElementById('wager-slider');
+      if (slider) slider.value = num <= 25.00 ? num : 25.00;
+      const valDisp = document.getElementById('slider-val-display');
+      if (valDisp) valDisp.textContent = `$${num.toFixed(2)}`;
       updateCreatePreview();
     }
 
@@ -271,6 +293,9 @@
       const players = size === '1v1' ? 2 : size === '2v2' ? 4 : 6;
       const totalPool = wager * players;
       const winPrize = Math.round(totalPool * 0.90 * 100) / 100;
+
+      const valDisp = document.getElementById('slider-val-display');
+      if (valDisp) valDisp.textContent = `$${wager.toFixed(2)}`;
 
       document.getElementById('preview-title').textContent = `${size} ${mode}`;
       document.getElementById('preview-players').textContent = `${players} Players (${size})`;
@@ -393,26 +418,45 @@
           </select>
         </div>
 
-        <!-- Wager Amount -->
+        <!-- Wager Amount with Custom Theme Slider -->
         <div class="form-group">
-          <label class="form-label">Wager per player (Tokens / USD)</label>
-          <input
-            class="form-input"
-            id="wager-input"
-            type="number"
-            step="0.25"
-            min="0.50"
-            value="1.00"
-            placeholder="e.g. 0.50, 1.00, 5.00"
-            oninput="updateCreatePreview()"
-            required
-          />
-          <div class="wager-shortcuts">
-            <span class="wager-pill" onclick="setWager(0.50)">$0.50</span>
-            <span class="wager-pill" onclick="setWager(1.00)">$1.00</span>
-            <span class="wager-pill" onclick="setWager(2.50)">$2.50</span>
-            <span class="wager-pill" onclick="setWager(5.00)">$5.00</span>
-            <span class="wager-pill" onclick="setWager(10.00)">$10.00</span>
+          <div class="slider-wrap">
+            <div class="slider-header">
+              <span>Wager per Player</span>
+              <span class="slider-val-badge" id="slider-val-display">$1.00</span>
+            </div>
+            <input
+              type="range"
+              class="ct-slider"
+              id="wager-slider"
+              min="0.50"
+              max="25.00"
+              step="0.25"
+              value="1.00"
+              oninput="syncSlider(this.value)"
+            />
+          </div>
+
+          <div style="display:flex;align-items:center;gap:10px;margin-top:6px;">
+            <input
+              class="form-input"
+              id="wager-input"
+              type="number"
+              step="0.25"
+              min="0.50"
+              max="100.00"
+              value="1.00"
+              oninput="syncInput(this.value)"
+              required
+              style="font-weight:800;font-size:1rem;"
+            />
+            <div class="wager-shortcuts" style="margin:0;">
+              <span class="wager-pill" onclick="setWager(0.50)">$0.50</span>
+              <span class="wager-pill" onclick="setWager(1.00)">$1.00</span>
+              <span class="wager-pill" onclick="setWager(2.50)">$2.50</span>
+              <span class="wager-pill" onclick="setWager(5.00)">$5.00</span>
+              <span class="wager-pill" onclick="setWager(10.00)">$10.00</span>
+            </div>
           </div>
         </div>
 

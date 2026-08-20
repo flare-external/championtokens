@@ -213,6 +213,30 @@
     }
 
     // ── Token Adjustment Tool ────────────────────────────────
+    function setAdminAmount(val) {
+      const num = parseFloat(val) || 0;
+      document.getElementById('adjust-amount-input').value = num.toFixed(2);
+      const slider = document.getElementById('admin-token-slider');
+      if (slider) slider.value = Math.min(Math.max(num, -50), 200);
+      const valBadge = document.getElementById('admin-slider-val');
+      if (valBadge) valBadge.textContent = `${num >= 0 ? '+' : ''}${num.toFixed(2)}`;
+    }
+
+    function syncAdminSlider(val) {
+      const num = parseFloat(val) || 0;
+      document.getElementById('adjust-amount-input').value = num.toFixed(2);
+      const valBadge = document.getElementById('admin-slider-val');
+      if (valBadge) valBadge.textContent = `${num >= 0 ? '+' : ''}${num.toFixed(2)}`;
+    }
+
+    function syncAdminInput(val) {
+      const num = parseFloat(val) || 0;
+      const slider = document.getElementById('admin-token-slider');
+      if (slider) slider.value = Math.min(Math.max(num, -50), 200);
+      const valBadge = document.getElementById('admin-slider-val');
+      if (valBadge) valBadge.textContent = `${num >= 0 ? '+' : ''}${num.toFixed(2)}`;
+    }
+
     async function handleAdjustTokens(e) {
       e.preventDefault();
       const identifier = document.getElementById('adjust-uid-input').value.trim();
@@ -227,7 +251,7 @@
         const res = await adminAdjustTokens(identifier, amount, reason);
         showToast(`Successfully adjusted ${amount > 0 ? '+' : ''}${amount} tokens for ${res.userName || identifier}!`, 'success');
         document.getElementById('adjust-uid-input').value = '';
-        document.getElementById('adjust-amount-input').value = '';
+        setAdminAmount(10.00);
       } catch (err) {
         showToast(err.message, 'error');
       } finally {
@@ -292,14 +316,36 @@
           <div class="section-title" style="margin-bottom:12px;">
             <i data-lucide="coins"></i> User Token Adjuster
           </div>
-          <form onsubmit="handleAdjustTokens(event)" style="display:flex;flex-direction:column;gap:10px;">
+          <form onsubmit="handleAdjustTokens(event)" style="display:flex;flex-direction:column;gap:12px;">
             <div class="form-group">
-              <label class="form-label">User UID / Discord ID</label>
-              <input class="form-input" id="adjust-uid-input" placeholder="e.g. discord:1121188319410278420" required />
+              <label class="form-label">User ID / Username</label>
+              <input class="form-input" id="adjust-uid-input" placeholder="e.g. 1121188319410278420 or aubt" required />
             </div>
             <div class="form-group">
-              <label class="form-label">Amount (Positive to grant, Negative to deduct)</label>
-              <input class="form-input" id="adjust-amount-input" type="number" step="0.25" placeholder="e.g. 10.00 or -5.00" required />
+              <div class="slider-wrap" style="margin:4px 0 8px;">
+                <div class="slider-header">
+                  <span>Adjustment Amount</span>
+                  <span class="slider-val-badge" id="admin-slider-val">+10.00</span>
+                </div>
+                <input
+                  type="range"
+                  class="ct-slider"
+                  id="admin-token-slider"
+                  min="-50"
+                  max="200"
+                  step="5"
+                  value="10"
+                  oninput="syncAdminSlider(this.value)"
+                />
+              </div>
+              <input class="form-input" id="adjust-amount-input" type="number" step="0.25" value="10.00" oninput="syncAdminInput(this.value)" required style="font-weight:800;" />
+              <div class="wager-shortcuts" style="margin-top:6px;">
+                <span class="wager-pill" onclick="setAdminAmount(5.00)">+5.00</span>
+                <span class="wager-pill" onclick="setAdminAmount(10.00)">+10.00</span>
+                <span class="wager-pill" onclick="setAdminAmount(25.00)">+25.00</span>
+                <span class="wager-pill" onclick="setAdminAmount(50.00)">+50.00</span>
+                <span class="wager-pill" onclick="setAdminAmount(-10.00)" style="color:var(--red);">-10.00</span>
+              </div>
             </div>
             <div class="form-group">
               <label class="form-label">Reason / Notes</label>
