@@ -22,7 +22,6 @@ function getFirebaseAdmin() {
 
     let serviceAccount;
     try {
-      // Handle either raw JSON string or base64 encoded JSON
       const jsonString = rawServiceAccount.trim().startsWith('{')
         ? rawServiceAccount
         : Buffer.from(rawServiceAccount, 'base64').toString('utf-8');
@@ -31,7 +30,6 @@ function getFirebaseAdmin() {
       throw new Error('Failed to parse FIREBASE_SERVICE_ACCOUNT JSON: ' + parseErr.message);
     }
 
-    // Fix potential newline issues in private_key if passed as string
     if (serviceAccount.private_key && typeof serviceAccount.private_key === 'string') {
       serviceAccount.private_key = serviceAccount.private_key.replace(/\\n/g, '\n');
     }
@@ -124,6 +122,7 @@ exports.handler = async (event) => {
     const snap    = await userRef.get();
 
     if (!snap.exists) {
+      // 10.00 Tokens Welcome Bonus (1 Token = $1.00 USD)
       await userRef.set({
         uid,
         displayName,
@@ -131,20 +130,19 @@ exports.handler = async (event) => {
         photoURL,
         discordId:       discordUser.id,
         discordUsername: discordUser.username,
-        tokens:          500,
-        totalEarned:     500,
-        totalSpent:      0,
+        tokens:          10.00,
+        totalEarned:     10.00,
+        totalSpent:      0.00,
         matchesPlayed:   0,
         matchesWon:      0,
         createdAt:       admin.firestore.FieldValue.serverTimestamp(),
-        lastDailyClaim:  null,
       });
 
       await db.collection('transactions').add({
         userId:      uid,
-        amount:      500,
+        amount:      10.00,
         type:        'bonus',
-        description: '🎉 Welcome bonus',
+        description: '🎉 Welcome bonus (10.00 Tokens = $10.00)',
         timestamp:   admin.firestore.FieldValue.serverTimestamp(),
       });
     } else {

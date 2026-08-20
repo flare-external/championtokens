@@ -3,28 +3,10 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Champion Tokens — Fortnite Token Platform</title>
+  <title>Champion Tokens — Fortnite 1v1, 2v2, 3v3 Wager Matches</title>
   <link rel="stylesheet" href="css/style.css"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
-  <style>
-    .btn-discord {
-      background: #5865F2;
-      color: #fff;
-      font-size: 1rem;
-      padding: 14px 32px;
-      border-radius: 999px;
-      gap: 12px;
-      font-weight: 700;
-      box-shadow: 0 2px 16px rgba(88,101,242,0.45);
-    }
-    .btn-discord:hover {
-      background: #4752c4;
-      transform: translateY(-2px);
-      box-shadow: 0 6px 28px rgba(88,101,242,0.55);
-    }
-    .discord-logo { width: 22px; height: 22px; flex-shrink: 0; }
-  </style>
 </head>
 <body>
   <div class="page-bg"></div>
@@ -32,11 +14,11 @@
   <!-- Landing Nav -->
   <header class="landing-nav">
     <div class="landing-brand">
-      <i data-lucide="shield"></i>
-      Champion <span class="brand-accent" style="color:var(--accent);margin-left:5px;">Tokens</span>
+      <img src="champion_tokens_CT_v4.png" alt="Champion Tokens" class="landing-brand-logo"/>
+      <span>Champion <span class="brand-accent">Tokens</span></span>
     </div>
-    <button class="btn btn-discord" id="header-signin" style="font-size:0.875rem;padding:10px 20px;border-radius:var(--radius-md);">
-      <svg class="discord-logo" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.015.04.029.055a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
+    <button class="btn btn-discord btn-sm" id="header-signin" style="padding:8px 18px;border-radius:var(--radius-md);">
+      <svg class="discord-logo" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" style="width:18px;height:18px;"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.015.04.029.055a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
       Sign In
     </button>
   </header>
@@ -44,107 +26,82 @@
   <!-- Hero -->
   <main>
     <section class="hero">
+      <img src="champion_tokens_CT_v4.png" alt="Champion Tokens" class="hero-logo-large" />
+
       <div class="hero-eyebrow">
-        <i data-lucide="zap"></i>
-        Testing Phase — Free Tokens Available
+        <i data-lucide="sparkles"></i>
+        Testing Phase — 10.00 Free Tokens ($10 Value) On Signup
       </div>
+
       <h1 class="hero-title">
-        Compete in Fortnite.<br/>
-        Earn <span class="highlight">Champion</span> <span class="gold">Tokens</span>.
+        Wager & Win in Fortnite.<br/>
+        Earn <span class="gold-gradient">Champion Tokens</span>.
       </h1>
+
       <p class="hero-sub">
-        Create or join wager matches, climb the leaderboard, and collect tokens
-        for your wins. The official token platform for Fortnite players.
+        Create or join <strong>1v1, 2v2, & 3v3</strong> wager matches for <strong>Realistic, Zone Wars, & Box Fights</strong>.
+        Win games, collect tokens, and climb to the top of the leaderboard. (1 Token = $1.00 USD)
       </p>
+
       <div class="hero-cta">
         <button class="btn btn-discord btn-lg" id="hero-signin">
           <svg class="discord-logo" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.015.04.029.055a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
           Login with Discord
         </button>
-        <a href="#features" class="btn btn-outline btn-lg">
-          <i data-lucide="info"></i> Learn More
+        <a href="#modes" class="btn btn-outline btn-lg">
+          <i data-lucide="swords"></i> View Game Modes
         </a>
       </div>
 
-      <!-- Stats strip -->
-      <div class="hero-stats">
-        <div style="text-align:center;">
-          <div class="hero-stat-value" style="color:var(--gold);">500</div>
-          <div class="hero-stat-label">Free Welcome Tokens</div>
-        </div>
-        <div style="width:1px;height:40px;background:var(--border);"></div>
-        <div style="text-align:center;">
-          <div class="hero-stat-value">100</div>
-          <div class="hero-stat-label">Daily Free Claim</div>
-        </div>
-        <div style="width:1px;height:40px;background:var(--border);"></div>
-        <div style="text-align:center;">
-          <div class="hero-stat-value" style="color:var(--accent);">Live</div>
-          <div class="hero-stat-label">Real-Time Matches</div>
-        </div>
+      <!-- Modes strip -->
+      <div class="hero-modes-strip" id="modes">
+        <div class="mode-tag"><i data-lucide="user"></i> 1v1 Matchups</div>
+        <div class="mode-tag"><i data-lucide="users"></i> 2v2 Duos</div>
+        <div class="mode-tag"><i data-lucide="shield"></i> 3v3 Squads</div>
+        <div class="mode-tag" style="border-color:rgba(16,185,129,0.3);"><i data-lucide="target" style="color:#34d399;"></i> Realistic</div>
+        <div class="mode-tag" style="border-color:rgba(239,68,68,0.3);"><i data-lucide="flame" style="color:#f87171;"></i> Zone Wars</div>
+        <div class="mode-tag" style="border-color:rgba(245,158,11,0.3);"><i data-lucide="box" style="color:#fbbf24;"></i> Box Fights</div>
       </div>
     </section>
 
     <!-- Features -->
     <section class="features" id="features">
-      <h2 class="features-title">Everything You Need to <span style="color:var(--accent);">Compete</span></h2>
+      <h2 class="features-title">Competitive Fortnite <span class="brand-accent">Token Platform</span></h2>
       <div class="features-grid">
         <div class="feature-card">
-          <div class="feature-icon feature-icon--blue">
+          <div class="feature-icon feature-icon--gold">
             <i data-lucide="swords"></i>
           </div>
-          <div class="feature-title">Wager Matches</div>
-          <div class="feature-desc">Create Solo, Duos, or Squads matches. Set your wager, share the code, and may the best player win.</div>
+          <div class="feature-title">Instant Matchmaking</div>
+          <div class="feature-desc">Pick 1v1, 2v2, or 3v3 across Realistic, Zone Wars, or Box Fights. Start wagering from as low as $0.50 tokens.</div>
         </div>
         <div class="feature-card">
-          <div class="feature-icon feature-icon--gold">
+          <div class="feature-icon feature-icon--blue">
             <i data-lucide="coins"></i>
           </div>
-          <div class="feature-title">Earn Tokens</div>
-          <div class="feature-desc">Win matches to earn Champion Tokens. Claim your free daily tokens during the testing phase.</div>
+          <div class="feature-title">1 Token = $1.00 USD</div>
+          <div class="feature-desc">Simple, transparent 1:1 token economy. Free 10.00 tokens credited immediately upon signing up during beta.</div>
         </div>
         <div class="feature-card">
           <div class="feature-icon feature-icon--purple">
             <i data-lucide="trophy"></i>
           </div>
-          <div class="feature-title">Leaderboard</div>
-          <div class="feature-desc">Climb the global token leaderboard. Show off your dominance to the entire Champion Tokens community.</div>
+          <div class="feature-title">Global Leaderboard</div>
+          <div class="feature-desc">Dominate matches, increase your win rate, and show off your earnings on the global Champion Tokens leaderboard.</div>
         </div>
         <div class="feature-card">
           <div class="feature-icon feature-icon--green">
             <i data-lucide="zap"></i>
           </div>
-          <div class="feature-title">Testing Phase Perks</div>
-          <div class="feature-desc">We're in beta! Get 500 tokens just for signing up plus 100 free tokens every day. No purchase needed.</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- How it works -->
-    <section style="max-width:900px;margin:0 auto;padding:0 20px 80px;">
-      <h2 class="features-title">How It Works</h2>
-      <div class="grid-3" style="gap:24px;">
-        <div style="text-align:center;padding:24px;">
-          <div style="width:56px;height:56px;border-radius:50%;background:var(--accent-dim);border:2px solid var(--accent);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:1.3rem;font-weight:900;color:var(--accent);">1</div>
-          <div style="font-weight:700;margin-bottom:8px;">Sign In with Google</div>
-          <div style="font-size:0.875rem;color:var(--text-muted);">Create your free account in one click. Instantly receive 500 welcome tokens.</div>
-        </div>
-        <div style="text-align:center;padding:24px;">
-          <div style="width:56px;height:56px;border-radius:50%;background:var(--accent-dim);border:2px solid var(--accent);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:1.3rem;font-weight:900;color:var(--accent);">2</div>
-          <div style="font-weight:700;margin-bottom:8px;">Join or Create a Match</div>
-          <div style="font-size:0.875rem;color:var(--text-muted);">Browse open matches or create your own. Set the wager and invite friends with a code.</div>
-        </div>
-        <div style="text-align:center;padding:24px;">
-          <div style="width:56px;height:56px;border-radius:50%;background:var(--accent-dim);border:2px solid var(--accent);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:1.3rem;font-weight:900;color:var(--accent);">3</div>
-          <div style="font-weight:700;margin-bottom:8px;">Win & Collect Tokens</div>
-          <div style="font-size:0.875rem;color:var(--text-muted);">Destroy the competition and claim 90% of the prize pool. Climb to the top of the leaderboard.</div>
+          <div class="feature-title">90% Winner Payout</div>
+          <div class="feature-desc">Winners take home 90% of the entire match prize pool instantly after match results are confirmed.</div>
         </div>
       </div>
     </section>
   </main>
 
   <footer class="footer">
-    <p>© 2025 Champion Tokens · Fortnite Token Platform · Testing Phase</p>
+    <p>© 2025 Champion Tokens · Fortnite Token Platform · 1 Token = $1.00 USD</p>
   </footer>
 
   <!-- Firebase SDKs -->
@@ -156,14 +113,15 @@
   <!-- App scripts -->
   <script src="js/firebase-config.js"></script>
   <script src="js/auth.js"></script>
+  <script src="js/nav.js"></script>
 
   <script>
+    injectFloatingIcons();
     lucide.createIcons();
 
     // Redirect if already signed in
     redirectIfAuthed('dashboard.html');
 
-    // Both buttons call Discord OAuth
     function handleSignIn() {
       signInWithDiscord();
     }

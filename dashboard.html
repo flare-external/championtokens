@@ -36,12 +36,11 @@
       document.getElementById('page-loading').classList.add('hidden');
 
       try {
-        // Fetch initial user data
         const userData = await getUser(user.uid);
-        renderDashboard(userData || { displayName: user.displayName || 'Champion', tokens: 500, totalEarned: 500, matchesPlayed: 0, matchesWon: 0 });
+        renderDashboard(userData || { displayName: user.displayName || 'Champion', tokens: 10.00, totalEarned: 10.00, matchesPlayed: 0, matchesWon: 0 });
       } catch (err) {
         console.error('Error fetching initial user:', err);
-        renderDashboard({ displayName: user.displayName || 'Champion', tokens: 500, totalEarned: 500, matchesPlayed: 0, matchesWon: 0 });
+        renderDashboard({ displayName: user.displayName || 'Champion', tokens: 10.00, totalEarned: 10.00, matchesPlayed: 0, matchesWon: 0 });
       }
 
       // Real-time balance update
@@ -49,7 +48,7 @@
         if (snap.exists) renderStats(snap.data());
       }, (err) => console.warn('Users snapshot error:', err));
 
-      // Real-time recent transactions (in-memory sort to avoid index errors)
+      // Real-time recent transactions
       db.collection('transactions')
         .where('userId', '==', user.uid)
         .onSnapshot((snap) => {
@@ -84,29 +83,16 @@
     }
 
     function renderStats(data) {
-      document.getElementById('stat-tokens').textContent     = formatTokens(data.tokens);
-      document.getElementById('stat-earned').textContent     = formatTokens(data.totalEarned);
+      document.getElementById('stat-tokens').textContent     = formatTokens(data.tokens ?? 10.00);
+      document.getElementById('stat-earned').textContent     = formatTokens(data.totalEarned ?? 10.00);
       document.getElementById('stat-played').textContent     = data.matchesPlayed ?? 0;
       document.getElementById('stat-won').textContent        = data.matchesWon    ?? 0;
 
-      // Daily claim button logic
-      const claimBtn    = document.getElementById('claim-btn');
-      const claimStatus = document.getElementById('claim-status');
-      const now         = new Date();
-
-      if (data.lastDailyClaim) {
-        const last  = data.lastDailyClaim.toDate();
-        const diff  = (now - last) / 3_600_000;
-        if (diff < 24) {
-          const h = Math.floor(24 - diff);
-          const m = Math.floor(((24 - diff) - h) * 60);
-          claimBtn.disabled = true;
-          claimStatus.textContent = `Next claim in ${h}h ${m}m`;
-          return;
-        }
-      }
-      claimBtn.disabled = false;
-      claimStatus.textContent = 'Claim 100 free tokens!';
+      const played = data.matchesPlayed || 0;
+      const won = data.matchesWon || 0;
+      const wr = played > 0 ? Math.round((won / played) * 100) : 0;
+      const wrEl = document.getElementById('stat-winrate');
+      if (wrEl) wrEl.textContent = wr + '%';
     }
 
     function renderTransactions(txs) {
@@ -129,7 +115,7 @@
               <div class="tx-time">${formatTime(tx.timestamp)}</div>
             </div>
             <div class="tx-amount ${isCredit ? 'tx-amount--credit' : 'tx-amount--debit'}">
-              ${isCredit ? '+' : ''}${formatTokens(tx.amount)}
+              ${isCredit ? '+' : ''}${formatTokens(tx.amount)} Tokens
             </div>
           </div>`;
       }).join('');
@@ -139,7 +125,7 @@
     function renderMyMatches(matches) {
       const el = document.getElementById('my-matches');
       if (!matches.length) {
-        el.innerHTML = `<div class="empty-state"><i data-lucide="swords"></i><p>No active matches. <a href="matches.html" style="color:var(--accent)">Join one!</a></p></div>`;
+        el.innerHTML = `<div class="empty-state"><i data-lucide="swords"></i><p>No active matches. <a href="matches.html" style="color:var(--gold-bright);font-weight:700;">Create or join one!</a></p></div>`;
         lucide.createIcons();
         return;
       }
@@ -148,13 +134,16 @@
           <div class="match-card__header">
             <div>
               <div class="match-card__title">${m.title}</div>
-              <div class="match-card__host">by ${m.hostName}</div>
+              <div class="match-card__host">Hosted by ${m.hostName}</div>
             </div>
-            <span class="badge ${modeColor(m.mode)}">${m.mode}</span>
+            <div class="badge-group">
+              <span class="badge ${sizeColor(m.size || '1v1')}">${m.size || '1v1'}</span>
+              <span class="badge ${modeColor(m.mode)}">${m.mode}</span>
+            </div>
           </div>
           <div class="match-card__meta">
             <span class="match-meta-item"><i data-lucide="coins"></i><span class="gold">${formatTokens(m.wager)}</span> wager</span>
-            <span class="match-meta-item"><i data-lucide="users"></i>${m.players.length}/${m.maxPlayers}</span>
+            <span class="match-meta-item"><i data-lucide="users"></i>${m.players?.length || 1}/${m.maxPlayers}</span>
             <span class="badge badge-${m.status}" style="margin-left:auto;">${m.status.replace('_',' ')}</span>
           </div>
           <div style="display:flex;gap:8px;align-items:center;justify-content:space-between;">
@@ -165,24 +154,8 @@
               </button>` : ''}
           </div>
         </div>`).join('');
-      // Store matches for modal
       window._myMatches = matches;
       lucide.createIcons();
-    }
-
-    // ── Daily Claim ──────────────────────────────────────────
-    document.addEventListener('DOMContentLoaded', () => {});
-
-    async function handleClaim() {
-      const btn = document.getElementById('claim-btn');
-      btn.disabled = true;
-      try {
-        const earned = await claimDailyTokens(currentUser.uid);
-        showToast(`+${earned} tokens claimed!`, 'success');
-      } catch (err) {
-        showToast(err.message, 'error');
-        btn.disabled = false;
-      }
     }
 
     // ── Declare Winner Modal ─────────────────────────────────
@@ -205,8 +178,8 @@
     }
 
     async function handleDeclareWinner() {
-      const select   = document.getElementById('winner-select');
-      const matchId  = select.dataset.matchId;
+      const select    = document.getElementById('winner-select');
+      const matchId   = select.dataset.matchId;
       const winnerUid = select.value;
       const btn = document.getElementById('declare-btn');
       btn.disabled = true;
@@ -222,18 +195,23 @@
     }
   </script>
 
-  <!-- Page content (inserted after nav by injectNav) -->
+  <!-- Page content -->
   <main class="page-wrap" id="main-content">
     <div class="page-header">
-      <h1>Welcome back, <span id="welcome-name">Champion</span> 👋</h1>
-      <p>Here's your Champion Tokens overview.</p>
+      <h1>Welcome back, <span id="welcome-name" class="brand-accent">Champion</span> 👋</h1>
+      <p>Your competitive Fortnite tokens dashboard.</p>
     </div>
 
-    <!-- Balance hero -->
-    <div class="balance-card card--glow-gold" style="margin-bottom:24px;">
-      <div class="balance-label">Token Balance</div>
-      <div class="balance-amount" id="stat-tokens">--</div>
-      <div class="balance-unit">Champion Tokens</div>
+    <!-- Balance hero with Add Tokens CTA -->
+    <div class="balance-card" style="margin-bottom:24px;">
+      <div class="balance-label">Current Token Balance</div>
+      <div class="balance-amount-wrap">
+        <div class="balance-amount" id="stat-tokens">10.00</div>
+        <a href="shop.html" class="token-add-btn" style="width:36px;height:36px;font-size:1.2rem;" title="Add / Buy Tokens">
+          <i data-lucide="plus"></i>
+        </a>
+      </div>
+      <div class="balance-unit">Champion Tokens (1 Token = $1.00 USD)</div>
     </div>
 
     <!-- Stats row -->
@@ -241,35 +219,23 @@
       <div class="card stat-card">
         <div class="stat-icon stat-icon--gold"><i data-lucide="trending-up"></i></div>
         <div class="stat-label">Total Earned</div>
-        <div class="stat-value stat-value--gold" id="stat-earned">--</div>
+        <div class="stat-value stat-value--gold" id="stat-earned">10.00</div>
       </div>
       <div class="card stat-card">
         <div class="stat-icon stat-icon--accent"><i data-lucide="swords"></i></div>
         <div class="stat-label">Matches Played</div>
-        <div class="stat-value" id="stat-played">--</div>
+        <div class="stat-value" id="stat-played">0</div>
       </div>
       <div class="card stat-card">
         <div class="stat-icon stat-icon--purple"><i data-lucide="trophy"></i></div>
         <div class="stat-label">Matches Won</div>
-        <div class="stat-value" id="stat-won">--</div>
+        <div class="stat-value" id="stat-won">0</div>
       </div>
       <div class="card stat-card">
         <div class="stat-icon stat-icon--green"><i data-lucide="percent"></i></div>
         <div class="stat-label">Win Rate</div>
-        <div class="stat-value" id="stat-winrate">--</div>
+        <div class="stat-value" id="stat-winrate">0%</div>
       </div>
-    </div>
-
-    <!-- Daily Claim -->
-    <div class="claim-card" style="margin-bottom:24px;">
-      <div class="claim-icon"><i data-lucide="gift"></i></div>
-      <div style="flex:1;">
-        <div class="claim-title">Daily Free Tokens 🎁</div>
-        <div class="claim-desc" id="claim-status">Claim 100 free tokens!</div>
-      </div>
-      <button class="btn btn-gold" id="claim-btn" onclick="handleClaim()">
-        <i data-lucide="gift"></i> Claim 100 Tokens
-      </button>
     </div>
 
     <!-- Two-col: activity + my matches -->
@@ -297,18 +263,18 @@
           <div class="empty-state"><div class="spinner" style="margin:0 auto"></div></div>
         </div>
         <a href="matches.html" class="btn btn-outline btn-full" style="margin-top:14px;">
-          <i data-lucide="plus"></i> Browse All Matches
+          <i data-lucide="plus"></i> Browse or Create Matches
         </a>
       </div>
     </div>
 
-    <!-- Quick links -->
+    <!-- Quick action links -->
     <div class="grid-3" style="margin-top:24px;">
       <a href="matches.html" class="card" style="display:flex;align-items:center;gap:14px;text-decoration:none;">
         <div class="stat-icon stat-icon--accent"><i data-lucide="swords"></i></div>
         <div>
           <div style="font-weight:700;">Matches</div>
-          <div style="font-size:0.8125rem;color:var(--text-muted);">Create or join</div>
+          <div style="font-size:0.8125rem;color:var(--text-muted);">1v1, 2v2, 3v3 Wagers</div>
         </div>
         <i data-lucide="chevron-right" style="margin-left:auto;color:var(--text-muted);width:16px;height:16px;"></i>
       </a>
@@ -316,7 +282,7 @@
         <div class="stat-icon stat-icon--gold"><i data-lucide="trophy"></i></div>
         <div>
           <div style="font-weight:700;">Leaderboard</div>
-          <div style="font-size:0.8125rem;color:var(--text-muted);">Top earners</div>
+          <div style="font-size:0.8125rem;color:var(--text-muted);">Top Token Earners</div>
         </div>
         <i data-lucide="chevron-right" style="margin-left:auto;color:var(--text-muted);width:16px;height:16px;"></i>
       </a>
@@ -324,7 +290,7 @@
         <div class="stat-icon stat-icon--purple"><i data-lucide="shopping-cart"></i></div>
         <div>
           <div style="font-weight:700;">Token Shop</div>
-          <div style="font-size:0.8125rem;color:var(--text-muted);">Buy tokens</div>
+          <div style="font-size:0.8125rem;color:var(--text-muted);">Add Tokens ($1 = 1 Token)</div>
         </div>
         <i data-lucide="chevron-right" style="margin-left:auto;color:var(--text-muted);width:16px;height:16px;"></i>
       </a>
@@ -339,7 +305,7 @@
         <button class="modal-close" onclick="closeDeclareModal()"><i data-lucide="x"></i></button>
       </div>
       <p style="font-size:0.875rem;color:var(--text-muted);margin-bottom:20px;">
-        Select the winner of "<strong id="declare-match-title"></strong>". 90% of the prize pool will be awarded to them.
+        Select the winning player/team of "<strong id="declare-match-title"></strong>". 90% of the prize pool will be paid out immediately.
       </p>
       <div class="modal-form">
         <div class="form-group">
@@ -355,21 +321,5 @@
       </div>
     </div>
   </div>
-
-  <script>
-    // Win rate calc
-    db && auth.onAuthStateChanged(user => {
-      if (!user) return;
-      db.collection('users').doc(user.uid).onSnapshot(snap => {
-        const d = snap.data();
-        if (!d) return;
-        const wr = d.matchesPlayed > 0
-          ? Math.round((d.matchesWon / d.matchesPlayed) * 100)
-          : 0;
-        const el = document.getElementById('stat-winrate');
-        if (el) el.textContent = wr + '%';
-      });
-    });
-  </script>
 </body>
 </html>

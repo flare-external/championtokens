@@ -8,7 +8,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
-    .tx-type-icon { font-size: 1rem; }
     .matches-history { display: flex; flex-direction: column; gap: 12px; }
     .mh-card {
       background: var(--bg-card);
@@ -19,7 +18,7 @@
       align-items: center;
       gap: 14px;
     }
-    .mh-card:hover { background: var(--bg-card-hover); }
+    .mh-card:hover { background: var(--bg-card-hover); border-color: var(--gold-bright); }
     .mh-status-icon {
       width: 40px; height: 40px; flex-shrink: 0;
       border-radius: var(--radius-md);
@@ -27,8 +26,8 @@
     }
     .mh-status-icon i { width: 18px; height: 18px; }
     .mh-info { flex: 1; min-width: 0; }
-    .mh-title { font-weight: 700; font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .mh-meta  { font-size: 0.75rem; color: var(--text-muted); margin-top: 2px; }
+    .mh-title { font-weight: 700; font-size: 0.95rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .mh-meta  { font-size: 0.78rem; color: var(--text-muted); margin-top: 2px; }
   </style>
 </head>
 <body>
@@ -69,7 +68,7 @@
         renderTransactions([]);
       }
 
-      // Match history (using safe in-memory sorting)
+      // Match history
       subscribeUserMatches(user.uid, (matches) => {
         renderMatchHistory(matches.slice(0, 10));
       });
@@ -89,16 +88,16 @@
       }
 
       document.getElementById('profile-name').textContent    = data.displayName || 'Champion';
-      document.getElementById('profile-email').textContent   = data.email || '';
-      document.getElementById('profile-tokens').textContent  = formatTokens(data.tokens);
-      document.getElementById('profile-earned').textContent  = formatTokens(data.totalEarned);
-      document.getElementById('profile-spent').textContent   = formatTokens(data.totalSpent);
+      document.getElementById('profile-email').textContent   = data.email ? data.email : (data.discordUsername ? `@${data.discordUsername}` : '');
+      document.getElementById('profile-tokens').textContent  = formatTokens(data.tokens ?? 10.00);
+      document.getElementById('profile-earned').textContent  = formatTokens(data.totalEarned ?? 10.00);
+      document.getElementById('profile-spent').textContent   = formatTokens(data.totalSpent ?? 0.00);
       document.getElementById('profile-played').textContent  = data.matchesPlayed ?? 0;
       document.getElementById('profile-won').textContent     = data.matchesWon ?? 0;
 
       const wr = data.matchesPlayed > 0
         ? Math.round((data.matchesWon / data.matchesPlayed) * 100) + '%'
-        : '—';
+        : '0%';
       document.getElementById('profile-winrate').textContent = wr;
 
       if (data.createdAt) {
@@ -111,7 +110,7 @@
     function renderTransactions(txs) {
       const el = document.getElementById('tx-list');
       if (!txs.length) {
-        el.innerHTML = `<div class="empty-state"><i data-lucide="inbox"></i><p>No transactions yet</p></div>`;
+        el.innerHTML = `<div class="empty-state"><i data-lucide="inbox"></i><p>No transactions recorded yet</p></div>`;
         lucide.createIcons();
         return;
       }
@@ -127,7 +126,7 @@
               <div class="tx-time">${formatTime(tx.timestamp)}</div>
             </div>
             <div class="tx-amount ${isCredit ? 'tx-amount--credit' : 'tx-amount--debit'}">
-              ${isCredit ? '+' : ''}${formatTokens(tx.amount)}
+              ${isCredit ? '+' : ''}${formatTokens(tx.amount)} Tokens
             </div>
           </div>`;
       }).join('');
@@ -144,6 +143,10 @@
       el.innerHTML = matches.map(m => {
         const isWinner = m.winner?.uid === currentUser?.uid;
         const isHost   = m.createdBy === currentUser?.uid;
+        const size     = m.size || '1v1';
+        const mode     = m.mode || 'Realistic';
+        const winPrize = Math.round(Number(m.prizePool || m.wager) * 0.90 * 100) / 100;
+
         const statusColor = {
           waiting:     'stat-icon--gold',
           in_progress: 'stat-icon--green',
@@ -161,19 +164,20 @@
               <i data-lucide="${statusIcon}"></i>
             </div>
             <div class="mh-info">
-              <div class="mh-title">${m.title}</div>
+              <div class="mh-title">${m.title || `${size} ${mode}`}</div>
               <div class="mh-meta">
-                <span class="badge ${modeColor(m.mode)}" style="padding:1px 8px;font-size:0.7rem;">${m.mode}</span>
+                <span class="badge ${sizeColor(size)}" style="padding:1px 8px;font-size:0.7rem;">${size}</span>
+                <span class="badge ${modeColor(mode)}" style="padding:1px 8px;font-size:0.7rem;">${mode}</span>
                 · ${formatTokens(m.wager)} wager
                 · ${formatTime(m.createdAt)}
-                ${isHost ? ' · <span style="color:var(--accent)">Host</span>' : ''}
+                ${isHost ? ' · <span style="color:var(--gold-bright);font-weight:700;">Host</span>' : ''}
               </div>
             </div>
             <div style="text-align:right;flex-shrink:0;">
               ${m.status === 'completed'
                 ? isWinner
-                  ? `<div style="color:var(--green);font-weight:800;">+${formatTokens(Math.floor(m.prizePool*0.9))}</div><div style="font-size:0.75rem;color:var(--green);">Won!</div>`
-                  : `<div style="color:var(--red);font-weight:700;">-${formatTokens(m.wager)}</div><div style="font-size:0.75rem;color:var(--text-muted);">Lost</div>`
+                  ? `<div style="color:var(--green);font-weight:800;">+${formatTokens(winPrize)} Tokens</div><div style="font-size:0.75rem;color:var(--green);">Victory!</div>`
+                  : `<div style="color:var(--red);font-weight:700;">-${formatTokens(m.wager)} Tokens</div><div style="font-size:0.75rem;color:var(--text-muted);">Defeat</div>`
                 : `<span class="badge badge-${m.status}">${m.status.replace('_',' ')}</span>`
               }
             </div>
@@ -196,8 +200,8 @@
         <div class="profile-since" id="profile-since"></div>
       </div>
       <div style="text-align:right;flex-shrink:0;">
-        <div style="font-size:0.75rem;color:var(--text-muted);margin-bottom:4px;">Token Balance</div>
-        <div style="font-size:1.8rem;font-weight:900;color:var(--gold);" id="profile-tokens">--</div>
+        <div style="font-size:0.75rem;color:var(--text-muted);margin-bottom:4px;text-transform:uppercase;font-weight:700;">Token Balance</div>
+        <div style="font-size:1.9rem;font-weight:900;" class="stat-value--gold" id="profile-tokens">10.00</div>
       </div>
     </div>
 
@@ -206,25 +210,25 @@
       <div class="card stat-card">
         <div class="stat-icon stat-icon--gold"><i data-lucide="trending-up"></i></div>
         <div class="stat-label">Total Earned</div>
-        <div class="stat-value stat-value--gold" id="profile-earned">--</div>
+        <div class="stat-value stat-value--gold" id="profile-earned">10.00</div>
       </div>
       <div class="card stat-card">
         <div class="stat-icon stat-icon--accent"><i data-lucide="trending-down"></i></div>
         <div class="stat-label">Total Spent</div>
-        <div class="stat-value" id="profile-spent">--</div>
+        <div class="stat-value" id="profile-spent">0.00</div>
       </div>
       <div class="card stat-card">
         <div class="stat-icon stat-icon--purple"><i data-lucide="swords"></i></div>
         <div class="stat-label">Matches Played</div>
-        <div class="stat-value" id="profile-played">--</div>
+        <div class="stat-value" id="profile-played">0</div>
       </div>
       <div class="card stat-card">
         <div class="stat-icon stat-icon--green"><i data-lucide="trophy"></i></div>
         <div class="stat-label">Wins / Win Rate</div>
         <div class="stat-value">
-          <span id="profile-won">--</span>
+          <span id="profile-won">0</span>
           <span style="font-size:0.9rem;color:var(--text-muted);"> / </span>
-          <span id="profile-winrate" style="font-size:1rem;">--</span>
+          <span id="profile-winrate" style="font-size:1.1rem;">0%</span>
         </div>
       </div>
     </div>

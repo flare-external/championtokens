@@ -14,59 +14,27 @@ async function getUser(uid) {
  * Update a user's token balance and log a transaction.
  * @param {string} uid
  * @param {number} amount  positive = credit, negative = debit
- * @param {string} type    'bonus' | 'daily' | 'match_wager' | 'match_win' | 'purchase' | 'admin'
+ * @param {string} type    'bonus' | 'match_wager' | 'match_win' | 'purchase' | 'admin'
  * @param {string} description
  */
 async function updateTokens(uid, amount, type, description) {
+  const roundedAmount = Math.round(Number(amount) * 100) / 100;
   const userRef = db.collection('users').doc(uid);
   const update  = {
-    tokens: firebase.firestore.FieldValue.increment(amount),
+    tokens: firebase.firestore.FieldValue.increment(roundedAmount),
   };
-  if (amount > 0) update.totalEarned = firebase.firestore.FieldValue.increment(amount);
-  if (amount < 0) update.totalSpent  = firebase.firestore.FieldValue.increment(Math.abs(amount));
+  if (roundedAmount > 0) update.totalEarned = firebase.firestore.FieldValue.increment(roundedAmount);
+  if (roundedAmount < 0) update.totalSpent  = firebase.firestore.FieldValue.increment(Math.abs(roundedAmount));
 
   await userRef.update(update);
 
   await db.collection('transactions').add({
     userId:      uid,
-    amount,
+    amount:      roundedAmount,
     type,
     description,
     timestamp:   firebase.firestore.FieldValue.serverTimestamp(),
   });
-}
-
-// ── Daily Claim ──────────────────────────────────────────────
-
-/** Claim 100 daily tokens. Throws if not yet 24h since last claim. */
-async function claimDailyTokens(uid) {
-  const user = await getUser(uid);
-  const now  = new Date();
-
-  if (user.lastDailyClaim) {
-    const last      = user.lastDailyClaim.toDate();
-    const diffHours = (now - last) / 3_600_000;
-    if (diffHours < 24) {
-      const hoursLeft = Math.ceil(24 - diffHours);
-      throw new Error(`Come back in ${hoursLeft} hour${hoursLeft !== 1 ? 's' : ''}`);
-    }
-  }
-
-  await db.collection('users').doc(uid).update({
-    tokens:         firebase.firestore.FieldValue.increment(100),
-    totalEarned:    firebase.firestore.FieldValue.increment(100),
-    lastDailyClaim: firebase.firestore.FieldValue.serverTimestamp(),
-  });
-
-  await db.collection('transactions').add({
-    userId:      uid,
-    amount:      100,
-    type:        'daily',
-    description: '🎁 Daily token claim',
-    timestamp:   firebase.firestore.FieldValue.serverTimestamp(),
-  });
-
-  return 100;
 }
 
 // ── Matches ──────────────────────────────────────────────────
@@ -77,54 +45,67 @@ function generateMatchCode() {
 }
 
 /**
- * Create a new match. Deducts wager from host.
- * Returns { id, code }
+ * Create a new match.
+ * @param {object} hostUser
+ * @param {object} matchData { mode: 'Realistic'|'Zone Wars'|'Box Fights', size: '1v1'|'2v2'|'3v3', wager: number }
  */
 async function createMatch(hostUser, matchData) {
-  if (hostUser.tokens < matchData.wager) {
+  const wager = Math.round(parseFloat(matchData.wager) * 100) / 100;
+  if (isNaN(wager) || wager < 0.50) {
+    throw new Error('Minimum wager is 0.50 tokens ($0.50)');
+  }
+  if (Number(hostUser.tokens || 0) < wager) {
     throw new Error('Insufficient tokens to create this match');
   }
+
+  const size = matchData.size || '1v1';
+  const mode = matchData.mode || 'Realistic';
+  const maxPlayers = size === '1v1' ? 2 : size === '2v2' ? 4 : 6;
+  const title = `${size} ${mode}`;
   const code = generateMatchCode();
 
+  const hostPlayer = {
+    uid:         hostUser.uid,
+    displayName: hostUser.displayName,
+    photoURL:    hostUser.photoURL || '',
+    isHost:      true,
+  };
+
   const matchRef = await db.collection('matches').add({
-    title:      matchData.title,
-    mode:       matchData.mode,       // 'Solo' | 'Duos' | 'Squads'
-    wager:      matchData.wager,
-    maxPlayers: matchData.maxPlayers,
-    players: [{
-      uid:         hostUser.uid,
-      displayName: hostUser.displayName,
-      photoURL:    hostUser.photoURL || '',
-      isHost:      true,
-    }],
-    status:      'waiting',           // waiting | in_progress | completed
-    createdBy:   hostUser.uid,
-    hostName:    hostUser.displayName,
+    title,
+    size,
+    mode,
+    wager,
+    maxPlayers,
+    players:    [hostPlayer],
+    playerUids: [hostUser.uid],
+    status:     'waiting', // waiting | in_progress | completed
+    createdBy:  hostUser.uid,
+    hostName:   hostUser.displayName,
     code,
-    prizePool:   matchData.wager,
-    winner:      null,
-    createdAt:   firebase.firestore.FieldValue.serverTimestamp(),
-    completedAt: null,
+    prizePool:  wager,
+    winner:     null,
+    createdAt:  firebase.firestore.FieldValue.serverTimestamp(),
+    completedAt:null,
   });
 
   // Hold the host's wager
   await updateTokens(
     hostUser.uid,
-    -matchData.wager,
+    -wager,
     'match_wager',
-    `🎮 Match wager — "${matchData.title}"`
+    `🎮 Created match — "${title}" (${code})`
   );
 
-  return { id: matchRef.id, code };
+  return { id: matchRef.id, code, title };
 }
 
 /**
  * Join a match by its 6-character code.
- * Returns the match document ID.
  */
 async function joinMatch(code, joiningUser) {
   const snap = await db.collection('matches')
-    .where('code',   '==', code.toUpperCase())
+    .where('code', '==', code.toUpperCase())
     .where('status', '==', 'waiting')
     .limit(1)
     .get();
@@ -133,13 +114,14 @@ async function joinMatch(code, joiningUser) {
 
   const matchDoc = snap.docs[0];
   const match    = matchDoc.data();
+  const wager    = Number(match.wager);
 
   if (match.players.length >= match.maxPlayers)
-    throw new Error('This match is full');
+    throw new Error('This match is already full');
   if (match.players.find(p => p.uid === joiningUser.uid))
     throw new Error('You are already in this match');
-  if (joiningUser.tokens < match.wager)
-    throw new Error('Insufficient tokens to join');
+  if (Number(joiningUser.tokens || 0) < wager)
+    throw new Error(`Insufficient tokens to join (Requires ${formatTokens(wager)} tokens)`);
 
   const newPlayer = {
     uid:         joiningUser.uid,
@@ -151,23 +133,19 @@ async function joinMatch(code, joiningUser) {
   await matchDoc.ref.update({
     players:    firebase.firestore.FieldValue.arrayUnion(newPlayer),
     playerUids: firebase.firestore.FieldValue.arrayUnion(joiningUser.uid),
-    prizePool:  firebase.firestore.FieldValue.increment(match.wager),
+    prizePool:  firebase.firestore.FieldValue.increment(wager),
   });
 
   await updateTokens(
     joiningUser.uid,
-    -match.wager,
+    -wager,
     'match_wager',
-    `🎮 Joined match — "${match.title}"`
+    `🎮 Joined match — "${match.title}" (${match.code})`
   );
 
   return matchDoc.id;
 }
 
-/**
- * Subscribe to open (status=waiting) matches in real-time.
- * Returns the Firestore unsubscribe function.
- */
 /**
  * Subscribe to open (status=waiting) matches in real-time.
  * In-memory sort avoids composite index requirement.
@@ -217,7 +195,8 @@ async function declareWinner(matchId, winnerUid, hostUid) {
   const winner = match.players.find(p => p.uid === winnerUid);
   if (!winner) throw new Error('Player not found in match');
 
-  const prize = Math.floor(match.prizePool * 0.9); // 10% fee
+  const rawPrize = Number(match.prizePool || 0) * 0.90; // 90% to winner
+  const prize = Math.round(rawPrize * 100) / 100;
 
   await matchRef.update({
     status:      'completed',
@@ -240,16 +219,6 @@ async function declareWinner(matchId, winnerUid, hostUid) {
   await Promise.all(statsUpdates);
 
   return prize;
-}
-
-/** Start a match (host only) */
-async function startMatch(matchId, hostUid) {
-  const matchRef  = db.collection('matches').doc(matchId);
-  const matchSnap = await matchRef.get();
-  if (!matchSnap.exists) throw new Error('Match not found');
-  const match = matchSnap.data();
-  if (match.createdBy !== hostUid) throw new Error('Only the host can start the match');
-  await matchRef.update({ status: 'in_progress' });
 }
 
 // ── Leaderboard ──────────────────────────────────────────────

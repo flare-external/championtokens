@@ -25,17 +25,23 @@ function injectNav(activePage = '') {
     <nav class="ct-nav" id="ct-nav">
       <div class="ct-nav__inner">
         <a href="dashboard.html" class="ct-nav__brand">
-          <i data-lucide="shield" class="brand-icon"></i>
+          <img src="champion_tokens_CT_v4.png" alt="Champion Tokens" class="brand-logo-img" />
           <span class="brand-text">Champion <span class="brand-accent">Tokens</span></span>
         </a>
 
         <div class="ct-nav__links">${navLinksHTML}</div>
 
         <div class="ct-nav__user">
-          <div class="token-pill">
-            <i data-lucide="coins"></i>
-            <span id="nav-balance">--</span>
+          <div class="ct-nav__token-group">
+            <div class="token-pill" title="Champion Tokens Balance (1 Token = $1.00 USD)">
+              <img src="champion_tokens_CT_v4.png" alt="CT" class="token-pill-coin" />
+              <span id="nav-balance">10.00</span>
+            </div>
+            <a href="shop.html" class="token-add-btn" title="Add / Buy Tokens">
+              <i data-lucide="plus"></i>
+            </a>
           </div>
+
           <a href="profile.html" class="nav-avatar-wrap" id="nav-avatar-wrap" title="Profile">
             <img id="nav-avatar-img" src="" alt="" style="display:none"/>
             <i data-lucide="user" id="nav-avatar-icon"></i>
@@ -63,6 +69,7 @@ function injectNav(activePage = '') {
     <div class="ct-nav-spacer"></div>`;
 
   document.body.insertAdjacentHTML('afterbegin', navHTML);
+  injectFloatingIcons();
   lucide.createIcons();
 
   // Populate balance + avatar from Firestore in real-time
@@ -72,9 +79,9 @@ function injectNav(activePage = '') {
       if (!snap.exists) return;
       const data = snap.data();
 
-      // Balance
+      // Balance (2 decimals)
       const balEl = document.getElementById('nav-balance');
-      if (balEl) balEl.textContent = (data.tokens ?? 0).toLocaleString();
+      if (balEl) balEl.textContent = formatTokens(data.tokens);
 
       // Avatar
       const img  = document.getElementById('nav-avatar-img');
@@ -95,6 +102,36 @@ function handleSignOut() {
 function toggleMobileNav() {
   const drawer = document.getElementById('nav-mobile');
   if (drawer) drawer.classList.toggle('open');
+}
+
+/**
+ * Injects animated floating Fortnite & gaming icons into the background
+ */
+function injectFloatingIcons() {
+  if (document.getElementById('floating-icons-container')) return;
+
+  const icons = [
+    { name: 'crosshair', top: '12%', left: '8%',  size: 32, dur: '18s', delay: '0s' },
+    { name: 'swords',    top: '25%', left: '88%', size: 36, dur: '22s', delay: '2s' },
+    { name: 'shield',    top: '65%', left: '6%',  size: 30, dur: '20s', delay: '4s' },
+    { name: 'trophy',    top: '78%', left: '92%', size: 34, dur: '25s', delay: '1s' },
+    { name: 'zap',       top: '45%', left: '95%', size: 28, dur: '17s', delay: '5s' },
+    { name: 'flame',     top: '85%', left: '18%', size: 30, dur: '24s', delay: '3s' },
+    { name: 'target',    top: '38%', left: '3%',  size: 26, dur: '19s', delay: '6s' },
+    { name: 'crown',     top: '15%', left: '75%', size: 32, dur: '21s', delay: '2.5s' },
+  ];
+
+  const container = document.createElement('div');
+  container.id = 'floating-icons-container';
+  container.className = 'floating-icons-layer';
+
+  container.innerHTML = icons.map(ic => `
+    <div class="floating-icon-item" style="top:${ic.top};left:${ic.left};animation-duration:${ic.dur};animation-delay:${ic.delay};">
+      <i data-lucide="${ic.name}" style="width:${ic.size}px;height:${ic.size}px;"></i>
+    </div>
+  `).join('');
+
+  document.body.appendChild(container);
 }
 
 // ── Toast Notifications ───────────────────────────────────────
@@ -144,24 +181,40 @@ function formatTime(timestamp) {
   return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 }
 
+/** Format tokens to 2 decimal places (e.g. 10.00, 0.50) */
 function formatTokens(n) {
-  if (n == null) return '0';
-  return Number(n).toLocaleString();
+  if (n == null || isNaN(n)) return '0.00';
+  return Number(n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 
 function txTypeLabel(type) {
   const labels = {
     bonus:       '🎉 Welcome Bonus',
-    daily:       '🎁 Daily Claim',
     match_wager: '🎮 Match Wager',
     match_win:   '🏆 Match Win',
-    purchase:    '💳 Purchase',
+    purchase:    '💳 Token Purchase',
     admin:       '⚡ Admin Grant',
   };
   return labels[type] || type;
 }
 
 function modeColor(mode) {
-  const map = { Solo: 'mode-solo', Duos: 'mode-duos', Squads: 'mode-squads' };
-  return map[mode] || 'mode-solo';
+  const map = {
+    'Realistic':  'badge-mode-realistic',
+    'Zone Wars':  'badge-mode-zonewars',
+    'Box Fights': 'badge-mode-boxfights',
+    'Solo':       'badge-mode-realistic',
+    'Duos':       'badge-mode-zonewars',
+    'Squads':     'badge-mode-boxfights',
+  };
+  return map[mode] || 'badge-mode-realistic';
+}
+
+function sizeColor(size) {
+  const map = {
+    '1v1': 'badge-size-1v1',
+    '2v2': 'badge-size-2v2',
+    '3v3': 'badge-size-3v3',
+  };
+  return map[size] || 'badge-size-1v1';
 }
