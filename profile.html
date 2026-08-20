@@ -8,83 +8,118 @@
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
-    .matches-history { display: flex; flex-direction: column; gap: 12px; }
-    .mh-card {
+    /* Clean, Professional Profile Layout */
+    .profile-hero-card {
       background: var(--bg-card);
       border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      padding: 16px;
+      border-radius: var(--radius-xl);
+      padding: 28px 32px;
       display: flex;
       align-items: center;
-      gap: 14px;
-    }
-    .mh-card:hover { background: var(--bg-card-hover); border-color: var(--gold-bright); }
-    .mh-status-icon {
-      width: 40px; height: 40px; flex-shrink: 0;
-      border-radius: var(--radius-md);
-      display: flex; align-items: center; justify-content: center;
-    }
-    .mh-status-icon i { width: 18px; height: 18px; }
-    .mh-info { flex: 1; min-width: 0; }
-    .mh-title { font-weight: 700; font-size: 0.95rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .mh-meta  { font-size: 0.78rem; color: var(--text-muted); margin-top: 2px; }
-
-    /* Epic Games Account Box */
-    .epic-banner-card {
-      background: linear-gradient(135deg, rgba(56, 189, 248, 0.12) 0%, rgba(245, 158, 11, 0.05) 100%);
-      border: 1px solid rgba(56, 189, 248, 0.35);
-      border-radius: var(--radius-xl);
-      padding: 24px;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 24px;
       margin-bottom: 24px;
     }
-    .epic-tag-badge {
+    .profile-user-group {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .profile-pfp {
+      width: 76px;
+      height: 76px;
+      border-radius: 50%;
+      background: var(--bg-card-hover);
+      border: 2px solid var(--gold-bright);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: var(--gold-bright);
+      box-shadow: 0 0 20px var(--gold-glow);
+      flex-shrink: 0;
+    }
+    .profile-pfp img { width: 100%; height: 100%; object-fit: cover; }
+    .discord-id-pill {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      background: rgba(56, 189, 248, 0.15);
-      border: 1px solid rgba(56, 189, 248, 0.4);
-      color: #38bdf8;
+      background: rgba(88, 101, 242, 0.12);
+      border: 1px solid rgba(88, 101, 242, 0.3);
+      color: #818cf8;
       border-radius: var(--radius-sm);
-      padding: 4px 12px;
-      font-weight: 800;
-      font-size: 1.1rem;
+      padding: 3px 8px;
+      font-size: 0.78rem;
+      font-family: monospace;
+      margin-top: 4px;
     }
 
-    /* Team Card Styling */
-    .team-banner-card {
-      background: linear-gradient(135deg, rgba(168, 85, 247, 0.12) 0%, rgba(245, 158, 11, 0.05) 100%);
-      border: 1px solid rgba(168, 85, 247, 0.3);
-      border-radius: var(--radius-xl);
-      padding: 24px;
+    /* Epic Games Account Box */
+    .epic-account-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 22px 24px;
+      margin-bottom: 24px;
+    }
+    .epic-badge-connected {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      color: #38bdf8;
+      border-radius: var(--radius-sm);
+      padding: 6px 14px;
+      font-weight: 800;
+      font-size: 1.05rem;
+    }
+
+    /* Official Epic Games Vector Logo */
+    .epic-official-svg {
+      width: 22px;
+      height: 25px;
+      fill: currentColor;
+      flex-shrink: 0;
+    }
+
+    /* Team Card */
+    .team-section-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 22px 24px;
       margin-bottom: 24px;
     }
     .team-roster-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 12px;
-      margin-top: 16px;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 10px;
+      margin-top: 14px;
     }
     .team-member-chip {
       display: flex;
       align-items: center;
-      gap: 10px;
-      background: var(--bg-card);
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.03);
       border: 1px solid var(--border-bright);
+      border-radius: var(--radius-sm);
+      padding: 8px 12px;
+    }
+
+    .matches-history { display: flex; flex-direction: column; gap: 10px; }
+    .mh-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
       border-radius: var(--radius-md);
-      padding: 10px 14px;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
     }
-    .team-member-pfp {
-      width: 32px; height: 32px;
-      border-radius: 50%;
-      background: var(--bg-card-hover);
-      border: 1.5px solid var(--border-bright);
-      overflow: hidden;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 0.8rem; font-weight: 700;
-      color: var(--gold-bright);
-      flex-shrink: 0;
-    }
-    .team-member-pfp img { width: 100%; height: 100%; object-fit: cover; }
   </style>
 </head>
 <body>
@@ -167,8 +202,14 @@
         icon.style.display = 'none';
       }
 
-      document.getElementById('profile-name').textContent    = data.displayName || 'Champion';
-      document.getElementById('profile-email').textContent   = data.email ? data.email : (data.discordUsername ? `@${data.discordUsername}` : '');
+      document.getElementById('profile-name').textContent = data.displayName || 'Champion';
+
+      // Show Discord username & ID instead of email
+      const discordId = data.discordId || targetUid.replace('discord:', '');
+      const discordHandle = data.discordUsername ? `@${data.discordUsername}` : (data.displayName || 'user');
+      document.getElementById('profile-discord-tag').textContent = discordHandle;
+      document.getElementById('profile-discord-id').textContent = `Discord ID: ${discordId}`;
+
       document.getElementById('profile-tokens').textContent  = formatTokens(data.tokens ?? 10.00);
       document.getElementById('profile-earned').textContent  = formatTokens(data.totalEarned ?? 10.00);
       document.getElementById('profile-spent').textContent   = formatTokens(data.totalSpent ?? 0.00);
@@ -183,18 +224,24 @@
       if (data.createdAt) {
         const d = data.createdAt.toDate();
         document.getElementById('profile-since').textContent =
-          'Member since ' + d.toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' });
+          'Member since ' + d.toLocaleDateString('en-US', { year:'numeric', month:'short', day:'numeric' });
       }
     }
 
-    // ── Epic Games / Fortnite Account Section ────────────────
+    // ── Epic Games Account Section ────────────────────────────
     function renderEpicSection(data) {
       const el = document.getElementById('epic-content');
       if (!isViewingSelf) {
         if (data.epicUsername) {
           el.innerHTML = `
             <div style="display:flex;align-items:center;gap:12px;">
-              <span class="epic-tag-badge"><i data-lucide="gamepad-2"></i> ${data.epicUsername}</span>
+              <span class="epic-badge-connected">
+                <svg class="epic-official-svg" viewBox="0 0 24 28">
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M12 0L0 3.75V21.84L12 28L24 21.84V3.75L12 0ZM20.8 19.86L12 24.38L3.2 19.86V5.89L12 3.14L20.8 5.89V19.86Z" fill="#38bdf8"/>
+                  <path d="M6.5 8H17.5V10.5H9.5V13H16.5V15.5H9.5V18H17.5V20.5H6.5V8Z" fill="#38bdf8"/>
+                </svg>
+                ${data.epicUsername}
+              </span>
               <span class="chip chip-success">Verified Epic Account</span>
             </div>`;
         } else {
@@ -208,10 +255,10 @@
         el.innerHTML = `
           <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;">
             <div style="display:flex;align-items:center;gap:12px;">
-              <span class="epic-tag-badge">
-                <svg style="width:20px;height:23px;fill:#38bdf8;" viewBox="0 0 44 50" fill="currentColor">
-                  <path fill-rule="evenodd" clip-rule="evenodd" d="M22 0L0 5.2V39.4L22 50L44 39.4V5.2L22 0ZM37.8 35.8L22 43.4L6.2 35.8V9.2L22 5.4L37.8 9.2V35.8Z"/>
-                  <path d="M12.5 14H31.5V18.5H18V22.5H29.5V27H18V31.5H31.5V36H12.5V14Z"/>
+              <span class="epic-badge-connected">
+                <svg class="epic-official-svg" viewBox="0 0 24 28">
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M12 0L0 3.75V21.84L12 28L24 21.84V3.75L12 0ZM20.8 19.86L12 24.38L3.2 19.86V5.89L12 3.14L20.8 5.89V19.86Z" fill="#38bdf8"/>
+                  <path d="M6.5 8H17.5V10.5H9.5V13H16.5V15.5H9.5V18H17.5V20.5H6.5V8Z" fill="#38bdf8"/>
                 </svg>
                 ${data.epicUsername}
               </span>
@@ -219,7 +266,7 @@
             </div>
             <div style="display:flex;gap:8px;">
               <button class="btn btn-outline btn-sm" onclick="signInWithEpic()">
-                <i data-lucide="refresh-cw"></i> Sync / Re-login
+                <i data-lucide="refresh-cw"></i> Re-Sync
               </button>
               <button class="btn btn-danger btn-sm" onclick="handleUnlinkEpic()">
                 <i data-lucide="unlink"></i> Unlink (2.00 Tokens Fee)
@@ -228,38 +275,24 @@
           </div>`;
       } else {
         el.innerHTML = `
-          <p style="font-size:0.875rem;color:var(--text-muted);margin-bottom:16px;">
-            <strong style="color:var(--gold-bright);">Required to play:</strong> Sign in with your official Epic Games account to link your verified Fortnite username.
-          </p>
-          <button class="btn btn-epic" onclick="signInWithEpic()" style="display:inline-flex;align-items:center;gap:12px;padding:12px 24px;font-weight:800;font-size:0.95rem;">
-            <svg class="epic-logo" viewBox="0 0 44 50" fill="currentColor">
-              <path fill-rule="evenodd" clip-rule="evenodd" d="M22 0L0 5.2V39.4L22 50L44 39.4V5.2L22 0ZM37.8 35.8L22 43.4L6.2 35.8V9.2L22 5.4L37.8 9.2V35.8Z"/>
-              <path d="M12.5 14H31.5V18.5H18V22.5H29.5V27H18V31.5H31.5V36H12.5V14Z"/>
-            </svg>
-            Sign In with Epic Games
-          </button>`;
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;">
+            <div>
+              <div style="font-weight:700;color:#fff;font-size:0.95rem;">Connect Epic Games / Fortnite</div>
+              <div style="font-size:0.8125rem;color:var(--text-muted);margin-top:2px;">
+                Required to create and join matches. Verifies your official Fortnite display name.
+              </div>
+            </div>
+            <button class="btn btn-epic" onclick="signInWithEpic()" style="display:inline-flex;align-items:center;gap:10px;padding:11px 22px;">
+              <svg class="epic-official-svg" viewBox="0 0 24 28">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M12 0L0 3.75V21.84L12 28L24 21.84V3.75L12 0ZM20.8 19.86L12 24.38L3.2 19.86V5.89L12 3.14L20.8 5.89V19.86Z" fill="#fff"/>
+                <path d="M6.5 8H17.5V10.5H9.5V13H16.5V15.5H9.5V18H17.5V20.5H6.5V8Z" fill="#fff"/>
+              </svg>
+              Sign In with Epic Games
+            </button>
+          </div>`;
       }
       lucide.createIcons();
     }
-
-    function openEpicAuthPopup() {
-      const width = 480;
-      const height = 660;
-      const left = (window.screen.width / 2) - (width / 2);
-      const top = (window.screen.height / 2) - (height / 2);
-      window.open(
-        'epic-login',
-        'EpicGamesAuth',
-        `width=${width},height=${height},top=${top},left=${left},scrollbars=yes,status=yes`
-      );
-    }
-
-    // Listen for Epic OAuth callback from popup
-    window.addEventListener('message', (e) => {
-      if (e.data && e.data.type === 'EPIC_LINK_SUCCESS') {
-        showToast(`🎉 Linked with Epic Games as "${e.data.epicUsername}"!`, 'success');
-      }
-    });
 
     async function handleUnlinkEpic() {
       if (!confirm('Unlinking your Epic Games account costs 2.00 Tokens ($2.00). Are you sure you want to unlink?')) return;
@@ -281,32 +314,21 @@
       const el = document.getElementById('team-content');
       if (!team) {
         el.innerHTML = isViewingSelf ? `
-          <p style="font-size:0.875rem;color:var(--text-muted);margin-bottom:16px;">
-            Create or join a squad team to queue for <strong>2v2 Duos</strong> and <strong>3v3 Squads</strong> matches.
-          </p>
-          <div style="display:flex;gap:12px;flex-wrap:wrap;">
-            <button class="btn btn-primary btn-sm" onclick="openCreateTeamModal()">
-              <i data-lucide="plus"></i> Create New Team
-            </button>
-            <button class="btn btn-outline btn-sm" onclick="openJoinTeamModal()">
-              <i data-lucide="log-in"></i> Join with Invite Code
-            </button>
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+            <div style="font-size:0.875rem;color:var(--text-muted);">
+              Create or join a squad team to play <strong>2v2 Duos</strong> and <strong>3v3 Squads</strong> matches.
+            </div>
+            <div style="display:flex;gap:10px;">
+              <button class="btn btn-primary btn-sm" onclick="openCreateTeamModal()"><i data-lucide="plus"></i> Create Team</button>
+              <button class="btn btn-outline btn-sm" onclick="openJoinTeamModal()"><i data-lucide="log-in"></i> Join with Code</button>
+            </div>
           </div>` : `<span style="color:var(--text-muted);font-size:0.875rem;">Not currently on any squad team.</span>`;
       } else {
         const isOwner = team.ownerUid === currentUser?.uid;
         const membersHTML = (team.members || []).map(m => `
           <div class="team-member-chip">
-            <div class="team-member-pfp">
-              ${m.photoURL ? `<img src="${m.photoURL}" onerror="this.style.display='none'"/>` : m.displayName?.charAt(0)}
-            </div>
-            <div style="flex:1;min-width:0;">
-              <div style="font-weight:700;font-size:0.85rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
-                ${m.displayName}
-              </div>
-              <div style="font-size:0.7rem;color:var(--text-muted);">
-                ${m.isLeader || m.uid === team.ownerUid ? '<span style="color:var(--gold-bright);">Leader</span>' : 'Member'}
-              </div>
-            </div>
+            <span style="font-weight:700;font-size:0.85rem;color:#fff;">${m.displayName}</span>
+            ${m.isLeader || m.uid === team.ownerUid ? '<span class="badge" style="background:var(--gold-dim);color:var(--gold-bright);font-size:0.65rem;padding:1px 6px;">LEADER</span>' : ''}
           </div>
         `).join('');
 
@@ -314,7 +336,7 @@
           <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:12px;">
             <div style="display:flex;align-items:center;gap:10px;">
               <span class="badge" style="background:var(--purple);color:#fff;font-size:0.8rem;padding:4px 10px;">[${team.tag}]</span>
-              <span style="font-size:1.25rem;font-weight:900;color:#fff;">${team.name}</span>
+              <span style="font-size:1.15rem;font-weight:900;color:#fff;">${team.name}</span>
             </div>
             ${isViewingSelf ? `
               <div style="display:flex;gap:8px;align-items:center;">
@@ -322,7 +344,7 @@
                   <i data-lucide="hash"></i>${team.code} <span style="font-size:0.7rem;opacity:0.7;">(Copy)</span>
                 </span>
                 <button class="btn btn-danger btn-sm" onclick="handleLeaveTeam('${team.id}')">
-                  <i data-lucide="log-out"></i> ${isOwner ? 'Disband Team' : 'Leave Team'}
+                  <i data-lucide="log-out"></i> ${isOwner ? 'Disband' : 'Leave'}
                 </button>
               </div>` : ''}
           </div>
@@ -429,31 +451,14 @@
         const mode     = m.mode || 'Realistic';
         const winPrize = Math.round(Number(m.prizePool || m.wager) * 0.90 * 100) / 100;
 
-        const statusColor = {
-          waiting:     'stat-icon--gold',
-          in_progress: 'stat-icon--green',
-          completed:   isWinner ? 'stat-icon--accent' : 'stat-icon--purple',
-          cancelled:   'stat-icon--purple',
-        }[m.status] || 'stat-icon--purple';
-        const statusIcon = {
-          waiting:     'clock',
-          in_progress: 'play-circle',
-          completed:   isWinner ? 'trophy' : 'x-circle',
-          cancelled:   'slash',
-        }[m.status] || 'circle';
-
         return `
           <div class="mh-card">
-            <div class="mh-status-icon ${statusColor}">
-              <i data-lucide="${statusIcon}"></i>
-            </div>
-            <div class="mh-info">
-              <div class="mh-title">${m.title || `${size} ${mode}`}</div>
-              <div class="mh-meta">
+            <div style="flex:1;min-width:0;">
+              <div style="font-weight:700;font-size:0.95rem;">${m.title || `${size} ${mode}`}</div>
+              <div style="font-size:0.78rem;color:var(--text-muted);margin-top:2px;">
                 <span class="badge ${sizeColor(size)}" style="padding:1px 8px;font-size:0.7rem;">${size}</span>
                 <span class="badge ${modeColor(mode)}" style="padding:1px 8px;font-size:0.7rem;">${mode}</span>
-                · ${formatTokens(m.wager)} wager
-                · ${formatTime(m.createdAt)}
+                · ${formatTokens(m.wager)} wager · ${formatTime(m.createdAt)}
                 ${isHost ? ' · <span style="color:var(--gold-bright);font-weight:700;">Host</span>' : ''}
               </div>
             </div>
@@ -472,45 +477,50 @@
   </script>
 
   <main class="page-wrap">
-    <!-- Profile hero -->
-    <div class="profile-hero">
-      <div class="profile-avatar">
-        <img id="profile-avatar-img" src="" alt="" style="display:none"/>
-        <i data-lucide="user" id="profile-avatar-icon"></i>
-      </div>
-      <div style="flex:1;min-width:0;">
-        <div class="profile-name" id="profile-name">--</div>
-        <div class="profile-email" id="profile-email"></div>
-        <div class="profile-since" id="profile-since"></div>
+    <!-- Clean Profile Hero -->
+    <div class="profile-hero-card">
+      <div class="profile-user-group">
+        <div class="profile-pfp">
+          <img id="profile-avatar-img" src="" alt="" style="display:none"/>
+          <i data-lucide="user" id="profile-avatar-icon"></i>
+        </div>
+        <div>
+          <div style="font-size:1.6rem;font-weight:900;color:#fff;" id="profile-name">--</div>
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:4px;">
+            <span style="font-weight:700;color:var(--text-muted);font-size:0.85rem;" id="profile-discord-tag">@discord</span>
+            <span class="discord-id-pill" id="profile-discord-id">Discord ID: --</span>
+          </div>
+          <div style="font-size:0.75rem;color:var(--text-faint);margin-top:4px;" id="profile-since"></div>
+        </div>
       </div>
       <div style="text-align:right;flex-shrink:0;">
-        <div style="font-size:0.75rem;color:var(--text-muted);margin-bottom:4px;text-transform:uppercase;font-weight:700;">Token Balance</div>
-        <div style="font-size:1.9rem;font-weight:900;" class="stat-value--gold" id="profile-tokens">10.00</div>
+        <div style="font-size:0.75rem;color:var(--text-muted);text-transform:uppercase;font-weight:700;">Token Balance</div>
+        <div style="font-size:2.2rem;font-weight:900;" class="stat-value--gold" id="profile-tokens">10.00</div>
       </div>
     </div>
 
-    <!-- Epic Games / Fortnite Username Card -->
-    <div class="epic-banner-card">
-      <div class="section-title" style="margin-bottom:10px;color:#fff;">
+    <!-- Epic Games Account Box -->
+    <div class="epic-account-card">
+      <div class="section-title" style="margin-bottom:12px;color:#fff;">
         <i data-lucide="gamepad-2" style="color:#38bdf8;"></i> Epic Games / Fortnite Account
       </div>
       <div id="epic-content">
-        <div class="spinner" style="margin:16px 0;"></div>
+        <div class="spinner" style="margin:12px 0;"></div>
       </div>
     </div>
 
-    <!-- Team Management Section (for 2v2 / 3v3) -->
-    <div class="team-banner-card">
-      <div class="section-title" style="margin-bottom:8px;color:#fff;">
-        <i data-lucide="shield" style="color:var(--purple);"></i> Squad & Team Roster (2v2 / 3v3)
+    <!-- Squad Team Section -->
+    <div class="team-section-card">
+      <div class="section-title" style="margin-bottom:12px;color:#fff;">
+        <i data-lucide="shield" style="color:var(--purple);"></i> Squad Team (2v2 / 3v3)
       </div>
       <div id="team-content">
-        <div class="spinner" style="margin:16px 0;"></div>
+        <div class="spinner" style="margin:12px 0;"></div>
       </div>
     </div>
 
     <!-- Stats grid -->
-    <div class="grid-4" style="margin-bottom:28px;">
+    <div class="grid-4" style="margin-bottom:24px;">
       <div class="card stat-card">
         <div class="stat-icon stat-icon--gold"><i data-lucide="trending-up"></i></div>
         <div class="stat-label">Total Earned</div>
@@ -528,16 +538,12 @@
       </div>
       <div class="card stat-card">
         <div class="stat-icon stat-icon--green"><i data-lucide="trophy"></i></div>
-        <div class="stat-label">Wins / Win Rate</div>
-        <div class="stat-value">
-          <span id="profile-won">0</span>
-          <span style="font-size:0.9rem;color:var(--text-muted);"> / </span>
-          <span id="profile-winrate" style="font-size:1.1rem;">0%</span>
-        </div>
+        <div class="stat-label">Win Rate</div>
+        <div class="stat-value" id="profile-winrate">0%</div>
       </div>
     </div>
 
-    <!-- Two-col: transactions + match history -->
+    <!-- Transactions + Match History -->
     <div class="grid-2" style="align-items:start;gap:20px;">
       <div class="card" id="tx-card">
         <div class="section-title" style="margin-bottom:14px;">
@@ -558,9 +564,8 @@
       </div>
     </div>
 
-    <!-- Sign out -->
     <div id="signout-section" style="margin-top:32px;text-align:center;">
-      <button class="btn btn-danger" onclick="handleSignOut()">
+      <button class="btn btn-danger btn-sm" onclick="handleSignOut()">
         <i data-lucide="log-out"></i> Sign Out
       </button>
     </div>

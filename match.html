@@ -3,23 +3,30 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Match Room — Champion Tokens</title>
+  <title>Match Lobby — Champion Tokens</title>
   <link rel="stylesheet" href="css/style.css"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
-    /* Two-column Layout (Center Main + Right Chat Sidebar) */
-    .room-layout {
+    /* Esports Arena Grid Layout */
+    .arena-container {
       display: grid;
-      grid-template-columns: 1fr 380px;
-      gap: 24px;
+      grid-template-columns: 1fr 360px;
+      gap: 20px;
       align-items: start;
+      max-width: 1400px;
+      margin: 0 auto;
     }
-    @media (max-width: 960px) {
-      .room-layout { grid-template-columns: 1fr; }
+    @media (max-width: 1024px) {
+      .arena-container { grid-template-columns: 1fr; }
     }
 
-    .room-header {
+    /* Top Compact Header */
+    .arena-top-header {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 18px 24px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -27,11 +34,17 @@
       gap: 16px;
       margin-bottom: 20px;
     }
-    .match-id-pill {
+    .arena-title-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .match-tag-pill {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      background: var(--bg-card);
+      background: rgba(255, 255, 255, 0.05);
       border: 1px solid var(--border-bright);
       border-radius: var(--radius-sm);
       padding: 4px 10px;
@@ -40,127 +53,84 @@
       color: var(--text-muted);
     }
 
-    /* 30-Minute Timer Bar */
-    .timer-bar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 12px 18px;
-      background: rgba(245, 158, 11, 0.08);
-      border: 1px solid rgba(245, 158, 11, 0.3);
-      border-radius: var(--radius-md);
-      margin-bottom: 20px;
-      font-size: 0.875rem;
-      color: var(--gold-light);
-    }
-    .timer-clock {
-      font-family: 'Courier New', monospace;
-      font-size: 1.15rem;
-      font-weight: 900;
-      color: var(--gold-bright);
-      background: rgba(0, 0, 0, 0.5);
-      padding: 4px 12px;
-      border-radius: var(--radius-sm);
-      border: 1px solid var(--border-bright);
-    }
-
-    /* Match Overview Card */
-    .match-overview-card {
-      background: linear-gradient(135deg, rgba(245, 158, 11, 0.12) 0%, rgba(217, 119, 6, 0.04) 100%);
-      border: 1px solid rgba(245, 158, 11, 0.3);
-      border-radius: var(--radius-xl);
-      padding: 20px 24px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 16px;
-      margin-bottom: 24px;
-      box-shadow: 0 0 35px rgba(245, 158, 11, 0.1);
-    }
-    .prize-highlight { text-align: right; }
-    .prize-highlight-amount {
-      font-size: 2.2rem;
-      font-weight: 900;
-      color: var(--gold-bright);
-      line-height: 1.1;
-      text-shadow: 0 0 20px var(--gold-glow);
-    }
-
-    /* Ready Up Card */
-    .ready-banner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 14px;
-      padding: 18px 22px;
+    /* Arena Center Stage */
+    .stage-card {
       background: var(--bg-card);
-      border: 1px solid var(--border-bright);
-      border-radius: var(--radius-lg);
-      margin-bottom: 24px;
-    }
-
-    /* VS Teams Layout */
-    .vs-matchup-container {
-      display: grid;
-      grid-template-columns: 1fr auto 1fr;
-      gap: 14px;
-      align-items: center;
-      margin-bottom: 24px;
-    }
-    @media (max-width: 650px) {
-      .vs-matchup-container { grid-template-columns: 1fr; }
-      .vs-badge-divider { margin: 8px auto; }
-    }
-    .team-column {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 28px;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 24px;
     }
-    .vs-badge-divider {
-      width: 48px; height: 48px;
+
+    /* VS Battle Matchup Layout */
+    .vs-arena-layout {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 20px;
+      align-items: center;
+      padding: 24px 20px;
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.05) 0%, rgba(14, 18, 32, 0.6) 100%);
+      border: 1px solid var(--border-bright);
+      border-radius: var(--radius-lg);
+    }
+    @media (max-width: 720px) {
+      .vs-arena-layout { grid-template-columns: 1fr; }
+      .vs-ring { margin: 10px auto; }
+    }
+
+    .vs-ring {
+      width: 58px;
+      height: 58px;
       border-radius: 50%;
       background: linear-gradient(135deg, #FBBF24 0%, #D97706 100%);
       color: #000;
       font-weight: 900;
-      font-size: 1rem;
+      font-size: 1.25rem;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 0 20px var(--gold-glow);
+      box-shadow: 0 0 25px var(--gold-glow);
       flex-shrink: 0;
     }
 
-    .slot-card {
-      background: var(--bg-card);
+    .team-squad-column {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    /* Modern Player Card */
+    .player-slot-box {
+      background: rgba(20, 25, 42, 0.75);
       border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 16px;
+      border-radius: var(--radius-md);
+      padding: 16px 18px;
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 14px;
       transition: all 0.2s;
       cursor: pointer;
     }
-    .slot-card:hover {
+    .player-slot-box:hover {
       border-color: var(--gold-bright);
-      background: var(--bg-card-hover);
+      background: rgba(26, 32, 54, 0.9);
     }
-    .slot-card.hidden-opponent {
+    .player-slot-box.hidden-opp {
       border-color: rgba(168, 85, 247, 0.35);
-      background: rgba(168, 85, 247, 0.05);
+      background: rgba(168, 85, 247, 0.04);
       cursor: default;
     }
-    .slot-card.empty {
+    .player-slot-box.empty-slot {
       border-style: dashed;
-      opacity: 0.65;
+      opacity: 0.55;
       cursor: default;
     }
-    .slot-avatar {
-      width: 46px;
-      height: 46px;
+
+    .slot-avatar-img {
+      width: 48px;
+      height: 48px;
       border-radius: 50%;
       background: var(--bg-card-hover);
       border: 2px solid var(--border-bright);
@@ -168,118 +138,136 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.15rem;
+      font-size: 1.2rem;
       font-weight: 900;
-      color: var(--text-muted);
+      color: var(--gold-bright);
       flex-shrink: 0;
     }
-    .slot-avatar img { width: 100%; height: 100%; object-fit: cover; }
-    .slot-avatar.host { border-color: var(--gold-bright); box-shadow: 0 0 14px var(--gold-glow); }
-    .slot-avatar.anonymous {
-      background: rgba(168, 85, 247, 0.15);
-      border-color: rgba(168, 85, 247, 0.4);
-      color: #c084fc;
+    .slot-avatar-img img { width: 100%; height: 100%; object-fit: cover; }
+    .slot-avatar-img.host { border-color: var(--gold-bright); box-shadow: 0 0 14px var(--gold-glow); }
+
+    .epic-ingame-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.78rem;
+      color: #38bdf8;
+      font-weight: 700;
+      margin-top: 2px;
     }
 
-    /* Right Sidebar Chat Box with PFPs */
-    .chat-container-card {
+    /* Prize & Stakes Mini Card */
+    .stakes-summary-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 16px 20px;
+    }
+
+    /* Big Ready Action Bar */
+    .ready-action-card {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.12) 0%, rgba(245, 158, 11, 0.06) 100%);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      border-radius: var(--radius-lg);
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    /* Right Sidebar Chat Box */
+    .live-chat-panel {
       position: sticky;
-      top: 90px;
+      top: 85px;
       background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: var(--radius-xl);
-      padding: 18px;
+      padding: 16px;
       display: flex;
       flex-direction: column;
-      height: calc(100vh - 120px);
-      min-height: 520px;
-      max-height: 700px;
+      height: calc(100vh - 110px);
+      min-height: 540px;
+      max-height: 720px;
     }
-    .chat-messages {
+    .chat-msg-stream {
       flex: 1;
       overflow-y: auto;
-      padding: 10px 4px;
+      padding: 8px 2px;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 10px;
     }
-    .chat-msg-row {
+    .chat-item-row {
       display: flex;
       align-items: flex-start;
-      gap: 10px;
+      gap: 8px;
       max-width: 90%;
     }
-    .chat-msg-row.mine {
+    .chat-item-row.mine {
       margin-left: auto;
       flex-direction: row-reverse;
     }
-    .chat-pfp {
-      width: 32px; height: 32px;
+    .chat-pfp-avatar {
+      width: 30px;
+      height: 30px;
       border-radius: 50%;
       background: var(--bg-card-hover);
       border: 1.5px solid var(--border-bright);
       overflow: hidden;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 0.8rem; font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 700;
       color: var(--gold-bright);
       flex-shrink: 0;
       cursor: pointer;
     }
-    .chat-pfp img { width: 100%; height: 100%; object-fit: cover; }
-    .chat-body { display: flex; flex-direction: column; gap: 2px; }
-    .chat-msg-row.mine .chat-body { align-items: flex-end; }
-    .chat-sender-info {
+    .chat-pfp-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .chat-content-wrap { display: flex; flex-direction: column; gap: 2px; }
+    .chat-item-row.mine .chat-content-wrap { align-items: flex-end; }
+    .chat-author-line {
       display: flex;
       align-items: center;
       gap: 6px;
       font-size: 0.72rem;
       color: var(--text-muted);
     }
-    .chat-sender-name { font-weight: 700; color: var(--gold-bright); }
-    .chat-bubble {
+    .chat-text-bubble {
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid var(--border);
       border-radius: var(--radius-md);
       padding: 8px 12px;
-      font-size: 0.86rem;
+      font-size: 0.85rem;
       color: var(--text);
-      line-height: 1.4;
+      line-height: 1.35;
       word-break: break-word;
     }
-    .chat-msg-row.mine .chat-bubble {
-      background: linear-gradient(135deg, rgba(245, 158, 11, 0.22) 0%, rgba(217, 119, 6, 0.12) 100%);
+    .chat-item-row.mine .chat-text-bubble {
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.25) 0%, rgba(217, 119, 6, 0.15) 100%);
       border-color: rgba(245, 158, 11, 0.4);
       color: #fff;
     }
-    .chat-input-bar {
+    .chat-bottom-input {
       display: flex;
-      gap: 8px;
-      padding-top: 12px;
+      gap: 6px;
+      padding-top: 10px;
       border-top: 1px solid var(--border);
     }
-
-    .staff-alert-banner {
-      display: none;
-      align-items: center;
-      gap: 12px;
-      background: rgba(239, 68, 68, 0.15);
-      border: 1px solid rgba(239, 68, 68, 0.35);
-      border-radius: var(--radius-md);
-      padding: 14px 20px;
-      margin-bottom: 20px;
-      color: #fca5a5;
-      font-weight: 600;
-      font-size: 0.9rem;
-    }
-    .staff-alert-banner.active { display: flex; }
-    .staff-alert-banner i { width: 22px; height: 22px; color: var(--red); flex-shrink: 0; }
   </style>
 </head>
 <body>
   <div class="page-bg"></div>
   <div class="page-loading" id="page-loading">
     <div class="spinner"></div>
-    <span>Loading match room…</span>
+    <span>Loading match lobby…</span>
   </div>
 
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
@@ -309,7 +297,7 @@
 
       if (!matchId && !code) {
         showToast('No match ID specified', 'error');
-        setTimeout(() => window.location.href = 'matches', 1500);
+        setTimeout(() => window.location.href = 'matches', 1200);
         return;
       }
 
@@ -319,7 +307,7 @@
         const snap = await db.collection('matches').where('code', '==', code.toUpperCase()).limit(1).get();
         if (snap.empty) {
           showToast('Match not found', 'error');
-          setTimeout(() => window.location.href = 'matches', 1500);
+          setTimeout(() => window.location.href = 'matches', 1200);
           return;
         }
         matchId = snap.docs[0].id;
@@ -331,8 +319,8 @@
       db.collection('matches').doc(id).onSnapshot((doc) => {
         document.getElementById('page-loading').classList.add('hidden');
         if (!doc.exists) {
-          showToast('Match not found or was cancelled', 'error');
-          setTimeout(() => window.location.href = 'matches', 1500);
+          showToast('Match was cancelled or removed', 'error');
+          setTimeout(() => window.location.href = 'matches', 1200);
           return;
         }
         currentMatch = { id: doc.id, ...doc.data() };
@@ -356,27 +344,23 @@
         const banner = document.getElementById('staff-banner');
         if (!snap.empty) {
           const call = snap.docs[0].data();
-          banner.classList.add('active');
+          banner.style.display = 'flex';
           document.getElementById('staff-banner-text').textContent =
             `Staff Alert Active: "${call.reason}" reported by ${call.calledByName}. A moderator has been notified.`;
         } else {
-          banner.classList.remove('active');
+          banner.style.display = 'none';
         }
       });
     }
 
     function startTimerCountdown(match) {
       if (timerInterval) clearInterval(timerInterval);
-
       const clockEl = document.getElementById('timer-clock');
-      const timerBar = document.getElementById('timer-bar');
 
       if (match.status !== 'waiting') {
-        timerBar.style.display = 'none';
+        clockEl.textContent = 'Active';
         return;
       }
-
-      timerBar.style.display = 'flex';
 
       function updateClock() {
         if (!match.expiresAt) {
@@ -412,24 +396,22 @@
       const isMatchStarted = match.status === 'in_progress' || match.status === 'completed';
       const prize = Math.round(Number(match.prizePool || match.wager) * 0.90 * 100) / 100;
 
-      // Header info
+      // Header Bar
       document.getElementById('room-title').textContent = match.title || `${size} ${mode}`;
-      document.getElementById('room-id').textContent = match.id.substring(0, 10);
+      document.getElementById('room-id').textContent = `ID: ${match.id.substring(0, 8)}`;
       document.getElementById('room-code').textContent = match.code;
-      document.getElementById('room-mode-badge').className = `badge ${modeColor(mode)}`;
       document.getElementById('room-mode-badge').textContent = mode;
-      document.getElementById('room-size-badge').className = `badge ${sizeColor(size)}`;
       document.getElementById('room-size-badge').textContent = size;
       document.getElementById('room-status-badge').className = `badge badge-${match.status}`;
       document.getElementById('room-status-badge').textContent = match.status.replace('_', ' ');
 
-      // Prize & Wager info
-      document.getElementById('banner-wager').textContent = `${formatTokens(match.wager)} Tokens ($${formatTokens(match.wager)})`;
-      document.getElementById('banner-pool').textContent = `${formatTokens(match.prizePool)} Tokens`;
-      document.getElementById('banner-prize').textContent = `${formatTokens(prize)} Tokens`;
+      // Stakes Bar
+      document.getElementById('stakes-wager').textContent = `${formatTokens(match.wager)} Tokens`;
+      document.getElementById('stakes-pool').textContent = `${formatTokens(match.prizePool)} Tokens`;
+      document.getElementById('stakes-prize').textContent = `${formatTokens(prize)} Tokens`;
 
-      // Ready-Up Banner
-      const readyBanner = document.getElementById('ready-banner');
+      // Ready Up Action Area
+      const readyBanner = document.getElementById('ready-action-area');
       if (alreadyIn && match.status === 'waiting') {
         const mySlot = players.find(p => p.uid === currentUser?.uid);
         const amIReady = !!mySlot?.ready;
@@ -438,10 +420,10 @@
           <div>
             <div style="font-weight:800;font-size:1.05rem;color:#fff;display:flex;align-items:center;gap:8px;">
               <i data-lucide="${amIReady ? 'check-circle' : 'clock'}" style="color:${amIReady ? 'var(--green)' : 'var(--gold-bright)'};"></i>
-              ${amIReady ? 'You are READY! Waiting for opponent to ready up…' : 'Match Queue: Click Ready Up to begin!'}
+              ${amIReady ? 'You are READY! Waiting for opponent…' : 'Match Queue: Click Ready Up to start!'}
             </div>
             <div style="font-size:0.8rem;color:var(--text-muted);margin-top:2px;">
-              Opponent identities and Epic usernames unlock once BOTH players click Ready.
+              Opponent identities and Epic usernames reveal once BOTH sides click Ready.
             </div>
           </div>
           <button class="btn ${amIReady ? 'btn-outline' : 'btn-primary'} btn-lg" onclick="handleReadyToggle(${!amIReady})">
@@ -451,12 +433,12 @@
         readyBanner.style.display = 'none';
       }
 
-      // Render VS Layout (Team 1 vs Team 2)
+      // Render Teams VS Matchup (Center Stage)
       const halfCount = maxPlayers / 2;
       const team1Players = players.slice(0, halfCount);
       const team2Players = players.slice(halfCount);
 
-      function renderTeamSlot(player, slotIndex, teamName) {
+      function renderPlayerSlot(player, slotIndex, teamName) {
         if (player) {
           const isPlayerHost = player.isHost || player.uid === match.createdBy;
           const isMe = player.uid === currentUser?.uid;
@@ -465,9 +447,9 @@
 
           if (hideOpponent) {
             return `
-              <div class="slot-card hidden-opponent">
-                <div class="slot-avatar anonymous">
-                  <i data-lucide="lock" style="width:22px;height:22px;"></i>
+              <div class="player-slot-box hidden-opp">
+                <div class="slot-avatar-img" style="background:rgba(168,85,247,0.15);border-color:rgba(168,85,247,0.4);color:#c084fc;">
+                  <i data-lucide="lock" style="width:20px;height:20px;"></i>
                 </div>
                 <div style="flex:1;min-width:0;">
                   <div style="font-weight:800;font-size:0.95rem;color:#c084fc;">Opponent [Hidden]</div>
@@ -478,28 +460,28 @@
               </div>`;
           } else {
             return `
-              <div class="slot-card filled" onclick="openUserProfileModal('${player.uid}')" title="Click to view player profile">
-                <div class="slot-avatar ${isPlayerHost ? 'host' : ''}">
+              <div class="player-slot-box" onclick="openUserProfileModal('${player.uid}')" title="Click to view player stats">
+                <div class="slot-avatar-img ${isPlayerHost ? 'host' : ''}">
                   ${player.photoURL ? `<img src="${player.photoURL}" onerror="this.style.display='none'"/>` : player.displayName?.charAt(0)}
                 </div>
                 <div style="flex:1;min-width:0;">
                   <div style="font-weight:800;font-size:0.95rem;display:flex;align-items:center;gap:6px;">
                     <span>${player.displayName}</span>
-                    ${isPlayerHost ? '<span class="badge badge-waiting" style="padding:1px 6px;font-size:0.65rem;">HOST</span>' : ''}
+                    ${isPlayerHost ? '<span class="badge" style="background:var(--gold-dim);color:var(--gold-bright);padding:1px 6px;font-size:0.65rem;">HOST</span>' : ''}
                     ${isMe ? '<span style="color:var(--gold-bright);font-size:0.75rem;">(You)</span>' : ''}
                   </div>
                   <div style="font-size:0.75rem;color:var(--text-muted);margin-top:2px;">
                     ${isReady ? '✅ <span style="color:var(--green);font-weight:700;">READY</span>' : '⏳ Not Ready'}
                   </div>
                 </div>
-                <i data-lucide="chevron-right" style="width:16px;height:16px;color:var(--text-muted);"></i>
+                <i data-lucide="chevron-right" style="width:14px;height:14px;color:var(--text-muted);"></i>
               </div>`;
           }
         } else {
           return `
-            <div class="slot-card empty">
-              <div class="slot-avatar">
-                <i data-lucide="user-plus" style="width:20px;height:20px;opacity:0.5;"></i>
+            <div class="player-slot-box empty-slot">
+              <div class="slot-avatar-img">
+                <i data-lucide="user-plus" style="width:18px;height:18px;opacity:0.5;"></i>
               </div>
               <div>
                 <div style="font-weight:700;color:var(--text-muted);">${teamName} Slot #${slotIndex}</div>
@@ -511,19 +493,19 @@
 
       let team1HTML = '';
       for (let i = 0; i < halfCount; i++) {
-        team1HTML += renderTeamSlot(team1Players[i], i + 1, 'Team 1');
+        team1HTML += renderPlayerSlot(team1Players[i], i + 1, 'Team 1');
       }
 
       let team2HTML = '';
       for (let i = 0; i < halfCount; i++) {
-        team2HTML += renderTeamSlot(team2Players[i], i + 1, 'Team 2');
+        team2HTML += renderPlayerSlot(team2Players[i], i + 1, 'Team 2');
       }
 
-      document.getElementById('team1-slots').innerHTML = team1HTML;
-      document.getElementById('team2-slots').innerHTML = team2HTML;
+      document.getElementById('team1-squad').innerHTML = team1HTML;
+      document.getElementById('team2-squad').innerHTML = team2HTML;
 
-      // Action Buttons
-      const actionsContainer = document.getElementById('match-actions');
+      // Arena Action Buttons
+      const actionsContainer = document.getElementById('arena-actions');
       let actionsHTML = `
         <button class="btn btn-danger btn-sm" onclick="openCallStaffModal()">
           <i data-lucide="shield-alert"></i> Call Staff
@@ -540,17 +522,10 @@
       }
 
       if (alreadyIn && match.status === 'waiting') {
-        if (isHost) {
-          actionsHTML += `
-            <button class="btn btn-danger btn-sm" onclick="handleLeaveOrCancel()">
-              <i data-lucide="x-circle"></i> Cancel & Refund ($${formatTokens(match.wager)})
-            </button>`;
-        } else {
-          actionsHTML += `
-            <button class="btn btn-danger btn-sm" onclick="handleLeaveOrCancel()">
-              <i data-lucide="log-out"></i> Leave & Refund ($${formatTokens(match.wager)})
-            </button>`;
-        }
+        actionsHTML += `
+          <button class="btn btn-danger btn-sm" onclick="handleLeaveOrCancel()">
+            <i data-lucide="x-circle"></i> ${isHost ? 'Cancel & Refund' : 'Leave & Refund'} ($${formatTokens(match.wager)})
+          </button>`;
       }
 
       if (isHost && isMatchStarted && match.status !== 'completed') {
@@ -569,9 +544,9 @@
       try {
         const res = await setPlayerReady(matchId, currentUser.uid, isReady);
         if (res.allReady) {
-          showToast('Both teams READY! Match is starting and opponent profiles are unlocked!', 'success');
+          showToast('Both teams READY! Match started & Fortnite tags unlocked!', 'success');
         } else {
-          showToast(isReady ? 'You are marked as Ready!' : 'Ready status cancelled', 'info');
+          showToast(isReady ? 'Marked as Ready!' : 'Ready status cancelled', 'info');
         }
       } catch (err) {
         showToast(err.message, 'error');
@@ -579,7 +554,7 @@
     }
 
     async function handleLeaveOrCancel() {
-      if (!confirm('Are you sure? You will receive a full token refund immediately.')) return;
+      if (!confirm('Are you sure? Your wager will be refunded to your balance.')) return;
       try {
         const res = await leaveOrCancelMatch(matchId, currentUser.uid);
         showToast(res.message, 'success');
@@ -624,9 +599,9 @@
         const u = await getUser(uid);
         if (!u) return;
         document.getElementById('modal-user-name').textContent = u.displayName || 'Champion';
-        document.getElementById('modal-user-epic').textContent = u.epicUsername ? `🎮 ${u.epicUsername}` : 'No Epic linked';
+        document.getElementById('modal-user-discord').textContent = `@${u.discordUsername || 'user'} · ID: ${u.discordId || uid.replace('discord:','')}`;
+        document.getElementById('modal-user-epic').textContent = u.epicUsername ? `🎮 Epic: ${u.epicUsername}` : 'No Epic linked';
         document.getElementById('modal-user-tokens').textContent = formatTokens(u.tokens);
-        document.getElementById('modal-user-earned').textContent = formatTokens(u.totalEarned);
         document.getElementById('modal-user-played').textContent = u.matchesPlayed || 0;
         document.getElementById('modal-user-won').textContent = u.matchesWon || 0;
         const wr = (u.matchesPlayed || 0) > 0 ? Math.round((u.matchesWon / u.matchesPlayed) * 100) + '%' : '0%';
@@ -652,24 +627,24 @@
     function renderChat(messages) {
       const container = document.getElementById('chat-messages');
       if (!messages.length) {
-        container.innerHTML = `<div style="margin:auto;font-size:0.85rem;color:var(--text-faint);text-align:center;">Lobby chat active. Ready up and share your Epic Games usernames!</div>`;
+        container.innerHTML = `<div style="margin:auto;font-size:0.8rem;color:var(--text-faint);text-align:center;">Lobby chat active. Ready up and share your Epic Games usernames!</div>`;
         return;
       }
       container.innerHTML = messages.map(m => {
         const isMine = m.senderUid === currentUser?.uid;
         const pfpHTML = m.photoURL
-          ? `<div class="chat-pfp" onclick="openUserProfileModal('${m.senderUid}')"><img src="${m.photoURL}" onerror="this.style.display='none'"/></div>`
-          : `<div class="chat-pfp" onclick="openUserProfileModal('${m.senderUid}')">${(m.senderName || '?').charAt(0)}</div>`;
+          ? `<div class="chat-pfp-avatar" onclick="openUserProfileModal('${m.senderUid}')"><img src="${m.photoURL}" onerror="this.style.display='none'"/></div>`
+          : `<div class="chat-pfp-avatar" onclick="openUserProfileModal('${m.senderUid}')">${(m.senderName || '?').charAt(0)}</div>`;
 
         return `
-          <div class="chat-msg-row ${isMine ? 'mine' : ''}">
+          <div class="chat-item-row ${isMine ? 'mine' : ''}">
             ${pfpHTML}
-            <div class="chat-body">
-              <div class="chat-sender-info">
-                <span class="chat-sender-name">${m.senderName}</span>
+            <div class="chat-content-wrap">
+              <div class="chat-author-line">
+                <span style="font-weight:700;color:var(--gold-bright);">${m.senderName}</span>
                 <span>${formatTime(m.timestamp)}</span>
               </div>
-              <div class="chat-bubble">${escapeHtml(m.text)}</div>
+              <div class="chat-text-bubble">${escapeHtml(m.text)}</div>
             </div>
           </div>`;
       }).join('');
@@ -758,114 +733,83 @@
 
   <main class="page-wrap">
     <!-- Staff Alert Active Banner -->
-    <div class="staff-alert-banner" id="staff-banner">
-      <i data-lucide="shield-alert"></i>
+    <div id="staff-banner" style="display:none;align-items:center;gap:12px;background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.35);border-radius:var(--radius-md);padding:12px 18px;margin-bottom:16px;color:#fca5a5;font-weight:600;font-size:0.875rem;">
+      <i data-lucide="shield-alert" style="color:var(--red);flex-shrink:0;"></i>
       <span id="staff-banner-text">Staff Alert Active</span>
     </div>
 
-    <!-- 30-Minute Expiration Timer Bar -->
-    <div class="timer-bar" id="timer-bar">
-      <div style="display:flex;align-items:center;gap:8px;">
-        <i data-lucide="clock" style="color:var(--gold-bright);"></i>
-        <span><strong>Queue Timer:</strong> Auto-cancels and refunds if unfilled within 30 minutes.</span>
-      </div>
-      <div style="display:flex;align-items:center;gap:8px;">
-        <span>Time Remaining:</span>
-        <span class="timer-clock" id="timer-clock">30:00</span>
-      </div>
-    </div>
-
-    <!-- 2-Column Layout (Main Arena on Left, Chat on Right) -->
-    <div class="room-layout">
-      <!-- Left Column: Match Room Details -->
+    <!-- Arena Container (Center Stage + Right Live Chat) -->
+    <div class="arena-container">
+      <!-- Center Main Stage -->
       <div>
-        <div class="room-header">
-          <div>
-            <h1 id="room-title" style="font-size:1.8rem;display:flex;align-items:center;gap:10px;">
-              Match Room
-            </h1>
-            <div style="display:flex;align-items:center;gap:8px;margin-top:6px;flex-wrap:wrap;">
-              <span class="match-id-pill">ID: <span id="room-id">--</span></span>
-              <span class="match-code-badge"><i data-lucide="hash"></i><span id="room-code">------</span></span>
-              <span id="room-size-badge" class="badge">1v1</span>
-              <span id="room-mode-badge" class="badge">Realistic</span>
-              <span id="room-status-badge" class="badge">waiting</span>
-            </div>
+        <!-- Top Compact Bar -->
+        <div class="arena-top-header">
+          <div class="arena-title-group">
+            <h1 id="room-title" style="font-size:1.6rem;font-weight:900;">1v1 Realistic</h1>
+            <span class="match-tag-pill" id="room-id">ID: --</span>
+            <span class="match-code-badge"><i data-lucide="hash"></i><span id="room-code">------</span></span>
+            <span id="room-size-badge" class="badge">1v1</span>
+            <span id="room-mode-badge" class="badge">Realistic</span>
+            <span id="room-status-badge" class="badge">waiting</span>
           </div>
-          <div id="match-actions" style="display:flex;gap:8px;flex-wrap:wrap;"></div>
+          <div id="arena-actions" style="display:flex;gap:8px;flex-wrap:wrap;"></div>
         </div>
 
-        <!-- Ready Up Interactive Banner -->
-        <div class="ready-banner" id="ready-banner" style="display:none;"></div>
+        <!-- Center Stage Card -->
+        <div class="stage-card">
+          <!-- Stakes Summary Bar -->
+          <div class="stakes-summary-bar">
+            <div style="display:flex;align-items:center;gap:12px;">
+              <img src="champion_token_coin.png" alt="CT" style="width:38px;height:38px;object-fit:contain;" />
+              <div>
+                <div style="font-size:0.75rem;color:var(--text-muted);font-weight:700;text-transform:uppercase;">Entry Wager</div>
+                <div style="font-size:1.15rem;font-weight:900;color:#fff;" id="stakes-wager">1.00 Tokens</div>
+              </div>
+            </div>
+            <div style="text-align:center;">
+              <div style="font-size:0.75rem;color:var(--text-muted);font-weight:700;text-transform:uppercase;">Total Pool</div>
+              <div style="font-size:1.15rem;font-weight:800;color:var(--text);" id="stakes-pool">2.00 Tokens</div>
+            </div>
+            <div style="text-align:right;">
+              <div style="font-size:0.75rem;color:var(--gold-bright);font-weight:700;text-transform:uppercase;">Winner Prize (90%)</div>
+              <div style="font-size:1.5rem;font-weight:900;color:var(--gold-bright);" id="stakes-prize">1.80 Tokens</div>
+            </div>
+          </div>
 
-        <!-- Match Overview Banner -->
-        <div class="match-overview-card">
-          <div style="display:flex;align-items:center;gap:16px;">
-            <img src="champion_token_coin.png" alt="CT" style="width:58px;height:58px;object-fit:contain;filter:drop-shadow(0 0 15px var(--gold-glow));" />
+          <!-- Ready Action Area -->
+          <div class="ready-action-card" id="ready-action-area" style="display:none;"></div>
+
+          <!-- VS Battle Matchup (Center Dominant) -->
+          <div class="vs-arena-layout">
+            <div class="team-squad-column" id="team1-squad"></div>
+            <div class="vs-ring">VS</div>
+            <div class="team-squad-column" id="team2-squad"></div>
+          </div>
+
+          <!-- Footer Timer & Quick Guide -->
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:0.8rem;color:var(--text-muted);border-top:1px solid rgba(255,255,255,0.05);padding-top:16px;">
+            <div style="display:flex;align-items:center;gap:6px;">
+              <i data-lucide="clock" style="color:var(--gold-bright);width:15px;height:15px;"></i>
+              <span>Queue Auto-Refund Timer: <strong id="timer-clock" style="color:#fff;font-family:monospace;">30:00</strong></span>
+            </div>
             <div>
-              <div style="font-size:0.75rem;color:var(--text-muted);font-weight:700;text-transform:uppercase;letter-spacing:0.05em;">Entry Wager</div>
-              <div style="font-size:1.25rem;font-weight:900;color:#fff;" id="banner-wager">1.00 Tokens</div>
-              <div style="font-size:0.75rem;color:var(--text-faint);margin-top:2px;">Total Prize Pool: <span id="banner-pool">2.00 Tokens</span></div>
-            </div>
-          </div>
-          <div class="prize-highlight">
-            <div style="font-size:0.75rem;color:var(--gold-bright);font-weight:700;text-transform:uppercase;letter-spacing:0.05em;">Winner Payout (90%)</div>
-            <div class="prize-highlight-amount" id="banner-prize">1.80 Tokens</div>
-            <div style="font-size:0.72rem;color:var(--text-muted);">$1.00 = 1 Champion Token</div>
-          </div>
-        </div>
-
-        <!-- VS Matchup / Rosters Grid -->
-        <div class="section-title">
-          <i data-lucide="swords"></i> Team Matchup
-        </div>
-        <div class="vs-matchup-container">
-          <div class="team-column" id="team1-slots"></div>
-          <div class="vs-badge-divider">VS</div>
-          <div class="team-column" id="team2-slots"></div>
-        </div>
-
-        <!-- Match Rules & Instructions Card -->
-        <div class="card" style="padding:20px;margin-top:20px;">
-          <div class="section-title" style="margin-bottom:12px;">
-            <i data-lucide="gamepad-2"></i> How to Play & Match Rules
-          </div>
-          <div style="display:flex;flex-direction:column;gap:12px;font-size:0.875rem;color:var(--text-muted);">
-            <div style="display:flex;gap:10px;">
-              <strong style="color:var(--gold-bright);">1.</strong>
-              <span>Click <strong>"Ready Up Now"</strong>. Opponent identities unlock automatically once both sides are ready.</span>
-            </div>
-            <div style="display:flex;gap:10px;">
-              <strong style="color:var(--gold-bright);">2.</strong>
-              <span>Send your Epic Games username in the lobby chat to party up in Fortnite.</span>
-            </div>
-            <div style="display:flex;gap:10px;">
-              <strong style="color:var(--gold-bright);">3.</strong>
-              <span>Play out the wager on the selected map. Host reports the winner upon match end.</span>
-            </div>
-            <div style="display:flex;gap:10px;">
-              <strong style="color:var(--gold-bright);">4.</strong>
-              <span>Need to leave before game starts? Click <strong>"Leave / Cancel"</strong> for an instant full token refund.</span>
-            </div>
-            <div style="display:flex;gap:10px;">
-              <strong style="color:var(--gold-bright);">5.</strong>
-              <span>Have an issue or dispute? Click <strong>"Call Staff"</strong> for immediate moderator assistance.</span>
+              <span>Party up in Fortnite after Ready Up · Report winner upon finish</span>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Right Column: Live Lobby Chat Box -->
-      <div class="chat-container-card">
-        <div class="section-title" style="margin-bottom:10px;">
-          <i data-lucide="message-square"></i> Lobby Chat & Party
+      <!-- Right Sidebar: Live Lobby Chat -->
+      <div class="live-chat-panel">
+        <div class="section-title" style="margin-bottom:8px;font-size:0.95rem;">
+          <i data-lucide="message-square"></i> Lobby Chat & Party Tags
         </div>
-        <div class="chat-messages" id="chat-messages"></div>
-        <form class="chat-input-bar" onsubmit="sendChatMessage(event)">
+        <div class="chat-msg-stream" id="chat-messages"></div>
+        <form class="chat-bottom-input" onsubmit="sendChatMessage(event)">
           <input
             id="chat-input"
             class="form-input"
-            style="padding:9px 12px;font-size:0.85rem;"
+            style="padding:8px 12px;font-size:0.85rem;"
             placeholder="Type message or Epic tag…"
             required
           />
@@ -877,35 +821,36 @@
 
   <!-- Player Profile Modal -->
   <div class="modal-overlay" id="profile-modal" onclick="if(event.target===this)closeUserProfileModal()">
-    <div class="modal" style="max-width:400px;">
+    <div class="modal" style="max-width:380px;">
       <div class="modal-header">
         <div class="modal-title"><i data-lucide="user"></i> Player Profile</div>
         <button class="modal-close" onclick="closeUserProfileModal()"><i data-lucide="x"></i></button>
       </div>
-      <div style="text-align:center;margin-bottom:20px;">
-        <div class="slot-avatar" style="width:68px;height:68px;margin:0 auto 10px;border-color:var(--gold-bright);">
+      <div style="text-align:center;margin-bottom:18px;">
+        <div class="slot-avatar-img" style="width:64px;height:64px;margin:0 auto 10px;border-color:var(--gold-bright);">
           <img id="modal-user-avatar-img" src="" alt="" style="display:none;"/>
-          <i data-lucide="user" id="modal-user-avatar-icon" style="width:32px;height:32px;"></i>
+          <i data-lucide="user" id="modal-user-avatar-icon" style="width:28px;height:28px;"></i>
         </div>
-        <div id="modal-user-name" style="font-size:1.3rem;font-weight:900;color:#fff;">Champion</div>
-        <div id="modal-user-epic" style="font-size:0.85rem;color:#38bdf8;font-weight:700;margin-top:2px;">🎮 Epic: --</div>
+        <div id="modal-user-name" style="font-size:1.25rem;font-weight:900;color:#fff;">Champion</div>
+        <div id="modal-user-discord" style="font-size:0.78rem;color:var(--text-muted);font-family:monospace;margin-top:2px;">@user · ID: --</div>
+        <div id="modal-user-epic" style="font-size:0.85rem;color:#38bdf8;font-weight:700;margin-top:4px;">🎮 Epic: --</div>
       </div>
-      <div class="grid-2" style="gap:10px;margin-bottom:20px;">
-        <div class="card" style="padding:12px;text-align:center;">
-          <div style="font-size:0.75rem;color:var(--text-muted);font-weight:700;">TOKENS</div>
-          <div id="modal-user-tokens" style="font-size:1.2rem;font-weight:900;color:var(--gold-bright);">10.00</div>
+      <div class="grid-2" style="gap:8px;margin-bottom:18px;">
+        <div class="card" style="padding:10px;text-align:center;">
+          <div style="font-size:0.7rem;color:var(--text-muted);font-weight:700;">TOKENS</div>
+          <div id="modal-user-tokens" style="font-size:1.15rem;font-weight:900;color:var(--gold-bright);">10.00</div>
         </div>
-        <div class="card" style="padding:12px;text-align:center;">
-          <div style="font-size:0.75rem;color:var(--text-muted);font-weight:700;">WIN RATE</div>
-          <div id="modal-user-winrate" style="font-size:1.2rem;font-weight:900;color:var(--green);">0%</div>
+        <div class="card" style="padding:10px;text-align:center;">
+          <div style="font-size:0.7rem;color:var(--text-muted);font-weight:700;">WIN RATE</div>
+          <div id="modal-user-winrate" style="font-size:1.15rem;font-weight:900;color:var(--green);">0%</div>
         </div>
-        <div class="card" style="padding:12px;text-align:center;">
-          <div style="font-size:0.75rem;color:var(--text-muted);font-weight:700;">PLAYED</div>
-          <div id="modal-user-played" style="font-size:1.2rem;font-weight:900;">0</div>
+        <div class="card" style="padding:10px;text-align:center;">
+          <div style="font-size:0.7rem;color:var(--text-muted);font-weight:700;">PLAYED</div>
+          <div id="modal-user-played" style="font-size:1.15rem;font-weight:900;">0</div>
         </div>
-        <div class="card" style="padding:12px;text-align:center;">
-          <div style="font-size:0.75rem;color:var(--text-muted);font-weight:700;">WINS</div>
-          <div id="modal-user-won" style="font-size:1.2rem;font-weight:900;color:var(--gold-bright);">0</div>
+        <div class="card" style="padding:10px;text-align:center;">
+          <div style="font-size:0.7rem;color:var(--text-muted);font-weight:700;">WINS</div>
+          <div id="modal-user-won" style="font-size:1.15rem;font-weight:900;color:var(--gold-bright);">0</div>
         </div>
       </div>
       <button class="btn btn-outline btn-full" onclick="closeUserProfileModal()">Close</button>
@@ -920,9 +865,6 @@
         <button class="modal-close" onclick="closeCallStaffModal()"><i data-lucide="x"></i></button>
       </div>
       <form class="modal-form" onsubmit="submitStaffCall(event)">
-        <p style="font-size:0.875rem;color:var(--text-muted);">
-          Need an admin? Select the reason and a staff member will review the match logs.
-        </p>
         <div class="form-group">
           <label class="form-label">Issue Category</label>
           <select class="form-select" id="staff-reason-select" required>
