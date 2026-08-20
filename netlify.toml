@@ -1,21 +1,8 @@
 [build]
+  command   = "npm install"
   publish   = "."
   functions = "netlify/functions"
 
 [functions]
   node_bundler = "esbuild"
 
-# Redirect all requests to index.html for SPA-like behaviour
-[[redirects]]
-  from   = "/*"
-  to     = "/index.html"
-  status = 200
-  force  = false
-  conditions = {Role = ["admin"]}
-
-# Do NOT redirect actual files or function calls
-[[headers]]
-  for = "/*"
-  [headers.values]
-    X-Frame-Options = "DENY"
-    X-Content-Type-Options = "nosniff"
