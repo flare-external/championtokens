@@ -133,8 +133,8 @@
   </div>
 
   <main class="page-wrap">
-    <!-- Clean Profile Hero -->
-    <div class="profile-hero-card">
+    <!-- Profile Hero with Banner Theme -->
+    <div class="profile-hero-card" id="profile-hero">
       <div class="profile-user-group">
         <div class="profile-pfp">
           <img id="profile-avatar-img" src="" alt="" style="display:none"/>
@@ -142,7 +142,8 @@
         </div>
         <div>
           <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-            <span style="font-size:1.6rem;font-weight:900;color:#fff;" id="profile-name">--</span>
+            <span style="font-size:1.6rem;font-weight:900;" id="profile-name">--</span>
+            <span id="profile-title-slot"></span>
             <div id="profile-badges-row" style="display:inline-flex;gap:6px;align-items:center;"></div>
           </div>
           <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:4px;">
@@ -153,11 +154,72 @@
         </div>
       </div>
       <div style="text-align:right;flex-shrink:0;display:flex;flex-direction:column;align-items:flex-end;gap:8px;">
-        <div>
+        <div id="profile-balance-box">
           <div style="font-size:0.75rem;color:var(--text-muted);text-transform:uppercase;font-weight:700;">Token Balance</div>
           <div style="font-size:2.2rem;font-weight:900;" class="stat-value--gold" id="profile-tokens">10.00</div>
         </div>
+        <div id="profile-rank-box" style="display:none;">
+          <div style="font-size:0.75rem;color:var(--text-muted);text-transform:uppercase;font-weight:700;">Leaderboard Rank</div>
+          <div id="profile-rank-badge" style="margin-top:4px;"></div>
+        </div>
         <div id="premium-action-wrap"></div>
+      </div>
+    </div>
+
+    <!-- Cosmetics & Premium Studio (For Account Owner) -->
+    <div class="card" id="cosmetics-studio-card" style="margin-bottom:24px;display:none;">
+      <div class="section-title" style="margin-bottom:14px;">
+        <i data-lucide="palette" style="color:var(--gold-bright);"></i> Cosmetics & Style Studio
+      </div>
+      <div class="grid-2" style="gap:16px;">
+        <!-- Equipped Title & Banner -->
+        <div>
+          <div class="form-group" style="margin-bottom:12px;">
+            <label class="form-label">Equipped Title</label>
+            <select class="form-select" id="equip-title-select" onchange="handleEquipTitle(this.value)">
+              <option value="">None</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Equipped Profile Banner</label>
+            <select class="form-select" id="equip-banner-select" onchange="handleEquipBanner(this.value)">
+              <option value="">Default (Dark Obsidian)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Premium Style Picker -->
+        <div id="premium-studio-controls">
+          <div style="font-size:0.85rem;font-weight:700;color:var(--gold-bright);margin-bottom:8px;display:flex;align-items:center;gap:6px;">
+            <i data-lucide="crown"></i> Premium Username Styling
+          </div>
+          <div class="grid-2" style="gap:10px;">
+            <div class="form-group">
+              <label class="form-label">Name Color</label>
+              <select class="form-select" id="pref-color-select">
+                <option value="gold">Gold</option>
+                <option value="blue">Cyber Blue</option>
+                <option value="purple">Neon Purple</option>
+                <option value="green">Emerald Green</option>
+                <option value="red">Crimson Red</option>
+                <option value="rainbow">Rainbow / Aurora</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Animation</label>
+              <select class="form-select" id="pref-anim-select">
+                <option value="shimmer">Gold Shimmer</option>
+                <option value="pulse">Pulse Glow</option>
+                <option value="glow">Neon Glow</option>
+                <option value="glitch">Cyber Glitch</option>
+                <option value="none">None (Static)</option>
+              </select>
+            </div>
+          </div>
+          <button class="btn btn-gold btn-sm btn-full" style="margin-top:10px;" onclick="handleSaveStyle()">
+            <i data-lucide="check"></i> Save Username Style
+          </button>
+        </div>
       </div>
     </div>
 
@@ -181,27 +243,27 @@
       </div>
     </div>
 
-    <!-- Stats grid -->
+    <!-- Stats grid (Wins, Losses, Win Rate %, Leaderboard Rank) -->
     <div class="grid-4" style="margin-bottom:24px;">
       <div class="card stat-card">
-        <div class="stat-icon stat-icon--gold"><i data-lucide="trending-up"></i></div>
-        <div class="stat-label">Total Earned</div>
-        <div class="stat-value stat-value--gold" id="profile-earned">10.00</div>
-      </div>
-      <div class="card stat-card">
-        <div class="stat-icon stat-icon--accent"><i data-lucide="trending-down"></i></div>
-        <div class="stat-label">Total Spent</div>
-        <div class="stat-value" id="profile-spent">0.00</div>
-      </div>
-      <div class="card stat-card">
-        <div class="stat-icon stat-icon--purple"><i data-lucide="swords"></i></div>
-        <div class="stat-label">Matches Played</div>
-        <div class="stat-value" id="profile-played">0</div>
-      </div>
-      <div class="card stat-card">
         <div class="stat-icon stat-icon--green"><i data-lucide="trophy"></i></div>
+        <div class="stat-label">Matches Won</div>
+        <div class="stat-value" style="color:var(--green);" id="profile-won">0</div>
+      </div>
+      <div class="card stat-card">
+        <div class="stat-icon stat-icon--accent"><i data-lucide="x-circle"></i></div>
+        <div class="stat-label">Matches Lost</div>
+        <div class="stat-value" style="color:var(--red);" id="profile-lost">0</div>
+      </div>
+      <div class="card stat-card">
+        <div class="stat-icon stat-icon--gold"><i data-lucide="activity"></i></div>
         <div class="stat-label">Win Rate</div>
-        <div class="stat-value" id="profile-winrate">0%</div>
+        <div class="stat-value stat-value--gold" id="profile-winrate">0%</div>
+      </div>
+      <div class="card stat-card">
+        <div class="stat-icon stat-icon--purple"><i data-lucide="award"></i></div>
+        <div class="stat-label">Leaderboard Rank</div>
+        <div class="stat-value" style="color:#c084fc;font-size:1.4rem;" id="profile-rank-text">#--</div>
       </div>
     </div>
 
@@ -359,7 +421,7 @@
       });
     });
 
-    function renderProfile(data) {
+    async function renderProfile(data) {
       if (!data) return;
       const img  = document.getElementById('profile-avatar-img');
       const icon = document.getElementById('profile-avatar-icon');
@@ -372,10 +434,35 @@
       const isStaff = data.isAdmin === true || ADMIN_DISCORD_IDS.includes((data.discordId || targetUid || '').replace('discord:', ''));
       const isPremium = !!data.isPremium;
 
+      // Apply Custom Profile Style
+      const style = data.profileStyle || {};
+      const colorClass = style.color ? `usercolor-${style.color}` : (isPremium ? 'usercolor-gold' : '');
+      const animClass  = style.animation ? `anim-${style.animation}` : (isPremium ? 'anim-shimmer' : '');
+
       const nameEl = document.getElementById('profile-name');
       if (nameEl) {
         nameEl.textContent = data.displayName || 'Champion';
-        nameEl.className = isPremium ? 'username-premium' : '';
+        nameEl.className = `${colorClass} ${animClass}`.trim();
+      }
+
+      // Title Tag
+      const titleSlot = document.getElementById('profile-title-slot');
+      if (titleSlot) {
+        if (data.equippedTitle && SHOP_TITLES[data.equippedTitle]) {
+          const t = SHOP_TITLES[data.equippedTitle];
+          titleSlot.innerHTML = `<span class="player-title-tag ${t.className}">${t.name}</span>`;
+        } else {
+          titleSlot.innerHTML = '';
+        }
+      }
+
+      // Banner Theme on Hero
+      const heroCard = document.getElementById('profile-hero');
+      if (heroCard) {
+        heroCard.className = 'profile-hero-card';
+        if (data.equippedBanner && SHOP_BANNERS[data.equippedBanner]) {
+          heroCard.classList.add(SHOP_BANNERS[data.equippedBanner].className);
+        }
       }
 
       // Badges
@@ -383,21 +470,41 @@
       if (badgesRow) {
         let bHtml = '';
         if (isStaff) bHtml += `<span class="badge-staff"><i data-lucide="shield-check" style="width:12px;height:12px;"></i> STAFF</span>`;
-        if (isPremium) bHtml += `<span class="badge-premium"><i data-lucide="crown" style="width:12px;height:12px;"></i> VIP PASS</span>`;
+        if (isPremium) bHtml += `<span class="badge-premium"><i data-lucide="crown" style="width:12px;height:12px;"></i> PREMIUM</span>`;
         if (data.epicUsername) bHtml += `<span class="chip chip-success" style="font-size:0.68rem;padding:2px 8px;">VERIFIED EPIC</span>`;
         badgesRow.innerHTML = bHtml;
       }
 
-      // Premium Pass Action Button
+      // Token Balance (Private: only for account owner)
+      const balBox = document.getElementById('profile-balance-box');
+      const rankBox = document.getElementById('profile-rank-box');
+      if (balBox && rankBox) {
+        if (isViewingSelf) {
+          balBox.style.display = 'block';
+          rankBox.style.display = 'none';
+        } else {
+          balBox.style.display = 'none';
+          rankBox.style.display = 'block';
+        }
+      }
+
+      // Premium Action Button
       const premWrap = document.getElementById('premium-action-wrap');
       if (premWrap) {
-        if (isPremium) {
-          premWrap.innerHTML = `<span class="badge-premium" style="font-size:0.75rem;padding:4px 10px;"><i data-lucide="sparkles"></i> Premium Active</span>`;
+        if (isViewingSelf) {
+          if (isPremium) {
+            premWrap.innerHTML = `<span class="badge-premium" style="font-size:0.75rem;padding:4px 10px;"><i data-lucide="sparkles"></i> Premium Active</span>`;
+          } else {
+            premWrap.innerHTML = `
+              <a href="shop" class="btn btn-gold btn-sm" style="font-size:0.75rem;padding:4px 12px;">
+                <i data-lucide="crown"></i> Get Premium ($5.00)
+              </a>`;
+          }
         } else {
           premWrap.innerHTML = `
-            <a href="shop" class="btn btn-gold btn-sm" style="font-size:0.75rem;padding:4px 12px;">
-              <i data-lucide="crown"></i> Get Premium ($5.00)
-            </a>`;
+            <button class="btn btn-gold btn-sm" onclick="handleDirectTipModal('${targetUid}')">
+              <i data-lucide="gift"></i> Tip Player Tokens
+            </button>`;
         }
       }
 
@@ -409,22 +516,32 @@
       if (idEl) idEl.textContent = `Discord ID: ${discordId}`;
 
       const tokEl = document.getElementById('profile-tokens');
-      const earnEl = document.getElementById('profile-earned');
-      const spentEl = document.getElementById('profile-spent');
-      const playedEl = document.getElementById('profile-played');
-      const wonEl = document.getElementById('profile-won');
-      const wrEl = document.getElementById('profile-winrate');
-
       if (tokEl) tokEl.textContent = formatTokens(data.tokens ?? 10.00);
-      if (earnEl) earnEl.textContent = formatTokens(data.totalEarned ?? 10.00);
-      if (spentEl) spentEl.textContent = formatTokens(data.totalSpent ?? 0.00);
-      if (playedEl) playedEl.textContent = data.matchesPlayed ?? 0;
-      if (wonEl) wonEl.textContent = data.matchesWon ?? 0;
 
-      const wr = (data.matchesPlayed || 0) > 0
-        ? Math.round(((data.matchesWon || 0) / data.matchesPlayed) * 100) + '%'
-        : '0%';
-      if (wrEl) wrEl.textContent = wr;
+      // Matches Stats: Wins, Losses, Win Rate %
+      const played = Number(data.matchesPlayed || 0);
+      const won    = Number(data.matchesWon || 0);
+      const lost   = Math.max(0, played - won);
+      const wr     = played > 0 ? `${Math.round((won / played) * 100)}%` : '0%';
+
+      const wonEl = document.getElementById('profile-won');
+      const lostEl = document.getElementById('profile-lost');
+      const wrEl = document.getElementById('profile-winrate');
+      if (wonEl)  wonEl.textContent = `${won}`;
+      if (lostEl) lostEl.textContent = `${lost}`;
+      if (wrEl)   wrEl.textContent = wr;
+
+      // Leaderboard Rank Calculation
+      const rankInfo = await getUserLeaderboardRank(targetUid);
+      const rankTextEl = document.getElementById('profile-rank-text');
+      const rankBadgeEl = document.getElementById('profile-rank-badge');
+      if (rankTextEl) rankTextEl.textContent = rankInfo.display;
+      if (rankBadgeEl) {
+        rankBadgeEl.innerHTML = `<span class="rank-badge ${rankInfo.badgeClass}">${rankInfo.display}</span>`;
+      }
+
+      // Cosmetics Studio setup
+      setupCosmeticsStudio(data);
 
       const sinceEl = document.getElementById('profile-since');
       if (sinceEl && data.createdAt) {
@@ -433,6 +550,101 @@
           'Member since ' + d.toLocaleDateString('en-US', { year:'numeric', month:'short', day:'numeric' });
       }
       if (window.lucide) lucide.createIcons();
+    }
+
+    function setupCosmeticsStudio(data) {
+      const card = document.getElementById('cosmetics-studio-card');
+      if (!card) return;
+      if (!isViewingSelf) {
+        card.style.display = 'none';
+        return;
+      }
+      card.style.display = 'block';
+
+      // Title Selector
+      const titleSelect = document.getElementById('equip-title-select');
+      const unlockedTitles = data.unlockedTitles || [];
+      if (titleSelect) {
+        titleSelect.innerHTML = '<option value="">None (No Title)</option>' +
+          unlockedTitles.map(tId => {
+            const item = SHOP_TITLES[tId];
+            return item ? `<option value="${tId}" ${data.equippedTitle === tId ? 'selected' : ''}>${item.name}</option>` : '';
+          }).join('');
+      }
+
+      // Banner Selector
+      const bannerSelect = document.getElementById('equip-banner-select');
+      const unlockedBanners = data.unlockedBanners || [];
+      if (bannerSelect) {
+        bannerSelect.innerHTML = '<option value="">Default (Dark Obsidian)</option>' +
+          unlockedBanners.map(bId => {
+            const item = SHOP_BANNERS[bId];
+            return item ? `<option value="${bId}" ${data.equippedBanner === bId ? 'selected' : ''}>${item.name}</option>` : '';
+          }).join('');
+      }
+
+      // Premium styling controls
+      const premControls = document.getElementById('premium-studio-controls');
+      if (premControls) {
+        if (data.isPremium) {
+          premControls.style.opacity = '1';
+          premControls.style.pointerEvents = 'all';
+          const style = data.profileStyle || {};
+          if (document.getElementById('pref-color-select')) document.getElementById('pref-color-select').value = style.color || 'gold';
+          if (document.getElementById('pref-anim-select')) document.getElementById('pref-anim-select').value = style.animation || 'shimmer';
+        } else {
+          premControls.style.opacity = '0.4';
+          premControls.style.pointerEvents = 'none';
+        }
+      }
+    }
+
+    async function handleEquipTitle(titleId) {
+      if (!currentUser) return;
+      try {
+        await equipTitle(currentUser.uid, titleId);
+        showToast(titleId ? 'Title equipped!' : 'Title unequipped', 'info');
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
+    }
+
+    async function handleEquipBanner(bannerId) {
+      if (!currentUser) return;
+      try {
+        await equipBanner(currentUser.uid, bannerId);
+        showToast(bannerId ? 'Banner equipped!' : 'Banner reset to default', 'info');
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
+    }
+
+    async function handleSaveStyle() {
+      if (!currentUser) return;
+      const color = document.getElementById('pref-color-select').value;
+      const animation = document.getElementById('pref-anim-select').value;
+      try {
+        await updateProfileStyle(currentUser.uid, { color, animation });
+        showToast('Username styling updated across site!', 'success');
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
+    }
+
+    async function handleDirectTipModal(receiverUid) {
+      const raw = prompt('Enter token amount to tip to this player:', '1.00');
+      if (!raw) return;
+      const amount = parseFloat(raw);
+      if (isNaN(amount) || amount <= 0) {
+        showToast('Invalid tip amount', 'error');
+        return;
+      }
+      try {
+        await tipPlayer(currentUser.uid, receiverUid, amount);
+        showToast(`Tipped ${formatTokens(amount)} Tokens to player!`, 'success');
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
     }
 
     // ── Epic Games Account Section ────────────────────────────

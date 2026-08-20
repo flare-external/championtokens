@@ -361,9 +361,9 @@
     </div>
   </main>
 
-  <!-- Player Profile Modal (with Badges & Tipping) -->
+  <!-- Player Profile Modal (with Badges, Stats & Match Past History) -->
   <div class="modal-overlay" id="profile-modal" onclick="if(event.target===this)closeUserProfileModal()">
-    <div class="modal" style="max-width:400px;">
+    <div class="modal" style="max-width:420px;">
       <div class="modal-header">
         <div class="modal-title"><i data-lucide="user"></i> Player Profile</div>
         <button class="modal-close" onclick="closeUserProfileModal()"><i data-lucide="x"></i></button>
@@ -373,33 +373,47 @@
           <img id="modal-user-avatar-img" src="" alt="" style="display:none;"/>
           <i data-lucide="user" id="modal-user-avatar-icon" style="width:28px;height:28px;"></i>
         </div>
-        <div id="modal-user-name" style="font-size:1.3rem;font-weight:900;color:#fff;">Champion</div>
+        <div style="display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap;">
+          <span id="modal-user-name" style="font-size:1.3rem;font-weight:900;color:#fff;">Champion</span>
+          <span id="modal-user-title-slot"></span>
+        </div>
         <div id="modal-user-badges" style="display:flex;align-items:center;justify-content:center;gap:6px;margin-top:6px;flex-wrap:wrap;"></div>
         <div id="modal-user-discord" style="font-size:0.78rem;color:var(--text-muted);font-family:monospace;margin-top:4px;">@user · ID: --</div>
         <div id="modal-user-epic-wrap" style="margin-top:6px;"></div>
       </div>
 
-      <div class="grid-2" style="gap:8px;margin-bottom:16px;">
+      <!-- Stats Grid (Wins, Losses, Win Rate %, Rank) -->
+      <div class="grid-4" style="gap:8px;margin-bottom:16px;">
         <div class="card" style="padding:10px;text-align:center;">
-          <div style="font-size:0.7rem;color:var(--text-muted);font-weight:700;">TOKENS</div>
-          <div id="modal-user-tokens" style="font-size:1.15rem;font-weight:900;color:var(--gold-bright);">10.00</div>
+          <div style="font-size:0.68rem;color:var(--text-muted);font-weight:700;">WINS</div>
+          <div id="modal-user-won" style="font-size:1.15rem;font-weight:900;color:var(--green);">0</div>
         </div>
         <div class="card" style="padding:10px;text-align:center;">
-          <div style="font-size:0.7rem;color:var(--text-muted);font-weight:700;">WIN RATE</div>
-          <div id="modal-user-winrate" style="font-size:1.15rem;font-weight:900;color:var(--green);">0%</div>
+          <div style="font-size:0.68rem;color:var(--text-muted);font-weight:700;">LOSSES</div>
+          <div id="modal-user-lost" style="font-size:1.15rem;font-weight:900;color:var(--red);">0</div>
         </div>
         <div class="card" style="padding:10px;text-align:center;">
-          <div style="font-size:0.7rem;color:var(--text-muted);font-weight:700;">PLAYED</div>
-          <div id="modal-user-played" style="font-size:1.15rem;font-weight:900;">0</div>
+          <div style="font-size:0.68rem;color:var(--text-muted);font-weight:700;">WIN RATE</div>
+          <div id="modal-user-winrate" style="font-size:1.15rem;font-weight:900;color:var(--gold-bright);">0%</div>
         </div>
         <div class="card" style="padding:10px;text-align:center;">
-          <div style="font-size:0.7rem;color:var(--text-muted);font-weight:700;">WINS</div>
-          <div id="modal-user-won" style="font-size:1.15rem;font-weight:900;color:var(--gold-bright);">0</div>
+          <div style="font-size:0.68rem;color:var(--text-muted);font-weight:700;">RANK</div>
+          <div id="modal-user-rank" style="font-size:0.95rem;font-weight:900;color:#c084fc;">#--</div>
+        </div>
+      </div>
+
+      <!-- Match Past History -->
+      <div class="card" style="padding:12px 14px;margin-bottom:14px;background:rgba(0,0,0,0.3);">
+        <div style="font-size:0.75rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:6px;">
+          <i data-lucide="history" style="width:13px;height:13px;"></i> Recent Match History
+        </div>
+        <div id="modal-user-match-past" style="display:flex;flex-direction:column;gap:6px;">
+          <div style="font-size:0.75rem;color:var(--text-faint);text-align:center;">Loading past matches…</div>
         </div>
       </div>
 
       <!-- Tipping Tokens Section -->
-      <div class="tip-box" id="tip-section" style="display:none;">
+      <div class="tip-box" id="tip-section" style="display:none;margin-top:0;">
         <div style="display:flex;align-items:center;gap:6px;font-weight:800;font-size:0.85rem;color:var(--gold-bright);margin-bottom:6px;">
           <i data-lucide="gift"></i> Tip Player Tokens
         </div>
@@ -732,6 +746,16 @@
                 : `<span class="epic-copy-chip" style="opacity:0.6;border-style:dashed;" onclick="event.stopPropagation();showToast('Opponent has not linked their Epic account yet','info')"><img src="epic_games_logo.webp" alt="" style="width:13px;height:15px;object-fit:contain;"/> <span>No Epic Linked</span></span>`;
             }
 
+            const style = liveData.profileStyle || {};
+            const colorClass = style.color ? `usercolor-${style.color}` : (isPremium ? 'usercolor-gold' : '');
+            const animClass  = style.animation ? `anim-${style.animation}` : (isPremium ? 'anim-shimmer' : '');
+
+            let titleTagHTML = '';
+            if (liveData.equippedTitle && SHOP_TITLES[liveData.equippedTitle]) {
+              const t = SHOP_TITLES[liveData.equippedTitle];
+              titleTagHTML = `<span class="player-title-tag ${t.className}">${t.name}</span>`;
+            }
+
             return `
               <div class="player-slot-box" onclick="openUserProfileModal('${player.uid}')" title="Click to view stats & tip player">
                 <div class="slot-avatar-img ${isPlayerHost ? 'host' : ''}">
@@ -739,9 +763,10 @@
                 </div>
                 <div style="flex:1;min-width:0;">
                   <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
-                    <span class="${isPremium ? 'username-premium' : ''}" style="font-weight:800;font-size:0.95rem;">${realDisplayName}</span>
+                    <span class="${colorClass} ${animClass}" style="font-weight:800;font-size:0.95rem;">${realDisplayName}</span>
+                    ${titleTagHTML}
                     ${isPlayerHost ? '<span class="badge" style="background:var(--gold-dim);color:var(--gold-bright);padding:1px 6px;font-size:0.65rem;">HOST</span>' : ''}
-                    ${isPremium ? '<span class="badge-premium">👑 VIP</span>' : ''}
+                    ${isPremium ? '<span class="badge-premium"><i data-lucide="crown" style="width:10px;height:10px;"></i> PREMIUM</span>' : ''}
                     ${isMe ? '<span style="color:var(--gold-bright);font-size:0.75rem;">(You)</span>' : ''}
                   </div>
                   <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:3px;">
@@ -894,10 +919,26 @@
         const isAdmin = u.isAdmin === true || ADMIN_DISCORD_IDS.includes((u.discordId || uid).replace('discord:', ''));
         const isPremium = !!u.isPremium;
 
+        // Custom Profile Style (Color + Animation)
+        const style = u.profileStyle || {};
+        const colorClass = style.color ? `usercolor-${style.color}` : (isPremium ? 'usercolor-gold' : '');
+        const animClass  = style.animation ? `anim-${style.animation}` : (isPremium ? 'anim-shimmer' : '');
+
         const nameEl = document.getElementById('modal-user-name');
         if (nameEl) {
           nameEl.textContent = u.displayName || 'Champion';
-          nameEl.className = isPremium ? 'username-premium' : '';
+          nameEl.className = `${colorClass} ${animClass}`.trim();
+        }
+
+        // Title Tag
+        const titleSlot = document.getElementById('modal-user-title-slot');
+        if (titleSlot) {
+          if (u.equippedTitle && SHOP_TITLES[u.equippedTitle]) {
+            const t = SHOP_TITLES[u.equippedTitle];
+            titleSlot.innerHTML = `<span class="player-title-tag ${t.className}">${t.name}</span>`;
+          } else {
+            titleSlot.innerHTML = '';
+          }
         }
 
         // Badges container
@@ -905,7 +946,7 @@
         if (badgesEl) {
           let badgesHTML = '';
           if (isAdmin) badgesHTML += `<span class="badge-staff"><i data-lucide="shield-check" style="width:12px;height:12px;"></i> STAFF</span>`;
-          if (isPremium) badgesHTML += `<span class="badge-premium"><i data-lucide="crown" style="width:12px;height:12px;"></i> VIP PASS</span>`;
+          if (isPremium) badgesHTML += `<span class="badge-premium"><i data-lucide="crown" style="width:12px;height:12px;"></i> PREMIUM</span>`;
           if (u.epicUsername) badgesHTML += `<span class="chip chip-success" style="font-size:0.68rem;padding:2px 8px;">VERIFIED EPIC</span>`;
           badgesEl.innerHTML = badgesHTML;
         }
@@ -929,11 +970,22 @@
           }
         }
 
-        document.getElementById('modal-user-tokens').textContent = formatTokens(u.tokens);
-        document.getElementById('modal-user-played').textContent = u.matchesPlayed || 0;
-        document.getElementById('modal-user-won').textContent = u.matchesWon || 0;
-        const wr = (u.matchesPlayed || 0) > 0 ? Math.round((u.matchesWon / u.matchesPlayed) * 100) + '%' : '0%';
+        // Wins, Losses, Win Rate %
+        const played = Number(u.matchesPlayed || 0);
+        const won    = Number(u.matchesWon || 0);
+        const lost   = Math.max(0, played - won);
+        const wr     = played > 0 ? `${Math.round((won / played) * 100)}%` : '0%';
+
+        document.getElementById('modal-user-won').textContent = `${won}`;
+        document.getElementById('modal-user-lost').textContent = `${lost}`;
         document.getElementById('modal-user-winrate').textContent = wr;
+
+        // Leaderboard Rank
+        const rankInfo = await getUserLeaderboardRank(uid);
+        document.getElementById('modal-user-rank').textContent = rankInfo.display;
+
+        // Recent Match Past History
+        loadModalMatchHistory(uid);
 
         const img = document.getElementById('modal-user-avatar-img');
         const icon = document.getElementById('modal-user-avatar-icon');
@@ -955,6 +1007,46 @@
         if (window.lucide) lucide.createIcons();
       } catch (e) {
         console.warn(e);
+      }
+    }
+
+    async function loadModalMatchHistory(uid) {
+      const listEl = document.getElementById('modal-user-match-past');
+      if (!listEl) return;
+      try {
+        const snap = await db.collection('matches')
+          .where('playerUids', 'array-contains', uid)
+          .limit(5)
+          .get();
+
+        if (snap.empty) {
+          listEl.innerHTML = `<div style="font-size:0.75rem;color:var(--text-faint);text-align:center;">No recent matches played yet.</div>`;
+          return;
+        }
+
+        const matches = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        matches.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
+
+        listEl.innerHTML = matches.slice(0, 3).map(m => {
+          const isWinner = m.winner?.uid === uid;
+          const isCompleted = m.status === 'completed';
+          let outcomeBadge = '<span style="color:var(--text-muted);font-size:0.72rem;">⏳ Active</span>';
+          if (isCompleted) {
+            outcomeBadge = isWinner
+              ? '<span style="color:var(--green);font-weight:800;font-size:0.72rem;">🏆 WON</span>'
+              : '<span style="color:var(--red);font-weight:800;font-size:0.72rem;">❌ LOST</span>';
+          }
+          return `
+            <div style="display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:var(--radius-sm);padding:5px 8px;font-size:0.78rem;">
+              <span style="font-weight:700;color:var(--text);">${escapeHtml(m.title || 'Match')}</span>
+              <div style="display:flex;align-items:center;gap:6px;">
+                <span style="color:var(--gold-bright);font-size:0.72rem;">${formatTokens(m.wager)}T</span>
+                ${outcomeBadge}
+              </div>
+            </div>`;
+        }).join('');
+      } catch (err) {
+        listEl.innerHTML = `<div style="font-size:0.75rem;color:var(--text-faint);text-align:center;">No past match records found.</div>`;
       }
     }
 

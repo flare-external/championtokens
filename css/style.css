@@ -1294,3 +1294,175 @@ input[type="range"].ct-slider::-moz-range-thumb {
   flex-direction: column;
   gap: 4px;
 }
+
+/* ── Player Titles & Tags ──────────────────────────────────── */
+.player-title-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border-radius: var(--radius-sm);
+  padding: 2px 8px;
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.title-goated {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.25) 0%, rgba(217, 119, 6, 0.15) 100%);
+  border: 1px solid rgba(245, 158, 11, 0.6);
+  color: #FBBF24;
+  box-shadow: 0 0 10px var(--gold-glow);
+}
+.title-average {
+  background: rgba(56, 189, 248, 0.15);
+  border: 1px solid rgba(56, 189, 248, 0.4);
+  color: #38bdf8;
+}
+.title-the-boss {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.3) 0%, rgba(180, 83, 9, 0.25) 100%);
+  border: 1px solid rgba(253, 230, 138, 0.7);
+  color: #FFFBEB;
+  box-shadow: 0 0 16px rgba(245, 158, 11, 0.6);
+  animation: bossShimmer 3s ease-in-out infinite alternate;
+}
+@keyframes bossShimmer {
+  0% { transform: scale(1); filter: brightness(1); }
+  100% { transform: scale(1.03); filter: brightness(1.25); }
+}
+
+/* ── Profile Banners ───────────────────────────────────────── */
+.profile-hero-card.banner-obsidian-flame {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(245, 158, 11, 0.12) 50%, rgba(13, 16, 26, 0.95) 100%) !important;
+  border-color: rgba(239, 68, 68, 0.45) !important;
+  box-shadow: 0 0 35px rgba(239, 68, 68, 0.2) !important;
+}
+.profile-hero-card.banner-cyber-matrix {
+  background: linear-gradient(135deg, rgba(56, 189, 248, 0.2) 0%, rgba(129, 140, 248, 0.12) 50%, rgba(13, 16, 26, 0.95) 100%) !important;
+  border-color: rgba(56, 189, 248, 0.45) !important;
+  box-shadow: 0 0 35px rgba(56, 189, 248, 0.2) !important;
+}
+.profile-hero-card.banner-golden-royale {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.3) 0%, rgba(253, 230, 138, 0.15) 50%, rgba(13, 16, 26, 0.95) 100%) !important;
+  border-color: rgba(245, 158, 11, 0.6) !important;
+  box-shadow: 0 0 45px rgba(245, 158, 11, 0.3) !important;
+}
+
+/* ── Custom Username Colors ────────────────────────────────── */
+.usercolor-gold    { color: #FBBF24 !important; }
+.usercolor-blue    { color: #38bdf8 !important; }
+.usercolor-purple  { color: #c084fc !important; }
+.usercolor-green   { color: #34d399 !important; }
+.usercolor-red     { color: #f87171 !important; }
+.usercolor-rainbow {
+  background: linear-gradient(90deg, #f87171, #fbbf24, #34d399, #38bdf8, #c084fc, #f87171);
+  background-size: 300% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: rainbowScroll 4s linear infinite;
+}
+@keyframes rainbowScroll {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 300% 50%; }
+}
+
+/* ── Custom Username Animations ────────────────────────────── */
+.anim-shimmer {
+  background: linear-gradient(90deg, #FDE68A 0%, #F59E0B 35%, #FFFBEB 50%, #F59E0B 70%, #FDE68A 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: goldShimmer 3s linear infinite;
+}
+.anim-pulse {
+  animation: namePulse 2s ease-in-out infinite alternate;
+}
+@keyframes namePulse {
+  0% { transform: scale(1); filter: drop-shadow(0 0 2px currentColor); }
+  100% { transform: scale(1.04); filter: drop-shadow(0 0 10px currentColor); }
+}
+.anim-glow {
+  text-shadow: 0 0 14px currentColor, 0 0 28px currentColor;
+}
+.anim-glitch {
+  animation: nameGlitch 3s infinite;
+}
+@keyframes nameGlitch {
+  0%, 90%, 100% { transform: translate(0,0); }
+  92% { transform: translate(-2px, 1px); }
+  94% { transform: translate(2px, -1px); }
+  96% { transform: translate(-1px, -1px); }
+}
+
+/* ── Leaderboard Rank Badges ───────────────────────────────── */
+.rank-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  border-radius: var(--radius-sm);
+  padding: 3px 8px;
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+.rank-badge-1 {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.3) 0%, rgba(217, 119, 6, 0.2) 100%);
+  border: 1px solid #F59E0B;
+  color: #FDE68A;
+  box-shadow: 0 0 14px var(--gold-glow);
+}
+.rank-badge-top {
+  background: rgba(56, 189, 248, 0.15);
+  border: 1px solid rgba(56, 189, 248, 0.4);
+  color: #38bdf8;
+}
+.rank-badge-normal {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+}
+
+/* ── Shop Chests ───────────────────────────────────────────── */
+.chest-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-bright);
+  border-radius: var(--radius-xl);
+  padding: 24px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.25s;
+}
+.chest-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 35px rgba(0,0,0,0.7), 0 0 25px rgba(245, 158, 11, 0.2);
+  border-color: var(--gold-bright);
+}
+.chest-icon-glow {
+  width: 72px;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(245, 158, 11, 0.12);
+  border: 1.5px solid var(--border-bright);
+  color: var(--gold-bright);
+  box-shadow: 0 0 20px rgba(245, 158, 11, 0.25);
+  margin-bottom: 4px;
+}
+.timer-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(245, 158, 11, 0.1);
+  border: 1px solid var(--border-bright);
+  border-radius: var(--radius-full);
+  padding: 4px 12px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  font-family: monospace;
+  color: var(--gold-bright);
+}

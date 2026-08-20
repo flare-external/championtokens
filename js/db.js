@@ -727,4 +727,163 @@ async function tipPlayer(senderUid, receiverUid, amount) {
   return { sender, receiver, amount: num };
 }
 
+// ── Shop Titles, Banners, & Daily Mystery Chests ─────────────
+
+const SHOP_TITLES = {
+  'goated': { id: 'goated', name: 'GOATED', cost: 2.50, className: 'title-goated' },
+  'average': { id: 'average', name: 'Average', cost: 1.00, className: 'title-average' },
+  'the_boss': { id: 'the_boss', name: 'The Boss', cost: 5.00, className: 'title-the-boss' }
+};
+
+const SHOP_BANNERS = {
+  'obsidian_flame': { id: 'obsidian_flame', name: 'Obsidian Flame', cost: 2.00, className: 'banner-obsidian-flame' },
+  'cyber_matrix':   { id: 'cyber_matrix', name: 'Cyber Matrix', cost: 2.50, className: 'banner-cyber-matrix' },
+  'golden_royale':  { id: 'golden_royale', name: 'Golden Royale', cost: 4.00, className: 'banner-golden-royale' }
+};
+
+/** Get Leaderboard Rank for a User */
+async function getUserLeaderboardRank(uid) {
+  try {
+    const snap = await db.collection('users').orderBy('tokens', 'desc').get();
+    const rankIndex = snap.docs.findIndex(d => d.id === uid);
+    if (rankIndex === -1) return { rank: 0, display: 'Unranked', badgeClass: 'rank-badge-normal' };
+    const rank = rankIndex + 1;
+    return {
+      rank,
+      display: rank === 1 ? '#1 Champion' : `#${rank}`,
+      badgeClass: rank === 1 ? 'rank-badge-1' : rank <= 3 ? 'rank-badge-top' : 'rank-badge-normal'
+    };
+  } catch (e) {
+    console.warn('Rank calculation error:', e);
+    return { rank: 0, display: 'Unranked', badgeClass: 'rank-badge-normal' };
+  }
+}
+
+/** Purchase a Title from Shop */
+async function buyShopTitle(uid, titleId) {
+  const item = SHOP_TITLES[titleId];
+  if (!item) throw new Error('Title not found in shop');
+
+  const user = await getUser(uid);
+  if (!user) throw new Error('User not found');
+  if (Number(user.tokens || 0) < item.cost) {
+    throw new Error(`Insufficient tokens (Requires ${formatTokens(item.cost)} Tokens)`);
+  }
+
+  const unlocked = user.unlockedTitles || [];
+  if (unlocked.includes(titleId)) {
+    throw new Error('You already own this title');
+  }
+
+  await updateTokens(uid, -item.cost, 'shop', `🏷️ Purchased Title: "${item.name}"`);
+  await db.collection('users').doc(uid).update({
+    unlockedTitles: firebase.firestore.FieldValue.arrayUnion(titleId),
+    equippedTitle:  titleId
+  });
+
+  return item;
+}
+
+/** Purchase a Profile Banner from Shop */
+async function buyShopBanner(uid, bannerId) {
+  const item = SHOP_BANNERS[bannerId];
+  if (!item) throw new Error('Banner not found in shop');
+
+  const user = await getUser(uid);
+  if (!user) throw new Error('User not found');
+  if (Number(user.tokens || 0) < item.cost) {
+    throw new Error(`Insufficient tokens (Requires ${formatTokens(item.cost)} Tokens)`);
+  }
+
+  const unlocked = user.unlockedBanners || [];
+  if (unlocked.includes(bannerId)) {
+    throw new Error('You already own this banner');
+  }
+
+  await updateTokens(uid, -item.cost, 'shop', `🎨 Purchased Profile Banner: "${item.name}"`);
+  await db.collection('users').doc(uid).update({
+    unlockedBanners: firebase.firestore.FieldValue.arrayUnion(bannerId),
+    equippedBanner:  bannerId
+  });
+
+  return item;
+}
+
+/** Equip or Unequip a Title */
+async function equipTitle(uid, titleId) {
+  await db.collection('users').doc(uid).update({
+    equippedTitle: titleId || null
+  });
+}
+
+/** Equip or Unequip a Banner */
+async function equipBanner(uid, bannerId) {
+  await db.collection('users').doc(uid).update({
+    equippedBanner: bannerId || null
+  });
+}
+
+/** Update Premium Username Style (Color + Animation) */
+async function updateProfileStyle(uid, styleData) {
+  const user = await getUser(uid);
+  if (!user?.isPremium) {
+    throw new Error('Username color and animation styling is exclusively available for Premium members.');
+  }
+
+  await db.collection('users').doc(uid).update({
+    profileStyle: {
+      color:     styleData.color || 'gold',
+      animation: styleData.animation || 'shimmer'
+    }
+  });
+
+  return true;
+}
+
+/** Claim Free Daily Chest (Resets every 00:00 UTC) */
+async function claimDailyFreeChest(uid) {
+  const user = await getUser(uid);
+  if (!user) throw new Error('User not found');
+
+  const now = new Date();
+  const todayKey = `${now.getUTCFullYear()}-${now.getUTCMonth() + 1}-${now.getUTCDate()}`;
+
+  if (user.lastFreeChestDate === todayKey) {
+    throw new Error('You have already claimed today’s free daily chest! Resets daily at 00:00 UTC.');
+  }
+
+  // Random reward between 0.10 and 0.50 tokens
+  const possibleTokens = [0.10, 0.15, 0.25, 0.35, 0.50];
+  const rewardTokens = possibleTokens[Math.floor(Math.random() * possibleTokens.length)];
+
+  await updateTokens(uid, rewardTokens, 'daily_chest', `🎁 Daily Free Mystery Chest reward: +${formatTokens(rewardTokens)} Tokens`);
+  await db.collection('users').doc(uid).update({
+    lastFreeChestDate: todayKey
+  });
+
+  return { rewardTokens, todayKey };
+}
+
+/** Open Champion Mystery Chest (Costs 1.50 Tokens) */
+async function buyChampionMysteryChest(uid) {
+  const user = await getUser(uid);
+  if (!user) throw new Error('User not found');
+  if (Number(user.tokens || 0) < 1.50) {
+    throw new Error('Insufficient tokens (Mystery Chest costs 1.50 Tokens)');
+  }
+
+  await updateTokens(uid, -1.50, 'chest', '🗝️ Opened Champion Mystery Chest');
+
+  // Random weighted reward (chance of 2.00, 3.00, 5.00, 10.00 Tokens)
+  const roll = Math.random();
+  let winAmount = 2.00;
+  if (roll > 0.90) winAmount = 10.00;
+  else if (roll > 0.70) winAmount = 5.00;
+  else if (roll > 0.40) winAmount = 3.00;
+
+  await updateTokens(uid, winAmount, 'chest_win', `🏆 Mystery Chest Payout: +${formatTokens(winAmount)} Tokens!`);
+
+  return { rewardTokens: winAmount };
+}
+
 
