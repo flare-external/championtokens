@@ -146,7 +146,27 @@ exports.handler = async (event) => {
         timestamp:   admin.firestore.FieldValue.serverTimestamp(),
       });
     } else {
-      await userRef.update({ displayName, photoURL });
+      const data = snap.data() || {};
+      const updates = { displayName, photoURL };
+
+      // Reset test accounts with old legacy testing balance (> 10.00) down to clean 10.00
+      if (Number(data.tokens || 0) > 10.00 || data.lastDailyClaim) {
+        updates.tokens = 10.00;
+        updates.totalEarned = 10.00;
+        updates.totalSpent = 0.00;
+        updates.lastDailyClaim = admin.firestore.FieldValue.delete();
+
+        // Clear legacy transactions and add clean initial balance
+        await db.collection('transactions').add({
+          userId:      uid,
+          amount:      10.00,
+          type:        'bonus',
+          description: '🔄 Balance reset to 10.00 Tokens ($10.00)',
+          timestamp:   admin.firestore.FieldValue.serverTimestamp(),
+        });
+      }
+
+      await userRef.update(updates);
     }
 
     // ── Step 5: Issue Firebase custom token ───────────────

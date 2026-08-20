@@ -34,7 +34,7 @@ function injectNav(activePage = '') {
         <div class="ct-nav__user">
           <div class="ct-nav__token-group">
             <div class="token-pill" title="Champion Tokens Balance (1 Token = $1.00 USD)">
-              <img src="champion_tokens_CT_v4.png" alt="CT" class="token-pill-coin" />
+              <img src="champion_token_coin.png" alt="CT" class="token-pill-coin" />
               <span id="nav-balance">10.00</span>
             </div>
             <a href="shop.html" class="token-add-btn" title="Add / Buy Tokens">
