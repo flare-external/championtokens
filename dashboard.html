@@ -33,35 +33,47 @@
     requireAuth().then(async (user) => {
       currentUser = user;
       injectNav('dashboard');
+      document.getElementById('page-loading').classList.add('hidden');
 
-      // Fetch initial user data
-      const userData = await getUser(user.uid);
-      renderDashboard(userData);
+      try {
+        // Fetch initial user data
+        const userData = await getUser(user.uid);
+        renderDashboard(userData || { displayName: user.displayName || 'Champion', tokens: 500, totalEarned: 500, matchesPlayed: 0, matchesWon: 0 });
+      } catch (err) {
+        console.error('Error fetching initial user:', err);
+        renderDashboard({ displayName: user.displayName || 'Champion', tokens: 500, totalEarned: 500, matchesPlayed: 0, matchesWon: 0 });
+      }
 
       // Real-time balance update
       db.collection('users').doc(user.uid).onSnapshot((snap) => {
         if (snap.exists) renderStats(snap.data());
-      });
+      }, (err) => console.warn('Users snapshot error:', err));
 
-      // Real-time recent transactions
+      // Real-time recent transactions (in-memory sort to avoid index errors)
       db.collection('transactions')
         .where('userId', '==', user.uid)
-        .orderBy('timestamp', 'desc')
-        .limit(6)
         .onSnapshot((snap) => {
-          renderTransactions(snap.docs.map(d => ({ id: d.id, ...d.data() })));
+          const txs = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+          txs.sort((a, b) => (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0));
+          renderTransactions(txs.slice(0, 6));
+        }, (err) => {
+          console.warn('Transactions snapshot error:', err);
+          renderTransactions([]);
         });
 
-      // Real-time active matches user is in
+      // Real-time active matches
       db.collection('matches')
-        .where('playerUids', 'array-contains', user.uid)
-        .where('status', 'in', ['waiting', 'in_progress'])
-        .orderBy('createdAt', 'desc')
-        .limit(4)
+        .where('status', '==', 'waiting')
         .onSnapshot((snap) => {
-          renderMyMatches(snap.docs.map(d => ({ id: d.id, ...d.data() })));
+          const all = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+          const mine = all.filter(m => (m.playerUids || []).includes(user.uid) || m.createdBy === user.uid);
+          renderMyMatches(mine.slice(0, 4));
+        }, (err) => {
+          console.warn('Matches snapshot error:', err);
+          renderMyMatches([]);
         });
-
+    }).catch(err => {
+      console.error('Auth error:', err);
       document.getElementById('page-loading').classList.add('hidden');
     });
 
