@@ -6,23 +6,46 @@
 
 const admin = require('firebase-admin');
 
-// Initialize Firebase Admin once (using service account from env var)
-if (!admin.apps.length) {
-  const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
-  admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-    projectId:  'champion-tokens',
-  });
-}
-
-const db = admin.firestore();
-
 const HEADERS = {
   'Access-Control-Allow-Origin':  '*',
   'Access-Control-Allow-Headers': 'Content-Type',
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
   'Content-Type': 'application/json',
 };
+
+function getFirebaseAdmin() {
+  if (!admin.apps.length) {
+    const rawServiceAccount = process.env.FIREBASE_SERVICE_ACCOUNT;
+    if (!rawServiceAccount) {
+      throw new Error('Missing FIREBASE_SERVICE_ACCOUNT environment variable in Netlify');
+    }
+
+    let serviceAccount;
+    try {
+      // Handle either raw JSON string or base64 encoded JSON
+      const jsonString = rawServiceAccount.trim().startsWith('{')
+        ? rawServiceAccount
+        : Buffer.from(rawServiceAccount, 'base64').toString('utf-8');
+      serviceAccount = JSON.parse(jsonString);
+    } catch (parseErr) {
+      throw new Error('Failed to parse FIREBASE_SERVICE_ACCOUNT JSON: ' + parseErr.message);
+    }
+
+    // Fix potential newline issues in private_key if passed as string
+    if (serviceAccount.private_key && typeof serviceAccount.private_key === 'string') {
+      serviceAccount.private_key = serviceAccount.private_key.replace(/\\n/g, '\n');
+    }
+
+    admin.initializeApp({
+      credential: admin.credential.cert(serviceAccount),
+      projectId:  serviceAccount.project_id || 'champion-tokens',
+    });
+  }
+  return {
+    admin,
+    db: admin.firestore(),
+  };
+}
 
 exports.handler = async (event) => {
   // Handle CORS preflight
@@ -44,6 +67,15 @@ exports.handler = async (event) => {
     return { statusCode: 400, headers: HEADERS, body: JSON.stringify({ error: 'Missing code or redirectUri' }) };
   }
 
+  const clientSecret = process.env.DISCORD_CLIENT_SECRET;
+  if (!clientSecret) {
+    return {
+      statusCode: 500,
+      headers: HEADERS,
+      body: JSON.stringify({ error: 'Missing DISCORD_CLIENT_SECRET in Netlify environment variables' }),
+    };
+  }
+
   try {
     // ── Step 1: Exchange Discord code for access token ─────
     const tokenRes = await fetch('https://discord.com/api/oauth2/token', {
@@ -51,7 +83,7 @@ exports.handler = async (event) => {
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: new URLSearchParams({
         client_id:     '1540084692873912470',
-        client_secret: process.env.DISCORD_CLIENT_SECRET,
+        client_secret: clientSecret,
         grant_type:    'authorization_code',
         code,
         redirect_uri:  redirectUri,
@@ -60,11 +92,11 @@ exports.handler = async (event) => {
 
     const tokenData = await tokenRes.json();
     if (tokenData.error) {
-      console.error('Discord token error:', tokenData);
+      console.error('Discord token exchange error:', tokenData);
       return {
         statusCode: 400,
         headers:    HEADERS,
-        body:       JSON.stringify({ error: tokenData.error_description || 'Discord auth failed' }),
+        body:       JSON.stringify({ error: tokenData.error_description || tokenData.error || 'Discord auth failed' }),
       };
     }
 
@@ -75,10 +107,12 @@ exports.handler = async (event) => {
     const discordUser = await userRes.json();
 
     if (!discordUser.id) {
-      return { statusCode: 400, headers: HEADERS, body: JSON.stringify({ error: 'Failed to fetch Discord user' }) };
+      return { statusCode: 400, headers: HEADERS, body: JSON.stringify({ error: 'Failed to fetch Discord user profile' }) };
     }
 
-    // ── Step 3: Build user info ───────────────────────────
+    // ── Step 3: Initialize Firebase Admin ─────────────────
+    const { db } = getFirebaseAdmin();
+
     const uid         = `discord:${discordUser.id}`;
     const displayName = discordUser.global_name || discordUser.username;
     const photoURL    = discordUser.avatar
@@ -131,6 +165,10 @@ exports.handler = async (event) => {
 
   } catch (err) {
     console.error('discordAuth error:', err);
-    return { statusCode: 500, headers: HEADERS, body: JSON.stringify({ error: 'Internal server error' }) };
+    return {
+      statusCode: 500,
+      headers:    HEADERS,
+      body:       JSON.stringify({ error: err.message || 'Internal server error' }),
+    };
   }
 };
