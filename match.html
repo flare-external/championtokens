@@ -68,11 +68,11 @@
       color: var(--text-muted);
     }
 
-    /* 2-Column Split: Dominant Match Info Stage (60%) & Sleek Chat (40%) */
+    /* 2-Column Split: Dominant Match Info Stage (72%) & Compact Chat (28%) */
     .arena-main-grid {
       display: grid;
-      grid-template-columns: 1.4fr 0.9fr;
-      gap: 22px;
+      grid-template-columns: 1fr 380px;
+      gap: 24px;
       flex: 1;
       min-height: 0;
       align-items: stretch;
@@ -84,15 +84,15 @@
       }
     }
 
-    /* Arena Center Stage (Larger & Prominent) */
+    /* Arena Center Stage (Grand & Prominent) */
     .stage-card {
       background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: var(--radius-2xl);
-      padding: 28px 30px;
+      padding: 32px 36px;
       display: flex;
       flex-direction: column;
-      gap: 22px;
+      gap: 24px;
       box-shadow: var(--shadow-card);
       backdrop-filter: blur(24px);
       height: 100%;
@@ -102,13 +102,13 @@
     .stage-card::-webkit-scrollbar { width: 5px; }
     .stage-card::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 10px; }
 
-    /* VS Battle Matchup Layout (Bigger) */
+    /* VS Battle Matchup Layout (Grand Scale) */
     .vs-arena-layout {
       display: grid;
       grid-template-columns: 1fr auto 1fr;
-      gap: 24px;
+      gap: 28px;
       align-items: center;
-      padding: 28px 24px;
+      padding: 32px 28px;
       background: linear-gradient(135deg, rgba(245, 158, 11, 0.04) 0%, rgba(10, 14, 24, 0.7) 100%);
       border-radius: var(--radius-xl);
     }
@@ -118,34 +118,34 @@
     }
 
     .vs-ring {
-      width: 66px;
-      height: 66px;
+      width: 72px;
+      height: 72px;
       border-radius: 50%;
       background: linear-gradient(135deg, #FBBF24 0%, #D97706 100%);
       color: #000;
       font-weight: 900;
-      font-size: 1.4rem;
+      font-size: 1.5rem;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 0 30px var(--gold-glow);
+      box-shadow: 0 0 32px var(--gold-glow);
       flex-shrink: 0;
     }
 
     .team-squad-column {
       display: flex;
       flex-direction: column;
-      gap: 14px;
+      gap: 16px;
     }
 
-    /* Modern Player Card (Larger) */
+    /* Modern Player Card (Grand & Spacious) */
     .player-slot-box {
       background: rgba(16, 21, 36, 0.75);
-      border-radius: var(--radius-lg);
-      padding: 18px 22px;
+      border-radius: var(--radius-xl);
+      padding: 20px 24px;
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 18px;
       transition: all 0.2s;
       cursor: pointer;
     }
@@ -164,15 +164,15 @@
     }
 
     .slot-avatar-img {
-      width: 54px;
-      height: 54px;
+      width: 58px;
+      height: 58px;
       border-radius: 50%;
       background: var(--bg-card-hover);
       overflow: hidden;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.35rem;
+      font-size: 1.4rem;
       font-weight: 900;
       color: var(--gold-bright);
       flex-shrink: 0;
@@ -180,16 +180,16 @@
     .slot-avatar-img img { width: 100%; height: 100%; object-fit: cover; }
     .slot-avatar-img.host { box-shadow: 0 0 16px var(--gold-glow); }
 
-    /* Prize & Stakes Mini Card (Bigger) */
+    /* Prize & Stakes Mini Card (Grand) */
     .stakes-summary-bar {
       display: flex;
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
-      gap: 18px;
+      gap: 20px;
       background: rgba(255, 255, 255, 0.02);
-      border-radius: var(--radius-lg);
-      padding: 20px 28px;
+      border-radius: var(--radius-xl);
+      padding: 22px 32px;
     }
 
     /* Big Ready Action Bar */
