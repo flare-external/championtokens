@@ -414,7 +414,28 @@ ul { list-style: none; }
   transform: translateY(-2px);
   box-shadow: 0 8px 30px rgba(88,101,242,0.6);
 }
-.discord-logo { width: 22px; height: 22px; flex-shrink: 0; }
+.discord-logo { width: 24px; height: 20px; flex-shrink: 0; }
+
+/* Epic Games button */
+.btn-epic {
+  background: #1a1a1a;
+  color: #fff;
+  border: 1px solid #333;
+  font-size: 0.95rem;
+  padding: 12px 24px;
+  border-radius: var(--radius-md);
+  gap: 12px;
+  font-weight: 700;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.5);
+  transition: all 0.2s;
+}
+.btn-epic:hover {
+  background: #282828;
+  border-color: #0078f2;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,120,242,0.3);
+}
+.epic-logo { width: 22px; height: 22px; flex-shrink: 0; }
 
 /* ── Forms ─────────────────────────────────────────────────── */
 .form-group { display: flex; flex-direction: column; gap: 6px; }

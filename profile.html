@@ -209,9 +209,9 @@
           <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;">
             <div style="display:flex;align-items:center;gap:12px;">
               <span class="epic-tag-badge">
-                <svg style="width:18px;height:18px;fill:#38bdf8;" viewBox="0 0 100 100">
-                  <path d="M50 5 L88 20 L80 75 L50 95 L20 75 L12 20 Z" fill="none" stroke="#38bdf8" stroke-width="8"/>
-                  <text x="50" y="58" font-family="sans-serif" font-weight="900" font-size="24" fill="#38bdf8" text-anchor="middle">EPIC</text>
+                <svg style="width:20px;height:23px;fill:#38bdf8;" viewBox="0 0 44 50" fill="currentColor">
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M22 0L0 5.2V39.4L22 50L44 39.4V5.2L22 0ZM37.8 35.8L22 43.4L6.2 35.8V9.2L22 5.4L37.8 9.2V35.8Z"/>
+                  <path d="M12.5 14H31.5V18.5H18V22.5H29.5V27H18V31.5H31.5V36H12.5V14Z"/>
                 </svg>
                 ${data.epicUsername}
               </span>
@@ -231,10 +231,10 @@
           <p style="font-size:0.875rem;color:var(--text-muted);margin-bottom:16px;">
             <strong style="color:var(--gold-bright);">Required to play:</strong> Click below to log in with your Epic Games account and link your Fortnite username.
           </p>
-          <button class="btn btn-primary" onclick="openEpicAuthPopup()" style="background:#0078f2;border-color:#0078f2;color:#fff;display:inline-flex;align-items:center;gap:10px;padding:12px 22px;font-weight:800;font-size:0.95rem;">
-            <svg style="width:20px;height:20px;fill:#fff;" viewBox="0 0 100 100">
-              <path d="M50 5 L88 20 L80 75 L50 95 L20 75 L12 20 Z" fill="none" stroke="#ffffff" stroke-width="8"/>
-              <text x="50" y="58" font-family="sans-serif" font-weight="900" font-size="24" fill="#ffffff" text-anchor="middle">EPIC</text>
+          <button class="btn btn-epic" onclick="openEpicAuthPopup()" style="display:inline-flex;align-items:center;gap:12px;padding:12px 24px;font-weight:800;font-size:0.95rem;">
+            <svg class="epic-logo" viewBox="0 0 44 50" fill="currentColor">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M22 0L0 5.2V39.4L22 50L44 39.4V5.2L22 0ZM37.8 35.8L22 43.4L6.2 35.8V9.2L22 5.4L37.8 9.2V35.8Z"/>
+              <path d="M12.5 14H31.5V18.5H18V22.5H29.5V27H18V31.5H31.5V36H12.5V14Z"/>
             </svg>
             Sign In with Epic Games
           </button>`;
