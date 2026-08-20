@@ -64,7 +64,7 @@ async function signInAsGuest() {
         matchesPlayed:   0,
         matchesWon:      0,
         isGuest:         true,
-        isAdmin:         true,
+        isAdmin:         false,
         epicUsername:    `GuestEpic_${guestNumber}`,
         createdAt:       firebase.firestore.FieldValue.serverTimestamp(),
       });
@@ -132,16 +132,16 @@ function requireAuth(redirectTo = 'index.html') {
 const ADMIN_DISCORD_IDS = ['1121188319410278420'];
 
 /**
- * Check if the given user is an administrator (allows Admin IDs, guest accounts, and tester accounts)
+ * Check if the given user is an administrator
  */
 function isAdminUser(user, userData = null) {
-  if (!user && !userData) return true;
+  if (!user && !userData) return false;
   const uid = user?.uid || userData?.uid || '';
   const discordId = userData?.discordId || uid.replace('discord:', '');
   if (user?.isAnonymous || userData?.isGuest === true || uid.startsWith('guest_') || discordId.startsWith('guest_')) {
-    return true;
+    return false;
   }
-  return ADMIN_DISCORD_IDS.includes(discordId) || userData?.isAdmin === true;
+  return ADMIN_DISCORD_IDS.includes(discordId) || (userData?.isAdmin === true && !userData?.isGuest);
 }
 
 /**
