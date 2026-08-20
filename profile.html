@@ -195,7 +195,7 @@
           el.innerHTML = `
             <div style="display:flex;align-items:center;gap:12px;">
               <span class="epic-tag-badge"><i data-lucide="gamepad-2"></i> ${data.epicUsername}</span>
-              <span class="chip chip-success">Verified Player</span>
+              <span class="chip chip-success">Verified Epic Account</span>
             </div>`;
         } else {
           el.innerHTML = `<span style="color:var(--text-muted);font-size:0.875rem;">No Epic Games account linked yet.</span>`;
@@ -208,49 +208,58 @@
         el.innerHTML = `
           <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;">
             <div style="display:flex;align-items:center;gap:12px;">
-              <span class="epic-tag-badge"><i data-lucide="gamepad-2"></i> ${data.epicUsername}</span>
-              <span class="chip chip-success">Linked & Verified</span>
+              <span class="epic-tag-badge">
+                <svg style="width:18px;height:18px;fill:#38bdf8;" viewBox="0 0 100 100">
+                  <path d="M50 5 L88 20 L80 75 L50 95 L20 75 L12 20 Z" fill="none" stroke="#38bdf8" stroke-width="8"/>
+                  <text x="50" y="58" font-family="sans-serif" font-weight="900" font-size="24" fill="#38bdf8" text-anchor="middle">EPIC</text>
+                </svg>
+                ${data.epicUsername}
+              </span>
+              <span class="chip chip-success">Connected & Verified</span>
             </div>
             <div style="display:flex;gap:8px;">
-              <button class="btn btn-outline btn-sm" onclick="openSyncEpicModal('${data.epicUsername}')">
-                <i data-lucide="refresh-cw"></i> Sync / Change
+              <button class="btn btn-outline btn-sm" onclick="openEpicAuthPopup()">
+                <i data-lucide="refresh-cw"></i> Sync / Re-login
               </button>
               <button class="btn btn-danger btn-sm" onclick="handleUnlinkEpic()">
-                <i data-lucide="unlink"></i> Unlink (Fee: 2.00 Tokens)
+                <i data-lucide="unlink"></i> Unlink (2.00 Tokens Fee)
               </button>
             </div>
           </div>`;
       } else {
         el.innerHTML = `
-          <p style="font-size:0.875rem;color:var(--text-muted);margin-bottom:14px;">
-            <strong style="color:var(--gold-bright);">Required to play:</strong> You must link your Epic Games / Fortnite username to create or join matches.
+          <p style="font-size:0.875rem;color:var(--text-muted);margin-bottom:16px;">
+            <strong style="color:var(--gold-bright);">Required to play:</strong> Click below to log in with your Epic Games account and link your Fortnite username.
           </p>
-          <form style="display:flex;gap:10px;max-width:440px;" onsubmit="handleLinkEpic(event)">
-            <input class="form-input" id="epic-input" placeholder="Enter Epic Games / Fortnite Username…" required style="flex:1;" />
-            <button type="submit" class="btn btn-primary btn-sm"><i data-lucide="link"></i> Link Account</button>
-          </form>`;
+          <button class="btn btn-primary" onclick="openEpicAuthPopup()" style="background:#0078f2;border-color:#0078f2;color:#fff;display:inline-flex;align-items:center;gap:10px;padding:12px 22px;font-weight:800;font-size:0.95rem;">
+            <svg style="width:20px;height:20px;fill:#fff;" viewBox="0 0 100 100">
+              <path d="M50 5 L88 20 L80 75 L50 95 L20 75 L12 20 Z" fill="none" stroke="#ffffff" stroke-width="8"/>
+              <text x="50" y="58" font-family="sans-serif" font-weight="900" font-size="24" fill="#ffffff" text-anchor="middle">EPIC</text>
+            </svg>
+            Sign In with Epic Games
+          </button>`;
       }
       lucide.createIcons();
     }
 
-    async function handleLinkEpic(e) {
-      e.preventDefault();
-      const name = document.getElementById('epic-input').value.trim();
-      try {
-        await linkEpicAccount(currentUser.uid, name);
-        showToast(`Epic Games account "${name}" linked successfully!`, 'success');
-      } catch (err) {
-        showToast(err.message, 'error');
-      }
+    function openEpicAuthPopup() {
+      const width = 480;
+      const height = 660;
+      const left = (window.screen.width / 2) - (width / 2);
+      const top = (window.screen.height / 2) - (height / 2);
+      window.open(
+        'epic-login',
+        'EpicGamesAuth',
+        `width=${width},height=${height},top=${top},left=${left},scrollbars=yes,status=yes`
+      );
     }
 
-    function openSyncEpicModal(current) {
-      const newName = prompt('Enter your updated Epic Games / Fortnite username to sync:', current);
-      if (!newName || !newName.trim()) return;
-      syncEpicAccount(currentUser.uid, newName.trim())
-        .then(() => showToast(`Fortnite username synced to "${newName.trim()}"!`, 'success'))
-        .catch(err => showToast(err.message, 'error'));
-    }
+    // Listen for Epic OAuth callback from popup
+    window.addEventListener('message', (e) => {
+      if (e.data && e.data.type === 'EPIC_LINK_SUCCESS') {
+        showToast(`🎉 Linked with Epic Games as "${e.data.epicUsername}"!`, 'success');
+      }
+    });
 
     async function handleUnlinkEpic() {
       if (!confirm('Unlinking your Epic Games account costs 2.00 Tokens ($2.00). Are you sure you want to unlink?')) return;

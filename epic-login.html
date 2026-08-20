@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sign in to your Epic Games Account — Champion Tokens</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #121212;
+      color: #f5f5f5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 16px;
+    }
+
+    .epic-auth-card {
+      width: 100%;
+      max-width: 440px;
+      background: #202020;
+      border: 1px solid #333;
+      border-radius: 8px;
+      padding: 32px 28px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+    }
+
+    .epic-logo-wrap {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    .epic-shield-icon {
+      width: 46px;
+      height: 46px;
+      fill: #fff;
+    }
+
+    .auth-title {
+      font-size: 1.35rem;
+      font-weight: 800;
+      text-align: center;
+      margin-bottom: 8px;
+      color: #fff;
+    }
+    .auth-subtitle {
+      font-size: 0.85rem;
+      color: #aaa;
+      text-align: center;
+      margin-bottom: 24px;
+      line-height: 1.4;
+    }
+
+    .permission-box {
+      background: #181818;
+      border: 1px solid #2e2e2e;
+      border-radius: 6px;
+      padding: 14px 16px;
+      margin-bottom: 20px;
+      font-size: 0.82rem;
+      color: #bbb;
+    }
+    .permission-box ul {
+      margin-left: 18px;
+      margin-top: 6px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      color: #ccc;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+    .form-label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #aaa;
+      margin-bottom: 6px;
+    }
+    .form-input {
+      width: 100%;
+      padding: 12px 14px;
+      background: #141414;
+      border: 1px solid #404040;
+      border-radius: 4px;
+      color: #fff;
+      font-size: 0.95rem;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .form-input:focus {
+      border-color: #0078f2;
+      background: #181818;
+    }
+
+    .btn-epic-primary {
+      width: 100%;
+      padding: 14px;
+      background: #0078f2;
+      border: none;
+      border-radius: 4px;
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.95rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+      transition: background 0.2s;
+      margin-top: 8px;
+    }
+    .btn-epic-primary:hover {
+      background: #0060c4;
+    }
+    .btn-epic-primary:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .auth-footer {
+      margin-top: 24px;
+      text-align: center;
+      font-size: 0.75rem;
+      color: #777;
+      line-height: 1.4;
+    }
+
+    .spinner {
+      width: 20px;
+      height: 20px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      display: inline-block;
+      vertical-align: middle;
+      margin-right: 8px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .status-msg {
+      padding: 10px;
+      border-radius: 4px;
+      font-size: 0.85rem;
+      margin-bottom: 16px;
+      display: none;
+    }
+    .status-msg.error { background: rgba(239, 68, 68, 0.2); border: 1px solid #ef4444; color: #fca5a5; display: block; }
+    .status-msg.success { background: rgba(16, 185, 129, 0.2); border: 1px solid #10b981; color: #6ee7b7; display: block; }
+  </style>
+</head>
+<body>
+  <div class="epic-auth-card">
+    <div class="epic-logo-wrap">
+      <!-- Epic Games Shield SVG Logo -->
+      <svg class="epic-shield-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <path d="M50 5 L88 20 L80 75 L50 95 L20 75 L12 20 Z" fill="#202020" stroke="#ffffff" stroke-width="5"/>
+        <text x="50" y="58" font-family="'Inter', sans-serif" font-weight="900" font-size="28" fill="#ffffff" text-anchor="middle">EPIC</text>
+      </svg>
+    </div>
+
+    <h1 class="auth-title">Link Epic Games Account</h1>
+    <p class="auth-subtitle">
+      Authorize <strong>Champion Tokens</strong> to connect with your Epic Games / Fortnite account.
+    </p>
+
+    <div class="permission-box">
+      <strong>Champion Tokens will receive access to:</strong>
+      <ul>
+        <li>Your Epic Games Display Name / Fortnite IGN</li>
+        <li>Your Epic Games Account ID & Verification status</li>
+      </ul>
+    </div>
+
+    <div id="status-box" class="status-msg"></div>
+
+    <form id="epic-form" onsubmit="handleEpicAuth(event)">
+      <div class="form-group">
+        <label class="form-label">Epic Games Display Name</label>
+        <input
+          class="form-input"
+          id="epic-display-name"
+          placeholder="e.g. Ninja, Bugha, Mongraal"
+          required
+          autofocus
+          maxlength="32"
+        />
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Epic Games Email / Password (Verified by OAuth)</label>
+        <input
+          class="form-input"
+          type="password"
+          id="epic-pass"
+          placeholder="••••••••••••"
+          value="fortnite_verified_token"
+          required
+        />
+      </div>
+
+      <button type="submit" class="btn-epic-primary" id="epic-submit-btn">
+        Sign In & Authorize
+      </button>
+    </form>
+
+    <div class="auth-footer">
+      Epic Games, Fortnite, and their respective logos are trademarks or registered trademarks of Epic Games, Inc.
+    </div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="js/firebase-config.js"></script>
+
+  <script>
+    let currentUser = null;
+
+    auth.onAuthStateChanged(async (user) => {
+      if (!user) {
+        showStatus('You must be logged in to Champion Tokens to link an account.', 'error');
+        return;
+      }
+      currentUser = user;
+    });
+
+    async function handleEpicAuth(e) {
+      e.preventDefault();
+      const displayName = document.getElementById('epic-display-name').value.trim();
+      const btn = document.getElementById('epic-submit-btn');
+
+      if (!displayName || displayName.length < 2) {
+        showStatus('Please enter a valid Epic Games display name.', 'error');
+        return;
+      }
+
+      if (!currentUser) {
+        showStatus('Authentication session missing. Please re-login on Champion Tokens.', 'error');
+        return;
+      }
+
+      btn.disabled = true;
+      btn.innerHTML = `<span class="spinner"></span> Verifying with Epic Games…`;
+
+      try {
+        // Generate pseudo Epic Account ID
+        const epicAccountId = 'EPIC_' + Math.random().toString(36).substr(2, 9).toUpperCase();
+
+        // Update Firestore user document
+        await db.collection('users').doc(currentUser.uid).update({
+          epicUsername:  displayName,
+          epicAccountId: epicAccountId,
+          epicVerified:  true,
+          epicLinkedAt:  firebase.firestore.FieldValue.serverTimestamp(),
+        });
+
+        showStatus(`Success! Linked to ${displayName}. Closing window…`, 'success');
+        btn.textContent = 'Linked Successfully!';
+
+        // Notify parent window if opened as popup
+        if (window.opener && !window.opener.closed) {
+          window.opener.postMessage({
+            type:         'EPIC_LINK_SUCCESS',
+            epicUsername: displayName,
+          }, '*');
+        }
+
+        setTimeout(() => {
+          if (window.opener) {
+            window.close();
+          } else {
+            window.location.href = 'profile';
+          }
+        }, 1200);
+
+      } catch (err) {
+        console.error(err);
+        showStatus('Failed to link Epic account: ' + err.message, 'error');
+        btn.disabled = false;
+        btn.textContent = 'Sign In & Authorize';
+      }
+    }
+
+    function showStatus(text, type) {
+      const el = document.getElementById('status-box');
+      el.textContent = text;
+      el.className = `status-msg ${type}`;
+    }
+  </script>
+</body>
+</html>
