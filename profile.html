@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Profile — Champion Tokens</title>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <style>
+    .tx-type-icon { font-size: 1rem; }
+    .matches-history { display: flex; flex-direction: column; gap: 12px; }
+    .mh-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .mh-card:hover { background: var(--bg-card-hover); }
+    .mh-status-icon {
+      width: 40px; height: 40px; flex-shrink: 0;
+      border-radius: var(--radius-md);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .mh-status-icon i { width: 18px; height: 18px; }
+    .mh-info { flex: 1; min-width: 0; }
+    .mh-title { font-weight: 700; font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .mh-meta  { font-size: 0.75rem; color: var(--text-muted); margin-top: 2px; }
+  </style>
+</head>
+<body>
+  <div class="page-bg"></div>
+  <div class="page-loading" id="page-loading">
+    <div class="spinner"></div>
+    <span>Loading profile…</span>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script src="js/firebase-config.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/db.js"></script>
+  <script src="js/nav.js"></script>
+
+  <script>
+    let currentUser = null;
+
+    requireAuth().then(async (user) => {
+      currentUser = user;
+      injectNav('profile');
+
+      // Real-time user data
+      db.collection('users').doc(user.uid).onSnapshot((snap) => {
+        if (snap.exists) renderProfile(snap.data());
+      });
+
+      // Transactions
+      const txs = await getUserTransactions(user.uid, 20);
+      renderTransactions(txs);
+
+      // Match history
+      db.collection('matches')
+        .where('playerUids', 'array-contains', user.uid)
+        .orderBy('createdAt', 'desc')
+        .limit(10)
+        .onSnapshot((snap) => {
+          renderMatchHistory(snap.docs.map(d => ({ id: d.id, ...d.data() })));
+        });
+
+      document.getElementById('page-loading').classList.add('hidden');
+    });
+
+    function renderProfile(data) {
+      // Avatar
+      const img  = document.getElementById('profile-avatar-img');
+      const icon = document.getElementById('profile-avatar-icon');
+      if (data.photoURL) {
+        img.src = data.photoURL;
+        img.style.display = 'block';
+        icon.style.display = 'none';
+      }
+
+      document.getElementById('profile-name').textContent    = data.displayName || 'Champion';
+      document.getElementById('profile-email').textContent   = data.email || '';
+      document.getElementById('profile-tokens').textContent  = formatTokens(data.tokens);
+      document.getElementById('profile-earned').textContent  = formatTokens(data.totalEarned);
+      document.getElementById('profile-spent').textContent   = formatTokens(data.totalSpent);
+      document.getElementById('profile-played').textContent  = data.matchesPlayed ?? 0;
+      document.getElementById('profile-won').textContent     = data.matchesWon ?? 0;
+
+      const wr = data.matchesPlayed > 0
+        ? Math.round((data.matchesWon / data.matchesPlayed) * 100) + '%'
+        : '—';
+      document.getElementById('profile-winrate').textContent = wr;
+
+      if (data.createdAt) {
+        const d = data.createdAt.toDate();
+        document.getElementById('profile-since').textContent =
+          'Member since ' + d.toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' });
+      }
+    }
+
+    function renderTransactions(txs) {
+      const el = document.getElementById('tx-list');
+      if (!txs.length) {
+        el.innerHTML = `<div class="empty-state"><i data-lucide="inbox"></i><p>No transactions yet</p></div>`;
+        lucide.createIcons();
+        return;
+      }
+      el.innerHTML = txs.map(tx => {
+        const isCredit = tx.amount > 0;
+        return `
+          <div class="tx-item">
+            <div class="tx-icon ${isCredit ? 'tx-icon--credit' : 'tx-icon--debit'}">
+              <i data-lucide="${isCredit ? 'trending-up' : 'trending-down'}"></i>
+            </div>
+            <div class="tx-info">
+              <div class="tx-desc">${tx.description || txTypeLabel(tx.type)}</div>
+              <div class="tx-time">${formatTime(tx.timestamp)}</div>
+            </div>
+            <div class="tx-amount ${isCredit ? 'tx-amount--credit' : 'tx-amount--debit'}">
+              ${isCredit ? '+' : ''}${formatTokens(tx.amount)}
+            </div>
+          </div>`;
+      }).join('');
+      lucide.createIcons();
+    }
+
+    function renderMatchHistory(matches) {
+      const el = document.getElementById('match-history');
+      if (!matches.length) {
+        el.innerHTML = `<div class="empty-state"><i data-lucide="swords"></i><p>No matches played yet</p></div>`;
+        lucide.createIcons();
+        return;
+      }
+      el.innerHTML = matches.map(m => {
+        const isWinner = m.winner?.uid === currentUser?.uid;
+        const isHost   = m.createdBy === currentUser?.uid;
+        const statusColor = {
+          waiting:     'stat-icon--gold',
+          in_progress: 'stat-icon--green',
+          completed:   isWinner ? 'stat-icon--accent' : 'stat-icon--purple',
+        }[m.status] || 'stat-icon--purple';
+        const statusIcon = {
+          waiting:     'clock',
+          in_progress: 'play-circle',
+          completed:   isWinner ? 'trophy' : 'x-circle',
+        }[m.status] || 'circle';
+
+        return `
+          <div class="mh-card">
+            <div class="mh-status-icon ${statusColor}">
+              <i data-lucide="${statusIcon}"></i>
+            </div>
+            <div class="mh-info">
+              <div class="mh-title">${m.title}</div>
+              <div class="mh-meta">
+                <span class="badge ${modeColor(m.mode)}" style="padding:1px 8px;font-size:0.7rem;">${m.mode}</span>
+                · ${formatTokens(m.wager)} wager
+                · ${formatTime(m.createdAt)}
+                ${isHost ? ' · <span style="color:var(--accent)">Host</span>' : ''}
+              </div>
+            </div>
+            <div style="text-align:right;flex-shrink:0;">
+              ${m.status === 'completed'
+                ? isWinner
+                  ? `<div style="color:var(--green);font-weight:800;">+${formatTokens(Math.floor(m.prizePool*0.9))}</div><div style="font-size:0.75rem;color:var(--green);">Won!</div>`
+                  : `<div style="color:var(--red);font-weight:700;">-${formatTokens(m.wager)}</div><div style="font-size:0.75rem;color:var(--text-muted);">Lost</div>`
+                : `<span class="badge badge-${m.status}">${m.status.replace('_',' ')}</span>`
+              }
+            </div>
+          </div>`;
+      }).join('');
+      lucide.createIcons();
+    }
+  </script>
+
+  <main class="page-wrap">
+    <!-- Profile hero -->
+    <div class="profile-hero">
+      <div class="profile-avatar">
+        <img id="profile-avatar-img" src="" alt="" style="display:none"/>
+        <i data-lucide="user" id="profile-avatar-icon"></i>
+      </div>
+      <div style="flex:1;min-width:0;">
+        <div class="profile-name" id="profile-name">--</div>
+        <div class="profile-email" id="profile-email"></div>
+        <div class="profile-since" id="profile-since"></div>
+      </div>
+      <div style="text-align:right;flex-shrink:0;">
+        <div style="font-size:0.75rem;color:var(--text-muted);margin-bottom:4px;">Token Balance</div>
+        <div style="font-size:1.8rem;font-weight:900;color:var(--gold);" id="profile-tokens">--</div>
+      </div>
+    </div>
+
+    <!-- Stats grid -->
+    <div class="grid-4" style="margin-bottom:28px;">
+      <div class="card stat-card">
+        <div class="stat-icon stat-icon--gold"><i data-lucide="trending-up"></i></div>
+        <div class="stat-label">Total Earned</div>
+        <div class="stat-value stat-value--gold" id="profile-earned">--</div>
+      </div>
+      <div class="card stat-card">
+        <div class="stat-icon stat-icon--accent"><i data-lucide="trending-down"></i></div>
+        <div class="stat-label">Total Spent</div>
+        <div class="stat-value" id="profile-spent">--</div>
+      </div>
+      <div class="card stat-card">
+        <div class="stat-icon stat-icon--purple"><i data-lucide="swords"></i></div>
+        <div class="stat-label">Matches Played</div>
+        <div class="stat-value" id="profile-played">--</div>
+      </div>
+      <div class="card stat-card">
+        <div class="stat-icon stat-icon--green"><i data-lucide="trophy"></i></div>
+        <div class="stat-label">Wins / Win Rate</div>
+        <div class="stat-value">
+          <span id="profile-won">--</span>
+          <span style="font-size:0.9rem;color:var(--text-muted);"> / </span>
+          <span id="profile-winrate" style="font-size:1rem;">--</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Two-col: transactions + match history -->
+    <div class="grid-2" style="align-items:start;gap:20px;">
+      <div class="card">
+        <div class="section-title" style="margin-bottom:14px;">
+          <i data-lucide="activity"></i> Transaction History
+        </div>
+        <div class="tx-list" id="tx-list">
+          <div class="empty-state"><div class="spinner" style="margin:0 auto;"></div></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="section-title" style="margin-bottom:14px;">
+          <i data-lucide="swords"></i> Match History
+        </div>
+        <div class="matches-history" id="match-history">
+          <div class="empty-state"><div class="spinner" style="margin:0 auto;"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sign out -->
+    <div style="margin-top:32px;text-align:center;">
+      <button class="btn btn-danger" onclick="handleSignOut()">
+        <i data-lucide="log-out"></i> Sign Out
+      </button>
+    </div>
+  </main>
+</body>
+</html>

@@ -1,0 +1,8 @@
+{
+  "name": "champion-tokens",
+  "version": "1.0.0",
+  "description": "Champion Tokens — Fortnite Token Platform",
+  "dependencies": {
+    "firebase-admin": "^12.0.0"
+  }
+}

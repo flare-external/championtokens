@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Token Shop — Champion Tokens</title>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <style>
+    .coming-soon-banner {
+      background: linear-gradient(135deg, rgba(139,92,246,0.1), rgba(0,212,255,0.1));
+      border: 1px solid rgba(139,92,246,0.3);
+      border-radius: var(--radius-xl);
+      padding: 24px 28px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+    .coming-soon-banner i { width: 28px; height: 28px; color: var(--purple); flex-shrink: 0; }
+    .coming-soon-title { font-size: 1rem; font-weight: 700; margin-bottom: 4px; }
+    .coming-soon-desc  { font-size: 0.875rem; color: var(--text-muted); }
+
+    .shop-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+    .shop-card .btn { margin-top: auto; width: 100%; justify-content: center; }
+
+    .free-section {
+      background: linear-gradient(135deg, rgba(255,215,0,0.08), rgba(249,115,22,0.08));
+      border: 1px solid rgba(255,215,0,0.25);
+      border-radius: var(--radius-xl);
+      padding: 32px;
+      text-align: center;
+    }
+    .free-section h2 { font-size: 1.4rem; font-weight: 800; margin-bottom: 8px; }
+    .free-section p  { color: var(--text-muted); margin-bottom: 24px; font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+  <div class="page-bg"></div>
+  <div class="page-loading" id="page-loading">
+    <div class="spinner"></div>
+    <span>Loading shop…</span>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script src="js/firebase-config.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/db.js"></script>
+  <script src="js/nav.js"></script>
+
+  <script>
+    let currentUser = null;
+    let currentUserData = null;
+
+    requireAuth().then(async (user) => {
+      currentUser = user;
+      currentUserData = await getUser(user.uid);
+      injectNav('shop');
+      document.getElementById('page-loading').classList.add('hidden');
+    });
+
+    async function handleDailyClaim() {
+      const btn = document.getElementById('daily-claim-btn');
+      btn.disabled = true;
+      try {
+        await claimDailyTokens(currentUser.uid);
+        showToast('+100 tokens claimed! 🎁', 'success');
+        currentUserData = await getUser(currentUser.uid);
+      } catch (err) {
+        showToast(err.message, 'warning');
+      } finally {
+        setTimeout(() => { btn.disabled = false; }, 2000);
+      }
+    }
+
+    function handleBuy(packageName) {
+      showToast('Token purchases coming soon! Claim your free daily tokens for now.', 'info');
+    }
+  </script>
+
+  <main class="page-wrap">
+    <div class="page-header">
+      <h1>Token Shop</h1>
+      <p>Purchase Champion Tokens to fuel your matches.</p>
+    </div>
+
+    <!-- Coming soon banner -->
+    <div class="coming-soon-banner">
+      <i data-lucide="construction"></i>
+      <div>
+        <div class="coming-soon-title">🚧 Payments Coming Soon</div>
+        <div class="coming-soon-desc">
+          We're currently in the <strong>testing phase</strong> — token purchases aren't live yet.
+          In the meantime, claim your <strong>free daily tokens</strong> and enjoy the platform!
+        </div>
+      </div>
+    </div>
+
+    <!-- Token packages -->
+    <div class="section-title" style="margin-bottom:16px;">
+      <i data-lucide="package"></i> Token Packages
+    </div>
+    <div class="shop-grid">
+      <!-- Starter -->
+      <div class="shop-card">
+        <div class="shop-coin-icon">🪙</div>
+        <div class="shop-amount">500</div>
+        <div class="shop-price">Champion Tokens</div>
+        <div class="shop-price" style="font-size:0.8rem;margin-top:2px;">~<strong>$4.99</strong></div>
+        <button class="btn btn-outline" onclick="handleBuy('Starter')" disabled>
+          <i data-lucide="lock"></i> Coming Soon
+        </button>
+      </div>
+
+      <!-- Popular -->
+      <div class="shop-card shop-card--featured">
+        <div class="shop-badge">Popular</div>
+        <div class="shop-coin-icon">💰</div>
+        <div class="shop-amount">1,200</div>
+        <div class="shop-price">Champion Tokens</div>
+        <div class="shop-price" style="font-size:0.8rem;margin-top:2px;">~<strong>$9.99</strong> · <span style="color:var(--green);">+200 bonus</span></div>
+        <button class="btn btn-outline" onclick="handleBuy('Popular')" disabled>
+          <i data-lucide="lock"></i> Coming Soon
+        </button>
+      </div>
+
+      <!-- Pro -->
+      <div class="shop-card">
+        <div class="shop-coin-icon">💎</div>
+        <div class="shop-amount">2,750</div>
+        <div class="shop-price">Champion Tokens</div>
+        <div class="shop-price" style="font-size:0.8rem;margin-top:2px;">~<strong>$19.99</strong> · <span style="color:var(--green);">+750 bonus</span></div>
+        <button class="btn btn-outline" onclick="handleBuy('Pro')" disabled>
+          <i data-lucide="lock"></i> Coming Soon
+        </button>
+      </div>
+
+      <!-- Elite -->
+      <div class="shop-card">
+        <div class="shop-coin-icon">👑</div>
+        <div class="shop-amount">6,000</div>
+        <div class="shop-price">Champion Tokens</div>
+        <div class="shop-price" style="font-size:0.8rem;margin-top:2px;">~<strong>$39.99</strong> · <span style="color:var(--green);">+2,000 bonus</span></div>
+        <button class="btn btn-outline" onclick="handleBuy('Elite')" disabled>
+          <i data-lucide="lock"></i> Coming Soon
+        </button>
+      </div>
+    </div>
+
+    <!-- Free daily claim CTA -->
+    <div class="free-section">
+      <h2>🎁 Free Daily Tokens</h2>
+      <p>
+        During the testing phase, claim <strong>100 free tokens</strong> every 24 hours.<br/>
+        No purchase required — just sign in and collect!
+      </p>
+      <div style="display:flex;gap:12px;align-items:center;justify-content:center;flex-wrap:wrap;">
+        <button class="btn btn-gold btn-lg" id="daily-claim-btn" onclick="handleDailyClaim()">
+          <i data-lucide="gift"></i> Claim 100 Tokens
+        </button>
+        <a href="dashboard.html" class="btn btn-outline btn-lg">
+          <i data-lucide="layout-dashboard"></i> Go to Dashboard
+        </a>
+      </div>
+    </div>
+
+    <!-- FAQ -->
+    <div class="card" style="margin-top:32px;">
+      <div class="section-title" style="margin-bottom:20px;">
+        <i data-lucide="help-circle"></i> Frequently Asked Questions
+      </div>
+      <div style="display:flex;flex-direction:column;gap:20px;">
+        <div>
+          <div style="font-weight:700;margin-bottom:4px;">How do I earn tokens for free?</div>
+          <div style="font-size:0.875rem;color:var(--text-muted);">Sign in to receive 500 welcome tokens, then claim 100 free tokens every 24 hours from your Dashboard or this Shop page.</div>
+        </div>
+        <hr class="divider" style="margin:0;"/>
+        <div>
+          <div style="font-weight:700;margin-bottom:4px;">When will token purchases be available?</div>
+          <div style="font-size:0.875rem;color:var(--text-muted);">We're actively working on secure payment integration. Follow us for updates — it's coming soon!</div>
+        </div>
+        <hr class="divider" style="margin:0;"/>
+        <div>
+          <div style="font-weight:700;margin-bottom:4px;">Are tokens refundable?</div>
+          <div style="font-size:0.875rem;color:var(--text-muted);">Since we're in the testing phase and tokens are free, there's nothing to refund yet. Refund policy will be published before paid purchases go live.</div>
+        </div>
+        <hr class="divider" style="margin:0;"/>
+        <div>
+          <div style="font-weight:700;margin-bottom:4px;">How does the match prize pool work?</div>
+          <div style="font-size:0.875rem;color:var(--text-muted);">Each player's wager goes into the prize pool. The winner receives 90% of the total. The remaining 10% is a platform fee.</div>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

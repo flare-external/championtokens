@@ -1,0 +1,25 @@
+# Dependencies
+node_modules/
+functions/node_modules/
+
+# Firebase
+.firebase/
+firebase-debug.log
+firebase-debug.*.log
+.firebaserc.local
+
+# Netlify
+.netlify/
+
+# Environment / secrets — NEVER commit these
+.env
+.env.local
+*service-account*.json
+*serviceAccount*.json
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log

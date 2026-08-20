@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard — Champion Tokens</title>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+</head>
+<body>
+  <div class="page-bg"></div>
+
+  <!-- Loading screen -->
+  <div class="page-loading" id="page-loading">
+    <div class="spinner"></div>
+    <span>Loading your dashboard…</span>
+  </div>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script src="js/firebase-config.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/db.js"></script>
+  <script src="js/nav.js"></script>
+
+  <script>
+    let currentUser = null;
+
+    requireAuth().then(async (user) => {
+      currentUser = user;
+      injectNav('dashboard');
+
+      // Fetch initial user data
+      const userData = await getUser(user.uid);
+      renderDashboard(userData);
+
+      // Real-time balance update
+      db.collection('users').doc(user.uid).onSnapshot((snap) => {
+        if (snap.exists) renderStats(snap.data());
+      });
+
+      // Real-time recent transactions
+      db.collection('transactions')
+        .where('userId', '==', user.uid)
+        .orderBy('timestamp', 'desc')
+        .limit(6)
+        .onSnapshot((snap) => {
+          renderTransactions(snap.docs.map(d => ({ id: d.id, ...d.data() })));
+        });
+
+      // Real-time active matches user is in
+      db.collection('matches')
+        .where('playerUids', 'array-contains', user.uid)
+        .where('status', 'in', ['waiting', 'in_progress'])
+        .orderBy('createdAt', 'desc')
+        .limit(4)
+        .onSnapshot((snap) => {
+          renderMyMatches(snap.docs.map(d => ({ id: d.id, ...d.data() })));
+        });
+
+      document.getElementById('page-loading').classList.add('hidden');
+    });
+
+    function renderDashboard(userData) {
+      const firstName = (userData.displayName || 'Champion').split(' ')[0];
+      document.getElementById('welcome-name').textContent = firstName;
+      renderStats(userData);
+    }
+
+    function renderStats(data) {
+      document.getElementById('stat-tokens').textContent     = formatTokens(data.tokens);
+      document.getElementById('stat-earned').textContent     = formatTokens(data.totalEarned);
+      document.getElementById('stat-played').textContent     = data.matchesPlayed ?? 0;
+      document.getElementById('stat-won').textContent        = data.matchesWon    ?? 0;
+
+      // Daily claim button logic
+      const claimBtn    = document.getElementById('claim-btn');
+      const claimStatus = document.getElementById('claim-status');
+      const now         = new Date();
+
+      if (data.lastDailyClaim) {
+        const last  = data.lastDailyClaim.toDate();
+        const diff  = (now - last) / 3_600_000;
+        if (diff < 24) {
+          const h = Math.floor(24 - diff);
+          const m = Math.floor(((24 - diff) - h) * 60);
+          claimBtn.disabled = true;
+          claimStatus.textContent = `Next claim in ${h}h ${m}m`;
+          return;
+        }
+      }
+      claimBtn.disabled = false;
+      claimStatus.textContent = 'Claim 100 free tokens!';
+    }
+
+    function renderTransactions(txs) {
+      const el = document.getElementById('tx-list');
+      if (!txs.length) {
+        el.innerHTML = `<div class="empty-state"><i data-lucide="inbox"></i><p>No transactions yet</p></div>`;
+        lucide.createIcons();
+        return;
+      }
+      el.innerHTML = txs.map(tx => {
+        const isCredit = tx.amount > 0;
+        const iconName = isCredit ? 'trending-up' : 'trending-down';
+        return `
+          <div class="tx-item">
+            <div class="tx-icon ${isCredit ? 'tx-icon--credit' : 'tx-icon--debit'}">
+              <i data-lucide="${iconName}"></i>
+            </div>
+            <div class="tx-info">
+              <div class="tx-desc">${tx.description || txTypeLabel(tx.type)}</div>
+              <div class="tx-time">${formatTime(tx.timestamp)}</div>
+            </div>
+            <div class="tx-amount ${isCredit ? 'tx-amount--credit' : 'tx-amount--debit'}">
+              ${isCredit ? '+' : ''}${formatTokens(tx.amount)}
+            </div>
+          </div>`;
+      }).join('');
+      lucide.createIcons();
+    }
+
+    function renderMyMatches(matches) {
+      const el = document.getElementById('my-matches');
+      if (!matches.length) {
+        el.innerHTML = `<div class="empty-state"><i data-lucide="swords"></i><p>No active matches. <a href="matches.html" style="color:var(--accent)">Join one!</a></p></div>`;
+        lucide.createIcons();
+        return;
+      }
+      el.innerHTML = matches.map(m => `
+        <div class="match-card">
+          <div class="match-card__header">
+            <div>
+              <div class="match-card__title">${m.title}</div>
+              <div class="match-card__host">by ${m.hostName}</div>
+            </div>
+            <span class="badge ${modeColor(m.mode)}">${m.mode}</span>
+          </div>
+          <div class="match-card__meta">
+            <span class="match-meta-item"><i data-lucide="coins"></i><span class="gold">${formatTokens(m.wager)}</span> wager</span>
+            <span class="match-meta-item"><i data-lucide="users"></i>${m.players.length}/${m.maxPlayers}</span>
+            <span class="badge badge-${m.status}" style="margin-left:auto;">${m.status.replace('_',' ')}</span>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center;justify-content:space-between;">
+            <div class="match-code-badge"><i data-lucide="hash"></i>${m.code}</div>
+            ${m.createdBy === currentUser?.uid && m.status !== 'completed' ? `
+              <button class="btn btn-sm btn-primary" onclick="openDeclareModal('${m.id}', '${m.title}')">
+                <i data-lucide="trophy"></i> Declare Winner
+              </button>` : ''}
+          </div>
+        </div>`).join('');
+      // Store matches for modal
+      window._myMatches = matches;
+      lucide.createIcons();
+    }
+
+    // ── Daily Claim ──────────────────────────────────────────
+    document.addEventListener('DOMContentLoaded', () => {});
+
+    async function handleClaim() {
+      const btn = document.getElementById('claim-btn');
+      btn.disabled = true;
+      try {
+        const earned = await claimDailyTokens(currentUser.uid);
+        showToast(`+${earned} tokens claimed!`, 'success');
+      } catch (err) {
+        showToast(err.message, 'error');
+        btn.disabled = false;
+      }
+    }
+
+    // ── Declare Winner Modal ─────────────────────────────────
+    function openDeclareModal(matchId, matchTitle) {
+      const match = window._myMatches?.find(m => m.id === matchId);
+      if (!match) return;
+
+      document.getElementById('declare-match-title').textContent = matchTitle;
+      const select = document.getElementById('winner-select');
+      select.innerHTML = match.players.map(p =>
+        `<option value="${p.uid}">${p.displayName}${p.isHost ? ' (Host)' : ''}</option>`
+      ).join('');
+      select.dataset.matchId = matchId;
+
+      document.getElementById('declare-modal').classList.add('open');
+    }
+
+    function closeDeclareModal() {
+      document.getElementById('declare-modal').classList.remove('open');
+    }
+
+    async function handleDeclareWinner() {
+      const select   = document.getElementById('winner-select');
+      const matchId  = select.dataset.matchId;
+      const winnerUid = select.value;
+      const btn = document.getElementById('declare-btn');
+      btn.disabled = true;
+      try {
+        const prize = await declareWinner(matchId, winnerUid, currentUser.uid);
+        showToast(`Winner declared! +${formatTokens(prize)} tokens awarded.`, 'success');
+        closeDeclareModal();
+      } catch (err) {
+        showToast(err.message, 'error');
+      } finally {
+        btn.disabled = false;
+      }
+    }
+  </script>
+
+  <!-- Page content (inserted after nav by injectNav) -->
+  <main class="page-wrap" id="main-content">
+    <div class="page-header">
+      <h1>Welcome back, <span id="welcome-name">Champion</span> 👋</h1>
+      <p>Here's your Champion Tokens overview.</p>
+    </div>
+
+    <!-- Balance hero -->
+    <div class="balance-card card--glow-gold" style="margin-bottom:24px;">
+      <div class="balance-label">Token Balance</div>
+      <div class="balance-amount" id="stat-tokens">--</div>
+      <div class="balance-unit">Champion Tokens</div>
+    </div>
+
+    <!-- Stats row -->
+    <div class="grid-4" style="margin-bottom:24px;">
+      <div class="card stat-card">
+        <div class="stat-icon stat-icon--gold"><i data-lucide="trending-up"></i></div>
+        <div class="stat-label">Total Earned</div>
+        <div class="stat-value stat-value--gold" id="stat-earned">--</div>
+      </div>
+      <div class="card stat-card">
+        <div class="stat-icon stat-icon--accent"><i data-lucide="swords"></i></div>
+        <div class="stat-label">Matches Played</div>
+        <div class="stat-value" id="stat-played">--</div>
+      </div>
+      <div class="card stat-card">
+        <div class="stat-icon stat-icon--purple"><i data-lucide="trophy"></i></div>
+        <div class="stat-label">Matches Won</div>
+        <div class="stat-value" id="stat-won">--</div>
+      </div>
+      <div class="card stat-card">
+        <div class="stat-icon stat-icon--green"><i data-lucide="percent"></i></div>
+        <div class="stat-label">Win Rate</div>
+        <div class="stat-value" id="stat-winrate">--</div>
+      </div>
+    </div>
+
+    <!-- Daily Claim -->
+    <div class="claim-card" style="margin-bottom:24px;">
+      <div class="claim-icon"><i data-lucide="gift"></i></div>
+      <div style="flex:1;">
+        <div class="claim-title">Daily Free Tokens 🎁</div>
+        <div class="claim-desc" id="claim-status">Claim 100 free tokens!</div>
+      </div>
+      <button class="btn btn-gold" id="claim-btn" onclick="handleClaim()">
+        <i data-lucide="gift"></i> Claim 100 Tokens
+      </button>
+    </div>
+
+    <!-- Two-col: activity + my matches -->
+    <div class="grid-2" style="align-items:start;">
+      <!-- Recent Activity -->
+      <div class="card">
+        <div class="section-title">
+          <i data-lucide="activity"></i> Recent Activity
+        </div>
+        <div class="tx-list" id="tx-list">
+          <div class="empty-state"><div class="spinner" style="margin:0 auto"></div></div>
+        </div>
+        <hr class="divider"/>
+        <a href="profile.html" class="btn btn-ghost btn-sm" style="width:100%;justify-content:center;">
+          <i data-lucide="clock"></i> View All Transactions
+        </a>
+      </div>
+
+      <!-- My Active Matches -->
+      <div>
+        <div class="section-title" style="margin-bottom:14px;">
+          <i data-lucide="swords"></i> My Active Matches
+        </div>
+        <div id="my-matches" style="display:flex;flex-direction:column;gap:12px;">
+          <div class="empty-state"><div class="spinner" style="margin:0 auto"></div></div>
+        </div>
+        <a href="matches.html" class="btn btn-outline btn-full" style="margin-top:14px;">
+          <i data-lucide="plus"></i> Browse All Matches
+        </a>
+      </div>
+    </div>
+
+    <!-- Quick links -->
+    <div class="grid-3" style="margin-top:24px;">
+      <a href="matches.html" class="card" style="display:flex;align-items:center;gap:14px;text-decoration:none;">
+        <div class="stat-icon stat-icon--accent"><i data-lucide="swords"></i></div>
+        <div>
+          <div style="font-weight:700;">Matches</div>
+          <div style="font-size:0.8125rem;color:var(--text-muted);">Create or join</div>
+        </div>
+        <i data-lucide="chevron-right" style="margin-left:auto;color:var(--text-muted);width:16px;height:16px;"></i>
+      </a>
+      <a href="leaderboard.html" class="card" style="display:flex;align-items:center;gap:14px;text-decoration:none;">
+        <div class="stat-icon stat-icon--gold"><i data-lucide="trophy"></i></div>
+        <div>
+          <div style="font-weight:700;">Leaderboard</div>
+          <div style="font-size:0.8125rem;color:var(--text-muted);">Top earners</div>
+        </div>
+        <i data-lucide="chevron-right" style="margin-left:auto;color:var(--text-muted);width:16px;height:16px;"></i>
+      </a>
+      <a href="shop.html" class="card" style="display:flex;align-items:center;gap:14px;text-decoration:none;">
+        <div class="stat-icon stat-icon--purple"><i data-lucide="shopping-cart"></i></div>
+        <div>
+          <div style="font-weight:700;">Token Shop</div>
+          <div style="font-size:0.8125rem;color:var(--text-muted);">Buy tokens</div>
+        </div>
+        <i data-lucide="chevron-right" style="margin-left:auto;color:var(--text-muted);width:16px;height:16px;"></i>
+      </a>
+    </div>
+  </main>
+
+  <!-- Declare Winner Modal -->
+  <div class="modal-overlay" id="declare-modal" onclick="if(event.target===this)closeDeclareModal()">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-title"><i data-lucide="trophy"></i> Declare Winner</div>
+        <button class="modal-close" onclick="closeDeclareModal()"><i data-lucide="x"></i></button>
+      </div>
+      <p style="font-size:0.875rem;color:var(--text-muted);margin-bottom:20px;">
+        Select the winner of "<strong id="declare-match-title"></strong>". 90% of the prize pool will be awarded to them.
+      </p>
+      <div class="modal-form">
+        <div class="form-group">
+          <label class="form-label">Winner</label>
+          <select class="form-select" id="winner-select"></select>
+        </div>
+        <div class="modal-actions">
+          <button class="btn btn-outline" onclick="closeDeclareModal()">Cancel</button>
+          <button class="btn btn-gold" id="declare-btn" onclick="handleDeclareWinner()">
+            <i data-lucide="trophy"></i> Declare Winner
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Win rate calc
+    db && auth.onAuthStateChanged(user => {
+      if (!user) return;
+      db.collection('users').doc(user.uid).onSnapshot(snap => {
+        const d = snap.data();
+        if (!d) return;
+        const wr = d.matchesPlayed > 0
+          ? Math.round((d.matchesWon / d.matchesPlayed) * 100)
+          : 0;
+        const el = document.getElementById('stat-winrate');
+        if (el) el.textContent = wr + '%';
+      });
+    });
+  </script>
+</body>
+</html>

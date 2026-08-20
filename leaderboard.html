@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Leaderboard — Champion Tokens</title>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <style>
+    .lb-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .podium {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 32px;
+      align-items: end;
+    }
+    .podium-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 20px 16px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      transition: transform 0.2s;
+    }
+    .podium-card:hover { transform: translateY(-3px); }
+    .podium-card--1 {
+      border-color: var(--gold);
+      background: linear-gradient(180deg, rgba(255,215,0,0.08) 0%, transparent 100%);
+      padding-top: 28px;
+    }
+    .podium-card--2 { border-color: rgba(192,192,192,0.4); }
+    .podium-card--3 { border-color: rgba(205,127,50,0.4);  }
+    .podium-rank {
+      font-size: 1.5rem;
+      line-height: 1;
+    }
+    .podium-avatar {
+      width: 64px; height: 64px;
+      border-radius: 50%;
+      overflow: hidden;
+      background: var(--bg-card-hover);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem;
+      font-weight: 900;
+      color: var(--text-muted);
+      position: relative;
+    }
+    .podium-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .podium-avatar--1 { border: 3px solid var(--gold); box-shadow: 0 0 20px var(--gold-glow); }
+    .podium-avatar--2 { border: 3px solid #c0c0c0; }
+    .podium-avatar--3 { border: 3px solid #cd7f32; }
+    .podium-name   { font-weight: 800; font-size: 0.95rem; }
+    .podium-tokens { font-size: 1.1rem; font-weight: 900; color: var(--gold); }
+    .podium-label  { font-size: 0.7rem; color: var(--text-muted); }
+
+    .lb-table-wrap { overflow-x: auto; }
+    .lb-table { min-width: 500px; }
+
+    .refresh-btn {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      transition: all 0.2s;
+    }
+    .refresh-btn:hover { color: var(--accent); border-color: var(--accent); background: var(--accent-dim); }
+    .refresh-btn i { width: 14px; height: 14px; }
+
+    @media (max-width:600px) {
+      .podium { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-bg"></div>
+  <div class="page-loading" id="page-loading">
+    <div class="spinner"></div>
+    <span>Loading leaderboard…</span>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script src="js/firebase-config.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/db.js"></script>
+  <script src="js/nav.js"></script>
+
+  <script>
+    let currentUser = null;
+
+    requireAuth().then(async (user) => {
+      currentUser = user;
+      injectNav('leaderboard');
+      await loadLeaderboard();
+      document.getElementById('page-loading').classList.add('hidden');
+    });
+
+    async function loadLeaderboard() {
+      try {
+        const users = await getLeaderboard();
+        renderPodium(users.slice(0, 3));
+        renderTable(users);
+      } catch (err) {
+        console.error(err);
+        showToast('Failed to load leaderboard', 'error');
+      }
+    }
+
+    const RANK_ICONS = { 1: '🥇', 2: '🥈', 3: '🥉' };
+
+    function avatarEl(u, size, cls) {
+      const letter = (u.displayName || '?').charAt(0).toUpperCase();
+      return u.photoURL
+        ? `<div class="${cls}"><img src="${u.photoURL}" onerror="this.style.display='none'"/></div>`
+        : `<div class="${cls}">${letter}</div>`;
+    }
+
+    function renderPodium(top3) {
+      // Reorder: 2nd, 1st, 3rd for visual podium
+      const order = [top3[1], top3[0], top3[2]].filter(Boolean);
+      const posClass = { 0: '2', 1: '1', 2: '3' };
+
+      document.getElementById('podium').innerHTML = order.map((u, i) => {
+        const rank = u === top3[0] ? 1 : u === top3[1] ? 2 : 3;
+        const pos  = posClass[i];
+        const isCurrent = u.id === currentUser?.uid;
+        return `
+          <div class="podium-card podium-card--${pos}${isCurrent ? ' current-user' : ''}">
+            <div class="podium-rank">${RANK_ICONS[rank] || rank}</div>
+            ${avatarEl(u, 64, `podium-avatar podium-avatar--${pos}`)}
+            <div class="podium-name">${u.displayName || 'Unknown'}${isCurrent ? ' <span style="color:var(--accent);font-size:0.75rem;">(You)</span>' : ''}</div>
+            <div class="podium-tokens">${formatTokens(u.tokens)}</div>
+            <div class="podium-label">Champion Tokens</div>
+            <div class="podium-label" style="display:flex;gap:6px;align-items:center;margin-top:2px;">
+              <i data-lucide="trophy" style="width:11px;height:11px;"></i>
+              ${u.matchesWon || 0} wins
+            </div>
+          </div>`;
+      }).join('');
+      lucide.createIcons();
+    }
+
+    function renderTable(users) {
+      const tbody = document.getElementById('lb-tbody');
+      tbody.innerHTML = users.map((u, idx) => {
+        const rank = idx + 1;
+        const isCurrent = u.id === currentUser?.uid;
+        const letter = (u.displayName || '?').charAt(0).toUpperCase();
+        const wr = u.matchesPlayed > 0
+          ? Math.round((u.matchesWon / u.matchesPlayed) * 100) + '%'
+          : '—';
+        return `
+          <tr class="lb-row${isCurrent ? ' current-user' : ''}">
+            <td>
+              <div class="lb-rank lb-rank--${rank <= 3 ? rank : ''}">${rank <= 3 ? RANK_ICONS[rank] : rank}</div>
+            </td>
+            <td>
+              <div class="lb-user">
+                <div class="lb-avatar">
+                  ${u.photoURL ? `<img src="${u.photoURL}" onerror="this.style.display='none'"/>` : ''}
+                  ${letter}
+                </div>
+                <div>
+                  <div class="lb-name">${u.displayName || 'Unknown'}${isCurrent ? ' <span style="font-size:0.75rem;color:var(--accent);">(You)</span>' : ''}</div>
+                  <div style="font-size:0.75rem;color:var(--text-faint);">${u.matchesPlayed || 0} matches</div>
+                </div>
+              </div>
+            </td>
+            <td class="lb-tokens">${formatTokens(u.tokens)}</td>
+            <td style="color:var(--green);font-weight:700;">${u.matchesWon || 0}</td>
+            <td style="color:var(--text-muted);">${wr}</td>
+          </tr>`;
+      }).join('');
+      lucide.createIcons();
+    }
+
+    async function handleRefresh() {
+      const btn = document.getElementById('refresh-btn');
+      btn.disabled = true;
+      await loadLeaderboard();
+      setTimeout(() => { btn.disabled = false; }, 2000);
+      showToast('Leaderboard refreshed', 'info');
+    }
+  </script>
+
+  <main class="page-wrap">
+    <div class="lb-header">
+      <div class="page-header" style="margin-bottom:0;">
+        <h1>🏆 Leaderboard</h1>
+        <p>The richest Champions in the game.</p>
+      </div>
+      <button class="refresh-btn" id="refresh-btn" onclick="handleRefresh()">
+        <i data-lucide="refresh-cw"></i> Refresh
+      </button>
+    </div>
+
+    <!-- Podium -->
+    <div class="podium" id="podium">
+      <div class="empty-state" style="grid-column:1/-1;"><div class="spinner" style="margin:0 auto;"></div></div>
+    </div>
+
+    <!-- Full Table -->
+    <div class="card">
+      <div class="section-title" style="margin-bottom:16px;">
+        <i data-lucide="list"></i> Full Rankings
+      </div>
+      <div class="lb-table-wrap">
+        <table class="lb-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Player</th>
+              <th><i data-lucide="coins" style="width:13px;height:13px;display:inline;"></i> Tokens</th>
+              <th><i data-lucide="trophy" style="width:13px;height:13px;display:inline;"></i> Wins</th>
+              <th>Win Rate</th>
+            </tr>
+          </thead>
+          <tbody id="lb-tbody">
+            <tr><td colspan="5" style="text-align:center;padding:24px;"><div class="spinner" style="margin:0 auto;"></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Matches — Champion Tokens</title>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <style>
+    .filters { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:20px; }
+    .filter-btn {
+      padding:6px 16px;
+      border-radius:999px;
+      font-size:0.8125rem;
+      font-weight:600;
+      border:1px solid var(--border-bright);
+      color:var(--text-muted);
+      background:transparent;
+      transition:all 0.2s;
+    }
+    .filter-btn.active,
+    .filter-btn:hover {
+      border-color:var(--accent);
+      color:var(--accent);
+      background:var(--accent-dim);
+    }
+    .join-bar {
+      display:flex;
+      gap:10px;
+      margin-bottom:24px;
+    }
+    .join-bar .form-input {
+      flex:1;
+      text-transform:uppercase;
+      letter-spacing:0.1em;
+      font-weight:700;
+    }
+    .match-grid {
+      display:grid;
+      grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+      gap:16px;
+    }
+    .prize-pool {
+      display:flex;
+      align-items:center;
+      gap:6px;
+      font-size:0.85rem;
+      font-weight:700;
+      color:var(--gold);
+    }
+    .prize-pool i { width:14px;height:14px; }
+  </style>
+</head>
+<body>
+  <div class="page-bg"></div>
+  <div class="page-loading" id="page-loading">
+    <div class="spinner"></div>
+    <span>Loading matches…</span>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script src="js/firebase-config.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/db.js"></script>
+  <script src="js/nav.js"></script>
+
+  <script>
+    let currentUser = null;
+    let currentUserData = null;
+    let activeFilter = 'All';
+    let allMatches = [];
+
+    requireAuth().then(async (user) => {
+      currentUser = user;
+      currentUserData = await getUser(user.uid);
+      injectNav('matches');
+      document.getElementById('page-loading').classList.add('hidden');
+
+      // Subscribe to open matches
+      subscribeOpenMatches((snap) => {
+        allMatches = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        renderMatches();
+      });
+    });
+
+    function setFilter(mode) {
+      activeFilter = mode;
+      document.querySelectorAll('.filter-btn').forEach(b => {
+        b.classList.toggle('active', b.dataset.mode === mode);
+      });
+      renderMatches();
+    }
+
+    function renderMatches() {
+      const grid = document.getElementById('match-grid');
+      const filtered = activeFilter === 'All'
+        ? allMatches
+        : allMatches.filter(m => m.mode === activeFilter);
+
+      if (!filtered.length) {
+        grid.innerHTML = `
+          <div class="empty-state" style="grid-column:1/-1;">
+            <i data-lucide="swords"></i>
+            <p>No open ${activeFilter !== 'All' ? activeFilter + ' ' : ''}matches right now. <br/>Be the first to create one!</p>
+          </div>`;
+        lucide.createIcons();
+        return;
+      }
+
+      grid.innerHTML = filtered.map(m => {
+        const isMine = m.createdBy === currentUser?.uid;
+        const alreadyIn = m.players?.some(p => p.uid === currentUser?.uid);
+        const isFull = m.players?.length >= m.maxPlayers;
+        const canJoin = !isMine && !alreadyIn && !isFull;
+
+        const playerAvatars = (m.players || []).slice(0, 5).map(p =>
+          `<div class="player-avatar" title="${p.displayName}">
+            ${p.photoURL ? `<img src="${p.photoURL}" onerror="this.style.display='none'"/>` : p.displayName?.charAt(0) || '?'}
+          </div>`
+        ).join('');
+
+        return `
+          <div class="match-card">
+            <div class="match-card__header">
+              <div>
+                <div class="match-card__title">${m.title}</div>
+                <div class="match-card__host">
+                  <i data-lucide="user" style="width:12px;height:12px;display:inline;"></i>
+                  ${m.hostName}${isMine ? ' <span style="color:var(--accent);font-weight:700;">(You)</span>' : ''}
+                </div>
+              </div>
+              <span class="badge ${modeColor(m.mode)}">${m.mode}</span>
+            </div>
+
+            <div class="match-card__meta">
+              <span class="match-meta-item">
+                <i data-lucide="coins"></i>
+                <span class="gold">${formatTokens(m.wager)}</span> wager
+              </span>
+              <span class="match-meta-item">
+                <i data-lucide="shield"></i>
+                <span class="prize-pool" style="font-size:inherit;">
+                  ${formatTokens(Math.floor(m.prizePool * 0.9))} prize
+                </span>
+              </span>
+            </div>
+
+            <div class="match-card__players">
+              ${playerAvatars}
+              <span class="players-count">${m.players?.length || 0}/${m.maxPlayers} players</span>
+              ${isFull ? '<span class="chip chip-muted" style="margin-left:auto;">Full</span>' : ''}
+              ${alreadyIn && !isMine ? '<span class="chip chip-success" style="margin-left:auto;">Joined</span>' : ''}
+            </div>
+
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
+              <div class="match-code-badge"><i data-lucide="hash"></i>${m.code}</div>
+              ${canJoin ? `
+                <button class="btn btn-sm btn-primary" onclick="handleJoin('${m.code}', '${m.title}', ${m.wager})">
+                  <i data-lucide="log-in"></i> Join
+                </button>` : ''}
+              ${isMine ? `
+                <button class="btn btn-sm btn-outline" onclick="shareCode('${m.code}', '${m.title}')">
+                  <i data-lucide="share-2"></i> Share
+                </button>` : ''}
+            </div>
+
+            <div style="font-size:0.75rem;color:var(--text-faint);">
+              <i data-lucide="clock" style="width:12px;height:12px;display:inline;"></i>
+              ${formatTime(m.createdAt)}
+            </div>
+          </div>`;
+      }).join('');
+      lucide.createIcons();
+    }
+
+    // ── Join by code bar ─────────────────────────────────────
+    async function handleJoinByCode() {
+      const input = document.getElementById('join-code-input');
+      const code  = input.value.trim().toUpperCase();
+      if (code.length !== 6) { showToast('Enter a valid 6-character code', 'error'); return; }
+      await attemptJoin(code);
+    }
+
+    async function handleJoin(code, title, wager) {
+      if (!currentUserData || currentUserData.tokens < wager) {
+        showToast('Insufficient tokens to join this match', 'error');
+        return;
+      }
+      await attemptJoin(code);
+    }
+
+    async function attemptJoin(code) {
+      // Re-fetch fresh user data
+      currentUserData = await getUser(currentUser.uid);
+      const btn = document.querySelector(`[onclick*="${code}"]`);
+      if (btn) btn.disabled = true;
+      try {
+        await joinMatch(code, currentUserData);
+        showToast('Joined match! Good luck!', 'success');
+        document.getElementById('join-code-input').value = '';
+        currentUserData = await getUser(currentUser.uid);
+      } catch (err) {
+        showToast(err.message, 'error');
+        if (btn) btn.disabled = false;
+      }
+    }
+
+    function shareCode(code, title) {
+      if (navigator.share) {
+        navigator.share({ title: 'Join my Champion Tokens match!', text: `Join my ${title} match! Code: ${code}` });
+      } else {
+        navigator.clipboard.writeText(code).then(() => showToast(`Code "${code}" copied!`, 'info'));
+      }
+    }
+
+    // ── Create Match Modal ────────────────────────────────────
+    function openCreateModal() {
+      document.getElementById('create-modal').classList.add('open');
+    }
+    function closeCreateModal() {
+      document.getElementById('create-modal').classList.remove('open');
+      document.getElementById('create-form').reset();
+    }
+
+    async function handleCreateMatch(e) {
+      e.preventDefault();
+      const form = e.target;
+      const title = form.title.value.trim();
+      const mode  = form.mode.value;
+      const wager = parseInt(form.wager.value, 10);
+      const maxPlayers = parseInt(form.maxPlayers.value, 10);
+
+      if (!title || !mode || isNaN(wager) || wager < 1) {
+        showToast('Please fill in all fields', 'error');
+        return;
+      }
+
+      currentUserData = await getUser(currentUser.uid);
+      if (currentUserData.tokens < wager) {
+        showToast('Not enough tokens to wager', 'error');
+        return;
+      }
+
+      const submitBtn = document.getElementById('create-submit');
+      submitBtn.disabled = true;
+
+      try {
+        // Also store uid in playerUids for querying
+        const hostPlayer = {
+          uid:         currentUser.uid,
+          displayName: currentUserData.displayName,
+          photoURL:    currentUserData.photoURL || '',
+          isHost:      true,
+        };
+
+        const matchRef = await db.collection('matches').add({
+          title,
+          mode,
+          wager,
+          maxPlayers,
+          players:    [hostPlayer],
+          playerUids: [currentUser.uid],
+          status:     'waiting',
+          createdBy:  currentUser.uid,
+          hostName:   currentUserData.displayName,
+          code:       generateMatchCode(),
+          prizePool:  wager,
+          winner:     null,
+          createdAt:  firebase.firestore.FieldValue.serverTimestamp(),
+          completedAt:null,
+        });
+
+        await updateTokens(currentUser.uid, -wager, 'match_wager', `🎮 Match wager — "${title}"`);
+        currentUserData = await getUser(currentUser.uid);
+
+        showToast('Match created! Share your code to invite players.', 'success');
+        closeCreateModal();
+      } catch (err) {
+        showToast(err.message, 'error');
+      } finally {
+        submitBtn.disabled = false;
+      }
+    }
+
+    // Update max players options when mode changes
+    function onModeChange(val) {
+      const maxSel = document.getElementById('maxPlayers-select');
+      maxSel.innerHTML = '';
+      const opts = val === 'Solo' ? [2,3,4] : val === 'Duos' ? [4,6,8] : [8,10,12,16];
+      opts.forEach(n => {
+        const o = document.createElement('option');
+        o.value = n; o.textContent = n + ' players';
+        maxSel.appendChild(o);
+      });
+    }
+  </script>
+
+  <main class="page-wrap">
+    <div class="page-header" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+      <div>
+        <h1>Matches</h1>
+        <p>Browse open matches or create your own wager game.</p>
+      </div>
+      <button class="btn btn-primary" onclick="openCreateModal()">
+        <i data-lucide="plus"></i> Create Match
+      </button>
+    </div>
+
+    <!-- Join by code -->
+    <div style="margin-bottom:20px;">
+      <div class="section-title"><i data-lucide="hash"></i> Join by Code</div>
+      <div class="join-bar">
+        <input
+          id="join-code-input"
+          class="form-input"
+          maxlength="6"
+          placeholder="Enter 6-character match code…"
+          oninput="this.value=this.value.toUpperCase()"
+        />
+        <button class="btn btn-primary" onclick="handleJoinByCode()">
+          <i data-lucide="log-in"></i> Join
+        </button>
+      </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="filters">
+      <button class="filter-btn active" data-mode="All" onclick="setFilter('All')">All Modes</button>
+      <button class="filter-btn" data-mode="Solo" onclick="setFilter('Solo')">
+        <i data-lucide="user" style="width:12px;height:12px;display:inline;"></i> Solo
+      </button>
+      <button class="filter-btn" data-mode="Duos" onclick="setFilter('Duos')">
+        <i data-lucide="users" style="width:12px;height:12px;display:inline;"></i> Duos
+      </button>
+      <button class="filter-btn" data-mode="Squads" onclick="setFilter('Squads')">
+        <i data-lucide="shield" style="width:12px;height:12px;display:inline;"></i> Squads
+      </button>
+    </div>
+
+    <!-- Match grid -->
+    <div class="match-grid" id="match-grid">
+      <div class="empty-state" style="grid-column:1/-1;">
+        <div class="spinner" style="margin:0 auto 12px;"></div>
+        <p>Loading matches…</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- Create Match Modal -->
+  <div class="modal-overlay" id="create-modal" onclick="if(event.target===this)closeCreateModal()">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-title"><i data-lucide="plus-circle"></i> Create Match</div>
+        <button class="modal-close" onclick="closeCreateModal()"><i data-lucide="x"></i></button>
+      </div>
+      <form class="modal-form" id="create-form" onsubmit="handleCreateMatch(event)">
+        <div class="form-group">
+          <label class="form-label">Match Title</label>
+          <input class="form-input" name="title" placeholder="e.g. Friday Night Showdown" maxlength="40" required/>
+        </div>
+        <div class="grid-2" style="gap:12px;">
+          <div class="form-group">
+            <label class="form-label">Mode</label>
+            <select class="form-select" name="mode" onchange="onModeChange(this.value)" required>
+              <option value="Solo">Solo</option>
+              <option value="Duos">Duos</option>
+              <option value="Squads">Squads</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Max Players</label>
+            <select class="form-select" id="maxPlayers-select" name="maxPlayers">
+              <option value="2">2 players</option>
+              <option value="3">3 players</option>
+              <option value="4">4 players</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Wager (tokens per player)</label>
+          <input class="form-input" name="wager" type="number" min="1" placeholder="e.g. 50" required/>
+        </div>
+        <p style="font-size:0.8rem;color:var(--text-muted);">
+          <i data-lucide="info" style="width:13px;height:13px;display:inline;"></i>
+          Winner receives 90% of the prize pool. 10% is a platform fee.
+        </p>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-outline" onclick="closeCreateModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="create-submit">
+            <i data-lucide="swords"></i> Create Match
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</body>
+</html>
