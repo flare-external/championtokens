@@ -381,6 +381,195 @@ async function declareWinner(matchId, winnerUid, hostUid) {
   return prize;
 }
 
+/**
+ * Dual-Confirmation Match Score Submission Protocol
+ * Both Team 1 and Team 2 must submit the match winner.
+ * - If both agree: Winner is verified & paid instantly.
+ * - If conflicting: Dispute triggered & Staff Moderator auto-called!
+ * @param {string} matchId
+ * @param {string} reporterUid
+ * @param {string} reportedWinnerTeam - 'team1' | 'team2'
+ */
+async function submitMatchReport(matchId, reporterUid, reportedWinnerTeam) {
+  const matchRef = db.collection('matches').doc(matchId);
+  const matchSnap = await matchRef.get();
+  if (!matchSnap.exists) throw new Error('Match not found');
+
+  const match = matchSnap.data();
+  if (match.status === 'completed') {
+    throw new Error('Match is already completed');
+  }
+
+  const players = match.players || [];
+  const reporterPlayer = players.find(p => p.uid === reporterUid);
+  if (!reporterPlayer) throw new Error('You are not a participant in this match');
+
+  const isTeam1 = reporterPlayer.team === 'team1' || reporterPlayer.isHost || reporterPlayer.uid === match.createdBy;
+  const reporterTeamKey = isTeam1 ? 'team1' : 'team2';
+  const reporterTeamName = isTeam1 ? 'Team 1 (Host)' : 'Team 2 (Enemy)';
+
+  const updatePayload = {};
+  if (isTeam1) {
+    updatePayload.team1Reported = reportedWinnerTeam;
+    updatePayload.team1ReportedBy = reporterUid;
+    updatePayload.team1ReportedByName = reporterPlayer.displayName || 'Player';
+    updatePayload.team1ReportedAt = firebase.firestore.FieldValue.serverTimestamp();
+  } else {
+    updatePayload.team2Reported = reportedWinnerTeam;
+    updatePayload.team2ReportedBy = reporterUid;
+    updatePayload.team2ReportedByName = reporterPlayer.displayName || 'Player';
+    updatePayload.team2ReportedAt = firebase.firestore.FieldValue.serverTimestamp();
+  }
+
+  const currentTeam1Report = isTeam1 ? reportedWinnerTeam : match.team1Reported;
+  const currentTeam2Report = isTeam1 ? match.team2Reported : reportedWinnerTeam;
+
+  const msgRef = matchRef.collection('messages');
+
+  // Both teams have reported
+  if (currentTeam1Report && currentTeam2Report) {
+    if (currentTeam1Report === currentTeam2Report) {
+      // 🏆 CONSENSUS: BOTH SIDES AGREE ON WINNER!
+      const winningTeam = currentTeam1Report;
+      const isWinnerTeam1 = winningTeam === 'team1';
+
+      const winningPlayers = players.filter(p => (p.team === 'team1' || p.isHost || p.uid === match.createdBy) === isWinnerTeam1);
+      const losingPlayers  = players.filter(p => (p.team === 'team1' || p.isHost || p.uid === match.createdBy) !== isWinnerTeam1);
+
+      const totalPool = Number(match.prizePool || (Number(match.wager) * players.length));
+      const rawPrize = totalPool * 0.90; // 90% payout
+      const prizePerPlayer = Math.round((rawPrize / Math.max(1, winningPlayers.length)) * 100) / 100;
+
+      updatePayload.status = 'completed';
+      updatePayload.isDisputed = false;
+      updatePayload.winnerTeam = winningTeam;
+      updatePayload.winner = winningPlayers.length === 1 ? { uid: winningPlayers[0].uid, displayName: winningPlayers[0].displayName } : null;
+      updatePayload.completedAt = firebase.firestore.FieldValue.serverTimestamp();
+
+      await matchRef.update(updatePayload);
+
+      // Distribute prize tokens
+      for (const wp of winningPlayers) {
+        await updateTokens(wp.uid, prizePerPlayer, 'match_win', `🏆 Won match — "${match.title}"`);
+      }
+
+      // Update win/loss stats
+      for (const p of winningPlayers) {
+        await db.collection('users').doc(p.uid).update({
+          matchesPlayed: firebase.firestore.FieldValue.increment(1),
+          matchesWon:    firebase.firestore.FieldValue.increment(1),
+        }).catch(console.warn);
+      }
+      for (const p of losingPlayers) {
+        await db.collection('users').doc(p.uid).update({
+          matchesPlayed: firebase.firestore.FieldValue.increment(1),
+        }).catch(console.warn);
+      }
+
+      // System chat notice
+      await msgRef.add({
+        isSystem: true,
+        text: `🏆 MATCH CONFIRMED: Both sides verified that ${winningTeam === 'team1' ? 'Team 1' : 'Team 2'} won! Total prize of ${formatTokens(rawPrize)} Tokens has been paid out.`,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      });
+
+      return { status: 'completed', winningTeam, prize: rawPrize };
+
+    } else {
+      // ⚠️ CONFLICT / DISPUTE DETECTED!
+      updatePayload.status = 'disputed';
+      updatePayload.isDisputed = true;
+      updatePayload.disputedAt = firebase.firestore.FieldValue.serverTimestamp();
+
+      await matchRef.update(updatePayload);
+
+      // AUTO-SUMMON STAFF MODERATOR
+      await db.collection('staff_calls').add({
+        matchId,
+        matchCode: match.code || '',
+        callerUid: 'system_auto_dispute',
+        calledByName: '🤖 System Auto-Dispute',
+        reason: 'Match Result Dispute (Conflicting Winner Claims)',
+        details: `Dispute triggered in match "${match.title}" (${match.code}). Team 1 claimed ${currentTeam1Report === 'team1' ? 'Team 1 Won' : 'Team 2 Won'} vs Team 2 claimed ${currentTeam2Report === 'team1' ? 'Team 1 Won' : 'Team 2 Won'}. Moderator auto-called to inspect match.`,
+        status: 'open',
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      });
+
+      // System chat notice
+      await msgRef.add({
+        isSystem: true,
+        text: `⚠️ DISPUTE DETECTED: Both sides reported conflicting match results! A Staff Moderator has been automatically called to review evidence and confirm the official winner.`,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      });
+
+      return { status: 'disputed' };
+    }
+  } else {
+    // Only one side has reported so far
+    await matchRef.update(updatePayload);
+
+    await msgRef.add({
+      isSystem: true,
+      text: `📢 ${reporterTeamName} submitted score: ${reportedWinnerTeam === 'team1' ? 'Team 1 Won' : 'Team 2 Won'}. Waiting for opponent to confirm…`,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+    });
+
+    return { status: 'waiting_opponent' };
+  }
+}
+
+/**
+ * Staff manual resolution for disputed matches
+ */
+async function adminResolveDispute(matchId, winningTeam, adminUid) {
+  const matchRef = db.collection('matches').doc(matchId);
+  const matchSnap = await matchRef.get();
+  if (!matchSnap.exists) throw new Error('Match not found');
+
+  const match = matchSnap.data();
+  const players = match.players || [];
+  const isWinnerTeam1 = winningTeam === 'team1';
+
+  const winningPlayers = players.filter(p => (p.team === 'team1' || p.isHost || p.uid === match.createdBy) === isWinnerTeam1);
+  const losingPlayers  = players.filter(p => (p.team === 'team1' || p.isHost || p.uid === match.createdBy) !== isWinnerTeam1);
+
+  const totalPool = Number(match.prizePool || (Number(match.wager) * players.length));
+  const rawPrize = totalPool * 0.90;
+  const prizePerPlayer = Math.round((rawPrize / Math.max(1, winningPlayers.length)) * 100) / 100;
+
+  await matchRef.update({
+    status: 'completed',
+    isDisputed: false,
+    winnerTeam: winningTeam,
+    resolvedByAdmin: adminUid,
+    winner: winningPlayers.length === 1 ? { uid: winningPlayers[0].uid, displayName: winningPlayers[0].displayName } : null,
+    completedAt: firebase.firestore.FieldValue.serverTimestamp(),
+  });
+
+  for (const wp of winningPlayers) {
+    await updateTokens(wp.uid, prizePerPlayer, 'match_win', `🏆 Won match (Staff Decision) — "${match.title}"`);
+  }
+  for (const p of winningPlayers) {
+    await db.collection('users').doc(p.uid).update({
+      matchesPlayed: firebase.firestore.FieldValue.increment(1),
+      matchesWon:    firebase.firestore.FieldValue.increment(1),
+    }).catch(console.warn);
+  }
+  for (const p of losingPlayers) {
+    await db.collection('users').doc(p.uid).update({
+      matchesPlayed: firebase.firestore.FieldValue.increment(1),
+    }).catch(console.warn);
+  }
+
+  await matchRef.collection('messages').add({
+    isSystem: true,
+    text: `🛡️ STAFF RULING: Staff Moderator resolved the dispute in favor of ${winningTeam === 'team1' ? 'Team 1' : 'Team 2'}! ${formatTokens(rawPrize)} Tokens awarded.`,
+    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+  });
+
+  return rawPrize;
+}
+
 // ── Leaderboard ──────────────────────────────────────────────
 
 /** Fetch top 10 users by token balance */
