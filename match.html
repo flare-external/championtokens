@@ -523,6 +523,8 @@
       });
     });
 
+    const playersUserCache = {};
+
     function listenToMatch(id) {
       db.collection('matches').doc(id).onSnapshot((doc) => {
         const loadingEl = document.getElementById('page-loading');
@@ -536,6 +538,7 @@
         currentMatch = { id: doc.id, ...doc.data() };
         renderMatchRoom(currentMatch);
         startTimerCountdown(currentMatch);
+        loadPlayersLiveCache(currentMatch.players);
       }, (err) => {
         console.error('Match listener error:', err);
         const loadingEl = document.getElementById('page-loading');
@@ -563,6 +566,30 @@
           banner.style.display = 'none';
         }
       });
+    }
+
+    async function loadPlayersLiveCache(players) {
+      if (!players || !players.length) return;
+      let shouldReRender = false;
+      for (const p of players) {
+        if (!playersUserCache[p.uid] || p.uid === currentUser?.uid) {
+          try {
+            const uData = await getUser(p.uid);
+            if (uData) {
+              playersUserCache[p.uid] = uData;
+              if (p.uid === currentUser?.uid) {
+                currentUserData = uData;
+              }
+              shouldReRender = true;
+            }
+          } catch (e) {
+            console.warn('Could not load user profile for', p.uid, e);
+          }
+        }
+      }
+      if (shouldReRender && currentMatch) {
+        renderMatchRoom(currentMatch);
+      }
     }
 
     function startTimerCountdown(match) {
@@ -671,7 +698,11 @@
           const isMe = player.uid === currentUser?.uid;
           const isReady = !!player.ready;
           const hideOpponent = !isMatchStarted && !isMe;
-          const isPremium = !!player.isPremium;
+
+          const liveData = (isMe ? currentUserData : playersUserCache[player.uid]) || {};
+          const isPremium = !!(liveData.isPremium ?? player.isPremium);
+          const realDisplayName = liveData.displayName || player.displayName || 'Player';
+          const realEpicUsername = liveData.epicUsername || player.epicUsername || '';
 
           if (hideOpponent) {
             return `
@@ -687,25 +718,34 @@
                 </div>
               </div>`;
           } else {
-            const epicTag = player.epicUsername || player.displayName;
+            let epicChipHTML = '';
+            if (realEpicUsername) {
+              epicChipHTML = `
+                <span class="epic-copy-chip" onclick="event.stopPropagation();copyEpicTag('${realEpicUsername}')" title="Click to copy Epic IGN">
+                  <img src="epic_games_logo.webp" alt="" style="width:13px;height:15px;object-fit:contain;"/>
+                  <span>${realEpicUsername}</span>
+                  <i data-lucide="copy" style="width:11px;height:11px;opacity:0.7;"></i>
+                </span>`;
+            } else {
+              epicChipHTML = isMe
+                ? `<span class="epic-copy-chip" style="opacity:0.8;border-style:dashed;color:var(--gold-bright);" onclick="event.stopPropagation();window.location.href='profile'" title="Click to link Epic in profile"><img src="epic_games_logo.webp" alt="" style="width:13px;height:15px;object-fit:contain;"/> <span>Link Epic IGN</span></span>`
+                : `<span class="epic-copy-chip" style="opacity:0.6;border-style:dashed;" onclick="event.stopPropagation();showToast('Opponent has not linked their Epic account yet','info')"><img src="epic_games_logo.webp" alt="" style="width:13px;height:15px;object-fit:contain;"/> <span>No Epic Linked</span></span>`;
+            }
+
             return `
               <div class="player-slot-box" onclick="openUserProfileModal('${player.uid}')" title="Click to view stats & tip player">
                 <div class="slot-avatar-img ${isPlayerHost ? 'host' : ''}">
-                  ${player.photoURL ? `<img src="${player.photoURL}" onerror="this.style.display='none'"/>` : player.displayName?.charAt(0)}
+                  ${(liveData.photoURL || player.photoURL) ? `<img src="${liveData.photoURL || player.photoURL}" onerror="this.style.display='none'"/>` : realDisplayName.charAt(0)}
                 </div>
                 <div style="flex:1;min-width:0;">
                   <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
-                    <span class="${isPremium ? 'username-premium' : ''}" style="font-weight:800;font-size:0.95rem;">${player.displayName}</span>
+                    <span class="${isPremium ? 'username-premium' : ''}" style="font-weight:800;font-size:0.95rem;">${realDisplayName}</span>
                     ${isPlayerHost ? '<span class="badge" style="background:var(--gold-dim);color:var(--gold-bright);padding:1px 6px;font-size:0.65rem;">HOST</span>' : ''}
                     ${isPremium ? '<span class="badge-premium">👑 VIP</span>' : ''}
                     ${isMe ? '<span style="color:var(--gold-bright);font-size:0.75rem;">(You)</span>' : ''}
                   </div>
                   <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:3px;">
-                    <span class="epic-copy-chip" onclick="event.stopPropagation();copyEpicTag('${epicTag}')" title="Click to copy Epic IGN">
-                      <img src="epic_games_logo.webp" alt="" style="width:13px;height:15px;object-fit:contain;"/>
-                      <span>${epicTag}</span>
-                      <i data-lucide="copy" style="width:11px;height:11px;opacity:0.7;"></i>
-                    </span>
+                    ${epicChipHTML}
                     <span style="font-size:0.75rem;color:var(--text-muted);">
                       ${isReady ? '✅ <span style="color:var(--green);font-weight:700;">READY</span>' : '⏳ Not Ready'}
                     </span>

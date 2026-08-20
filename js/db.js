@@ -72,11 +72,13 @@ async function createMatch(hostUser, matchData) {
   const expiresAt = new Date(Date.now() + 30 * 60 * 1000);
 
   const hostPlayer = {
-    uid:         hostUser.uid,
-    displayName: hostUser.displayName,
-    photoURL:    hostUser.photoURL || '',
-    isHost:      true,
-    ready:       false,
+    uid:          hostUser.uid,
+    displayName:  hostUser.displayName || 'Host',
+    epicUsername: hostUser.epicUsername || '',
+    isPremium:    !!hostUser.isPremium,
+    photoURL:     hostUser.photoURL || '',
+    isHost:       true,
+    ready:        false,
   };
 
   const matchRef = await db.collection('matches').add({
@@ -139,11 +141,13 @@ async function joinMatch(code, joiningUser) {
     throw new Error(`Insufficient tokens to join (Requires ${formatTokens(wager)} tokens)`);
 
   const newPlayer = {
-    uid:         joiningUser.uid,
-    displayName: joiningUser.displayName,
-    photoURL:    joiningUser.photoURL || '',
-    isHost:      false,
-    ready:       false,
+    uid:          joiningUser.uid,
+    displayName:  joiningUser.displayName || 'Player',
+    epicUsername: joiningUser.epicUsername || '',
+    isPremium:    !!joiningUser.isPremium,
+    photoURL:     joiningUser.photoURL || '',
+    isHost:       false,
+    ready:        false,
   };
 
   await matchDoc.ref.update({
