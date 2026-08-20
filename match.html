@@ -11,32 +11,43 @@
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
-    /* Esports Arena Grid Layout */
-    /* Esports Arena Grid Layout (Significantly Wider & Bigger Chat) */
-    .arena-container {
-      display: grid;
-      grid-template-columns: 1fr 650px;
-      gap: 26px;
-      align-items: start;
-      max-width: 1560px;
-      margin: 0 auto;
+    /* Esports Arena Dashboard Layout (Full Viewport, Zero Page Scroll) */
+    body {
+      height: 100vh;
+      overflow-x: hidden;
     }
-    @media (max-width: 1240px) {
-      .arena-container { grid-template-columns: 1fr; }
+    .match-page-wrap {
+      max-width: 1720px;
+      margin: 0 auto;
+      padding: 14px 24px 20px;
+      height: calc(100vh - var(--nav-h));
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      box-sizing: border-box;
+      overflow: hidden;
+    }
+    @media (max-width: 1100px) {
+      body { height: auto; }
+      .match-page-wrap {
+        height: auto;
+        overflow: visible;
+        padding: 16px;
+      }
     }
 
-    /* Top Compact Header */
+    /* Top Full-Width Compact Bar */
     .arena-top-header {
       background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: var(--radius-xl);
-      padding: 18px 26px;
+      padding: 12px 22px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
-      gap: 16px;
-      margin-bottom: 20px;
+      gap: 12px;
+      flex-shrink: 0;
       box-shadow: var(--shadow-card);
     }
     .arena-title-group {
@@ -57,18 +68,39 @@
       color: var(--text-muted);
     }
 
+    /* 2-Column Equal Split Grid (Stage 50% | Chat 50%) */
+    .arena-main-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      flex: 1;
+      min-height: 0;
+      align-items: stretch;
+    }
+    @media (max-width: 1100px) {
+      .arena-main-grid {
+        grid-template-columns: 1fr;
+        flex: none;
+      }
+    }
+
     /* Arena Center Stage */
     .stage-card {
       background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: var(--radius-2xl);
-      padding: 30px;
+      padding: 24px;
       display: flex;
       flex-direction: column;
-      gap: 24px;
+      gap: 18px;
       box-shadow: var(--shadow-card);
       backdrop-filter: blur(24px);
+      height: 100%;
+      overflow-y: auto;
+      box-sizing: border-box;
     }
+    .stage-card::-webkit-scrollbar { width: 5px; }
+    .stage-card::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 10px; }
 
     /* VS Battle Matchup Layout */
     .vs-arena-layout {
@@ -207,17 +239,19 @@
       box-shadow: 0 0 35px rgba(245, 158, 11, 0.25);
     }
 
-    /* Clean, Significantly Wider & Bigger Esports Match Chat */
+    /* Clean, Significantly Wider & Bigger Esports Match Chat (Equal Height to Stage) */
     .live-chat-panel {
       background: var(--bg-card);
       border: 1px solid var(--border);
-      border-radius: var(--radius-xl);
+      border-radius: var(--radius-2xl);
       display: flex;
       flex-direction: column;
-      height: 580px;
+      height: 100%;
       box-shadow: var(--shadow-card);
       overflow: hidden;
       backdrop-filter: blur(24px);
+      box-sizing: border-box;
+      min-height: 0;
     }
     .chat-msg-stream {
       flex: 1;
@@ -226,6 +260,7 @@
       display: flex;
       flex-direction: column;
       gap: 16px;
+      min-height: 0;
     }
     .chat-msg-stream::-webkit-scrollbar { width: 5px; }
     .chat-msg-stream::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
@@ -381,75 +416,72 @@
     <span>Loading match lobby…</span>
   </div>
 
-  <main class="page-wrap">
-    <!-- Arena Container (Center Stage + Right Live Chat) -->
-    <div class="arena-container">
-      <!-- Center Main Stage -->
-      <div>
-        <!-- Top Compact Bar -->
-        <div class="arena-top-header">
-          <div class="arena-title-group">
-            <h1 id="room-title" style="font-size:1.6rem;font-weight:900;">1v1 Realistic</h1>
-            <span class="match-tag-pill" id="room-id">ID: --</span>
-            <span class="match-code-badge"><i data-lucide="hash"></i><span id="room-code">------</span></span>
-            <span id="room-size-badge" class="badge">1v1</span>
-            <span id="room-mode-badge" class="badge">Realistic</span>
-            <span id="room-status-badge" class="badge">waiting</span>
-            <span id="staff-alert-tag" class="badge" style="display:none;background:rgba(239,68,68,0.2);color:#fca5a5;border:1px solid rgba(239,68,68,0.35);">
-              <i data-lucide="shield-alert" style="width:13px;height:13px;"></i> Staff Alert Active
-            </span>
+  <main class="match-page-wrap">
+    <!-- Top Full-Width Header Bar -->
+    <div class="arena-top-header">
+      <div class="arena-title-group">
+        <h1 id="room-title" style="font-size:1.55rem;font-weight:900;">1v1 Realistic</h1>
+        <span class="match-tag-pill" id="room-id">ID: --</span>
+        <span class="match-code-badge"><i data-lucide="hash"></i><span id="room-code">------</span></span>
+        <span id="room-size-badge" class="badge">1v1</span>
+        <span id="room-mode-badge" class="badge">Realistic</span>
+        <span id="room-status-badge" class="badge">waiting</span>
+        <span id="staff-alert-tag" class="badge" style="display:none;background:rgba(239,68,68,0.2);color:#fca5a5;border:1px solid rgba(239,68,68,0.35);">
+          <i data-lucide="shield-alert" style="width:13px;height:13px;"></i> Staff Alert Active
+        </span>
+      </div>
+      <div id="arena-actions" style="display:flex;gap:8px;flex-wrap:wrap;"></div>
+    </div>
+
+    <!-- 2-Column Equal Grid: Battle Stage & Big Wide Chat Side-by-Side -->
+    <div class="arena-main-grid">
+      <!-- Left: Match Stage Card -->
+      <div class="stage-card">
+        <!-- Stakes Summary Bar -->
+        <div class="stakes-summary-bar">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <img src="champion_token_coin.png" alt="CT" style="width:36px;height:36px;object-fit:contain;" />
+            <div>
+              <div style="font-size:0.72rem;color:var(--text-muted);font-weight:700;text-transform:uppercase;">Entry Wager</div>
+              <div style="font-size:1.15rem;font-weight:900;color:#fff;" id="stakes-wager">1.00 Tokens</div>
+            </div>
           </div>
-          <div id="arena-actions" style="display:flex;gap:8px;flex-wrap:wrap;"></div>
+          <div style="text-align:center;">
+            <div style="font-size:0.72rem;color:var(--text-muted);font-weight:700;text-transform:uppercase;">Total Pool</div>
+            <div style="font-size:1.15rem;font-weight:800;color:var(--text);" id="stakes-pool">2.00 Tokens</div>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-size:0.72rem;color:var(--gold-bright);font-weight:700;text-transform:uppercase;">Winner Prize (90%)</div>
+            <div style="font-size:1.45rem;font-weight:900;color:var(--gold-bright);" id="stakes-prize">1.80 Tokens</div>
+          </div>
         </div>
 
-        <!-- Center Stage Card -->
-        <div class="stage-card">
-          <!-- Stakes Summary Bar -->
-          <div class="stakes-summary-bar">
-            <div style="display:flex;align-items:center;gap:12px;">
-              <img src="champion_token_coin.png" alt="CT" style="width:38px;height:38px;object-fit:contain;" />
-              <div>
-                <div style="font-size:0.75rem;color:var(--text-muted);font-weight:700;text-transform:uppercase;">Entry Wager</div>
-                <div style="font-size:1.15rem;font-weight:900;color:#fff;" id="stakes-wager">1.00 Tokens</div>
-              </div>
-            </div>
-            <div style="text-align:center;">
-              <div style="font-size:0.75rem;color:var(--text-muted);font-weight:700;text-transform:uppercase;">Total Pool</div>
-              <div style="font-size:1.15rem;font-weight:800;color:var(--text);" id="stakes-pool">2.00 Tokens</div>
-            </div>
-            <div style="text-align:right;">
-              <div style="font-size:0.75rem;color:var(--gold-bright);font-weight:700;text-transform:uppercase;">Winner Prize (90%)</div>
-              <div style="font-size:1.5rem;font-weight:900;color:var(--gold-bright);" id="stakes-prize">1.80 Tokens</div>
-            </div>
+        <!-- Ready Action Area -->
+        <div class="ready-action-card" id="ready-action-area" style="display:none;"></div>
+
+        <!-- Score Reporting / Dispute Area (Dual-Confirmation Protocol) -->
+        <div id="score-report-area" style="display:none;"></div>
+
+        <!-- VS Battle Matchup (Center Dominant) -->
+        <div class="vs-arena-layout">
+          <div class="team-squad-column" id="team1-squad"></div>
+          <div class="vs-ring">VS</div>
+          <div class="team-squad-column" id="team2-squad"></div>
+        </div>
+
+        <!-- Footer Timer & Quick Guide -->
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:0.8rem;color:var(--text-muted);border-top:1px solid rgba(255,255,255,0.05);padding-top:14px;margin-top:auto;">
+          <div style="display:flex;align-items:center;gap:6px;">
+            <i data-lucide="clock" style="color:var(--gold-bright);width:15px;height:15px;"></i>
+            <span>Queue Auto-Refund Timer: <strong id="timer-clock" style="color:#fff;font-family:monospace;">30:00</strong></span>
           </div>
-
-          <!-- Ready Action Area -->
-          <div class="ready-action-card" id="ready-action-area" style="display:none;"></div>
-
-          <!-- Score Reporting / Dispute Area (Dual-Confirmation Protocol) -->
-          <div id="score-report-area" style="display:none;"></div>
-
-          <!-- VS Battle Matchup (Center Dominant) -->
-          <div class="vs-arena-layout">
-            <div class="team-squad-column" id="team1-squad"></div>
-            <div class="vs-ring">VS</div>
-            <div class="team-squad-column" id="team2-squad"></div>
-          </div>
-
-          <!-- Footer Timer & Quick Guide -->
-          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:0.8rem;color:var(--text-muted);border-top:1px solid rgba(255,255,255,0.05);padding-top:16px;">
-            <div style="display:flex;align-items:center;gap:6px;">
-              <i data-lucide="clock" style="color:var(--gold-bright);width:15px;height:15px;"></i>
-              <span>Queue Auto-Refund Timer: <strong id="timer-clock" style="color:#fff;font-family:monospace;">30:00</strong></span>
-            </div>
-            <div>
-              <span>Copy your opponent's Epic IGN to party up in Fortnite</span>
-            </div>
+          <div>
+            <span>Copy opponent Epic IGN to party up in Fortnite</span>
           </div>
         </div>
       </div>
 
-      <!-- Clean Wide Match Chat -->
+      <!-- Right: Large Wide Live Match Chat -->
       <div class="live-chat-panel">
         <div class="chat-msg-stream" id="chat-messages"></div>
         <form class="chat-bottom-input" onsubmit="sendChatMessage(event)">
