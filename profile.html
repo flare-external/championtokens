@@ -163,7 +163,12 @@
           currentUserData = snap.data();
           renderProfile(currentUserData);
           renderEpicSection(currentUserData);
-          await loadUserTeam(targetUid);
+          try {
+            await loadUserTeam(targetUid);
+          } catch (e) {
+            console.warn('loadUserTeam error:', e);
+            renderTeamSection(null);
+          }
         } else {
           showToast('User profile not found', 'error');
         }

@@ -423,15 +423,22 @@ async function createTeam(user, { name, tag }) {
 
 /** Fetch a user's current team */
 async function getUserTeam(uid) {
-  const user = await getUser(uid);
-  if (!user || !user.teamId) {
-    // Check if user is in any team
+  try {
+    const user = await getUser(uid);
+    if (!user) return null;
+    if (user.teamId) {
+      const snap = await db.collection('teams').doc(user.teamId).get();
+      if (snap.exists) return { id: snap.id, ...snap.data() };
+    }
+    // Fallback search
     const snap = await db.collection('teams').where('memberUids', 'array-contains', uid).limit(1).get();
-    if (snap.empty) return null;
-    return { id: snap.docs[0].id, ...snap.docs[0].data() };
+    if (!snap.empty) {
+      return { id: snap.docs[0].id, ...snap.docs[0].data() };
+    }
+  } catch (e) {
+    console.warn('getUserTeam fallback notice:', e.message);
   }
-  const snap = await db.collection('teams').doc(user.teamId).get();
-  return snap.exists ? { id: snap.id, ...snap.data() } : null;
+  return null;
 }
 
 /** Join a team using invite code */
@@ -567,11 +574,47 @@ async function resolveStaffCall(callId, adminName, resolutionNotes = '') {
   });
 }
 
-/** Admin grant or deduct tokens to any user */
-async function adminAdjustTokens(targetUid, amount, reason) {
+/** Admin grant or deduct tokens to any user (Resolves by raw UID, Discord ID, or Username) */
+async function adminAdjustTokens(identifier, amount, reason) {
   const num = Number(amount);
   if (isNaN(num)) throw new Error('Invalid token amount');
+
+  const raw = identifier.trim().replace(/^@/, '');
+  let targetUid = raw;
+
+  // Check if doc exists with raw input
+  let userSnap = await db.collection('users').doc(raw).get();
+
+  // If not, check with discord: prefix
+  if (!userSnap.exists) {
+    const withPrefix = `discord:${raw.replace('discord:', '')}`;
+    userSnap = await db.collection('users').doc(withPrefix).get();
+    if (userSnap.exists) {
+      targetUid = withPrefix;
+    }
+  }
+
+  // If still not, search by discordUsername or displayName
+  if (!userSnap.exists) {
+    const byUsername = await db.collection('users').where('discordUsername', '==', raw).limit(1).get();
+    if (!byUsername.empty) {
+      targetUid = byUsername.docs[0].id;
+      userSnap = byUsername.docs[0];
+    } else {
+      const byDisplayName = await db.collection('users').where('displayName', '==', raw).limit(1).get();
+      if (!byDisplayName.empty) {
+        targetUid = byDisplayName.docs[0].id;
+        userSnap = byDisplayName.docs[0];
+      }
+    }
+  }
+
+  if (!userSnap.exists) {
+    throw new Error(`User not found for identifier "${identifier}". Please enter a valid Discord ID, UID, or Username.`);
+  }
+
   await updateTokens(targetUid, num, 'admin', `⚡ Admin adjustment: ${reason}`);
+  return { targetUid, userName: userSnap.data()?.displayName || targetUid };
 }
 
 /** Admin force cancel a match and refund players */

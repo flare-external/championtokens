@@ -212,17 +212,17 @@
     // ── Token Adjustment Tool ────────────────────────────────
     async function handleAdjustTokens(e) {
       e.preventDefault();
-      const uid = document.getElementById('adjust-uid-input').value.trim();
+      const identifier = document.getElementById('adjust-uid-input').value.trim();
       const amount = parseFloat(document.getElementById('adjust-amount-input').value);
-      const reason = document.getElementById('adjust-reason-input').value.trim() || 'Staff action';
+      const reason = document.getElementById('adjust-reason-input').value.trim() || 'Admin adjustment';
       const btn = document.getElementById('adjust-btn');
 
-      if (!uid || isNaN(amount)) return;
+      if (!identifier || isNaN(amount)) return;
       btn.disabled = true;
 
       try {
-        await adminAdjustTokens(uid, amount, reason);
-        showToast(`Successfully adjusted ${amount > 0 ? '+' : ''}${amount} tokens for user!`, 'success');
+        const res = await adminAdjustTokens(identifier, amount, reason);
+        showToast(`Successfully adjusted ${amount > 0 ? '+' : ''}${amount} tokens for ${res.userName || identifier}!`, 'success');
         document.getElementById('adjust-uid-input').value = '';
         document.getElementById('adjust-amount-input').value = '';
       } catch (err) {

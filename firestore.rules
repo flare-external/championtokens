@@ -10,17 +10,24 @@ service cloud.firestore {
       return request.auth.uid == uid;
     }
 
+    function isAdmin() {
+      return isAuth() && (
+        request.auth.uid == 'discord:1121188319410278420' ||
+        request.auth.uid == '1121188319410278420'
+      );
+    }
+
     // ── Users ──────────────────────────────────────────────────
     match /users/{uid} {
       allow read:   if isAuth();
-      allow create: if isOwner(uid);
-      allow update: if isOwner(uid);
+      allow create: if isAuth();
+      allow update: if isAuth() && (isOwner(uid) || isAdmin());
       allow delete: if false;
     }
 
     // ── Transactions ───────────────────────────────────────────
     match /transactions/{txId} {
-      allow read:   if isAuth() && resource.data.userId == request.auth.uid;
+      allow read:   if isAuth();
       allow create: if isAuth();
       allow update: if false;
       allow delete: if false;
