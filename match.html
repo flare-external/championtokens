@@ -12,16 +12,16 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
     /* Esports Arena Grid Layout */
-    /* Esports Arena Grid Layout (Wide & Clean Chat) */
+    /* Esports Arena Grid Layout (Significantly Wider & Bigger Chat) */
     .arena-container {
       display: grid;
-      grid-template-columns: 1fr 540px;
-      gap: 24px;
+      grid-template-columns: 1fr 650px;
+      gap: 26px;
       align-items: start;
-      max-width: 1460px;
+      max-width: 1560px;
       margin: 0 auto;
     }
-    @media (max-width: 1180px) {
+    @media (max-width: 1240px) {
       .arena-container { grid-template-columns: 1fr; }
     }
 
@@ -207,14 +207,14 @@
       box-shadow: 0 0 35px rgba(245, 158, 11, 0.25);
     }
 
-    /* Clean, Wide & Compact Esports Match Chat (No Title Header) */
+    /* Clean, Significantly Wider & Bigger Esports Match Chat */
     .live-chat-panel {
       background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: var(--radius-xl);
       display: flex;
       flex-direction: column;
-      height: 520px;
+      height: 580px;
       box-shadow: var(--shadow-card);
       overflow: hidden;
       backdrop-filter: blur(24px);
@@ -222,10 +222,10 @@
     .chat-msg-stream {
       flex: 1;
       overflow-y: auto;
-      padding: 16px 20px;
+      padding: 20px 24px;
       display: flex;
       flex-direction: column;
-      gap: 14px;
+      gap: 16px;
     }
     .chat-msg-stream::-webkit-scrollbar { width: 5px; }
     .chat-msg-stream::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
@@ -235,7 +235,7 @@
     .chat-item-row {
       display: flex;
       align-items: flex-start;
-      gap: 12px;
+      gap: 14px;
       width: 100%;
       animation: fadeInMsg 0.15s ease-out;
     }
@@ -244,15 +244,15 @@
       to { opacity: 1; transform: translateY(0); }
     }
     .chat-pfp-avatar {
-      width: 36px;
-      height: 36px;
+      width: 42px;
+      height: 42px;
       border-radius: 50%;
       background: var(--bg-card-hover);
       overflow: hidden;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 0.85rem;
+      font-size: 0.95rem;
       font-weight: 900;
       color: var(--gold-bright);
       flex-shrink: 0;
@@ -269,13 +269,13 @@
       min-width: 0;
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 5px;
     }
     .chat-author-line {
       display: flex;
       align-items: center;
       gap: 8px;
-      font-size: 0.8rem;
+      font-size: 0.88rem;
       color: var(--text-muted);
       flex-wrap: wrap;
     }
@@ -290,42 +290,42 @@
     }
     .chat-text-bubble {
       background: rgba(255, 255, 255, 0.04);
-      border-radius: 4px 14px 14px 14px;
-      padding: 10px 14px;
-      font-size: 0.92rem;
+      border-radius: 4px 16px 16px 16px;
+      padding: 12px 18px;
+      font-size: 0.98rem;
       color: var(--text);
-      line-height: 1.5;
+      line-height: 1.55;
       word-break: break-word;
       transition: all 0.15s;
     }
     .chat-item-row.mine .chat-text-bubble {
       background: rgba(245, 158, 11, 0.08);
-      border-left: 3px solid var(--gold-bright);
+      border-left: 3.5px solid var(--gold-bright);
     }
     .chat-item-row.staff-msg .chat-text-bubble {
       background: rgba(239, 68, 68, 0.09);
-      border-left: 3px solid var(--red);
+      border-left: 3.5px solid var(--red);
     }
 
     /* System Broadcast Banner */
     .chat-system-announcement {
       background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(10, 14, 26, 0.98) 100%);
       border-radius: var(--radius-lg);
-      padding: 12px 16px;
+      padding: 14px 18px;
       margin: 4px 0;
-      font-size: 0.84rem;
-      line-height: 1.5;
+      font-size: 0.88rem;
+      line-height: 1.55;
       color: #fde68a;
       box-shadow: 0 6px 20px rgba(0,0,0,0.5);
     }
 
     /* Chat Input Form */
     .chat-bottom-input {
-      padding: 14px 18px;
+      padding: 16px 22px;
       background: rgba(255, 255, 255, 0.02);
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
       flex-shrink: 0;
     }
     .chat-input-pill {
@@ -333,19 +333,19 @@
       background: rgba(12, 16, 28, 0.9);
       border: 1px solid var(--border);
       border-radius: var(--radius-full);
-      padding: 12px 18px;
+      padding: 14px 22px;
       color: #fff;
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       outline: none;
       transition: all 0.2s;
     }
     .chat-input-pill:focus {
       border-color: var(--gold-bright);
-      box-shadow: 0 0 18px var(--gold-glow);
+      box-shadow: 0 0 20px var(--gold-glow);
     }
     .chat-send-btn {
-      width: 42px;
-      height: 42px;
+      width: 46px;
+      height: 46px;
       border-radius: 50%;
       background: linear-gradient(135deg, #FBBF24 0%, #D97706 100%);
       color: #000;
@@ -356,14 +356,13 @@
       cursor: pointer;
       transition: all 0.2s;
       flex-shrink: 0;
-      box-shadow: 0 0 14px var(--gold-glow);
+      box-shadow: 0 0 16px var(--gold-glow);
     }
     .chat-send-btn:hover {
       transform: scale(1.08);
-      box-shadow: 0 0 24px var(--gold-glow);
+      box-shadow: 0 0 26px var(--gold-glow);
     }
-    .chat-send-btn i { width: 18px; height: 18px; stroke-width: 2.5; }
-
+    .chat-send-btn i { width: 20px; height: 20px; stroke-width: 2.5; }
     /* Tipping Section in Modal */
     .tip-box {
       background: rgba(245, 158, 11, 0.06);
@@ -383,12 +382,6 @@
   </div>
 
   <main class="page-wrap">
-    <!-- Staff Alert Active Banner -->
-    <div id="staff-banner" style="display:none;align-items:center;gap:12px;background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.35);border-radius:var(--radius-md);padding:12px 18px;margin-bottom:16px;color:#fca5a5;font-weight:600;font-size:0.875rem;">
-      <i data-lucide="shield-alert" style="color:var(--red);flex-shrink:0;"></i>
-      <span id="staff-banner-text">Staff Alert Active</span>
-    </div>
-
     <!-- Arena Container (Center Stage + Right Live Chat) -->
     <div class="arena-container">
       <!-- Center Main Stage -->
@@ -402,6 +395,9 @@
             <span id="room-size-badge" class="badge">1v1</span>
             <span id="room-mode-badge" class="badge">Realistic</span>
             <span id="room-status-badge" class="badge">waiting</span>
+            <span id="staff-alert-tag" class="badge" style="display:none;background:rgba(239,68,68,0.2);color:#fca5a5;border:1px solid rgba(239,68,68,0.35);">
+              <i data-lucide="shield-alert" style="width:13px;height:13px;"></i> Staff Alert Active
+            </span>
           </div>
           <div id="arena-actions" style="display:flex;gap:8px;flex-wrap:wrap;"></div>
         </div>
@@ -681,17 +677,17 @@
           renderChat(snap.docs.map(d => ({ id: d.id, ...d.data() })));
         });
 
-      // Staff Alerts
+      // Staff Alerts (Compact pill, no layout shifting)
       db.collection('staff_calls').where('matchId', '==', id).onSnapshot((snap) => {
-        const banner = document.getElementById('staff-banner');
-        if (!banner) return;
+        const tag = document.getElementById('staff-alert-tag');
+        if (!tag) return;
         if (!snap.empty) {
           const call = snap.docs[0].data();
-          banner.style.display = 'flex';
-          document.getElementById('staff-banner-text').textContent =
-            `Staff Alert Active: "${call.reason}" reported by ${call.calledByName}. A moderator has been notified.`;
+          tag.style.display = 'inline-flex';
+          tag.textContent = `🛡️ Staff Called (${call.reason || 'Alert'})`;
+          if (window.lucide) lucide.createIcons();
         } else {
-          banner.style.display = 'none';
+          tag.style.display = 'none';
         }
       });
     }
