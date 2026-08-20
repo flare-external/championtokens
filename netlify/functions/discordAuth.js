@@ -54,13 +54,69 @@ exports.handler = async (event) => {
     return { statusCode: 405, headers: HEADERS, body: JSON.stringify({ error: 'Method not allowed' }) };
   }
 
-  let code, redirectUri;
+  let bodyData = {};
   try {
-    ({ code, redirectUri } = JSON.parse(event.body));
+    bodyData = JSON.parse(event.body || '{}');
   } catch {
     return { statusCode: 400, headers: HEADERS, body: JSON.stringify({ error: 'Invalid request body' }) };
   }
 
+  // ── Guest Tester Login Flow (Firebase Custom Token) ──────
+  if (bodyData.isGuest) {
+    try {
+      const { admin, db } = getFirebaseAdmin();
+      const guestNumber = Math.floor(1000 + Math.random() * 9000);
+      const uid = `guest:${Date.now()}_${guestNumber}`;
+      const displayName = `Guest #${guestNumber}`;
+
+      const userRef = db.collection('users').doc(uid);
+      await userRef.set({
+        uid,
+        displayName,
+        email:           '',
+        photoURL:        null,
+        discordId:       `guest_${guestNumber}`,
+        discordUsername: `guest_${guestNumber}`,
+        tokens:          10.00,
+        totalEarned:     10.00,
+        totalSpent:      0.00,
+        matchesPlayed:   0,
+        matchesWon:      0,
+        isGuest:         true,
+        isAdmin:         false,
+        epicUsername:    `GuestEpic_${guestNumber}`,
+        createdAt:       admin.firestore.FieldValue.serverTimestamp(),
+      });
+
+      await db.collection('transactions').add({
+        userId:      uid,
+        amount:      10.00,
+        type:        'bonus',
+        description: '🎁 10.00 Free Starter Tokens for Guest Tester',
+        timestamp:   admin.firestore.FieldValue.serverTimestamp(),
+      });
+
+      const token = await admin.auth().createCustomToken(uid, {
+        displayName,
+        isGuest: true,
+      });
+
+      return {
+        statusCode: 200,
+        headers:    HEADERS,
+        body:       JSON.stringify({ token, user: { uid, displayName, photoURL: null } }),
+      };
+    } catch (guestErr) {
+      console.error('Guest auth error:', guestErr);
+      return {
+        statusCode: 500,
+        headers:    HEADERS,
+        body:       JSON.stringify({ error: guestErr.message || 'Failed to create guest session' }),
+      };
+    }
+  }
+
+  const { code, redirectUri } = bodyData;
   if (!code || !redirectUri) {
     return { statusCode: 400, headers: HEADERS, body: JSON.stringify({ error: 'Missing code or redirectUri' }) };
   }

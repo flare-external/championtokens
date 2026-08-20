@@ -43,44 +43,21 @@ function signOut() {
  */
 async function signInAsGuest() {
   try {
-    const cred = await auth.signInAnonymously();
-    const user = cred.user;
-    const guestNumber = Math.floor(1000 + Math.random() * 9000);
-    const guestName = `Guest_${guestNumber}`;
+    const response = await fetch(CLOUD_FUNCTION_URL, {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({ isGuest: true }),
+    });
 
-    const userRef = db.collection('users').doc(user.uid);
-    const snap = await userRef.get();
-
-    if (!snap.exists) {
-      await userRef.set({
-        uid:             user.uid,
-        discordId:       `guest_${guestNumber}`,
-        discordUsername: guestName.toLowerCase(),
-        displayName:     guestName,
-        photoURL:        null,
-        tokens:          10.00,
-        totalEarned:     10.00,
-        totalSpent:      0.00,
-        matchesPlayed:   0,
-        matchesWon:      0,
-        isGuest:         true,
-        isAdmin:         false,
-        epicUsername:    `GuestEpic_${guestNumber}`,
-        createdAt:       firebase.firestore.FieldValue.serverTimestamp(),
-      });
-
-      // Initial free beta tokens transaction
-      await db.collection('transactions').add({
-        userId:      user.uid,
-        amount:      10.00,
-        type:        'signup_bonus',
-        description: '🎁 10.00 Free Starter Tokens for Guest Tester',
-        timestamp:   firebase.firestore.FieldValue.serverTimestamp(),
-      });
+    if (!response.ok) {
+      const err = await response.json().catch(() => ({}));
+      throw new Error(err.error || `Server error ${response.status}`);
     }
 
+    const { token } = await response.json();
+    const cred = await auth.signInWithCustomToken(token);
     window.location.href = 'dashboard';
-    return user;
+    return cred.user;
   } catch (err) {
     console.error('Guest login error:', err);
     alert('Guest login error: ' + err.message);
