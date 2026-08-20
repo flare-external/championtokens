@@ -13,9 +13,9 @@ if (!admin.apps.length) {
 
 const db = admin.firestore();
 
-// Epic Games OAuth 2.0 Credentials (from Epic Games Developer Portal: dev.epicgames.com)
-const EPIC_CLIENT_ID     = process.env.EPIC_CLIENT_ID || 'xyza7891U2d0FjPqXn4L1vR8';
-const EPIC_CLIENT_SECRET = process.env.EPIC_CLIENT_SECRET || 'secret_placeholder';
+// Epic Games OAuth 2.0 Credentials (from Epic Games Developer Portal)
+const EPIC_CLIENT_ID     = process.env.EPIC_CLIENT_ID || 'xyza78916i52N8UrLv1m41xvkgeBXfUh';
+const EPIC_CLIENT_SECRET = process.env.EPIC_CLIENT_SECRET || 'QVCOU070fXLGtGjH8IUpNe0GfPJ8Zb0pOmDcBiSNMX4';
 const EPIC_TOKEN_URL     = 'https://api.epicgames.dev/epic/oauth/v1/token';
 const EPIC_USERINFO_URL  = 'https://api.epicgames.dev/epic/id/v1/accounts';
 
@@ -74,29 +74,40 @@ exports.handler = async (event) => {
         body: tokenParams.toString(),
       });
 
-      if (tokenRes.ok) {
-        const tokenData = await tokenRes.json();
-        epicAccountId = tokenData.account_id;
+      const tokenData = await tokenRes.json();
+
+      if (tokenRes.ok && tokenData.access_token) {
+        epicAccountId = tokenData.account_id || '';
 
         // ── 2. Fetch Epic Account Profile ──────────────────────
-        const userRes = await fetch(`${EPIC_USERINFO_URL}?accountId=${epicAccountId}`, {
-          headers: { 'Authorization': `Bearer ${tokenData.access_token}` },
-        });
+        if (epicAccountId) {
+          const userRes = await fetch(`${EPIC_USERINFO_URL}?accountId=${epicAccountId}`, {
+            headers: { 'Authorization': `Bearer ${tokenData.access_token}` },
+          });
 
-        if (userRes.ok) {
-          const userData = await userRes.json();
-          const account = Array.isArray(userData) ? userData[0] : userData;
-          epicDisplayName = account.displayName || account.displayName;
+          if (userRes.ok) {
+            const userData = await userRes.json();
+            const account = Array.isArray(userData) ? userData[0] : userData;
+            epicDisplayName = account.displayName || account.displayName;
+          }
         }
+
+        if (!epicDisplayName && tokenData.displayName) {
+          epicDisplayName = tokenData.displayName;
+        }
+      } else {
+        console.warn('Epic OAuth token response:', tokenData);
       }
     } catch (e) {
-      console.warn('Epic OAuth token exchange warning:', e.message);
+      console.warn('Epic OAuth token exchange error:', e.message);
     }
 
-    // Fallback if Epic Client Credentials are in sandbox mode: extract username or code ref
+    // Fallback if DisplayName is still empty (e.g. basic account scope)
     if (!epicDisplayName) {
-      epicDisplayName = 'Epic_' + code.substring(0, 8).toUpperCase();
-      epicAccountId   = 'EPIC_' + Math.random().toString(36).substr(2, 9).toUpperCase();
+      epicDisplayName = 'EpicPlayer_' + code.substring(0, 6).toUpperCase();
+      if (!epicAccountId) {
+        epicAccountId = 'EPIC_' + Math.random().toString(36).substr(2, 9).toUpperCase();
+      }
     }
 
     // ── 3. Update User Document in Firestore ─────────────────

@@ -22,7 +22,7 @@ function signInWithDiscord() {
  * Epic will redirect back to /epic-callback?code=...
  */
 function signInWithEpic() {
-  const clientId = 'xyza7891U2d0FjPqXn4L1vR8';
+  const clientId = 'xyza78916i52N8UrLv1m41xvkgeBXfUh';
   const redirectUri = encodeURIComponent(`${window.location.origin}/epic-callback`);
   window.location.href = `https://www.epicgames.com/id/authorize?client_id=${clientId}&response_type=code&scope=basic_profile&redirect_uri=${redirectUri}`;
 }
