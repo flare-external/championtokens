@@ -666,17 +666,21 @@ async function adminForceCancelMatch(matchId, adminName) {
 
 // ── Premium Pass & Player Tipping ────────────────────────────
 
-/** Purchase Champion Premium Pass (Cost: 5.00 Tokens) */
+/** Purchase Champion Premium (Cost: 5.00 Tokens) */
 async function buyPremiumPass(uid) {
   const user = await getUser(uid);
   if (!user) throw new Error('User not found');
 
+  if (user.isPremium && user.premiumExpiresAt && user.premiumExpiresAt.toDate() > new Date()) {
+    throw new Error('You already have an active Champion Premium subscription!');
+  }
+
   if (Number(user.tokens || 0) < 5.00) {
-    throw new Error('Insufficient tokens. Premium Pass costs 5.00 Tokens ($5.00).');
+    throw new Error('Insufficient tokens. Premium costs 5.00 Tokens ($5.00).');
   }
 
   // Deduct 5.00 tokens
-  await updateTokens(uid, -5.00, 'shop', '👑 Purchased Champion Premium Pass (30 Days)');
+  await updateTokens(uid, -5.00, 'shop', '👑 Purchased Champion Premium (30 Days)');
 
   const expiresDate = new Date();
   expiresDate.setDate(expiresDate.getDate() + 30);
@@ -687,6 +691,42 @@ async function buyPremiumPass(uid) {
   });
 
   return true;
+}
+
+/** Auto-refund duplicate premium purchases if user bought it multiple times */
+async function autoRefundDuplicatePremium(uid) {
+  try {
+    const snap = await db.collection('transactions')
+      .where('userId', '==', uid)
+      .where('type', '==', 'shop')
+      .get();
+    
+    const premiumPurchases = snap.docs.filter(d => {
+      const desc = d.data().description || '';
+      return desc.includes('Premium Pass') || desc.includes('Champion Premium');
+    });
+
+    if (premiumPurchases.length > 1) {
+      const refundCheckSnap = await db.collection('transactions')
+        .where('userId', '==', uid)
+        .where('type', '==', 'refund_premium_duplicates')
+        .limit(1)
+        .get();
+
+      if (refundCheckSnap.empty) {
+        const excessCount = premiumPurchases.length - 1;
+        const refundAmount = excessCount * 5.00;
+        await updateTokens(
+          uid,
+          refundAmount,
+          'refund_premium_duplicates',
+          `↩️ Refunded ${refundAmount.toFixed(2)} Tokens for ${excessCount} duplicate Premium purchase(s)`
+        );
+      }
+    }
+  } catch (e) {
+    console.warn('autoRefundDuplicatePremium notice:', e);
+  }
 }
 
 /** Tip tokens to another player */
@@ -736,9 +776,9 @@ const SHOP_TITLES = {
 };
 
 const SHOP_BANNERS = {
-  'obsidian_flame': { id: 'obsidian_flame', name: 'Obsidian Flame', cost: 2.00, className: 'banner-obsidian-flame' },
-  'cyber_matrix':   { id: 'cyber_matrix', name: 'Cyber Matrix', cost: 2.50, className: 'banner-cyber-matrix' },
-  'golden_royale':  { id: 'golden_royale', name: 'Golden Royale', cost: 4.00, className: 'banner-golden-royale' }
+  'obsidian_flame': { id: 'obsidian_flame', name: 'Dark Fire', cost: 2.00, className: 'banner-obsidian-flame' },
+  'cyber_matrix':   { id: 'cyber_matrix', name: 'Neon Grid', cost: 2.50, className: 'banner-cyber-matrix' },
+  'golden_royale':  { id: 'golden_royale', name: 'Royal Gold', cost: 4.00, className: 'banner-golden-royale' }
 };
 
 /** Get Leaderboard Rank for a User */

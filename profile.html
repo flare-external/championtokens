@@ -176,13 +176,13 @@
         <div>
           <div class="form-group" style="margin-bottom:12px;">
             <label class="form-label">Equipped Title</label>
-            <select class="form-select" id="equip-title-select" onchange="handleEquipTitle(this.value)">
+            <select class="form-select" id="equip-title-select" onchange="handleEquipTitle(this.value); previewLiveProfileStyle();">
               <option value="">None</option>
             </select>
           </div>
           <div class="form-group">
-            <label class="form-label">Equipped Profile Banner</label>
-            <select class="form-select" id="equip-banner-select" onchange="handleEquipBanner(this.value)">
+            <label class="form-label">Equipped Banner Theme</label>
+            <select class="form-select" id="equip-banner-select" onchange="handleEquipBanner(this.value); previewLiveProfileStyle();">
               <option value="">Default (Dark Obsidian)</option>
             </select>
           </div>
@@ -191,28 +191,28 @@
         <!-- Premium Style Picker -->
         <div id="premium-studio-controls">
           <div style="font-size:0.85rem;font-weight:700;color:var(--gold-bright);margin-bottom:8px;display:flex;align-items:center;gap:6px;">
-            <i data-lucide="crown"></i> Premium Username Styling
+            <i data-lucide="crown"></i> Name Color & Animation
           </div>
           <div class="grid-2" style="gap:10px;">
             <div class="form-group">
               <label class="form-label">Name Color</label>
-              <select class="form-select" id="pref-color-select">
-                <option value="gold">Gold</option>
-                <option value="blue">Cyber Blue</option>
-                <option value="purple">Neon Purple</option>
-                <option value="green">Emerald Green</option>
-                <option value="red">Crimson Red</option>
-                <option value="rainbow">Rainbow / Aurora</option>
+              <select class="form-select" id="pref-color-select" onchange="previewLiveProfileStyle()">
+                <option value="gold">🟡 Gold</option>
+                <option value="blue">🔵 Blue</option>
+                <option value="purple">🟣 Purple</option>
+                <option value="green">🟢 Green</option>
+                <option value="red">🔴 Red</option>
+                <option value="rainbow">🌈 Rainbow</option>
               </select>
             </div>
             <div class="form-group">
               <label class="form-label">Animation</label>
-              <select class="form-select" id="pref-anim-select">
-                <option value="shimmer">Gold Shimmer</option>
-                <option value="pulse">Pulse Glow</option>
-                <option value="glow">Neon Glow</option>
-                <option value="glitch">Cyber Glitch</option>
-                <option value="none">None (Static)</option>
+              <select class="form-select" id="pref-anim-select" onchange="previewLiveProfileStyle()">
+                <option value="shimmer">✨ Shimmer</option>
+                <option value="pulse">💫 Pulse</option>
+                <option value="glow">🌟 Glow</option>
+                <option value="glitch">⚡ Glitch</option>
+                <option value="none">Static (None)</option>
               </select>
             </div>
           </div>
@@ -369,6 +369,15 @@
           signoutSec.style.display = 'none';
         }
 
+        // Check and auto-refund any duplicate premium pass clicks
+        if (isViewingSelf) {
+          try {
+            await autoRefundDuplicatePremium(user.uid);
+          } catch (e) {
+            console.warn('Refund check notice:', e);
+          }
+        }
+
         // Real-time target user data
         db.collection('users').doc(targetUid).onSnapshot(async (snap) => {
           const loadingEl = document.getElementById('page-loading');
@@ -437,7 +446,7 @@
       // Apply Custom Profile Style
       const style = data.profileStyle || {};
       const colorClass = style.color ? `usercolor-${style.color}` : (isPremium ? 'usercolor-gold' : '');
-      const animClass  = style.animation ? `anim-${style.animation}` : (isPremium ? 'anim-shimmer' : '');
+      const animClass  = (style.animation && style.animation !== 'none') ? `anim-${style.animation}` : (isPremium ? 'anim-shimmer' : '');
 
       const nameEl = document.getElementById('profile-name');
       if (nameEl) {
@@ -488,12 +497,12 @@
         }
       }
 
-      // Premium Action Button
+      // Premium Action Button (Remove "Premium Active" text completely per user request)
       const premWrap = document.getElementById('premium-action-wrap');
       if (premWrap) {
         if (isViewingSelf) {
           if (isPremium) {
-            premWrap.innerHTML = `<span class="badge-premium" style="font-size:0.75rem;padding:4px 10px;"><i data-lucide="sparkles"></i> Premium Active</span>`;
+            premWrap.innerHTML = '';
           } else {
             premWrap.innerHTML = `
               <a href="shop" class="btn btn-gold btn-sm" style="font-size:0.75rem;padding:4px 12px;">
@@ -595,6 +604,39 @@
         } else {
           premControls.style.opacity = '0.4';
           premControls.style.pointerEvents = 'none';
+        }
+      }
+    }
+
+    /** Live real-time preview of name color, animations, titles, and banners */
+    function previewLiveProfileStyle() {
+      const color = document.getElementById('pref-color-select')?.value || 'gold';
+      const anim = document.getElementById('pref-anim-select')?.value || 'shimmer';
+      const titleId = document.getElementById('equip-title-select')?.value || '';
+      const bannerId = document.getElementById('equip-banner-select')?.value || '';
+
+      const nameEl = document.getElementById('profile-name');
+      if (nameEl) {
+        const colorClass = color ? `usercolor-${color}` : '';
+        const animClass  = (anim && anim !== 'none') ? `anim-${anim}` : '';
+        nameEl.className = `${colorClass} ${animClass}`.trim();
+      }
+
+      const titleSlot = document.getElementById('profile-title-slot');
+      if (titleSlot) {
+        if (titleId && SHOP_TITLES[titleId]) {
+          const t = SHOP_TITLES[titleId];
+          titleSlot.innerHTML = `<span class="player-title-tag ${t.className}">${t.name}</span>`;
+        } else {
+          titleSlot.innerHTML = '';
+        }
+      }
+
+      const heroCard = document.getElementById('profile-hero');
+      if (heroCard) {
+        heroCard.className = 'profile-hero-card';
+        if (bannerId && SHOP_BANNERS[bannerId]) {
+          heroCard.classList.add(SHOP_BANNERS[bannerId].className);
         }
       }
     }

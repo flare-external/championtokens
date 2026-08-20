@@ -109,7 +109,7 @@
       </div>
       <div style="text-align:right;flex-shrink:0;">
         <div style="font-size:1.8rem;font-weight:900;color:var(--gold-bright);margin-bottom:6px;">5.00 Tokens</div>
-        <button class="btn btn-gold btn-lg" onclick="handleBuyPremium()">
+        <button class="btn btn-gold btn-lg" id="btn-buy-premium" onclick="handleBuyPremium()">
           <i data-lucide="crown"></i> Get Premium
         </button>
       </div>
@@ -209,13 +209,13 @@
       <i data-lucide="image"></i> Profile Banners & Themes
     </div>
     <div class="shop-grid-items" id="banners-grid">
-      <!-- Obsidian Flame -->
+      <!-- Dark Fire -->
       <div class="item-card">
         <div class="item-preview-box" style="background:linear-gradient(135deg, rgba(239,68,68,0.4) 0%, rgba(245,158,11,0.2) 100%);border-color:rgba(239,68,68,0.5);">
-          <span style="font-weight:800;font-size:0.8rem;color:#fca5a5;">🔥 Obsidian Flame</span>
+          <span style="font-weight:800;font-size:0.8rem;color:#fca5a5;">🔥 Dark Fire</span>
         </div>
         <div>
-          <div style="font-weight:800;font-size:1rem;color:#fff;">Obsidian Flame Banner</div>
+          <div style="font-weight:800;font-size:1rem;color:#fff;">Dark Fire Banner</div>
           <div style="font-size:0.75rem;color:var(--text-muted);margin-top:2px;">Fiery dark profile theme</div>
         </div>
         <div style="font-size:1.2rem;font-weight:900;color:#f87171;">2.00 Tokens</div>
@@ -224,13 +224,13 @@
         </button>
       </div>
 
-      <!-- Cyber Matrix -->
+      <!-- Neon Grid -->
       <div class="item-card">
         <div class="item-preview-box" style="background:linear-gradient(135deg, rgba(56,189,248,0.4) 0%, rgba(129,140,248,0.2) 100%);border-color:rgba(56,189,248,0.5);">
-          <span style="font-weight:800;font-size:0.8rem;color:#38bdf8;">🌐 Cyber Matrix</span>
+          <span style="font-weight:800;font-size:0.8rem;color:#38bdf8;">🌐 Neon Grid</span>
         </div>
         <div>
-          <div style="font-weight:800;font-size:1rem;color:#fff;">Cyber Matrix Banner</div>
+          <div style="font-weight:800;font-size:1rem;color:#fff;">Neon Grid Banner</div>
           <div style="font-size:0.75rem;color:var(--text-muted);margin-top:2px;">Neon cyber grid theme</div>
         </div>
         <div style="font-size:1.2rem;font-weight:900;color:#38bdf8;">2.50 Tokens</div>
@@ -239,13 +239,13 @@
         </button>
       </div>
 
-      <!-- Golden Royale -->
+      <!-- Royal Gold -->
       <div class="item-card" style="border-color:rgba(245,158,11,0.4);">
         <div class="item-preview-box" style="background:linear-gradient(135deg, rgba(245,158,11,0.45) 0%, rgba(253,230,138,0.25) 100%);border-color:rgba(245,158,11,0.6);">
-          <span style="font-weight:800;font-size:0.8rem;color:#fde68a;">👑 Golden Royale</span>
+          <span style="font-weight:800;font-size:0.8rem;color:#fde68a;">👑 Royal Gold</span>
         </div>
         <div>
-          <div style="font-weight:800;font-size:1rem;color:#fff;">Golden Royale Banner</div>
+          <div style="font-weight:800;font-size:1rem;color:#fff;">Royal Gold Banner</div>
           <div style="font-size:0.75rem;color:var(--text-muted);margin-top:2px;">Luxury radiant gold theme</div>
         </div>
         <div style="font-size:1.2rem;font-weight:900;color:var(--gold-bright);">4.00 Tokens</div>
@@ -310,6 +310,11 @@
     document.addEventListener('DOMContentLoaded', () => {
       requireAuth().then(async (user) => {
         currentUser = user;
+        try {
+          await autoRefundDuplicatePremium(user.uid);
+        } catch (e) {
+          console.warn('Refund check notice:', e);
+        }
         currentUserData = await getUser(user.uid);
         injectNav('shop');
         document.getElementById('page-loading').classList.add('hidden');
@@ -346,6 +351,14 @@
       if (!currentUserData) return;
       const unlockedTitles = currentUserData.unlockedTitles || [];
       const unlockedBanners = currentUserData.unlockedBanners || [];
+
+      // Check Premium Status
+      const premBtn = document.getElementById('btn-buy-premium');
+      if (premBtn && currentUserData.isPremium) {
+        premBtn.innerHTML = '<i data-lucide="check-circle"></i> Active (30 Days)';
+        premBtn.disabled = true;
+        premBtn.classList.replace('btn-gold', 'btn-outline');
+      }
 
       ['goated', 'average', 'the_boss'].forEach(id => {
         const btn = document.getElementById(`btn-title-${id}`);
