@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Profile & Teams — Champion Tokens</title>
+  <title>Profile & Account — Champion Tokens</title>
   <link rel="stylesheet" href="css/style.css"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
@@ -29,13 +29,34 @@
     .mh-title { font-weight: 700; font-size: 0.95rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .mh-meta  { font-size: 0.78rem; color: var(--text-muted); margin-top: 2px; }
 
+    /* Epic Games Account Box */
+    .epic-banner-card {
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.12) 0%, rgba(245, 158, 11, 0.05) 100%);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      border-radius: var(--radius-xl);
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    .epic-tag-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(56, 189, 248, 0.15);
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      color: #38bdf8;
+      border-radius: var(--radius-sm);
+      padding: 4px 12px;
+      font-weight: 800;
+      font-size: 1.1rem;
+    }
+
     /* Team Card Styling */
     .team-banner-card {
       background: linear-gradient(135deg, rgba(168, 85, 247, 0.12) 0%, rgba(245, 158, 11, 0.05) 100%);
       border: 1px solid rgba(168, 85, 247, 0.3);
       border-radius: var(--radius-xl);
       padding: 24px;
-      margin-bottom: 28px;
+      margin-bottom: 24px;
     }
     .team-roster-grid {
       display: grid;
@@ -70,7 +91,7 @@
   <div class="page-bg"></div>
   <div class="page-loading" id="page-loading">
     <div class="spinner"></div>
-    <span>Loading profile & teams…</span>
+    <span>Loading profile…</span>
   </div>
 
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
@@ -84,46 +105,58 @@
 
   <script>
     let currentUser = null;
+    let targetUid = null;
     let currentUserData = null;
-    let myTeam = null;
+    let isViewingSelf = true;
 
     requireAuth().then(async (user) => {
       currentUser = user;
       injectNav('profile');
-      document.getElementById('page-loading').classList.add('hidden');
 
-      // Real-time user data
-      db.collection('users').doc(user.uid).onSnapshot(async (snap) => {
+      const urlParams = new URLSearchParams(window.location.search);
+      targetUid = urlParams.get('uid') || user.uid;
+      isViewingSelf = targetUid === user.uid;
+
+      if (!isViewingSelf) {
+        document.getElementById('signout-section').style.display = 'none';
+      }
+
+      // Real-time target user data
+      db.collection('users').doc(targetUid).onSnapshot(async (snap) => {
+        document.getElementById('page-loading').classList.add('hidden');
         if (snap.exists) {
           currentUserData = snap.data();
           renderProfile(currentUserData);
-          await loadUserTeam();
+          renderEpicSection(currentUserData);
+          await loadUserTeam(targetUid);
+        } else {
+          showToast('User profile not found', 'error');
         }
-      }, (err) => console.warn('User profile snapshot error:', err));
+      }, (err) => {
+        console.warn('User profile snapshot error:', err);
+        document.getElementById('page-loading').classList.add('hidden');
+      });
 
       // Transactions
-      try {
-        const txs = await getUserTransactions(user.uid, 20);
-        renderTransactions(txs);
-      } catch (e) {
-        console.warn('Error loading transactions:', e);
-        renderTransactions([]);
+      if (isViewingSelf) {
+        try {
+          const txs = await getUserTransactions(user.uid, 20);
+          renderTransactions(txs);
+        } catch (e) {
+          renderTransactions([]);
+        }
+      } else {
+        document.getElementById('tx-card').style.display = 'none';
       }
 
       // Match history
-      subscribeUserMatches(user.uid, (matches) => {
+      subscribeUserMatches(targetUid, (matches) => {
         renderMatchHistory(matches.slice(0, 10));
       });
     }).catch(err => {
       console.error('Profile auth error:', err);
       document.getElementById('page-loading').classList.add('hidden');
     });
-
-    async function loadUserTeam() {
-      if (!currentUser) return;
-      myTeam = await getUserTeam(currentUser.uid);
-      renderTeamSection(myTeam);
-    }
 
     function renderProfile(data) {
       const img  = document.getElementById('profile-avatar-img');
@@ -154,11 +187,91 @@
       }
     }
 
+    // ── Epic Games / Fortnite Account Section ────────────────
+    function renderEpicSection(data) {
+      const el = document.getElementById('epic-content');
+      if (!isViewingSelf) {
+        if (data.epicUsername) {
+          el.innerHTML = `
+            <div style="display:flex;align-items:center;gap:12px;">
+              <span class="epic-tag-badge"><i data-lucide="gamepad-2"></i> ${data.epicUsername}</span>
+              <span class="chip chip-success">Verified Player</span>
+            </div>`;
+        } else {
+          el.innerHTML = `<span style="color:var(--text-muted);font-size:0.875rem;">No Epic Games account linked yet.</span>`;
+        }
+        lucide.createIcons();
+        return;
+      }
+
+      if (data.epicUsername) {
+        el.innerHTML = `
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;">
+            <div style="display:flex;align-items:center;gap:12px;">
+              <span class="epic-tag-badge"><i data-lucide="gamepad-2"></i> ${data.epicUsername}</span>
+              <span class="chip chip-success">Linked & Verified</span>
+            </div>
+            <div style="display:flex;gap:8px;">
+              <button class="btn btn-outline btn-sm" onclick="openSyncEpicModal('${data.epicUsername}')">
+                <i data-lucide="refresh-cw"></i> Sync / Change
+              </button>
+              <button class="btn btn-danger btn-sm" onclick="handleUnlinkEpic()">
+                <i data-lucide="unlink"></i> Unlink (Fee: 2.00 Tokens)
+              </button>
+            </div>
+          </div>`;
+      } else {
+        el.innerHTML = `
+          <p style="font-size:0.875rem;color:var(--text-muted);margin-bottom:14px;">
+            <strong style="color:var(--gold-bright);">Required to play:</strong> You must link your Epic Games / Fortnite username to create or join matches.
+          </p>
+          <form style="display:flex;gap:10px;max-width:440px;" onsubmit="handleLinkEpic(event)">
+            <input class="form-input" id="epic-input" placeholder="Enter Epic Games / Fortnite Username…" required style="flex:1;" />
+            <button type="submit" class="btn btn-primary btn-sm"><i data-lucide="link"></i> Link Account</button>
+          </form>`;
+      }
+      lucide.createIcons();
+    }
+
+    async function handleLinkEpic(e) {
+      e.preventDefault();
+      const name = document.getElementById('epic-input').value.trim();
+      try {
+        await linkEpicAccount(currentUser.uid, name);
+        showToast(`Epic Games account "${name}" linked successfully!`, 'success');
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
+    }
+
+    function openSyncEpicModal(current) {
+      const newName = prompt('Enter your updated Epic Games / Fortnite username to sync:', current);
+      if (!newName || !newName.trim()) return;
+      syncEpicAccount(currentUser.uid, newName.trim())
+        .then(() => showToast(`Fortnite username synced to "${newName.trim()}"!`, 'success'))
+        .catch(err => showToast(err.message, 'error'));
+    }
+
+    async function handleUnlinkEpic() {
+      if (!confirm('Unlinking your Epic Games account costs 2.00 Tokens ($2.00). Are you sure you want to unlink?')) return;
+      try {
+        await unlinkEpicAccount(currentUser.uid);
+        showToast('Epic Games account unlinked (-2.00 tokens fee deducted)', 'success');
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
+    }
+
+    // ── Teams Section ────────────────────────────────────────
+    async function loadUserTeam(uid) {
+      const team = await getUserTeam(uid);
+      renderTeamSection(team);
+    }
+
     function renderTeamSection(team) {
       const el = document.getElementById('team-content');
       if (!team) {
-        // No team state
-        el.innerHTML = `
+        el.innerHTML = isViewingSelf ? `
           <p style="font-size:0.875rem;color:var(--text-muted);margin-bottom:16px;">
             Create or join a squad team to queue for <strong>2v2 Duos</strong> and <strong>3v3 Squads</strong> matches.
           </p>
@@ -169,10 +282,9 @@
             <button class="btn btn-outline btn-sm" onclick="openJoinTeamModal()">
               <i data-lucide="log-in"></i> Join with Invite Code
             </button>
-          </div>`;
+          </div>` : `<span style="color:var(--text-muted);font-size:0.875rem;">Not currently on any squad team.</span>`;
       } else {
-        // Team exists state
-        const isOwner = team.ownerUid === currentUser.uid;
+        const isOwner = team.ownerUid === currentUser?.uid;
         const membersHTML = (team.members || []).map(m => `
           <div class="team-member-chip">
             <div class="team-member-pfp">
@@ -195,26 +307,25 @@
               <span class="badge" style="background:var(--purple);color:#fff;font-size:0.8rem;padding:4px 10px;">[${team.tag}]</span>
               <span style="font-size:1.25rem;font-weight:900;color:#fff;">${team.name}</span>
             </div>
-            <div style="display:flex;gap:8px;align-items:center;">
-              <span class="match-code-badge" title="Team Invite Code" onclick="copyTeamCode('${team.code}')" style="cursor:pointer;">
-                <i data-lucide="hash"></i>${team.code} <span style="font-size:0.7rem;opacity:0.7;">(Copy)</span>
-              </span>
-              <button class="btn btn-danger btn-sm" onclick="handleLeaveTeam('${team.id}')">
-                <i data-lucide="log-out"></i> ${isOwner ? 'Disband Team' : 'Leave Team'}
-              </button>
-            </div>
+            ${isViewingSelf ? `
+              <div style="display:flex;gap:8px;align-items:center;">
+                <span class="match-code-badge" title="Team Invite Code" onclick="copyTeamCode('${team.code}')" style="cursor:pointer;">
+                  <i data-lucide="hash"></i>${team.code} <span style="font-size:0.7rem;opacity:0.7;">(Copy)</span>
+                </span>
+                <button class="btn btn-danger btn-sm" onclick="handleLeaveTeam('${team.id}')">
+                  <i data-lucide="log-out"></i> ${isOwner ? 'Disband Team' : 'Leave Team'}
+                </button>
+              </div>` : ''}
           </div>
           <div style="font-size:0.8rem;color:var(--text-muted);">Roster (${team.members?.length || 1}/6 Players):</div>
-          <div class="team-roster-grid">
-            ${membersHTML}
-          </div>`;
+          <div class="team-roster-grid">${membersHTML}</div>`;
       }
       lucide.createIcons();
     }
 
     function copyTeamCode(code) {
       if (navigator.clipboard) {
-        navigator.clipboard.writeText(code).then(() => showToast(`Team Code "${code}" copied to clipboard! Share it with your teammates.`, 'info'));
+        navigator.clipboard.writeText(code).then(() => showToast(`Team Code "${code}" copied to clipboard! Share it with teammates.`, 'info'));
       }
     }
 
@@ -223,7 +334,7 @@
       try {
         await leaveTeam(teamId, currentUser.uid);
         showToast('You left the team', 'success');
-        await loadUserTeam();
+        await loadUserTeam(currentUser.uid);
       } catch (err) {
         showToast(err.message, 'error');
       }
@@ -244,7 +355,7 @@
         await createTeam(currentUserData || currentUser, { name, tag });
         showToast(`Team "${name}" created!`, 'success');
         closeCreateTeamModal();
-        await loadUserTeam();
+        await loadUserTeam(currentUser.uid);
       } catch (err) {
         showToast(err.message, 'error');
       } finally {
@@ -261,7 +372,7 @@
         await joinTeamByCode(code, currentUserData || currentUser);
         showToast('Joined team successfully!', 'success');
         closeJoinTeamModal();
-        await loadUserTeam();
+        await loadUserTeam(currentUser.uid);
       } catch (err) {
         showToast(err.message, 'error');
       } finally {
@@ -303,8 +414,8 @@
         return;
       }
       el.innerHTML = matches.map(m => {
-        const isWinner = m.winner?.uid === currentUser?.uid;
-        const isHost   = m.createdBy === currentUser?.uid;
+        const isWinner = m.winner?.uid === targetUid;
+        const isHost   = m.createdBy === targetUid;
         const size     = m.size || '1v1';
         const mode     = m.mode || 'Realistic';
         const winPrize = Math.round(Number(m.prizePool || m.wager) * 0.90 * 100) / 100;
@@ -369,6 +480,16 @@
       </div>
     </div>
 
+    <!-- Epic Games / Fortnite Username Card -->
+    <div class="epic-banner-card">
+      <div class="section-title" style="margin-bottom:10px;color:#fff;">
+        <i data-lucide="gamepad-2" style="color:#38bdf8;"></i> Epic Games / Fortnite Account
+      </div>
+      <div id="epic-content">
+        <div class="spinner" style="margin:16px 0;"></div>
+      </div>
+    </div>
+
     <!-- Team Management Section (for 2v2 / 3v3) -->
     <div class="team-banner-card">
       <div class="section-title" style="margin-bottom:8px;color:#fff;">
@@ -409,7 +530,7 @@
 
     <!-- Two-col: transactions + match history -->
     <div class="grid-2" style="align-items:start;gap:20px;">
-      <div class="card">
+      <div class="card" id="tx-card">
         <div class="section-title" style="margin-bottom:14px;">
           <i data-lucide="activity"></i> Transaction History
         </div>
@@ -429,7 +550,7 @@
     </div>
 
     <!-- Sign out -->
-    <div style="margin-top:32px;text-align:center;">
+    <div id="signout-section" style="margin-top:32px;text-align:center;">
       <button class="btn btn-danger" onclick="handleSignOut()">
         <i data-lucide="log-out"></i> Sign Out
       </button>

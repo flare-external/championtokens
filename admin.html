@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Panel — Champion Tokens</title>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <style>
+    .admin-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      color: var(--red);
+      border-radius: var(--radius-sm);
+      padding: 4px 10px;
+      font-weight: 800;
+      font-size: 0.8rem;
+    }
+    .ticket-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      transition: border-color 0.2s;
+    }
+    .ticket-card.open {
+      border-color: rgba(239, 68, 68, 0.4);
+      background: rgba(239, 68, 68, 0.03);
+    }
+    .ticket-card.resolved {
+      border-color: rgba(16, 185, 129, 0.3);
+      opacity: 0.75;
+    }
+  </style>
+</head>
+<body>
+  <div class="page-bg"></div>
+  <div class="page-loading" id="page-loading">
+    <div class="spinner"></div>
+    <span>Authenticating Administrator…</span>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script src="js/firebase-config.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/db.js"></script>
+  <script src="js/nav.js"></script>
+
+  <script>
+    let currentUser = null;
+    let currentUserData = null;
+
+    requireAuth().then(async (user) => {
+      currentUser = user;
+      currentUserData = await getUser(user.uid);
+
+      // Verify admin status
+      if (!isAdminUser(user, currentUserData)) {
+        document.getElementById('page-loading').innerHTML = `
+          <div style="text-align:center;padding:20px;">
+            <i data-lucide="shield-x" style="width:48px;height:48px;color:var(--red);margin-bottom:12px;"></i>
+            <h2 style="color:var(--red);">Access Denied</h2>
+            <p style="color:var(--text-muted);margin:8px 0 16px;">This panel is restricted to system administrators only.</p>
+            <a href="dashboard" class="btn btn-primary btn-sm">Return to Dashboard</a>
+          </div>`;
+        lucide.createIcons();
+        return;
+      }
+
+      injectNav('admin');
+      document.getElementById('page-loading').classList.add('hidden');
+
+      // Real-time Staff Calls
+      subscribeStaffCalls();
+      // Real-time Active Matches
+      subscribeActiveMatches();
+    }).catch(err => {
+      console.error(err);
+      window.location.href = '/';
+    });
+
+    // ── Staff Calls Listener ─────────────────────────────────
+    function subscribeStaffCalls() {
+      db.collection('staff_calls')
+        .orderBy('timestamp', 'desc')
+        .limit(30)
+        .onSnapshot((snap) => {
+          const calls = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+          renderStaffCalls(calls);
+        }, (err) => {
+          console.warn('Staff calls error:', err);
+          document.getElementById('staff-calls-list').innerHTML = `<div class="empty-state">No staff calls logged.</div>`;
+        });
+    }
+
+    function renderStaffCalls(calls) {
+      const container = document.getElementById('staff-calls-list');
+      const openCalls = calls.filter(c => c.status !== 'resolved');
+      document.getElementById('open-calls-count').textContent = openCalls.length;
+
+      if (!calls.length) {
+        container.innerHTML = `<div class="empty-state"><i data-lucide="shield-check"></i><p>No active staff calls. All quiet!</p></div>`;
+        lucide.createIcons();
+        return;
+      }
+
+      container.innerHTML = calls.map(c => {
+        const isOpen = c.status !== 'resolved';
+        return `
+          <div class="ticket-card ${isOpen ? 'open' : 'resolved'}">
+            <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+              <div style="display:flex;align-items:center;gap:8px;">
+                <span class="badge ${isOpen ? 'badge-waiting' : 'badge-completed'}" style="${isOpen ? 'background:rgba(239,68,68,0.2);color:var(--red);border-color:rgba(239,68,68,0.4);' : ''}">
+                  ${isOpen ? '🚨 OPEN TICKET' : '✅ RESOLVED'}
+                </span>
+                <span style="font-weight:800;font-size:1rem;color:#fff;">${c.reason}</span>
+              </div>
+              <span style="font-size:0.75rem;color:var(--text-faint);">${formatTime(c.timestamp)}</span>
+            </div>
+
+            <div style="font-size:0.85rem;color:var(--text-muted);line-height:1.4;">
+              ${c.details ? `<div><strong>Details:</strong> "${escapeHtml(c.details)}"</div>` : ''}
+              <div style="margin-top:4px;">
+                <strong>Reported By:</strong> ${c.calledByName} (UID: <span style="font-family:monospace;font-size:0.75rem;">${c.calledByUid?.substring(0,10)}</span>)
+                · <strong>Match:</strong> ${c.matchTitle || 'Match'} (${c.matchCode})
+              </div>
+              ${c.resolvedBy ? `<div style="margin-top:2px;color:var(--green);"><strong>Resolved by:</strong> ${c.resolvedBy} ${c.resolutionNotes ? `("${escapeHtml(c.resolutionNotes)}")` : ''}</div>` : ''}
+            </div>
+
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px;">
+              <a href="match?id=${c.matchId}" target="_blank" class="btn btn-outline btn-sm">
+                <i data-lucide="external-link"></i> Inspect Match Arena
+              </a>
+              ${isOpen ? `
+                <button class="btn btn-primary btn-sm" onclick="handleResolveTicket('${c.id}')">
+                  <i data-lucide="check"></i> Mark Resolved
+                </button>
+                <button class="btn btn-danger btn-sm" onclick="handleAdminCancelMatch('${c.matchId}')">
+                  <i data-lucide="slash"></i> Force Cancel & Refund
+                </button>` : ''}
+            </div>
+          </div>`;
+      }).join('');
+      lucide.createIcons();
+    }
+
+    async function handleResolveTicket(callId) {
+      const notes = prompt('Enter resolution notes (optional):', 'Issue verified and resolved');
+      if (notes === null) return;
+      try {
+        await resolveStaffCall(callId, currentUserData?.displayName || 'Admin', notes);
+        showToast('Ticket marked as resolved!', 'success');
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
+    }
+
+    async function handleAdminCancelMatch(matchId) {
+      if (!confirm('Force cancel this match and refund all players?')) return;
+      try {
+        await adminForceCancelMatch(matchId, currentUserData?.displayName || 'Admin');
+        showToast('Match force cancelled and players refunded!', 'success');
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
+    }
+
+    // ── Active Matches ───────────────────────────────────────
+    function subscribeActiveMatches() {
+      db.collection('matches')
+        .where('status', 'in', ['waiting', 'in_progress'])
+        .limit(20)
+        .onSnapshot((snap) => {
+          const list = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+          document.getElementById('active-matches-count').textContent = list.length;
+          renderActiveMatches(list);
+        });
+    }
+
+    function renderActiveMatches(matches) {
+      const container = document.getElementById('active-matches-list');
+      if (!matches.length) {
+        container.innerHTML = `<div class="empty-state"><p>No live matches currently running.</p></div>`;
+        return;
+      }
+      container.innerHTML = matches.map(m => `
+        <div class="mh-card" style="margin-bottom:8px;">
+          <div style="flex:1;">
+            <div style="font-weight:700;font-size:0.95rem;">${m.title} (${m.code})</div>
+            <div style="font-size:0.75rem;color:var(--text-muted);">
+              Host: ${m.hostName} · ${formatTokens(m.wager)} wager · ${m.players?.length || 1}/${m.maxPlayers} players
+            </div>
+          </div>
+          <div style="display:flex;gap:6px;">
+            <a href="match?id=${m.id}" target="_blank" class="btn btn-outline btn-sm">Inspect</a>
+            <button class="btn btn-danger btn-sm" onclick="handleAdminCancelMatch('${m.id}')">Cancel</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // ── Token Adjustment Tool ────────────────────────────────
+    async function handleAdjustTokens(e) {
+      e.preventDefault();
+      const uid = document.getElementById('adjust-uid-input').value.trim();
+      const amount = parseFloat(document.getElementById('adjust-amount-input').value);
+      const reason = document.getElementById('adjust-reason-input').value.trim() || 'Staff action';
+      const btn = document.getElementById('adjust-btn');
+
+      if (!uid || isNaN(amount)) return;
+      btn.disabled = true;
+
+      try {
+        await adminAdjustTokens(uid, amount, reason);
+        showToast(`Successfully adjusted ${amount > 0 ? '+' : ''}${amount} tokens for user!`, 'success');
+        document.getElementById('adjust-uid-input').value = '';
+        document.getElementById('adjust-amount-input').value = '';
+      } catch (err) {
+        showToast(err.message, 'error');
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
+    function escapeHtml(str) {
+      return str ? str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;") : '';
+    }
+  </script>
+
+  <main class="page-wrap">
+    <!-- Admin Header -->
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-bottom:28px;">
+      <div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <h1 style="font-size:1.9rem;">Staff & Admin Dashboard</h1>
+          <span class="admin-badge"><i data-lucide="shield-check"></i> System Administrator</span>
+        </div>
+        <p style="color:var(--text-muted);font-size:0.875rem;margin-top:4px;">
+          Moderate live matches, resolve player dispute tickets, and manage token accounts.
+        </p>
+      </div>
+    </div>
+
+    <!-- Quick Stats -->
+    <div class="grid-3" style="margin-bottom:28px;">
+      <div class="card stat-card">
+        <div class="stat-icon stat-icon--accent"><i data-lucide="shield-alert"></i></div>
+        <div class="stat-label">Open Staff Calls</div>
+        <div class="stat-value" id="open-calls-count" style="color:var(--red);">0</div>
+      </div>
+      <div class="card stat-card">
+        <div class="stat-icon stat-icon--gold"><i data-lucide="swords"></i></div>
+        <div class="stat-label">Live Active Matches</div>
+        <div class="stat-value stat-value--gold" id="active-matches-count">0</div>
+      </div>
+      <div class="card stat-card">
+        <div class="stat-icon stat-icon--green"><i data-lucide="check-circle"></i></div>
+        <div class="stat-label">System Status</div>
+        <div class="stat-value" style="color:var(--green);font-size:1.3rem;">Operational</div>
+      </div>
+    </div>
+
+    <!-- Two-col: Staff Calls List + Tools -->
+    <div class="grid-2" style="align-items:start;gap:24px;">
+      <!-- Staff Calls Stream -->
+      <div>
+        <div class="section-title" style="margin-bottom:14px;">
+          <i data-lucide="shield-alert"></i> Staff Calls & Dispute Queue
+        </div>
+        <div id="staff-calls-list" style="display:flex;flex-direction:column;gap:14px;">
+          <div class="empty-state"><div class="spinner" style="margin:0 auto;"></div></div>
+        </div>
+      </div>
+
+      <!-- Right Column: Admin Tools & Live Matches -->
+      <div style="display:flex;flex-direction:column;gap:24px;">
+        <!-- Token Adjustment Tool -->
+        <div class="card">
+          <div class="section-title" style="margin-bottom:12px;">
+            <i data-lucide="coins"></i> User Token Adjuster
+          </div>
+          <form onsubmit="handleAdjustTokens(event)" style="display:flex;flex-direction:column;gap:10px;">
+            <div class="form-group">
+              <label class="form-label">User UID / Discord ID</label>
+              <input class="form-input" id="adjust-uid-input" placeholder="e.g. discord:1121188319410278420" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Amount (Positive to grant, Negative to deduct)</label>
+              <input class="form-input" id="adjust-amount-input" type="number" step="0.25" placeholder="e.g. 10.00 or -5.00" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Reason / Notes</label>
+              <input class="form-input" id="adjust-reason-input" placeholder="e.g. Match compensation / manual reward" />
+            </div>
+            <button type="submit" class="btn btn-primary btn-sm" id="adjust-btn" style="margin-top:4px;">
+              <i data-lucide="zap"></i> Apply Adjustment
+            </button>
+          </form>
+        </div>
+
+        <!-- Live Matches Monitor -->
+        <div class="card">
+          <div class="section-title" style="margin-bottom:12px;">
+            <i data-lucide="swords"></i> Live Matches Monitor
+          </div>
+          <div id="active-matches-list">
+            <div class="spinner" style="margin:10px auto;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

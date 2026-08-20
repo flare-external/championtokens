@@ -208,7 +208,13 @@
 
     async function handleJoin(code, wager) {
       currentUserData = await getUser(currentUser.uid);
-      if (!currentUserData || Number(currentUserData.tokens || 0) < Number(wager)) {
+      if (!currentUserData?.epicUsername) {
+        if (confirm('You must link your Epic Games / Fortnite username before entering matches! Go to Profile to link now?')) {
+          window.location.href = 'profile';
+        }
+        return;
+      }
+      if (Number(currentUserData.tokens || 0) < Number(wager)) {
         showToast(`Insufficient tokens (Need ${formatTokens(wager)} tokens)`, 'error');
         return;
       }
@@ -219,9 +225,9 @@
       currentUserData = await getUser(currentUser.uid);
       try {
         await joinMatch(code, currentUserData);
-        showToast('Joined match! Good luck in the arena!', 'success');
+        showToast('Joined match! Opening room…', 'success');
         document.getElementById('join-code-input').value = '';
-        currentUserData = await getUser(currentUser.uid);
+        setTimeout(() => window.location.href = `match?code=${code}`, 500);
       } catch (err) {
         showToast(err.message, 'error');
       }
@@ -237,6 +243,12 @@
 
     // ── Create Match Modal ────────────────────────────────────
     function openCreateModal() {
+      if (!currentUserData?.epicUsername) {
+        if (confirm('You must link your Epic Games / Fortnite username before creating matches! Go to Profile to link now?')) {
+          window.location.href = 'profile';
+        }
+        return;
+      }
       document.getElementById('create-modal').classList.add('open');
       updateCreatePreview();
     }
@@ -275,6 +287,10 @@
       }
 
       currentUserData = await getUser(currentUser.uid);
+      if (!currentUserData?.epicUsername) {
+        showToast('Please link your Epic Games username in Profile first', 'error');
+        return;
+      }
       if (Number(currentUserData.tokens || 0) < wager) {
         showToast(`Not enough tokens to wager (You have ${formatTokens(currentUserData.tokens)})`, 'error');
         return;
@@ -287,7 +303,6 @@
         const { id, code, title } = await createMatch(currentUserData, { size, mode, wager });
         showToast(`Match "${title}" created! Opening room…`, 'success');
         closeCreateModal();
-        // Immediately navigate to the created match room!
         setTimeout(() => {
           window.location.href = `match?id=${id}`;
         }, 500);

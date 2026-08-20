@@ -511,3 +511,90 @@ async function leaveTeam(teamId, uid) {
   }
 }
 
+// ── Epic Games / Fortnite Account Linking ────────────────────
+
+/** Link or update Epic Games username */
+async function linkEpicAccount(uid, epicUsername) {
+  const cleanUsername = epicUsername.trim();
+  if (!cleanUsername || cleanUsername.length < 2) {
+    throw new Error('Please enter a valid Epic Games / Fortnite username');
+  }
+
+  await db.collection('users').doc(uid).update({
+    epicUsername: cleanUsername,
+    epicLinkedAt: firebase.firestore.FieldValue.serverTimestamp(),
+  });
+
+  return cleanUsername;
+}
+
+/** Sync/re-verify Epic Games username */
+async function syncEpicAccount(uid, epicUsername) {
+  return linkEpicAccount(uid, epicUsername);
+}
+
+/**
+ * Unlink Epic Games account (Requires 2.00 Tokens fee)
+ */
+async function unlinkEpicAccount(uid) {
+  const user = await getUser(uid);
+  if (!user || !user.epicUsername) throw new Error('No Epic Games account is linked');
+
+  if (Number(user.tokens || 0) < 2.00) {
+    throw new Error('Unlinking requires 2.00 Tokens ($2.00). Please add tokens to your balance.');
+  }
+
+  // Deduct 2.00 tokens fee
+  await updateTokens(uid, -2.00, 'admin', 'Unlinked Epic Games Account (-2.00 Tokens Fee)');
+
+  await db.collection('users').doc(uid).update({
+    epicUsername: firebase.firestore.FieldValue.delete(),
+    epicLinkedAt: firebase.firestore.FieldValue.delete(),
+  });
+
+  return true;
+}
+
+// ── Admin Actions ────────────────────────────────────────────
+
+/** Mark a staff call as resolved */
+async function resolveStaffCall(callId, adminName, resolutionNotes = '') {
+  await db.collection('staff_calls').doc(callId).update({
+    status:          'resolved',
+    resolvedBy:      adminName,
+    resolutionNotes: resolutionNotes.trim(),
+    resolvedAt:      firebase.firestore.FieldValue.serverTimestamp(),
+  });
+}
+
+/** Admin grant or deduct tokens to any user */
+async function adminAdjustTokens(targetUid, amount, reason) {
+  const num = Number(amount);
+  if (isNaN(num)) throw new Error('Invalid token amount');
+  await updateTokens(targetUid, num, 'admin', `⚡ Admin adjustment: ${reason}`);
+}
+
+/** Admin force cancel a match and refund players */
+async function adminForceCancelMatch(matchId, adminName) {
+  const matchRef = db.collection('matches').doc(matchId);
+  const snap = await matchRef.get();
+  if (!snap.exists) throw new Error('Match not found');
+
+  const match = snap.data();
+  const wager = Number(match.wager || 0);
+
+  if (match.players && match.players.length > 0) {
+    const refundPromises = match.players.map(p =>
+      updateTokens(p.uid, wager, 'refund', `🛡️ Admin (${adminName}) cancelled match — "${match.title}" refund`)
+    );
+    await Promise.all(refundPromises);
+  }
+
+  await matchRef.update({
+    status:      'cancelled',
+    cancelledBy: adminName,
+    completedAt: firebase.firestore.FieldValue.serverTimestamp(),
+  });
+}
+
+

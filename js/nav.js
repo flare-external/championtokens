@@ -72,8 +72,8 @@ function injectNav(activePage = '') {
   injectFloatingIcons();
   lucide.createIcons();
 
-  // Populate balance + avatar from Firestore in real-time
-  auth.onAuthStateChanged((user) => {
+  // Populate balance + avatar + admin link from Firestore in real-time
+  auth.onAuthStateChanged(async (user) => {
     if (!user) return;
     db.collection('users').doc(user.uid).onSnapshot((snap) => {
       if (!snap.exists) return;
@@ -90,6 +90,23 @@ function injectNav(activePage = '') {
         img.src = data.photoURL;
         img.style.display = 'block';
         icon.style.display = 'none';
+      }
+
+      // Check Admin status and inject Admin link if admin
+      if (typeof isAdminUser === 'function' && isAdminUser(user, data)) {
+        if (!document.getElementById('nav-admin-link')) {
+          const linksContainer = document.querySelector('.ct-nav__links');
+          if (linksContainer) {
+            const adminLink = document.createElement('a');
+            adminLink.id = 'nav-admin-link';
+            adminLink.href = 'admin';
+            adminLink.className = `nav-link${activePage === 'admin' ? ' active' : ''}`;
+            adminLink.style.color = 'var(--red)';
+            adminLink.innerHTML = `<i data-lucide="shield-alert"></i><span>Admin Panel</span>`;
+            linksContainer.appendChild(adminLink);
+            lucide.createIcons();
+          }
+        }
       }
     });
   });

@@ -69,10 +69,23 @@ function requireAuth(redirectTo = 'index.html') {
   });
 }
 
+/** Admin Discord IDs list */
+const ADMIN_DISCORD_IDS = ['1121188319410278420'];
+
+/**
+ * Check if the given user is an administrator
+ */
+function isAdminUser(user, userData = null) {
+  if (!user && !userData) return false;
+  const uid = user?.uid || userData?.uid || '';
+  const discordId = userData?.discordId || uid.replace('discord:', '');
+  return ADMIN_DISCORD_IDS.includes(discordId) || userData?.isAdmin === true;
+}
+
 /**
  * Redirect already-signed-in users away from the landing page.
  */
-function redirectIfAuthed(redirectTo = 'dashboard.html') {
+function redirectIfAuthed(redirectTo = 'dashboard') {
   auth.onAuthStateChanged((user) => {
     if (user) window.location.href = redirectTo;
   });
