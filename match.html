@@ -14,7 +14,7 @@
       justify-content: space-between;
       flex-wrap: wrap;
       gap: 16px;
-      margin-bottom: 24px;
+      margin-bottom: 20px;
     }
     .match-id-pill {
       display: inline-flex;
@@ -28,6 +28,32 @@
       font-family: monospace;
       color: var(--text-muted);
     }
+
+    /* 30-Minute Timer Bar */
+    .timer-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 20px;
+      background: rgba(245, 158, 11, 0.08);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      border-radius: var(--radius-md);
+      margin-bottom: 20px;
+      font-size: 0.875rem;
+      color: var(--gold-light);
+    }
+    .timer-clock {
+      font-family: 'Courier New', monospace;
+      font-size: 1.15rem;
+      font-weight: 900;
+      color: var(--gold-bright);
+      background: rgba(0, 0, 0, 0.4);
+      padding: 4px 12px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-bright);
+    }
+
     .match-banner {
       background: linear-gradient(135deg, rgba(245, 158, 11, 0.12) 0%, rgba(217, 119, 6, 0.04) 100%);
       border: 1px solid rgba(245, 158, 11, 0.3);
@@ -41,9 +67,7 @@
       margin-bottom: 28px;
       box-shadow: 0 0 35px rgba(245, 158, 11, 0.1);
     }
-    .prize-highlight {
-      text-align: right;
-    }
+    .prize-highlight { text-align: right; }
     .prize-highlight-amount {
       font-size: 2.4rem;
       font-weight: 900;
@@ -52,9 +76,23 @@
       text-shadow: 0 0 20px var(--gold-glow);
     }
 
+    /* Ready Up Card */
+    .ready-banner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+      padding: 20px 24px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-bright);
+      border-radius: var(--radius-lg);
+      margin-bottom: 28px;
+    }
+
     .slots-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 16px;
       margin-bottom: 28px;
     }
@@ -73,13 +111,17 @@
       border-color: rgba(245, 158, 11, 0.35);
       background: var(--bg-card-hover);
     }
+    .slot-card.hidden-opponent {
+      border-color: rgba(168, 85, 247, 0.35);
+      background: rgba(168, 85, 247, 0.05);
+    }
     .slot-card.empty {
       border-style: dashed;
       opacity: 0.65;
     }
     .slot-avatar {
-      width: 52px;
-      height: 52px;
+      width: 54px;
+      height: 54px;
       border-radius: 50%;
       background: var(--bg-card-hover);
       border: 2px solid var(--border-bright);
@@ -87,13 +129,18 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.2rem;
-      font-weight: 800;
+      font-size: 1.25rem;
+      font-weight: 900;
       color: var(--text-muted);
       flex-shrink: 0;
     }
     .slot-avatar img { width: 100%; height: 100%; object-fit: cover; }
     .slot-avatar.host { border-color: var(--gold-bright); box-shadow: 0 0 15px var(--gold-glow); }
+    .slot-avatar.anonymous {
+      background: rgba(168, 85, 247, 0.15);
+      border-color: rgba(168, 85, 247, 0.4);
+      color: #c084fc;
+    }
 
     /* Match Chat */
     .chat-box {
@@ -119,10 +166,7 @@
       gap: 2px;
       max-width: 80%;
     }
-    .chat-msg.mine {
-      align-self: flex-end;
-      text-align: right;
-    }
+    .chat-msg.mine { align-self: flex-end; text-align: right; }
     .chat-sender { font-size: 0.72rem; color: var(--gold-bright); font-weight: 700; }
     .chat-bubble {
       background: var(--bg-card);
@@ -183,13 +227,13 @@
     let currentUserData = null;
     let currentMatch = null;
     let matchId = null;
+    let timerInterval = null;
 
     requireAuth().then(async (user) => {
       currentUser = user;
       currentUserData = await getUser(user.uid);
       injectNav('matches');
 
-      // Get match ID from URL parameter (e.g. ?id=xyz or ?code=ABCDEF)
       const urlParams = new URLSearchParams(window.location.search);
       matchId = urlParams.get('id');
       const code = urlParams.get('code');
@@ -223,12 +267,13 @@
         }
         currentMatch = { id: doc.id, ...doc.data() };
         renderMatchRoom(currentMatch);
+        startTimerCountdown(currentMatch);
       }, (err) => {
         console.error('Match listener error:', err);
         document.getElementById('page-loading').classList.add('hidden');
       });
 
-      // Listen to lobby chat messages
+      // Lobby Chat
       db.collection('matches').doc(id).collection('messages')
         .orderBy('timestamp', 'asc')
         .limit(50)
@@ -236,7 +281,7 @@
           renderChat(snap.docs.map(d => ({ id: d.id, ...d.data() })));
         });
 
-      // Check staff alerts
+      // Staff Alerts
       db.collection('staff_calls').where('matchId', '==', id).onSnapshot((snap) => {
         const banner = document.getElementById('staff-banner');
         if (!snap.empty) {
@@ -250,6 +295,42 @@
       });
     }
 
+    function startTimerCountdown(match) {
+      if (timerInterval) clearInterval(timerInterval);
+
+      const clockEl = document.getElementById('timer-clock');
+      const timerBar = document.getElementById('timer-bar');
+
+      if (match.status !== 'waiting') {
+        timerBar.style.display = 'none';
+        return;
+      }
+
+      timerBar.style.display = 'flex';
+
+      function updateClock() {
+        if (!match.expiresAt) {
+          clockEl.textContent = '30:00';
+          return;
+        }
+        const expTime = match.expiresAt.toDate().getTime();
+        const diffMs = expTime - Date.now();
+
+        if (diffMs <= 0) {
+          clockEl.textContent = '00:00 (Expired)';
+          clearInterval(timerInterval);
+          return;
+        }
+
+        const mins = Math.floor(diffMs / 60000);
+        const secs = Math.floor((diffMs % 60000) / 1000);
+        clockEl.textContent = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+      }
+
+      updateClock();
+      timerInterval = setInterval(updateClock, 1000);
+    }
+
     function renderMatchRoom(match) {
       const size = match.size || '1v1';
       const mode = match.mode || 'Realistic';
@@ -258,6 +339,7 @@
       const isHost = match.createdBy === currentUser?.uid;
       const alreadyIn = players.some(p => p.uid === currentUser?.uid);
       const isFull = players.length >= maxPlayers;
+      const isMatchStarted = match.status === 'in_progress' || match.status === 'completed';
       const prize = Math.round(Number(match.prizePool || match.wager) * 0.90 * 100) / 100;
 
       // Header info
@@ -276,7 +358,30 @@
       document.getElementById('banner-pool').textContent = `${formatTokens(match.prizePool)} Tokens`;
       document.getElementById('banner-prize').textContent = `${formatTokens(prize)} Tokens`;
 
-      // Render Player Slots
+      // Ready-Up Banner (if user is in match and match is not started yet)
+      const readyBanner = document.getElementById('ready-banner');
+      if (alreadyIn && match.status === 'waiting') {
+        const mySlot = players.find(p => p.uid === currentUser?.uid);
+        const amIReady = !!mySlot?.ready;
+        readyBanner.style.display = 'flex';
+        readyBanner.innerHTML = `
+          <div>
+            <div style="font-weight:800;font-size:1.05rem;color:#fff;display:flex;align-items:center;gap:8px;">
+              <i data-lucide="${amIReady ? 'check-circle' : 'clock'}" style="color:${amIReady ? 'var(--green)' : 'var(--gold-bright)'};"></i>
+              ${amIReady ? 'You are READY! Waiting for opponent…' : 'Match Queue: Click Ready Up to start!'}
+            </div>
+            <div style="font-size:0.8rem;color:var(--text-muted);margin-top:2px;">
+              Opponent identities and Epic usernames are locked until BOTH players click Ready.
+            </div>
+          </div>
+          <button class="btn ${amIReady ? 'btn-outline' : 'btn-primary'} btn-lg" onclick="handleReadyToggle(${!amIReady})">
+            <i data-lucide="${amIReady ? 'x' : 'check'}"></i> ${amIReady ? 'Cancel Ready' : 'Ready Up Now'}
+          </button>`;
+      } else {
+        readyBanner.style.display = 'none';
+      }
+
+      // Render Player Slots (Blind Opponent Feature)
       const slotsContainer = document.getElementById('slots-grid');
       let slotsHTML = '';
 
@@ -285,22 +390,44 @@
         if (player) {
           const isPlayerHost = player.isHost || player.uid === match.createdBy;
           const isMe = player.uid === currentUser?.uid;
-          slotsHTML += `
-            <div class="slot-card filled">
-              <div class="slot-avatar ${isPlayerHost ? 'host' : ''}">
-                ${player.photoURL ? `<img src="${player.photoURL}" onerror="this.style.display='none'"/>` : player.displayName?.charAt(0)}
-              </div>
-              <div style="flex:1;min-width:0;">
-                <div style="font-weight:800;font-size:0.95rem;display:flex;align-items:center;gap:6px;">
-                  <span>${player.displayName}</span>
-                  ${isPlayerHost ? '<span class="badge badge-waiting" style="padding:1px 6px;font-size:0.65rem;">HOST</span>' : ''}
-                  ${isMe ? '<span style="color:var(--gold-bright);font-size:0.75rem;">(You)</span>' : ''}
+          const isReady = !!player.ready;
+
+          // If match hasn't started and it's NOT me -> HIDE OPPONENT INFO
+          const hideOpponent = !isMatchStarted && !isMe;
+
+          if (hideOpponent) {
+            slotsHTML += `
+              <div class="slot-card hidden-opponent">
+                <div class="slot-avatar anonymous">
+                  <i data-lucide="lock" style="width:24px;height:24px;"></i>
                 </div>
-                <div style="font-size:0.75rem;color:var(--text-muted);margin-top:2px;">
-                  Slot #${i+1} · Ready
+                <div style="flex:1;min-width:0;">
+                  <div style="font-weight:800;font-size:0.95rem;display:flex;align-items:center;gap:6px;">
+                    <span style="color:#c084fc;">Opponent #${i+1} [Hidden]</span>
+                  </div>
+                  <div style="font-size:0.75rem;color:var(--text-muted);margin-top:2px;">
+                    ${isReady ? '✅ <span style="color:var(--green);font-weight:700;">READY</span>' : '⏳ Waiting to Ready Up…'}
+                  </div>
                 </div>
-              </div>
-            </div>`;
+              </div>`;
+          } else {
+            slotsHTML += `
+              <div class="slot-card filled">
+                <div class="slot-avatar ${isPlayerHost ? 'host' : ''}">
+                  ${player.photoURL ? `<img src="${player.photoURL}" onerror="this.style.display='none'"/>` : player.displayName?.charAt(0)}
+                </div>
+                <div style="flex:1;min-width:0;">
+                  <div style="font-weight:800;font-size:0.95rem;display:flex;align-items:center;gap:6px;">
+                    <span>${player.displayName}</span>
+                    ${isPlayerHost ? '<span class="badge badge-waiting" style="padding:1px 6px;font-size:0.65rem;">HOST</span>' : ''}
+                    ${isMe ? '<span style="color:var(--gold-bright);font-size:0.75rem;">(You)</span>' : ''}
+                  </div>
+                  <div style="font-size:0.75rem;color:var(--text-muted);margin-top:2px;">
+                    ${isReady ? '✅ <span style="color:var(--green);font-weight:700;">READY</span>' : '⏳ Not Ready'}
+                  </div>
+                </div>
+              </div>`;
+          }
         } else {
           slotsHTML += `
             <div class="slot-card empty">
@@ -333,7 +460,22 @@
           </button>`;
       }
 
-      if (isHost && match.status !== 'completed') {
+      // Leave or Cancel with Full Refund (only when match is not finished)
+      if (alreadyIn && match.status === 'waiting') {
+        if (isHost) {
+          actionsHTML += `
+            <button class="btn btn-danger" onclick="handleLeaveOrCancel()">
+              <i data-lucide="x-circle"></i> Cancel Match (Refund $${formatTokens(match.wager)})
+            </button>`;
+        } else {
+          actionsHTML += `
+            <button class="btn btn-danger" onclick="handleLeaveOrCancel()">
+              <i data-lucide="log-out"></i> Leave Match (Refund $${formatTokens(match.wager)})
+            </button>`;
+        }
+      }
+
+      if (isHost && isMatchStarted && match.status !== 'completed') {
         actionsHTML += `
           <button class="btn btn-gold" onclick="openDeclareModal()">
             <i data-lucide="trophy"></i> Declare Winner
@@ -342,6 +484,33 @@
 
       actionsContainer.innerHTML = actionsHTML;
       lucide.createIcons();
+    }
+
+    // ── Ready Up Handler ─────────────────────────────────────
+    async function handleReadyToggle(isReady) {
+      if (!matchId || !currentUser) return;
+      try {
+        const res = await setPlayerReady(matchId, currentUser.uid, isReady);
+        if (res.allReady) {
+          showToast('Both players READY! Match is starting and opponents are unlocked!', 'success');
+        } else {
+          showToast(isReady ? 'You are marked as Ready!' : 'Ready status cancelled', 'info');
+        }
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
+    }
+
+    // ── Leave or Cancel Match with Refund ────────────────────
+    async function handleLeaveOrCancel() {
+      if (!confirm('Are you sure? You will leave this match and receive a full token refund.')) return;
+      try {
+        const res = await leaveOrCancelMatch(matchId, currentUser.uid);
+        showToast(res.message, 'success');
+        setTimeout(() => window.location.href = 'matches', 1500);
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
     }
 
     async function handleJoinArena() {
@@ -353,7 +522,7 @@
       }
       try {
         await joinMatch(currentMatch.code, currentUserData);
-        showToast('Joined match arena!', 'success');
+        showToast('Joined match arena! Click Ready Up to begin.', 'success');
       } catch (err) {
         showToast(err.message, 'error');
       }
@@ -370,7 +539,7 @@
     function renderChat(messages) {
       const container = document.getElementById('chat-messages');
       if (!messages.length) {
-        container.innerHTML = `<div style="margin:auto;font-size:0.85rem;color:var(--text-faint);text-align:center;">No messages yet. Say hello or share Epic usernames!</div>`;
+        container.innerHTML = `<div style="margin:auto;font-size:0.85rem;color:var(--text-faint);text-align:center;">Lobby chat active. Ready up and share your Epic Games usernames!</div>`;
         return;
       }
       container.innerHTML = messages.map(m => {
@@ -394,7 +563,7 @@
       await db.collection('matches').doc(matchId).collection('messages').add({
         text,
         senderUid:  currentUser.uid,
-        senderName: currentUserData.displayName || 'Player',
+        senderName: currentUserData?.displayName || 'Player',
         timestamp:  firebase.firestore.FieldValue.serverTimestamp(),
       });
     }
@@ -476,6 +645,18 @@
       <span id="staff-banner-text">Staff Alert Active</span>
     </div>
 
+    <!-- 30-Minute Expiration Timer Bar -->
+    <div class="timer-bar" id="timer-bar">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <i data-lucide="clock" style="color:var(--gold-bright);"></i>
+        <span><strong>Match Queue Timer:</strong> Closes & auto-refunds if unfulfilled within 30 minutes.</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span>Time Left:</span>
+        <span class="timer-clock" id="timer-clock">30:00</span>
+      </div>
+    </div>
+
     <!-- Arena Header -->
     <div class="arena-header">
       <div>
@@ -492,6 +673,9 @@
       </div>
       <div id="match-actions" style="display:flex;gap:10px;flex-wrap:wrap;"></div>
     </div>
+
+    <!-- Ready Up Interactive Banner -->
+    <div class="ready-banner" id="ready-banner" style="display:none;"></div>
 
     <!-- Prize & Wager Banner -->
     <div class="match-banner">
@@ -510,9 +694,9 @@
       </div>
     </div>
 
-    <!-- Player Slots Grid -->
+    <!-- Player Slots Grid (With Blind Opponents) -->
     <div class="section-title">
-      <i data-lucide="users"></i> Player Roster & Slots
+      <i data-lucide="users"></i> Player Roster & Queue Slots
     </div>
     <div class="slots-grid" id="slots-grid"></div>
 
@@ -546,18 +730,22 @@
         <div style="display:flex;flex-direction:column;gap:14px;font-size:0.875rem;color:var(--text-muted);">
           <div style="display:flex;gap:10px;">
             <strong style="color:var(--gold-bright);">1.</strong>
-            <span>Add your opponent in Fortnite using the lobby chat to share Epic Games usernames.</span>
+            <span>Both players must click <strong>"Ready Up"</strong>. Opponent identities are revealed once both are ready.</span>
           </div>
           <div style="display:flex;gap:10px;">
             <strong style="color:var(--gold-bright);">2.</strong>
-            <span>Party up and load into the designated map (Realistic, Zone Wars, or Box Fights).</span>
+            <span>Share Epic Games usernames in the lobby chat and party up in Fortnite.</span>
           </div>
           <div style="display:flex;gap:10px;">
             <strong style="color:var(--gold-bright);">3.</strong>
-            <span>Play the match (First to 5 or agreed rounds). Host declares the winner after completion.</span>
+            <span>Play the match on the selected map (Realistic, Zone Wars, or Box Fights). Host submits winner.</span>
           </div>
           <div style="display:flex;gap:10px;">
             <strong style="color:var(--gold-bright);">4.</strong>
+            <span>Need to leave before match starts? Click <strong>"Leave Match"</strong> for a full instant token refund.</span>
+          </div>
+          <div style="display:flex;gap:10px;">
+            <strong style="color:var(--gold-bright);">5.</strong>
             <span>If there is any dispute or rule breaking, click <strong>"Call Staff"</strong> for moderator review.</span>
           </div>
         </div>

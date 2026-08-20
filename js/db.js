@@ -14,7 +14,7 @@ async function getUser(uid) {
  * Update a user's token balance and log a transaction.
  * @param {string} uid
  * @param {number} amount  positive = credit, negative = debit
- * @param {string} type    'bonus' | 'match_wager' | 'match_win' | 'purchase' | 'admin'
+ * @param {string} type    'bonus' | 'match_wager' | 'match_win' | 'refund' | 'purchase' | 'admin'
  * @param {string} description
  */
 async function updateTokens(uid, amount, type, description) {
@@ -23,8 +23,12 @@ async function updateTokens(uid, amount, type, description) {
   const update  = {
     tokens: firebase.firestore.FieldValue.increment(roundedAmount),
   };
-  if (roundedAmount > 0) update.totalEarned = firebase.firestore.FieldValue.increment(roundedAmount);
-  if (roundedAmount < 0) update.totalSpent  = firebase.firestore.FieldValue.increment(Math.abs(roundedAmount));
+  if (roundedAmount > 0 && type !== 'refund') {
+    update.totalEarned = firebase.firestore.FieldValue.increment(roundedAmount);
+  }
+  if (roundedAmount < 0) {
+    update.totalSpent  = firebase.firestore.FieldValue.increment(Math.abs(roundedAmount));
+  }
 
   await userRef.update(update);
 
@@ -45,7 +49,7 @@ function generateMatchCode() {
 }
 
 /**
- * Create a new match.
+ * Create a new match with 30-min expiration and ready status.
  * @param {object} hostUser
  * @param {object} matchData { mode: 'Realistic'|'Zone Wars'|'Box Fights', size: '1v1'|'2v2'|'3v3', wager: number }
  */
@@ -64,11 +68,15 @@ async function createMatch(hostUser, matchData) {
   const title = `${size} ${mode}`;
   const code = generateMatchCode();
 
+  // 30 Minutes from now
+  const expiresAt = new Date(Date.now() + 30 * 60 * 1000);
+
   const hostPlayer = {
     uid:         hostUser.uid,
     displayName: hostUser.displayName,
     photoURL:    hostUser.photoURL || '',
     isHost:      true,
+    ready:       false,
   };
 
   const matchRef = await db.collection('matches').add({
@@ -79,13 +87,14 @@ async function createMatch(hostUser, matchData) {
     maxPlayers,
     players:    [hostPlayer],
     playerUids: [hostUser.uid],
-    status:     'waiting', // waiting | in_progress | completed
+    status:     'waiting', // waiting | in_progress | completed | cancelled
     createdBy:  hostUser.uid,
     hostName:   hostUser.displayName,
     code,
     prizePool:  wager,
     winner:     null,
     createdAt:  firebase.firestore.FieldValue.serverTimestamp(),
+    expiresAt:  firebase.firestore.Timestamp.fromDate(expiresAt),
     completedAt:null,
   });
 
@@ -110,11 +119,17 @@ async function joinMatch(code, joiningUser) {
     .limit(1)
     .get();
 
-  if (snap.empty) throw new Error('Match not found or already started');
+  if (snap.empty) throw new Error('Match not found, started, or expired');
 
   const matchDoc = snap.docs[0];
   const match    = matchDoc.data();
   const wager    = Number(match.wager);
+
+  // Check if 30-min timer expired
+  if (match.expiresAt && match.expiresAt.toDate() < new Date()) {
+    await expireMatch(matchDoc.id);
+    throw new Error('This match has expired and is no longer available');
+  }
 
   if (match.players.length >= match.maxPlayers)
     throw new Error('This match is already full');
@@ -128,6 +143,7 @@ async function joinMatch(code, joiningUser) {
     displayName: joiningUser.displayName,
     photoURL:    joiningUser.photoURL || '',
     isHost:      false,
+    ready:       false,
   };
 
   await matchDoc.ref.update({
@@ -147,14 +163,134 @@ async function joinMatch(code, joiningUser) {
 }
 
 /**
+ * Player toggles or sets Ready status in a match.
+ * If all players are ready, match status automatically becomes 'in_progress'.
+ */
+async function setPlayerReady(matchId, uid, isReady = true) {
+  const matchRef = db.collection('matches').doc(matchId);
+  const matchSnap = await matchRef.get();
+  if (!matchSnap.exists) throw new Error('Match not found');
+
+  const match = matchSnap.data();
+  if (match.status !== 'waiting' && match.status !== 'ready') {
+    throw new Error('Cannot change ready state once match has started or ended');
+  }
+
+  const updatedPlayers = (match.players || []).map(p => {
+    if (p.uid === uid) {
+      return { ...p, ready: isReady };
+    }
+    return p;
+  });
+
+  const allReady = updatedPlayers.length === match.maxPlayers && updatedPlayers.every(p => p.ready);
+  const newStatus = allReady ? 'in_progress' : 'waiting';
+
+  await matchRef.update({
+    players: updatedPlayers,
+    status:  newStatus,
+    ...(allReady ? { startedAt: firebase.firestore.FieldValue.serverTimestamp() } : {}),
+  });
+
+  return { allReady, newStatus };
+}
+
+/**
+ * Leave or cancel a match with full token refund.
+ * - If Host leaves: cancels match & refunds everyone.
+ * - If Joined player leaves: removes player, reduces prizePool, refunds player.
+ */
+async function leaveOrCancelMatch(matchId, uid) {
+  const matchRef = db.collection('matches').doc(matchId);
+  const matchSnap = await matchRef.get();
+  if (!matchSnap.exists) throw new Error('Match not found');
+
+  const match = matchSnap.data();
+  if (match.status !== 'waiting' && match.status !== 'ready') {
+    throw new Error('Cannot leave or cancel a match that is already in progress or completed');
+  }
+
+  const isHost = match.createdBy === uid;
+  const wager  = Number(match.wager);
+
+  if (isHost) {
+    // Cancel match and refund ALL players in the match
+    const refundPromises = (match.players || []).map(p =>
+      updateTokens(p.uid, wager, 'refund', `↩️ Match cancelled by host — "${match.title}" refund`)
+    );
+    await Promise.all(refundPromises);
+
+    await matchRef.update({
+      status:      'cancelled',
+      completedAt: firebase.firestore.FieldValue.serverTimestamp(),
+    });
+
+    return { action: 'cancelled', message: 'Match cancelled and your tokens were refunded.' };
+  } else {
+    // Non-host player leaving
+    const updatedPlayers = (match.players || []).filter(p => p.uid !== uid);
+    const updatedUids    = (match.playerUids || []).filter(u => u !== uid);
+
+    await matchRef.update({
+      players:    updatedPlayers,
+      playerUids: updatedUids,
+      prizePool:  firebase.firestore.FieldValue.increment(-wager),
+      status:     'waiting',
+    });
+
+    // Refund player wager
+    await updateTokens(uid, wager, 'refund', `↩️ Left match — "${match.title}" refund`);
+
+    return { action: 'left', message: 'You left the match and your wager was refunded.' };
+  }
+}
+
+/**
+ * Auto-expire match after 30 minutes and refund all players.
+ */
+async function expireMatch(matchId) {
+  const matchRef = db.collection('matches').doc(matchId);
+  const matchSnap = await matchRef.get();
+  if (!matchSnap.exists) return;
+
+  const match = matchSnap.data();
+  if (match.status !== 'waiting') return;
+
+  const wager = Number(match.wager);
+  const refundPromises = (match.players || []).map(p =>
+    updateTokens(p.uid, wager, 'refund', `⏱️ Match expired (30m limit) — "${match.title}" refund`)
+  );
+  await Promise.all(refundPromises);
+
+  await matchRef.update({
+    status:      'cancelled',
+    completedAt: firebase.firestore.FieldValue.serverTimestamp(),
+  });
+}
+
+/**
  * Subscribe to open (status=waiting) matches in real-time.
- * In-memory sort avoids composite index requirement.
+ * Filters out expired matches automatically.
  */
 function subscribeOpenMatches(callback) {
   return db.collection('matches')
     .where('status', '==', 'waiting')
     .onSnapshot((snap) => {
-      const list = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      const now = Date.now();
+      const list = [];
+
+      snap.docs.forEach(d => {
+        const data = d.data();
+        const expTime = data.expiresAt ? data.expiresAt.toDate().getTime() : 0;
+
+        if (expTime > 0 && expTime < now) {
+          // Trigger expiration in background
+          expireMatch(d.id).catch(console.warn);
+        } else {
+          list.push({ id: d.id, ...data });
+        }
+      });
+
       list.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
       callback(list);
     }, (err) => {

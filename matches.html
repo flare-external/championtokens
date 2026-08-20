@@ -125,6 +125,18 @@
           </div>`
         ).join('');
 
+        // 30-minute timer calculation
+        let timerDisplay = '30m left';
+        if (m.expiresAt) {
+          const expMs = m.expiresAt.toDate().getTime() - Date.now();
+          if (expMs > 0) {
+            const mins = Math.floor(expMs / 60000);
+            timerDisplay = `${mins}m left`;
+          } else {
+            timerDisplay = 'Expired';
+          }
+        }
+
         return `
           <div class="match-card">
             <div class="match-card__header">
@@ -177,8 +189,8 @@
               </div>
             </div>
 
-            <div style="font-size:0.75rem;color:var(--text-faint);display:flex;justify-content:space-between;">
-              <span><i data-lucide="clock" style="width:12px;height:12px;display:inline;"></i> ${formatTime(m.createdAt)}</span>
+            <div style="font-size:0.75rem;color:var(--text-faint);display:flex;justify-content:space-between;border-top:1px solid rgba(255,255,255,0.05);padding-top:8px;margin-top:2px;">
+              <span style="color:var(--gold-light);font-weight:700;"><i data-lucide="clock" style="width:12px;height:12px;display:inline;"></i> ⏳ ${timerDisplay}</span>
               <span style="font-family:monospace;opacity:0.7;">ID: ${m.id.substring(0,8)}</span>
             </div>
           </div>`;
