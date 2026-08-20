@@ -1,17 +1,6 @@
 // ============================================================
-//  CHAMPION TOKENS — Epic Games Real OAuth Serverless Function
+//  CHAMPION TOKENS — Epic Games OAuth Token Exchange Function
 // ============================================================
-
-const admin = require('firebase-admin');
-
-// Initialize Firebase Admin SDK if not already initialized
-if (!admin.apps.length) {
-  admin.initializeApp({
-    projectId: process.env.FIREBASE_PROJECT_ID || 'champion-tokens',
-  });
-}
-
-const db = admin.firestore();
 
 // Epic Games OAuth 2.0 Credentials (from Epic Games Developer Portal)
 const EPIC_CLIENT_ID     = process.env.EPIC_CLIENT_ID || 'xyza78916i52N8UrLv1m41xvkgeBXfUh';
@@ -35,21 +24,13 @@ exports.handler = async (event) => {
   }
 
   try {
-    const { code, redirectUri, uid } = JSON.parse(event.body || '{}');
+    const { code, redirectUri } = JSON.parse(event.body || '{}');
 
     if (!code) {
       return {
         statusCode: 400,
         headers,
         body: JSON.stringify({ error: 'Missing authorization code from Epic Games' }),
-      };
-    }
-
-    if (!uid) {
-      return {
-        statusCode: 400,
-        headers,
-        body: JSON.stringify({ error: 'Missing user ID session' }),
       };
     }
 
@@ -102,7 +83,7 @@ exports.handler = async (event) => {
       console.warn('Epic OAuth token exchange error:', e.message);
     }
 
-    // Fallback if DisplayName is still empty (e.g. basic account scope)
+    // Fallback if DisplayName is not returned by the basic scope token
     if (!epicDisplayName) {
       epicDisplayName = 'EpicPlayer_' + code.substring(0, 6).toUpperCase();
       if (!epicAccountId) {
@@ -110,20 +91,12 @@ exports.handler = async (event) => {
       }
     }
 
-    // ── 3. Update User Document in Firestore ─────────────────
-    await db.collection('users').doc(uid).update({
-      epicUsername:  epicDisplayName,
-      epicAccountId: epicAccountId,
-      epicVerified:  true,
-      epicLinkedAt:  admin.firestore.FieldValue.serverTimestamp(),
-    });
-
     return {
       statusCode: 200,
       headers,
       body: JSON.stringify({
-        success:      true,
-        epicUsername: epicDisplayName,
+        success:       true,
+        epicUsername:  epicDisplayName,
         epicAccountId: epicAccountId,
       }),
     };

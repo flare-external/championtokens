@@ -84,19 +84,26 @@
             body: JSON.stringify({
               code,
               redirectUri,
-              uid: user.uid,
             }),
           });
 
           const data = await res.json();
           if (!res.ok) throw new Error(data.error || 'Failed to exchange Epic token');
 
+          // Write verified Epic Account info to user's Firestore doc
+          await db.collection('users').doc(user.uid).update({
+            epicUsername:  data.epicUsername,
+            epicAccountId: data.epicAccountId || '',
+            epicVerified:  true,
+            epicLinkedAt:  firebase.firestore.FieldValue.serverTimestamp(),
+          });
+
           document.getElementById('status-title').textContent = 'Epic Account Linked!';
-          document.getElementById('status-desc').textContent = `Successfully linked as "${data.epicUsername}". Redirecting…`;
+          document.getElementById('status-desc').textContent = `Successfully linked as "${data.epicUsername}". Redirecting to profile…`;
 
           setTimeout(() => {
             window.location.href = 'profile';
-          }, 1500);
+          }, 1200);
 
         } catch (err) {
           console.error(err);
