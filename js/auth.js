@@ -39,6 +39,54 @@ function signOut() {
 }
 
 /**
+ * Sign in as a temporary Guest / Tester account with full functionality.
+ */
+async function signInAsGuest() {
+  try {
+    const cred = await auth.signInAnonymously();
+    const user = cred.user;
+    const guestNumber = Math.floor(1000 + Math.random() * 9000);
+    const guestName = `Guest_${guestNumber}`;
+
+    const userRef = db.collection('users').doc(user.uid);
+    const snap = await userRef.get();
+
+    if (!snap.exists) {
+      await userRef.set({
+        uid:             user.uid,
+        discordId:       `guest_${guestNumber}`,
+        discordUsername: guestName.toLowerCase(),
+        displayName:     guestName,
+        photoURL:        null,
+        tokens:          10.00,
+        totalEarned:     10.00,
+        totalSpent:      0.00,
+        matchesPlayed:   0,
+        matchesWon:      0,
+        isGuest:         true,
+        epicUsername:    `GuestEpic_${guestNumber}`,
+        createdAt:       firebase.firestore.FieldValue.serverTimestamp(),
+      });
+
+      // Initial free beta tokens transaction
+      await db.collection('transactions').add({
+        userId:      user.uid,
+        amount:      10.00,
+        type:        'signup_bonus',
+        description: '🎁 10.00 Free Starter Tokens for Guest Tester',
+        timestamp:   firebase.firestore.FieldValue.serverTimestamp(),
+      });
+    }
+
+    window.location.href = 'dashboard';
+    return user;
+  } catch (err) {
+    console.error('Guest login error:', err);
+    alert('Guest login error: ' + err.message);
+  }
+}
+
+/**
  * Exchange a Discord OAuth code for a Firebase custom token via Cloud Function,
  * then sign in to Firebase.
  * Returns the Firebase user.
