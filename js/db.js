@@ -379,3 +379,135 @@ async function getUserTransactions(uid, limitCount = 15) {
   list.sort((a, b) => (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0));
   return list.slice(0, limitCount);
 }
+
+// ── Teams (for 2v2 & 3v3) ────────────────────────────────────
+
+/** Generate a random 5-character team invite code */
+function generateTeamCode() {
+  return 'TM-' + Math.random().toString(36).substr(2, 5).toUpperCase();
+}
+
+/** Create a new team */
+async function createTeam(user, { name, tag }) {
+  if (!name || !name.trim()) throw new Error('Team name is required');
+  const cleanTag = (tag || name.substring(0, 4)).toUpperCase().trim().replace(/[^A-Z0-9]/g, '');
+  const code = generateTeamCode();
+
+  const leader = {
+    uid:         user.uid,
+    displayName: user.displayName,
+    photoURL:    user.photoURL || '',
+    isLeader:    true,
+  };
+
+  const teamRef = await db.collection('teams').add({
+    name:       name.trim(),
+    tag:        cleanTag,
+    code,
+    ownerUid:   user.uid,
+    ownerName:  user.displayName,
+    members:    [leader],
+    memberUids: [user.uid],
+    createdAt:  firebase.firestore.FieldValue.serverTimestamp(),
+  });
+
+  // Link team to user document
+  await db.collection('users').doc(user.uid).update({
+    teamId:   teamRef.id,
+    teamName: name.trim(),
+    teamTag:  cleanTag,
+  });
+
+  return { id: teamRef.id, code, name: name.trim(), tag: cleanTag };
+}
+
+/** Fetch a user's current team */
+async function getUserTeam(uid) {
+  const user = await getUser(uid);
+  if (!user || !user.teamId) {
+    // Check if user is in any team
+    const snap = await db.collection('teams').where('memberUids', 'array-contains', uid).limit(1).get();
+    if (snap.empty) return null;
+    return { id: snap.docs[0].id, ...snap.docs[0].data() };
+  }
+  const snap = await db.collection('teams').doc(user.teamId).get();
+  return snap.exists ? { id: snap.id, ...snap.data() } : null;
+}
+
+/** Join a team using invite code */
+async function joinTeamByCode(code, user) {
+  const cleanCode = code.trim().toUpperCase();
+  const snap = await db.collection('teams').where('code', '==', cleanCode).limit(1).get();
+  if (snap.empty) throw new Error('Team invite code not found');
+
+  const teamDoc = snap.docs[0];
+  const team = teamDoc.data();
+
+  if (team.members && team.members.length >= 6) {
+    throw new Error('This team is already at max roster capacity (6 players)');
+  }
+  if (team.members && team.members.some(m => m.uid === user.uid)) {
+    throw new Error('You are already on this team');
+  }
+
+  const newMember = {
+    uid:         user.uid,
+    displayName: user.displayName,
+    photoURL:    user.photoURL || '',
+    isLeader:    false,
+  };
+
+  await teamDoc.ref.update({
+    members:    firebase.firestore.FieldValue.arrayUnion(newMember),
+    memberUids: firebase.firestore.FieldValue.arrayUnion(user.uid),
+  });
+
+  await db.collection('users').doc(user.uid).update({
+    teamId:   teamDoc.id,
+    teamName: team.name,
+    teamTag:  team.tag,
+  });
+
+  return { id: teamDoc.id, name: team.name, tag: team.tag };
+}
+
+/** Leave or disband team */
+async function leaveTeam(teamId, uid) {
+  const teamRef = db.collection('teams').doc(teamId);
+  const snap = await teamRef.get();
+  if (!snap.exists) return;
+
+  const team = snap.data();
+  const isOwner = team.ownerUid === uid;
+
+  if (isOwner || (team.members && team.members.length <= 1)) {
+    // Delete team and unlink members
+    for (const m of team.members || []) {
+      await db.collection('users').doc(m.uid).update({
+        teamId:   firebase.firestore.FieldValue.delete(),
+        teamName: firebase.firestore.FieldValue.delete(),
+        teamTag:  firebase.firestore.FieldValue.delete(),
+      }).catch(() => {});
+    }
+    await teamRef.delete();
+    return { action: 'disbanded' };
+  } else {
+    // Remove member
+    const updatedMembers = (team.members || []).filter(m => m.uid !== uid);
+    const updatedUids    = (team.memberUids || []).filter(u => u !== uid);
+
+    await teamRef.update({
+      members:    updatedMembers,
+      memberUids: updatedUids,
+    });
+
+    await db.collection('users').doc(uid).update({
+      teamId:   firebase.firestore.FieldValue.delete(),
+      teamName: firebase.firestore.FieldValue.delete(),
+      teamTag:  firebase.firestore.FieldValue.delete(),
+    });
+
+    return { action: 'left' };
+  }
+}
+

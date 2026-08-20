@@ -284,10 +284,13 @@
       submitBtn.disabled = true;
 
       try {
-        const { code, title } = await createMatch(currentUserData, { size, mode, wager });
-        currentUserData = await getUser(currentUser.uid);
-        showToast(`Match "${title}" created! Code: ${code}`, 'success');
+        const { id, code, title } = await createMatch(currentUserData, { size, mode, wager });
+        showToast(`Match "${title}" created! Opening room…`, 'success');
         closeCreateModal();
+        // Immediately navigate to the created match room!
+        setTimeout(() => {
+          window.location.href = `match?id=${id}`;
+        }, 500);
       } catch (err) {
         showToast(err.message, 'error');
       } finally {

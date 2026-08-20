@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Profile — Champion Tokens</title>
+  <title>Profile & Teams — Champion Tokens</title>
   <link rel="stylesheet" href="css/style.css"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
@@ -28,13 +28,49 @@
     .mh-info { flex: 1; min-width: 0; }
     .mh-title { font-weight: 700; font-size: 0.95rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .mh-meta  { font-size: 0.78rem; color: var(--text-muted); margin-top: 2px; }
+
+    /* Team Card Styling */
+    .team-banner-card {
+      background: linear-gradient(135deg, rgba(168, 85, 247, 0.12) 0%, rgba(245, 158, 11, 0.05) 100%);
+      border: 1px solid rgba(168, 85, 247, 0.3);
+      border-radius: var(--radius-xl);
+      padding: 24px;
+      margin-bottom: 28px;
+    }
+    .team-roster-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
+    .team-member-chip {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-bright);
+      border-radius: var(--radius-md);
+      padding: 10px 14px;
+    }
+    .team-member-pfp {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      background: var(--bg-card-hover);
+      border: 1.5px solid var(--border-bright);
+      overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.8rem; font-weight: 700;
+      color: var(--gold-bright);
+      flex-shrink: 0;
+    }
+    .team-member-pfp img { width: 100%; height: 100%; object-fit: cover; }
   </style>
 </head>
 <body>
   <div class="page-bg"></div>
   <div class="page-loading" id="page-loading">
     <div class="spinner"></div>
-    <span>Loading profile…</span>
+    <span>Loading profile & teams…</span>
   </div>
 
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
@@ -48,6 +84,8 @@
 
   <script>
     let currentUser = null;
+    let currentUserData = null;
+    let myTeam = null;
 
     requireAuth().then(async (user) => {
       currentUser = user;
@@ -55,8 +93,12 @@
       document.getElementById('page-loading').classList.add('hidden');
 
       // Real-time user data
-      db.collection('users').doc(user.uid).onSnapshot((snap) => {
-        if (snap.exists) renderProfile(snap.data());
+      db.collection('users').doc(user.uid).onSnapshot(async (snap) => {
+        if (snap.exists) {
+          currentUserData = snap.data();
+          renderProfile(currentUserData);
+          await loadUserTeam();
+        }
       }, (err) => console.warn('User profile snapshot error:', err));
 
       // Transactions
@@ -77,8 +119,13 @@
       document.getElementById('page-loading').classList.add('hidden');
     });
 
+    async function loadUserTeam() {
+      if (!currentUser) return;
+      myTeam = await getUserTeam(currentUser.uid);
+      renderTeamSection(myTeam);
+    }
+
     function renderProfile(data) {
-      // Avatar
       const img  = document.getElementById('profile-avatar-img');
       const icon = document.getElementById('profile-avatar-icon');
       if (data.photoURL) {
@@ -104,6 +151,121 @@
         const d = data.createdAt.toDate();
         document.getElementById('profile-since').textContent =
           'Member since ' + d.toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' });
+      }
+    }
+
+    function renderTeamSection(team) {
+      const el = document.getElementById('team-content');
+      if (!team) {
+        // No team state
+        el.innerHTML = `
+          <p style="font-size:0.875rem;color:var(--text-muted);margin-bottom:16px;">
+            Create or join a squad team to queue for <strong>2v2 Duos</strong> and <strong>3v3 Squads</strong> matches.
+          </p>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;">
+            <button class="btn btn-primary btn-sm" onclick="openCreateTeamModal()">
+              <i data-lucide="plus"></i> Create New Team
+            </button>
+            <button class="btn btn-outline btn-sm" onclick="openJoinTeamModal()">
+              <i data-lucide="log-in"></i> Join with Invite Code
+            </button>
+          </div>`;
+      } else {
+        // Team exists state
+        const isOwner = team.ownerUid === currentUser.uid;
+        const membersHTML = (team.members || []).map(m => `
+          <div class="team-member-chip">
+            <div class="team-member-pfp">
+              ${m.photoURL ? `<img src="${m.photoURL}" onerror="this.style.display='none'"/>` : m.displayName?.charAt(0)}
+            </div>
+            <div style="flex:1;min-width:0;">
+              <div style="font-weight:700;font-size:0.85rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+                ${m.displayName}
+              </div>
+              <div style="font-size:0.7rem;color:var(--text-muted);">
+                ${m.isLeader || m.uid === team.ownerUid ? '<span style="color:var(--gold-bright);">Leader</span>' : 'Member'}
+              </div>
+            </div>
+          </div>
+        `).join('');
+
+        el.innerHTML = `
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:12px;">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <span class="badge" style="background:var(--purple);color:#fff;font-size:0.8rem;padding:4px 10px;">[${team.tag}]</span>
+              <span style="font-size:1.25rem;font-weight:900;color:#fff;">${team.name}</span>
+            </div>
+            <div style="display:flex;gap:8px;align-items:center;">
+              <span class="match-code-badge" title="Team Invite Code" onclick="copyTeamCode('${team.code}')" style="cursor:pointer;">
+                <i data-lucide="hash"></i>${team.code} <span style="font-size:0.7rem;opacity:0.7;">(Copy)</span>
+              </span>
+              <button class="btn btn-danger btn-sm" onclick="handleLeaveTeam('${team.id}')">
+                <i data-lucide="log-out"></i> ${isOwner ? 'Disband Team' : 'Leave Team'}
+              </button>
+            </div>
+          </div>
+          <div style="font-size:0.8rem;color:var(--text-muted);">Roster (${team.members?.length || 1}/6 Players):</div>
+          <div class="team-roster-grid">
+            ${membersHTML}
+          </div>`;
+      }
+      lucide.createIcons();
+    }
+
+    function copyTeamCode(code) {
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(code).then(() => showToast(`Team Code "${code}" copied to clipboard! Share it with your teammates.`, 'info'));
+      }
+    }
+
+    async function handleLeaveTeam(teamId) {
+      if (!confirm('Are you sure you want to leave or disband this team?')) return;
+      try {
+        await leaveTeam(teamId, currentUser.uid);
+        showToast('You left the team', 'success');
+        await loadUserTeam();
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
+    }
+
+    function openCreateTeamModal() { document.getElementById('create-team-modal').classList.add('open'); }
+    function closeCreateTeamModal() { document.getElementById('create-team-modal').classList.remove('open'); }
+    function openJoinTeamModal() { document.getElementById('join-team-modal').classList.add('open'); }
+    function closeJoinTeamModal() { document.getElementById('join-team-modal').classList.remove('open'); }
+
+    async function submitCreateTeam(e) {
+      e.preventDefault();
+      const name = document.getElementById('team-name-input').value.trim();
+      const tag  = document.getElementById('team-tag-input').value.trim().toUpperCase();
+      const btn = document.getElementById('submit-team-btn');
+      btn.disabled = true;
+      try {
+        await createTeam(currentUserData || currentUser, { name, tag });
+        showToast(`Team "${name}" created!`, 'success');
+        closeCreateTeamModal();
+        await loadUserTeam();
+      } catch (err) {
+        showToast(err.message, 'error');
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
+    async function submitJoinTeam(e) {
+      e.preventDefault();
+      const code = document.getElementById('join-team-input').value.trim().toUpperCase();
+      const btn = document.getElementById('submit-join-team-btn');
+      btn.disabled = true;
+      try {
+        await joinTeamByCode(code, currentUserData || currentUser);
+        showToast('Joined team successfully!', 'success');
+        closeJoinTeamModal();
+        await loadUserTeam();
+      } catch (err) {
+        showToast(err.message, 'error');
+      } finally {
+        btn.disabled = false;
       }
     }
 
@@ -151,11 +313,13 @@
           waiting:     'stat-icon--gold',
           in_progress: 'stat-icon--green',
           completed:   isWinner ? 'stat-icon--accent' : 'stat-icon--purple',
+          cancelled:   'stat-icon--purple',
         }[m.status] || 'stat-icon--purple';
         const statusIcon = {
           waiting:     'clock',
           in_progress: 'play-circle',
           completed:   isWinner ? 'trophy' : 'x-circle',
+          cancelled:   'slash',
         }[m.status] || 'circle';
 
         return `
@@ -202,6 +366,16 @@
       <div style="text-align:right;flex-shrink:0;">
         <div style="font-size:0.75rem;color:var(--text-muted);margin-bottom:4px;text-transform:uppercase;font-weight:700;">Token Balance</div>
         <div style="font-size:1.9rem;font-weight:900;" class="stat-value--gold" id="profile-tokens">10.00</div>
+      </div>
+    </div>
+
+    <!-- Team Management Section (for 2v2 / 3v3) -->
+    <div class="team-banner-card">
+      <div class="section-title" style="margin-bottom:8px;color:#fff;">
+        <i data-lucide="shield" style="color:var(--purple);"></i> Squad & Team Roster (2v2 / 3v3)
+      </div>
+      <div id="team-content">
+        <div class="spinner" style="margin:16px 0;"></div>
       </div>
     </div>
 
@@ -261,5 +435,49 @@
       </button>
     </div>
   </main>
+
+  <!-- Create Team Modal -->
+  <div class="modal-overlay" id="create-team-modal" onclick="if(event.target===this)closeCreateTeamModal()">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-title"><i data-lucide="shield"></i> Create Squad Team</div>
+        <button class="modal-close" onclick="closeCreateTeamModal()"><i data-lucide="x"></i></button>
+      </div>
+      <form class="modal-form" onsubmit="submitCreateTeam(event)">
+        <div class="form-group">
+          <label class="form-label">Team Name</label>
+          <input class="form-input" id="team-name-input" placeholder="e.g. Apex Champions" maxlength="24" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Team Clan Tag (3-4 Letters)</label>
+          <input class="form-input" id="team-tag-input" placeholder="e.g. APEX" maxlength="5" required />
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-outline" onclick="closeCreateTeamModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="submit-team-btn">Create Team</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Join Team Modal -->
+  <div class="modal-overlay" id="join-team-modal" onclick="if(event.target===this)closeJoinTeamModal()">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-title"><i data-lucide="log-in"></i> Join Team</div>
+        <button class="modal-close" onclick="closeJoinTeamModal()"><i data-lucide="x"></i></button>
+      </div>
+      <form class="modal-form" onsubmit="submitJoinTeam(event)">
+        <div class="form-group">
+          <label class="form-label">Team Invite Code</label>
+          <input class="form-input" id="join-team-input" placeholder="e.g. TM-AB123" required oninput="this.value=this.value.toUpperCase()" />
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-outline" onclick="closeJoinTeamModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="submit-join-team-btn">Join Team</button>
+        </div>
+      </form>
+    </div>
+  </div>
 </body>
 </html>

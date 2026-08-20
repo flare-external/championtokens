@@ -41,6 +41,14 @@ service cloud.firestore {
       }
     }
 
+    // ── Teams (2v2 & 3v3 Squads) ───────────────────────────────
+    match /teams/{teamId} {
+      allow read:   if isAuth();
+      allow create: if isAuth();
+      allow update: if isAuth();
+      allow delete: if isAuth();
+    }
+
     // ── Staff Calls / Disputes ─────────────────────────────────
     match /staff_calls/{callId} {
       allow read:   if isAuth();
