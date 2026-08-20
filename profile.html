@@ -166,59 +166,25 @@
       </div>
     </div>
 
-    <!-- Cosmetics & Premium Studio (For Account Owner) -->
+    <!-- Cosmetics Studio: Title & Banner Equipment -->
     <div class="card" id="cosmetics-studio-card" style="margin-bottom:24px;display:none;">
       <div class="section-title" style="margin-bottom:14px;">
-        <i data-lucide="palette" style="color:var(--gold-bright);"></i> Cosmetics & Style Studio
+        <i data-lucide="award" style="color:var(--gold-bright);"></i> Equipped Title & Profile Banner
       </div>
       <div class="grid-2" style="gap:16px;">
-        <!-- Equipped Title & Banner -->
-        <div>
-          <div class="form-group" style="margin-bottom:12px;">
-            <label class="form-label">Equipped Title</label>
-            <select class="form-select" id="equip-title-select" onchange="handleEquipTitle(this.value); previewLiveProfileStyle();">
-              <option value="">None</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Equipped Banner Theme</label>
-            <select class="form-select" id="equip-banner-select" onchange="handleEquipBanner(this.value); previewLiveProfileStyle();">
-              <option value="">Default (Dark Obsidian)</option>
-            </select>
-          </div>
+        <div class="form-group">
+          <label class="form-label">Equipped Title</label>
+          <select class="form-select" id="equip-title-select" onchange="handleEquipTitle(this.value); previewLiveProfileStyle();">
+            <option value="">None (No Title)</option>
+          </select>
+          <div style="font-size:0.75rem;color:var(--text-muted);margin-top:4px;">Appears next to your name in matches and leaderboards.</div>
         </div>
-
-        <!-- Premium Style Picker -->
-        <div id="premium-studio-controls">
-          <div style="font-size:0.85rem;font-weight:700;color:var(--gold-bright);margin-bottom:8px;display:flex;align-items:center;gap:6px;">
-            <i data-lucide="crown"></i> Name Color & Animation
-          </div>
-          <div class="grid-2" style="gap:10px;">
-            <div class="form-group">
-              <label class="form-label">Name Color</label>
-              <select class="form-select" id="pref-color-select" onchange="previewLiveProfileStyle()">
-                <option value="gold">🟡 Gold</option>
-                <option value="blue">🔵 Blue</option>
-                <option value="purple">🟣 Purple</option>
-                <option value="green">🟢 Green</option>
-                <option value="red">🔴 Red</option>
-                <option value="rainbow">🌈 Rainbow</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label class="form-label">Animation</label>
-              <select class="form-select" id="pref-anim-select" onchange="previewLiveProfileStyle()">
-                <option value="shimmer">✨ Shimmer</option>
-                <option value="pulse">💫 Pulse</option>
-                <option value="glow">🌟 Glow</option>
-                <option value="glitch">⚡ Glitch</option>
-                <option value="none">Static (None)</option>
-              </select>
-            </div>
-          </div>
-          <button class="btn btn-gold btn-sm btn-full" style="margin-top:10px;" onclick="handleSaveStyle()">
-            <i data-lucide="check"></i> Save Username Style
-          </button>
+        <div class="form-group">
+          <label class="form-label">Equipped Match & Profile Banner</label>
+          <select class="form-select" id="equip-banner-select" onchange="handleEquipBanner(this.value); previewLiveProfileStyle();">
+            <option value="">Default (Dark Obsidian)</option>
+          </select>
+          <div style="font-size:0.75rem;color:var(--text-muted);margin-top:4px;">Changes the card & lobby background in matches.</div>
         </div>
       </div>
     </div>
@@ -451,7 +417,7 @@
       const nameEl = document.getElementById('profile-name');
       if (nameEl) {
         nameEl.textContent = data.displayName || 'Champion';
-        nameEl.className = `${colorClass} ${animClass}`.trim();
+        nameEl.className = isPremium ? 'username-premium' : '';
       }
 
       // Title Tag
@@ -591,36 +557,12 @@
             return item ? `<option value="${bId}" ${data.equippedBanner === bId ? 'selected' : ''}>${item.name}</option>` : '';
           }).join('');
       }
-
-      // Premium styling controls
-      const premControls = document.getElementById('premium-studio-controls');
-      if (premControls) {
-        if (data.isPremium) {
-          premControls.style.opacity = '1';
-          premControls.style.pointerEvents = 'all';
-          const style = data.profileStyle || {};
-          if (document.getElementById('pref-color-select')) document.getElementById('pref-color-select').value = style.color || 'gold';
-          if (document.getElementById('pref-anim-select')) document.getElementById('pref-anim-select').value = style.animation || 'shimmer';
-        } else {
-          premControls.style.opacity = '0.4';
-          premControls.style.pointerEvents = 'none';
-        }
-      }
     }
 
-    /** Live real-time preview of name color, animations, titles, and banners */
+    /** Live real-time preview of titles and banners */
     function previewLiveProfileStyle() {
-      const color = document.getElementById('pref-color-select')?.value || 'gold';
-      const anim = document.getElementById('pref-anim-select')?.value || 'shimmer';
       const titleId = document.getElementById('equip-title-select')?.value || '';
       const bannerId = document.getElementById('equip-banner-select')?.value || '';
-
-      const nameEl = document.getElementById('profile-name');
-      if (nameEl) {
-        const colorClass = color ? `usercolor-${color}` : '';
-        const animClass  = (anim && anim !== 'none') ? `anim-${anim}` : '';
-        nameEl.className = `${colorClass} ${animClass}`.trim();
-      }
 
       const titleSlot = document.getElementById('profile-title-slot');
       if (titleSlot) {

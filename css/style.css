@@ -1330,21 +1330,27 @@ input[type="range"].ct-slider::-moz-range-thumb {
   100% { transform: scale(1.03); filter: brightness(1.25); }
 }
 
-/* ── Profile Banners ───────────────────────────────────────── */
-.profile-hero-card.banner-obsidian-flame {
-  background: linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(245, 158, 11, 0.12) 50%, rgba(13, 16, 26, 0.95) 100%) !important;
-  border-color: rgba(239, 68, 68, 0.45) !important;
-  box-shadow: 0 0 35px rgba(239, 68, 68, 0.2) !important;
+/* ── Profile & Arena Match Banners ─────────────────────────── */
+.profile-hero-card.banner-obsidian-flame,
+.player-slot-box.banner-obsidian-flame,
+.modal-header-banner.banner-obsidian-flame {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.24) 0%, rgba(245, 158, 11, 0.14) 50%, rgba(13, 16, 26, 0.95) 100%) !important;
+  border-color: rgba(239, 68, 68, 0.5) !important;
+  box-shadow: 0 0 25px rgba(239, 68, 68, 0.2) !important;
 }
-.profile-hero-card.banner-cyber-matrix {
-  background: linear-gradient(135deg, rgba(56, 189, 248, 0.2) 0%, rgba(129, 140, 248, 0.12) 50%, rgba(13, 16, 26, 0.95) 100%) !important;
-  border-color: rgba(56, 189, 248, 0.45) !important;
-  box-shadow: 0 0 35px rgba(56, 189, 248, 0.2) !important;
+.profile-hero-card.banner-cyber-matrix,
+.player-slot-box.banner-cyber-matrix,
+.modal-header-banner.banner-cyber-matrix {
+  background: linear-gradient(135deg, rgba(56, 189, 248, 0.24) 0%, rgba(129, 140, 248, 0.14) 50%, rgba(13, 16, 26, 0.95) 100%) !important;
+  border-color: rgba(56, 189, 248, 0.5) !important;
+  box-shadow: 0 0 25px rgba(56, 189, 248, 0.2) !important;
 }
-.profile-hero-card.banner-golden-royale {
-  background: linear-gradient(135deg, rgba(245, 158, 11, 0.3) 0%, rgba(253, 230, 138, 0.15) 50%, rgba(13, 16, 26, 0.95) 100%) !important;
-  border-color: rgba(245, 158, 11, 0.6) !important;
-  box-shadow: 0 0 45px rgba(245, 158, 11, 0.3) !important;
+.profile-hero-card.banner-golden-royale,
+.player-slot-box.banner-golden-royale,
+.modal-header-banner.banner-golden-royale {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.32) 0%, rgba(253, 230, 138, 0.18) 50%, rgba(13, 16, 26, 0.95) 100%) !important;
+  border-color: rgba(245, 158, 11, 0.65) !important;
+  box-shadow: 0 0 35px rgba(245, 158, 11, 0.28) !important;
 }
 
 /* ── Custom Username Colors ────────────────────────────────── */
