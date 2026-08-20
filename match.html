@@ -12,16 +12,16 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
     /* Esports Arena Grid Layout */
-    /* Esports Arena Grid Layout (Wider Chat) */
+    /* Esports Arena Grid Layout (Wide & Clean Chat) */
     .arena-container {
       display: grid;
-      grid-template-columns: 1fr 450px;
+      grid-template-columns: 1fr 540px;
       gap: 24px;
       align-items: start;
-      max-width: 1440px;
+      max-width: 1460px;
       margin: 0 auto;
     }
-    @media (max-width: 1080px) {
+    @media (max-width: 1180px) {
       .arena-container { grid-template-columns: 1fr; }
     }
 
@@ -207,53 +207,17 @@
       box-shadow: 0 0 35px rgba(245, 158, 11, 0.25);
     }
 
-    /* Modern Bigger Esports Lobby Chat */
+    /* Clean, Wide & Compact Esports Match Chat (No Title Header) */
     .live-chat-panel {
-      position: sticky;
-      top: 85px;
-      background: rgba(8, 11, 20, 0.96);
+      background: var(--bg-card);
       border: 1px solid var(--border);
-      border-radius: var(--radius-2xl);
+      border-radius: var(--radius-xl);
       display: flex;
       flex-direction: column;
-      height: calc(100vh - 100px);
-      min-height: 640px;
-      max-height: 840px;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+      height: 520px;
+      box-shadow: var(--shadow-card);
       overflow: hidden;
       backdrop-filter: blur(24px);
-    }
-    .chat-header-bar {
-      padding: 18px 22px;
-      background: rgba(255, 255, 255, 0.02);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-shrink: 0;
-    }
-    .chat-live-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(16, 185, 129, 0.15);
-      color: #34d399;
-      border-radius: var(--radius-full);
-      padding: 3px 10px;
-      font-size: 0.72rem;
-      font-weight: 800;
-      letter-spacing: 0.06em;
-    }
-    .live-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: #34d399;
-      box-shadow: 0 0 10px #34d399;
-      animation: livePulse 1.5s infinite alternate;
-    }
-    @keyframes livePulse {
-      0% { opacity: 0.4; transform: scale(0.8); }
-      100% { opacity: 1; transform: scale(1.2); }
     }
     .chat-msg-stream {
       flex: 1;
@@ -489,15 +453,8 @@
         </div>
       </div>
 
-      <!-- Right Sidebar: Live Lobby Chat -->
+      <!-- Clean Wide Match Chat -->
       <div class="live-chat-panel">
-        <div class="chat-header-bar">
-          <div style="display:flex;align-items:center;gap:8px;font-weight:900;font-size:0.95rem;color:#fff;">
-            <i data-lucide="message-square" style="color:var(--gold-bright);width:18px;height:18px;"></i>
-            <span>Match Lobby Chat</span>
-          </div>
-          <span class="chat-live-pill"><span class="live-dot"></span> LIVE</span>
-        </div>
         <div class="chat-msg-stream" id="chat-messages"></div>
         <form class="chat-bottom-input" onsubmit="sendChatMessage(event)">
           <input
