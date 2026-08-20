@@ -69,6 +69,18 @@
     function handleBuy(packageName, amount, price) {
       showToast(`Token checkout (${amount} Tokens for $${price}) coming soon! You already have free test tokens.`, 'info');
     }
+
+    async function handleBuyPremium() {
+      if (!currentUser) return;
+      if (!confirm('Unlock Champion Premium Pass for 5.00 Tokens ($5.00) for 30 days?')) return;
+      try {
+        await buyPremiumPass(currentUser.uid);
+        showToast('👑 Congratulations! Champion Premium Pass activated!', 'success');
+        setTimeout(() => window.location.href = 'profile', 1200);
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
+    }
   </script>
 
   <main class="page-wrap">
@@ -77,14 +89,27 @@
       <p>Add Champion Tokens to your wallet. <strong>1 Token = $1.00 USD</strong>.</p>
     </div>
 
-    <!-- Shop banner -->
-    <div class="shop-info-banner">
-      <img src="champion_token_coin.png" alt="CT Coin" class="shop-info-banner-logo"/>
+    <!-- Premium Pass Featured Banner -->
+    <div class="card" style="background:linear-gradient(135deg, rgba(245,158,11,0.15) 0%, rgba(13,16,26,0.95) 100%);border:1px solid rgba(245,158,11,0.5);border-radius:var(--radius-xl);padding:24px 28px;margin-bottom:32px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;box-shadow:0 0 30px rgba(245,158,11,0.15);">
       <div>
-        <div class="shop-info-title">1:1 Fixed Token Value (1 Token = $1.00 USD)</div>
-        <div class="shop-info-desc">
-          Tokens are used directly to enter 1v1, 2v2, and 3v3 Fortnite matches. Wagers can range from <strong>$0.50</strong> up to custom amounts.
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+          <span class="badge-premium"><i data-lucide="crown"></i> VIP PASS</span>
+          <span class="username-premium" style="font-size:1.35rem;">Champion Premium Pass</span>
         </div>
+        <p style="font-size:0.875rem;color:var(--text-muted);max-width:540px;line-height:1.5;">
+          Unlock animated gold shimmering usernames, custom VIP badges, the ability to tip tokens to players, and priority profile flair for 30 days.
+        </p>
+        <div style="display:flex;gap:16px;margin-top:12px;flex-wrap:wrap;font-size:0.8rem;color:#fde68a;">
+          <span>✨ Gold Username</span>
+          <span>👑 VIP Profile Badge</span>
+          <span>🎁 Tip Tokens System</span>
+        </div>
+      </div>
+      <div style="text-align:right;flex-shrink:0;">
+        <div style="font-size:1.8rem;font-weight:900;color:var(--gold-bright);margin-bottom:6px;">5.00 Tokens</div>
+        <button class="btn btn-gold btn-lg" onclick="handleBuyPremium()">
+          <i data-lucide="crown"></i> Get Premium Pass
+        </button>
       </div>
     </div>
 

@@ -14,7 +14,7 @@
     /* Esports Arena Grid Layout */
     .arena-container {
       display: grid;
-      grid-template-columns: 1fr 360px;
+      grid-template-columns: 1fr 370px;
       gap: 20px;
       align-items: start;
       max-width: 1400px;
@@ -149,16 +149,6 @@
     .slot-avatar-img img { width: 100%; height: 100%; object-fit: cover; }
     .slot-avatar-img.host { border-color: var(--gold-bright); box-shadow: 0 0 14px var(--gold-glow); }
 
-    .epic-ingame-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      font-size: 0.78rem;
-      color: #38bdf8;
-      font-weight: 700;
-      margin-top: 2px;
-    }
-
     /* Prize & Stakes Mini Card */
     .stakes-summary-bar {
       display: flex;
@@ -196,7 +186,7 @@
       display: flex;
       flex-direction: column;
       height: calc(100vh - 110px);
-      min-height: 540px;
+      min-height: 560px;
       max-height: 720px;
     }
     .chat-msg-stream {
@@ -211,7 +201,7 @@
       display: flex;
       align-items: flex-start;
       gap: 8px;
-      max-width: 90%;
+      max-width: 92%;
     }
     .chat-item-row.mine {
       margin-left: auto;
@@ -264,6 +254,16 @@
       padding-top: 10px;
       border-top: 1px solid var(--border);
     }
+
+    /* Tipping Section in Modal */
+    .tip-box {
+      background: rgba(245, 158, 11, 0.06);
+      border: 1px solid rgba(245, 158, 11, 0.25);
+      border-radius: var(--radius-md);
+      padding: 14px;
+      margin-top: 14px;
+      text-align: left;
+    }
   </style>
 </head>
 <body>
@@ -272,467 +272,6 @@
     <div class="spinner"></div>
     <span>Loading match lobby…</span>
   </div>
-
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
-  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
-  <script src="js/firebase-config.js"></script>
-  <script src="js/auth.js"></script>
-  <script src="js/db.js"></script>
-  <script src="js/nav.js"></script>
-
-  <script>
-    let currentUser = null;
-    let currentUserData = null;
-    let currentMatch = null;
-    let matchId = null;
-    let timerInterval = null;
-
-    requireAuth().then(async (user) => {
-      currentUser = user;
-      currentUserData = await getUser(user.uid);
-      injectNav('matches');
-
-      const urlParams = new URLSearchParams(window.location.search);
-      matchId = urlParams.get('id');
-      const code = urlParams.get('code');
-
-      if (!matchId && !code) {
-        showToast('No match ID specified', 'error');
-        setTimeout(() => window.location.href = 'matches', 1200);
-        return;
-      }
-
-      if (matchId) {
-        listenToMatch(matchId);
-      } else if (code) {
-        const snap = await db.collection('matches').where('code', '==', code.toUpperCase()).limit(1).get();
-        if (snap.empty) {
-          showToast('Match not found', 'error');
-          setTimeout(() => window.location.href = 'matches', 1200);
-          return;
-        }
-        matchId = snap.docs[0].id;
-        listenToMatch(matchId);
-      }
-    });
-
-    function listenToMatch(id) {
-      db.collection('matches').doc(id).onSnapshot((doc) => {
-        document.getElementById('page-loading').classList.add('hidden');
-        if (!doc.exists) {
-          showToast('Match was cancelled or removed', 'error');
-          setTimeout(() => window.location.href = 'matches', 1200);
-          return;
-        }
-        currentMatch = { id: doc.id, ...doc.data() };
-        renderMatchRoom(currentMatch);
-        startTimerCountdown(currentMatch);
-      }, (err) => {
-        console.error('Match listener error:', err);
-        document.getElementById('page-loading').classList.add('hidden');
-      });
-
-      // Lobby Chat with PFPs
-      db.collection('matches').doc(id).collection('messages')
-        .orderBy('timestamp', 'asc')
-        .limit(60)
-        .onSnapshot((snap) => {
-          renderChat(snap.docs.map(d => ({ id: d.id, ...d.data() })));
-        });
-
-      // Staff Alerts
-      db.collection('staff_calls').where('matchId', '==', id).onSnapshot((snap) => {
-        const banner = document.getElementById('staff-banner');
-        if (!snap.empty) {
-          const call = snap.docs[0].data();
-          banner.style.display = 'flex';
-          document.getElementById('staff-banner-text').textContent =
-            `Staff Alert Active: "${call.reason}" reported by ${call.calledByName}. A moderator has been notified.`;
-        } else {
-          banner.style.display = 'none';
-        }
-      });
-    }
-
-    function startTimerCountdown(match) {
-      if (timerInterval) clearInterval(timerInterval);
-      const clockEl = document.getElementById('timer-clock');
-
-      if (match.status !== 'waiting') {
-        clockEl.textContent = 'Active';
-        return;
-      }
-
-      function updateClock() {
-        if (!match.expiresAt) {
-          clockEl.textContent = '30:00';
-          return;
-        }
-        const expTime = match.expiresAt.toDate().getTime();
-        const diffMs = expTime - Date.now();
-
-        if (diffMs <= 0) {
-          clockEl.textContent = '00:00 (Expired)';
-          clearInterval(timerInterval);
-          return;
-        }
-
-        const mins = Math.floor(diffMs / 60000);
-        const secs = Math.floor((diffMs % 60000) / 1000);
-        clockEl.textContent = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-      }
-
-      updateClock();
-      timerInterval = setInterval(updateClock, 1000);
-    }
-
-    function renderMatchRoom(match) {
-      const size = match.size || '1v1';
-      const mode = match.mode || 'Realistic';
-      const maxPlayers = match.maxPlayers || (size === '1v1' ? 2 : size === '2v2' ? 4 : 6);
-      const players = match.players || [];
-      const isHost = match.createdBy === currentUser?.uid;
-      const alreadyIn = players.some(p => p.uid === currentUser?.uid);
-      const isFull = players.length >= maxPlayers;
-      const isMatchStarted = match.status === 'in_progress' || match.status === 'completed';
-      const prize = Math.round(Number(match.prizePool || match.wager) * 0.90 * 100) / 100;
-
-      // Header Bar
-      document.getElementById('room-title').textContent = match.title || `${size} ${mode}`;
-      document.getElementById('room-id').textContent = `ID: ${match.id.substring(0, 8)}`;
-      document.getElementById('room-code').textContent = match.code;
-      document.getElementById('room-mode-badge').textContent = mode;
-      document.getElementById('room-size-badge').textContent = size;
-      document.getElementById('room-status-badge').className = `badge badge-${match.status}`;
-      document.getElementById('room-status-badge').textContent = match.status.replace('_', ' ');
-
-      // Stakes Bar
-      document.getElementById('stakes-wager').textContent = `${formatTokens(match.wager)} Tokens`;
-      document.getElementById('stakes-pool').textContent = `${formatTokens(match.prizePool)} Tokens`;
-      document.getElementById('stakes-prize').textContent = `${formatTokens(prize)} Tokens`;
-
-      // Ready Up Action Area
-      const readyBanner = document.getElementById('ready-action-area');
-      if (alreadyIn && match.status === 'waiting') {
-        const mySlot = players.find(p => p.uid === currentUser?.uid);
-        const amIReady = !!mySlot?.ready;
-        readyBanner.style.display = 'flex';
-        readyBanner.innerHTML = `
-          <div>
-            <div style="font-weight:800;font-size:1.05rem;color:#fff;display:flex;align-items:center;gap:8px;">
-              <i data-lucide="${amIReady ? 'check-circle' : 'clock'}" style="color:${amIReady ? 'var(--green)' : 'var(--gold-bright)'};"></i>
-              ${amIReady ? 'You are READY! Waiting for opponent…' : 'Match Queue: Click Ready Up to start!'}
-            </div>
-            <div style="font-size:0.8rem;color:var(--text-muted);margin-top:2px;">
-              Opponent identities and Epic usernames reveal once BOTH sides click Ready.
-            </div>
-          </div>
-          <button class="btn ${amIReady ? 'btn-outline' : 'btn-primary'} btn-lg" onclick="handleReadyToggle(${!amIReady})">
-            <i data-lucide="${amIReady ? 'x' : 'check'}"></i> ${amIReady ? 'Cancel Ready' : 'Ready Up Now'}
-          </button>`;
-      } else {
-        readyBanner.style.display = 'none';
-      }
-
-      // Render Teams VS Matchup (Center Stage)
-      const halfCount = maxPlayers / 2;
-      const team1Players = players.slice(0, halfCount);
-      const team2Players = players.slice(halfCount);
-
-      function renderPlayerSlot(player, slotIndex, teamName) {
-        if (player) {
-          const isPlayerHost = player.isHost || player.uid === match.createdBy;
-          const isMe = player.uid === currentUser?.uid;
-          const isReady = !!player.ready;
-          const hideOpponent = !isMatchStarted && !isMe;
-
-          if (hideOpponent) {
-            return `
-              <div class="player-slot-box hidden-opp">
-                <div class="slot-avatar-img" style="background:rgba(168,85,247,0.15);border-color:rgba(168,85,247,0.4);color:#c084fc;">
-                  <i data-lucide="lock" style="width:20px;height:20px;"></i>
-                </div>
-                <div style="flex:1;min-width:0;">
-                  <div style="font-weight:800;font-size:0.95rem;color:#c084fc;">Opponent [Hidden]</div>
-                  <div style="font-size:0.75rem;color:var(--text-muted);margin-top:2px;">
-                    ${isReady ? '✅ <span style="color:var(--green);font-weight:700;">READY</span>' : '⏳ Waiting to Ready Up…'}
-                  </div>
-                </div>
-              </div>`;
-          } else {
-            return `
-              <div class="player-slot-box" onclick="openUserProfileModal('${player.uid}')" title="Click to view player stats">
-                <div class="slot-avatar-img ${isPlayerHost ? 'host' : ''}">
-                  ${player.photoURL ? `<img src="${player.photoURL}" onerror="this.style.display='none'"/>` : player.displayName?.charAt(0)}
-                </div>
-                <div style="flex:1;min-width:0;">
-                  <div style="font-weight:800;font-size:0.95rem;display:flex;align-items:center;gap:6px;">
-                    <span>${player.displayName}</span>
-                    ${isPlayerHost ? '<span class="badge" style="background:var(--gold-dim);color:var(--gold-bright);padding:1px 6px;font-size:0.65rem;">HOST</span>' : ''}
-                    ${isMe ? '<span style="color:var(--gold-bright);font-size:0.75rem;">(You)</span>' : ''}
-                  </div>
-                  <div style="font-size:0.75rem;color:var(--text-muted);margin-top:2px;">
-                    ${isReady ? '✅ <span style="color:var(--green);font-weight:700;">READY</span>' : '⏳ Not Ready'}
-                  </div>
-                </div>
-                <i data-lucide="chevron-right" style="width:14px;height:14px;color:var(--text-muted);"></i>
-              </div>`;
-          }
-        } else {
-          return `
-            <div class="player-slot-box empty-slot">
-              <div class="slot-avatar-img">
-                <i data-lucide="user-plus" style="width:18px;height:18px;opacity:0.5;"></i>
-              </div>
-              <div>
-                <div style="font-weight:700;color:var(--text-muted);">${teamName} Slot #${slotIndex}</div>
-                <div style="font-size:0.75rem;color:var(--text-faint);">Waiting for player…</div>
-              </div>
-            </div>`;
-        }
-      }
-
-      let team1HTML = '';
-      for (let i = 0; i < halfCount; i++) {
-        team1HTML += renderPlayerSlot(team1Players[i], i + 1, 'Team 1');
-      }
-
-      let team2HTML = '';
-      for (let i = 0; i < halfCount; i++) {
-        team2HTML += renderPlayerSlot(team2Players[i], i + 1, 'Team 2');
-      }
-
-      document.getElementById('team1-squad').innerHTML = team1HTML;
-      document.getElementById('team2-squad').innerHTML = team2HTML;
-
-      // Arena Action Buttons
-      const actionsContainer = document.getElementById('arena-actions');
-      let actionsHTML = `
-        <button class="btn btn-danger btn-sm" onclick="openCallStaffModal()">
-          <i data-lucide="shield-alert"></i> Call Staff
-        </button>
-        <button class="btn btn-outline btn-sm" onclick="copyMatchLink()">
-          <i data-lucide="share-2"></i> Share Link
-        </button>`;
-
-      if (!alreadyIn && !isFull && match.status === 'waiting') {
-        actionsHTML += `
-          <button class="btn btn-primary btn-sm" onclick="handleJoinArena()">
-            <i data-lucide="log-in"></i> Join Match ($${formatTokens(match.wager)})
-          </button>`;
-      }
-
-      if (alreadyIn && match.status === 'waiting') {
-        actionsHTML += `
-          <button class="btn btn-danger btn-sm" onclick="handleLeaveOrCancel()">
-            <i data-lucide="x-circle"></i> ${isHost ? 'Cancel & Refund' : 'Leave & Refund'} ($${formatTokens(match.wager)})
-          </button>`;
-      }
-
-      if (isHost && isMatchStarted && match.status !== 'completed') {
-        actionsHTML += `
-          <button class="btn btn-gold btn-sm" onclick="openDeclareModal()">
-            <i data-lucide="trophy"></i> Declare Winner
-          </button>`;
-      }
-
-      actionsContainer.innerHTML = actionsHTML;
-      lucide.createIcons();
-    }
-
-    async function handleReadyToggle(isReady) {
-      if (!matchId || !currentUser) return;
-      try {
-        const res = await setPlayerReady(matchId, currentUser.uid, isReady);
-        if (res.allReady) {
-          showToast('Both teams READY! Match started & Fortnite tags unlocked!', 'success');
-        } else {
-          showToast(isReady ? 'Marked as Ready!' : 'Ready status cancelled', 'info');
-        }
-      } catch (err) {
-        showToast(err.message, 'error');
-      }
-    }
-
-    async function handleLeaveOrCancel() {
-      if (!confirm('Are you sure? Your wager will be refunded to your balance.')) return;
-      try {
-        const res = await leaveOrCancelMatch(matchId, currentUser.uid);
-        showToast(res.message, 'success');
-        setTimeout(() => window.location.href = 'matches', 1000);
-      } catch (err) {
-        showToast(err.message, 'error');
-      }
-    }
-
-    async function handleJoinArena() {
-      if (!currentMatch) return;
-      currentUserData = await getUser(currentUser.uid);
-      if (!currentUserData?.epicUsername) {
-        if (confirm('You must link your Epic Games / Fortnite username first! Go to Profile to link now?')) {
-          window.location.href = 'profile';
-        }
-        return;
-      }
-      if (Number(currentUserData.tokens || 0) < Number(currentMatch.wager)) {
-        showToast(`Insufficient tokens (Need ${formatTokens(currentMatch.wager)} tokens)`, 'error');
-        return;
-      }
-      try {
-        await joinMatch(currentMatch.code, currentUserData);
-        showToast('Joined match! Click Ready Up to begin.', 'success');
-      } catch (err) {
-        showToast(err.message, 'error');
-      }
-    }
-
-    function copyMatchLink() {
-      const url = `${window.location.origin}/match?id=${matchId}`;
-      if (navigator.clipboard) {
-        navigator.clipboard.writeText(url).then(() => showToast('Match link copied to clipboard!', 'info'));
-      }
-    }
-
-    // ── Public User Profile Modal ────────────────────────────
-    async function openUserProfileModal(uid) {
-      if (!uid) return;
-      try {
-        const u = await getUser(uid);
-        if (!u) return;
-        document.getElementById('modal-user-name').textContent = u.displayName || 'Champion';
-        document.getElementById('modal-user-discord').textContent = `@${u.discordUsername || 'user'} · ID: ${u.discordId || uid.replace('discord:','')}`;
-        document.getElementById('modal-user-epic').textContent = u.epicUsername ? `🎮 Epic: ${u.epicUsername}` : 'No Epic linked';
-        document.getElementById('modal-user-tokens').textContent = formatTokens(u.tokens);
-        document.getElementById('modal-user-played').textContent = u.matchesPlayed || 0;
-        document.getElementById('modal-user-won').textContent = u.matchesWon || 0;
-        const wr = (u.matchesPlayed || 0) > 0 ? Math.round((u.matchesWon / u.matchesPlayed) * 100) + '%' : '0%';
-        document.getElementById('modal-user-winrate').textContent = wr;
-
-        const img = document.getElementById('modal-user-avatar-img');
-        const icon = document.getElementById('modal-user-avatar-icon');
-        if (u.photoURL) {
-          img.src = u.photoURL; img.style.display = 'block'; icon.style.display = 'none';
-        } else {
-          img.style.display = 'none'; icon.style.display = 'block';
-        }
-        document.getElementById('profile-modal').classList.add('open');
-      } catch (e) {
-        console.warn(e);
-      }
-    }
-    function closeUserProfileModal() {
-      document.getElementById('profile-modal').classList.remove('open');
-    }
-
-    // ── Chat System with PFPs ────────────────────────────────
-    function renderChat(messages) {
-      const container = document.getElementById('chat-messages');
-      if (!messages.length) {
-        container.innerHTML = `<div style="margin:auto;font-size:0.8rem;color:var(--text-faint);text-align:center;">Lobby chat active. Ready up and share your Epic Games usernames!</div>`;
-        return;
-      }
-      container.innerHTML = messages.map(m => {
-        const isMine = m.senderUid === currentUser?.uid;
-        const pfpHTML = m.photoURL
-          ? `<div class="chat-pfp-avatar" onclick="openUserProfileModal('${m.senderUid}')"><img src="${m.photoURL}" onerror="this.style.display='none'"/></div>`
-          : `<div class="chat-pfp-avatar" onclick="openUserProfileModal('${m.senderUid}')">${(m.senderName || '?').charAt(0)}</div>`;
-
-        return `
-          <div class="chat-item-row ${isMine ? 'mine' : ''}">
-            ${pfpHTML}
-            <div class="chat-content-wrap">
-              <div class="chat-author-line">
-                <span style="font-weight:700;color:var(--gold-bright);">${m.senderName}</span>
-                <span>${formatTime(m.timestamp)}</span>
-              </div>
-              <div class="chat-text-bubble">${escapeHtml(m.text)}</div>
-            </div>
-          </div>`;
-      }).join('');
-      container.scrollTop = container.scrollHeight;
-    }
-
-    async function sendChatMessage(e) {
-      e.preventDefault();
-      const input = document.getElementById('chat-input');
-      const text = input.value.trim();
-      if (!text || !matchId) return;
-
-      input.value = '';
-      await db.collection('matches').doc(matchId).collection('messages').add({
-        text,
-        senderUid:  currentUser.uid,
-        senderName: currentUserData?.displayName || 'Player',
-        photoURL:   currentUserData?.photoURL || currentUser?.photoURL || '',
-        timestamp:  firebase.firestore.FieldValue.serverTimestamp(),
-      });
-    }
-
-    function escapeHtml(str) {
-      return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-    }
-
-    // ── Call Staff Modal ─────────────────────────────────────
-    function openCallStaffModal() { document.getElementById('staff-modal').classList.add('open'); }
-    function closeCallStaffModal() { document.getElementById('staff-modal').classList.remove('open'); }
-
-    async function submitStaffCall(e) {
-      e.preventDefault();
-      const reason = document.getElementById('staff-reason-select').value;
-      const details = document.getElementById('staff-details-input').value.trim();
-      const btn = document.getElementById('submit-staff-btn');
-      btn.disabled = true;
-
-      try {
-        await db.collection('staff_calls').add({
-          matchId,
-          matchCode:    currentMatch?.code || '',
-          matchTitle:   currentMatch?.title || '',
-          calledByUid:  currentUser.uid,
-          calledByName: currentUserData?.displayName || 'Player',
-          reason,
-          details,
-          status:       'open',
-          timestamp:    firebase.firestore.FieldValue.serverTimestamp(),
-        });
-        showToast('Staff has been called! A moderator will review shortly.', 'warning');
-        closeCallStaffModal();
-      } catch (err) {
-        showToast('Failed to alert staff: ' + err.message, 'error');
-      } finally {
-        btn.disabled = false;
-      }
-    }
-
-    // ── Declare Winner Modal ─────────────────────────────────
-    function openDeclareModal() {
-      if (!currentMatch) return;
-      const select = document.getElementById('winner-select');
-      select.innerHTML = (currentMatch.players || []).map(p =>
-        `<option value="${p.uid}">${p.displayName}${p.isHost ? ' (Host)' : ''}</option>`
-      ).join('');
-      document.getElementById('declare-modal').classList.add('open');
-    }
-    function closeDeclareModal() { document.getElementById('declare-modal').classList.remove('open'); }
-
-    async function handleDeclareWinner() {
-      const select = document.getElementById('winner-select');
-      const winnerUid = select.value;
-      const btn = document.getElementById('declare-btn');
-      btn.disabled = true;
-      try {
-        const prize = await declareWinner(matchId, winnerUid, currentUser.uid);
-        showToast(`Winner declared! +${formatTokens(prize)} tokens awarded.`, 'success');
-        closeDeclareModal();
-      } catch (err) {
-        showToast(err.message, 'error');
-      } finally {
-        btn.disabled = false;
-      }
-    }
-  </script>
 
   <main class="page-wrap">
     <!-- Staff Alert Active Banner -->
@@ -796,7 +335,7 @@
               <span>Queue Auto-Refund Timer: <strong id="timer-clock" style="color:#fff;font-family:monospace;">30:00</strong></span>
             </div>
             <div>
-              <span>Party up in Fortnite after Ready Up · Report winner upon finish</span>
+              <span>Copy your opponent's Epic IGN to party up in Fortnite</span>
             </div>
           </div>
         </div>
@@ -822,23 +361,25 @@
     </div>
   </main>
 
-  <!-- Player Profile Modal -->
+  <!-- Player Profile Modal (with Badges & Tipping) -->
   <div class="modal-overlay" id="profile-modal" onclick="if(event.target===this)closeUserProfileModal()">
-    <div class="modal" style="max-width:380px;">
+    <div class="modal" style="max-width:400px;">
       <div class="modal-header">
         <div class="modal-title"><i data-lucide="user"></i> Player Profile</div>
         <button class="modal-close" onclick="closeUserProfileModal()"><i data-lucide="x"></i></button>
       </div>
-      <div style="text-align:center;margin-bottom:18px;">
+      <div style="text-align:center;margin-bottom:16px;">
         <div class="slot-avatar-img" style="width:64px;height:64px;margin:0 auto 10px;border-color:var(--gold-bright);">
           <img id="modal-user-avatar-img" src="" alt="" style="display:none;"/>
           <i data-lucide="user" id="modal-user-avatar-icon" style="width:28px;height:28px;"></i>
         </div>
-        <div id="modal-user-name" style="font-size:1.25rem;font-weight:900;color:#fff;">Champion</div>
-        <div id="modal-user-discord" style="font-size:0.78rem;color:var(--text-muted);font-family:monospace;margin-top:2px;">@user · ID: --</div>
-        <div id="modal-user-epic" style="font-size:0.85rem;color:#38bdf8;font-weight:700;margin-top:4px;">🎮 Epic: --</div>
+        <div id="modal-user-name" style="font-size:1.3rem;font-weight:900;color:#fff;">Champion</div>
+        <div id="modal-user-badges" style="display:flex;align-items:center;justify-content:center;gap:6px;margin-top:6px;flex-wrap:wrap;"></div>
+        <div id="modal-user-discord" style="font-size:0.78rem;color:var(--text-muted);font-family:monospace;margin-top:4px;">@user · ID: --</div>
+        <div id="modal-user-epic-wrap" style="margin-top:6px;"></div>
       </div>
-      <div class="grid-2" style="gap:8px;margin-bottom:18px;">
+
+      <div class="grid-2" style="gap:8px;margin-bottom:16px;">
         <div class="card" style="padding:10px;text-align:center;">
           <div style="font-size:0.7rem;color:var(--text-muted);font-weight:700;">TOKENS</div>
           <div id="modal-user-tokens" style="font-size:1.15rem;font-weight:900;color:var(--gold-bright);">10.00</div>
@@ -856,7 +397,22 @@
           <div id="modal-user-won" style="font-size:1.15rem;font-weight:900;color:var(--gold-bright);">0</div>
         </div>
       </div>
-      <button class="btn btn-outline btn-full" onclick="closeUserProfileModal()">Close</button>
+
+      <!-- Tipping Tokens Section -->
+      <div class="tip-box" id="tip-section" style="display:none;">
+        <div style="display:flex;align-items:center;gap:6px;font-weight:800;font-size:0.85rem;color:var(--gold-bright);margin-bottom:6px;">
+          <i data-lucide="gift"></i> Tip Player Tokens
+        </div>
+        <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
+          <span class="wager-pill" onclick="handleTipAmount(0.50)">0.50</span>
+          <span class="wager-pill" onclick="handleTipAmount(1.00)">1.00</span>
+          <span class="wager-pill" onclick="handleTipAmount(2.50)">2.50</span>
+          <span class="wager-pill" onclick="handleTipAmount(5.00)">5.00</span>
+          <button class="btn btn-gold btn-sm" onclick="handleCustomTip()" style="padding:4px 12px;font-size:0.75rem;">Custom Tip</button>
+        </div>
+      </div>
+
+      <button class="btn btn-outline btn-full" style="margin-top:14px;" onclick="closeUserProfileModal()">Close</button>
     </div>
   </div>
 
@@ -913,5 +469,619 @@
       </div>
     </div>
   </div>
+
+  <!-- Core Scripts -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script src="js/firebase-config.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/db.js"></script>
+  <script src="js/nav.js"></script>
+
+  <script>
+    let currentUser = null;
+    let currentUserData = null;
+    let currentMatch = null;
+    let matchId = null;
+    let timerInterval = null;
+    let activeModalUid = null;
+
+    document.addEventListener('DOMContentLoaded', () => {
+      requireAuth().then(async (user) => {
+        currentUser = user;
+        currentUserData = await getUser(user.uid);
+        injectNav('matches');
+
+        const urlParams = new URLSearchParams(window.location.search);
+        matchId = urlParams.get('id');
+        const code = urlParams.get('code');
+
+        if (!matchId && !code) {
+          showToast('No match ID specified', 'error');
+          setTimeout(() => window.location.href = 'matches', 1200);
+          return;
+        }
+
+        if (matchId) {
+          listenToMatch(matchId);
+        } else if (code) {
+          const snap = await db.collection('matches').where('code', '==', code.toUpperCase()).limit(1).get();
+          if (snap.empty) {
+            showToast('Match not found', 'error');
+            setTimeout(() => window.location.href = 'matches', 1200);
+            return;
+          }
+          matchId = snap.docs[0].id;
+          listenToMatch(matchId);
+        }
+      }).catch(err => {
+        console.error('Match auth error:', err);
+        const loadingEl = document.getElementById('page-loading');
+        if (loadingEl) loadingEl.classList.add('hidden');
+      });
+    });
+
+    function listenToMatch(id) {
+      db.collection('matches').doc(id).onSnapshot((doc) => {
+        const loadingEl = document.getElementById('page-loading');
+        if (loadingEl) loadingEl.classList.add('hidden');
+
+        if (!doc.exists) {
+          showToast('Match was cancelled or removed', 'error');
+          setTimeout(() => window.location.href = 'matches', 1200);
+          return;
+        }
+        currentMatch = { id: doc.id, ...doc.data() };
+        renderMatchRoom(currentMatch);
+        startTimerCountdown(currentMatch);
+      }, (err) => {
+        console.error('Match listener error:', err);
+        const loadingEl = document.getElementById('page-loading');
+        if (loadingEl) loadingEl.classList.add('hidden');
+      });
+
+      // Lobby Chat with PFPs and System Messages
+      db.collection('matches').doc(id).collection('messages')
+        .orderBy('timestamp', 'asc')
+        .limit(80)
+        .onSnapshot((snap) => {
+          renderChat(snap.docs.map(d => ({ id: d.id, ...d.data() })));
+        });
+
+      // Staff Alerts
+      db.collection('staff_calls').where('matchId', '==', id).onSnapshot((snap) => {
+        const banner = document.getElementById('staff-banner');
+        if (!banner) return;
+        if (!snap.empty) {
+          const call = snap.docs[0].data();
+          banner.style.display = 'flex';
+          document.getElementById('staff-banner-text').textContent =
+            `Staff Alert Active: "${call.reason}" reported by ${call.calledByName}. A moderator has been notified.`;
+        } else {
+          banner.style.display = 'none';
+        }
+      });
+    }
+
+    function startTimerCountdown(match) {
+      if (timerInterval) clearInterval(timerInterval);
+      const clockEl = document.getElementById('timer-clock');
+      if (!clockEl) return;
+
+      if (match.status !== 'waiting') {
+        clockEl.textContent = 'Active';
+        return;
+      }
+
+      function updateClock() {
+        if (!match.expiresAt) {
+          clockEl.textContent = '30:00';
+          return;
+        }
+        const expTime = match.expiresAt.toDate().getTime();
+        const diffMs = expTime - Date.now();
+
+        if (diffMs <= 0) {
+          clockEl.textContent = '00:00 (Expired)';
+          clearInterval(timerInterval);
+          return;
+        }
+
+        const mins = Math.floor(diffMs / 60000);
+        const secs = Math.floor((diffMs % 60000) / 1000);
+        clockEl.textContent = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+      }
+
+      updateClock();
+      timerInterval = setInterval(updateClock, 1000);
+    }
+
+    function renderMatchRoom(match) {
+      const size = match.size || '1v1';
+      const mode = match.mode || 'Realistic';
+      const maxPlayers = match.maxPlayers || (size === '1v1' ? 2 : size === '2v2' ? 4 : 6);
+      const players = match.players || [];
+      const isHost = match.createdBy === currentUser?.uid;
+      const alreadyIn = players.some(p => p.uid === currentUser?.uid);
+      const isFull = players.length >= maxPlayers;
+      const isMatchStarted = match.status === 'in_progress' || match.status === 'completed';
+      const prize = Math.round(Number(match.prizePool || match.wager) * 0.90 * 100) / 100;
+
+      // Header Bar
+      const titleEl = document.getElementById('room-title');
+      const idEl    = document.getElementById('room-id');
+      const codeEl  = document.getElementById('room-code');
+      const modeEl  = document.getElementById('room-mode-badge');
+      const sizeEl  = document.getElementById('room-size-badge');
+      const statEl  = document.getElementById('room-status-badge');
+
+      if (titleEl) titleEl.textContent = match.title || `${size} ${mode}`;
+      if (idEl)    idEl.textContent = `ID: ${match.id.substring(0, 8)}`;
+      if (codeEl)  codeEl.textContent = match.code;
+      if (modeEl)  modeEl.textContent = mode;
+      if (sizeEl)  sizeEl.textContent = size;
+      if (statEl) {
+        statEl.className = `badge badge-${match.status}`;
+        statEl.textContent = match.status.replace('_', ' ');
+      }
+
+      // Stakes Bar
+      const wEl = document.getElementById('stakes-wager');
+      const pEl = document.getElementById('stakes-pool');
+      const zEl = document.getElementById('stakes-prize');
+      if (wEl) wEl.textContent = `${formatTokens(match.wager)} Tokens`;
+      if (pEl) pEl.textContent = `${formatTokens(match.prizePool)} Tokens`;
+      if (zEl) zEl.textContent = `${formatTokens(prize)} Tokens`;
+
+      // Ready Up Action Area
+      const readyBanner = document.getElementById('ready-action-area');
+      if (readyBanner) {
+        if (alreadyIn && match.status === 'waiting') {
+          const mySlot = players.find(p => p.uid === currentUser?.uid);
+          const amIReady = !!mySlot?.ready;
+          readyBanner.style.display = 'flex';
+          readyBanner.innerHTML = `
+            <div>
+              <div style="font-weight:800;font-size:1.05rem;color:#fff;display:flex;align-items:center;gap:8px;">
+                <i data-lucide="${amIReady ? 'check-circle' : 'clock'}" style="color:${amIReady ? 'var(--green)' : 'var(--gold-bright)'};"></i>
+                ${amIReady ? 'You are READY! Waiting for opponent…' : 'Match Queue: Click Ready Up to start!'}
+              </div>
+              <div style="font-size:0.8rem;color:var(--text-muted);margin-top:2px;">
+                Opponent identities & Epic tags unlock once BOTH sides click Ready.
+              </div>
+            </div>
+            <button class="btn ${amIReady ? 'btn-outline' : 'btn-primary'} btn-lg" onclick="handleReadyToggle(${!amIReady})">
+              <i data-lucide="${amIReady ? 'x' : 'check'}"></i> ${amIReady ? 'Cancel Ready' : 'Ready Up Now'}
+            </button>`;
+        } else {
+          readyBanner.style.display = 'none';
+        }
+      }
+
+      // Render Teams VS Matchup (Center Stage)
+      const halfCount = maxPlayers / 2;
+      const team1Players = players.slice(0, halfCount);
+      const team2Players = players.slice(halfCount);
+
+      function renderPlayerSlot(player, slotIndex, teamName) {
+        if (player) {
+          const isPlayerHost = player.isHost || player.uid === match.createdBy;
+          const isMe = player.uid === currentUser?.uid;
+          const isReady = !!player.ready;
+          const hideOpponent = !isMatchStarted && !isMe;
+          const isPremium = !!player.isPremium;
+
+          if (hideOpponent) {
+            return `
+              <div class="player-slot-box hidden-opp">
+                <div class="slot-avatar-img" style="background:rgba(168,85,247,0.15);border-color:rgba(168,85,247,0.4);color:#c084fc;">
+                  <i data-lucide="lock" style="width:20px;height:20px;"></i>
+                </div>
+                <div style="flex:1;min-width:0;">
+                  <div style="font-weight:800;font-size:0.95rem;color:#c084fc;">Opponent [Hidden]</div>
+                  <div style="font-size:0.75rem;color:var(--text-muted);margin-top:2px;">
+                    ${isReady ? '✅ <span style="color:var(--green);font-weight:700;">READY</span>' : '⏳ Waiting to Ready Up…'}
+                  </div>
+                </div>
+              </div>`;
+          } else {
+            const epicTag = player.epicUsername || player.displayName;
+            return `
+              <div class="player-slot-box" onclick="openUserProfileModal('${player.uid}')" title="Click to view stats & tip player">
+                <div class="slot-avatar-img ${isPlayerHost ? 'host' : ''}">
+                  ${player.photoURL ? `<img src="${player.photoURL}" onerror="this.style.display='none'"/>` : player.displayName?.charAt(0)}
+                </div>
+                <div style="flex:1;min-width:0;">
+                  <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+                    <span class="${isPremium ? 'username-premium' : ''}" style="font-weight:800;font-size:0.95rem;">${player.displayName}</span>
+                    ${isPlayerHost ? '<span class="badge" style="background:var(--gold-dim);color:var(--gold-bright);padding:1px 6px;font-size:0.65rem;">HOST</span>' : ''}
+                    ${isPremium ? '<span class="badge-premium">👑 VIP</span>' : ''}
+                    ${isMe ? '<span style="color:var(--gold-bright);font-size:0.75rem;">(You)</span>' : ''}
+                  </div>
+                  <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:3px;">
+                    <span class="epic-copy-chip" onclick="event.stopPropagation();copyEpicTag('${epicTag}')" title="Click to copy Epic IGN">
+                      <img src="epic_games_logo.webp" alt="" style="width:13px;height:15px;object-fit:contain;"/>
+                      <span>${epicTag}</span>
+                      <i data-lucide="copy" style="width:11px;height:11px;opacity:0.7;"></i>
+                    </span>
+                    <span style="font-size:0.75rem;color:var(--text-muted);">
+                      ${isReady ? '✅ <span style="color:var(--green);font-weight:700;">READY</span>' : '⏳ Not Ready'}
+                    </span>
+                  </div>
+                </div>
+                <i data-lucide="chevron-right" style="width:14px;height:14px;color:var(--text-muted);"></i>
+              </div>`;
+          }
+        } else {
+          return `
+            <div class="player-slot-box empty-slot">
+              <div class="slot-avatar-img">
+                <i data-lucide="user-plus" style="width:18px;height:18px;opacity:0.5;"></i>
+              </div>
+              <div>
+                <div style="font-weight:700;color:var(--text-muted);">${teamName} Slot #${slotIndex}</div>
+                <div style="font-size:0.75rem;color:var(--text-faint);">Waiting for player…</div>
+              </div>
+            </div>`;
+        }
+      }
+
+      let team1HTML = '';
+      for (let i = 0; i < halfCount; i++) {
+        team1HTML += renderPlayerSlot(team1Players[i], i + 1, 'Team 1');
+      }
+
+      let team2HTML = '';
+      for (let i = 0; i < halfCount; i++) {
+        team2HTML += renderPlayerSlot(team2Players[i], i + 1, 'Team 2');
+      }
+
+      const t1El = document.getElementById('team1-squad');
+      const t2El = document.getElementById('team2-squad');
+      if (t1El) t1El.innerHTML = team1HTML;
+      if (t2El) t2El.innerHTML = team2HTML;
+
+      // Arena Action Buttons
+      const actionsContainer = document.getElementById('arena-actions');
+      if (actionsContainer) {
+        let actionsHTML = `
+          <button class="btn btn-danger btn-sm" onclick="openCallStaffModal()">
+            <i data-lucide="shield-alert"></i> Call Staff
+          </button>
+          <button class="btn btn-outline btn-sm" onclick="copyMatchLink()">
+            <i data-lucide="share-2"></i> Share Link
+          </button>`;
+
+        if (!alreadyIn && !isFull && match.status === 'waiting') {
+          actionsHTML += `
+            <button class="btn btn-primary btn-sm" onclick="handleJoinArena()">
+              <i data-lucide="log-in"></i> Join Match ($${formatTokens(match.wager)})
+            </button>`;
+        }
+
+        if (alreadyIn && match.status === 'waiting') {
+          actionsHTML += `
+            <button class="btn btn-danger btn-sm" onclick="handleLeaveOrCancel()">
+              <i data-lucide="x-circle"></i> ${isHost ? 'Cancel & Refund' : 'Leave & Refund'} ($${formatTokens(match.wager)})
+            </button>`;
+        }
+
+        if (isHost && isMatchStarted && match.status !== 'completed') {
+          actionsHTML += `
+            <button class="btn btn-gold btn-sm" onclick="openDeclareModal()">
+              <i data-lucide="trophy"></i> Declare Winner
+            </button>`;
+        }
+
+        actionsContainer.innerHTML = actionsHTML;
+      }
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function copyEpicTag(tag) {
+      if (!tag) return;
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(tag).then(() => {
+          showToast(`Epic IGN "${tag}" copied! Paste in Fortnite party finder.`, 'info');
+        });
+      }
+    }
+
+    async function handleReadyToggle(isReady) {
+      if (!matchId || !currentUser) return;
+      try {
+        const res = await setPlayerReady(matchId, currentUser.uid, isReady);
+        if (res.allReady) {
+          showToast('Both teams READY! Match started & Fortnite tags unlocked!', 'success');
+        } else {
+          showToast(isReady ? 'Marked as Ready!' : 'Ready status cancelled', 'info');
+        }
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
+    }
+
+    async function handleLeaveOrCancel() {
+      if (!confirm('Are you sure? Your wager will be refunded to your balance.')) return;
+      try {
+        const res = await leaveOrCancelMatch(matchId, currentUser.uid);
+        showToast(res.message, 'success');
+        setTimeout(() => window.location.href = 'matches', 1000);
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
+    }
+
+    async function handleJoinArena() {
+      if (!currentMatch) return;
+      currentUserData = await getUser(currentUser.uid);
+      if (!currentUserData?.epicUsername) {
+        if (confirm('You must link your Epic Games username first! Go to Profile to link now?')) {
+          window.location.href = 'profile';
+        }
+        return;
+      }
+      if (Number(currentUserData.tokens || 0) < Number(currentMatch.wager)) {
+        showToast(`Insufficient tokens (Need ${formatTokens(currentMatch.wager)} tokens)`, 'error');
+        return;
+      }
+      try {
+        await joinMatch(currentMatch.code, currentUserData);
+        showToast('Joined match! Click Ready Up to begin.', 'success');
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
+    }
+
+    function copyMatchLink() {
+      const url = `${window.location.origin}/match?id=${matchId}`;
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(url).then(() => showToast('Match link copied to clipboard!', 'info'));
+      }
+    }
+
+    // ── Public User Profile Modal ────────────────────────────
+    async function openUserProfileModal(uid) {
+      if (!uid) return;
+      activeModalUid = uid;
+      try {
+        const u = await getUser(uid);
+        if (!u) return;
+
+        const isSelf = uid === currentUser?.uid;
+        const isAdmin = u.isAdmin === true || ADMIN_DISCORD_IDS.includes((u.discordId || uid).replace('discord:', ''));
+        const isPremium = !!u.isPremium;
+
+        const nameEl = document.getElementById('modal-user-name');
+        if (nameEl) {
+          nameEl.textContent = u.displayName || 'Champion';
+          nameEl.className = isPremium ? 'username-premium' : '';
+        }
+
+        // Badges container
+        const badgesEl = document.getElementById('modal-user-badges');
+        if (badgesEl) {
+          let badgesHTML = '';
+          if (isAdmin) badgesHTML += `<span class="badge-staff"><i data-lucide="shield-check" style="width:12px;height:12px;"></i> STAFF</span>`;
+          if (isPremium) badgesHTML += `<span class="badge-premium"><i data-lucide="crown" style="width:12px;height:12px;"></i> VIP PASS</span>`;
+          if (u.epicUsername) badgesHTML += `<span class="chip chip-success" style="font-size:0.68rem;padding:2px 8px;">VERIFIED EPIC</span>`;
+          badgesEl.innerHTML = badgesHTML;
+        }
+
+        const discEl = document.getElementById('modal-user-discord');
+        if (discEl) {
+          discEl.textContent = `@${u.discordUsername || 'user'} · ID: ${u.discordId || uid.replace('discord:','')}`;
+        }
+
+        const epicWrap = document.getElementById('modal-user-epic-wrap');
+        if (epicWrap) {
+          if (u.epicUsername) {
+            epicWrap.innerHTML = `
+              <span class="epic-copy-chip" onclick="copyEpicTag('${u.epicUsername}')">
+                <img src="epic_games_logo.webp" alt="" style="width:14px;height:16px;object-fit:contain;" />
+                <span>${u.epicUsername}</span>
+                <i data-lucide="copy" style="width:12px;height:12px;"></i>
+              </span>`;
+          } else {
+            epicWrap.innerHTML = `<span style="font-size:0.75rem;color:var(--text-faint);">No Epic linked</span>`;
+          }
+        }
+
+        document.getElementById('modal-user-tokens').textContent = formatTokens(u.tokens);
+        document.getElementById('modal-user-played').textContent = u.matchesPlayed || 0;
+        document.getElementById('modal-user-won').textContent = u.matchesWon || 0;
+        const wr = (u.matchesPlayed || 0) > 0 ? Math.round((u.matchesWon / u.matchesPlayed) * 100) + '%' : '0%';
+        document.getElementById('modal-user-winrate').textContent = wr;
+
+        const img = document.getElementById('modal-user-avatar-img');
+        const icon = document.getElementById('modal-user-avatar-icon');
+        if (img && icon) {
+          if (u.photoURL) {
+            img.src = u.photoURL; img.style.display = 'block'; icon.style.display = 'none';
+          } else {
+            img.style.display = 'none'; icon.style.display = 'block';
+          }
+        }
+
+        // Tipping section: show only if viewing someone else
+        const tipSec = document.getElementById('tip-section');
+        if (tipSec) {
+          tipSec.style.display = !isSelf ? 'block' : 'none';
+        }
+
+        document.getElementById('profile-modal').classList.add('open');
+        if (window.lucide) lucide.createIcons();
+      } catch (e) {
+        console.warn(e);
+      }
+    }
+
+    function closeUserProfileModal() {
+      document.getElementById('profile-modal').classList.remove('open');
+      activeModalUid = null;
+    }
+
+    async function handleTipAmount(amount) {
+      if (!activeModalUid || !currentUser) return;
+      if (!confirm(`Send a tip of ${formatTokens(amount)} Tokens to this player?`)) return;
+      try {
+        await tipPlayer(currentUser.uid, activeModalUid, amount);
+        showToast(`Successfully sent ${formatTokens(amount)} Tokens tip!`, 'success');
+        openUserProfileModal(activeModalUid);
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
+    }
+
+    async function handleCustomTip() {
+      if (!activeModalUid || !currentUser) return;
+      const raw = prompt('Enter token amount to tip (e.g. 1.50):', '1.00');
+      if (!raw) return;
+      const amount = parseFloat(raw);
+      if (isNaN(amount) || amount <= 0) {
+        showToast('Invalid tip amount', 'error');
+        return;
+      }
+      handleTipAmount(amount);
+    }
+
+    // ── Chat System with Staff & System Messages ─────────────
+    function renderChat(messages) {
+      const container = document.getElementById('chat-messages');
+      if (!container) return;
+      if (!messages.length) {
+        container.innerHTML = `<div style="margin:auto;font-size:0.8rem;color:var(--text-faint);text-align:center;">Lobby chat active. Ready up and share your Epic Games usernames!</div>`;
+        return;
+      }
+
+      container.innerHTML = messages.map(m => {
+        // System Announcement
+        if (m.isSystem) {
+          return `
+            <div class="chat-system-announcement">
+              <div style="font-weight:800;display:flex;align-items:center;gap:6px;">
+                <i data-lucide="bell" style="width:13px;height:13px;color:var(--gold-bright);"></i>
+                <span>Match Announcement</span>
+              </div>
+              <div>${escapeHtml(m.text)}</div>
+            </div>`;
+        }
+
+        const isMine = m.senderUid === currentUser?.uid;
+        const isStaff = m.isStaff || ADMIN_DISCORD_IDS.includes((m.senderUid || '').replace('discord:', ''));
+        const isPremium = !!m.isPremium;
+
+        const pfpHTML = m.photoURL
+          ? `<div class="chat-pfp-avatar" onclick="openUserProfileModal('${m.senderUid}')"><img src="${m.photoURL}" onerror="this.style.display='none'"/></div>`
+          : `<div class="chat-pfp-avatar" onclick="openUserProfileModal('${m.senderUid}')">${(m.senderName || '?').charAt(0)}</div>`;
+
+        return `
+          <div class="chat-item-row ${isMine ? 'mine' : ''}">
+            ${pfpHTML}
+            <div class="chat-content-wrap">
+              <div class="chat-author-line">
+                <span class="${isPremium ? 'username-premium' : ''}" style="font-weight:800;color:${isStaff ? '#f87171' : 'var(--gold-bright)'};">
+                  ${m.senderName}
+                </span>
+                ${isStaff ? '<span class="badge-staff">🛡️ STAFF</span>' : ''}
+                ${isPremium ? '<span class="badge-premium">👑 VIP</span>' : ''}
+                <span>${formatTime(m.timestamp)}</span>
+              </div>
+              <div class="chat-text-bubble" style="${isStaff ? 'border-color:rgba(239,68,68,0.4);background:rgba(239,68,68,0.08);' : ''}">
+                ${escapeHtml(m.text)}
+              </div>
+            </div>
+          </div>`;
+      }).join('');
+      container.scrollTop = container.scrollHeight;
+      if (window.lucide) lucide.createIcons();
+    }
+
+    async function sendChatMessage(e) {
+      e.preventDefault();
+      const input = document.getElementById('chat-input');
+      const text = input.value.trim();
+      if (!text || !matchId) return;
+
+      input.value = '';
+      const isStaff = isAdminUser(currentUser, currentUserData);
+      const isPremium = !!currentUserData?.isPremium;
+
+      await db.collection('matches').doc(matchId).collection('messages').add({
+        text,
+        senderUid:  currentUser.uid,
+        senderName: currentUserData?.displayName || 'Player',
+        photoURL:   currentUserData?.photoURL || currentUser?.photoURL || '',
+        isStaff:    isStaff,
+        isPremium:  isPremium,
+        timestamp:  firebase.firestore.FieldValue.serverTimestamp(),
+      });
+    }
+
+    function escapeHtml(str) {
+      return str ? str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;") : '';
+    }
+
+    // ── Call Staff Modal ─────────────────────────────────────
+    function openCallStaffModal() { document.getElementById('staff-modal').classList.add('open'); }
+    function closeCallStaffModal() { document.getElementById('staff-modal').classList.remove('open'); }
+
+    async function submitStaffCall(e) {
+      e.preventDefault();
+      const reason = document.getElementById('staff-reason-select').value;
+      const details = document.getElementById('staff-details-input').value.trim();
+      const btn = document.getElementById('submit-staff-btn');
+      btn.disabled = true;
+
+      try {
+        await db.collection('staff_calls').add({
+          matchId,
+          matchCode:    currentMatch?.code || '',
+          matchTitle:   currentMatch?.title || '',
+          calledByUid:  currentUser.uid,
+          calledByName: currentUserData?.displayName || 'Player',
+          reason,
+          details,
+          status:       'open',
+          timestamp:    firebase.firestore.FieldValue.serverTimestamp(),
+        });
+        showToast('Staff has been called! A moderator will review shortly.', 'warning');
+        closeCallStaffModal();
+      } catch (err) {
+        showToast('Failed to alert staff: ' + err.message, 'error');
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
+    // ── Declare Winner Modal ─────────────────────────────────
+    function openDeclareModal() {
+      if (!currentMatch) return;
+      const select = document.getElementById('winner-select');
+      select.innerHTML = (currentMatch.players || []).map(p =>
+        `<option value="${p.uid}">${p.displayName}${p.isHost ? ' (Host)' : ''}</option>`
+      ).join('');
+      document.getElementById('declare-modal').classList.add('open');
+    }
+    function closeDeclareModal() { document.getElementById('declare-modal').classList.remove('open'); }
+
+    async function handleDeclareWinner() {
+      const select = document.getElementById('winner-select');
+      const winnerUid = select.value;
+      const btn = document.getElementById('declare-btn');
+      btn.disabled = true;
+      try {
+        const prize = await declareWinner(matchId, winnerUid, currentUser.uid);
+        showToast(`Winner declared! +${formatTokens(prize)} tokens awarded.`, 'success');
+        closeDeclareModal();
+      } catch (err) {
+        showToast(err.message, 'error');
+      } finally {
+        btn.disabled = false;
+      }
+    }
+  </script>
 </body>
 </html>

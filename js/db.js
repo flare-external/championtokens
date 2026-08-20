@@ -192,6 +192,26 @@ async function setPlayerReady(matchId, uid, isReady = true) {
     ...(allReady ? { startedAt: firebase.firestore.FieldValue.serverTimestamp() } : {}),
   });
 
+  // Automated System Announcements on match start
+  if (allReady) {
+    const hostPlayer = updatedPlayers.find(p => p.isHost || p.uid === match.createdBy) || updatedPlayers[0];
+    const oppPlayer = updatedPlayers.find(p => p.uid !== hostPlayer?.uid) || updatedPlayers[1];
+    const hostName = hostPlayer ? (hostPlayer.epicUsername || hostPlayer.displayName) : 'Host';
+    const oppName  = oppPlayer ? (oppPlayer.epicUsername || oppPlayer.displayName) : 'Opponent';
+
+    const msgRef = matchRef.collection('messages');
+    await msgRef.add({
+      isSystem:  true,
+      text:      '⏰ Players have 10 minutes to queue into a game. If your opponent does not join within 10 minutes, click "Call Staff" to report and a moderator will resolve the situation.',
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+    });
+    await msgRef.add({
+      isSystem:  true,
+      text:      `👑 Team ${hostName} is host, so ${oppName} has to add them in Fortnite!`,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+    });
+  }
+
   return { allReady, newStatus };
 }
 
@@ -638,6 +658,69 @@ async function adminForceCancelMatch(matchId, adminName) {
     cancelledBy: adminName,
     completedAt: firebase.firestore.FieldValue.serverTimestamp(),
   });
+}
+
+// ── Premium Pass & Player Tipping ────────────────────────────
+
+/** Purchase Champion Premium Pass (Cost: 5.00 Tokens) */
+async function buyPremiumPass(uid) {
+  const user = await getUser(uid);
+  if (!user) throw new Error('User not found');
+
+  if (Number(user.tokens || 0) < 5.00) {
+    throw new Error('Insufficient tokens. Premium Pass costs 5.00 Tokens ($5.00).');
+  }
+
+  // Deduct 5.00 tokens
+  await updateTokens(uid, -5.00, 'shop', '👑 Purchased Champion Premium Pass (30 Days)');
+
+  const expiresDate = new Date();
+  expiresDate.setDate(expiresDate.getDate() + 30);
+
+  await db.collection('users').doc(uid).update({
+    isPremium:        true,
+    premiumExpiresAt: firebase.firestore.Timestamp.fromDate(expiresDate),
+  });
+
+  return true;
+}
+
+/** Tip tokens to another player */
+async function tipPlayer(senderUid, receiverUid, amount) {
+  const num = Math.round(Number(amount) * 100) / 100;
+  if (isNaN(num) || num < 0.10) {
+    throw new Error('Minimum tip amount is 0.10 Tokens');
+  }
+  if (senderUid === receiverUid) {
+    throw new Error('You cannot tip yourself');
+  }
+
+  const sender = await getUser(senderUid);
+  if (!sender) throw new Error('Sender user not found');
+  if (Number(sender.tokens || 0) < num) {
+    throw new Error(`Insufficient tokens (Need ${formatTokens(num)} Tokens)`);
+  }
+
+  const receiver = await getUser(receiverUid);
+  if (!receiver) throw new Error('Recipient user not found');
+
+  // Deduct from sender
+  await updateTokens(
+    senderUid,
+    -num,
+    'tip_sent',
+    `🎁 Tipped ${formatTokens(num)} Tokens to @${receiver.discordUsername || receiver.displayName}`
+  );
+
+  // Credit to receiver
+  await updateTokens(
+    receiverUid,
+    num,
+    'tip_received',
+    `🎁 Received ${formatTokens(num)} Tokens tip from @${sender.discordUsername || sender.displayName}`
+  );
+
+  return { sender, receiver, amount: num };
 }
 
 
