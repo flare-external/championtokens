@@ -53,25 +53,28 @@
     requireAuth().then(async (user) => {
       currentUser = user;
       injectNav('profile');
+      document.getElementById('page-loading').classList.add('hidden');
 
       // Real-time user data
       db.collection('users').doc(user.uid).onSnapshot((snap) => {
         if (snap.exists) renderProfile(snap.data());
-      });
+      }, (err) => console.warn('User profile snapshot error:', err));
 
       // Transactions
-      const txs = await getUserTransactions(user.uid, 20);
-      renderTransactions(txs);
+      try {
+        const txs = await getUserTransactions(user.uid, 20);
+        renderTransactions(txs);
+      } catch (e) {
+        console.warn('Error loading transactions:', e);
+        renderTransactions([]);
+      }
 
-      // Match history
-      db.collection('matches')
-        .where('playerUids', 'array-contains', user.uid)
-        .orderBy('createdAt', 'desc')
-        .limit(10)
-        .onSnapshot((snap) => {
-          renderMatchHistory(snap.docs.map(d => ({ id: d.id, ...d.data() })));
-        });
-
+      // Match history (using safe in-memory sorting)
+      subscribeUserMatches(user.uid, (matches) => {
+        renderMatchHistory(matches.slice(0, 10));
+      });
+    }).catch(err => {
+      console.error('Profile auth error:', err);
       document.getElementById('page-loading').classList.add('hidden');
     });
 

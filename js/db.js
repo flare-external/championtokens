@@ -168,26 +168,37 @@ async function joinMatch(code, joiningUser) {
  * Subscribe to open (status=waiting) matches in real-time.
  * Returns the Firestore unsubscribe function.
  */
+/**
+ * Subscribe to open (status=waiting) matches in real-time.
+ * In-memory sort avoids composite index requirement.
+ */
 function subscribeOpenMatches(callback) {
   return db.collection('matches')
     .where('status', '==', 'waiting')
-    .orderBy('createdAt', 'desc')
-    .limit(20)
-    .onSnapshot(callback);
+    .onSnapshot((snap) => {
+      const list = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      list.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
+      callback(list);
+    }, (err) => {
+      console.warn('subscribeOpenMatches error:', err);
+      callback([]);
+    });
 }
 
 /**
  * Subscribe to all matches a user is a player in.
- * Note: Firestore doesn't support array-contains with objects natively;
- * we track participation via a separate index field `playerUids`.
- * We add uid to playerUids on create/join so we can query here.
  */
 function subscribeUserMatches(uid, callback) {
   return db.collection('matches')
-    .where('playerUids', 'array-contains', uid)
-    .orderBy('createdAt', 'desc')
-    .limit(10)
-    .onSnapshot(callback);
+    .onSnapshot((snap) => {
+      const all = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      const mine = all.filter(m => (m.playerUids || []).includes(uid) || m.createdBy === uid);
+      mine.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
+      callback(mine);
+    }, (err) => {
+      console.warn('subscribeUserMatches error:', err);
+      callback([]);
+    });
 }
 
 /**
@@ -258,8 +269,8 @@ async function getLeaderboard() {
 async function getUserTransactions(uid, limitCount = 15) {
   const snap = await db.collection('transactions')
     .where('userId', '==', uid)
-    .orderBy('timestamp', 'desc')
-    .limit(limitCount)
     .get();
-  return snap.docs.map(d => ({ id: d.id, ...d.data() }));
+  const list = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+  list.sort((a, b) => (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0));
+  return list.slice(0, limitCount);
 }
