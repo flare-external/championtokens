@@ -160,21 +160,26 @@
               ${alreadyIn && !isMine ? '<span class="chip chip-success" style="margin-left:auto;">Joined</span>' : ''}
             </div>
 
-            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;">
               <div class="match-code-badge"><i data-lucide="hash"></i>${m.code}</div>
-              ${canJoin ? `
-                <button class="btn btn-sm btn-primary" onclick="handleJoin('${m.code}', ${m.wager})">
-                  <i data-lucide="log-in"></i> Join Match
-                </button>` : ''}
-              ${isMine ? `
-                <button class="btn btn-sm btn-outline" onclick="shareCode('${m.code}', '${m.title}')">
-                  <i data-lucide="share-2"></i> Share Code
-                </button>` : ''}
+              <div style="display:flex;gap:6px;margin-left:auto;">
+                <a href="match?id=${m.id}" target="_blank" class="btn btn-sm btn-outline" title="Open match room in new tab">
+                  <i data-lucide="external-link"></i> Arena
+                </a>
+                ${canJoin ? `
+                  <button class="btn btn-sm btn-primary" onclick="handleJoin('${m.code}', ${m.wager})">
+                    <i data-lucide="log-in"></i> Join
+                  </button>` : ''}
+                ${isMine ? `
+                  <button class="btn btn-sm btn-outline" onclick="shareCode('${m.code}', '${m.title}')">
+                    <i data-lucide="share-2"></i>
+                  </button>` : ''}
+              </div>
             </div>
 
-            <div style="font-size:0.75rem;color:var(--text-faint);">
-              <i data-lucide="clock" style="width:12px;height:12px;display:inline;"></i>
-              ${formatTime(m.createdAt)}
+            <div style="font-size:0.75rem;color:var(--text-faint);display:flex;justify-content:space-between;">
+              <span><i data-lucide="clock" style="width:12px;height:12px;display:inline;"></i> ${formatTime(m.createdAt)}</span>
+              <span style="font-family:monospace;opacity:0.7;">ID: ${m.id.substring(0,8)}</span>
             </div>
           </div>`;
       }).join('');

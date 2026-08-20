@@ -2,12 +2,10 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // Helper: is the request from a signed-in user?
     function isAuth() {
       return request.auth != null;
     }
 
-    // Helper: is the requester the owner of this document?
     function isOwner(uid) {
       return request.auth.uid == uid;
     }
@@ -28,15 +26,26 @@ service cloud.firestore {
       allow delete: if false;
     }
 
-    // ── Matches ────────────────────────────────────────────────
+    // ── Matches & Lobby Chat ───────────────────────────────────
     match /matches/{matchId} {
       allow read:   if isAuth();
       allow create: if isAuth();
-      // Only players in the match or the host can update it
-      allow update: if isAuth() && (
-        request.auth.uid in resource.data.playerUids ||
-        request.auth.uid == resource.data.createdBy
-      );
+      allow update: if isAuth();
+      allow delete: if false;
+
+      match /messages/{msgId} {
+        allow read:   if isAuth();
+        allow create: if isAuth();
+        allow update: if false;
+        allow delete: if false;
+      }
+    }
+
+    // ── Staff Calls / Disputes ─────────────────────────────────
+    match /staff_calls/{callId} {
+      allow read:   if isAuth();
+      allow create: if isAuth();
+      allow update: if isAuth();
       allow delete: if false;
     }
   }

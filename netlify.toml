@@ -6,3 +6,38 @@
 [functions]
   node_bundler = "esbuild"
 
+# Clean URLs (serve /page without .html extension)
+[[redirects]]
+  from   = "/dashboard"
+  to     = "/dashboard.html"
+  status = 200
+
+[[redirects]]
+  from   = "/matches"
+  to     = "/matches.html"
+  status = 200
+
+[[redirects]]
+  from   = "/match"
+  to     = "/match.html"
+  status = 200
+
+[[redirects]]
+  from   = "/leaderboard"
+  to     = "/leaderboard.html"
+  status = 200
+
+[[redirects]]
+  from   = "/shop"
+  to     = "/shop.html"
+  status = 200
+
+[[redirects]]
+  from   = "/profile"
+  to     = "/profile.html"
+  status = 200
+
+[[redirects]]
+  from   = "/callback"
+  to     = "/callback.html"
+  status = 200

@@ -9,10 +9,10 @@
  */
 function injectNav(activePage = '') {
   const links = [
-    { href: 'dashboard.html',   key: 'dashboard',   icon: 'layout-dashboard', label: 'Dashboard'   },
-    { href: 'matches.html',     key: 'matches',      icon: 'swords',           label: 'Matches'     },
-    { href: 'leaderboard.html', key: 'leaderboard',  icon: 'trophy',           label: 'Leaderboard' },
-    { href: 'shop.html',        key: 'shop',         icon: 'shopping-cart',    label: 'Shop'        },
+    { href: 'dashboard',   key: 'dashboard',   icon: 'layout-dashboard', label: 'Dashboard'   },
+    { href: 'matches',     key: 'matches',      icon: 'swords',           label: 'Matches'     },
+    { href: 'leaderboard', key: 'leaderboard',  icon: 'trophy',           label: 'Leaderboard' },
+    { href: 'shop',        key: 'shop',         icon: 'shopping-cart',    label: 'Shop'        },
   ];
 
   const navLinksHTML = links.map(l => `
@@ -24,7 +24,7 @@ function injectNav(activePage = '') {
   const navHTML = `
     <nav class="ct-nav" id="ct-nav">
       <div class="ct-nav__inner">
-        <a href="dashboard.html" class="ct-nav__brand">
+        <a href="dashboard" class="ct-nav__brand">
           <img src="champion_tokens_CT_v4.png" alt="Champion Tokens" class="brand-logo-img" />
           <span class="brand-text">Champion <span class="brand-accent">Tokens</span></span>
         </a>
@@ -37,12 +37,12 @@ function injectNav(activePage = '') {
               <img src="champion_token_coin.png" alt="CT" class="token-pill-coin" />
               <span id="nav-balance">10.00</span>
             </div>
-            <a href="shop.html" class="token-add-btn" title="Add / Buy Tokens">
+            <a href="shop" class="token-add-btn" title="Add / Buy Tokens">
               <i data-lucide="plus"></i>
             </a>
           </div>
 
-          <a href="profile.html" class="nav-avatar-wrap" id="nav-avatar-wrap" title="Profile">
+          <a href="profile" class="nav-avatar-wrap" id="nav-avatar-wrap" title="Profile">
             <img id="nav-avatar-img" src="" alt="" style="display:none"/>
             <i data-lucide="user" id="nav-avatar-icon"></i>
           </a>
@@ -96,7 +96,7 @@ function injectNav(activePage = '') {
 }
 
 function handleSignOut() {
-  signOut().then(() => { window.location.href = 'index.html'; });
+  signOut().then(() => { window.location.href = '/'; });
 }
 
 function toggleMobileNav() {
