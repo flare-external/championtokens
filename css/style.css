@@ -366,9 +366,9 @@ input[type="range"].ct-slider::-moz-range-thumb {
 .page-wrap {
   position: relative;
   z-index: 1;
-  max-width: 1200px;
+  max-width: 1320px;
   margin: 0 auto;
-  padding: 36px 20px 60px;
+  padding: 36px 24px 64px;
 }
 
 .page-header {
@@ -578,7 +578,7 @@ input[type="range"].ct-slider::-moz-range-thumb {
   border-radius: var(--radius-xl);
   padding: 32px;
   width: 100%;
-  max-width: 480px;
+  max-width: 560px;
   transform: translateY(16px);
   transition: transform 0.2s;
   box-shadow: 0 24px 64px rgba(0,0,0,0.7), 0 0 40px rgba(245, 158, 11, 0.15);

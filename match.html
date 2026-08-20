@@ -361,72 +361,75 @@
     </div>
   </main>
 
-  <!-- Player Profile Modal (with Badges, Stats & Match Past History) -->
+  <!-- Wide Player Profile Modal (Clean Esports Style) -->
   <div class="modal-overlay" id="profile-modal" onclick="if(event.target===this)closeUserProfileModal()">
-    <div class="modal" style="max-width:420px;">
-      <div class="modal-header">
+    <div class="modal" style="max-width:580px;width:100%;padding:28px 32px;">
+      <div class="modal-header" style="margin-bottom:18px;">
         <div class="modal-title"><i data-lucide="user"></i> Player Profile</div>
         <button class="modal-close" onclick="closeUserProfileModal()"><i data-lucide="x"></i></button>
       </div>
-      <div style="text-align:center;margin-bottom:16px;">
-        <div class="slot-avatar-img" style="width:64px;height:64px;margin:0 auto 10px;border-color:var(--gold-bright);">
+      
+      <!-- Wide Profile Header -->
+      <div style="display:flex;align-items:center;gap:18px;margin-bottom:22px;background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:var(--radius-lg);padding:16px 20px;">
+        <div class="slot-avatar-img" style="width:68px;height:68px;border-color:var(--gold-bright);flex-shrink:0;">
           <img id="modal-user-avatar-img" src="" alt="" style="display:none;"/>
-          <i data-lucide="user" id="modal-user-avatar-icon" style="width:28px;height:28px;"></i>
+          <i data-lucide="user" id="modal-user-avatar-icon" style="width:30px;height:30px;"></i>
         </div>
-        <div style="display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap;">
-          <span id="modal-user-name" style="font-size:1.3rem;font-weight:900;color:#fff;">Champion</span>
-          <span id="modal-user-title-slot"></span>
+        <div style="flex:1;min-width:0;">
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+            <span id="modal-user-name" style="font-size:1.35rem;font-weight:900;color:#fff;">Champion</span>
+            <span id="modal-user-title-slot"></span>
+          </div>
+          <div id="modal-user-discord" style="font-size:0.8rem;color:var(--text-muted);font-family:monospace;margin-top:2px;">@user · ID: --</div>
+          <div id="modal-user-epic-wrap" style="margin-top:6px;"></div>
         </div>
-        <div id="modal-user-badges" style="display:flex;align-items:center;justify-content:center;gap:6px;margin-top:6px;flex-wrap:wrap;"></div>
-        <div id="modal-user-discord" style="font-size:0.78rem;color:var(--text-muted);font-family:monospace;margin-top:4px;">@user · ID: --</div>
-        <div id="modal-user-epic-wrap" style="margin-top:6px;"></div>
       </div>
 
       <!-- Stats Grid (Wins, Losses, Win Rate %, Rank) -->
-      <div class="grid-4" style="gap:8px;margin-bottom:16px;">
-        <div class="card" style="padding:10px;text-align:center;">
-          <div style="font-size:0.68rem;color:var(--text-muted);font-weight:700;">WINS</div>
-          <div id="modal-user-won" style="font-size:1.15rem;font-weight:900;color:var(--green);">0</div>
+      <div class="grid-4" style="gap:10px;margin-bottom:20px;">
+        <div class="card" style="padding:14px 10px;text-align:center;">
+          <div style="font-size:0.7rem;color:var(--text-muted);font-weight:700;letter-spacing:0.04em;">WINS</div>
+          <div id="modal-user-won" style="font-size:1.35rem;font-weight:900;color:var(--green);margin-top:2px;">0</div>
         </div>
-        <div class="card" style="padding:10px;text-align:center;">
-          <div style="font-size:0.68rem;color:var(--text-muted);font-weight:700;">LOSSES</div>
-          <div id="modal-user-lost" style="font-size:1.15rem;font-weight:900;color:var(--red);">0</div>
+        <div class="card" style="padding:14px 10px;text-align:center;">
+          <div style="font-size:0.7rem;color:var(--text-muted);font-weight:700;letter-spacing:0.04em;">LOSSES</div>
+          <div id="modal-user-lost" style="font-size:1.35rem;font-weight:900;color:var(--red);margin-top:2px;">0</div>
         </div>
-        <div class="card" style="padding:10px;text-align:center;">
-          <div style="font-size:0.68rem;color:var(--text-muted);font-weight:700;">WIN RATE</div>
-          <div id="modal-user-winrate" style="font-size:1.15rem;font-weight:900;color:var(--gold-bright);">0%</div>
+        <div class="card" style="padding:14px 10px;text-align:center;">
+          <div style="font-size:0.7rem;color:var(--text-muted);font-weight:700;letter-spacing:0.04em;">WIN RATE</div>
+          <div id="modal-user-winrate" style="font-size:1.35rem;font-weight:900;color:var(--gold-bright);margin-top:2px;">0%</div>
         </div>
-        <div class="card" style="padding:10px;text-align:center;">
-          <div style="font-size:0.68rem;color:var(--text-muted);font-weight:700;">RANK</div>
-          <div id="modal-user-rank" style="font-size:0.95rem;font-weight:900;color:#c084fc;">#--</div>
+        <div class="card" style="padding:14px 10px;text-align:center;">
+          <div style="font-size:0.7rem;color:var(--text-muted);font-weight:700;letter-spacing:0.04em;">RANK</div>
+          <div id="modal-user-rank" style="font-size:1.15rem;font-weight:900;color:#c084fc;margin-top:2px;">#--</div>
         </div>
       </div>
 
       <!-- Match Past History -->
-      <div class="card" style="padding:12px 14px;margin-bottom:14px;background:rgba(0,0,0,0.3);">
-        <div style="font-size:0.75rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:6px;">
-          <i data-lucide="history" style="width:13px;height:13px;"></i> Recent Match History
+      <div class="card" style="padding:14px 16px;margin-bottom:18px;background:rgba(0,0,0,0.35);">
+        <div style="font-size:0.78rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:10px;display:flex;align-items:center;gap:6px;">
+          <i data-lucide="history" style="width:14px;height:14px;"></i> Recent Match History
         </div>
-        <div id="modal-user-match-past" style="display:flex;flex-direction:column;gap:6px;">
-          <div style="font-size:0.75rem;color:var(--text-faint);text-align:center;">Loading past matches…</div>
+        <div id="modal-user-match-past" style="display:flex;flex-direction:column;gap:8px;">
+          <div style="font-size:0.8rem;color:var(--text-faint);text-align:center;">Loading past matches…</div>
         </div>
       </div>
 
       <!-- Tipping Tokens Section -->
-      <div class="tip-box" id="tip-section" style="display:none;margin-top:0;">
-        <div style="display:flex;align-items:center;gap:6px;font-weight:800;font-size:0.85rem;color:var(--gold-bright);margin-bottom:6px;">
+      <div class="tip-box" id="tip-section" style="display:none;margin-top:0;padding:14px 18px;">
+        <div style="display:flex;align-items:center;gap:6px;font-weight:800;font-size:0.85rem;color:var(--gold-bright);margin-bottom:8px;">
           <i data-lucide="gift"></i> Tip Player Tokens
         </div>
-        <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
           <span class="wager-pill" onclick="handleTipAmount(0.50)">0.50</span>
           <span class="wager-pill" onclick="handleTipAmount(1.00)">1.00</span>
           <span class="wager-pill" onclick="handleTipAmount(2.50)">2.50</span>
           <span class="wager-pill" onclick="handleTipAmount(5.00)">5.00</span>
-          <button class="btn btn-gold btn-sm" onclick="handleCustomTip()" style="padding:4px 12px;font-size:0.75rem;">Custom Tip</button>
+          <button class="btn btn-gold btn-sm" onclick="handleCustomTip()" style="padding:5px 14px;font-size:0.78rem;">Custom Tip</button>
         </div>
       </div>
 
-      <button class="btn btn-outline btn-full" style="margin-top:14px;" onclick="closeUserProfileModal()">Close</button>
+      <button class="btn btn-outline btn-full" style="margin-top:16px;" onclick="closeUserProfileModal()">Close</button>
     </div>
   </div>
 
@@ -766,7 +769,6 @@
                     <span class="${colorClass} ${animClass}" style="font-weight:800;font-size:0.95rem;">${realDisplayName}</span>
                     ${titleTagHTML}
                     ${isPlayerHost ? '<span class="badge" style="background:var(--gold-dim);color:var(--gold-bright);padding:1px 6px;font-size:0.65rem;">HOST</span>' : ''}
-                    ${isPremium ? '<span class="badge-premium"><i data-lucide="crown" style="width:10px;height:10px;"></i> PREMIUM</span>' : ''}
                     ${isMe ? '<span style="color:var(--gold-bright);font-size:0.75rem;">(You)</span>' : ''}
                   </div>
                   <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:3px;">
@@ -939,16 +941,6 @@
           } else {
             titleSlot.innerHTML = '';
           }
-        }
-
-        // Badges container
-        const badgesEl = document.getElementById('modal-user-badges');
-        if (badgesEl) {
-          let badgesHTML = '';
-          if (isAdmin) badgesHTML += `<span class="badge-staff"><i data-lucide="shield-check" style="width:12px;height:12px;"></i> STAFF</span>`;
-          if (isPremium) badgesHTML += `<span class="badge-premium"><i data-lucide="crown" style="width:12px;height:12px;"></i> PREMIUM</span>`;
-          if (u.epicUsername) badgesHTML += `<span class="chip chip-success" style="font-size:0.68rem;padding:2px 8px;">VERIFIED EPIC</span>`;
-          badgesEl.innerHTML = badgesHTML;
         }
 
         const discEl = document.getElementById('modal-user-discord');
