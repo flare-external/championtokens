@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Champion Tokens</title>
+  <link rel="icon" type="image/png" href="champion_tokens_CT_v4.png"/>
+  <link rel="shortcut icon" type="image/png" href="champion_tokens_CT_v4.png"/>
+  <link rel="apple-touch-icon" href="champion_tokens_CT_v4.png"/>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <style>
+    .legal-wrap {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+    .legal-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-2xl);
+      padding: 42px 38px;
+      box-shadow: var(--shadow-card);
+      backdrop-filter: blur(24px);
+    }
+    .legal-card h1 {
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+    .legal-date {
+      font-size: 0.85rem;
+      color: var(--gold-bright);
+      margin-bottom: 28px;
+      font-weight: 600;
+    }
+    .legal-section {
+      margin-bottom: 28px;
+    }
+    .legal-section h2 {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 12px;
+    }
+    .legal-section p {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+      margin-bottom: 12px;
+    }
+    .legal-section ul {
+      margin-left: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+      list-style-type: disc;
+    }
+  </style>
+</head>
+<body>
+  <div class="page-bg"></div>
+
+  <!-- Header / Navigation -->
+  <header class="landing-nav" style="border-bottom: 1px solid var(--border);">
+    <a href="/" class="landing-brand">
+      <img src="champion_tokens_CT_v4.png" alt="Champion Tokens" class="landing-brand-logo"/>
+      <span>Champion <span class="brand-accent">Tokens</span></span>
+    </a>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <a href="/" class="btn btn-outline btn-sm">
+        <i data-lucide="arrow-left"></i> Home
+      </a>
+      <a href="/dashboard" class="btn btn-primary btn-sm">
+        <i data-lucide="layout-dashboard"></i> Dashboard
+      </a>
+    </div>
+  </header>
+
+  <main class="legal-wrap">
+    <div class="legal-card">
+      <h1>Terms of Service</h1>
+      <div class="legal-date">Last Updated: August 21, 2026 · Champion Tokens (championtokens.fun)</div>
+
+      <div class="legal-section">
+        <h2>1. Acceptance of Terms</h2>
+        <p>By accessing or using Champion Tokens, you agree to comply with and be bound by these Terms of Service. If you do not agree, do not use the platform.</p>
+      </div>
+
+      <div class="legal-section">
+        <h2>2. Competitive Rules & Fair Play</h2>
+        <p>Champion Tokens is a competitive skill-based platform. Cheating, hacking, exploiting glitches, teaming in solo matches, or submitting false match score reports will result in an immediate and permanent ban without refund of token balances.</p>
+      </div>
+
+      <div class="legal-section">
+        <h2>3. Virtual Token Economy</h2>
+        <p>Tokens on Champion Tokens represent virtual credits for tournament entry and matchmaking participation. Tokens are earned through winning matches and platform rewards.</p>
+      </div>
+
+      <div class="legal-section">
+        <h2>4. Disclaimers</h2>
+        <p>Champion Tokens is an independent competitive platform and is not officially endorsed, sponsored, or affiliated with Epic Games, Inc., Fortnite, or Discord, Inc. All trademarks belong to their respective owners.</p>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer" style="border-top:1px solid var(--border);padding:24px;text-align:center;color:var(--text-muted);font-size:0.85rem;">
+    <p>© 2026 Champion Tokens (championtokens.fun) · All Rights Reserved.</p>
+  </footer>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>
+    if (window.lucide) lucide.createIcons();
+  </script>
+</body>
+</html>

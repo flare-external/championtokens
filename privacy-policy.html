@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Champion Tokens</title>
+  <link rel="icon" type="image/png" href="champion_tokens_CT_v4.png"/>
+  <link rel="shortcut icon" type="image/png" href="champion_tokens_CT_v4.png"/>
+  <link rel="apple-touch-icon" href="champion_tokens_CT_v4.png"/>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <style>
+    .legal-wrap {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+    .legal-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-2xl);
+      padding: 42px 38px;
+      box-shadow: var(--shadow-card);
+      backdrop-filter: blur(24px);
+    }
+    .legal-card h1 {
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+    .legal-date {
+      font-size: 0.85rem;
+      color: var(--gold-bright);
+      margin-bottom: 28px;
+      font-weight: 600;
+    }
+    .legal-section {
+      margin-bottom: 28px;
+    }
+    .legal-section h2 {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .legal-section p {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+      margin-bottom: 12px;
+    }
+    .legal-section ul {
+      margin-left: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+      list-style-type: disc;
+    }
+    .legal-highlight {
+      background: rgba(245, 158, 11, 0.08);
+      border-left: 3px solid var(--gold-bright);
+      border-radius: 4px var(--radius-md) var(--radius-md) 4px;
+      padding: 14px 18px;
+      margin: 16px 0;
+      font-size: 0.9rem;
+      color: #fde68a;
+    }
+  </style>
+</head>
+<body>
+  <div class="page-bg"></div>
+
+  <!-- Header / Navigation -->
+  <header class="landing-nav" style="border-bottom: 1px solid var(--border);">
+    <a href="/" class="landing-brand">
+      <img src="champion_tokens_CT_v4.png" alt="Champion Tokens" class="landing-brand-logo"/>
+      <span>Champion <span class="brand-accent">Tokens</span></span>
+    </a>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <a href="/" class="btn btn-outline btn-sm">
+        <i data-lucide="arrow-left"></i> Home
+      </a>
+      <a href="/dashboard" class="btn btn-primary btn-sm">
+        <i data-lucide="layout-dashboard"></i> Dashboard
+      </a>
+    </div>
+  </header>
+
+  <main class="legal-wrap">
+    <div class="legal-card">
+      <h1>Privacy Policy</h1>
+      <div class="legal-date">Last Updated: August 21, 2026 · Champion Tokens (championtokens.fun)</div>
+
+      <div class="legal-highlight">
+        Champion Tokens values your privacy. This policy details how we collect, use, and protect your information when utilizing our competitive gaming platform.
+      </div>
+
+      <div class="legal-section">
+        <h2>1. Information We Collect</h2>
+        <p>When you create an account, play matches, or interact with Champion Tokens, we collect the following information:</p>
+        <ul>
+          <li><strong>Authentication Data:</strong> When logging in through Discord OAuth, we collect your public Discord username, avatar, and Discord User ID.</li>
+          <li><strong>Gaming Accounts:</strong> When linking your Epic Games account, we collect and store your official Epic Games / Fortnite display name and Account ID to facilitate competitive match lobbies and party invitations.</li>
+          <li><strong>Match & Gameplay History:</strong> Records of matches created, joined, scores reported, victory ratios, and leaderboard rankings.</li>
+          <li><strong>Token & Transaction Logs:</strong> Internal ledger records of tokens earned, match entry wagers, prize payouts, and cosmetic equipments.</li>
+        </ul>
+      </div>
+
+      <div class="legal-section">
+        <h2>2. How We Use Your Information</h2>
+        <p>Your information is strictly used to deliver and maintain platform features, specifically:</p>
+        <ul>
+          <li>Creating, coordinating, and managing competitive 1v1, 2v2, and 3v3 Fortnite matches.</li>
+          <li>Verifying player identities and displaying accurate Fortnite Epic IGNs to match participants.</li>
+          <li>Calculating win rates, seasonal rankings, and displaying the global leaderboard.</li>
+          <li>Distributing prize pool tokens automatically upon dual-confirmed match results.</li>
+          <li>Detecting fraudulent activities, multi-accounting, and resolving disputed match tickets.</li>
+        </ul>
+      </div>
+
+      <div class="legal-section">
+        <h2>3. Third-Party Integrations & Services</h2>
+        <p>Champion Tokens integrates with trusted third-party providers:</p>
+        <ul>
+          <li><strong>Epic Games:</strong> We connect with Epic Games Account Services to verify your Fortnite player identity. We do not access, view, or store your Epic Games passwords.</li>
+          <li><strong>Discord:</strong> Used strictly for secure authentication and player identification via OAuth2.</li>
+          <li><strong>Firebase / Google Cloud:</strong> Powers our secure database infrastructure with strict security rules and encryption at rest and in transit.</li>
+        </ul>
+      </div>
+
+      <div class="legal-section">
+        <h2>4. Data Protection & Security</h2>
+        <p>We implement industry-standard security measures to safeguard your data against unauthorized access, alteration, or disclosure. All sensitive communication is encrypted via HTTPS / SSL, and administrative permissions are strictly restricted to verified moderators.</p>
+      </div>
+
+      <div class="legal-section">
+        <h2>5. Your Rights & Data Deletion</h2>
+        <p>You have full control over your data. You may request to disconnect your Epic Games account, update your display preferences, or request full deletion of your user account and transaction history by contacting our support team or opening a ticket in our official community server.</p>
+      </div>
+
+      <div class="legal-section">
+        <h2>6. Updates to This Policy</h2>
+        <p>We may update this Privacy Policy periodically as new game modes and features are added. Changes are effective immediately upon posting to this page.</p>
+      </div>
+
+      <div class="legal-section">
+        <h2>7. Contact Information</h2>
+        <p>If you have any questions regarding this Privacy Policy or your data, please contact us via:</p>
+        <ul>
+          <li><strong>Website:</strong> <a href="https://championtokens.fun" style="color:var(--gold-bright);">https://championtokens.fun</a></li>
+          <li><strong>Discord Support:</strong> Join our official support channel via the website footer.</li>
+        </ul>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer" style="border-top:1px solid var(--border);padding:24px;text-align:center;color:var(--text-muted);font-size:0.85rem;">
+    <p>© 2026 Champion Tokens (championtokens.fun) · All Rights Reserved.</p>
+  </footer>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>
+    if (window.lucide) lucide.createIcons();
+  </script>
+</body>
+</html>
