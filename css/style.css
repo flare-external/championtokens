@@ -1473,3 +1473,17 @@ input[type="range"].ct-slider::-moz-range-thumb {
   font-family: monospace;
   color: var(--gold-bright);
 }
+
+/* Suppress Netlify floating badges and collaborative drawers */
+#netlify-drawer,
+[data-netlify-drawer],
+.netlify-badge,
+iframe[src*="netlify"],
+div[class*="netlify-drawer"],
+#netlify-identity-widget {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  opacity: 0 !important;
+  z-index: -9999 !important;
+}
