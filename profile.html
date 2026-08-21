@@ -347,19 +347,115 @@
       border-color: var(--gold-bright);
       background: linear-gradient(135deg, rgba(245, 158, 11, 0.18) 0%, rgba(18, 24, 46, 0.95) 100%);
       box-shadow: 0 0 22px rgba(245, 158, 11, 0.25);
+    /* Modal Display Support */
+    .modal-overlay.open,
+    .modal-overlay.active {
+      opacity: 1 !important;
+      pointer-events: all !important;
+      visibility: visible !important;
+      display: flex !important;
     }
-    .equipped-badge-indicator {
-      position: absolute;
-      top: 8px;
-      right: 8px;
-      font-size: 0.7rem;
-      font-weight: 800;
+    .modal-overlay.open .modal,
+    .modal-overlay.active .modal {
+      transform: translateY(0) !important;
+    }
+
+    /* ── Settings & Customization Hub ── */
+    .profile-settings-card {
+      background: rgba(14, 18, 34, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: var(--radius-xl);
+      padding: 24px 28px;
+      margin-bottom: 24px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+    .settings-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .setting-item-row {
+      background: rgba(18, 24, 46, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      border-radius: var(--radius-lg);
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+    }
+    .setting-item-row:hover {
+      background: rgba(26, 34, 64, 0.95);
+      border-color: rgba(245, 158, 11, 0.45);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4), 0 0 20px rgba(245, 158, 11, 0.12);
+    }
+    .setting-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .setting-icon-box {
+      width: 42px;
+      height: 42px;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #cbd5e1;
+      flex-shrink: 0;
+      transition: all 0.25s ease;
+    }
+    .setting-item-row:hover .setting-icon-box {
+      background: rgba(245, 158, 11, 0.18);
+      border-color: var(--gold-bright);
       color: var(--gold-bright);
-      background: rgba(245, 158, 11, 0.2);
-      border: 1px solid rgba(245, 158, 11, 0.4);
-      border-radius: 999px;
-      padding: 2px 8px;
+      box-shadow: 0 0 16px rgba(245, 158, 11, 0.25);
     }
+    .setting-title {
+      font-weight: 800;
+      font-size: 0.95rem;
+      color: #fff;
+      margin-bottom: 2px;
+    }
+    .setting-desc {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+    .setting-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+    .setting-pen-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      color: #94a3b8;
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .setting-item-row:hover .setting-pen-btn,
+    .setting-pen-btn:hover {
+      background: rgba(245, 158, 11, 0.25);
+      border-color: var(--gold-bright);
+      color: var(--gold-bright);
+      transform: rotate(15deg) scale(1.18);
+      box-shadow: 0 0 16px rgba(245, 158, 11, 0.5);
+    }
+    .setting-pen-btn i { width: 14px; height: 14px; }
   </style>
 </head>
 <body>
@@ -422,20 +518,124 @@
       </div>
     </div>
 
-    <!-- Epic Games Account Box -->
-    <div class="epic-account-card">
-      <div class="section-title" style="margin-bottom:12px;color:#fff;">
-        <i data-lucide="gamepad-2" style="color:#38bdf8;"></i> Epic Games Account
+    <!-- Unified Player Customization & Settings Hub -->
+    <div class="profile-settings-card" id="profile-settings-hub">
+      <div class="section-title" style="margin-bottom:16px;color:#fff;">
+        <i data-lucide="sliders" style="color:var(--gold-bright);"></i> Customization & Settings
       </div>
-      <div id="epic-content">
-        <div class="spinner" style="margin:12px 0;"></div>
+
+      <div class="settings-grid">
+        <!-- Setting 1: Player Title -->
+        <div class="setting-item-row" onclick="openCosmeticsModal('titles')">
+          <div class="setting-left">
+            <div class="setting-icon-box" style="color:var(--gold-bright);">
+              <i data-lucide="award"></i>
+            </div>
+            <div>
+              <div class="setting-title">Player Title</div>
+              <div class="setting-desc">Equipped cosmetic title on matches and the leaderboard</div>
+            </div>
+          </div>
+          <div class="setting-right">
+            <div id="hub-current-title">
+              <span class="title-empty-placeholder">+ Set Title</span>
+            </div>
+            <div class="setting-pen-btn" title="Customize Player Title">
+              <i data-lucide="edit-3"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Setting 2: Match & Profile Banner -->
+        <div class="setting-item-row" onclick="openCosmeticsModal('banners')">
+          <div class="setting-left">
+            <div class="setting-icon-box" style="color:#c084fc;">
+              <i data-lucide="palette"></i>
+            </div>
+            <div>
+              <div class="setting-title">Profile & Match Theme Banner</div>
+              <div class="setting-desc">Custom background styling in match lobbies and player cards</div>
+            </div>
+          </div>
+          <div class="setting-right">
+            <div id="hub-current-banner">
+              <span class="chip" style="font-size:0.78rem;font-weight:700;">Dark Obsidian</span>
+            </div>
+            <div class="setting-pen-btn" title="Customize Theme Banner">
+              <i data-lucide="edit-3"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Setting 3: Username Style & Aura -->
+        <div class="setting-item-row" onclick="openStyleModal()">
+          <div class="setting-left">
+            <div class="setting-icon-box" style="color:#f43f5e;">
+              <i data-lucide="sparkles"></i>
+            </div>
+            <div>
+              <div class="setting-title">Username Colors & Glow Aura</div>
+              <div class="setting-desc">Personalize your name with premium colors and animations</div>
+            </div>
+          </div>
+          <div class="setting-right">
+            <div id="hub-current-style">
+              <span class="chip" style="font-size:0.78rem;font-weight:700;">Default</span>
+            </div>
+            <div class="setting-pen-btn" title="Customize Username Style">
+              <i data-lucide="edit-3"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Setting 4: Epic Games Account -->
+        <div class="setting-item-row" onclick="openLinkEpicModal()">
+          <div class="setting-left">
+            <div class="setting-icon-box" style="color:#38bdf8;">
+              <img src="epic_games_logo.webp" alt="Epic" style="width:20px;height:24px;object-fit:contain;"/>
+            </div>
+            <div>
+              <div class="setting-title">Epic Games Account</div>
+              <div class="setting-desc">Fortnite display name used by opponents to party up</div>
+            </div>
+          </div>
+          <div class="setting-right">
+            <div id="hub-current-epic">
+              <span style="color:var(--text-muted);font-size:0.82rem;">Not Connected</span>
+            </div>
+            <div class="setting-pen-btn" title="Link / Edit Epic Games Account">
+              <i data-lucide="edit-3"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Setting 5: Squad Team -->
+        <div class="setting-item-row" onclick="handleTeamRowClick()">
+          <div class="setting-left">
+            <div class="setting-icon-box" style="color:#34d399;">
+              <i data-lucide="shield"></i>
+            </div>
+            <div>
+              <div class="setting-title">Squad Team & Clan Tag</div>
+              <div class="setting-desc">Your 2v2 duos and 3v3 squad tournament roster</div>
+            </div>
+          </div>
+          <div class="setting-right">
+            <div id="hub-current-team">
+              <span style="color:var(--text-muted);font-size:0.82rem;">No Squad</span>
+            </div>
+            <div class="setting-pen-btn" title="Create or Join Team">
+              <i data-lucide="edit-3"></i>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- Squad Team Section -->
-    <div class="team-section-card">
+    <!-- Squad Team Details Section (When on a team or viewing others) -->
+    <div class="team-section-card" id="team-section-card" style="display:none;">
       <div class="section-title" style="margin-bottom:12px;color:#fff;">
-        <i data-lucide="shield" style="color:var(--purple);"></i> Squad Team
+        <i data-lucide="shield" style="color:var(--purple);"></i> Squad Team Roster
       </div>
       <div id="team-content">
         <div class="spinner" style="margin:12px 0;"></div>
@@ -617,6 +817,58 @@
         <div class="cosmetics-item-grid" id="banners-grid-list">
           <div class="spinner" style="margin:20px auto;"></div>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Username Style & Glow Aura Modal -->
+  <div class="modal-overlay" id="style-customizer-modal" onclick="if(event.target===this)closeStyleModal()">
+    <div class="modal" style="max-width:480px;">
+      <div class="modal-header">
+        <div class="modal-title" style="display:flex;align-items:center;gap:10px;">
+          <i data-lucide="sparkles" style="color:var(--gold-bright);"></i>
+          <span>Customize Username Style</span>
+        </div>
+        <button class="modal-close" onclick="closeStyleModal()"><i data-lucide="x"></i></button>
+      </div>
+
+      <!-- Live Real-Time Username Preview -->
+      <div class="cosmetics-preview-box" style="margin-bottom:16px;">
+        <div style="font-size:0.72rem;color:var(--text-muted);text-transform:uppercase;font-weight:800;margin-bottom:8px;">
+          Live Username Preview
+        </div>
+        <div style="text-align:center;padding:14px;background:rgba(14,18,34,0.95);border-radius:var(--radius-md);border:1px solid rgba(245,158,11,0.25);">
+          <span style="font-size:1.6rem;font-weight:900;" id="style-preview-name">Champion</span>
+        </div>
+      </div>
+
+      <div class="form-group" style="margin-bottom:14px;">
+        <label class="form-label">Username Color Theme</label>
+        <select class="form-select" id="pref-color-select" onchange="previewStyleModal()">
+          <option value="">Default (Clean White)</option>
+          <option value="gold">Champion Gold 🟡</option>
+          <option value="blue">Cyber Cyan 🔵</option>
+          <option value="purple">Royal Purple 🟣</option>
+          <option value="green">Emerald Green 🟢</option>
+          <option value="red">Crimson Flame 🔴</option>
+          <option value="rainbow">Animated Rainbow 🌈</option>
+        </select>
+      </div>
+
+      <div class="form-group" style="margin-bottom:20px;">
+        <label class="form-label">Animation / Glow Aura</label>
+        <select class="form-select" id="pref-anim-select" onchange="previewStyleModal()">
+          <option value="none">None (Standard)</option>
+          <option value="shimmer">Golden Shimmer ✨</option>
+          <option value="pulse">Breathing Pulse 💓</option>
+          <option value="glow">Ambient Glow 🌟</option>
+          <option value="glitch">Cyber Glitch ⚡</option>
+        </select>
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" class="btn btn-outline" onclick="closeStyleModal()">Cancel</button>
+        <button type="button" class="btn btn-primary" onclick="saveStyleFromModal()">Save & Apply</button>
       </div>
     </div>
   </div>
@@ -839,6 +1091,50 @@
         rankBadgeEl.innerHTML = `<span class="rank-badge ${rankInfo.badgeClass}">${rankInfo.display}</span>`;
       }
 
+      // Update Settings Hub values
+      const hubCard = document.getElementById('profile-settings-hub');
+      if (hubCard) {
+        hubCard.style.display = isViewingSelf ? 'block' : 'none';
+      }
+
+      const hubTitle = document.getElementById('hub-current-title');
+      if (hubTitle) {
+        if (data.equippedTitle && SHOP_TITLES[data.equippedTitle]) {
+          const t = SHOP_TITLES[data.equippedTitle];
+          hubTitle.innerHTML = `<span class="player-title-tag ${t.className}">${t.name}</span>`;
+        } else {
+          hubTitle.innerHTML = `<span class="title-empty-placeholder">+ Set Title</span>`;
+        }
+      }
+
+      const hubBanner = document.getElementById('hub-current-banner');
+      if (hubBanner) {
+        if (data.equippedBanner && SHOP_BANNERS[data.equippedBanner]) {
+          hubBanner.innerHTML = `<span class="chip" style="font-size:0.78rem;font-weight:700;color:#fff;">${SHOP_BANNERS[data.equippedBanner].name}</span>`;
+        } else {
+          hubBanner.innerHTML = `<span class="chip" style="font-size:0.78rem;font-weight:700;">Dark Obsidian (Default)</span>`;
+        }
+      }
+
+      const hubStyle = document.getElementById('hub-current-style');
+      if (hubStyle) {
+        const styleObj = data.profileStyle || {};
+        if (styleObj.color || (styleObj.animation && styleObj.animation !== 'none')) {
+          hubStyle.innerHTML = `<span class="chip" style="font-size:0.78rem;font-weight:700;color:var(--gold-bright);">Custom (${styleObj.color || 'white'} · ${styleObj.animation || 'static'})</span>`;
+        } else {
+          hubStyle.innerHTML = `<span class="chip" style="font-size:0.78rem;font-weight:700;">Default</span>`;
+        }
+      }
+
+      const hubEpic = document.getElementById('hub-current-epic');
+      if (hubEpic) {
+        if (data.epicUsername) {
+          hubEpic.innerHTML = `<span class="chip chip-success" style="font-size:0.78rem;font-weight:700;"><i data-lucide="check-circle" style="width:12px;height:12px;display:inline;"></i> ${data.epicUsername}</span>`;
+        } else {
+          hubEpic.innerHTML = `<span style="color:var(--text-muted);font-size:0.82rem;">Not Connected</span>`;
+        }
+      }
+
       const sinceEl = document.getElementById('profile-since');
       if (sinceEl && data.createdAt) {
         const d = data.createdAt.toDate();
@@ -880,7 +1176,10 @@
       currentCosmeticsTab = initialTab;
 
       const modal = document.getElementById('cosmetics-customizer-modal');
-      if (modal) modal.classList.add('active');
+      if (modal) {
+        modal.classList.add('open');
+        modal.classList.add('active');
+      }
 
       switchCosmeticsTab(initialTab);
       renderCosmeticsModal();
@@ -889,7 +1188,10 @@
 
     function closeCosmeticsModal() {
       const modal = document.getElementById('cosmetics-customizer-modal');
-      if (modal) modal.classList.remove('active');
+      if (modal) {
+        modal.classList.remove('open');
+        modal.classList.remove('active');
+      }
     }
 
     function switchCosmeticsTab(tab) {
@@ -1071,6 +1373,78 @@
       }
     }
 
+    // ── Username Style & Glow Modal ─────────────────────────────
+    function openStyleModal() {
+      if (!isViewingSelf || !currentUserData) return;
+      const modal = document.getElementById('style-customizer-modal');
+      if (modal) {
+        modal.classList.add('open');
+        modal.classList.add('active');
+      }
+      const colorSel = document.getElementById('pref-color-select');
+      const animSel = document.getElementById('pref-anim-select');
+      const curStyle = currentUserData.profileStyle || {};
+      if (colorSel) colorSel.value = curStyle.color || '';
+      if (animSel) animSel.value = curStyle.animation || 'none';
+      previewStyleModal();
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function closeStyleModal() {
+      const modal = document.getElementById('style-customizer-modal');
+      if (modal) {
+        modal.classList.remove('open');
+        modal.classList.remove('active');
+      }
+    }
+
+    function previewStyleModal() {
+      const color = document.getElementById('pref-color-select')?.value || '';
+      const anim = document.getElementById('pref-anim-select')?.value || 'none';
+      const preview = document.getElementById('style-preview-name');
+      if (preview && currentUserData) {
+        preview.textContent = currentUserData.displayName || 'Champion';
+        preview.className = '';
+        if (color) preview.classList.add(`usercolor-${color}`);
+        if (anim && anim !== 'none') preview.classList.add(`anim-${anim}`);
+        if (currentUserData.isPremium && !color && anim === 'none') {
+          preview.classList.add('username-premium');
+        }
+      }
+    }
+
+    async function saveStyleFromModal() {
+      if (!currentUser) return;
+      const color = document.getElementById('pref-color-select')?.value || '';
+      const animation = document.getElementById('pref-anim-select')?.value || 'none';
+      try {
+        await updateProfileStyle(currentUser.uid, { color, animation });
+        if (currentUserData) {
+          currentUserData.profileStyle = { color, animation };
+          renderProfile(currentUserData);
+        }
+        closeStyleModal();
+        showToast('Username style updated and applied!', 'success');
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
+    }
+
+    let currentTeamData = null;
+
+    function handleTeamRowClick() {
+      if (!currentUserData) return;
+      if (currentTeamData) {
+        const teamSec = document.getElementById('team-section-card');
+        if (teamSec) {
+          teamSec.style.display = 'block';
+          teamSec.scrollIntoView({ behavior: 'smooth' });
+        }
+      } else {
+        openCreateTeamModal();
+      }
+    }
+
     async function handleSaveStyle() {
       if (!currentUser) return;
       const color = document.getElementById('pref-color-select').value;
@@ -1229,6 +1603,21 @@
     }
 
     function renderTeamSection(team) {
+      currentTeamData = team;
+
+      const hubTeam = document.getElementById('hub-current-team');
+      const teamCard = document.getElementById('team-section-card');
+      if (hubTeam) {
+        if (team) {
+          hubTeam.innerHTML = `<span class="chip" style="font-size:0.78rem;font-weight:700;color:var(--gold-bright);border-color:rgba(245,158,11,0.4);">[${team.tag}] ${team.name}</span>`;
+        } else {
+          hubTeam.innerHTML = `<span style="color:var(--text-muted);font-size:0.82rem;">No Squad</span>`;
+        }
+      }
+      if (teamCard) {
+        teamCard.style.display = (team || !isViewingSelf) ? 'block' : 'none';
+      }
+
       const el = document.getElementById('team-content');
       if (!el) return;
 
@@ -1291,10 +1680,43 @@
       }
     }
 
-    function openCreateTeamModal() { document.getElementById('create-team-modal').classList.add('open'); }
-    function closeCreateTeamModal() { document.getElementById('create-team-modal').classList.remove('open'); }
-    function openJoinTeamModal() { document.getElementById('join-team-modal').classList.add('open'); }
-    function closeJoinTeamModal() { document.getElementById('join-team-modal').classList.remove('open'); }
+    function openCreateTeamModal() { 
+      const m = document.getElementById('create-team-modal');
+      if (m) { m.classList.add('open'); m.classList.add('active'); }
+    }
+    function closeCreateTeamModal() { 
+      const m = document.getElementById('create-team-modal');
+      if (m) { m.classList.remove('open'); m.classList.remove('active'); }
+    }
+    function openJoinTeamModal() { 
+      const m = document.getElementById('join-team-modal');
+      if (m) { m.classList.add('open'); m.classList.add('active'); }
+    }
+    function closeJoinTeamModal() { 
+      const m = document.getElementById('join-team-modal');
+      if (m) { m.classList.remove('open'); m.classList.remove('active'); }
+    }
+
+    function openLinkEpicModal() {
+      const modal = document.getElementById('link-epic-modal');
+      if (modal) {
+        modal.classList.add('open');
+        modal.classList.add('active');
+        const input = document.getElementById('modal-epic-ign-input');
+        if (input) {
+          input.value = currentUserData?.epicUsername || '';
+          setTimeout(() => input.focus(), 150);
+        }
+      }
+    }
+
+    function closeLinkEpicModal() {
+      const modal = document.getElementById('link-epic-modal');
+      if (modal) {
+        modal.classList.remove('open');
+        modal.classList.remove('active');
+      }
+    }
 
     async function submitCreateTeam(e) {
       e.preventDefault();
