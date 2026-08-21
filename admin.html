@@ -259,6 +259,30 @@
       }
     }
 
+    async function handleMasterDatabaseReset() {
+      const confirm1 = confirm('⚠️ WARNING: This will completely delete all matches, transactions, teams, and staff calls, and reset all real user balances to 10.00 Tokens.\n\nAre you sure you want to proceed?');
+      if (!confirm1) return;
+
+      const confirm2 = prompt('Type RESET to confirm complete database wipe:');
+      if (confirm2 !== 'RESET') {
+        showToast('Database reset cancelled', 'info');
+        return;
+      }
+
+      const btn = document.getElementById('reset-db-btn');
+      if (btn) btn.disabled = true;
+      showToast('Wiping database and resetting all accounts to 10.00 Tokens…', 'info');
+
+      try {
+        const res = await fullDatabaseReset();
+        showToast(`Database wiped successfully! Cleaned ${res.deletedCount || 0} records.`, 'success');
+        setTimeout(() => location.reload(), 1500);
+      } catch (err) {
+        showToast('Database reset error: ' + err.message, 'error');
+        if (btn) btn.disabled = false;
+      }
+    }
+
     function escapeHtml(str) {
       return str ? str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;") : '';
     }
@@ -355,6 +379,19 @@
               <i data-lucide="zap"></i> Apply Adjustment
             </button>
           </form>
+        </div>
+
+        <!-- Master Database Wipe Tool -->
+        <div class="card" style="border-color:rgba(239,68,68,0.4);background:linear-gradient(135deg,rgba(239,68,68,0.08) 0%,rgba(14,18,32,0.95) 100%);">
+          <div class="section-title" style="margin-bottom:8px;color:#fca5a5;">
+            <i data-lucide="trash-2" style="color:var(--red);"></i> Master Database Reset
+          </div>
+          <p style="font-size:0.825rem;color:var(--text-muted);margin-bottom:14px;">
+            Clears all matches, transactions, teams, and staff tickets. Resets all real player accounts to <strong>10.00 Starter Tokens</strong> and 0 match history.
+          </p>
+          <button type="button" class="btn btn-danger btn-sm" id="reset-db-btn" onclick="handleMasterDatabaseReset()" style="width:100%;justify-content:center;">
+            <i data-lucide="refresh-cw"></i> Execute Full Database Reset
+          </button>
         </div>
 
         <!-- Live Matches Monitor -->

@@ -4,10 +4,51 @@
 
 // ── Users ────────────────────────────────────────────────────
 
-/** Fetch a user document by UID */
+/**
+ * Ensures user document exists with 10.00 Tokens starter balance.
+ */
+async function ensureUserRecord(user) {
+  if (!user || !user.uid) return null;
+  const userRef = db.collection('users').doc(user.uid);
+  const snap = await userRef.get();
+  if (!snap.exists) {
+    const newUser = {
+      uid: user.uid,
+      displayName: user.displayName || 'Champion',
+      email: user.email || '',
+      photoURL: user.photoURL || '',
+      tokens: 10.00,
+      totalEarned: 10.00,
+      totalSpent: 0.00,
+      matchesPlayed: 0,
+      matchesWon: 0,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    };
+    await userRef.set(newUser);
+    await db.collection('transactions').add({
+      userId: user.uid,
+      amount: 10.00,
+      type: 'bonus',
+      description: '🎉 10.00 Free Starter Tokens',
+      timestamp: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    return { id: user.uid, ...newUser };
+  }
+  return { id: snap.id, ...snap.data() };
+}
+
+/** Fetch a user document by UID (or create with 10.00 starter tokens if missing) */
 async function getUser(uid) {
+  if (!uid) return null;
   const snap = await db.collection('users').doc(uid).get();
-  return snap.exists ? { id: snap.id, ...snap.data() } : null;
+  if (snap.exists) {
+    return { id: snap.id, ...snap.data() };
+  }
+  const authUser = (typeof firebase !== 'undefined' && firebase.auth) ? firebase.auth().currentUser : null;
+  if (authUser && authUser.uid === uid) {
+    return await ensureUserRecord(authUser);
+  }
+  return null;
 }
 
 /**
@@ -1162,6 +1203,77 @@ if (typeof window !== 'undefined') {
     }
   }, 2000);
 }
+
+/**
+ * Master Database Reset
+ * Deletes all matches, transactions, teams, and staff calls, and resets all users to 10.00 Tokens.
+ */
+async function fullDatabaseReset() {
+  const collections = ['matches', 'transactions', 'teams', 'staff_calls'];
+  let deletedCount = 0;
+
+  for (const colName of collections) {
+    try {
+      const snap = await db.collection(colName).get();
+      if (!snap.empty) {
+        const batch = db.batch();
+        snap.docs.forEach(doc => {
+          batch.delete(doc.ref);
+          deletedCount++;
+        });
+        await batch.commit();
+      }
+    } catch (colErr) {
+      console.warn(`Error clearing collection ${colName}:`, colErr);
+    }
+  }
+
+  // Reset or purge users
+  try {
+    const userSnap = await db.collection('users').get();
+    if (!userSnap.empty) {
+      const userBatch = db.batch();
+      for (const doc of userSnap.docs) {
+        const u = doc.data();
+        if (doc.id.startsWith('guest_') || u.isGuest === true || (u.displayName || '').toLowerCase().includes('guest')) {
+          userBatch.delete(doc.ref);
+        } else {
+          userBatch.update(doc.ref, {
+            tokens: 10.00,
+            totalEarned: 10.00,
+            totalSpent: 0.00,
+            matchesPlayed: 0,
+            matchesWon: 0,
+            unlockedTitles: [],
+            equippedTitle: '',
+            unlockedBanners: [],
+            equippedBanner: '',
+            isPremium: false,
+            teamId: firebase.firestore.FieldValue.delete(),
+            teamName: firebase.firestore.FieldValue.delete(),
+            teamTag: firebase.firestore.FieldValue.delete(),
+            lastFreeChestDate: firebase.firestore.FieldValue.delete()
+          });
+          // Add clean initial bonus transaction
+          await db.collection('transactions').add({
+            userId: doc.id,
+            amount: 10.00,
+            type: 'bonus',
+            description: '🎁 10.00 Starter Tokens (Beta Launch Reset)',
+            timestamp: firebase.firestore.FieldValue.serverTimestamp()
+          });
+        }
+      }
+      await userBatch.commit();
+    }
+  } catch (userErr) {
+    console.warn('Error resetting users:', userErr);
+  }
+
+  console.log(`Database reset finished. Cleaned ${deletedCount} records.`);
+  return { success: true, deletedCount };
+}
+
 
 
 
