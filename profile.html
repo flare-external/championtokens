@@ -11,10 +11,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
-    /* Clean, Professional Profile Layout */
+    /* Clean, Modern Profile Hero Card */
     .profile-hero-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
+      background: rgba(14, 18, 34, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.14);
       border-radius: var(--radius-xl);
       padding: 28px 32px;
       display: flex;
@@ -23,7 +23,44 @@
       flex-wrap: wrap;
       gap: 24px;
       margin-bottom: 24px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 12px 36px rgba(0,0,0,0.6);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
+    .profile-hero-card:hover {
+      box-shadow: 0 16px 48px rgba(0,0,0,0.7), 0 0 30px rgba(245, 158, 11, 0.12);
+    }
+
+    /* Floating Palette / Theme Customizer Button */
+    .hero-theme-palette-btn {
+      position: absolute;
+      top: 16px;
+      right: 18px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 999px;
+      padding: 6px 14px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #e2e8f0;
+      cursor: pointer;
+      backdrop-filter: blur(8px);
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 2;
+    }
+    .hero-theme-palette-btn:hover {
+      background: rgba(245, 158, 11, 0.22);
+      border-color: var(--gold-bright);
+      color: var(--gold-bright);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(245, 158, 11, 0.3);
+    }
+    .hero-theme-palette-btn i { width: 14px; height: 14px; }
+
     .profile-user-group {
       display: flex;
       align-items: center;
@@ -44,8 +81,81 @@
       color: var(--gold-bright);
       box-shadow: 0 0 20px var(--gold-glow);
       flex-shrink: 0;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+    }
+    .profile-pfp:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 30px var(--gold-bright);
     }
     .profile-pfp img { width: 100%; height: 100%; object-fit: cover; }
+
+    /* Interactive Title & Pen Container */
+    .title-interactive-container {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      position: relative;
+    }
+    .title-chip-clickable {
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+    }
+    .title-chip-clickable:hover {
+      transform: translateY(-2px) scale(1.04);
+      filter: brightness(1.15) drop-shadow(0 0 14px rgba(245, 158, 11, 0.55));
+    }
+    .title-empty-placeholder {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(245, 158, 11, 0.08);
+      border: 1px dashed rgba(245, 158, 11, 0.45);
+      border-radius: 999px;
+      padding: 3px 10px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--gold-bright);
+      cursor: pointer;
+      transition: all 0.25s ease;
+      animation: pulseGlow 3s infinite ease-in-out;
+    }
+    .title-empty-placeholder:hover {
+      background: rgba(245, 158, 11, 0.22);
+      border-style: solid;
+      transform: scale(1.05);
+      box-shadow: 0 0 16px rgba(245, 158, 11, 0.4);
+    }
+
+    /* Smart Animated Edit Pen Button */
+    .title-edit-pen-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      color: #94a3b8;
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+    }
+    .title-edit-pen-btn:hover,
+    .title-interactive-container:hover .title-edit-pen-btn {
+      background: rgba(245, 158, 11, 0.22);
+      border-color: var(--gold-bright);
+      color: var(--gold-bright);
+      transform: rotate(15deg) scale(1.18);
+      box-shadow: 0 0 14px rgba(245, 158, 11, 0.45);
+    }
+    .title-edit-pen-btn i { width: 13px; height: 13px; }
+
+    /* Discord Copy Pill with Smart Feedback */
     .discord-id-pill {
       display: inline-flex;
       align-items: center;
@@ -54,19 +164,40 @@
       border: 1px solid rgba(88, 101, 242, 0.3);
       color: #818cf8;
       border-radius: var(--radius-sm);
-      padding: 3px 8px;
+      padding: 4px 10px;
       font-size: 0.78rem;
       font-family: monospace;
       margin-top: 4px;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .discord-id-pill:hover {
+      background: rgba(88, 101, 242, 0.25);
+      border-color: #818cf8;
+      color: #fff;
+      transform: translateY(-1px);
+      box-shadow: 0 0 12px rgba(88, 101, 242, 0.4);
+    }
+    .discord-id-pill.copied {
+      background: rgba(16, 185, 129, 0.2);
+      border-color: #34d399;
+      color: #34d399;
+      animation: bounceCopy 0.35s ease;
+    }
+
+    @keyframes bounceCopy {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
     }
 
     /* Epic Games Account Box */
     .epic-account-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
+      background: rgba(14, 18, 34, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.14);
       border-radius: var(--radius-lg);
       padding: 22px 24px;
       margin-bottom: 24px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
     }
     .epic-badge-connected {
       display: inline-flex;
@@ -91,11 +222,12 @@
 
     /* Team Card */
     .team-section-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
+      background: rgba(14, 18, 34, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.14);
       border-radius: var(--radius-lg);
       padding: 22px 24px;
       margin-bottom: 24px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
     }
     .team-roster-grid {
       display: grid;
@@ -107,7 +239,7 @@
       display: flex;
       align-items: center;
       gap: 8px;
-      background: rgba(255, 255, 255, 0.03);
+      background: rgba(255, 255, 255, 0.05);
       border: 1px solid var(--border-bright);
       border-radius: var(--radius-sm);
       padding: 8px 12px;
@@ -115,13 +247,118 @@
 
     .matches-history { display: flex; flex-direction: column; gap: 10px; }
     .mh-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
+      background: rgba(14, 18, 34, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.14);
       border-radius: var(--radius-md);
       padding: 14px 16px;
       display: flex;
       align-items: center;
       gap: 12px;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .mh-card:hover {
+      border-color: var(--border-bright);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.6);
+    }
+
+    /* Cosmetics Studio Modal Tabs & Grids */
+    .cosmetics-modal-tabs {
+      display: flex;
+      gap: 8px;
+      background: rgba(0, 0, 0, 0.35);
+      padding: 4px;
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      margin-bottom: 20px;
+    }
+    .cosmetics-tab-btn {
+      flex: 1;
+      padding: 10px 16px;
+      border-radius: var(--radius-md);
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: #94a3b8;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+    }
+    .cosmetics-tab-btn.active {
+      background: rgba(245, 158, 11, 0.2);
+      color: var(--gold-bright);
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      box-shadow: 0 0 14px rgba(245, 158, 11, 0.18);
+    }
+    .cosmetics-tab-btn i { width: 16px; height: 16px; }
+
+    .cosmetics-preview-box {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: var(--radius-lg);
+      padding: 16px 20px;
+      margin-bottom: 20px;
+    }
+    .preview-hero-strip {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      padding: 12px 16px;
+      border-radius: var(--radius-md);
+      background: rgba(14, 18, 34, 0.95);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    .cosmetics-item-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+      gap: 12px;
+      max-height: 360px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+    .cosmetics-option-card {
+      background: rgba(18, 24, 46, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: var(--radius-lg);
+      padding: 16px 14px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 10px;
+      transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+    }
+    .cosmetics-option-card:hover {
+      border-color: var(--gold-bright);
+      transform: translateY(-3px) scale(1.02);
+      background: rgba(26, 34, 62, 0.95);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.5), 0 0 20px rgba(245, 158, 11, 0.18);
+    }
+    .cosmetics-option-card.equipped {
+      border-color: var(--gold-bright);
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.18) 0%, rgba(18, 24, 46, 0.95) 100%);
+      box-shadow: 0 0 22px rgba(245, 158, 11, 0.25);
+    }
+    .equipped-badge-indicator {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      font-size: 0.7rem;
+      font-weight: 800;
+      color: var(--gold-bright);
+      background: rgba(245, 158, 11, 0.2);
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      border-radius: 999px;
+      padding: 2px 8px;
     }
   </style>
 </head>
@@ -135,20 +372,39 @@
   <main class="page-wrap">
     <!-- Profile Hero with Banner Theme -->
     <div class="profile-hero-card" id="profile-hero">
+      <!-- Floating Palette / Theme Customizer Button -->
+      <button class="hero-theme-palette-btn" id="hero-theme-palette-btn" onclick="openCosmeticsModal('banners')" title="Customize Profile Theme Banner">
+        <i data-lucide="palette"></i>
+        <span>Theme</span>
+      </button>
+
       <div class="profile-user-group">
         <div class="profile-pfp">
           <img id="profile-avatar-img" src="" alt="" style="display:none"/>
           <i data-lucide="user" id="profile-avatar-icon"></i>
         </div>
         <div>
-          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
             <span style="font-size:1.6rem;font-weight:900;" id="profile-name">--</span>
-            <span id="profile-title-slot"></span>
+            
+            <!-- Interactive Title Tag & Animated Pen -->
+            <div class="title-interactive-container" id="title-interactive-container">
+              <div id="profile-title-slot" class="title-chip-clickable" onclick="openCosmeticsModal('titles')" title="Click to Change Title">
+                <span class="title-empty-placeholder"><i data-lucide="plus" style="width:11px;height:11px;"></i> Set Title</span>
+              </div>
+              <button class="title-edit-pen-btn" id="title-edit-pen-btn" onclick="openCosmeticsModal('titles')" title="Customize Player Title">
+                <i data-lucide="edit-3"></i>
+              </button>
+            </div>
+
             <div id="profile-badges-row" style="display:inline-flex;gap:6px;align-items:center;"></div>
           </div>
           <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:4px;">
             <span style="font-weight:700;color:var(--text-muted);font-size:0.85rem;" id="profile-discord-tag">@discord</span>
-            <span class="discord-id-pill" id="profile-discord-id">Discord ID: --</span>
+            <span class="discord-id-pill" id="profile-discord-id" onclick="copyDiscordId()" title="Click to copy Discord ID">
+              <i data-lucide="copy" id="discord-copy-icon" style="width:12px;height:12px;"></i>
+              <span id="discord-id-text">Discord ID: --</span>
+            </span>
           </div>
           <div style="font-size:0.75rem;color:var(--text-faint);margin-top:4px;" id="profile-since"></div>
         </div>
@@ -163,29 +419,6 @@
           <div id="profile-rank-badge" style="margin-top:4px;"></div>
         </div>
         <div id="premium-action-wrap"></div>
-      </div>
-    </div>
-
-    <!-- Cosmetics Studio: Title & Banner Equipment -->
-    <div class="card" id="cosmetics-studio-card" style="margin-bottom:24px;display:none;">
-      <div class="section-title" style="margin-bottom:14px;">
-        <i data-lucide="award" style="color:var(--gold-bright);"></i> Equipped Title & Profile Banner
-      </div>
-      <div class="grid-2" style="gap:16px;">
-        <div class="form-group">
-          <label class="form-label">Equipped Title</label>
-          <select class="form-select" id="equip-title-select" onchange="handleEquipTitle(this.value); previewLiveProfileStyle();">
-            <option value="">None (No Title)</option>
-          </select>
-          <div style="font-size:0.75rem;color:var(--text-muted);margin-top:4px;">Appears next to your name in matches and leaderboards.</div>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Equipped Match & Profile Banner</label>
-          <select class="form-select" id="equip-banner-select" onchange="handleEquipBanner(this.value); previewLiveProfileStyle();">
-            <option value="">Default (Dark Obsidian)</option>
-          </select>
-          <div style="font-size:0.75rem;color:var(--text-muted);margin-top:4px;">Changes the card & lobby background in matches.</div>
-        </div>
       </div>
     </div>
 
@@ -334,6 +567,60 @@
     </div>
   </div>
 
+  <!-- Cosmetics Customizer Studio Modal -->
+  <div class="modal-overlay" id="cosmetics-customizer-modal" onclick="if(event.target===this)closeCosmeticsModal()">
+    <div class="modal" style="max-width:540px;">
+      <div class="modal-header">
+        <div class="modal-title" style="display:flex;align-items:center;gap:10px;">
+          <i data-lucide="sparkles" style="color:var(--gold-bright);"></i>
+          <span id="cosmetics-modal-title">Customization Studio</span>
+        </div>
+        <button class="modal-close" onclick="closeCosmeticsModal()"><i data-lucide="x"></i></button>
+      </div>
+
+      <!-- Tab Switcher -->
+      <div class="cosmetics-modal-tabs">
+        <button class="cosmetics-tab-btn active" id="tab-btn-titles" onclick="switchCosmeticsTab('titles')">
+          <i data-lucide="award"></i> Player Titles
+        </button>
+        <button class="cosmetics-tab-btn" id="tab-btn-banners" onclick="switchCosmeticsTab('banners')">
+          <i data-lucide="palette"></i> Profile Banners
+        </button>
+      </div>
+
+      <!-- Live Mini Preview -->
+      <div class="cosmetics-preview-box">
+        <div style="font-size:0.72rem;color:var(--text-muted);text-transform:uppercase;font-weight:800;margin-bottom:8px;">
+          Live Real-Time Preview
+        </div>
+        <div class="preview-hero-strip" id="preview-hero-strip">
+          <span style="font-weight:900;font-size:1.15rem;" id="preview-name-display">Champion</span>
+          <span id="preview-title-display"></span>
+        </div>
+      </div>
+
+      <!-- Titles View -->
+      <div id="cosmetics-titles-view">
+        <div style="font-size:0.8rem;color:var(--text-muted);margin-bottom:12px;">
+          Select any unlocked player title to equip it next to your name across matches and leaderboards:
+        </div>
+        <div class="cosmetics-item-grid" id="titles-grid-list">
+          <div class="spinner" style="margin:20px auto;"></div>
+        </div>
+      </div>
+
+      <!-- Banners View -->
+      <div id="cosmetics-banners-view" style="display:none;">
+        <div style="font-size:0.8rem;color:var(--text-muted);margin-bottom:12px;">
+          Select a match & profile theme banner to light up your profile and battle arena:
+        </div>
+        <div class="cosmetics-item-grid" id="banners-grid-list">
+          <div class="spinner" style="margin:20px auto;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Core Scripts (Placed after DOM elements) -->
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
@@ -449,16 +736,24 @@
         nameEl.className = isPremium ? 'username-premium' : '';
       }
 
-      // Title Tag
+      // Title Tag & Interactive Quick-Edit Pen
       const titleSlot = document.getElementById('profile-title-slot');
+      const penBtn = document.getElementById('title-edit-pen-btn');
+      const themeBtn = document.getElementById('hero-theme-palette-btn');
+
       if (titleSlot) {
         if (data.equippedTitle && SHOP_TITLES[data.equippedTitle]) {
           const t = SHOP_TITLES[data.equippedTitle];
           titleSlot.innerHTML = `<span class="player-title-tag ${t.className}">${t.name}</span>`;
+        } else if (isViewingSelf) {
+          titleSlot.innerHTML = `<span class="title-empty-placeholder"><i data-lucide="plus" style="width:11px;height:11px;"></i> Set Title</span>`;
         } else {
           titleSlot.innerHTML = '';
         }
       }
+
+      if (penBtn) penBtn.style.display = isViewingSelf ? 'inline-flex' : 'none';
+      if (themeBtn) themeBtn.style.display = isViewingSelf ? 'inline-flex' : 'none';
 
       // Banner Theme on Hero
       const heroCard = document.getElementById('profile-hero');
@@ -513,7 +808,7 @@
       }
 
       const tagEl = document.getElementById('profile-discord-tag');
-      const idEl  = document.getElementById('profile-discord-id');
+      const idEl  = document.getElementById('discord-id-text');
       const discordId = data.discordId || (targetUid || '').replace('discord:', '');
       const discordHandle = data.discordUsername ? `@${data.discordUsername}` : (data.displayName || 'user');
       if (tagEl) tagEl.textContent = discordHandle;
@@ -544,9 +839,6 @@
         rankBadgeEl.innerHTML = `<span class="rank-badge ${rankInfo.badgeClass}">${rankInfo.display}</span>`;
       }
 
-      // Cosmetics Studio setup
-      setupCosmeticsStudio(data);
-
       const sinceEl = document.getElementById('profile-since');
       if (sinceEl && data.createdAt) {
         const d = data.createdAt.toDate();
@@ -556,77 +848,224 @@
       if (window.lucide) lucide.createIcons();
     }
 
-    function setupCosmeticsStudio(data) {
-      const card = document.getElementById('cosmetics-studio-card');
-      if (!card) return;
-      if (!isViewingSelf) {
-        card.style.display = 'none';
-        return;
-      }
-      card.style.display = 'block';
+    /** Copy Discord ID with interactive smart visual feedback */
+    function copyDiscordId() {
+      if (!currentUserData && !targetUid) return;
+      const discordId = (currentUserData && currentUserData.discordId) || (targetUid || '').replace('discord:', '');
+      if (!discordId) return;
 
-      // Title Selector
-      const titleSelect = document.getElementById('equip-title-select');
-      const unlockedTitles = data.unlockedTitles || [];
-      if (titleSelect) {
-        titleSelect.innerHTML = '<option value="">None (No Title)</option>' +
-          unlockedTitles.map(tId => {
-            const item = SHOP_TITLES[tId];
-            return item ? `<option value="${tId}" ${data.equippedTitle === tId ? 'selected' : ''}>${item.name}</option>` : '';
-          }).join('');
-      }
-
-      // Banner Selector
-      const bannerSelect = document.getElementById('equip-banner-select');
-      const unlockedBanners = data.unlockedBanners || [];
-      if (bannerSelect) {
-        bannerSelect.innerHTML = '<option value="">Default (Dark Obsidian)</option>' +
-          unlockedBanners.map(bId => {
-            const item = SHOP_BANNERS[bId];
-            return item ? `<option value="${bId}" ${data.equippedBanner === bId ? 'selected' : ''}>${item.name}</option>` : '';
-          }).join('');
-      }
+      navigator.clipboard.writeText(discordId).then(() => {
+        const pill = document.getElementById('profile-discord-id');
+        const textEl = document.getElementById('discord-id-text');
+        if (pill && textEl) {
+          pill.classList.add('copied');
+          const original = textEl.textContent;
+          textEl.textContent = 'Copied! ✓';
+          setTimeout(() => {
+            pill.classList.remove('copied');
+            textEl.textContent = original;
+          }, 1800);
+        }
+        showToast('Discord ID copied to clipboard!', 'success');
+      }).catch(e => {
+        showToast('Could not copy Discord ID', 'error');
+      });
     }
 
-    /** Live real-time preview of titles and banners */
-    function previewLiveProfileStyle() {
-      const titleId = document.getElementById('equip-title-select')?.value || '';
-      const bannerId = document.getElementById('equip-banner-select')?.value || '';
+    // ── Cosmetics Customizer Studio Modal ───────────────────────
+    let currentCosmeticsTab = 'titles';
 
-      const titleSlot = document.getElementById('profile-title-slot');
-      if (titleSlot) {
-        if (titleId && SHOP_TITLES[titleId]) {
-          const t = SHOP_TITLES[titleId];
-          titleSlot.innerHTML = `<span class="player-title-tag ${t.className}">${t.name}</span>`;
+    function openCosmeticsModal(initialTab = 'titles') {
+      if (!isViewingSelf || !currentUserData) return;
+      currentCosmeticsTab = initialTab;
+
+      const modal = document.getElementById('cosmetics-customizer-modal');
+      if (modal) modal.classList.add('active');
+
+      switchCosmeticsTab(initialTab);
+      renderCosmeticsModal();
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function closeCosmeticsModal() {
+      const modal = document.getElementById('cosmetics-customizer-modal');
+      if (modal) modal.classList.remove('active');
+    }
+
+    function switchCosmeticsTab(tab) {
+      currentCosmeticsTab = tab;
+      const tabTitles = document.getElementById('tab-btn-titles');
+      const tabBanners = document.getElementById('tab-btn-banners');
+      const viewTitles = document.getElementById('cosmetics-titles-view');
+      const viewBanners = document.getElementById('cosmetics-banners-view');
+
+      if (tab === 'titles') {
+        if (tabTitles) tabTitles.classList.add('active');
+        if (tabBanners) tabBanners.classList.remove('active');
+        if (viewTitles) viewTitles.style.display = 'block';
+        if (viewBanners) viewBanners.style.display = 'none';
+      } else {
+        if (tabTitles) tabTitles.classList.remove('active');
+        if (tabBanners) tabBanners.classList.add('active');
+        if (viewTitles) viewTitles.style.display = 'none';
+        if (viewBanners) viewBanners.style.display = 'block';
+      }
+      updateCosmeticsPreview();
+    }
+
+    function updateCosmeticsPreview() {
+      const nameEl = document.getElementById('preview-name-display');
+      const titleEl = document.getElementById('preview-title-display');
+      const stripEl = document.getElementById('preview-hero-strip');
+
+      if (!currentUserData) return;
+
+      if (nameEl) {
+        nameEl.textContent = currentUserData.displayName || 'Champion';
+        if (currentUserData.isPremium) nameEl.className = 'username-premium';
+      }
+
+      if (titleEl) {
+        const curTitle = currentUserData.equippedTitle;
+        if (curTitle && SHOP_TITLES[curTitle]) {
+          const t = SHOP_TITLES[curTitle];
+          titleEl.innerHTML = `<span class="player-title-tag ${t.className}">${t.name}</span>`;
         } else {
-          titleSlot.innerHTML = '';
+          titleEl.innerHTML = `<span style="font-size:0.75rem;color:var(--text-muted);font-style:italic;">No title equipped</span>`;
         }
       }
 
-      const heroCard = document.getElementById('profile-hero');
-      if (heroCard) {
-        heroCard.className = 'profile-hero-card';
-        if (bannerId && SHOP_BANNERS[bannerId]) {
-          heroCard.classList.add(SHOP_BANNERS[bannerId].className);
+      if (stripEl) {
+        stripEl.className = 'preview-hero-strip';
+        const curBanner = currentUserData.equippedBanner;
+        if (curBanner && SHOP_BANNERS[curBanner]) {
+          stripEl.classList.add(SHOP_BANNERS[curBanner].className);
         }
       }
     }
 
-    async function handleEquipTitle(titleId) {
+    function renderCosmeticsModal() {
+      if (!currentUserData) return;
+
+      updateCosmeticsPreview();
+
+      const titlesGrid = document.getElementById('titles-grid-list');
+      const bannersGrid = document.getElementById('banners-grid-list');
+
+      const unlockedTitles = currentUserData.unlockedTitles || [];
+      const equippedTitle = currentUserData.equippedTitle || '';
+
+      const unlockedBanners = currentUserData.unlockedBanners || [];
+      const equippedBanner = currentUserData.equippedBanner || '';
+
+      // Render Titles
+      if (titlesGrid) {
+        let tHtml = '';
+
+        // Option 1: None (Default)
+        const isNoneEquipped = !equippedTitle;
+        tHtml += `
+          <div class="cosmetics-option-card ${isNoneEquipped ? 'equipped' : ''}" onclick="equipTitleFromModal('')">
+            ${isNoneEquipped ? '<span class="equipped-badge-indicator">Equipped ✓</span>' : ''}
+            <span style="font-weight:700;font-size:0.95rem;color:#94a3b8;">No Title</span>
+            <div style="font-size:0.75rem;color:var(--text-muted);">Default plain username</div>
+            <button class="btn btn-sm ${isNoneEquipped ? 'btn-outline' : 'btn-primary'}" style="margin-top:auto;width:100%;font-size:0.78rem;">
+              ${isNoneEquipped ? 'Active' : 'Equip None'}
+            </button>
+          </div>
+        `;
+
+        Object.values(SHOP_TITLES).forEach(item => {
+          const isUnlocked = item.cost === 0 || unlockedTitles.includes(item.id);
+          const isEquipped = equippedTitle === item.id;
+
+          tHtml += `
+            <div class="cosmetics-option-card ${isEquipped ? 'equipped' : ''}" ${isUnlocked ? `onclick="equipTitleFromModal('${item.id}')"` : ''}>
+              ${isEquipped ? '<span class="equipped-badge-indicator">Equipped ✓</span>' : ''}
+              <span class="player-title-tag ${item.className}" style="font-size:0.82rem;padding:4px 10px;">${item.name}</span>
+              <div style="font-size:0.75rem;color:var(--text-muted);">${isUnlocked ? 'Unlocked & ready' : `Shop Price: ${formatTokens(item.cost)} Tokens`}</div>
+              ${isUnlocked ? `
+                <button class="btn btn-sm ${isEquipped ? 'btn-gold' : 'btn-outline'}" onclick="event.stopPropagation();equipTitleFromModal('${item.id}')" style="margin-top:auto;width:100%;font-size:0.78rem;">
+                  ${isEquipped ? 'Equipped ✓' : 'Equip Title'}
+                </button>
+              ` : `
+                <a href="shop" class="btn btn-gold btn-sm" onclick="event.stopPropagation()" style="margin-top:auto;width:100%;font-size:0.75rem;text-decoration:none;">
+                  <i data-lucide="shopping-cart" style="width:12px;height:12px;"></i> Get in Shop
+                </a>
+              `}
+            </div>
+          `;
+        });
+
+        titlesGrid.innerHTML = tHtml;
+      }
+
+      // Render Banners
+      if (bannersGrid) {
+        let bHtml = '';
+
+        // Default Banner
+        const isDefEquipped = !equippedBanner;
+        bHtml += `
+          <div class="cosmetics-option-card ${isDefEquipped ? 'equipped' : ''}" onclick="equipBannerFromModal('')">
+            ${isDefEquipped ? '<span class="equipped-badge-indicator">Equipped ✓</span>' : ''}
+            <span style="font-weight:700;font-size:0.95rem;color:#94a3b8;">Dark Obsidian</span>
+            <div style="font-size:0.75rem;color:var(--text-muted);">Standard sleek theme</div>
+            <button class="btn btn-sm ${isDefEquipped ? 'btn-outline' : 'btn-primary'}" style="margin-top:auto;width:100%;font-size:0.78rem;">
+              ${isDefEquipped ? 'Active' : 'Equip Default'}
+            </button>
+          </div>
+        `;
+
+        Object.values(SHOP_BANNERS).forEach(banner => {
+          const isUnlocked = unlockedBanners.includes(banner.id);
+          const isEquipped = equippedBanner === banner.id;
+
+          bHtml += `
+            <div class="cosmetics-option-card ${banner.className} ${isEquipped ? 'equipped' : ''}" ${isUnlocked ? `onclick="equipBannerFromModal('${banner.id}')"` : ''} style="border-width:2px;">
+              ${isEquipped ? '<span class="equipped-badge-indicator">Equipped ✓</span>' : ''}
+              <span style="font-weight:800;font-size:1rem;color:#fff;">${banner.name}</span>
+              <div style="font-size:0.75rem;color:var(--text-muted);">${isUnlocked ? 'Unlocked theme' : `Shop Price: ${formatTokens(banner.cost)} Tokens`}</div>
+              ${isUnlocked ? `
+                <button class="btn btn-sm ${isEquipped ? 'btn-gold' : 'btn-outline'}" onclick="event.stopPropagation();equipBannerFromModal('${banner.id}')" style="margin-top:auto;width:100%;font-size:0.78rem;">
+                  ${isEquipped ? 'Equipped ✓' : 'Equip Banner'}
+                </button>
+              ` : `
+                <a href="shop" class="btn btn-gold btn-sm" onclick="event.stopPropagation()" style="margin-top:auto;width:100%;font-size:0.75rem;text-decoration:none;">
+                  <i data-lucide="shopping-cart" style="width:12px;height:12px;"></i> Get in Shop
+                </a>
+              `}
+            </div>
+          `;
+        });
+
+        bannersGrid.innerHTML = bHtml;
+      }
+
+      if (window.lucide) lucide.createIcons();
+    }
+
+    async function equipTitleFromModal(titleId) {
       if (!currentUser) return;
       try {
         await equipTitle(currentUser.uid, titleId);
-        showToast(titleId ? 'Title equipped!' : 'Title unequipped', 'info');
+        if (currentUserData) currentUserData.equippedTitle = titleId;
+        renderCosmeticsModal();
+        renderProfile(currentUserData);
+        showToast(titleId ? `Equipped "${SHOP_TITLES[titleId]?.name || titleId}" Title!` : 'Title unequipped', 'success');
       } catch (err) {
         showToast(err.message, 'error');
       }
     }
 
-    async function handleEquipBanner(bannerId) {
+    async function equipBannerFromModal(bannerId) {
       if (!currentUser) return;
       try {
         await equipBanner(currentUser.uid, bannerId);
-        showToast(bannerId ? 'Banner equipped!' : 'Banner reset to default', 'info');
+        if (currentUserData) currentUserData.equippedBanner = bannerId;
+        renderCosmeticsModal();
+        renderProfile(currentUserData);
+        showToast(bannerId ? `Equipped "${SHOP_BANNERS[bannerId]?.name || bannerId}" Banner!` : 'Banner reset to default', 'success');
       } catch (err) {
         showToast(err.message, 'error');
       }

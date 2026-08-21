@@ -1008,9 +1008,14 @@ async function tipPlayer(senderUid, receiverUid, amount) {
 // ── Shop Titles, Banners, & Daily Mystery Chests ─────────────
 
 const SHOP_TITLES = {
-  'goated': { id: 'goated', name: 'GOATED', cost: 2.50, className: 'title-goated' },
-  'average': { id: 'average', name: 'Average', cost: 1.00, className: 'title-average' },
-  'the_boss': { id: 'the_boss', name: 'The Boss', cost: 5.00, className: 'title-the-boss' }
+  'goated':        { id: 'goated',        name: '⚡ GOATED',           cost: 2.50, className: 'title-goated' },
+  'the_boss':      { id: 'the_boss',      name: '👑 The Boss',         cost: 5.00, className: 'title-the-boss' },
+  'unreal':        { id: 'unreal',        name: '🔥 Unreal Legend',    cost: 3.50, className: 'title-unreal' },
+  'prodigy':       { id: 'prodigy',       name: '🏆 The Prodigy',      cost: 2.00, className: 'title-prodigy' },
+  'box_god':       { id: 'box_god',       name: '🎯 Box Fight God',    cost: 2.50, className: 'title-box-god' },
+  'high_roller':   { id: 'high_roller',   name: '💎 High Roller',      cost: 4.00, className: 'title-high-roller' },
+  'beta_pioneer':  { id: 'beta_pioneer',  name: '🌟 Beta Pioneer',     cost: 0.00, className: 'title-beta-pioneer' },
+  'average':       { id: 'average',       name: 'Average',             cost: 1.00, className: 'title-average' }
 };
 
 const SHOP_BANNERS = {
