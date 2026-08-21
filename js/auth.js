@@ -18,13 +18,10 @@ function signInWithDiscord() {
 }
 
 /**
- * Build the Epic Games OAuth redirect URL and navigate there.
- * Epic will redirect back to /epic-callback?code=...
+ * Open the in-app Epic Games account linking flow.
  */
 function signInWithEpic() {
-  const clientId = 'xyza78916i52N8UrLv1m41xvkgeBXfUh';
-  const redirectUri = encodeURIComponent(`${window.location.origin}/epic-callback`);
-  window.location.href = `https://www.epicgames.com/id/authorize?client_id=${clientId}&response_type=code&scope=basic_profile&redirect_uri=${redirectUri}`;
+  window.location.href = 'epic-login';
 }
 
 /** The OAuth redirect URI — must match what's set in Discord Developer Portal */

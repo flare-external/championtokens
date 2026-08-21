@@ -13,126 +13,127 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: #0f1015;
-      color: #f5f5f5;
+      background: #020306;
+      color: #f8fafc;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       padding: 24px 16px;
+      background-image: radial-gradient(circle at 50% 10%, rgba(0, 120, 242, 0.15), transparent 60%);
     }
 
     .epic-auth-card {
       width: 100%;
-      max-width: 420px;
-      background: #181a20;
-      border: 1px solid #282c38;
-      border-radius: 12px;
-      padding: 36px 30px;
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.7);
+      max-width: 440px;
+      background: rgba(10, 13, 24, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      border-radius: 24px;
+      padding: 40px 32px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(20px);
     }
 
     .epic-logo-wrap {
       text-align: center;
       margin-bottom: 20px;
     }
-    .epic-shield-icon {
-      width: 48px;
-      height: 54px;
-      fill: #ffffff;
-    }
 
     .auth-title {
-      font-size: 1.35rem;
+      font-size: 1.45rem;
       font-weight: 900;
       text-align: center;
       margin-bottom: 6px;
       color: #fff;
     }
     .auth-subtitle {
-      font-size: 0.85rem;
-      color: #9ca3af;
+      font-size: 0.88rem;
+      color: #94a3b8;
       text-align: center;
       margin-bottom: 24px;
-      line-height: 1.4;
+      line-height: 1.5;
     }
 
     .permission-box {
-      background: #12141a;
-      border: 1px solid #222634;
-      border-radius: 8px;
-      padding: 14px 16px;
-      margin-bottom: 20px;
-      font-size: 0.82rem;
-      color: #9ca3af;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      border-radius: 14px;
+      padding: 16px 18px;
+      margin-bottom: 22px;
+      font-size: 0.84rem;
+      color: #94a3b8;
     }
     .permission-box ul {
       margin-left: 18px;
-      margin-top: 6px;
+      margin-top: 8px;
       display: flex;
       flex-direction: column;
-      gap: 4px;
-      color: #e5e7eb;
+      gap: 6px;
+      color: #e2e8f0;
     }
 
     .form-group {
-      margin-bottom: 16px;
+      margin-bottom: 18px;
     }
     .form-label {
       display: block;
-      font-size: 0.78rem;
+      font-size: 0.8rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.05em;
-      color: #9ca3af;
-      margin-bottom: 6px;
+      color: #94a3b8;
+      margin-bottom: 8px;
     }
     .form-input {
       width: 100%;
-      padding: 12px 14px;
-      background: #0f1015;
-      border: 1px solid #374151;
-      border-radius: 6px;
+      padding: 14px 18px;
+      background: rgba(14, 18, 32, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 14px;
       color: #fff;
       font-size: 0.95rem;
       font-family: inherit;
       outline: none;
-      transition: border-color 0.2s;
+      transition: all 0.2s;
     }
     .form-input:focus {
       border-color: #0078f2;
-      background: #14161f;
+      box-shadow: 0 0 20px rgba(0, 120, 242, 0.35);
+      background: rgba(18, 24, 42, 0.95);
     }
 
     .btn-epic-primary {
       width: 100%;
-      padding: 14px;
-      background: #0078f2;
+      padding: 15px;
+      background: linear-gradient(135deg, #0078f2 0%, #0056b3 100%);
       border: none;
-      border-radius: 6px;
+      border-radius: 14px;
       color: #fff;
       font-weight: 800;
       font-size: 0.95rem;
       text-transform: uppercase;
       letter-spacing: 0.05em;
       cursor: pointer;
-      transition: background 0.2s;
-      margin-top: 6px;
+      transition: all 0.2s;
+      margin-top: 8px;
+      box-shadow: 0 4px 20px rgba(0, 120, 242, 0.4);
     }
     .btn-epic-primary:hover {
-      background: #0060c4;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 28px rgba(0, 120, 242, 0.6);
     }
     .btn-epic-primary:disabled {
       opacity: 0.6;
       cursor: not-allowed;
+      transform: none;
     }
 
     .auth-footer {
       margin-top: 24px;
       text-align: center;
-      font-size: 0.72rem;
-      color: #6b7280;
+      font-size: 0.75rem;
+      color: #64748b;
       line-height: 1.4;
     }
 
@@ -150,14 +151,14 @@
     @keyframes spin { to { transform: rotate(360deg); } }
 
     .status-msg {
-      padding: 10px 14px;
-      border-radius: 6px;
-      font-size: 0.85rem;
-      margin-bottom: 16px;
+      padding: 12px 16px;
+      border-radius: 12px;
+      font-size: 0.88rem;
+      margin-bottom: 18px;
       display: none;
     }
-    .status-msg.error { background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; color: #fca5a5; display: block; }
-    .status-msg.success { background: rgba(16, 185, 129, 0.15); border: 1px solid #10b981; color: #6ee7b7; display: block; }
+    .status-msg.error { background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.35); color: #fca5a5; display: block; }
+    .status-msg.success { background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.35); color: #6ee7b7; display: block; }
   </style>
 </head>
 <body>
