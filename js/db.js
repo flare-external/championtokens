@@ -576,11 +576,16 @@ async function adminResolveDispute(matchId, winningTeam, adminUid) {
 async function getLeaderboard() {
   const snap = await db.collection('users')
     .orderBy('tokens', 'desc')
-    .limit(30)
+    .limit(50)
     .get();
   return snap.docs
     .map(d => ({ id: d.id, ...d.data() }))
-    .filter(u => !u.isGuest && !u.id.startsWith('guest_') && !u.displayName?.toLowerCase().includes('guest'))
+    .filter(u => {
+      if (u.isGuest === true || u.id.startsWith('guest_') || u.uid?.startsWith('guest_')) return false;
+      const name = (u.displayName || '').toLowerCase();
+      if (name.includes('guest') || name.includes('tester') || name.startsWith('guest #') || name.startsWith('guest-')) return false;
+      return true;
+    })
     .slice(0, 10);
 }
 
@@ -979,7 +984,12 @@ async function getUserLeaderboardRank(uid) {
     const snap = await db.collection('users').orderBy('tokens', 'desc').get();
     const realUsers = snap.docs
       .map(d => ({ id: d.id, ...d.data() }))
-      .filter(u => !u.isGuest && !u.id.startsWith('guest_') && !u.displayName?.toLowerCase().includes('guest'));
+      .filter(u => {
+        if (u.isGuest === true || u.id.startsWith('guest_') || u.uid?.startsWith('guest_')) return false;
+        const name = (u.displayName || '').toLowerCase();
+        if (name.includes('guest') || name.includes('tester') || name.startsWith('guest #') || name.startsWith('guest-')) return false;
+        return true;
+      });
     const rankIndex = realUsers.findIndex(d => d.id === uid);
     if (rankIndex === -1) return { rank: 0, display: 'Unranked', badgeClass: 'rank-badge-normal' };
     const rank = rankIndex + 1;
@@ -1120,5 +1130,38 @@ async function buyChampionMysteryChest(uid) {
 
   return { rewardTokens: winAmount };
 }
+
+/** Auto cleanup any legacy guest records in Firestore */
+async function cleanupGuestUsers() {
+  try {
+    const snap = await db.collection('users').get();
+    const deleteBatch = db.batch();
+    let hasDeletes = false;
+    snap.docs.forEach(doc => {
+      const data = doc.data();
+      const name = (data.displayName || '').toLowerCase();
+      if (doc.id.startsWith('guest_') || data.isGuest === true || name.includes('guest #') || name.includes('guest-')) {
+        deleteBatch.delete(doc.ref);
+        hasDeletes = true;
+      }
+    });
+    if (hasDeletes) {
+      await deleteBatch.commit();
+      console.log('Cleaned up legacy guest users from database');
+    }
+  } catch (e) {
+    console.warn('Guest cleanup notice:', e);
+  }
+}
+
+// Auto-run guest cleanup in the background
+if (typeof window !== 'undefined') {
+  setTimeout(() => {
+    if (typeof db !== 'undefined' && db) {
+      cleanupGuestUsers().catch(() => {});
+    }
+  }, 2000);
+}
+
 
 

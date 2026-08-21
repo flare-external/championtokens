@@ -561,31 +561,6 @@
           <div class="team-squad-column" id="team2-squad"></div>
         </div>
 
-        <!-- Official Fortnite Map Arena & Match Settings Showcase -->
-        <div class="map-arena-card" id="map-arena-card">
-          <div class="map-arena-header">
-            <div class="map-arena-thumb-wrap" id="map-thumb-wrap" style="background: linear-gradient(135deg, #1e3a8a 0%, #0f172a 100%);">
-              <span class="map-mode-badge" id="map-mode-badge"><i data-lucide="crosshair" style="width:12px;height:12px;"></i> Realistic</span>
-            </div>
-            <div class="map-details-wrap">
-              <div style="font-size:0.74rem;color:var(--gold-bright);font-weight:800;text-transform:uppercase;letter-spacing:0.05em;">Official Fortnite Arena Map</div>
-              <h3 id="map-name-title" style="font-size:1.1rem;font-weight:900;color:#fff;margin:2px 0 6px;">Finx 1v1 Realistic (Chapter 5 Loot)</h3>
-              <div class="map-code-row">
-                <span class="map-code-pill" id="map-code-display"><i data-lucide="map-pin"></i> Code: 4470-5962-8648</span>
-                <button type="button" class="btn btn-outline btn-sm copy-map-btn" id="copy-map-code-btn" onclick="copyCurrentMapCode()">
-                  <i data-lucide="copy"></i> Copy Map Code
-                </button>
-              </div>
-            </div>
-          </div>
-          <div class="map-rules-strip">
-            <div class="rule-chip"><i data-lucide="globe"></i> Server: <strong>EU / NA Auto</strong></div>
-            <div class="rule-chip"><i data-lucide="target"></i> Format: <strong id="rule-format">First to 5 Rounds</strong></div>
-            <div class="rule-chip"><i data-lucide="shield"></i> Health: <strong id="rule-health">200 HP · 50 Siphon</strong></div>
-            <div class="rule-chip"><i data-lucide="swords"></i> Loot: <strong id="rule-loot">Competitive Realistic Pool</strong></div>
-          </div>
-        </div>
-
         <!-- Footer Timer & Quick Guide -->
         <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:0.8rem;color:var(--text-muted);border-top:1px solid rgba(255,255,255,0.05);padding-top:14px;margin-top:auto;">
           <div style="display:flex;align-items:center;gap:6px;">
@@ -898,59 +873,6 @@
       timerInterval = setInterval(updateClock, 1000);
     }
 
-    const FORTNITE_MAPS = {
-      'Realistic': {
-        name: 'Finx 1v1 Realistic (Ch. 5 Loot)',
-        code: '4470-5962-8648',
-        format: 'First to 5 Rounds',
-        health: '200 HP · 50 Siphon',
-        loot: 'Competitive Realistic Pool',
-        gradient: 'linear-gradient(135deg, #1e3a8a 0%, #0f172a 100%)',
-        icon: 'target'
-      },
-      'Zone Wars': {
-        name: 'Tilted Zone Wars (Classic Speed)',
-        code: '3729-0643-9775',
-        format: 'First to 5 Rounds',
-        health: '200 HP · Dynamic Zone',
-        loot: 'Standard Zone Wars Pool',
-        gradient: 'linear-gradient(135deg, #7c2d12 0%, #0f172a 100%)',
-        icon: 'flame'
-      },
-      'Box Fights': {
-        name: 'Clix 1v1 / 2v2 Box Fight Arena',
-        code: '7620-0771-9554',
-        format: 'First to 5 Rounds',
-        health: '200 HP · Fast Reset',
-        loot: 'Classic Pump + AR Pool',
-        gradient: 'linear-gradient(135deg, #78350f 0%, #0f172a 100%)',
-        icon: 'box'
-      }
-    };
-
-    let currentMatchMapCode = '4470-5962-8648';
-
-    function copyCurrentMapCode() {
-      const code = currentMatchMapCode || '4470-5962-8648';
-      if (navigator.clipboard) {
-        navigator.clipboard.writeText(code).then(() => {
-          showToast(`Map code "${code}" copied to clipboard!`, 'success');
-          const btn = document.getElementById('copy-map-code-btn');
-          if (btn) {
-            btn.innerHTML = `<i data-lucide="check"></i> Copied!`;
-            setTimeout(() => {
-              btn.innerHTML = `<i data-lucide="copy"></i> Copy Map Code`;
-              if (window.lucide) lucide.createIcons();
-            }, 1800);
-          }
-        }).catch(() => {
-          showToast(`Map code: ${code}`, 'info');
-        });
-      } else {
-        showToast(`Map code: ${code}`, 'info');
-      }
-    }
-
     function renderMatchRoom(match) {
       const size = match.size || '1v1';
       const mode = match.mode || 'Realistic';
@@ -1018,26 +940,6 @@
       if (scoreArea) {
         renderScoreReportArea(match, scoreArea, alreadyIn, isMatchStarted, prize, players);
       }
-
-      // Populate Fortnite Map Arena & Match Rules Showcase
-      const mapData = FORTNITE_MAPS[mode] || FORTNITE_MAPS['Realistic'];
-      currentMatchMapCode = mapData.code;
-
-      const mapBadge = document.getElementById('map-mode-badge');
-      const mapTitle = document.getElementById('map-name-title');
-      const mapCodeDisp = document.getElementById('map-code-display');
-      const mapThumb = document.getElementById('map-thumb-wrap');
-      const ruleFmt = document.getElementById('rule-format');
-      const ruleHp = document.getElementById('rule-health');
-      const ruleLoot = document.getElementById('rule-loot');
-
-      if (mapBadge) mapBadge.innerHTML = `<i data-lucide="${mapData.icon}" style="width:12px;height:12px;"></i> ${mode}`;
-      if (mapTitle) mapTitle.textContent = mapData.name;
-      if (mapCodeDisp) mapCodeDisp.innerHTML = `<i data-lucide="map-pin"></i> Code: ${mapData.code}`;
-      if (mapThumb) mapThumb.style.background = mapData.gradient;
-      if (ruleFmt) ruleFmt.textContent = mapData.format;
-      if (ruleHp) ruleHp.textContent = mapData.health;
-      if (ruleLoot) ruleLoot.textContent = mapData.loot;
 
       // Render Teams VS Matchup (Center Stage)
       const halfCount = maxPlayers / 2;

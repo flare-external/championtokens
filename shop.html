@@ -44,8 +44,8 @@
       margin-bottom: 36px;
     }
     .item-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
+      background: rgba(14, 18, 32, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.14);
       border-radius: var(--radius-xl);
       padding: 20px;
       display: flex;
@@ -53,12 +53,13 @@
       align-items: center;
       text-align: center;
       gap: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
       transition: all 0.2s;
     }
     .item-card:hover {
       border-color: var(--border-bright);
       transform: translateY(-2px);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6), 0 0 20px rgba(245, 158, 11, 0.15);
     }
     .item-preview-box {
       height: 60px;
@@ -67,8 +68,8 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background: rgba(0,0,0,0.3);
-      border: 1px dashed rgba(255,255,255,0.1);
+      background: rgba(0,0,0,0.4);
+      border: 1px solid rgba(255,255,255,0.14);
     }
   </style>
 </head>

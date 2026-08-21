@@ -13,13 +13,15 @@
   <style>
     .filters { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:20px; }
     .filter-btn {
-      padding:7px 16px;
+      padding:8px 18px;
       border-radius:999px;
-      font-size:0.825rem;
+      font-size:0.85rem;
       font-weight:700;
-      border:1px solid var(--border);
-      color:var(--text-muted);
-      background:var(--bg-card);
+      border:1px solid rgba(255, 255, 255, 0.16);
+      color:#cbd5e1;
+      background:rgba(18, 24, 42, 0.9);
+      box-shadow:0 2px 8px rgba(0,0,0,0.3);
+      cursor:pointer;
       transition:all 0.2s;
     }
     .filter-btn.active,
@@ -27,6 +29,7 @@
       border-color:var(--gold-bright);
       color:var(--gold-bright);
       background:var(--gold-dim);
+      box-shadow:0 0 14px rgba(245, 158, 11, 0.25);
     }
     .join-bar {
       display:flex;

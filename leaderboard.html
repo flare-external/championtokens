@@ -27,8 +27,8 @@
       align-items: end;
     }
     .podium-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
+      background: rgba(14, 18, 32, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.14);
       border-radius: var(--radius-xl);
       padding: 20px 16px;
       text-align: center;
@@ -36,17 +36,18 @@
       flex-direction: column;
       align-items: center;
       gap: 8px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.5);
       transition: transform 0.2s;
     }
     .podium-card:hover { transform: translateY(-3px); }
     .podium-card--1 {
       border-color: var(--gold-bright);
-      background: linear-gradient(180deg, rgba(245,158,11,0.12) 0%, transparent 100%);
+      background: linear-gradient(180deg, rgba(245,158,11,0.18) 0%, rgba(14,18,32,0.95) 100%);
       padding-top: 28px;
-      box-shadow: 0 0 30px rgba(245,158,11,0.15);
+      box-shadow: 0 0 35px rgba(245,158,11,0.22);
     }
-    .podium-card--2 { border-color: rgba(192,192,192,0.4); }
-    .podium-card--3 { border-color: rgba(205,127,50,0.4);  }
+    .podium-card--2 { border-color: rgba(192,192,192,0.5); background: linear-gradient(180deg, rgba(192,192,192,0.1) 0%, rgba(14,18,32,0.95) 100%); }
+    .podium-card--3 { border-color: rgba(205,127,50,0.5); background: linear-gradient(180deg, rgba(205,127,50,0.1) 0%, rgba(14,18,32,0.95) 100%); }
     .podium-rank {
       font-size: 1.5rem;
       line-height: 1;
