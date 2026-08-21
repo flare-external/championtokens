@@ -1,31 +1,31 @@
-﻿{
-  "version": 2,
+{
+  "cleanUrls": true,
   "rewrites": [
-    { "source": "/.netlify/functions/discordAuth", "destination": "/api/discordAuth" },
-    { "source": "/.netlify/functions/epicAuth", "destination": "/api/epicAuth" },
-    { "source": "/dashboard", "destination": "/dashboard.html" },
-    { "source": "/matches", "destination": "/matches.html" },
-    { "source": "/match", "destination": "/match.html" },
-    { "source": "/leaderboard", "destination": "/leaderboard.html" },
-    { "source": "/shop", "destination": "/shop.html" },
-    { "source": "/profile", "destination": "/profile.html" },
-    { "source": "/admin", "destination": "/admin.html" },
-    { "source": "/epic-login", "destination": "/epic-login.html" },
-    { "source": "/epic-callback", "destination": "/epic-callback.html" },
-    { "source": "/privacy-policy", "destination": "/privacy-policy.html" },
-    { "source": "/privacy", "destination": "/privacy-policy.html" },
-    { "source": "/terms", "destination": "/terms.html" },
-    { "source": "/terms-of-service", "destination": "/terms.html" },
-    { "source": "/callback", "destination": "/callback.html" }
+    {
+      "source": "/.netlify/functions/:path*",
+      "destination": "/api/:path*"
+    }
   ],
   "headers": [
     {
       "source": "/(.*)",
       "headers": [
-        { "key": "Strict-Transport-Security", "value": "max-age=31536000; includeSubDomains; preload" },
-        { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "X-Frame-Options", "value": "SAMEORIGIN" },
-        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=31536000; includeSubDomains; preload"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "SAMEORIGIN"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        }
       ]
     }
   ]
