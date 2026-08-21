@@ -26,8 +26,11 @@ function signInWithEpic() {
 
 /** The OAuth redirect URI — must match what's set in Discord Developer Portal */
 function getRedirectUri() {
-  const base = window.location.origin + window.location.pathname.replace(/\/[^/]*$/, '');
-  return base + '/callback.html';
+  let origin = window.location.origin;
+  if (!origin.includes('localhost') && !origin.includes('127.0.0.1')) {
+    origin = origin.replace(/^http:/, 'https:');
+  }
+  return origin + '/callback.html';
 }
 
 /** Sign out of Firebase */
