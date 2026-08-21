@@ -217,8 +217,8 @@ input[type="range"].ct-slider::-moz-range-thumb {
   margin-right: 12px;
 }
 .brand-logo-img {
-  width: 38px;
-  height: 38px;
+  width: 32px;
+  height: 32px;
   object-fit: contain;
   filter: drop-shadow(0 0 10px var(--gold-glow));
 }
@@ -961,10 +961,10 @@ input[type="range"].ct-slider::-moz-range-thumb {
   font-weight: 900;
 }
 .landing-brand-logo {
-  width: 42px;
-  height: 42px;
+  width: 32px;
+  height: 32px;
   object-fit: contain;
-  filter: drop-shadow(0 0 12px var(--gold-glow));
+  filter: drop-shadow(0 0 10px var(--gold-glow));
 }
 
 .hero {
@@ -974,16 +974,16 @@ input[type="range"].ct-slider::-moz-range-thumb {
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 48px 20px 32px;
+  padding: 40px 20px 28px;
   position: relative;
 }
 
 .hero-logo-large {
-  width: 100px;
-  height: 100px;
+  width: 58px;
+  height: 58px;
   object-fit: contain;
-  margin-bottom: 16px;
-  filter: drop-shadow(0 0 35px var(--gold-glow));
+  margin-bottom: 14px;
+  filter: drop-shadow(0 0 22px var(--gold-glow));
   animation: floatDrift 4s ease-in-out infinite alternate;
 }
 
