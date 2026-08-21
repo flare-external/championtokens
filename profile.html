@@ -347,6 +347,8 @@
       border-color: var(--gold-bright);
       background: linear-gradient(135deg, rgba(245, 158, 11, 0.18) 0%, rgba(18, 24, 46, 0.95) 100%);
       box-shadow: 0 0 22px rgba(245, 158, 11, 0.25);
+    }
+
     /* Modal Display Support */
     .modal-overlay.open,
     .modal-overlay.active {
@@ -358,6 +360,18 @@
     .modal-overlay.open .modal,
     .modal-overlay.active .modal {
       transform: translateY(0) !important;
+    }
+    .equipped-badge-indicator {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: var(--gold-bright);
+      color: #000;
+      font-size: 0.65rem;
+      font-weight: 800;
+      padding: 2px 7px;
+      border-radius: 999px;
+      white-space: nowrap;
     }
 
     /* ── Settings & Customization Hub ── */
@@ -1475,59 +1489,14 @@
 
     // ── Epic Games Account Section ────────────────────────────
     function renderEpicSection(data) {
-      const el = document.getElementById('epic-content');
-      if (!el) return;
-
-      if (!isViewingSelf) {
+      // Update the hub row that shows epic status
+      const hubEpic = document.getElementById('hub-current-epic');
+      if (hubEpic) {
         if (data && data.epicUsername) {
-          el.innerHTML = `
-            <div style="display:flex;align-items:center;gap:12px;">
-              <span class="epic-badge-connected">
-                <img src="epic_games_logo.webp" alt="Epic Games" style="width:20px;height:24px;object-fit:contain;" />
-                ${data.epicUsername}
-              </span>
-              <span class="chip chip-success">Verified Epic Account</span>
-            </div>`;
+          hubEpic.innerHTML = `<span class="chip chip-success" style="font-size:0.78rem;font-weight:700;">✓ ${data.epicUsername}</span>`;
         } else {
-          el.innerHTML = `<span style="color:var(--text-muted);font-size:0.875rem;">No Epic Games account linked yet.</span>`;
+          hubEpic.innerHTML = `<span style="color:var(--text-muted);font-size:0.82rem;">Not Connected</span>`;
         }
-        if (window.lucide) lucide.createIcons();
-        return;
-      }
-
-      if (data && data.epicUsername) {
-        el.innerHTML = `
-          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;">
-            <div style="display:flex;align-items:center;gap:12px;">
-              <span class="epic-badge-connected">
-                <img src="epic_games_logo.webp" alt="Epic Games" style="width:20px;height:24px;object-fit:contain;" />
-                ${data.epicUsername}
-              </span>
-              <span class="chip chip-success">Connected & Verified</span>
-            </div>
-            <div style="display:flex;gap:8px;">
-              <button class="btn btn-outline btn-sm" onclick="openLinkEpicModal()">
-                <i data-lucide="refresh-cw"></i> Edit / Re-Link
-              </button>
-              <button class="btn btn-danger btn-sm" onclick="handleUnlinkEpic()">
-                <i data-lucide="unlink"></i> Unlink (2.00 Tokens Fee)
-              </button>
-            </div>
-          </div>`;
-      } else {
-        el.innerHTML = `
-          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;">
-            <div>
-              <div style="font-weight:700;color:#fff;font-size:0.95rem;">Connect Epic Games / Fortnite</div>
-              <div style="font-size:0.8125rem;color:var(--text-muted);margin-top:2px;">
-                Required to create and join matches. Verifies your official Fortnite display name.
-              </div>
-            </div>
-            <button class="btn btn-epic" onclick="openLinkEpicModal()" style="display:inline-flex;align-items:center;gap:10px;padding:11px 22px;">
-              <img src="epic_games_logo.webp" alt="Epic Games" style="width:22px;height:26px;object-fit:contain;" />
-              Connect Epic Games
-            </button>
-          </div>`;
       }
       if (window.lucide) lucide.createIcons();
     }
@@ -1536,6 +1505,7 @@
       const modal = document.getElementById('link-epic-modal');
       if (modal) {
         modal.classList.add('open');
+        modal.classList.add('active');
         const input = document.getElementById('modal-epic-ign-input');
         if (input) {
           input.value = currentUserData?.epicUsername || '';
@@ -1546,7 +1516,10 @@
 
     function closeLinkEpicModal() {
       const modal = document.getElementById('link-epic-modal');
-      if (modal) modal.classList.remove('open');
+      if (modal) {
+        modal.classList.remove('open');
+        modal.classList.remove('active');
+      }
     }
 
     async function submitLinkEpicModal(e) {
@@ -1697,26 +1670,7 @@
       if (m) { m.classList.remove('open'); m.classList.remove('active'); }
     }
 
-    function openLinkEpicModal() {
-      const modal = document.getElementById('link-epic-modal');
-      if (modal) {
-        modal.classList.add('open');
-        modal.classList.add('active');
-        const input = document.getElementById('modal-epic-ign-input');
-        if (input) {
-          input.value = currentUserData?.epicUsername || '';
-          setTimeout(() => input.focus(), 150);
-        }
-      }
-    }
 
-    function closeLinkEpicModal() {
-      const modal = document.getElementById('link-epic-modal');
-      if (modal) {
-        modal.classList.remove('open');
-        modal.classList.remove('active');
-      }
-    }
 
     async function submitCreateTeam(e) {
       e.preventDefault();
