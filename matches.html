@@ -99,41 +99,46 @@
 
     function renderMatches() {
       const grid = document.getElementById('match-grid');
-      const filtered = activeFilter === 'All'
-        ? allMatches
-        : allMatches.filter(m => m.mode === activeFilter || m.size === activeFilter);
+      let filtered = allMatches;
 
-      if (!filtered.length) {
+      if (activeFilter !== 'All') {
+        filtered = allMatches.filter(m => m.size === activeFilter || m.mode === activeFilter);
+      }
+
+      if (filtered.length === 0) {
         grid.innerHTML = `
           <div class="empty-state" style="grid-column:1/-1;">
-            <i data-lucide="swords"></i>
-            <p>No open ${activeFilter !== 'All' ? activeFilter + ' ' : ''}matches right now. <br/>Click "Create Match" to start one!</p>
+            <i data-lucide="inbox" style="width:40px;height:40px;margin:0 auto 12px;display:block;opacity:0.4;"></i>
+            <p>No open matches right now in this category.</p>
+            <button class="btn btn-primary btn-sm" style="margin-top:14px;" onclick="openCreateModal()">
+              <i data-lucide="plus"></i> Create One
+            </button>
           </div>`;
         lucide.createIcons();
         return;
       }
 
       grid.innerHTML = filtered.map(m => {
-        const isMine = m.createdBy === currentUser?.uid;
-        const alreadyIn = m.players?.some(p => p.uid === currentUser?.uid);
-        const isFull = m.players?.length >= m.maxPlayers;
-        const canJoin = !isMine && !alreadyIn && !isFull;
-        const size = m.size || '1v1';
-        const mode = m.mode || 'Realistic';
-        const prize = Math.round(Number(m.prizePool || m.wager) * 0.90 * 100) / 100;
+        const isMine    = m.createdBy === currentUser?.uid;
+        const alreadyIn = (m.playerUids || []).includes(currentUser?.uid);
+        const isFull    = m.players?.length >= m.maxPlayers;
+        const canJoin   = !isMine && !alreadyIn && !isFull;
+        const size      = m.size || '1v1';
+        const mode      = m.mode || 'Realistic';
+        const prize     = Number(m.prizePool || (Number(m.wager) * m.maxPlayers)) * 0.90;
 
-        const playerAvatars = (m.players || []).map(p =>
-          `<div class="player-avatar" title="${p.displayName}">
-            ${p.photoURL ? `<img src="${p.photoURL}" onerror="this.style.display='none'"/>` : (p.displayName?.charAt(0) || '?')}
-          </div>`
-        ).join('');
+        const playerAvatars = (m.players || []).map(p => {
+          const letter = (p.displayName || '?').charAt(0).toUpperCase();
+          return p.photoURL
+            ? `<div class="player-avatar-thumb" title="${p.displayName}"><img src="${p.photoURL}" onerror="this.style.display='none'"/></div>`
+            : `<div class="player-avatar-thumb" title="${p.displayName}">${letter}</div>`;
+        }).join('');
 
-        // 30-minute timer calculation
         let timerDisplay = '30m left';
-        if (m.expiresAt) {
-          const expMs = m.expiresAt.toDate().getTime() - Date.now();
-          if (expMs > 0) {
-            const mins = Math.floor(expMs / 60000);
+        if (m.expiresAt && m.expiresAt.toDate) {
+          const diffMs = m.expiresAt.toDate().getTime() - Date.now();
+          if (diffMs > 0) {
+            const mins = Math.ceil(diffMs / 60000);
             timerDisplay = `${mins}m left`;
           } else {
             timerDisplay = 'Expired';
@@ -158,7 +163,7 @@
             <div class="match-card__meta">
               <span class="match-meta-item">
                 <i data-lucide="coins"></i>
-                <span class="gold">${formatTokens(m.wager)}</span> wager
+                <span class="gold">${formatTokens(m.wager)}</span> tokens
               </span>
               <span class="match-meta-item">
                 <i data-lucide="trophy"></i>
@@ -265,7 +270,7 @@
       const slider = document.getElementById('wager-slider');
       if (slider) slider.value = num <= 25.00 ? num : 25.00;
       const valDisp = document.getElementById('slider-val-display');
-      if (valDisp) valDisp.textContent = `$${num.toFixed(2)}`;
+      if (valDisp) valDisp.textContent = `${num.toFixed(2)} Tokens`;
       updateCreatePreview();
     }
 
@@ -273,7 +278,7 @@
       const num = parseFloat(val) || 0.50;
       document.getElementById('wager-input').value = num.toFixed(2);
       const valDisp = document.getElementById('slider-val-display');
-      if (valDisp) valDisp.textContent = `$${num.toFixed(2)}`;
+      if (valDisp) valDisp.textContent = `${num.toFixed(2)} Tokens`;
       updateCreatePreview();
     }
 
@@ -282,20 +287,19 @@
       const slider = document.getElementById('wager-slider');
       if (slider) slider.value = num <= 25.00 ? num : 25.00;
       const valDisp = document.getElementById('slider-val-display');
-      if (valDisp) valDisp.textContent = `$${num.toFixed(2)}`;
+      if (valDisp) valDisp.textContent = `${num.toFixed(2)} Tokens`;
       updateCreatePreview();
     }
 
     function updateCreatePreview() {
-      const size = document.getElementById('size-select').value;
-      const mode = document.getElementById('mode-select').value;
+      const size  = document.getElementById('size-select').value;
+      const mode  = document.getElementById('mode-select').value;
       const wager = parseFloat(document.getElementById('wager-input').value) || 0.50;
-      const players = size === '1v1' ? 2 : size === '2v2' ? 4 : 6;
-      const totalPool = wager * players;
-      const winPrize = Math.round(totalPool * 0.90 * 100) / 100;
 
-      const valDisp = document.getElementById('slider-val-display');
-      if (valDisp) valDisp.textContent = `$${wager.toFixed(2)}`;
+      const playersMap = { '1v1': 2, '2v2': 4, '3v3': 6 };
+      const players    = playersMap[size] || 2;
+      const totalPool  = wager * players;
+      const winPrize   = totalPool * 0.90;
 
       document.getElementById('preview-title').textContent = `${size} ${mode}`;
       document.getElementById('preview-players').textContent = `${players} Players (${size})`;
@@ -310,7 +314,7 @@
       const wager = parseFloat(document.getElementById('wager-input').value);
 
       if (isNaN(wager) || wager < 0.50) {
-        showToast('Minimum wager is 0.50 tokens ($0.50)', 'error');
+        showToast('Minimum entry is 0.50 tokens ($0.50)', 'error');
         return;
       }
 
@@ -320,7 +324,7 @@
         return;
       }
       if (Number(currentUserData.tokens || 0) < wager) {
-        showToast(`Not enough tokens to wager (You have ${formatTokens(currentUserData.tokens)})`, 'error');
+        showToast(`Not enough tokens to enter (You have ${formatTokens(currentUserData.tokens)})`, 'error');
         return;
       }
 
@@ -346,7 +350,7 @@
     <div class="page-header" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;">
       <div>
         <h1><i data-lucide="swords" style="color:var(--gold-bright);"></i> Matches</h1>
-        <p>1v1, 2v2, & 3v3 Fortnite Wager Arenas (Realistic, Zone Wars, Box Fights).</p>
+        <p>1v1, 2v2, & 3v3 Fortnite Token Arenas (Realistic, Zone Wars, Box Fights).</p>
       </div>
       <button class="btn btn-primary" onclick="openCreateModal()">
         <i data-lucide="plus"></i> Create Match
@@ -394,7 +398,7 @@
   <div class="modal-overlay" id="create-modal" onclick="if(event.target===this)closeCreateModal()">
     <div class="modal">
       <div class="modal-header">
-        <div class="modal-title"><i data-lucide="swords"></i> Create Wager Match</div>
+        <div class="modal-title"><i data-lucide="swords"></i> Create Token Match</div>
         <button class="modal-close" onclick="closeCreateModal()"><i data-lucide="x"></i></button>
       </div>
       <form class="modal-form" id="create-form" onsubmit="handleCreateMatch(event)">
@@ -418,12 +422,12 @@
           </select>
         </div>
 
-        <!-- Wager Amount with Custom Theme Slider -->
+        <!-- Entry Tokens Amount with Custom Theme Slider -->
         <div class="form-group">
           <div class="slider-wrap">
             <div class="slider-header">
-              <span>Wager per Player</span>
-              <span class="slider-val-badge" id="slider-val-display">$1.00</span>
+              <span>Tokens per Player</span>
+              <span class="slider-val-badge" id="slider-val-display">1.00 Tokens</span>
             </div>
             <input
               type="range"
@@ -451,11 +455,11 @@
               style="font-weight:800;font-size:1rem;"
             />
             <div class="wager-shortcuts" style="margin:0;">
-              <span class="wager-pill" onclick="setWager(0.50)">$0.50</span>
-              <span class="wager-pill" onclick="setWager(1.00)">$1.00</span>
-              <span class="wager-pill" onclick="setWager(2.50)">$2.50</span>
-              <span class="wager-pill" onclick="setWager(5.00)">$5.00</span>
-              <span class="wager-pill" onclick="setWager(10.00)">$10.00</span>
+              <span class="wager-pill" onclick="setWager(0.50)">0.50</span>
+              <span class="wager-pill" onclick="setWager(1.00)">1.00</span>
+              <span class="wager-pill" onclick="setWager(2.50)">2.50</span>
+              <span class="wager-pill" onclick="setWager(5.00)">5.00</span>
+              <span class="wager-pill" onclick="setWager(10.00)">10.00</span>
             </div>
           </div>
         </div>

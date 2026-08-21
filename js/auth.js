@@ -39,32 +39,6 @@ function signOut() {
 }
 
 /**
- * Sign in as a temporary Guest / Tester account with full functionality.
- */
-async function signInAsGuest() {
-  try {
-    const response = await fetch(CLOUD_FUNCTION_URL, {
-      method:  'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify({ isGuest: true }),
-    });
-
-    if (!response.ok) {
-      const err = await response.json().catch(() => ({}));
-      throw new Error(err.error || `Server error ${response.status}`);
-    }
-
-    const { token } = await response.json();
-    const cred = await auth.signInWithCustomToken(token);
-    window.location.href = 'dashboard';
-    return cred.user;
-  } catch (err) {
-    console.error('Guest login error:', err);
-    alert('Guest login error: ' + err.message);
-  }
-}
-
-/**
  * Exchange a Discord OAuth code for a Firebase custom token via Cloud Function,
  * then sign in to Firebase.
  * Returns the Firebase user.

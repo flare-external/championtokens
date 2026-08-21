@@ -572,13 +572,16 @@ async function adminResolveDispute(matchId, winningTeam, adminUid) {
 
 // ── Leaderboard ──────────────────────────────────────────────
 
-/** Fetch top 10 users by token balance */
+/** Fetch top 10 real users by token balance */
 async function getLeaderboard() {
   const snap = await db.collection('users')
     .orderBy('tokens', 'desc')
-    .limit(10)
+    .limit(30)
     .get();
-  return snap.docs.map(d => ({ id: d.id, ...d.data() }));
+  return snap.docs
+    .map(d => ({ id: d.id, ...d.data() }))
+    .filter(u => !u.isGuest && !u.id.startsWith('guest_') && !u.displayName?.toLowerCase().includes('guest'))
+    .slice(0, 10);
 }
 
 // ── Transactions ─────────────────────────────────────────────
@@ -974,7 +977,10 @@ const SHOP_BANNERS = {
 async function getUserLeaderboardRank(uid) {
   try {
     const snap = await db.collection('users').orderBy('tokens', 'desc').get();
-    const rankIndex = snap.docs.findIndex(d => d.id === uid);
+    const realUsers = snap.docs
+      .map(d => ({ id: d.id, ...d.data() }))
+      .filter(u => !u.isGuest && !u.id.startsWith('guest_') && !u.displayName?.toLowerCase().includes('guest'));
+    const rankIndex = realUsers.findIndex(d => d.id === uid);
     if (rankIndex === -1) return { rank: 0, display: 'Unranked', badgeClass: 'rank-badge-normal' };
     const rank = rankIndex + 1;
     return {
