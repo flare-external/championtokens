@@ -743,7 +743,7 @@
 
   <!-- Link Epic Games Modal -->
   <div class="modal-overlay" id="link-epic-modal" onclick="if(event.target===this)closeLinkEpicModal()">
-    <div class="modal" style="max-width:440px;">
+    <div class="modal" style="max-width:460px;">
       <div class="modal-header">
         <div class="modal-title" style="display:flex;align-items:center;gap:10px;">
           <img src="epic_games_logo.webp" alt="Epic" style="width:24px;height:28px;object-fit:contain;"/>
@@ -751,22 +751,37 @@
         </div>
         <button class="modal-close" onclick="closeLinkEpicModal()"><i data-lucide="x"></i></button>
       </div>
-      <form class="modal-form" onsubmit="submitLinkEpicModal(event)">
-        <div style="font-size:0.85rem;color:var(--text-muted);margin-bottom:14px;line-height:1.5;">
-          Enter your official Fortnite / Epic Games display name. Other players will copy this to invite and party up with you in Fortnite matches.
+
+      <div style="padding:4px 0 12px;">
+        <!-- Official Epic Games OAuth Button -->
+        <button type="button" class="btn-epic-brand" onclick="startEpicOAuth()" style="margin-bottom:16px;">
+          <img src="epic_games_logo.webp" alt="Epic" style="width:20px;height:24px;object-fit:contain;"/>
+          <span>Sign In with Epic Games (Official)</span>
+        </button>
+
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;color:var(--text-faint);font-size:0.75rem;font-weight:700;">
+          <div style="flex:1;height:1px;background:rgba(255,255,255,0.08);"></div>
+          <span>OR LINK BY DISPLAY NAME</span>
+          <div style="flex:1;height:1px;background:rgba(255,255,255,0.08);"></div>
         </div>
-        <div class="form-group">
-          <label class="form-label">Epic Games Display Name</label>
-          <input class="form-input" id="modal-epic-ign-input" placeholder="e.g. Ninja, Bugha, Mongraal" maxlength="32" required />
-        </div>
-        <div class="modal-actions" style="margin-top:16px;">
-          <button type="button" class="btn btn-outline" onclick="closeLinkEpicModal()">Cancel</button>
-          <button type="submit" class="btn btn-epic" id="modal-epic-submit-btn" style="flex:1;">
-            <img src="epic_games_logo.webp" alt="" style="width:16px;height:18px;object-fit:contain;"/>
-            Verify & Link Account
-          </button>
-        </div>
-      </form>
+
+        <form class="modal-form" onsubmit="submitLinkEpicModal(event)">
+          <div style="font-size:0.82rem;color:var(--text-muted);margin-bottom:12px;line-height:1.4;">
+            Enter your exact Fortnite / Epic Games display name so opponents can invite you to the match party.
+          </div>
+          <div class="form-group">
+            <label class="form-label">Epic Games Display Name</label>
+            <input class="form-input" id="modal-epic-ign-input" placeholder="e.g. Ninja, Bugha, Mongraal" maxlength="32" required />
+          </div>
+          <div class="modal-actions" style="margin-top:16px;">
+            <button type="button" class="btn btn-outline" onclick="closeLinkEpicModal()">Cancel</button>
+            <button type="submit" class="btn btn-epic" id="modal-epic-submit-btn" style="flex:1;">
+              <i data-lucide="check-circle" style="width:16px;height:16px;"></i>
+              Verify & Link Account
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 

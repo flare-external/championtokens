@@ -548,6 +548,47 @@
           </div>
         </div>
 
+        <!-- Official Fortnite Map Arena Showcase Banner -->
+        <div class="map-arena-card realistic-stage-banner" id="map-arena-card">
+          <div class="map-arena-header" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;">
+            <div style="display:flex;align-items:center;gap:14px;">
+              <div style="width:48px;height:48px;border-radius:var(--radius-md);background:rgba(245,158,11,0.2);border:1px solid var(--gold-bright);display:flex;align-items:center;justify-content:center;color:var(--gold-bright);flex-shrink:0;">
+                <i data-lucide="crosshair" style="width:24px;height:24px;"></i>
+              </div>
+              <div>
+                <div style="font-weight:900;font-size:1.05rem;color:#fff;display:flex;align-items:center;gap:8px;">
+                  <span id="map-banner-title">Realistic 1v1 Arena</span>
+                  <span class="badge" style="background:var(--gold-dim);color:var(--gold-bright);font-size:0.68rem;padding:2px 8px;">Official Map</span>
+                </div>
+                <div style="font-size:0.78rem;color:var(--text-muted);margin-top:2px;">
+                  Fortnite Creative Island Code — Party up with opponent to battle
+                </div>
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span class="map-code-pill" id="map-code-display" style="font-size:1rem;font-weight:900;letter-spacing:0.05em;padding:6px 14px;">
+                <i data-lucide="map-pin" style="width:15px;height:15px;"></i> 9854-1829-8735
+              </span>
+              <button class="btn btn-gold btn-sm" id="map-code-copy-btn" onclick="copyMapCode('9854-1829-8735')" style="padding:6px 14px;font-size:0.8rem;">
+                <i data-lucide="copy"></i> Copy Code
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Expired Notice Banner (Hidden by default) -->
+        <div id="match-expired-banner" style="display:none;background:rgba(239,68,68,0.14);border:1px solid rgba(239,68,68,0.4);border-radius:var(--radius-xl);padding:16px 20px;align-items:center;gap:14px;color:#fca5a5;">
+          <div style="width:40px;height:40px;border-radius:50%;background:rgba(239,68,68,0.2);display:flex;align-items:center;justify-content:center;color:var(--red);flex-shrink:0;">
+            <i data-lucide="clock" style="width:22px;height:22px;"></i>
+          </div>
+          <div>
+            <div style="font-weight:900;font-size:1rem;color:#fff;">Match Expired (30-Minute Limit Elapsed)</div>
+            <div style="font-size:0.8rem;color:#fca5a5;margin-top:2px;">
+              All participants have received a 100% full token refund back to their balance. No winner can be declared.
+            </div>
+          </div>
+        </div>
+
         <!-- Ready Action Area -->
         <div class="ready-action-card" id="ready-action-area" style="display:none;"></div>
 
@@ -845,8 +886,13 @@
       const clockEl = document.getElementById('timer-clock');
       if (!clockEl) return;
 
-      if (match.status !== 'waiting') {
-        clockEl.textContent = 'Active';
+      if (match.status === 'cancelled' || match.isExpired) {
+        clockEl.innerHTML = '<span style="color:var(--red);font-weight:900;">Expired & Refunded</span>';
+        return;
+      }
+
+      if (match.status === 'completed') {
+        clockEl.textContent = 'Completed';
         return;
       }
 
@@ -859,8 +905,11 @@
         const diffMs = expTime - Date.now();
 
         if (diffMs <= 0) {
-          clockEl.textContent = '00:00 (Expired)';
+          clockEl.innerHTML = '<span style="color:var(--red);font-weight:900;">00:00 (Expired — Fully Refunded)</span>';
           clearInterval(timerInterval);
+          if (match.status === 'waiting' || match.status === 'in_progress') {
+            expireMatch(match.id).catch(console.warn);
+          }
           return;
         }
 
@@ -873,6 +922,15 @@
       timerInterval = setInterval(updateClock, 1000);
     }
 
+    function copyMapCode(code) {
+      const c = code || '9854-1829-8735';
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(c).then(() => {
+          showToast(`Fortnite Island Code "${c}" copied! Paste in Fortnite island code bar.`, 'success');
+        });
+      }
+    }
+
     function renderMatchRoom(match) {
       const size = match.size || '1v1';
       const mode = match.mode || 'Realistic';
@@ -883,6 +941,22 @@
       const isFull = players.length >= maxPlayers;
       const isMatchStarted = match.status === 'in_progress' || match.status === 'completed';
       const prize = Math.round(Number(match.prizePool || match.wager) * 0.90 * 100) / 100;
+      const isExpired = match.isExpired || match.status === 'cancelled' || (match.expiresAt && match.expiresAt.toDate().getTime() <= Date.now() && match.status !== 'completed');
+
+      // Map Code & Banner
+      const mapCode = match.mapCode || (mode === 'Realistic' ? '9854-1829-8735' : (mode === 'Zone Wars' ? '7264-2987-0382' : '8234-9102-4419'));
+      const mapCodeEl = document.getElementById('map-code-display');
+      const mapTitleEl = document.getElementById('map-banner-title');
+      const mapCopyBtn = document.getElementById('map-code-copy-btn');
+      if (mapCodeEl) mapCodeEl.innerHTML = `<i data-lucide="map-pin" style="width:15px;height:15px;"></i> ${mapCode}`;
+      if (mapTitleEl) mapTitleEl.textContent = `${mode} Arena (${size})`;
+      if (mapCopyBtn) mapCopyBtn.setAttribute('onclick', `copyMapCode('${mapCode}')`);
+
+      // Expired banner
+      const expiredBanner = document.getElementById('match-expired-banner');
+      if (expiredBanner) {
+        expiredBanner.style.display = isExpired ? 'flex' : 'none';
+      }
 
       // Header Bar
       const titleEl = document.getElementById('room-title');
@@ -898,8 +972,8 @@
       if (modeEl)  modeEl.textContent = mode;
       if (sizeEl)  sizeEl.textContent = size;
       if (statEl) {
-        statEl.className = `badge badge-${match.status}`;
-        statEl.textContent = match.status.replace('_', ' ');
+        statEl.className = `badge badge-${isExpired ? 'cancelled' : match.status}`;
+        statEl.textContent = isExpired ? 'expired / refunded' : match.status.replace('_', ' ');
       }
 
       // Stakes Bar
@@ -1059,21 +1133,21 @@
             <i data-lucide="share-2"></i> Share Link
           </button>`;
 
-        if (!alreadyIn && !isFull && match.status === 'waiting') {
+        if (!isExpired && !alreadyIn && !isFull && match.status === 'waiting') {
           actionsHTML += `
             <button class="btn btn-primary btn-sm" onclick="handleJoinArena()">
               <i data-lucide="log-in"></i> Join Match ($${formatTokens(match.wager)})
             </button>`;
         }
 
-        if (alreadyIn && match.status === 'waiting') {
+        if (!isExpired && alreadyIn && match.status === 'waiting') {
           actionsHTML += `
             <button class="btn btn-danger btn-sm" onclick="handleLeaveOrCancel()">
               <i data-lucide="x-circle"></i> ${isHost ? 'Cancel & Refund' : 'Leave & Refund'} ($${formatTokens(match.wager)})
             </button>`;
         }
 
-        if (isHost && isMatchStarted && match.status !== 'completed') {
+        if (!isExpired && isHost && isMatchStarted && match.status !== 'completed') {
           actionsHTML += `
             <button class="btn btn-gold btn-sm" onclick="openDeclareModal()">
               <i data-lucide="trophy"></i> Declare Winner

@@ -186,8 +186,12 @@
           }
         }
 
+        const isExpired = timerDisplay === 'Expired';
+        const isRealistic = (m.mode || 'Realistic') === 'Realistic';
+        const mapCode = m.mapCode || (isRealistic ? '9854-1829-8735' : (m.mode === 'Zone Wars' ? '7264-2987-0382' : '8234-9102-4419'));
+
         return `
-        <div class="match-card">
+        <div class="match-card ${isRealistic ? 'match-card-realistic' : ''}">
           <div class="match-card__header">
             <div>
               <div class="match-card__title">${m.title}</div>
@@ -200,8 +204,8 @@
           </div>
           <div class="match-card__meta">
             <span class="match-meta-item"><i data-lucide="coins"></i><span class="gold">${formatTokens(m.wager)}</span> tokens</span>
-            <span class="match-meta-item"><i data-lucide="users"></i>${m.players?.length || 1}/${m.maxPlayers}</span>
-            <span class="badge badge-${m.status}" style="margin-left:auto;">${m.status.replace('_',' ')}</span>
+            <span class="match-meta-item"><i data-lucide="map-pin"></i>Map: <strong style="color:var(--gold-bright);">${mapCode}</strong></span>
+            <span class="badge badge-${isExpired ? 'cancelled' : m.status}" style="margin-left:auto;">${isExpired ? 'expired / refunded' : m.status.replace('_',' ')}</span>
           </div>
           <div style="display:flex;gap:8px;align-items:center;justify-content:space-between;flex-wrap:wrap;">
             <div class="match-code-badge"><i data-lucide="hash"></i>${m.code}</div>
@@ -209,14 +213,16 @@
               <a href="match?id=${m.id}" target="_blank" class="btn btn-sm btn-outline" title="Open match room">
                 <i data-lucide="external-link"></i> Arena
               </a>
-              ${m.createdBy === currentUser?.uid && m.status !== 'completed' ? `
+              ${!isExpired && m.createdBy === currentUser?.uid && m.status !== 'completed' ? `
                 <button class="btn btn-sm btn-primary" onclick="openDeclareModal('${m.id}', '${m.title}')">
                   <i data-lucide="trophy"></i> Declare Winner
                 </button>` : ''}
             </div>
           </div>
           <div style="font-size:0.75rem;color:var(--text-faint);display:flex;justify-content:space-between;border-top:1px solid rgba(255,255,255,0.05);padding-top:8px;margin-top:2px;">
-            <span style="color:var(--gold-light);font-weight:700;"><i data-lucide="clock" style="width:12px;height:12px;display:inline;"></i> ⏳ ${timerDisplay}</span>
+            <span style="color:${isExpired ? 'var(--red)' : 'var(--gold-light)'};font-weight:700;">
+              <i data-lucide="clock" style="width:12px;height:12px;display:inline;"></i> ⏳ ${isExpired ? 'Expired (Full Refund)' : timerDisplay}
+            </span>
             <span style="font-family:monospace;opacity:0.7;">ID: ${m.id.substring(0,8)}</span>
           </div>
         </div>`;

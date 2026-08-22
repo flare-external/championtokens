@@ -122,12 +122,16 @@ async function createMatch(hostUser, matchData) {
     ready:        false,
   };
 
+  const defaultMapCode = mode === 'Realistic' ? '9854-1829-8735' : (mode === 'Zone Wars' ? '7264-2987-0382' : '8234-9102-4419');
+  const mapCode = matchData.mapCode || defaultMapCode;
+
   const matchRef = await db.collection('matches').add({
     title,
     size,
     mode,
     wager,
     maxPlayers,
+    mapCode,
     players:    [hostPlayer],
     playerUids: [hostUser.uid],
     status:     'waiting', // waiting | in_progress | completed | cancelled
@@ -311,7 +315,7 @@ async function leaveOrCancelMatch(matchId, uid) {
 }
 
 /**
- * Auto-expire match after 30 minutes and refund all players.
+ * Auto-expire match after 30 minutes and issue 100% full refund to all players.
  */
 async function expireMatch(matchId) {
   const matchRef = db.collection('matches').doc(matchId);
@@ -319,18 +323,25 @@ async function expireMatch(matchId) {
   if (!matchSnap.exists) return;
 
   const match = matchSnap.data();
-  if (match.status !== 'waiting') return;
+  if (match.status === 'completed' || match.status === 'cancelled') return;
 
   const wager = Number(match.wager);
   const refundPromises = (match.players || []).map(p =>
-    updateTokens(p.uid, wager, 'refund', `⏱️ Match expired (30m limit) — "${match.title}" refund`)
+    updateTokens(p.uid, wager, 'refund', `⏱️ Match expired (30m limit) — "${match.title}" full refund`)
   );
   await Promise.all(refundPromises);
 
   await matchRef.update({
     status:      'cancelled',
+    isExpired:   true,
     completedAt: firebase.firestore.FieldValue.serverTimestamp(),
   });
+
+  await matchRef.collection('messages').add({
+    isSystem:  true,
+    text:      '⏱️ MATCH EXPIRED: The 30-minute match timer has elapsed. All participants have received a 100% full token refund.',
+    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+  }).catch(console.warn);
 }
 
 /**
@@ -383,6 +394,7 @@ function subscribeUserMatches(uid, callback) {
 /**
  * Declare a winner for a match. Host only.
  * Awards 90% of prize pool to winner (10% fee).
+ * Blocked if match has expired past the 30-minute limit.
  */
 async function declareWinner(matchId, winnerUid, hostUid) {
   const matchRef  = db.collection('matches').doc(matchId);
@@ -392,6 +404,13 @@ async function declareWinner(matchId, winnerUid, hostUid) {
   const match = matchSnap.data();
   if (match.createdBy !== hostUid) throw new Error('Only the host can declare a winner');
   if (match.status === 'completed')  throw new Error('Match is already completed');
+
+  // Check 30-minute expiration
+  const expTime = match.expiresAt ? match.expiresAt.toDate().getTime() : 0;
+  if (expTime > 0 && expTime <= Date.now()) {
+    await expireMatch(matchId);
+    throw new Error('This match has expired (30-minute limit) and was 100% fully refunded. No winner can be declared.');
+  }
 
   const winner = match.players.find(p => p.uid === winnerUid);
   if (!winner) throw new Error('Player not found in match');
@@ -439,6 +458,13 @@ async function submitMatchReport(matchId, reporterUid, reportedWinnerTeam) {
   const match = matchSnap.data();
   if (match.status === 'completed') {
     throw new Error('Match is already completed');
+  }
+
+  // Check 30-minute expiration
+  const expTime = match.expiresAt ? match.expiresAt.toDate().getTime() : 0;
+  if (expTime > 0 && expTime <= Date.now()) {
+    await expireMatch(matchId);
+    throw new Error('This match has expired (30-minute limit) and was 100% fully refunded.');
   }
 
   const players = match.players || [];

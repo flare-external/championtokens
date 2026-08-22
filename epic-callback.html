@@ -78,14 +78,19 @@
 
         try {
           const redirectUri = `${window.location.origin}/epic-callback`;
-          const res = await fetch('/.netlify/functions/epicAuth', {
+          let res = await fetch('/.netlify/functions/epicAuth', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              code,
-              redirectUri,
-            }),
-          });
+            body: JSON.stringify({ code, redirectUri }),
+          }).catch(() => null);
+
+          if (!res || !res.ok) {
+            res = await fetch('/api/epicAuth', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ code, redirectUri }),
+            });
+          }
 
           const data = await res.json();
           if (!res.ok) throw new Error(data.error || 'Failed to exchange Epic token');

@@ -18,10 +18,24 @@ function signInWithDiscord() {
 }
 
 /**
- * Open the in-app Epic Games account linking flow.
+ * Open the official Epic Games account linking OAuth flow.
  */
 function signInWithEpic() {
-  window.location.href = 'epic-login';
+  startEpicOAuth();
+}
+
+/**
+ * Initiate official published Epic Games OAuth 2.0 flow.
+ */
+function startEpicOAuth() {
+  const clientId = 'xyza78916i52N8UrLv1m41xvkgeBXfUh';
+  let origin = window.location.origin;
+  if (!origin.includes('localhost') && !origin.includes('127.0.0.1')) {
+    origin = origin.replace(/^http:/, 'https:');
+  }
+  const redirectUri = encodeURIComponent(`${origin}/epic-callback`);
+  const epicAuthUrl = `https://www.epicgames.com/id/authorize?client_id=${clientId}&response_type=code&scope=basic_profile&redirect_uri=${redirectUri}`;
+  window.location.href = epicAuthUrl;
 }
 
 /** The OAuth redirect URI — must match what's set in Discord Developer Portal */
