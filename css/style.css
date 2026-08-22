@@ -570,27 +570,26 @@ input[type="range"].ct-slider::-moz-range-thumb {
   transform: translateY(-2px);
 }
 .btn-epic-brand {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
-  width: 100%;
-  padding: 13px 20px;
+  padding: 12px 24px;
   background: linear-gradient(135deg, #0078f2 0%, #0056b3 100%);
   color: #fff;
   border: none;
   border-radius: var(--radius-md);
   font-weight: 800;
-  font-size: 0.95rem;
-  box-shadow: 0 4px 20px rgba(0, 120, 242, 0.4);
+  font-size: 0.92rem;
+  box-shadow: 0 4px 18px rgba(0, 120, 242, 0.35);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: background 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
   text-decoration: none;
 }
 .btn-epic-brand:hover {
   background: linear-gradient(135deg, #1a8aff 0%, #0069d9 100%);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 28px rgba(0, 120, 242, 0.6);
+  box-shadow: 0 6px 24px rgba(0, 120, 242, 0.55);
+  opacity: 0.96;
 }
 .epic-logo { width: 22px; height: 22px; flex-shrink: 0; }
 
@@ -1795,25 +1794,26 @@ input[type="range"].ct-slider::-moz-range-thumb {
   align-items: center;
   gap: 12px;
 }
-  100% { background-position: 300% 50%; }
-}
 
 /* ── Epic Games Top Showcase Card ─────────────────────────── */
 .epic-top-showcase-card {
+  position: relative;
   background: linear-gradient(135deg, rgba(14, 20, 42, 0.95) 0%, rgba(8, 12, 26, 0.98) 100%);
   border: 1px solid rgba(0, 120, 242, 0.35);
   border-radius: var(--radius-xl);
   padding: 22px 26px;
-  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.55), 0 0 24px rgba(0, 120, 242, 0.1);
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.55), 0 0 24px rgba(0, 120, 242, 0.08);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  transform: none !important;
 }
 .epic-top-showcase-card:hover {
-  border-color: rgba(0, 120, 242, 0.55);
-  box-shadow: 0 16px 44px rgba(0, 0, 0, 0.65), 0 0 32px rgba(0, 120, 242, 0.18);
+  border-color: rgba(0, 120, 242, 0.6);
+  box-shadow: 0 16px 44px rgba(0, 0, 0, 0.65), 0 0 32px rgba(0, 120, 242, 0.16);
+  transform: none !important;
 }
 .epic-badge-icon-box {
-  width: 54px;
-  height: 54px;
+  width: 52px;
+  height: 52px;
   border-radius: var(--radius-lg);
   background: rgba(0, 120, 242, 0.15);
   border: 1px solid rgba(0, 120, 242, 0.4);
@@ -1822,6 +1822,7 @@ input[type="range"].ct-slider::-moz-range-thumb {
   justify-content: center;
   flex-shrink: 0;
   box-shadow: 0 4px 16px rgba(0, 120, 242, 0.2);
+  transition: border-color 0.2s ease, transform 0.2s ease;
 }
 .epic-badge-unlinked {
   background: rgba(255, 255, 255, 0.04);
