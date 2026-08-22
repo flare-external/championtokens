@@ -19,38 +19,38 @@ service cloud.firestore {
 
     // ── Users ──────────────────────────────────────────────────
     match /users/{uid} {
-      allow read:   if isAuth();
+      allow read:   if true;
       allow create: if isAuth();
-      allow update: if isAuth() && (isOwner(uid) || isAdmin());
-      allow delete: if false;
+      allow update: if isAuth();
+      allow delete: if isAdmin();
     }
 
     // ── Transactions ───────────────────────────────────────────
     match /transactions/{txId} {
       allow read:   if isAuth();
       allow create: if isAuth();
-      allow update: if false;
-      allow delete: if false;
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
     }
 
     // ── Matches & Lobby Chat ───────────────────────────────────
     match /matches/{matchId} {
-      allow read:   if isAuth();
+      allow read:   if true;
       allow create: if isAuth();
       allow update: if isAuth();
-      allow delete: if false;
+      allow delete: if isAdmin();
 
       match /messages/{msgId} {
-        allow read:   if isAuth();
+        allow read:   if true;
         allow create: if isAuth();
-        allow update: if false;
-        allow delete: if false;
+        allow update: if isAuth();
+        allow delete: if isAdmin();
       }
     }
 
     // ── Teams (2v2 & 3v3 Squads) ───────────────────────────────
     match /teams/{teamId} {
-      allow read:   if isAuth();
+      allow read:   if true;
       allow create: if isAuth();
       allow update: if isAuth();
       allow delete: if isAuth();
@@ -61,7 +61,7 @@ service cloud.firestore {
       allow read:   if isAuth();
       allow create: if isAuth();
       allow update: if isAuth();
-      allow delete: if false;
+      allow delete: if isAdmin();
     }
   }
 }

@@ -85,33 +85,42 @@ exports.discordAuth = onRequest(
       const snap    = await userRef.get();
 
       if (!snap.exists) {
-        // First login — create doc with welcome bonus
+        // First login — create doc with starter bonus
         await userRef.set({
           uid,
           displayName,
-          email:          discordUser.email || '',
+          email:           discordUser.email || '',
           photoURL,
-          discordId:      discordUser.id,
-          discordUsername:discordUser.username,
-          tokens:         500,
-          totalEarned:    500,
-          totalSpent:     0,
-          matchesPlayed:  0,
-          matchesWon:     0,
-          createdAt:      admin.firestore.FieldValue.serverTimestamp(),
-          lastDailyClaim: null,
+          discordId:       discordUser.id,
+          discordUsername: discordUser.username,
+          tokens:          10.00,
+          totalEarned:     10.00,
+          totalSpent:      0.00,
+          matchesPlayed:   0,
+          matchesWon:      0,
+          createdAt:       admin.firestore.FieldValue.serverTimestamp(),
+          lastLoginAt:     admin.firestore.FieldValue.serverTimestamp(),
         });
 
         await db.collection('transactions').add({
           userId:      uid,
-          amount:      500,
+          amount:      10.00,
           type:        'bonus',
-          description: '🎉 Welcome bonus',
+          description: '🎉 Welcome bonus (10.00 Starter Tokens)',
           timestamp:   admin.firestore.FieldValue.serverTimestamp(),
         });
       } else {
-        // Returning user — refresh name & avatar
-        await userRef.update({ displayName, photoURL });
+        // Returning user — refresh name, avatar, username, lastLoginAt
+        const updates = {
+          displayName,
+          photoURL,
+          discordUsername: discordUser.username,
+          lastLoginAt:     admin.firestore.FieldValue.serverTimestamp(),
+        };
+        if (discordUser.email) {
+          updates.email = discordUser.email;
+        }
+        await userRef.update(updates);
       }
 
       // ── Step 5: Create Firebase custom token ──────────────

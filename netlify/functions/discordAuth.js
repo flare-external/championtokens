@@ -123,7 +123,6 @@ exports.handler = async (event) => {
     const snap    = await userRef.get();
 
     if (!snap.exists) {
-      // 10.00 Tokens Welcome Bonus (1 Token = $1.00 USD)
       await userRef.set({
         uid,
         displayName,
@@ -137,36 +136,27 @@ exports.handler = async (event) => {
         matchesPlayed:   0,
         matchesWon:      0,
         createdAt:       admin.firestore.FieldValue.serverTimestamp(),
+        lastLoginAt:     admin.firestore.FieldValue.serverTimestamp(),
       });
 
       await db.collection('transactions').add({
         userId:      uid,
         amount:      10.00,
         type:        'bonus',
-        description: '🎉 Welcome bonus (10.00 Tokens = $10.00)',
+        description: '🎉 Welcome bonus (10.00 Starter Tokens)',
         timestamp:   admin.firestore.FieldValue.serverTimestamp(),
       });
     } else {
-      const data = snap.data() || {};
-      const updates = { displayName, photoURL };
-
-      // Reset test accounts with old legacy testing balance (> 10.00) down to clean 10.00
-      if (Number(data.tokens || 0) > 10.00 || data.lastDailyClaim) {
-        updates.tokens = 10.00;
-        updates.totalEarned = 10.00;
-        updates.totalSpent = 0.00;
-        updates.lastDailyClaim = admin.firestore.FieldValue.delete();
-
-        // Clear legacy transactions and add clean initial balance
-        await db.collection('transactions').add({
-          userId:      uid,
-          amount:      10.00,
-          type:        'bonus',
-          description: '🔄 Balance reset to 10.00 Tokens ($10.00)',
-          timestamp:   admin.firestore.FieldValue.serverTimestamp(),
-        });
+      // Returning user — preserve tokens, matches, earnings. Only refresh profile display fields.
+      const updates = {
+        displayName,
+        photoURL,
+        discordUsername: discordUser.username,
+        lastLoginAt:     admin.firestore.FieldValue.serverTimestamp(),
+      };
+      if (discordUser.email) {
+        updates.email = discordUser.email;
       }
-
       await userRef.update(updates);
     }
 
