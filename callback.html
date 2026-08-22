@@ -11,6 +11,12 @@
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
+    .page-bg {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
     .callback-wrap {
       min-height: 100vh;
       display: flex;
@@ -20,47 +26,57 @@
       gap: 20px;
       text-align: center;
       padding: 20px;
+      position: relative;
+      z-index: 999;
     }
     .callback-brand {
       display: flex;
       align-items: center;
       gap: 10px;
-      font-size: 1.3rem;
+      font-size: 1.4rem;
       font-weight: 800;
       margin-bottom: 12px;
+      color: #ffffff;
     }
-    .callback-brand i { width: 26px; height: 26px; color: var(--accent); }
-    .callback-brand .brand-accent { color: var(--accent); }
+    .callback-brand i { width: 26px; height: 26px; color: var(--gold-bright, #f59e0b); }
+    .callback-brand .brand-accent { color: var(--gold-bright, #f59e0b); }
 
     .callback-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-bright);
-      border-radius: var(--radius-xl);
-      padding: 40px 48px;
-      max-width: 420px;
+      background: #0d1222;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 20px;
+      padding: 40px 36px;
+      max-width: 480px;
       width: 100%;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 16px;
+      gap: 18px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.85);
+      position: relative;
+      z-index: 1000;
     }
     .callback-spinner {
       width: 48px; height: 48px;
-      border: 3px solid var(--border-bright);
+      border: 3px solid rgba(255, 255, 255, 0.1);
       border-top-color: #5865F2;
       border-radius: 50%;
       animation: spin 0.8s linear infinite;
     }
-    .callback-title { font-size: 1.1rem; font-weight: 700; }
-    .callback-desc  { font-size: 0.875rem; color: var(--text-muted); }
-    .callback-error {
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      gap: 12px;
+    .callback-title { font-size: 1.2rem; font-weight: 800; color: #ffffff; }
+    .callback-desc  { font-size: 0.9rem; color: #94a3b8; }
+    .error-msg-box {
+      font-size: 0.85rem;
+      color: #fca5a5;
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.35);
+      padding: 12px 16px;
+      border-radius: 12px;
+      word-break: break-word;
+      width: 100%;
+      text-align: center;
+      font-family: monospace;
     }
-    .callback-error i { width: 40px; height: 40px; color: var(--red); }
-    .callback-error .error-msg { font-size: 0.875rem; color: var(--text-muted); }
   </style>
 </head>
 <body>
@@ -74,18 +90,18 @@
 
     <div class="callback-card">
       <!-- Loading state -->
-      <div id="loading-state">
+      <div id="loading-state" style="display:flex;flex-direction:column;align-items:center;gap:14px;width:100%;">
         <div class="callback-spinner"></div>
         <div class="callback-title">Signing you in…</div>
         <div class="callback-desc">Verifying your Discord account, hang tight.</div>
       </div>
 
       <!-- Error state -->
-      <div id="error-state" style="display:none;flex-direction:column;align-items:center;gap:12px;">
-        <i data-lucide="x-circle" style="width:40px;height:40px;color:var(--red);"></i>
-        <div class="callback-title">Sign-in failed</div>
-        <div class="callback-desc" id="error-msg">Something went wrong. Please try again.</div>
-        <a href="index.html" class="btn btn-outline" style="margin-top:8px;">
+      <div id="error-state" style="display:none;flex-direction:column;align-items:center;gap:14px;width:100%;">
+        <i data-lucide="alert-triangle" style="width:44px;height:44px;color:#ef4444;"></i>
+        <div class="callback-title">Sign-in Notice</div>
+        <div class="error-msg-box" id="error-msg">Something went wrong. Please try again.</div>
+        <a href="index.html" class="btn btn-primary" style="margin-top:10px;width:100%;justify-content:center;">
           <i data-lucide="arrow-left"></i> Back to Home
         </a>
       </div>
