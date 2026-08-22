@@ -532,7 +532,30 @@
     <!-- Dedicated Top Showcase: Epic Games Account (Excluded & Prominent) -->
     <div class="epic-top-showcase-card" id="epic-account-top-card" style="margin-bottom:24px;">
       <div id="epic-top-showcase-content">
-        <div class="spinner" style="margin:8px auto;"></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;">
+          <div style="display:flex;align-items:center;gap:16px;">
+            <div class="epic-badge-icon-box epic-badge-unlinked">
+              <img src="epic_games_logo.webp" alt="Epic Games" style="width:28px;height:34px;object-fit:contain;"/>
+            </div>
+            <div>
+              <div style="font-size:0.75rem;color:var(--text-muted);text-transform:uppercase;font-weight:800;letter-spacing:0.05em;">
+                Fortnite Account
+              </div>
+              <div style="font-size:1.2rem;font-weight:900;color:#fff;margin-top:2px;">
+                Connect Epic Games Account
+              </div>
+              <div style="font-size:0.8rem;color:var(--text-muted);margin-top:2px;">
+                Link your Fortnite IGN to participate in token matches and party up with opponents.
+              </div>
+            </div>
+          </div>
+          <div>
+            <button class="btn-epic-brand" onclick="startEpicOAuth()" style="width:auto;padding:11px 22px;font-size:0.92rem;">
+              <img src="epic_games_logo.webp" alt="Epic" style="width:18px;height:22px;object-fit:contain;"/>
+              <span>Link Account</span>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
 
