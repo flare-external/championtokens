@@ -931,8 +931,11 @@
 
           if (snap.exists) {
             currentUserData = snap.data();
+            if (isViewingSelf && !currentUserData.epicUsername && pendingEpic) {
+              currentUserData.epicUsername = pendingEpic;
+            }
             renderProfile(currentUserData);
-            renderEpicSection(currentUserData);
+            renderEpicTopSection(currentUserData);
             try {
               await loadUserTeam(targetUid);
             } catch (e) {
@@ -941,14 +944,14 @@
             }
           } else {
             showToast('User profile not found', 'error');
-            renderEpicSection({});
+            renderEpicTopSection({});
             renderTeamSection(null);
           }
         }, (err) => {
           console.warn('User profile snapshot error:', err);
           const loadingEl = document.getElementById('page-loading');
           if (loadingEl) loadingEl.classList.add('hidden');
-          renderEpicSection({});
+          renderEpicTopSection({});
           renderTeamSection(null);
         });
 
@@ -1558,7 +1561,9 @@
       if (window.lucide) lucide.createIcons();
     }
 
-    const renderEpicSection = renderEpicTopSection;
+    function renderEpicSection(data) {
+      return renderEpicTopSection(data);
+    }
 
     function copyEpicTag(tag) {
       if (!tag) return;
