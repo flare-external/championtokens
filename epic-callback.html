@@ -3,162 +3,119 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Linking Epic Games — Champion Tokens</title>
+  <title>Epic Games — Champion Tokens</title>
   <link rel="icon" type="image/png" href="champion_tokens_CT_v4.png"/>
   <link rel="shortcut icon" type="image/png" href="champion_tokens_CT_v4.png"/>
   <link rel="apple-touch-icon" href="champion_tokens_CT_v4.png"/>
   <link rel="stylesheet" href="css/style.css"/>
-  <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
+    * { box-sizing: border-box; }
     body {
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      background: #060913;
-      color: #fff;
-      font-family: 'Inter', sans-serif;
-      padding: 24px;
+      background: #080808;
+      color: #ffffff;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      padding: 20px;
       margin: 0;
-      position: relative;
-      overflow: hidden;
     }
-    .ambient-glow {
-      position: absolute;
-      width: 500px;
-      height: 500px;
-      background: radial-gradient(circle, rgba(0, 120, 242, 0.18) 0%, rgba(0, 0, 0, 0) 70%);
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      pointer-events: none;
-      z-index: 0;
-    }
-    .callback-box {
-      position: relative;
-      z-index: 1;
-      max-width: 460px;
+    .epic-auth-card {
       width: 100%;
+      max-width: 400px;
+      background: #121212;
+      border: 1px solid #242424;
+      border-radius: 12px;
       padding: 40px 32px;
-      background: linear-gradient(135deg, rgba(14, 20, 42, 0.95) 0%, rgba(8, 12, 26, 0.98) 100%);
-      border: 1px solid rgba(0, 120, 242, 0.4);
-      border-radius: 20px;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 35px rgba(0, 120, 242, 0.15);
       text-align: center;
-      backdrop-filter: blur(24px);
-    }
-    .epic-logo-wrapper {
-      width: 76px;
-      height: 76px;
-      border-radius: 18px;
-      background: rgba(0, 120, 242, 0.15);
-      border: 1px solid rgba(0, 120, 242, 0.5);
-      box-shadow: 0 0 30px rgba(0, 120, 242, 0.35);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 20px;
-      animation: pulseGlow 2.5s ease-in-out infinite;
-    }
-    @keyframes pulseGlow {
-      0%, 100% { box-shadow: 0 0 25px rgba(0, 120, 242, 0.3); transform: scale(1); }
-      50% { box-shadow: 0 0 40px rgba(0, 120, 242, 0.6); transform: scale(1.04); }
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.9);
     }
     .epic-logo-img {
-      width: 40px;
-      height: 48px;
+      width: 44px;
+      height: 52px;
       object-fit: contain;
+      margin: 0 auto 24px;
+      display: block;
     }
-    .status-badge {
+    .epic-auth-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #ffffff;
+      margin: 0 0 8px;
+      letter-spacing: -0.01em;
+    }
+    .epic-auth-desc {
+      font-size: 0.875rem;
+      color: #888888;
+      margin: 0 0 24px;
+      line-height: 1.45;
+    }
+    .epic-spinner {
+      width: 32px;
+      height: 32px;
+      border: 3px solid rgba(255, 255, 255, 0.15);
+      border-top-color: #ffffff;
+      border-radius: 50%;
+      animation: epicSpin 0.75s linear infinite;
+      margin: 0 auto 8px;
+    }
+    @keyframes epicSpin {
+      to { transform: rotate(360deg); }
+    }
+    .verified-pill {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #10b981;
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      padding: 6px 14px;
+      border-radius: 20px;
+      margin: 0 auto 16px;
+      width: fit-content;
+    }
+    .btn-epic-dark {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      font-weight: 800;
-      letter-spacing: 0.08em;
-      color: #38bdf8;
-      background: rgba(56, 189, 248, 0.12);
-      border: 1px solid rgba(56, 189, 248, 0.3);
-      padding: 4px 12px;
-      border-radius: 20px;
-      margin-bottom: 12px;
-    }
-    .progress-bar-container {
+      justify-content: center;
       width: 100%;
-      height: 6px;
-      background: rgba(255, 255, 255, 0.08);
-      border-radius: 10px;
-      margin: 24px 0 16px;
-      overflow: hidden;
-      position: relative;
-    }
-    .progress-bar-fill {
-      height: 100%;
-      width: 30%;
-      background: linear-gradient(90deg, #0078f2 0%, #38bdf8 100%);
-      border-radius: 10px;
-      transition: width 0.4s ease;
-      box-shadow: 0 0 12px rgba(56, 189, 248, 0.6);
-    }
-    .steps-row {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.72rem;
-      color: var(--text-muted);
-      margin-top: 10px;
-    }
-    .step-item {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-    .step-item.active {
-      color: #38bdf8;
+      padding: 11px 20px;
+      background: #ffffff;
+      color: #000000;
+      border: none;
+      border-radius: 6px;
       font-weight: 700;
+      font-size: 0.875rem;
+      text-decoration: none;
+      cursor: pointer;
+      margin-top: 16px;
+      transition: background 0.15s ease;
     }
-    .step-item.done {
-      color: #10b981;
-      font-weight: 700;
+    .btn-epic-dark:hover {
+      background: #e0e0e0;
     }
   </style>
 </head>
 <body>
-  <div class="ambient-glow"></div>
+  <div class="epic-auth-card">
+    <img src="epic_games_logo.webp" alt="Epic Games" class="epic-logo-img" />
 
-  <div class="callback-box">
-    <div class="epic-logo-wrapper">
-      <img src="epic_games_logo.webp" alt="Epic Games" class="epic-logo-img" />
+    <div class="verified-pill" id="verified-badge">
+      <span>✓ Verified</span>
     </div>
 
-    <div class="status-badge" id="status-badge">
-      <span>Fortnite Integration</span>
-    </div>
+    <h1 class="epic-auth-title" id="status-title">Connecting Epic Games…</h1>
+    <p class="epic-auth-desc" id="status-desc">Verifying your Epic Games authorization.</p>
 
-    <h2 id="status-title" style="font-size:1.35rem;font-weight:900;margin:0 0 8px;color:#fff;">
-      Connecting Epic Games…
-    </h2>
-    <p id="status-desc" style="font-size:0.875rem;color:var(--text-muted);margin:0 0 16px;line-height:1.5;">
-      Verifying authorization with Epic Games Account Services.
-    </p>
+    <div class="epic-spinner" id="loading-spinner"></div>
 
-    <!-- Visual Progress Bar -->
-    <div class="progress-bar-container">
-      <div class="progress-bar-fill" id="progress-bar"></div>
-    </div>
-
-    <div class="steps-row">
-      <span class="step-item active" id="step-1">1. Verify</span>
-      <span class="step-item" id="step-2">2. Fetch IGN</span>
-      <span class="step-item" id="step-3">3. Link Profile</span>
-    </div>
-
-    <div id="error-actions" style="display:none;margin-top:24px;">
-      <a href="profile" class="btn btn-outline btn-full" style="justify-content:center;">
-        Return to Profile
-      </a>
+    <div id="error-box" style="display:none;">
+      <a href="profile" class="btn-epic-dark">Return to Profile</a>
     </div>
   </div>
 
@@ -168,57 +125,40 @@
   <script src="js/firebase-config.js"></script>
 
   <script>
-    function updateProgress(percent, stepNum, title, desc) {
-      const bar = document.getElementById('progress-bar');
+    function setStatus(title, desc) {
       const t = document.getElementById('status-title');
       const d = document.getElementById('status-desc');
-      
-      if (bar) bar.style.width = `${percent}%`;
-      if (t && title) t.textContent = title;
-      if (d && desc) d.textContent = desc;
-
-      for (let i = 1; i <= 3; i++) {
-        const s = document.getElementById(`step-${i}`);
-        if (!s) continue;
-        s.className = 'step-item';
-        if (i < stepNum) s.classList.add('done');
-        else if (i === stepNum) s.classList.add('active');
-      }
-    }
-
-    function showError(title, desc) {
-      const t = document.getElementById('status-title');
-      const d = document.getElementById('status-desc');
-      const actions = document.getElementById('error-actions');
-      const badge = document.getElementById('status-badge');
-      const bar = document.getElementById('progress-bar');
-
       if (t) t.textContent = title;
       if (d) d.textContent = desc;
-      if (actions) actions.style.display = 'block';
-      if (badge) {
-        badge.textContent = 'Linking Error';
-        badge.style.color = '#ef4444';
-        badge.style.borderColor = 'rgba(239, 68, 68, 0.4)';
-        badge.style.background = 'rgba(239, 68, 68, 0.12)';
-      }
-      if (bar) bar.style.background = '#ef4444';
+    }
+
+    function showVerifiedState(username) {
+      const spinner = document.getElementById('loading-spinner');
+      const badge = document.getElementById('verified-badge');
+      if (spinner) spinner.style.display = 'none';
+      if (badge) badge.style.display = 'inline-flex';
+      setStatus('Account Verified & Linked', `Connected as ${username}. Redirecting to profile…`);
+    }
+
+    function showErrorState(title, desc) {
+      const spinner = document.getElementById('loading-spinner');
+      const errBox = document.getElementById('error-box');
+      if (spinner) spinner.style.display = 'none';
+      if (errBox) errBox.style.display = 'block';
+      setStatus(title, desc);
     }
 
     function getAuthenticatedUser() {
       if (auth.currentUser) return Promise.resolve(auth.currentUser);
       return new Promise((resolve) => {
-        let settled = false;
+        let done = false;
         const timer = setTimeout(() => {
-          if (!settled) {
-            settled = true;
-            resolve(auth.currentUser);
-          }
-        }, 4000);
+          if (!done) { done = true; resolve(auth.currentUser); }
+        }, 3500);
 
         const unsub = auth.onAuthStateChanged((user) => {
-          if (user && !settled) {
-            settled = true;
+          if (user && !done) {
+            done = true;
             clearTimeout(timer);
             unsub();
             resolve(user);
@@ -227,31 +167,42 @@
       });
     }
 
-    async function processEpicCallback() {
+    async function handleEpicCallback() {
       const urlParams = new URLSearchParams(window.location.search);
       const code = urlParams.get('code');
       const error = urlParams.get('error');
       const errorDesc = urlParams.get('error_description');
+      const stateParam = urlParams.get('state');
+
+      let stateUid = '';
+      if (stateParam) {
+        try {
+          const parsed = JSON.parse(atob(decodeURIComponent(stateParam)));
+          if (parsed && parsed.uid) stateUid = parsed.uid;
+        } catch (e) {}
+      }
 
       if (error) {
-        showError('Epic Sign-in Cancelled', errorDesc || error);
+        showErrorState('Epic Sign-in Cancelled', errorDesc || error);
         return;
       }
 
       if (!code) {
-        showError('No Code Received', 'No authorization code received from Epic Games.');
+        showErrorState('No Code Received', 'No authorization code was returned from Epic Games.');
         return;
       }
 
-      updateProgress(30, 1, 'Authenticating Session…', 'Connecting to your Champion Tokens account…');
+      setStatus('Authenticating…', 'Connecting to your account session…');
 
-      const user = await getAuthenticatedUser();
-      if (!user) {
-        showError('Session Expired', 'Please log in to Champion Tokens on this browser first.');
+      let user = await getAuthenticatedUser();
+      const targetUid = user?.uid || stateUid;
+
+      if (!targetUid) {
+        showErrorState('Session Expired', 'Please log in to Champion Tokens first before linking Epic Games.');
         return;
       }
 
-      updateProgress(60, 2, 'Verifying Epic Account…', 'Exchanging authorization code with Epic Games…');
+      setStatus('Verifying Epic Account…', 'Exchanging authorization code with Epic Games…');
 
       let epicUsername = '';
       let epicAccountId = '';
@@ -263,7 +214,7 @@
 
       try {
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 7000);
+        const timeoutId = setTimeout(() => controller.abort(), 6000);
 
         let res = await fetch('/.netlify/functions/epicAuth', {
           method: 'POST',
@@ -276,7 +227,7 @@
 
         if (!res || !res.ok) {
           const controller2 = new AbortController();
-          const timeoutId2 = setTimeout(() => controller2.abort(), 6000);
+          const timeoutId2 = setTimeout(() => controller2.abort(), 5000);
           res = await fetch('/api/epicAuth', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -292,7 +243,7 @@
           if (data.epicAccountId) epicAccountId = data.epicAccountId;
         }
       } catch (e) {
-        console.warn('Backend Epic token exchange notice:', e);
+        console.warn('Epic token notice:', e);
       }
 
       if (!epicUsername) {
@@ -302,41 +253,31 @@
         epicAccountId = 'EPIC_' + Math.random().toString(36).substr(2, 9).toUpperCase();
       }
 
-      updateProgress(90, 3, 'Linking Account…', `Saving Epic profile "${epicUsername}" to your profile…`);
+      setStatus('Linking Account…', `Saving Epic profile "${epicUsername}"…`);
 
       try {
-        // Use merge: true so it never fails
-        await db.collection('users').doc(user.uid).set({
+        await db.collection('users').doc(targetUid).set({
           epicUsername:  epicUsername,
           epicAccountId: epicAccountId,
           epicVerified:  true,
           epicLinkedAt:  firebase.firestore.FieldValue.serverTimestamp(),
         }, { merge: true });
 
-        updateProgress(100, 3, 'Epic Account Linked! 🎉', `Successfully linked as "${epicUsername}". Redirecting to profile…`);
-
-        const badge = document.getElementById('status-badge');
-        if (badge) {
-          badge.textContent = '✓ Verified Epic Account';
-          badge.style.color = '#10b981';
-          badge.style.borderColor = 'rgba(16, 185, 129, 0.4)';
-          badge.style.background = 'rgba(16, 185, 129, 0.12)';
-        }
+        showVerifiedState(epicUsername);
 
         setTimeout(() => {
           window.location.href = 'profile';
-        }, 1100);
+        }, 900);
 
       } catch (dbErr) {
-        console.error('Firestore save error:', dbErr);
-        showError('Saving Failed', 'Could not update profile: ' + dbErr.message);
+        console.error('Save error:', dbErr);
+        showErrorState('Saving Failed', dbErr.message);
       }
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-      processEpicCallback().catch((err) => {
-        console.error('Fatal callback error:', err);
-        showError('Linking Error', err.message || 'An unexpected error occurred.');
+      handleEpicCallback().catch(err => {
+        showErrorState('Error', err.message);
       });
     });
   </script>

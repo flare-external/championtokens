@@ -551,7 +551,7 @@
             </div>
           </div>
           <div>
-            <button class="btn-epic-brand" onclick="startEpicOAuth()" style="padding:12px 26px;font-size:0.92rem;flex-shrink:0;">
+            <button class="btn-epic-brand" onclick="openLinkEpicModal()" style="padding:12px 26px;font-size:0.92rem;flex-shrink:0;">
               <img src="epic_games_logo.webp" alt="Epic" style="width:18px;height:22px;object-fit:contain;"/>
               <span>Link Account</span>
               <i data-lucide="arrow-right" style="width:16px;height:16px;margin-left:2px;"></i>
@@ -1490,7 +1490,7 @@
               </div>
             </div>
             ${isViewingSelf ? `
-              <button class="btn-epic-brand" onclick="startEpicOAuth()" style="padding:12px 26px;font-size:0.92rem;flex-shrink:0;">
+              <button class="btn-epic-brand" onclick="openLinkEpicModal()" style="padding:12px 26px;font-size:0.92rem;flex-shrink:0;">
                 <img src="epic_games_logo.webp" alt="Epic" style="width:18px;height:22px;object-fit:contain;"/>
                 <span>Link Account</span>
                 <i data-lucide="arrow-right" style="width:16px;height:16px;margin-left:2px;"></i>
@@ -1549,21 +1549,62 @@
         `;
       } else {
         content.innerHTML = `
-          <div style="margin-bottom:20px;">
+          <div style="margin-bottom:18px;">
             <div style="font-size:0.88rem;color:var(--text-muted);line-height:1.5;">
               Connect your official Epic Games account to participate in Fortnite token matches.
             </div>
           </div>
-          <button type="button" class="btn-epic-brand" onclick="startEpicOAuth()">
+          <button type="button" class="btn-epic-brand" onclick="startEpicOAuth()" style="width:100%;justify-content:center;margin-bottom:16px;">
             <img src="epic_games_logo.webp" alt="Epic" style="width:20px;height:24px;object-fit:contain;"/>
-            <span>Link Account</span>
+            <span>Link with Epic Games</span>
           </button>
+          
+          <div style="position:relative;text-align:center;margin:18px 0 16px;">
+            <div style="border-top:1px solid rgba(255,255,255,0.1);position:absolute;top:50%;left:0;right:0;"></div>
+            <span style="position:relative;background:#18181b;padding:0 12px;font-size:0.72rem;color:var(--text-muted);text-transform:uppercase;font-weight:700;">OR ENTER FORTNITE IGN DIRECTLY</span>
+          </div>
+
+          <form onsubmit="handleDirectLinkEpic(event)">
+            <div style="margin-bottom:12px;">
+              <input type="text" class="form-input" id="direct-epic-input" placeholder="e.g. Flare_FN or Ninja" required style="text-align:center;font-size:1rem;font-weight:700;"/>
+            </div>
+            <button type="submit" class="btn btn-primary btn-full" id="direct-epic-btn" style="justify-content:center;">
+              <i data-lucide="check"></i> Save & Link IGN
+            </button>
+          </form>
         `;
       }
 
       modal.classList.add('open');
       modal.classList.add('active');
       if (window.lucide) lucide.createIcons();
+    }
+
+    async function handleDirectLinkEpic(e) {
+      if (e) e.preventDefault();
+      if (!currentUser) return;
+      const input = document.getElementById('direct-epic-input');
+      const ign = input ? input.value.trim() : '';
+      if (!ign) {
+        showToast('Please enter your Fortnite display name', 'error');
+        return;
+      }
+      const btn = document.getElementById('direct-epic-btn');
+      if (btn) btn.disabled = true;
+      try {
+        await linkEpicAccount(currentUser.uid, ign);
+        showToast(`Epic Games account linked as "${ign}"!`, 'success');
+        closeLinkEpicModal();
+        if (currentUserData) {
+          currentUserData.epicUsername = ign;
+          currentUserData.epicVerified = true;
+          renderProfile(currentUserData);
+        }
+      } catch (err) {
+        showToast(err.message, 'error');
+      } finally {
+        if (btn) btn.disabled = false;
+      }
     }
 
     function closeLinkEpicModal() {

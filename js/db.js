@@ -1052,6 +1052,25 @@ async function tipPlayer(senderUid, receiverUid, amount) {
 }
 
 /**
+ * Link connected Epic Games account to user profile.
+ */
+async function linkEpicAccount(uid, epicUsername, epicAccountId = '') {
+  if (!uid) throw new Error('User ID is required');
+  const clean = (epicUsername || '').trim();
+  if (!clean) throw new Error('Epic Games username cannot be empty');
+
+  const userRef = db.collection('users').doc(uid);
+  await userRef.set({
+    epicUsername:  clean,
+    epicAccountId: epicAccountId || '',
+    epicVerified:  true,
+    epicLinkedAt:  firebase.firestore.FieldValue.serverTimestamp(),
+  }, { merge: true });
+
+  return { success: true, epicUsername: clean };
+}
+
+/**
  * Unlink connected Epic Games account from user profile.
  * Deducts 2.00 Tokens unlinking fee.
  */
