@@ -76,21 +76,38 @@ function signOut() {
  */
 async function exchangeDiscordCode(code) {
   const redirectUri = getRedirectUri();
+  const endpoints = [
+    'https://us-central1-champion-tokens.cloudfunctions.net/discordAuth',
+    '/.netlify/functions/discordAuth',
+    '/api/discordAuth'
+  ];
 
-  const response = await fetch(CLOUD_FUNCTION_URL, {
-    method:  'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body:    JSON.stringify({ code, redirectUri }),
-  });
+  let lastError = null;
+  for (const endpoint of endpoints) {
+    try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 5000);
+      const response = await fetch(endpoint, {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({ code, redirectUri }),
+        signal:  controller.signal
+      });
+      clearTimeout(timeoutId);
 
-  if (!response.ok) {
-    const err = await response.json().catch(() => ({}));
-    throw new Error(err.error || `Server error ${response.status}`);
+      if (response.ok) {
+        const data = await response.json();
+        if (data.token) {
+          const cred = await auth.signInWithCustomToken(data.token);
+          return cred.user;
+        }
+      }
+    } catch (err) {
+      lastError = err;
+    }
   }
 
-  const { token } = await response.json();
-  const cred = await auth.signInWithCustomToken(token);
-  return cred.user;
+  throw lastError || new Error('Authentication server is connecting, please retry.');
 }
 
 /**

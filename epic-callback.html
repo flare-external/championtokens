@@ -139,38 +139,32 @@
         ? 'https://championtokens.fun/epic-callback'
         : `${window.location.origin}/epic-callback`;
 
-      try {
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 6000);
+      const epicEndpoints = [
+        '/.netlify/functions/epicAuth',
+        '/api/epicAuth',
+        'https://us-central1-champion-tokens.cloudfunctions.net/epicAuth'
+      ];
 
-        let res = await fetch('/.netlify/functions/epicAuth', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ code, redirectUri, uid: targetUid }),
-          signal: controller.signal,
-        }).catch(() => null);
-
-        clearTimeout(timeoutId);
-
-        if (!res || !res.ok) {
-          const controller2 = new AbortController();
-          const timeoutId2 = setTimeout(() => controller2.abort(), 5000);
-          res = await fetch('/api/epicAuth', {
+      for (const ep of epicEndpoints) {
+        try {
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 4000);
+          const res = await fetch(ep, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ code, redirectUri, uid: targetUid }),
-            signal: controller2.signal,
-          }).catch(() => null);
-          clearTimeout(timeoutId2);
-        }
-
-        if (res && res.ok) {
-          const data = await res.json().catch(() => ({}));
-          if (data.epicUsername) epicUsername = data.epicUsername;
-          if (data.epicAccountId) epicAccountId = data.epicAccountId;
-        }
-      } catch (e) {
-        console.warn('Epic token notice:', e);
+            signal: controller.signal,
+          });
+          clearTimeout(timeoutId);
+          if (res.ok) {
+            const data = await res.json().catch(() => ({}));
+            if (data.epicUsername) {
+              epicUsername = data.epicUsername;
+              epicAccountId = data.epicAccountId || '';
+              break;
+            }
+          }
+        } catch (e) {}
       }
 
       if (!epicUsername) {
