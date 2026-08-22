@@ -1285,14 +1285,16 @@ input[type="range"].ct-slider::-moz-range-thumb {
 .chip-warn    { background: var(--gold-dim);  color: var(--gold-bright);  }
 .chip-muted   { background: var(--bg-card);   color: var(--text-muted); }
 
-/* ── Toast ─────────────────────────────────────────────────── */
+/* ── Toast Notifications (Top Center) ─────────────────────── */
 #toast-container {
   position: fixed;
-  bottom: 24px;
-  right: 24px;
-  z-index: 999;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 10px;
   pointer-events: none;
 }
@@ -1693,34 +1695,8 @@ input[type="range"].ct-slider::-moz-range-thumb {
   margin: 4px 0;
 }
 
-/* ── Discreet Bottom-Right Floating Admin Console ──────────── */
-.admin-floating-btn {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  background: rgba(14, 18, 34, 0.92);
-  border: 1px solid rgba(239, 68, 68, 0.5);
-  border-radius: 999px;
-  padding: 7px 16px;
-  font-size: 0.76rem;
-  font-weight: 800;
-  color: #fca5a5;
-  cursor: pointer;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7), 0 0 16px rgba(239, 68, 68, 0.35);
-  backdrop-filter: blur(12px);
-  z-index: 999;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-}
-.admin-floating-btn:hover {
-  background: rgba(239, 68, 68, 0.25);
-  border-color: #ef4444;
-  color: #fff;
-  transform: translateY(-2px) scale(1.05);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.8), 0 0 24px rgba(239, 68, 68, 0.6);
-}
+/* ── Admin Floating Button (Removed) ──────────── */
+.admin-floating-btn { display: none !important; }
 
 /* ── Universal Token Wallet Modal (Purchase & Withdraw) ────── */
 .wallet-tabs {

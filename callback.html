@@ -11,100 +11,98 @@
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
-    .page-bg {
-      position: fixed;
-      inset: 0;
-      z-index: 0;
-      pointer-events: none;
-    }
-    .callback-wrap {
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #000000;
+      color: #ffffff;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .minimal-wrap {
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       gap: 20px;
       text-align: center;
-      padding: 20px;
+      padding: 24px;
       position: relative;
-      z-index: 999;
+      z-index: 10;
     }
-    .callback-brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 1.4rem;
-      font-weight: 800;
-      margin-bottom: 12px;
-      color: #ffffff;
+    .white-spinner {
+      width: 44px;
+      height: 44px;
+      border: 3px solid rgba(255, 255, 255, 0.12);
+      border-top-color: #ffffff;
+      border-radius: 50%;
+      animation: pureSpin 0.75s linear infinite;
     }
-    .callback-brand i { width: 26px; height: 26px; color: var(--gold-bright, #f59e0b); }
-    .callback-brand .brand-accent { color: var(--gold-bright, #f59e0b); }
-
-    .callback-card {
-      background: #0d1222;
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      border-radius: 20px;
-      padding: 40px 36px;
-      max-width: 480px;
-      width: 100%;
-      display: flex;
+    @keyframes pureSpin {
+      to { transform: rotate(360deg); }
+    }
+    .loading-text {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #e2e8f0;
+      letter-spacing: 0.02em;
+    }
+    .error-card {
+      display: none;
       flex-direction: column;
       align-items: center;
-      gap: 18px;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.85);
-      position: relative;
-      z-index: 1000;
+      gap: 14px;
+      max-width: 420px;
+      background: rgba(18, 24, 38, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 16px;
+      padding: 28px 24px;
     }
-    .callback-spinner {
-      width: 48px; height: 48px;
-      border: 3px solid rgba(255, 255, 255, 0.1);
-      border-top-color: #5865F2;
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-    }
-    .callback-title { font-size: 1.2rem; font-weight: 800; color: #ffffff; }
-    .callback-desc  { font-size: 0.9rem; color: #94a3b8; }
     .error-msg-box {
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       color: #fca5a5;
       background: rgba(239, 68, 68, 0.15);
-      border: 1px solid rgba(239, 68, 68, 0.35);
-      padding: 12px 16px;
-      border-radius: 12px;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      padding: 10px 14px;
+      border-radius: 10px;
       word-break: break-word;
-      width: 100%;
-      text-align: center;
       font-family: monospace;
     }
+    .btn-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #ffffff;
+      color: #000000;
+      font-weight: 700;
+      font-size: 0.85rem;
+      padding: 10px 20px;
+      border-radius: 999px;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+    .btn-back:hover { opacity: 0.85; }
   </style>
 </head>
 <body>
-  <div class="page-bg"></div>
-
-  <div class="callback-wrap">
-    <div class="callback-brand">
-      <i data-lucide="shield"></i>
-      Champion <span class="brand-accent">Tokens</span>
+  <div class="minimal-wrap">
+    <!-- Loading state -->
+    <div id="loading-state" style="display:flex;flex-direction:column;align-items:center;gap:18px;">
+      <div class="white-spinner"></div>
+      <div class="loading-text">Logging in…</div>
     </div>
 
-    <div class="callback-card">
-      <!-- Loading state -->
-      <div id="loading-state" style="display:flex;flex-direction:column;align-items:center;gap:14px;width:100%;">
-        <div class="callback-spinner"></div>
-        <div class="callback-title">Signing you in…</div>
-        <div class="callback-desc">Verifying your Discord account, hang tight.</div>
-      </div>
-
-      <!-- Error state -->
-      <div id="error-state" style="display:none;flex-direction:column;align-items:center;gap:14px;width:100%;">
-        <i data-lucide="alert-triangle" style="width:44px;height:44px;color:#ef4444;"></i>
-        <div class="callback-title">Sign-in Notice</div>
-        <div class="error-msg-box" id="error-msg">Something went wrong. Please try again.</div>
-        <a href="index.html" class="btn btn-primary" style="margin-top:10px;width:100%;justify-content:center;">
-          <i data-lucide="arrow-left"></i> Back to Home
-        </a>
-      </div>
+    <!-- Error state -->
+    <div id="error-state" class="error-card">
+      <div style="font-size:1.1rem;font-weight:800;color:#ffffff;">Sign-in Error</div>
+      <div class="error-msg-box" id="error-msg">Authentication failed.</div>
+      <a href="index.html" class="btn-back">
+        <i data-lucide="arrow-left" style="width:16px;height:16px;"></i> Back to Home
+      </a>
     </div>
   </div>
 

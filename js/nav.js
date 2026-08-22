@@ -210,20 +210,6 @@ function injectNav(activePage = '') {
       const menuHandle = document.getElementById('nav-menu-handle');
       if (menuName) menuName.textContent = data.displayName || 'Champion';
       if (menuHandle) menuHandle.textContent = data.discordUsername ? `@${data.discordUsername}` : (data.email || `@${user.uid.slice(0, 8)}`);
-
-      // Check Admin status and inject floating Admin console button if admin
-      if (typeof isAdminUser === 'function' && isAdminUser(user, data)) {
-        if (!document.getElementById('admin-floating-btn')) {
-          const adminBtn = document.createElement('button');
-          adminBtn.id = 'admin-floating-btn';
-          adminBtn.className = 'admin-floating-btn';
-          adminBtn.title = 'Open Staff Admin Console';
-          adminBtn.onclick = () => { window.location.href = 'admin'; };
-          adminBtn.innerHTML = `<i data-lucide="shield-alert" style="width:14px;height:14px;"></i><span>Admin Console</span>`;
-          document.body.appendChild(adminBtn);
-          lucide.createIcons();
-        }
-      }
     });
   });
 }
