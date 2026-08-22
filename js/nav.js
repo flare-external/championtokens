@@ -242,9 +242,13 @@ function injectNav(activePage = '') {
       if (menuName) menuName.textContent = data.displayName || 'Champion';
       if (menuHandle) menuHandle.textContent = data.discordUsername ? `@${data.discordUsername}` : (data.email || `@${user.uid.slice(0, 8)}`);
 
-      // Admin link
+      // Admin link — show if isAdmin flag OR hardcoded Discord ID
       const adminLink = document.getElementById('nav-admin-link');
-      if (adminLink && data.isAdmin) adminLink.style.display = 'flex';
+      if (adminLink) {
+        const discordId = data.discordId || snap.id.replace('discord:', '');
+        const isAdmin = data.isAdmin === true || ['1121188319410278420'].includes(discordId);
+        if (isAdmin) adminLink.style.display = 'flex';
+      }
     });
 
     // Real-time notifications

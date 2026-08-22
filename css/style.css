@@ -2081,14 +2081,17 @@ div[class*="netlify-drawer"],
 .nav-notif-item:last-child { border-bottom: none; }
 
 .nav-notif-icon {
-  font-size: 1.2rem;
+  font-size: 1.15rem;
   flex-shrink: 0;
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
   margin-top: 1px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.07);
 }
 .nav-notif-title {
   font-size: 0.85rem;
