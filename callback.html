@@ -101,14 +101,38 @@
   <script src="js/auth.js?v=3.5"></script>
 
   <script>
-    lucide.createIcons();
+    window.onerror = function(msg, url, line) {
+      showError(`Runtime error: ${msg} (line ${line})`);
+    };
+    window.onunhandledrejection = function(e) {
+      showError(e.reason?.message || String(e.reason || 'Unhandled network error'));
+    };
+
+    function showError(msg) {
+      const loading = document.getElementById('loading-state');
+      if (loading) loading.style.display = 'none';
+      
+      const errEl = document.getElementById('error-state');
+      if (errEl) {
+        errEl.style.display = 'flex';
+        const msgEl = document.getElementById('error-msg');
+        if (msgEl) msgEl.textContent = msg;
+      }
+      if (window.lucide) {
+        try { lucide.createIcons(); } catch(e) {}
+      }
+    }
 
     async function handleCallback() {
+      if (window.lucide) {
+        try { lucide.createIcons(); } catch(e) {}
+      }
+
       const params = new URLSearchParams(window.location.search);
       const code   = params.get('code');
       const error  = params.get('error');
 
-      // Discord sent back an error (user denied)
+      // Discord sent back an error (e.g. user denied access)
       if (error) {
         showError(error === 'access_denied'
           ? 'You cancelled the Discord sign-in.'
@@ -122,43 +146,31 @@
       }
 
       try {
-        // Check if already signed in with safety timeout
+        // Quick check if auth already active
         await new Promise((resolve) => {
-          let settled = false;
-          const timer = setTimeout(() => {
-            if (!settled) { settled = true; resolve(null); }
-          }, 1200);
-          const unsub = auth.onAuthStateChanged((user) => {
-            if (!settled) {
-              settled = true;
-              clearTimeout(timer);
-              unsub();
-              resolve(user);
-            }
+          let done = false;
+          const t = setTimeout(() => { if (!done) { done = true; resolve(null); } }, 800);
+          const unsub = auth.onAuthStateChanged((u) => {
+            if (!done) { done = true; clearTimeout(t); unsub(); resolve(u); }
           });
         });
 
+        // Exchange Discord OAuth Code for Firebase Token
         await exchangeDiscordCode(code);
 
-        // Clean the URL and redirect
+        // Success - clean URL and redirect to dashboard
         window.history.replaceState({}, '', window.location.pathname);
         window.location.href = 'dashboard';
 
       } catch (err) {
         console.error('Callback error:', err);
-        showError(err.message || 'Authentication failed. Please try again.');
+        showError(err.message || String(err));
       }
     }
 
-    function showError(msg) {
-      document.getElementById('loading-state').style.display = 'none';
-      const errEl = document.getElementById('error-state');
-      errEl.style.display = 'flex';
-      document.getElementById('error-msg').textContent = msg;
-      lucide.createIcons();
-    }
-
-    handleCallback();
+    document.addEventListener('DOMContentLoaded', () => {
+      handleCallback();
+    });
   </script>
 </body>
 </html>
