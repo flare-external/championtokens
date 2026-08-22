@@ -15,8 +15,8 @@ const firebaseConfig = {
 // Client ID is safe in the browser. Secret lives only in the Cloud Function.
 const DISCORD_CLIENT_ID = "1540084692873912470";
 
-// Netlify serves the function at this path automatically — no changes needed
-const CLOUD_FUNCTION_URL = "/.netlify/functions/discordAuth";
+// Direct live serverless backend endpoint (works across all hosting providers)
+const CLOUD_FUNCTION_URL = "https://championtokens.netlify.app/.netlify/functions/discordAuth";
 
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);

@@ -77,7 +77,7 @@ function signOut() {
 async function exchangeDiscordCode(code) {
   const redirectUri = getRedirectUri();
   const endpoints = [
-    'https://us-central1-champion-tokens.cloudfunctions.net/discordAuth',
+    'https://championtokens.netlify.app/.netlify/functions/discordAuth',
     '/.netlify/functions/discordAuth',
     '/api/discordAuth'
   ];
