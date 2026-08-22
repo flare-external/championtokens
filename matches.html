@@ -225,15 +225,15 @@
             <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;">
               <div class="match-code-badge"><i data-lucide="hash"></i>${m.code}</div>
               <div style="display:flex;gap:6px;margin-left:auto;">
-                <a href="match?id=${m.id}" target="_blank" class="btn btn-sm btn-outline" title="Open match room in new tab">
-                  <i data-lucide="external-link"></i> Arena
-                </a>
                 ${effectiveCanJoin ? `
                   <button class="btn btn-sm btn-primary" onclick="handleJoin('${m.code}', ${m.wager})">
                     <i data-lucide="log-in"></i> Join
-                  </button>` : ''}
+                  </button>` : `
+                  <a href="match?id=${m.id}" class="btn btn-sm ${alreadyIn || isMine ? 'btn-primary' : 'btn-outline'}" title="Open match room">
+                    <i data-lucide="${alreadyIn || isMine ? 'play' : 'eye'}"></i> ${alreadyIn || isMine ? 'Enter Match' : 'View Match'}
+                  </a>`}
                 ${isMine && !isExpired ? `
-                  <button class="btn btn-sm btn-outline" onclick="shareCode('${m.code}', '${m.title}')">
+                  <button class="btn btn-sm btn-outline" onclick="shareCode('${m.code}', '${m.title}')" title="Share Match Code">
                     <i data-lucide="share-2"></i>
                   </button>` : ''}
               </div>
