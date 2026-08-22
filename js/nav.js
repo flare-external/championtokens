@@ -315,21 +315,21 @@ function injectFloatingIcons() {
 // ── Toast Notifications ───────────────────────────────────────
 
 /**
- * Show a toast notification.
+ * Show a sleek pure black pill toast notification.
  * @param {string} message
  * @param {'success'|'error'|'info'|'warning'} type
  */
 function showToast(message, type = 'success') {
   const iconMap = {
-    success: 'check-circle',
-    error:   'x-circle',
+    success: 'check-circle-2',
+    error:   'alert-circle',
     info:    'info',
     warning: 'alert-triangle',
   };
 
   const toast = document.createElement('div');
   toast.className = `ct-toast ct-toast--${type}`;
-  toast.innerHTML = `<i data-lucide="${iconMap[type] || 'info'}"></i><span>${message}</span>`;
+  toast.innerHTML = `<i data-lucide="${iconMap[type] || 'check-circle-2'}"></i><span>${message}</span>`;
 
   let container = document.getElementById('toast-container');
   if (!container) {
@@ -338,13 +338,13 @@ function showToast(message, type = 'success') {
     document.body.appendChild(container);
   }
   container.appendChild(toast);
-  lucide.createIcons();
+  if (window.lucide) lucide.createIcons();
 
   requestAnimationFrame(() => toast.classList.add('show'));
   setTimeout(() => {
     toast.classList.remove('show');
     toast.addEventListener('transitionend', () => toast.remove(), { once: true });
-  }, 3200);
+  }, 3000);
 }
 
 // ── Formatting Helpers ────────────────────────────────────────

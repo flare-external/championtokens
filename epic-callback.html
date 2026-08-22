@@ -175,24 +175,31 @@
       }
 
       try {
+        localStorage.setItem('ct_epic_username', epicUsername);
+        localStorage.setItem('ct_epic_account_id', epicAccountId);
+        localStorage.setItem('ct_epic_linked_pending', '1');
+      } catch (e) {}
+
+      try {
         if (!auth.currentUser) {
           user = await getAuthenticatedUser();
         }
 
-        await db.collection('users').doc(targetUid).set({
-          epicUsername:  epicUsername,
-          epicAccountId: epicAccountId,
-          epicVerified:  true,
-          epicLinkedAt:  firebase.firestore.FieldValue.serverTimestamp(),
-        }, { merge: true });
+        if (auth.currentUser || user) {
+          const finalUid = auth.currentUser?.uid || user?.uid || targetUid;
+          await db.collection('users').doc(finalUid).set({
+            epicUsername:  epicUsername,
+            epicAccountId: epicAccountId,
+            epicVerified:  true,
+            epicLinkedAt:  firebase.firestore.FieldValue.serverTimestamp(),
+          }, { merge: true });
+        }
 
         try { localStorage.removeItem('ct_epic_linking_uid'); } catch (e) {}
-
-        // Smooth immediate redirect back to profile
         window.location.href = 'profile?linked=1';
 
       } catch (dbErr) {
-        console.error('Save error:', dbErr);
+        console.error('Save error in callback:', dbErr);
         try { localStorage.removeItem('ct_epic_linking_uid'); } catch (e) {}
         window.location.href = 'profile?linked=1';
       }
