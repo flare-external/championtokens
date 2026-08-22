@@ -551,7 +551,7 @@
             </div>
           </div>
           <div>
-            <button class="btn-epic-brand" onclick="openLinkEpicModal()" style="padding:12px 26px;font-size:0.92rem;flex-shrink:0;">
+            <button class="btn-epic-brand" onclick="startEpicOAuth()" style="padding:12px 26px;font-size:0.92rem;flex-shrink:0;">
               <img src="epic_games_logo.webp" alt="Epic" style="width:18px;height:22px;object-fit:contain;"/>
               <span>Link Account</span>
               <i data-lucide="arrow-right" style="width:16px;height:16px;margin-left:2px;"></i>
@@ -886,6 +886,14 @@
         const urlParams = new URLSearchParams(window.location.search);
         targetUid = urlParams.get('uid') || user.uid;
         isViewingSelf = targetUid === user.uid;
+
+        if (urlParams.get('linked') === '1') {
+          showToast('🎉 Epic Games account verified & linked!', 'success');
+          try {
+            const cleanUrl = window.location.pathname + (urlParams.get('uid') ? `?uid=${urlParams.get('uid')}` : '');
+            window.history.replaceState({}, document.title, cleanUrl);
+          } catch (e) {}
+        }
 
         const signoutSec = document.getElementById('signout-section');
         if (signoutSec && !isViewingSelf) {
@@ -1425,8 +1433,13 @@
       const isLinked = !!(data && data.epicUsername);
 
       if (card) {
-        if (isLinked) card.classList.add('epic-card--linked');
-        else card.classList.remove('epic-card--linked');
+        if (isLinked) {
+          card.classList.add('epic-card--linked');
+          card.classList.add('swoosh-pop');
+        } else {
+          card.classList.remove('epic-card--linked');
+          card.classList.remove('swoosh-pop');
+        }
       }
 
       if (isLinked) {
@@ -1440,7 +1453,7 @@
                 <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
                   <span style="font-size:0.75rem;text-transform:uppercase;font-weight:800;letter-spacing:0.08em;color:#38bdf8;">Epic Games Account</span>
                   <span class="chip chip-success" style="font-size:0.68rem;padding:2px 8px;font-weight:800;">
-                    <i data-lucide="check-circle" style="width:11px;height:11px;display:inline;"></i> Verified Account
+                    <i data-lucide="check-circle" style="width:11px;height:11px;display:inline;"></i> Verified
                   </span>
                 </div>
                 <div style="display:flex;align-items:center;gap:10px;margin-top:2px;">
@@ -1456,7 +1469,7 @@
             ${isViewingSelf ? `
               <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
                 <button class="btn btn-outline btn-sm" onclick="startEpicOAuth()" style="font-size:0.8rem;padding:8px 16px;border-color:rgba(255,255,255,0.18);">
-                  <i data-lucide="refresh-cw"></i> Switch Account
+                  <i data-lucide="refresh-cw"></i> Sync / Re-link
                 </button>
                 <button class="btn btn-danger btn-sm" onclick="handleUnlinkEpic()" style="font-size:0.8rem;padding:8px 16px;" title="Unlink Epic Games Account">
                   <i data-lucide="unlink"></i> Unlink <span style="opacity:0.8;font-size:0.72rem;margin-left:3px;">(-2.00 T)</span>
@@ -1490,7 +1503,7 @@
               </div>
             </div>
             ${isViewingSelf ? `
-              <button class="btn-epic-brand" onclick="openLinkEpicModal()" style="padding:12px 26px;font-size:0.92rem;flex-shrink:0;">
+              <button class="btn-epic-brand" onclick="startEpicOAuth()" style="padding:12px 26px;font-size:0.92rem;flex-shrink:0;">
                 <img src="epic_games_logo.webp" alt="Epic" style="width:18px;height:22px;object-fit:contain;"/>
                 <span>Link Account</span>
                 <i data-lucide="arrow-right" style="width:16px;height:16px;margin-left:2px;"></i>
@@ -1537,7 +1550,7 @@
           </div>
           <div style="display:flex;flex-direction:column;gap:10px;">
             <button type="button" class="btn btn-outline" onclick="startEpicOAuth()" style="width:100%;justify-content:center;">
-              <i data-lucide="refresh-cw"></i> Switch / Re-Link Account
+              <i data-lucide="refresh-cw"></i> Sync / Re-link Account
             </button>
             <div>
               <button type="button" class="btn btn-danger" onclick="handleUnlinkEpic()" style="width:100%;justify-content:center;">
@@ -1554,57 +1567,16 @@
               Connect your official Epic Games account to participate in Fortnite token matches.
             </div>
           </div>
-          <button type="button" class="btn-epic-brand" onclick="startEpicOAuth()" style="width:100%;justify-content:center;margin-bottom:16px;">
+          <button type="button" class="btn-epic-brand" onclick="startEpicOAuth()" style="width:100%;justify-content:center;">
             <img src="epic_games_logo.webp" alt="Epic" style="width:20px;height:24px;object-fit:contain;"/>
             <span>Link with Epic Games</span>
           </button>
-          
-          <div style="position:relative;text-align:center;margin:18px 0 16px;">
-            <div style="border-top:1px solid rgba(255,255,255,0.1);position:absolute;top:50%;left:0;right:0;"></div>
-            <span style="position:relative;background:#18181b;padding:0 12px;font-size:0.72rem;color:var(--text-muted);text-transform:uppercase;font-weight:700;">OR ENTER FORTNITE IGN DIRECTLY</span>
-          </div>
-
-          <form onsubmit="handleDirectLinkEpic(event)">
-            <div style="margin-bottom:12px;">
-              <input type="text" class="form-input" id="direct-epic-input" placeholder="e.g. Flare_FN or Ninja" required style="text-align:center;font-size:1rem;font-weight:700;"/>
-            </div>
-            <button type="submit" class="btn btn-primary btn-full" id="direct-epic-btn" style="justify-content:center;">
-              <i data-lucide="check"></i> Save & Link IGN
-            </button>
-          </form>
         `;
       }
 
       modal.classList.add('open');
       modal.classList.add('active');
       if (window.lucide) lucide.createIcons();
-    }
-
-    async function handleDirectLinkEpic(e) {
-      if (e) e.preventDefault();
-      if (!currentUser) return;
-      const input = document.getElementById('direct-epic-input');
-      const ign = input ? input.value.trim() : '';
-      if (!ign) {
-        showToast('Please enter your Fortnite display name', 'error');
-        return;
-      }
-      const btn = document.getElementById('direct-epic-btn');
-      if (btn) btn.disabled = true;
-      try {
-        await linkEpicAccount(currentUser.uid, ign);
-        showToast(`Epic Games account linked as "${ign}"!`, 'success');
-        closeLinkEpicModal();
-        if (currentUserData) {
-          currentUserData.epicUsername = ign;
-          currentUserData.epicVerified = true;
-          renderProfile(currentUserData);
-        }
-      } catch (err) {
-        showToast(err.message, 'error');
-      } finally {
-        if (btn) btn.disabled = false;
-      }
     }
 
     function closeLinkEpicModal() {

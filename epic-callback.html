@@ -7,116 +7,56 @@
   <link rel="icon" type="image/png" href="champion_tokens_CT_v4.png"/>
   <link rel="shortcut icon" type="image/png" href="champion_tokens_CT_v4.png"/>
   <link rel="apple-touch-icon" href="champion_tokens_CT_v4.png"/>
-  <link rel="stylesheet" href="css/style.css"/>
   <style>
-    * { box-sizing: border-box; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       min-height: 100vh;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
-      background: #080808;
+      background: #000000;
       color: #ffffff;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-      padding: 20px;
-      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      overflow: hidden;
     }
-    .epic-auth-card {
-      width: 100%;
-      max-width: 400px;
-      background: #121212;
-      border: 1px solid #242424;
-      border-radius: 12px;
-      padding: 40px 32px;
-      text-align: center;
-      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.9);
-    }
-    .epic-logo-img {
+    .white-spinner {
       width: 44px;
-      height: 52px;
-      object-fit: contain;
-      margin: 0 auto 24px;
-      display: block;
-    }
-    .epic-auth-title {
-      font-size: 1.25rem;
-      font-weight: 800;
-      color: #ffffff;
-      margin: 0 0 8px;
-      letter-spacing: -0.01em;
-    }
-    .epic-auth-desc {
-      font-size: 0.875rem;
-      color: #888888;
-      margin: 0 0 24px;
-      line-height: 1.45;
-    }
-    .epic-spinner {
-      width: 32px;
-      height: 32px;
+      height: 44px;
       border: 3px solid rgba(255, 255, 255, 0.15);
       border-top-color: #ffffff;
       border-radius: 50%;
-      animation: epicSpin 0.75s linear infinite;
-      margin: 0 auto 8px;
+      animation: spinCircle 0.8s linear infinite;
     }
-    @keyframes epicSpin {
+    @keyframes spinCircle {
       to { transform: rotate(360deg); }
     }
-    .verified-pill {
+    .error-fallback {
       display: none;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      font-size: 0.8rem;
-      font-weight: 700;
-      color: #10b981;
-      background: rgba(16, 185, 129, 0.1);
-      border: 1px solid rgba(16, 185, 129, 0.3);
-      padding: 6px 14px;
-      border-radius: 20px;
-      margin: 0 auto 16px;
-      width: fit-content;
+      text-align: center;
+      color: #888;
+      font-size: 0.9rem;
+      max-width: 320px;
+      line-height: 1.5;
     }
-    .btn-epic-dark {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-      padding: 11px 20px;
-      background: #ffffff;
-      color: #000000;
-      border: none;
-      border-radius: 6px;
-      font-weight: 700;
-      font-size: 0.875rem;
-      text-decoration: none;
-      cursor: pointer;
+    .error-fallback a {
+      display: inline-block;
       margin-top: 16px;
-      transition: background 0.15s ease;
-    }
-    .btn-epic-dark:hover {
-      background: #e0e0e0;
+      color: #ffffff;
+      text-decoration: none;
+      border: 1px solid #333;
+      padding: 8px 18px;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      font-weight: 700;
     }
   </style>
 </head>
 <body>
-  <div class="epic-auth-card">
-    <img src="epic_games_logo.webp" alt="Epic Games" class="epic-logo-img" />
+  <div class="white-spinner" id="spinner"></div>
 
-    <div class="verified-pill" id="verified-badge">
-      <span>✓ Verified</span>
-    </div>
-
-    <h1 class="epic-auth-title" id="status-title">Connecting Epic Games…</h1>
-    <p class="epic-auth-desc" id="status-desc">Verifying your Epic Games authorization.</p>
-
-    <div class="epic-spinner" id="loading-spinner"></div>
-
-    <div id="error-box" style="display:none;">
-      <a href="profile" class="btn-epic-dark">Return to Profile</a>
-    </div>
+  <div class="error-fallback" id="error-box">
+    <p id="error-msg">Could not complete Epic sign-in.</p>
+    <a href="profile">Return to Profile</a>
   </div>
 
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
@@ -125,27 +65,13 @@
   <script src="js/firebase-config.js"></script>
 
   <script>
-    function setStatus(title, desc) {
-      const t = document.getElementById('status-title');
-      const d = document.getElementById('status-desc');
-      if (t) t.textContent = title;
-      if (d) d.textContent = desc;
-    }
-
-    function showVerifiedState(username) {
-      const spinner = document.getElementById('loading-spinner');
-      const badge = document.getElementById('verified-badge');
-      if (spinner) spinner.style.display = 'none';
-      if (badge) badge.style.display = 'inline-flex';
-      setStatus('Account Verified & Linked', `Connected as ${username}. Redirecting to profile…`);
-    }
-
-    function showErrorState(title, desc) {
-      const spinner = document.getElementById('loading-spinner');
+    function showError(msg) {
+      document.getElementById('spinner').style.display = 'none';
       const errBox = document.getElementById('error-box');
-      if (spinner) spinner.style.display = 'none';
-      if (errBox) errBox.style.display = 'block';
-      setStatus(title, desc);
+      if (errBox) {
+        errBox.style.display = 'block';
+        document.getElementById('error-msg').textContent = msg;
+      }
     }
 
     function getAuthenticatedUser() {
@@ -183,26 +109,22 @@
       }
 
       if (error) {
-        showErrorState('Epic Sign-in Cancelled', errorDesc || error);
+        showError(errorDesc || 'Epic authentication was cancelled.');
         return;
       }
 
       if (!code) {
-        showErrorState('No Code Received', 'No authorization code was returned from Epic Games.');
+        showError('No authorization code returned from Epic Games.');
         return;
       }
-
-      setStatus('Authenticating…', 'Connecting to your account session…');
 
       let user = await getAuthenticatedUser();
       const targetUid = user?.uid || stateUid;
 
       if (!targetUid) {
-        showErrorState('Session Expired', 'Please log in to Champion Tokens first before linking Epic Games.');
+        showError('Session expired. Please log in to Champion Tokens first.');
         return;
       }
-
-      setStatus('Verifying Epic Account…', 'Exchanging authorization code with Epic Games…');
 
       let epicUsername = '';
       let epicAccountId = '';
@@ -253,8 +175,6 @@
         epicAccountId = 'EPIC_' + Math.random().toString(36).substr(2, 9).toUpperCase();
       }
 
-      setStatus('Linking Account…', `Saving Epic profile "${epicUsername}"…`);
-
       try {
         await db.collection('users').doc(targetUid).set({
           epicUsername:  epicUsername,
@@ -263,21 +183,18 @@
           epicLinkedAt:  firebase.firestore.FieldValue.serverTimestamp(),
         }, { merge: true });
 
-        showVerifiedState(epicUsername);
-
-        setTimeout(() => {
-          window.location.href = 'profile';
-        }, 900);
+        // Smooth immediate redirect back to profile
+        window.location.href = 'profile?linked=1';
 
       } catch (dbErr) {
         console.error('Save error:', dbErr);
-        showErrorState('Saving Failed', dbErr.message);
+        showError('Could not save Epic account: ' + dbErr.message);
       }
     }
 
     document.addEventListener('DOMContentLoaded', () => {
       handleEpicCallback().catch(err => {
-        showErrorState('Error', err.message);
+        showError(err.message || 'An unexpected error occurred.');
       });
     });
   </script>
