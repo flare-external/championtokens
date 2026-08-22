@@ -1,4 +1,4 @@
-﻿// ============================================================
+// ============================================================
 //  CHAMPION TOKENS — Cloudflare Worker (Static Assets + Auth API)
 // ============================================================
 
@@ -130,8 +130,13 @@ export default {
           return new Response(JSON.stringify({ error: 'Missing FIREBASE_SERVICE_ACCOUNT environment variable in Cloudflare' }), { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
         }
 
-        const jsonStr = rawServiceAccount.trim().startsWith('{') ? rawServiceAccount : atob(rawServiceAccount);
-        const serviceAccount = JSON.parse(jsonStr);
+        let serviceAccount;
+        if (typeof rawServiceAccount === 'object') {
+          serviceAccount = rawServiceAccount;
+        } else {
+          const jsonStr = rawServiceAccount.trim().startsWith('{') ? rawServiceAccount : atob(rawServiceAccount);
+          serviceAccount = JSON.parse(jsonStr);
+        }
 
         const token = await createFirebaseCustomToken(serviceAccount, uid, {
           discordId: discordUser.id,
