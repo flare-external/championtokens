@@ -2,6 +2,13 @@
 //  CHAMPION TOKENS — Database / Firestore Helpers
 // ============================================================
 
+// ── Utility Helpers ───────────────────────────────────────────
+
+/** Escape HTML to prevent XSS in dynamically rendered strings */
+function escapeHtml(str) {
+  return str ? String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;') : '';
+}
+
 // ── Users ────────────────────────────────────────────────────
 
 /**
@@ -1429,6 +1436,206 @@ async function fullDatabaseReset() {
   return { success: true, deletedCount };
 }
 
+// ── Notifications ─────────────────────────────────────────────
 
+/**
+ * Push a notification to a user's notifications subcollection.
+ * @param {string} uid - Target user UID
+ * @param {string} type - 'match_win'|'match_join'|'team_invite'|'income'|'system'|'admin'
+ * @param {string} title
+ * @param {string} body
+ * @param {object} [extra] - Optional extra data (teamId, matchId, etc.)
+ */
+async function pushNotification(uid, type, title, body, extra = {}) {
+  if (!uid) return;
+  try {
+    await db.collection('users').doc(uid).collection('notifications').add({
+      type,
+      title,
+      body,
+      read: false,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      ...extra,
+    });
+  } catch (e) {
+    console.warn('pushNotification error:', e);
+  }
+}
 
+/**
+ * Subscribe to a user's notifications (real-time, last 30).
+ */
+function subscribeNotifications(uid, callback) {
+  return db.collection('users').doc(uid).collection('notifications')
+    .orderBy('createdAt', 'desc')
+    .limit(30)
+    .onSnapshot((snap) => {
+      const list = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      callback(list);
+    }, (err) => {
+      console.warn('subscribeNotifications error:', err);
+      callback([]);
+    });
+}
 
+/**
+ * Mark all unread notifications as read for a user.
+ */
+async function markNotificationsRead(uid) {
+  try {
+    const snap = await db.collection('users').doc(uid).collection('notifications')
+      .where('read', '==', false).get();
+    if (snap.empty) return;
+    const batch = db.batch();
+    snap.docs.forEach(d => batch.update(d.ref, { read: true }));
+    await batch.commit();
+  } catch (e) {
+    console.warn('markNotificationsRead error:', e);
+  }
+}
+
+// ── Admin: Ban/Unban ──────────────────────────────────────────
+
+/**
+ * Ban a user. Sets banned:true and records the reason.
+ */
+async function adminBanUser(targetUid, adminName, reason = 'Violation of terms') {
+  if (!targetUid) throw new Error('Target UID required');
+  await db.collection('users').doc(targetUid).update({
+    banned: true,
+    bannedAt: firebase.firestore.FieldValue.serverTimestamp(),
+    bannedBy: adminName,
+    banReason: reason,
+  });
+  return true;
+}
+
+/**
+ * Unban a user.
+ */
+async function adminUnbanUser(targetUid) {
+  if (!targetUid) throw new Error('Target UID required');
+  await db.collection('users').doc(targetUid).update({
+    banned: false,
+    unbannedAt: firebase.firestore.FieldValue.serverTimestamp(),
+  });
+  return true;
+}
+
+// ── Admin: Search Users ───────────────────────────────────────
+
+/**
+ * Search users by display name, discord username, or epic username (prefix-match on displayName).
+ * Returns up to 10 results.
+ */
+async function searchUsers(query) {
+  if (!query || query.trim().length < 2) return [];
+  const q = query.trim();
+  const results = [];
+  const seen = new Set();
+
+  const addResult = (doc) => {
+    if (!seen.has(doc.id)) {
+      seen.add(doc.id);
+      results.push({ id: doc.id, ...doc.data() });
+    }
+  };
+
+  try {
+    // Exact UID match
+    const byUid = await db.collection('users').doc(q).get();
+    if (byUid.exists) addResult(byUid);
+
+    // Prefix-match on displayName
+    const byName = await db.collection('users')
+      .where('displayName', '>=', q)
+      .where('displayName', '<=', q + '\uf8ff')
+      .limit(8).get();
+    byName.docs.forEach(addResult);
+
+    // Exact discordUsername match
+    const byDiscord = await db.collection('users')
+      .where('discordUsername', '==', q)
+      .limit(3).get();
+    byDiscord.docs.forEach(addResult);
+
+    // Exact epicUsername match
+    const byEpic = await db.collection('users')
+      .where('epicUsername', '==', q)
+      .limit(3).get();
+    byEpic.docs.forEach(addResult);
+  } catch (e) {
+    console.warn('searchUsers error:', e);
+  }
+
+  return results.slice(0, 10);
+}
+
+// ── Teams: Invite by search ───────────────────────────────────
+
+/**
+ * Send a team invite notification to another user.
+ */
+async function sendTeamInvite(teamId, teamName, teamTag, inviterUid, inviterName, targetUid) {
+  if (!targetUid || targetUid === inviterUid) throw new Error('Invalid invite target');
+
+  // Check if already on a team
+  const targetUser = await getUser(targetUid);
+  if (targetUser?.teamId) throw new Error('This player is already in a team');
+
+  await pushNotification(targetUid, 'team_invite',
+    `Team Invite: ${teamName}`,
+    `${inviterName} invited you to join [${teamTag}] ${teamName}`,
+    { teamId, teamName, teamTag, inviterUid, inviterName }
+  );
+}
+
+/**
+ * Accept a team invite (from notification payload).
+ */
+async function acceptTeamInvite(notifId, uid, teamId) {
+  const user = await getUser(uid);
+  if (!user) throw new Error('User not found');
+  if (user.teamId) throw new Error('You are already in a team. Leave your current team first.');
+
+  const teamSnap = await db.collection('teams').doc(teamId).get();
+  if (!teamSnap.exists) throw new Error('Team no longer exists');
+  const team = teamSnap.data();
+
+  if ((team.members || []).length >= 6) throw new Error('Team is full (max 6 members)');
+  if ((team.memberUids || []).includes(uid)) throw new Error('You are already in this team');
+
+  const newMember = {
+    uid,
+    displayName: user.displayName || 'Player',
+    photoURL: user.photoURL || '',
+    isLeader: false,
+  };
+
+  await teamSnap.ref.update({
+    members: firebase.firestore.FieldValue.arrayUnion(newMember),
+    memberUids: firebase.firestore.FieldValue.arrayUnion(uid),
+  });
+
+  await db.collection('users').doc(uid).update({
+    teamId: teamId,
+    teamName: team.name,
+    teamTag: team.tag,
+  });
+
+  // Mark notification read
+  try {
+    await db.collection('users').doc(uid).collection('notifications').doc(notifId).update({ read: true, accepted: true });
+  } catch (e) {}
+
+  return { teamId, teamName: team.name };
+}
+
+/**
+ * Decline a team invite.
+ */
+async function declineTeamInvite(notifId, uid) {
+  try {
+    await db.collection('users').doc(uid).collection('notifications').doc(notifId).update({ read: true, declined: true });
+  } catch (e) {}
+}

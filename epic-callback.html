@@ -195,6 +195,10 @@
           }, { merge: true });
         }
 
+        // Clear ALL epic localStorage keys so profile.html doesn't re-write endlessly
+        try { localStorage.removeItem('ct_epic_username'); } catch (e) {}
+        try { localStorage.removeItem('ct_epic_account_id'); } catch (e) {}
+        try { localStorage.removeItem('ct_epic_linked_pending'); } catch (e) {}
         try { localStorage.removeItem('ct_epic_linking_uid'); } catch (e) {}
         window.location.href = 'profile?linked=1';
 

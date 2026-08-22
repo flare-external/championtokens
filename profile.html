@@ -754,6 +754,21 @@
     </div>
   </div>
 
+  <!-- Invite Player to Team Modal -->
+  <div class="modal-overlay" id="invite-player-modal" onclick="if(event.target===this)closeInvitePlayerModal()">
+    <div class="modal" style="max-width:440px;">
+      <div class="modal-header">
+        <div class="modal-title"><i data-lucide="user-plus"></i> Invite Player to Team</div>
+        <button class="modal-close" onclick="closeInvitePlayerModal()"><i data-lucide="x"></i></button>
+      </div>
+      <form onsubmit="handleInviteSearch(event)" style="display:flex;gap:8px;margin-bottom:10px;">
+        <input class="form-input" id="invite-player-search-input" placeholder="Search by name, @discord, or Epic username…" autocomplete="off" style="flex:1;"/>
+        <button type="submit" class="btn btn-primary btn-sm"><i data-lucide="search"></i></button>
+      </form>
+      <div id="invite-player-results" style="max-height:320px;overflow-y:auto;"></div>
+    </div>
+  </div>
+
   <!-- Link Epic Games Modal -->
   <div class="modal-overlay" id="link-epic-modal" onclick="if(event.target===this)closeLinkEpicModal()">
     <div class="modal" style="max-width:420px;text-align:center;">
@@ -896,7 +911,11 @@
               epicVerified: true,
               epicLinkedAt: firebase.firestore.FieldValue.serverTimestamp(),
             }, { merge: true });
+            // Clear ALL epic localStorage keys to prevent infinite re-writes
+            localStorage.removeItem('ct_epic_username');
+            localStorage.removeItem('ct_epic_account_id');
             localStorage.removeItem('ct_epic_linked_pending');
+            localStorage.removeItem('ct_epic_linking_uid');
           } catch (e) {
             console.warn('Epic sync notice:', e);
           }
@@ -1716,10 +1735,13 @@
               <span style="font-size:1.15rem;font-weight:900;color:#fff;">${team.name}</span>
             </div>
             ${isViewingSelf ? `
-              <div style="display:flex;gap:8px;align-items:center;">
+              <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
                 <span class="match-code-badge" title="Team Invite Code" onclick="copyTeamCode('${team.code}')" style="cursor:pointer;">
                   <i data-lucide="hash"></i>${team.code} <span style="font-size:0.7rem;opacity:0.7;">(Copy)</span>
                 </span>
+                ${isOwner ? `<button class="btn btn-outline btn-sm" onclick="openInvitePlayerModal('${team.id}','${team.name}','${team.tag}')">
+                  <i data-lucide="user-plus"></i> Invite Player
+                </button>` : ''}
                 <button class="btn btn-danger btn-sm" onclick="handleLeaveTeam('${team.id}')">
                   <i data-lucide="log-out"></i> ${isOwner ? 'Disband' : 'Leave'}
                 </button>
@@ -1734,6 +1756,69 @@
     function copyTeamCode(code) {
       if (navigator.clipboard) {
         navigator.clipboard.writeText(code).then(() => showToast(`Team Code "${code}" copied to clipboard! Share it with teammates.`, 'info'));
+      }
+    }
+
+    let _inviteTeamId = '', _inviteTeamName = '', _inviteTeamTag = '';
+
+    function openInvitePlayerModal(teamId, teamName, teamTag) {
+      _inviteTeamId = teamId;
+      _inviteTeamName = teamName;
+      _inviteTeamTag = teamTag;
+      document.getElementById('invite-player-search-input').value = '';
+      document.getElementById('invite-player-results').innerHTML = '';
+      const m = document.getElementById('invite-player-modal');
+      if (m) { m.classList.add('open'); m.classList.add('active'); }
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function closeInvitePlayerModal() {
+      const m = document.getElementById('invite-player-modal');
+      if (m) { m.classList.remove('open'); m.classList.remove('active'); }
+    }
+
+    async function handleInviteSearch(e) {
+      if (e) e.preventDefault();
+      const q = document.getElementById('invite-player-search-input').value.trim();
+      if (!q || q.length < 2) return;
+      document.getElementById('invite-player-results').innerHTML = '<div style="text-align:center;padding:12px;color:var(--text-muted);font-size:0.85rem;">Searching…</div>';
+      try {
+        const results = await searchUsers(q);
+        const filtered = results.filter(u => u.id !== currentUser?.uid);
+        if (!filtered.length) {
+          document.getElementById('invite-player-results').innerHTML = '<div style="text-align:center;padding:12px;color:var(--text-muted);font-size:0.85rem;">No players found.</div>';
+          return;
+        }
+        document.getElementById('invite-player-results').innerHTML = filtered.map(u => `
+          <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.07);">
+            <div style="width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;">
+              ${u.photoURL ? `<img src="${escapeHtml(u.photoURL)}" style="width:100%;height:100%;object-fit:cover;" alt=""/>` : `<i data-lucide="user" style="width:16px;height:16px;color:var(--text-faint);"></i>`}
+            </div>
+            <div style="flex:1;min-width:0;">
+              <div style="font-weight:800;font-size:0.9rem;color:#fff;">${escapeHtml(u.displayName || 'Unknown')}</div>
+              <div style="font-size:0.75rem;color:var(--text-muted);">${u.discordUsername ? '@' + escapeHtml(u.discordUsername) : ''}</div>
+            </div>
+            <button class="btn btn-primary btn-sm" style="font-size:0.78rem;" onclick="handleSendTeamInvite('${u.id}','${escapeHtml(u.displayName || 'Player')}')">
+              <i data-lucide="user-plus"></i> Invite
+            </button>
+          </div>`).join('');
+        if (window.lucide) lucide.createIcons();
+      } catch (err) {
+        document.getElementById('invite-player-results').innerHTML = '<div style="color:var(--red);font-size:0.85rem;padding:8px 0;">' + escapeHtml(err.message) + '</div>';
+      }
+    }
+
+    async function handleSendTeamInvite(targetUid, targetName) {
+      try {
+        await sendTeamInvite(
+          _inviteTeamId, _inviteTeamName, _inviteTeamTag,
+          currentUser.uid, currentUserData?.displayName || 'Someone',
+          targetUid
+        );
+        showToast(`Invite sent to ${targetName}!`, 'success');
+        closeInvitePlayerModal();
+      } catch (err) {
+        showToast(err.message, 'error');
       }
     }
 

@@ -42,6 +42,26 @@ function injectNav(activePage = '') {
             </button>
           </div>
 
+          <!-- Notification Bell -->
+          <div class="nav-notif-container" id="nav-notif-container">
+            <button class="nav-notif-btn" id="nav-notif-btn" onclick="toggleNotifDropdown(event)" title="Notifications">
+              <i data-lucide="bell"></i>
+              <span class="nav-notif-badge" id="nav-notif-badge" style="display:none;">0</span>
+            </button>
+            <div class="nav-notif-dropdown" id="nav-notif-dropdown">
+              <div class="nav-notif-header">
+                <span style="font-weight:800;font-size:0.9rem;color:#fff;">Notifications</span>
+                <button class="nav-notif-mark-read" onclick="handleMarkAllRead()">Mark all read</button>
+              </div>
+              <div id="nav-notif-list">
+                <div class="nav-notif-empty">
+                  <i data-lucide="bell-off" style="width:28px;height:28px;color:var(--text-faint);margin-bottom:8px;"></i>
+                  <div>No notifications yet</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <!-- Profile Avatar with Dropdown Menu -->
           <div class="nav-profile-menu-container">
             <div class="nav-profile-btn" id="nav-profile-btn" onclick="toggleNavProfileDropdown(event)" title="Account Menu">
@@ -64,6 +84,9 @@ function injectNav(activePage = '') {
                 <i data-lucide="sliders" style="width:16px;height:16px;"></i> Account Settings
               </a>
               <div class="nav-dropdown-divider"></div>
+              <a href="admin" class="nav-dropdown-item" id="nav-admin-link" style="display:none;color:var(--red);">
+                <i data-lucide="shield-check" style="width:16px;height:16px;color:var(--red);"></i> Admin Panel
+              </a>
               <div class="nav-dropdown-item danger-highlight" onclick="handleSignOut()">
                 <i data-lucide="log-out" style="width:16px;height:16px;color:#ef4444;"></i> Sign Out
               </div>
@@ -174,18 +197,26 @@ function injectNav(activePage = '') {
   injectFloatingIcons();
   lucide.createIcons();
 
-  // Close dropdown on outside click
+  // Close dropdowns on outside click
   document.addEventListener('click', (e) => {
-    const dropdown = document.getElementById('nav-profile-dropdown');
-    const btn = document.getElementById('nav-profile-btn');
-    if (dropdown && dropdown.classList.contains('open')) {
-      if (!dropdown.contains(e.target) && !btn.contains(e.target)) {
-        dropdown.classList.remove('open');
+    const profileDropdown = document.getElementById('nav-profile-dropdown');
+    const profileBtn = document.getElementById('nav-profile-btn');
+    const notifDropdown = document.getElementById('nav-notif-dropdown');
+    const notifBtn = document.getElementById('nav-notif-btn');
+
+    if (profileDropdown && profileDropdown.classList.contains('open')) {
+      if (!profileDropdown.contains(e.target) && !profileBtn.contains(e.target)) {
+        profileDropdown.classList.remove('open');
+      }
+    }
+    if (notifDropdown && notifDropdown.classList.contains('open')) {
+      if (!notifDropdown.contains(e.target) && !notifBtn.contains(e.target)) {
+        notifDropdown.classList.remove('open');
       }
     }
   });
 
-  // Populate balance + avatar + admin link from Firestore in real-time
+  // Populate balance + avatar + admin link + notifications from Firestore in real-time
   auth.onAuthStateChanged(async (user) => {
     if (!user) return;
     db.collection('users').doc(user.uid).onSnapshot((snap) => {
@@ -210,7 +241,18 @@ function injectNav(activePage = '') {
       const menuHandle = document.getElementById('nav-menu-handle');
       if (menuName) menuName.textContent = data.displayName || 'Champion';
       if (menuHandle) menuHandle.textContent = data.discordUsername ? `@${data.discordUsername}` : (data.email || `@${user.uid.slice(0, 8)}`);
+
+      // Admin link
+      const adminLink = document.getElementById('nav-admin-link');
+      if (adminLink && data.isAdmin) adminLink.style.display = 'flex';
     });
+
+    // Real-time notifications
+    if (typeof subscribeNotifications === 'function') {
+      subscribeNotifications(user.uid, (notifs) => {
+        renderNavNotifications(user.uid, notifs);
+      });
+    }
   });
 }
 
@@ -218,6 +260,106 @@ function toggleNavProfileDropdown(e) {
   if (e) e.stopPropagation();
   const dropdown = document.getElementById('nav-profile-dropdown');
   if (dropdown) dropdown.classList.toggle('open');
+}
+
+function toggleNotifDropdown(e) {
+  if (e) e.stopPropagation();
+  const dd = document.getElementById('nav-notif-dropdown');
+  if (dd) dd.classList.toggle('open');
+}
+
+let _notifCurrentUid = null;
+
+function renderNavNotifications(uid, notifs) {
+  _notifCurrentUid = uid;
+  const list = document.getElementById('nav-notif-list');
+  const badge = document.getElementById('nav-notif-badge');
+  if (!list) return;
+
+  const unread = notifs.filter(n => !n.read).length;
+  if (badge) {
+    if (unread > 0) {
+      badge.textContent = unread > 9 ? '9+' : unread;
+      badge.style.display = 'flex';
+    } else {
+      badge.style.display = 'none';
+    }
+  }
+
+  if (!notifs.length) {
+    list.innerHTML = `<div class="nav-notif-empty"><i data-lucide="bell-off" style="width:28px;height:28px;color:var(--text-faint);margin-bottom:8px;"></i><div>No notifications yet</div></div>`;
+    if (window.lucide) lucide.createIcons();
+    return;
+  }
+
+  const iconMap = {
+    match_win: '🏆',
+    match_join: '🎮',
+    team_invite: '🤝',
+    income: '💰',
+    system: '📢',
+    admin: '⚡',
+  };
+
+  list.innerHTML = notifs.map(n => {
+    const icon = iconMap[n.type] || '🔔';
+    const timeStr = n.createdAt ? formatTime(n.createdAt) : '';
+    const isTeamInvite = n.type === 'team_invite' && !n.read && !n.accepted && !n.declined;
+
+    return `
+      <div class="nav-notif-item${n.read ? '' : ' unread'}" data-id="${n.id}">
+        <div class="nav-notif-icon">${icon}</div>
+        <div style="flex:1;min-width:0;">
+          <div class="nav-notif-title">${n.title || 'Notification'}</div>
+          <div class="nav-notif-body">${n.body || ''}</div>
+          ${isTeamInvite ? `
+            <div style="display:flex;gap:6px;margin-top:8px;">
+              <button class="btn btn-primary btn-sm" style="font-size:0.75rem;padding:4px 10px;" onclick="handleAcceptTeamInvite('${n.id}','${n.teamId}',event)">
+                Accept
+              </button>
+              <button class="btn btn-outline btn-sm" style="font-size:0.75rem;padding:4px 10px;" onclick="handleDeclineTeamInvite('${n.id}',event)">
+                Decline
+              </button>
+            </div>` : ''}
+          ${timeStr ? `<div style="font-size:0.72rem;color:var(--text-faint);margin-top:4px;">${timeStr}</div>` : ''}
+        </div>
+        ${!n.read && !isTeamInvite ? `<div class="nav-notif-dot"></div>` : ''}
+      </div>`;
+  }).join('');
+
+  if (window.lucide) lucide.createIcons();
+}
+
+async function handleMarkAllRead() {
+  if (!_notifCurrentUid) return;
+  if (typeof markNotificationsRead === 'function') {
+    await markNotificationsRead(_notifCurrentUid);
+  }
+}
+
+async function handleAcceptTeamInvite(notifId, teamId, e) {
+  if (e) e.stopPropagation();
+  if (!_notifCurrentUid || !teamId) return;
+  try {
+    await acceptTeamInvite(notifId, _notifCurrentUid, teamId);
+    showToast('Team invite accepted! You joined the team.', 'success');
+    const dd = document.getElementById('nav-notif-dropdown');
+    if (dd) dd.classList.remove('open');
+    if (window.location.pathname.includes('profile')) window.location.reload();
+  } catch (err) {
+    showToast(err.message, 'error');
+  }
+}
+
+async function handleDeclineTeamInvite(notifId, e) {
+  if (e) e.stopPropagation();
+  if (!_notifCurrentUid) return;
+  try {
+    await declineTeamInvite(notifId, _notifCurrentUid);
+    showToast('Team invite declined.', 'info');
+  } catch (err) {
+    showToast(err.message, 'error');
+  }
 }
 
 function openTokenWalletModal(tab = 'purchase') {

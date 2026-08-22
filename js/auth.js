@@ -41,8 +41,16 @@ function getEpicRedirectUri() {
 
 /**
  * Initiate official published Epic Games OAuth 2.0 flow.
+ * Pass forceRelink=true to bypass the "already linked" guard.
  */
-function startEpicOAuth(uidOverride) {
+function startEpicOAuth(uidOverride, forceRelink = false) {
+  // Guard: if already linked, don't allow re-OAuth unless force-relinking after unlink
+  if (!forceRelink && typeof currentUserData !== 'undefined' && currentUserData?.epicUsername) {
+    if (typeof showToast === 'function') {
+      showToast('Epic account already linked. Unlink first to change accounts.', 'info');
+    }
+    return;
+  }
   const clientId = 'xyza78916i52N8UrLv1m41xvkgeBXfUh';
   const redirectUri = encodeURIComponent(getEpicRedirectUri());
   const uid = uidOverride || (auth.currentUser ? auth.currentUser.uid : (typeof currentUser !== 'undefined' && currentUser ? currentUser.uid : ''));

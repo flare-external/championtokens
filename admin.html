@@ -1,46 +1,19 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Champion Tokens</title>
+  <title>Admin Panel — Champion Tokens</title>
   <link rel="icon" type="image/png" href="champion_tokens_CT_v4.png"/>
-  <link rel="shortcut icon" type="image/png" href="champion_tokens_CT_v4.png"/>
-  <link rel="apple-touch-icon" href="champion_tokens_CT_v4.png"/>
   <link rel="stylesheet" href="css/style.css"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
-    .admin-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(239, 68, 68, 0.15);
-      border: 1px solid rgba(239, 68, 68, 0.4);
-      color: var(--red);
-      border-radius: var(--radius-sm);
-      padding: 4px 10px;
-      font-weight: 800;
-      font-size: 0.8rem;
-    }
-    .ticket-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 18px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      transition: border-color 0.2s;
-    }
-    .ticket-card.open {
-      border-color: rgba(239, 68, 68, 0.4);
-      background: rgba(239, 68, 68, 0.03);
-    }
-    .ticket-card.resolved {
-      border-color: rgba(16, 185, 129, 0.3);
-      opacity: 0.75;
-    }
+    .admin-badge { display:inline-flex;align-items:center;gap:6px;background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.4);color:var(--red);border-radius:var(--radius-sm);padding:4px 10px;font-weight:800;font-size:0.8rem; }
+    .ticket-card { background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:18px;display:flex;flex-direction:column;gap:12px;transition:border-color 0.2s; }
+    .ticket-card.open { border-color:rgba(239,68,68,0.4);background:rgba(239,68,68,0.03); }
+    .ticket-card.resolved { border-color:rgba(16,185,129,0.3);opacity:0.75; }
+    [id^="admin-tab-"].hidden { display:none !important; }
   </style>
 </head>
 <body>
@@ -58,7 +31,6 @@
   <script src="js/auth.js"></script>
   <script src="js/db.js"></script>
   <script src="js/nav.js"></script>
-
   <script>
     let currentUser = null;
     let currentUserData = null;
@@ -66,184 +38,103 @@
     requireAuth().then(async (user) => {
       currentUser = user;
       currentUserData = await getUser(user.uid);
-
-      // Verify admin status
       if (!isAdminUser(user, currentUserData)) {
-        document.getElementById('page-loading').innerHTML = `
-          <div style="text-align:center;padding:20px;">
-            <i data-lucide="shield-x" style="width:48px;height:48px;color:var(--red);margin-bottom:12px;"></i>
-            <h2 style="color:var(--red);">Access Denied</h2>
-            <p style="color:var(--text-muted);margin:8px 0 16px;">This panel is restricted to system administrators only.</p>
-            <a href="dashboard" class="btn btn-primary btn-sm">Return to Dashboard</a>
-          </div>`;
-        lucide.createIcons();
-        return;
+        document.getElementById('page-loading').innerHTML = '<div style="text-align:center;padding:20px;"><i data-lucide="shield-x" style="width:48px;height:48px;color:var(--red);margin-bottom:12px;"></i><h2 style="color:var(--red);">Access Denied</h2><p style="color:var(--text-muted);margin:8px 0 16px;">This panel is restricted to system administrators only.</p><a href="dashboard" class="btn btn-primary btn-sm">Return to Dashboard</a></div>';
+        lucide.createIcons(); return;
       }
-
       injectNav('admin');
       document.getElementById('page-loading').classList.add('hidden');
-
-      // Real-time Staff Calls
+      switchAdminTab('players');
       subscribeStaffCalls();
-      // Real-time Active Matches
       subscribeActiveMatches();
-    }).catch(err => {
-      console.error(err);
-      window.location.href = '/';
-    });
+      subscribeActiveTeams();
+    }).catch(() => window.location.href = '/');
 
-    // ── Staff Calls Listener ─────────────────────────────────
-    function subscribeStaffCalls() {
-      db.collection('staff_calls')
-        .orderBy('timestamp', 'desc')
-        .limit(30)
-        .onSnapshot((snap) => {
-          const calls = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-          renderStaffCalls(calls);
-        }, (err) => {
-          console.warn('Staff calls error:', err);
-          document.getElementById('staff-calls-list').innerHTML = `<div class="empty-state">No staff calls logged.</div>`;
-        });
+    function switchAdminTab(tab) {
+      ['players','matches','teams','tickets','broadcast'].forEach(t => {
+        const el = document.getElementById('admin-tab-' + t);
+        const btn = document.getElementById('admin-tabBtn-' + t);
+        if (el) el.classList.toggle('hidden', t !== tab);
+        if (btn) btn.classList.toggle('active', t === tab);
+      });
     }
 
-    function renderStaffCalls(calls) {
-      const container = document.getElementById('staff-calls-list');
-      const openCalls = calls.filter(c => c.status !== 'resolved');
-      document.getElementById('open-calls-count').textContent = openCalls.length;
+    async function handlePlayerSearch(e) {
+      if (e) e.preventDefault();
+      const q = document.getElementById('player-search-input').value.trim();
+      if (!q || q.length < 2) return;
+      const btn = document.getElementById('player-search-btn');
+      if (btn) btn.disabled = true;
+      document.getElementById('player-search-results').innerHTML = '<div class="empty-state"><div class="spinner" style="margin:0 auto;"></div></div>';
+      try { renderPlayerResults(await searchUsers(q)); }
+      catch (err) { document.getElementById('player-search-results').innerHTML = '<div class="empty-state"><p>Error: ' + escapeHtml(err.message) + '</p></div>'; }
+      finally { if (btn) btn.disabled = false; }
+    }
 
-      if (!calls.length) {
-        container.innerHTML = `<div class="empty-state"><i data-lucide="shield-check"></i><p>No active staff calls. All quiet!</p></div>`;
-        lucide.createIcons();
-        return;
-      }
-
-      container.innerHTML = calls.map(c => {
-        const isOpen = c.status !== 'resolved';
-        return `
-          <div class="ticket-card ${isOpen ? 'open' : 'resolved'}">
-            <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
-              <div style="display:flex;align-items:center;gap:8px;">
-                <span class="badge ${isOpen ? 'badge-waiting' : 'badge-completed'}" style="${isOpen ? 'background:rgba(239,68,68,0.2);color:var(--red);border-color:rgba(239,68,68,0.4);' : ''}">
-                  ${isOpen ? '🚨 OPEN TICKET' : '✅ RESOLVED'}
-                </span>
-                <span style="font-weight:800;font-size:1rem;color:#fff;">${c.reason}</span>
-              </div>
-              <span style="font-size:0.75rem;color:var(--text-faint);">${formatTime(c.timestamp)}</span>
-            </div>
-
-            <div style="font-size:0.85rem;color:var(--text-muted);line-height:1.4;">
-              ${c.details ? `<div><strong>Details:</strong> "${escapeHtml(c.details)}"</div>` : ''}
-              <div style="margin-top:4px;">
-                <strong>Reported By:</strong> ${c.calledByName} (UID: <span style="font-family:monospace;font-size:0.75rem;">${c.calledByUid?.substring(0,10)}</span>)
-                · <strong>Match:</strong> ${c.matchTitle || 'Match'} (${c.matchCode})
-              </div>
-              ${c.resolvedBy ? `<div style="margin-top:2px;color:var(--green);"><strong>Resolved by:</strong> ${c.resolvedBy} ${c.resolutionNotes ? `("${escapeHtml(c.resolutionNotes)}")` : ''}</div>` : ''}
-            </div>
-
-            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px;">
-              <a href="match?id=${c.matchId}" target="_blank" class="btn btn-outline btn-sm">
-                <i data-lucide="external-link"></i> Inspect Match Arena
-              </a>
-              ${isOpen ? `
-                <button class="btn btn-primary btn-sm" onclick="handleResolveTicket('${c.id}')">
-                  <i data-lucide="check"></i> Mark Resolved
-                </button>
-                <button class="btn btn-danger btn-sm" onclick="handleAdminCancelMatch('${c.matchId}')">
-                  <i data-lucide="slash"></i> Force Cancel & Refund
-                </button>` : ''}
-            </div>
-          </div>`;
+    function renderPlayerResults(users) {
+      const c = document.getElementById('player-search-results');
+      if (!users.length) { c.innerHTML = '<div class="empty-state"><p>No players found.</p></div>'; return; }
+      c.innerHTML = users.map(u => {
+        const banned = !!u.banned;
+        return '<div class="admin-player-card' + (banned ? ' banned' : '') + '">' +
+          '<div class="admin-player-avatar">' + (u.photoURL ? '<img src="' + escapeHtml(u.photoURL) + '" alt=""/>' : '<i data-lucide="user" style="width:20px;height:20px;color:var(--text-faint);"></i>') + '</div>' +
+          '<div style="flex:1;min-width:0;">' +
+            '<div style="font-weight:800;font-size:0.95rem;color:#fff;">' + escapeHtml(u.displayName || 'Unknown') + '</div>' +
+            '<div style="font-size:0.75rem;color:var(--text-muted);">' + (u.discordUsername ? '@' + escapeHtml(u.discordUsername) + ' · ' : '') + (u.epicUsername ? '🎮 ' + escapeHtml(u.epicUsername) + ' · ' : '') + formatTokens(u.tokens || 0) + ' T</div>' +
+            '<div style="font-size:0.7rem;color:var(--text-faint);margin-top:2px;font-family:monospace;">' + u.id + '</div>' +
+            (banned ? '<div style="font-size:0.75rem;color:var(--red);margin-top:2px;font-weight:700;">⛔ Banned' + (u.banReason ? ' — ' + escapeHtml(u.banReason) : '') + '</div>' : '') +
+          '</div>' +
+          '<div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end;flex-shrink:0;">' +
+            '<a href="profile?uid=' + u.id + '" target="_blank" class="btn btn-outline btn-sm"><i data-lucide="external-link"></i> Profile</a>' +
+            (banned ? '<button class="btn btn-primary btn-sm" onclick="handleUnbanUser(\'' + u.id + '\')"><i data-lucide="shield-check"></i> Unban</button>' : '<button class="btn btn-danger btn-sm" onclick="handleBanUser(\'' + u.id + '\',\'' + escapeHtml(u.displayName || 'Unknown') + '\')"><i data-lucide="shield-x"></i> Ban</button>') +
+            '<button class="btn btn-outline btn-sm" onclick="openGrantTokens(\'' + u.id + '\',\'' + escapeHtml(u.displayName || 'Unknown') + '\')"><i data-lucide="coins"></i> Tokens</button>' +
+          '</div></div>';
       }).join('');
       lucide.createIcons();
     }
 
-    async function handleResolveTicket(callId) {
-      const notes = prompt('Enter resolution notes (optional):', 'Issue verified and resolved');
-      if (notes === null) return;
-      try {
-        await resolveStaffCall(callId, currentUserData?.displayName || 'Admin', notes);
-        showToast('Ticket marked as resolved!', 'success');
-      } catch (err) {
-        showToast(err.message, 'error');
-      }
+    async function handleBanUser(uid, name) {
+      const reason = prompt('Ban reason for ' + name + ':', 'Violation of terms');
+      if (reason === null) return;
+      try { await adminBanUser(uid, currentUserData?.displayName || 'Admin', reason); showToast(name + ' banned.', 'success'); await handlePlayerSearch(null); }
+      catch (err) { showToast(err.message, 'error'); }
     }
 
-    async function handleAdminCancelMatch(matchId) {
-      const ok = await showConfirm({
-        title: 'Force Cancel Match?',
-        message: 'Force cancel this match and 100% refund all players?',
-        confirmText: 'Force Cancel & Refund',
-        cancelText: 'Cancel',
-        type: 'danger',
-        icon: 'x-circle'
-      });
-      if (!ok) return;
-
-      try {
-        await adminForceCancelMatch(matchId, currentUserData?.displayName || 'Admin');
-        showToast('Match force cancelled and players refunded!', 'success');
-      } catch (err) {
-        showToast(err.message, 'error');
-      }
+    async function handleUnbanUser(uid) {
+      try { await adminUnbanUser(uid); showToast('User unbanned.', 'success'); await handlePlayerSearch(null); }
+      catch (err) { showToast(err.message, 'error'); }
     }
 
-    // ── Active Matches ───────────────────────────────────────
-    function subscribeActiveMatches() {
-      db.collection('matches')
-        .where('status', 'in', ['waiting', 'in_progress'])
-        .limit(20)
-        .onSnapshot((snap) => {
-          const list = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-          document.getElementById('active-matches-count').textContent = list.length;
-          renderActiveMatches(list);
-        });
+    function openGrantTokens(uid, name) {
+      document.getElementById('adjust-uid-input').value = uid;
+      document.getElementById('adjust-uid-label').textContent = name;
+      document.getElementById('adjust-reason-input').value = '';
+      setAdminAmount(10);
+      document.getElementById('grant-tokens-section').scrollIntoView({ behavior: 'smooth' });
     }
 
-    function renderActiveMatches(matches) {
-      const container = document.getElementById('active-matches-list');
-      if (!matches.length) {
-        container.innerHTML = `<div class="empty-state"><p>No live matches currently running.</p></div>`;
-        return;
-      }
-      container.innerHTML = matches.map(m => `
-        <div class="mh-card" style="margin-bottom:8px;">
-          <div style="flex:1;">
-            <div style="font-weight:700;font-size:0.95rem;">${m.title} (${m.code})</div>
-            <div style="font-size:0.75rem;color:var(--text-muted);">
-              Host: ${m.hostName} · ${formatTokens(m.wager)} wager · ${m.players?.length || 1}/${m.maxPlayers} players
-            </div>
-          </div>
-          <div style="display:flex;gap:6px;">
-            <a href="match?id=${m.id}" target="_blank" class="btn btn-outline btn-sm">Inspect</a>
-            <button class="btn btn-danger btn-sm" onclick="handleAdminCancelMatch('${m.id}')">Cancel</button>
-          </div>
-        </div>
-      `).join('');
-    }
-
-    // ── Token Adjustment Tool ────────────────────────────────
     function setAdminAmount(val) {
       const num = parseFloat(val) || 0;
       document.getElementById('adjust-amount-input').value = num.toFixed(2);
       const slider = document.getElementById('admin-token-slider');
       if (slider) slider.value = Math.min(Math.max(num, -50), 200);
-      const valBadge = document.getElementById('admin-slider-val');
-      if (valBadge) valBadge.textContent = `${num >= 0 ? '+' : ''}${num.toFixed(2)}`;
+      const badge = document.getElementById('admin-slider-val');
+      if (badge) badge.textContent = (num >= 0 ? '+' : '') + num.toFixed(2);
     }
 
     function syncAdminSlider(val) {
       const num = parseFloat(val) || 0;
       document.getElementById('adjust-amount-input').value = num.toFixed(2);
-      const valBadge = document.getElementById('admin-slider-val');
-      if (valBadge) valBadge.textContent = `${num >= 0 ? '+' : ''}${num.toFixed(2)}`;
+      const badge = document.getElementById('admin-slider-val');
+      if (badge) badge.textContent = (num >= 0 ? '+' : '') + num.toFixed(2);
     }
 
     function syncAdminInput(val) {
       const num = parseFloat(val) || 0;
       const slider = document.getElementById('admin-token-slider');
       if (slider) slider.value = Math.min(Math.max(num, -50), 200);
-      const valBadge = document.getElementById('admin-slider-val');
-      if (valBadge) valBadge.textContent = `${num >= 0 ? '+' : ''}${num.toFixed(2)}`;
+      const badge = document.getElementById('admin-slider-val');
+      if (badge) badge.textContent = (num >= 0 ? '+' : '') + num.toFixed(2);
     }
 
     async function handleAdjustTokens(e) {
@@ -252,67 +143,140 @@
       const amount = parseFloat(document.getElementById('adjust-amount-input').value);
       const reason = document.getElementById('adjust-reason-input').value.trim() || 'Admin adjustment';
       const btn = document.getElementById('adjust-btn');
-
       if (!identifier || isNaN(amount)) return;
       btn.disabled = true;
-
       try {
         const res = await adminAdjustTokens(identifier, amount, reason);
-        showToast(`Successfully adjusted ${amount > 0 ? '+' : ''}${amount} tokens for ${res.userName || identifier}!`, 'success');
+        showToast((amount > 0 ? '+' : '') + amount.toFixed(2) + ' tokens applied to ' + (res.userName || identifier) + '!', 'success');
         document.getElementById('adjust-uid-input').value = '';
-        setAdminAmount(10.00);
-      } catch (err) {
-        showToast(err.message, 'error');
-      } finally {
-        btn.disabled = false;
-      }
+        document.getElementById('adjust-uid-label').textContent = 'Player';
+        setAdminAmount(10);
+      } catch (err) { showToast(err.message, 'error'); }
+      finally { btn.disabled = false; }
+    }
+
+    function subscribeActiveMatches() {
+      db.collection('matches').where('status', 'in', ['waiting','in_progress','disputed']).limit(25).onSnapshot((snap) => {
+        const list = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        document.getElementById('active-matches-count').textContent = list.length;
+        renderActiveMatches(list);
+      });
+    }
+
+    function renderActiveMatches(matches) {
+      const c = document.getElementById('active-matches-list');
+      if (!matches.length) { c.innerHTML = '<div class="empty-state"><p>No live matches.</p></div>'; return; }
+      c.innerHTML = matches.map(m => {
+        const sc = m.status === 'disputed' ? 'var(--red)' : (m.status === 'in_progress' ? 'var(--green)' : 'var(--text-muted)');
+        return '<div class="mh-card" style="margin-bottom:8px;"><div style="flex:1;"><div style="font-weight:700;">' + escapeHtml(m.title) + ' <span style="font-family:monospace;font-size:0.8rem;color:var(--text-faint);">(' + m.code + ')</span></div><div style="font-size:0.75rem;color:var(--text-muted);">Host: ' + escapeHtml(m.hostName || '—') + ' · ' + formatTokens(m.wager) + ' T · ' + (m.players?.length || 1) + '/' + m.maxPlayers + ' players · <span style="color:' + sc + ';font-weight:700;">' + m.status.toUpperCase() + '</span></div></div><div style="display:flex;gap:6px;"><a href="match?id=' + m.id + '" target="_blank" class="btn btn-outline btn-sm">Inspect</a><button class="btn btn-danger btn-sm" onclick="handleAdminCancelMatch(\'' + m.id + '\')">Force Cancel</button></div></div>';
+      }).join('');
+    }
+
+    async function handleAdminCancelMatch(matchId) {
+      const ok = await showConfirm({ title: 'Force Cancel Match?', message: 'Force cancel and 100% refund all players?', confirmText: 'Force Cancel & Refund', cancelText: 'Cancel', type: 'danger', icon: 'x-circle' });
+      if (!ok) return;
+      try { await adminForceCancelMatch(matchId, currentUserData?.displayName || 'Admin'); showToast('Match cancelled and players refunded!', 'success'); }
+      catch (err) { showToast(err.message, 'error'); }
+    }
+
+    function subscribeActiveTeams() {
+      db.collection('teams').limit(30).onSnapshot((snap) => {
+        const list = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        document.getElementById('teams-count').textContent = list.length;
+        renderTeamsList(list);
+      });
+    }
+
+    function renderTeamsList(teams) {
+      const c = document.getElementById('teams-admin-list');
+      if (!teams.length) { c.innerHTML = '<div class="empty-state"><p>No active teams.</p></div>'; return; }
+      c.innerHTML = teams.map(t => '<div class="mh-card" style="margin-bottom:8px;"><div style="flex:1;"><div style="font-weight:700;">[' + escapeHtml(t.tag) + '] ' + escapeHtml(t.name) + '</div><div style="font-size:0.75rem;color:var(--text-muted);">Owner: ' + escapeHtml(t.ownerName || '—') + ' · ' + (t.memberUids || []).length + ' members</div></div><button class="btn btn-danger btn-sm" onclick="handleDissolveTeam(\'' + t.id + '\',\'' + escapeHtml(t.name) + '\')"><i data-lucide="trash-2"></i> Dissolve</button></div>').join('');
+      lucide.createIcons();
+    }
+
+    async function handleDissolveTeam(teamId, name) {
+      const ok = await showConfirm({ title: 'Dissolve team "' + name + '"?', message: 'This will remove all members.', confirmText: 'Dissolve', type: 'danger' });
+      if (!ok) return;
+      try {
+        const teamSnap = await db.collection('teams').doc(teamId).get();
+        const ownerUid = teamSnap.data()?.ownerUid;
+        if (ownerUid) await leaveTeam(teamId, ownerUid);
+        showToast('Team "' + name + '" dissolved.', 'success');
+      } catch (err) { showToast(err.message, 'error'); }
+    }
+
+    function subscribeStaffCalls() {
+      db.collection('staff_calls').orderBy('timestamp', 'desc').limit(30).onSnapshot((snap) => {
+        const calls = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        document.getElementById('open-calls-count').textContent = calls.filter(c => c.status !== 'resolved').length;
+        renderStaffCalls(calls);
+      }, () => { document.getElementById('staff-calls-list').innerHTML = '<div class="empty-state">No staff calls.</div>'; });
+    }
+
+    function renderStaffCalls(calls) {
+      const c = document.getElementById('staff-calls-list');
+      if (!calls.length) { c.innerHTML = '<div class="empty-state"><p>All quiet!</p></div>'; return; }
+      c.innerHTML = calls.map(call => {
+        const isOpen = call.status !== 'resolved';
+        return '<div class="ticket-card ' + (isOpen ? 'open' : 'resolved') + '"><div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;"><div style="display:flex;align-items:center;gap:8px;"><span class="badge ' + (isOpen ? 'badge-waiting' : 'badge-completed') + '" style="' + (isOpen ? 'background:rgba(239,68,68,0.2);color:var(--red);border-color:rgba(239,68,68,0.4);' : '') + '">' + (isOpen ? '🚨 OPEN' : '✅ RESOLVED') + '</span><span style="font-weight:800;">' + escapeHtml(call.reason) + '</span></div><span style="font-size:0.75rem;color:var(--text-faint);">' + formatTime(call.timestamp) + '</span></div>' +
+          '<div style="font-size:0.85rem;color:var(--text-muted);">' + (call.details ? '<div><strong>Details:</strong> "' + escapeHtml(call.details) + '"</div>' : '') + '<div style="margin-top:4px;"><strong>By:</strong> ' + escapeHtml(call.calledByName || '—') + ' · <strong>Match:</strong> ' + escapeHtml(call.matchCode || '—') + '</div>' + (call.resolvedBy ? '<div style="color:var(--green);"><strong>Resolved by:</strong> ' + escapeHtml(call.resolvedBy) + '</div>' : '') + '</div>' +
+          '<div style="display:flex;gap:8px;flex-wrap:wrap;">' + '<a href="match?id=' + call.matchId + '" target="_blank" class="btn btn-outline btn-sm"><i data-lucide="external-link"></i> Inspect</a>' + (isOpen ? '<button class="btn btn-primary btn-sm" onclick="handleResolveTicket(\'' + call.id + '\')"><i data-lucide="check"></i> Resolve</button><button class="btn btn-danger btn-sm" onclick="handleAdminCancelMatch(\'' + call.matchId + '\')"><i data-lucide="slash"></i> Force Cancel</button>' : '') + '</div></div>';
+      }).join('');
+      lucide.createIcons();
+    }
+
+    async function handleResolveTicket(callId) {
+      const notes = prompt('Resolution notes:', 'Issue verified and resolved');
+      if (notes === null) return;
+      try { await resolveStaffCall(callId, currentUserData?.displayName || 'Admin', notes); showToast('Ticket resolved!', 'success'); }
+      catch (err) { showToast(err.message, 'error'); }
+    }
+
+    async function handleBroadcast(e) {
+      e.preventDefault();
+      const title = document.getElementById('broadcast-title').value.trim();
+      const body = document.getElementById('broadcast-body').value.trim();
+      if (!title || !body) return;
+      const btn = document.getElementById('broadcast-btn');
+      btn.disabled = true;
+      try {
+        const snap = await db.collection('users').get();
+        const uids = snap.docs.map(d => d.id);
+        await Promise.all(uids.map(uid => pushNotification(uid, 'system', title, body, { fromAdmin: currentUserData?.displayName || 'Admin' })));
+        showToast('Broadcast sent to ' + uids.length + ' users!', 'success');
+        document.getElementById('broadcast-title').value = '';
+        document.getElementById('broadcast-body').value = '';
+      } catch (err) { showToast(err.message, 'error'); }
+      finally { btn.disabled = false; }
     }
 
     async function handleMasterDatabaseReset() {
-      const confirm1 = confirm('⚠️ WARNING: This will completely delete all matches, transactions, teams, and staff calls, and reset all real user balances to 10.00 Tokens.\n\nAre you sure you want to proceed?');
-      if (!confirm1) return;
-
-      const confirm2 = prompt('Type RESET to confirm complete database wipe:');
-      if (confirm2 !== 'RESET') {
-        showToast('Database reset cancelled', 'info');
-        return;
-      }
-
+      if (!confirm('WARNING: This will delete all matches, transactions, teams, staff calls, and reset all users to 10.00 Tokens. Proceed?')) return;
+      if (prompt('Type RESET to confirm:') !== 'RESET') { showToast('Reset cancelled', 'info'); return; }
       const btn = document.getElementById('reset-db-btn');
       if (btn) btn.disabled = true;
-      showToast('Wiping database and resetting all accounts to 10.00 Tokens…', 'info');
-
-      try {
-        const res = await fullDatabaseReset();
-        showToast(`Database wiped successfully! Cleaned ${res.deletedCount || 0} records.`, 'success');
-        setTimeout(() => location.reload(), 1500);
-      } catch (err) {
-        showToast('Database reset error: ' + err.message, 'error');
-        if (btn) btn.disabled = false;
-      }
+      showToast('Wiping database…', 'info');
+      try { const res = await fullDatabaseReset(); showToast('Database wiped! Cleaned ' + (res.deletedCount || 0) + ' records.', 'success'); setTimeout(() => location.reload(), 1500); }
+      catch (err) { showToast('Error: ' + err.message, 'error'); if (btn) btn.disabled = false; }
     }
 
     function escapeHtml(str) {
-      return str ? str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;") : '';
+      return str ? String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') : '';
     }
   </script>
 
   <main class="page-wrap">
-    <!-- Admin Header -->
-    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-bottom:28px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-bottom:24px;">
       <div>
         <div style="display:flex;align-items:center;gap:10px;">
-          <h1 style="font-size:1.9rem;">Staff & Admin Dashboard</h1>
+          <h1 style="font-size:1.9rem;">Admin Dashboard</h1>
           <span class="admin-badge"><i data-lucide="shield-check"></i> System Administrator</span>
         </div>
-        <p style="color:var(--text-muted);font-size:0.875rem;margin-top:4px;">
-          Moderate live matches, resolve player dispute tickets, and manage token accounts.
-        </p>
+        <p style="color:var(--text-muted);font-size:0.875rem;margin-top:4px;">Manage players, matches, teams, support tickets, and broadcast messages.</p>
       </div>
     </div>
 
-    <!-- Quick Stats -->
-    <div class="grid-3" style="margin-bottom:28px;">
+    <div class="grid-3" style="margin-bottom:24px;">
       <div class="card stat-card">
         <div class="stat-icon stat-icon--accent"><i data-lucide="shield-alert"></i></div>
         <div class="stat-label">Open Staff Calls</div>
@@ -324,94 +288,93 @@
         <div class="stat-value stat-value--gold" id="active-matches-count">0</div>
       </div>
       <div class="card stat-card">
-        <div class="stat-icon stat-icon--green"><i data-lucide="check-circle"></i></div>
-        <div class="stat-label">System Status</div>
-        <div class="stat-value" style="color:var(--green);font-size:1.3rem;">Operational</div>
+        <div class="stat-icon stat-icon--green"><i data-lucide="users"></i></div>
+        <div class="stat-label">Active Teams</div>
+        <div class="stat-value" style="color:var(--green);" id="teams-count">0</div>
       </div>
     </div>
 
-    <!-- Two-col: Staff Calls List + Tools -->
-    <div class="grid-2" style="align-items:start;gap:24px;">
-      <!-- Staff Calls Stream -->
-      <div>
-        <div class="section-title" style="margin-bottom:14px;">
-          <i data-lucide="shield-alert"></i> Staff Calls & Dispute Queue
-        </div>
-        <div id="staff-calls-list" style="display:flex;flex-direction:column;gap:14px;">
-          <div class="empty-state"><div class="spinner" style="margin:0 auto;"></div></div>
+    <div class="admin-tab-row">
+      <button class="admin-tab-btn" id="admin-tabBtn-players" onclick="switchAdminTab('players')"><i data-lucide="users" style="width:15px;height:15px;"></i> Players</button>
+      <button class="admin-tab-btn" id="admin-tabBtn-matches" onclick="switchAdminTab('matches')"><i data-lucide="swords" style="width:15px;height:15px;"></i> Matches</button>
+      <button class="admin-tab-btn" id="admin-tabBtn-teams" onclick="switchAdminTab('teams')"><i data-lucide="shield" style="width:15px;height:15px;"></i> Teams</button>
+      <button class="admin-tab-btn" id="admin-tabBtn-tickets" onclick="switchAdminTab('tickets')"><i data-lucide="alert-circle" style="width:15px;height:15px;"></i> Tickets</button>
+      <button class="admin-tab-btn" id="admin-tabBtn-broadcast" onclick="switchAdminTab('broadcast')"><i data-lucide="megaphone" style="width:15px;height:15px;"></i> Broadcast</button>
+    </div>
+
+    <!-- Players Tab -->
+    <div id="admin-tab-players">
+      <div class="card" style="margin-bottom:20px;">
+        <div class="section-title" style="margin-bottom:14px;"><i data-lucide="search"></i> Player Search</div>
+        <form class="admin-search-bar" onsubmit="handlePlayerSearch(event)">
+          <input class="form-input" id="player-search-input" placeholder="Search by name, @discord, Epic username, or UID…" autocomplete="off"/>
+          <button type="submit" class="btn btn-primary btn-sm" id="player-search-btn"><i data-lucide="search"></i> Search</button>
+        </form>
+        <div id="player-search-results">
+          <div class="empty-state" style="padding:24px 0;"><i data-lucide="users"></i><p>Search for a player above.</p></div>
         </div>
       </div>
-
-      <!-- Right Column: Admin Tools & Live Matches -->
-      <div style="display:flex;flex-direction:column;gap:24px;">
-        <!-- Token Adjustment Tool -->
-        <div class="card">
-          <div class="section-title" style="margin-bottom:12px;">
-            <i data-lucide="coins"></i> User Token Adjuster
+      <div class="card" id="grant-tokens-section">
+        <div class="section-title" style="margin-bottom:12px;"><i data-lucide="coins"></i> Token Adjuster — <span id="adjust-uid-label" style="color:var(--gold-bright);font-size:0.9rem;">Player</span></div>
+        <form onsubmit="handleAdjustTokens(event)" style="display:flex;flex-direction:column;gap:12px;">
+          <div class="form-group">
+            <label class="form-label">User ID / Username</label>
+            <input class="form-input" id="adjust-uid-input" placeholder="e.g. UID or @username" required/>
           </div>
-          <form onsubmit="handleAdjustTokens(event)" style="display:flex;flex-direction:column;gap:12px;">
-            <div class="form-group">
-              <label class="form-label">User ID / Username</label>
-              <input class="form-input" id="adjust-uid-input" placeholder="e.g. 1121188319410278420 or aubt" required />
+          <div class="form-group">
+            <div class="slider-wrap" style="margin:4px 0 8px;">
+              <div class="slider-header"><span>Adjustment Amount</span><span class="slider-val-badge" id="admin-slider-val">+10.00</span></div>
+              <input type="range" class="ct-slider" id="admin-token-slider" min="-50" max="200" step="5" value="10" oninput="syncAdminSlider(this.value)"/>
             </div>
-            <div class="form-group">
-              <div class="slider-wrap" style="margin:4px 0 8px;">
-                <div class="slider-header">
-                  <span>Adjustment Amount</span>
-                  <span class="slider-val-badge" id="admin-slider-val">+10.00</span>
-                </div>
-                <input
-                  type="range"
-                  class="ct-slider"
-                  id="admin-token-slider"
-                  min="-50"
-                  max="200"
-                  step="5"
-                  value="10"
-                  oninput="syncAdminSlider(this.value)"
-                />
-              </div>
-              <input class="form-input" id="adjust-amount-input" type="number" step="0.25" value="10.00" oninput="syncAdminInput(this.value)" required style="font-weight:800;" />
-              <div class="wager-shortcuts" style="margin-top:6px;">
-                <span class="wager-pill" onclick="setAdminAmount(5.00)">+5.00</span>
-                <span class="wager-pill" onclick="setAdminAmount(10.00)">+10.00</span>
-                <span class="wager-pill" onclick="setAdminAmount(25.00)">+25.00</span>
-                <span class="wager-pill" onclick="setAdminAmount(50.00)">+50.00</span>
-                <span class="wager-pill" onclick="setAdminAmount(-10.00)" style="color:var(--red);">-10.00</span>
-              </div>
+            <input class="form-input" id="adjust-amount-input" type="number" step="0.25" value="10.00" oninput="syncAdminInput(this.value)" required style="font-weight:800;"/>
+            <div class="wager-shortcuts" style="margin-top:6px;">
+              <span class="wager-pill" onclick="setAdminAmount(5)">+5.00</span>
+              <span class="wager-pill" onclick="setAdminAmount(10)">+10.00</span>
+              <span class="wager-pill" onclick="setAdminAmount(25)">+25.00</span>
+              <span class="wager-pill" onclick="setAdminAmount(50)">+50.00</span>
+              <span class="wager-pill" onclick="setAdminAmount(-10)" style="color:var(--red);">-10.00</span>
             </div>
-            <div class="form-group">
-              <label class="form-label">Reason / Notes</label>
-              <input class="form-input" id="adjust-reason-input" placeholder="e.g. Match compensation / manual reward" />
-            </div>
-            <button type="submit" class="btn btn-primary btn-sm" id="adjust-btn" style="margin-top:4px;">
-              <i data-lucide="zap"></i> Apply Adjustment
-            </button>
-          </form>
-        </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Reason / Notes</label>
+            <input class="form-input" id="adjust-reason-input" placeholder="e.g. Match compensation"/>
+          </div>
+          <button type="submit" class="btn btn-primary btn-sm" id="adjust-btn"><i data-lucide="zap"></i> Apply Adjustment</button>
+        </form>
+      </div>
+      <div class="card" style="margin-top:20px;border-color:rgba(239,68,68,0.4);background:linear-gradient(135deg,rgba(239,68,68,0.08) 0%,rgba(14,18,32,0.95) 100%);">
+        <div class="section-title" style="margin-bottom:8px;color:#fca5a5;"><i data-lucide="trash-2" style="color:var(--red);"></i> Master Database Reset</div>
+        <p style="font-size:0.825rem;color:var(--text-muted);margin-bottom:14px;">Clears all matches, transactions, teams, staff tickets. Resets all accounts to 10.00 Tokens.</p>
+        <button type="button" class="btn btn-danger btn-sm" id="reset-db-btn" onclick="handleMasterDatabaseReset()" style="width:100%;justify-content:center;"><i data-lucide="refresh-cw"></i> Execute Full Database Reset</button>
+      </div>
+    </div>
 
-        <!-- Master Database Wipe Tool -->
-        <div class="card" style="border-color:rgba(239,68,68,0.4);background:linear-gradient(135deg,rgba(239,68,68,0.08) 0%,rgba(14,18,32,0.95) 100%);">
-          <div class="section-title" style="margin-bottom:8px;color:#fca5a5;">
-            <i data-lucide="trash-2" style="color:var(--red);"></i> Master Database Reset
-          </div>
-          <p style="font-size:0.825rem;color:var(--text-muted);margin-bottom:14px;">
-            Clears all matches, transactions, teams, and staff tickets. Resets all real player accounts to <strong>10.00 Starter Tokens</strong> and 0 match history.
-          </p>
-          <button type="button" class="btn btn-danger btn-sm" id="reset-db-btn" onclick="handleMasterDatabaseReset()" style="width:100%;justify-content:center;">
-            <i data-lucide="refresh-cw"></i> Execute Full Database Reset
-          </button>
-        </div>
+    <!-- Matches Tab -->
+    <div id="admin-tab-matches" class="hidden">
+      <div class="card"><div class="section-title" style="margin-bottom:14px;"><i data-lucide="swords"></i> Live Matches Monitor</div><div id="active-matches-list"><div class="spinner" style="margin:10px auto;"></div></div></div>
+    </div>
 
-        <!-- Live Matches Monitor -->
-        <div class="card">
-          <div class="section-title" style="margin-bottom:12px;">
-            <i data-lucide="swords"></i> Live Matches Monitor
-          </div>
-          <div id="active-matches-list">
-            <div class="spinner" style="margin:10px auto;"></div>
-          </div>
-        </div>
+    <!-- Teams Tab -->
+    <div id="admin-tab-teams" class="hidden">
+      <div class="card"><div class="section-title" style="margin-bottom:14px;"><i data-lucide="shield"></i> Active Teams</div><div id="teams-admin-list"><div class="spinner" style="margin:10px auto;"></div></div></div>
+    </div>
+
+    <!-- Tickets Tab -->
+    <div id="admin-tab-tickets" class="hidden">
+      <div class="section-title" style="margin-bottom:14px;"><i data-lucide="shield-alert"></i> Staff Calls & Dispute Queue</div>
+      <div id="staff-calls-list" style="display:flex;flex-direction:column;gap:14px;"><div class="empty-state"><div class="spinner" style="margin:0 auto;"></div></div></div>
+    </div>
+
+    <!-- Broadcast Tab -->
+    <div id="admin-tab-broadcast" class="hidden">
+      <div class="card">
+        <div class="section-title" style="margin-bottom:14px;"><i data-lucide="megaphone"></i> Broadcast Message to All Users</div>
+        <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:18px;">Pushes a notification to every registered user's notification bell.</p>
+        <form onsubmit="handleBroadcast(event)" style="display:flex;flex-direction:column;gap:12px;">
+          <div class="form-group"><label class="form-label">Title</label><input class="form-input" id="broadcast-title" placeholder="e.g. Season 2 is Live!" required/></div>
+          <div class="form-group"><label class="form-label">Message</label><textarea class="form-input" id="broadcast-body" rows="3" placeholder="Write the announcement…" required style="resize:vertical;"></textarea></div>
+          <button type="submit" class="btn btn-primary" id="broadcast-btn" style="align-self:flex-start;"><i data-lucide="send"></i> Send to All Users</button>
+        </form>
       </div>
     </div>
   </main>
