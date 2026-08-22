@@ -557,8 +557,8 @@
               </div>
               <div>
                 <div style="font-weight:900;font-size:1.05rem;color:#fff;display:flex;align-items:center;gap:8px;">
-                  <span id="map-banner-title">Realistic 1v1 Arena</span>
-                  <span class="badge" style="background:var(--gold-dim);color:var(--gold-bright);font-size:0.68rem;padding:2px 8px;">Official Map</span>
+                  <span id="map-banner-title">1V1-4V4 REALISTICS</span>
+                  <span class="badge" id="map-banner-badge" style="background:var(--gold-dim);color:var(--gold-bright);font-size:0.68rem;padding:2px 8px;">FINEST</span>
                 </div>
                 <div style="font-size:0.78rem;color:var(--text-muted);margin-top:2px;">
                   Fortnite Creative Island Code — Party up with opponent to battle
@@ -949,7 +949,9 @@
       const mapTitleEl = document.getElementById('map-banner-title');
       const mapCopyBtn = document.getElementById('map-code-copy-btn');
       if (mapCodeEl) mapCodeEl.innerHTML = `<i data-lucide="map-pin" style="width:15px;height:15px;"></i> ${mapCode}`;
-      if (mapTitleEl) mapTitleEl.textContent = `${mode} Arena (${size})`;
+      if (mapTitleEl) mapTitleEl.textContent = (mode === 'Realistic') ? '1V1-4V4 REALISTICS' : `${mode} Arena (${size})`;
+      const mapBadgeEl = document.getElementById('map-banner-badge');
+      if (mapBadgeEl) mapBadgeEl.textContent = (mode === 'Realistic') ? 'FINEST' : 'Official Map';
       if (mapCopyBtn) mapCopyBtn.setAttribute('onclick', `copyMapCode('${mapCode}')`);
 
       // Expired banner
