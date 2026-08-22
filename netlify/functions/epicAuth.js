@@ -24,7 +24,13 @@ exports.handler = async (event) => {
   }
 
   try {
-    const { code, redirectUri } = JSON.parse(event.body || '{}');
+    let body = {};
+    const raw = event.isBase64Encoded
+      ? Buffer.from(event.body || '', 'base64').toString('utf-8')
+      : event.body;
+    body = typeof raw === 'string' ? JSON.parse(raw || '{}') : (raw || {});
+
+    const { code, redirectUri } = body;
 
     if (!code) {
       return {

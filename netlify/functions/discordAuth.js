@@ -56,8 +56,12 @@ exports.handler = async (event) => {
 
   let bodyData = {};
   try {
-    bodyData = JSON.parse(event.body || '{}');
-  } catch {
+    const raw = event.isBase64Encoded
+      ? Buffer.from(event.body || '', 'base64').toString('utf-8')
+      : event.body;
+    bodyData = typeof raw === 'string' ? JSON.parse(raw || '{}') : (raw || {});
+  } catch (err) {
+    console.error('Body parse error:', err);
     return { statusCode: 400, headers: HEADERS, body: JSON.stringify({ error: 'Invalid request body' }) };
   }
 
