@@ -4,12 +4,68 @@
     {
       "source": "/.netlify/functions/:path*",
       "destination": "/api/:path*"
+    },
+    {
+      "source": "/api/:path*",
+      "destination": "/api/:path*"
+    },
+    {
+      "source": "/dashboard",
+      "destination": "/dashboard.html"
+    },
+    {
+      "source": "/matches",
+      "destination": "/matches.html"
+    },
+    {
+      "source": "/match",
+      "destination": "/match.html"
+    },
+    {
+      "source": "/leaderboard",
+      "destination": "/leaderboard.html"
+    },
+    {
+      "source": "/shop",
+      "destination": "/shop.html"
+    },
+    {
+      "source": "/profile",
+      "destination": "/profile.html"
+    },
+    {
+      "source": "/admin",
+      "destination": "/admin.html"
+    },
+    {
+      "source": "/epic-login",
+      "destination": "/epic-login.html"
+    },
+    {
+      "source": "/epic-callback",
+      "destination": "/epic-callback.html"
+    },
+    {
+      "source": "/privacy-policy",
+      "destination": "/privacy-policy.html"
+    },
+    {
+      "source": "/terms",
+      "destination": "/terms.html"
+    },
+    {
+      "source": "/callback",
+      "destination": "/callback.html"
     }
   ],
   "headers": [
     {
       "source": "/(.*)",
       "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        },
         {
           "key": "Strict-Transport-Security",
           "value": "max-age=31536000; includeSubDomains; preload"
