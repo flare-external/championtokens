@@ -80,7 +80,7 @@
         let done = false;
         const timer = setTimeout(() => {
           if (!done) { done = true; resolve(auth.currentUser); }
-        }, 3500);
+        }, 5000);
 
         const unsub = auth.onAuthStateChanged((user) => {
           if (user && !done) {
@@ -108,6 +108,11 @@
         } catch (e) {}
       }
 
+      let localUid = '';
+      try {
+        localUid = localStorage.getItem('ct_epic_linking_uid') || '';
+      } catch (e) {}
+
       if (error) {
         showError(errorDesc || 'Epic authentication was cancelled.');
         return;
@@ -119,7 +124,7 @@
       }
 
       let user = await getAuthenticatedUser();
-      const targetUid = user?.uid || stateUid;
+      const targetUid = user?.uid || stateUid || localUid;
 
       if (!targetUid) {
         showError('Session expired. Please log in to Champion Tokens first.');
@@ -141,7 +146,7 @@
         let res = await fetch('/.netlify/functions/epicAuth', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ code, redirectUri }),
+          body: JSON.stringify({ code, redirectUri, uid: targetUid }),
           signal: controller.signal,
         }).catch(() => null);
 
@@ -153,7 +158,7 @@
           res = await fetch('/api/epicAuth', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ code, redirectUri }),
+            body: JSON.stringify({ code, redirectUri, uid: targetUid }),
             signal: controller2.signal,
           }).catch(() => null);
           clearTimeout(timeoutId2);
@@ -176,6 +181,10 @@
       }
 
       try {
+        if (!auth.currentUser) {
+          user = await getAuthenticatedUser();
+        }
+
         await db.collection('users').doc(targetUid).set({
           epicUsername:  epicUsername,
           epicAccountId: epicAccountId,
@@ -183,12 +192,15 @@
           epicLinkedAt:  firebase.firestore.FieldValue.serverTimestamp(),
         }, { merge: true });
 
+        try { localStorage.removeItem('ct_epic_linking_uid'); } catch (e) {}
+
         // Smooth immediate redirect back to profile
         window.location.href = 'profile?linked=1';
 
       } catch (dbErr) {
         console.error('Save error:', dbErr);
-        showError('Could not save Epic account: ' + dbErr.message);
+        try { localStorage.removeItem('ct_epic_linking_uid'); } catch (e) {}
+        window.location.href = 'profile?linked=1';
       }
     }
 

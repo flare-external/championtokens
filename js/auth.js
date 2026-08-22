@@ -42,14 +42,15 @@ function getEpicRedirectUri() {
 /**
  * Initiate official published Epic Games OAuth 2.0 flow.
  */
-function startEpicOAuth() {
+function startEpicOAuth(uidOverride) {
   const clientId = 'xyza78916i52N8UrLv1m41xvkgeBXfUh';
   const redirectUri = encodeURIComponent(getEpicRedirectUri());
+  const uid = uidOverride || (auth.currentUser ? auth.currentUser.uid : (typeof currentUser !== 'undefined' && currentUser ? currentUser.uid : ''));
   let state = '';
-  try {
-    const currentUid = auth.currentUser ? auth.currentUser.uid : '';
-    state = encodeURIComponent(btoa(JSON.stringify({ uid: currentUid })));
-  } catch (e) {}
+  if (uid) {
+    state = encodeURIComponent(btoa(JSON.stringify({ uid: uid })));
+    try { localStorage.setItem('ct_epic_linking_uid', uid); } catch (e) {}
+  }
   const epicAuthUrl = `https://www.epicgames.com/id/authorize?client_id=${clientId}&response_type=code&scope=basic_profile&redirect_uri=${redirectUri}${state ? `&state=${state}` : ''}`;
   window.location.href = epicAuthUrl;
 }
