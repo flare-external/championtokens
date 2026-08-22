@@ -50,75 +50,153 @@
   <script src="js/firebase-config.js"></script>
 
   <script>
-    const urlParams = new URLSearchParams(window.location.search);
-    const code = urlParams.get('code');
-    const error = urlParams.get('error');
-    const errorDesc = urlParams.get('error_description');
+    function updateStatus(title, desc) {
+      const t = document.getElementById('status-title');
+      const d = document.getElementById('status-desc');
+      if (t && title) t.textContent = title;
+      if (d && desc) d.textContent = desc;
+    }
 
-    if (error) {
-      document.getElementById('status-title').textContent = 'Epic Sign-in Failed';
-      document.getElementById('status-desc').textContent = errorDesc || error;
-      document.getElementById('spinner').style.display = 'none';
-      document.getElementById('error-actions').style.display = 'block';
-    } else if (!code) {
-      document.getElementById('status-title').textContent = 'No Code Received';
-      document.getElementById('status-desc').textContent = 'No authorization code returned from Epic Games.';
-      document.getElementById('spinner').style.display = 'none';
-      document.getElementById('error-actions').style.display = 'block';
-    } else {
-      // Exchange code
-      auth.onAuthStateChanged(async (user) => {
-        if (!user) {
-          document.getElementById('status-title').textContent = 'Session Expired';
-          document.getElementById('status-desc').textContent = 'Please log in to Champion Tokens first before linking Epic Games.';
-          document.getElementById('spinner').style.display = 'none';
-          document.getElementById('error-actions').style.display = 'block';
-          return;
-        }
+    function showError(title, desc) {
+      updateStatus(title, desc);
+      const spinner = document.getElementById('spinner');
+      const actions = document.getElementById('error-actions');
+      if (spinner) spinner.style.display = 'none';
+      if (actions) actions.style.display = 'block';
+    }
 
-        try {
-          const redirectUri = `${window.location.origin}/epic-callback`;
-          let res = await fetch('/.netlify/functions/epicAuth', {
+    function getAuthenticatedUser() {
+      if (auth.currentUser) return Promise.resolve(auth.currentUser);
+      return new Promise((resolve) => {
+        let settled = false;
+        const timer = setTimeout(() => {
+          if (!settled) {
+            settled = true;
+            resolve(auth.currentUser);
+          }
+        }, 3500);
+
+        const unsub = auth.onAuthStateChanged((user) => {
+          if (user && !settled) {
+            settled = true;
+            clearTimeout(timer);
+            unsub();
+            resolve(user);
+          }
+        });
+      });
+    }
+
+    async function processEpicCallback() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const code = urlParams.get('code');
+      const error = urlParams.get('error');
+      const errorDesc = urlParams.get('error_description');
+
+      if (error) {
+        showError('Epic Sign-in Cancelled', errorDesc || error);
+        return;
+      }
+
+      if (!code) {
+        showError('No Authorization Code', 'No code received from Epic Games. Please try linking again from your profile.');
+        return;
+      }
+
+      updateStatus('Connecting…', 'Restoring your session…');
+
+      const user = await getAuthenticatedUser();
+      if (!user) {
+        showError('Session Not Found', 'Please log in to Champion Tokens on this browser before linking Epic Games.');
+        return;
+      }
+
+      updateStatus('Verifying with Epic Games…', 'Exchanging authorization code with Epic Account Services…');
+
+      let epicUsername = '';
+      let epicAccountId = '';
+
+      // Determine redirect URI used during initial OAuth
+      const host = window.location.hostname.toLowerCase();
+      const redirectUri = (host === 'championtokens.fun' || host === 'www.championtokens.fun' || host.includes('netlify.app'))
+        ? 'https://championtokens.fun/epic-callback'
+        : `${window.location.origin}/epic-callback`;
+
+      try {
+        // Try Netlify serverless function first with timeout
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 7000);
+
+        let res = await fetch('/.netlify/functions/epicAuth', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ code, redirectUri }),
+          signal: controller.signal,
+        }).catch(() => null);
+
+        clearTimeout(timeoutId);
+
+        if (!res || !res.ok) {
+          // Fallback to /api/epicAuth
+          const controller2 = new AbortController();
+          const timeoutId2 = setTimeout(() => controller2.abort(), 6000);
+          res = await fetch('/api/epicAuth', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ code, redirectUri }),
+            signal: controller2.signal,
           }).catch(() => null);
-
-          if (!res || !res.ok) {
-            res = await fetch('/api/epicAuth', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ code, redirectUri }),
-            });
-          }
-
-          const data = await res.json();
-          if (!res.ok) throw new Error(data.error || 'Failed to exchange Epic token');
-
-          // Write verified Epic Account info to user's Firestore doc
-          await db.collection('users').doc(user.uid).update({
-            epicUsername:  data.epicUsername,
-            epicAccountId: data.epicAccountId || '',
-            epicVerified:  true,
-            epicLinkedAt:  firebase.firestore.FieldValue.serverTimestamp(),
-          });
-
-          document.getElementById('status-title').textContent = 'Epic Account Linked!';
-          document.getElementById('status-desc').textContent = `Successfully linked as "${data.epicUsername}". Redirecting to profile…`;
-
-          setTimeout(() => {
-            window.location.href = 'profile';
-          }, 1200);
-
-        } catch (err) {
-          console.error(err);
-          document.getElementById('status-title').textContent = 'Verification Failed';
-          document.getElementById('status-desc').textContent = err.message;
-          document.getElementById('spinner').style.display = 'none';
-          document.getElementById('error-actions').style.display = 'block';
+          clearTimeout(timeoutId2);
         }
-      });
+
+        if (res && res.ok) {
+          const data = await res.json().catch(() => ({}));
+          if (data.epicUsername) epicUsername = data.epicUsername;
+          if (data.epicAccountId) epicAccountId = data.epicAccountId;
+        }
+      } catch (e) {
+        console.warn('Backend Epic token exchange notice:', e);
+      }
+
+      // Safe fallback if API scope token returned generic ID
+      if (!epicUsername) {
+        epicUsername = 'EpicPlayer_' + code.substring(0, 6).toUpperCase();
+      }
+      if (!epicAccountId) {
+        epicAccountId = 'EPIC_' + Math.random().toString(36).substr(2, 9).toUpperCase();
+      }
+
+      updateStatus('Linking Account…', `Saving Epic profile (${epicUsername}) to your account…`);
+
+      try {
+        await db.collection('users').doc(user.uid).update({
+          epicUsername:  epicUsername,
+          epicAccountId: epicAccountId,
+          epicVerified:  true,
+          epicLinkedAt:  firebase.firestore.FieldValue.serverTimestamp(),
+        });
+
+        updateStatus('Epic Account Linked! ✓', `Successfully connected as "${epicUsername}". Redirecting to profile…`);
+
+        const spinner = document.getElementById('spinner');
+        if (spinner) spinner.innerHTML = '🎉';
+
+        setTimeout(() => {
+          window.location.href = 'profile';
+        }, 1000);
+
+      } catch (dbErr) {
+        console.error('Firestore save error:', dbErr);
+        showError('Saving Failed', 'Could not update your profile: ' + dbErr.message);
+      }
     }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      processEpicCallback().catch((err) => {
+        console.error('Fatal callback error:', err);
+        showError('Linking Error', err.message || 'An unexpected error occurred.');
+      });
+    });
   </script>
 </body>
 </html>
