@@ -1035,6 +1035,20 @@ async function tipPlayer(senderUid, receiverUid, amount) {
   return { sender, receiver, amount: num };
 }
 
+/**
+ * Unlink connected Epic Games account from user profile.
+ */
+async function unlinkEpicAccount(uid) {
+  const userRef = db.collection('users').doc(uid);
+  await userRef.update({
+    epicUsername:  firebase.firestore.FieldValue.delete(),
+    epicAccountId: firebase.firestore.FieldValue.delete(),
+    epicVerified:  false,
+    epicUnlinkedAt: firebase.firestore.FieldValue.serverTimestamp(),
+  });
+  return { success: true };
+}
+
 // ── Shop Titles, Banners, & Daily Mystery Chests ─────────────
 
 const SHOP_TITLES = {

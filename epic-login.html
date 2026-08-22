@@ -182,23 +182,9 @@
 
     <div id="status-box" class="status-msg"></div>
 
-    <form id="epic-form" onsubmit="handleEpicAuth(event)">
-      <div class="form-group">
-        <label class="form-label">Epic Games Display Name</label>
-        <input
-          class="form-input"
-          id="epic-display-name"
-          placeholder="e.g. Ninja, Bugha, Mongraal"
-          required
-          autofocus
-          maxlength="32"
-        />
-      </div>
-
-      <button type="submit" class="btn-epic-primary" id="epic-submit-btn">
-        Authorize & Connect
-      </button>
-    </form>
+    <button type="button" class="btn-epic-primary" id="epic-submit-btn" onclick="startEpicOAuth()">
+      Link Account
+    </button>
 
     <div class="auth-footer">
       Epic Games, Fortnite, and their respective logos are trademarks of Epic Games, Inc.
@@ -209,77 +195,12 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="js/firebase-config.js"></script>
+  <script src="js/auth.js"></script>
 
   <script>
-    let currentUser = null;
-
-    auth.onAuthStateChanged(async (user) => {
-      if (!user) {
-        showStatus('You must be logged in to Champion Tokens to link an account.', 'error');
-        return;
-      }
-      currentUser = user;
+    document.addEventListener('DOMContentLoaded', () => {
+      // Direct Link
     });
-
-    async function handleEpicAuth(e) {
-      e.preventDefault();
-      const displayName = document.getElementById('epic-display-name').value.trim();
-      const btn = document.getElementById('epic-submit-btn');
-
-      if (!displayName || displayName.length < 2) {
-        showStatus('Please enter a valid Epic Games display name.', 'error');
-        return;
-      }
-
-      if (!currentUser) {
-        showStatus('Authentication session missing. Please re-login on Champion Tokens.', 'error');
-        return;
-      }
-
-      btn.disabled = true;
-      btn.innerHTML = `<span class="spinner"></span> Verifying with Epic Games…`;
-
-      try {
-        const epicAccountId = 'EPIC_' + Math.random().toString(36).substr(2, 9).toUpperCase();
-
-        await db.collection('users').doc(currentUser.uid).update({
-          epicUsername:  displayName,
-          epicAccountId: epicAccountId,
-          epicVerified:  true,
-          epicLinkedAt:  firebase.firestore.FieldValue.serverTimestamp(),
-        });
-
-        showStatus(`Success! Linked as "${displayName}". Redirecting…`, 'success');
-        btn.textContent = 'Linked Successfully!';
-
-        if (window.opener && !window.opener.closed) {
-          window.opener.postMessage({
-            type:         'EPIC_LINK_SUCCESS',
-            epicUsername: displayName,
-          }, '*');
-        }
-
-        setTimeout(() => {
-          if (window.opener) {
-            window.close();
-          } else {
-            window.location.href = 'profile';
-          }
-        }, 1000);
-
-      } catch (err) {
-        console.error(err);
-        showStatus('Failed to link Epic account: ' + err.message, 'error');
-        btn.disabled = false;
-        btn.textContent = 'Authorize & Connect';
-      }
-    }
-
-    function showStatus(text, type) {
-      const el = document.getElementById('status-box');
-      el.textContent = text;
-      el.className = `status-msg ${type}`;
-    }
   </script>
 </body>
 </html>

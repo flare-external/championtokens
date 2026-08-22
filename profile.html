@@ -743,45 +743,16 @@
 
   <!-- Link Epic Games Modal -->
   <div class="modal-overlay" id="link-epic-modal" onclick="if(event.target===this)closeLinkEpicModal()">
-    <div class="modal" style="max-width:460px;">
-      <div class="modal-header">
+    <div class="modal" style="max-width:420px;text-align:center;">
+      <div class="modal-header" style="justify-content:center;position:relative;">
         <div class="modal-title" style="display:flex;align-items:center;gap:10px;">
           <img src="epic_games_logo.webp" alt="Epic" style="width:24px;height:28px;object-fit:contain;"/>
-          <span>Link Epic Games Account</span>
+          <span>Epic Games Account</span>
         </div>
-        <button class="modal-close" onclick="closeLinkEpicModal()"><i data-lucide="x"></i></button>
+        <button class="modal-close" style="position:absolute;right:0;" onclick="closeLinkEpicModal()"><i data-lucide="x"></i></button>
       </div>
 
-      <div style="padding:4px 0 12px;">
-        <!-- Official Epic Games OAuth Button -->
-        <button type="button" class="btn-epic-brand" onclick="startEpicOAuth()" style="margin-bottom:16px;">
-          <img src="epic_games_logo.webp" alt="Epic" style="width:20px;height:24px;object-fit:contain;"/>
-          <span>Sign In with Epic Games (Official)</span>
-        </button>
-
-        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;color:var(--text-faint);font-size:0.75rem;font-weight:700;">
-          <div style="flex:1;height:1px;background:rgba(255,255,255,0.08);"></div>
-          <span>OR LINK BY DISPLAY NAME</span>
-          <div style="flex:1;height:1px;background:rgba(255,255,255,0.08);"></div>
-        </div>
-
-        <form class="modal-form" onsubmit="submitLinkEpicModal(event)">
-          <div style="font-size:0.82rem;color:var(--text-muted);margin-bottom:12px;line-height:1.4;">
-            Enter your exact Fortnite / Epic Games display name so opponents can invite you to the match party.
-          </div>
-          <div class="form-group">
-            <label class="form-label">Epic Games Display Name</label>
-            <input class="form-input" id="modal-epic-ign-input" placeholder="e.g. Ninja, Bugha, Mongraal" maxlength="32" required />
-          </div>
-          <div class="modal-actions" style="margin-top:16px;">
-            <button type="button" class="btn btn-outline" onclick="closeLinkEpicModal()">Cancel</button>
-            <button type="submit" class="btn btn-epic" id="modal-epic-submit-btn" style="flex:1;">
-              <i data-lucide="check-circle" style="width:16px;height:16px;"></i>
-              Verify & Link Account
-            </button>
-          </div>
-        </form>
-      </div>
+      <div id="modal-epic-content" style="padding:10px 0 6px;"></div>
     </div>
   </div>
 
@@ -1462,13 +1433,26 @@
 
     // ── Epic Games Account Section ────────────────────────────
     function renderEpicSection(data) {
-      // Update the hub row that shows epic status
       const hubEpic = document.getElementById('hub-current-epic');
       if (hubEpic) {
         if (data && data.epicUsername) {
-          hubEpic.innerHTML = `<span class="chip chip-success" style="font-size:0.78rem;font-weight:700;">✓ ${data.epicUsername}</span>`;
+          hubEpic.innerHTML = `
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span class="chip chip-success" style="font-size:0.78rem;font-weight:700;">
+                <i data-lucide="check-circle" style="width:12px;height:12px;display:inline;"></i> ${data.epicUsername}
+              </span>
+              <button class="btn btn-outline btn-sm" onclick="event.stopPropagation();handleUnlinkEpic()" style="padding:2px 8px;font-size:0.72rem;color:#fca5a5;border-color:rgba(239,68,68,0.3);" title="Unlink Epic Account">
+                <i data-lucide="unlink" style="width:11px;height:11px;"></i> Unlink
+              </button>
+            </div>`;
         } else {
-          hubEpic.innerHTML = `<span style="color:var(--text-muted);font-size:0.82rem;">Not Connected</span>`;
+          hubEpic.innerHTML = `
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span style="color:var(--text-muted);font-size:0.82rem;">Not Connected</span>
+              <button class="btn btn-primary btn-sm" onclick="event.stopPropagation();startEpicOAuth()" style="padding:3px 10px;font-size:0.75rem;">
+                <i data-lucide="link"></i> Link Account
+              </button>
+            </div>`;
         }
       }
       if (window.lucide) lucide.createIcons();
@@ -1476,15 +1460,49 @@
 
     function openLinkEpicModal() {
       const modal = document.getElementById('link-epic-modal');
-      if (modal) {
-        modal.classList.add('open');
-        modal.classList.add('active');
-        const input = document.getElementById('modal-epic-ign-input');
-        if (input) {
-          input.value = currentUserData?.epicUsername || '';
-          setTimeout(() => input.focus(), 150);
-        }
+      const content = document.getElementById('modal-epic-content');
+      if (!modal || !content) return;
+
+      const isLinked = !!currentUserData?.epicUsername;
+
+      if (isLinked) {
+        content.innerHTML = `
+          <div style="margin-bottom:20px;">
+            <div style="font-size:0.85rem;color:var(--text-muted);">Currently connected as:</div>
+            <div style="font-size:1.35rem;font-weight:900;color:var(--green);margin:6px 0;display:flex;align-items:center;justify-content:center;gap:8px;">
+              <i data-lucide="check-circle" style="width:20px;height:20px;"></i>
+              ${currentUserData.epicUsername}
+            </div>
+            <div style="font-size:0.78rem;color:var(--text-faint);">
+              Opponents use this display name to invite you in Fortnite matches.
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <button type="button" class="btn btn-outline" onclick="startEpicOAuth()" style="width:100%;justify-content:center;">
+              <i data-lucide="refresh-cw"></i> Switch / Re-Link Account
+            </button>
+            <button type="button" class="btn btn-danger" onclick="handleUnlinkEpic()" style="width:100%;justify-content:center;">
+              <i data-lucide="unlink"></i> Unlink Epic Account
+            </button>
+          </div>
+        `;
+      } else {
+        content.innerHTML = `
+          <div style="margin-bottom:20px;">
+            <div style="font-size:0.88rem;color:var(--text-muted);line-height:1.5;">
+              Connect your official Epic Games account to participate in Fortnite token matches.
+            </div>
+          </div>
+          <button type="button" class="btn-epic-brand" onclick="startEpicOAuth()">
+            <img src="epic_games_logo.webp" alt="Epic" style="width:20px;height:24px;object-fit:contain;"/>
+            <span>Link Account</span>
+          </button>
+        `;
       }
+
+      modal.classList.add('open');
+      modal.classList.add('active');
+      if (window.lucide) lucide.createIcons();
     }
 
     function closeLinkEpicModal() {
@@ -1495,44 +1513,18 @@
       }
     }
 
-    async function submitLinkEpicModal(e) {
-      e.preventDefault();
-      const displayName = document.getElementById('modal-epic-ign-input').value.trim();
-      const btn = document.getElementById('modal-epic-submit-btn');
-
-      if (!displayName || displayName.length < 2) {
-        showToast('Please enter a valid Epic Games display name', 'error');
-        return;
-      }
-
-      btn.disabled = true;
-      btn.textContent = 'Linking Account…';
-
-      try {
-        const epicAccountId = 'EPIC_' + Math.random().toString(36).substr(2, 9).toUpperCase();
-        await db.collection('users').doc(currentUser.uid).update({
-          epicUsername:  displayName,
-          epicAccountId: epicAccountId,
-          epicVerified:  true,
-          epicLinkedAt:  firebase.firestore.FieldValue.serverTimestamp(),
-        });
-
-        showToast(`Epic Games account linked as "${displayName}"!`, 'success');
-        closeLinkEpicModal();
-        loadProfile();
-      } catch (err) {
-        showToast(err.message, 'error');
-      } finally {
-        btn.disabled = false;
-        btn.innerHTML = `<img src="epic_games_logo.webp" alt="" style="width:16px;height:18px;object-fit:contain;"/> Verify & Link Account`;
-      }
-    }
-
     async function handleUnlinkEpic() {
-      if (!confirm('Unlinking your Epic Games account costs 2.00 Tokens ($2.00). Are you sure you want to unlink?')) return;
+      if (!confirm('Are you sure you want to unlink your Epic Games account?')) return;
       try {
         await unlinkEpicAccount(currentUser.uid);
-        showToast('Epic Games account unlinked (-2.00 tokens fee deducted)', 'success');
+        showToast('Epic Games account unlinked', 'success');
+        closeLinkEpicModal();
+        db.collection('users').doc(currentUser.uid).get().then(snap => {
+          if (snap.exists) {
+            currentUserData = snap.data();
+            renderProfile(currentUserData);
+          }
+        });
       } catch (err) {
         showToast(err.message, 'error');
       }
