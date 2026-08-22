@@ -1037,7 +1037,6 @@
         let bHtml = '';
         if (isStaff) bHtml += `<span class="badge-staff"><i data-lucide="shield-check" style="width:12px;height:12px;"></i> STAFF</span>`;
         if (isPremium) bHtml += `<span class="badge-premium"><i data-lucide="crown" style="width:12px;height:12px;"></i> PREMIUM</span>`;
-        if (data.epicUsername) bHtml += `<span class="chip chip-success" style="font-size:0.68rem;padding:2px 8px;">VERIFIED EPIC</span>`;
         badgesRow.innerHTML = bHtml;
       }
 
@@ -1493,14 +1492,14 @@
                 <img src="epic_games_logo.webp" alt="Epic Games" style="width:30px;height:38px;object-fit:contain;"/>
               </div>
               <div>
-                <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
-                  <span style="font-size:0.75rem;text-transform:uppercase;font-weight:800;letter-spacing:0.08em;color:#38bdf8;">Epic Games Account</span>
-                  <span class="chip chip-success" style="font-size:0.68rem;padding:2px 8px;font-weight:800;background:rgba(16,185,129,0.15);color:#34d399;border:1px solid rgba(16,185,129,0.3);">
-                    <i data-lucide="check-circle-2" style="width:11px;height:11px;display:inline;"></i> Account Linked
+                <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+                  <span style="font-size:0.78rem;text-transform:uppercase;font-weight:800;letter-spacing:0.08em;color:#38bdf8;">Epic Games Account</span>
+                  <span class="chip" style="font-size:0.75rem;padding:3px 10px;font-weight:800;background:rgba(16,185,129,0.2);color:#34d399;border:1px solid rgba(16,185,129,0.45);display:inline-flex;align-items:center;gap:5px;">
+                    <i data-lucide="check-circle-2" style="width:13px;height:13px;color:#34d399;"></i> Account Linked
                   </span>
                 </div>
-                <div style="display:flex;align-items:center;gap:10px;margin-top:2px;">
-                  <div style="font-size:1.45rem;font-weight:900;color:#fff;letter-spacing:-0.01em;">
+                <div style="display:flex;align-items:center;gap:12px;margin-top:2px;">
+                  <div style="font-size:1.55rem;font-weight:900;color:#ffffff;letter-spacing:-0.01em;">
                     ${escapeHtml(data.epicUsername)}
                   </div>
                   <button class="btn-copy-ign" onclick="copyEpicTag('${escapeHtml(data.epicUsername)}')" title="Copy Fortnite IGN">
@@ -1586,18 +1585,19 @@
       if (isLinked) {
         content.innerHTML = `
           <div style="margin-bottom:20px;">
-            <div style="font-size:0.85rem;color:var(--text-muted);">Currently connected as:</div>
-            <div style="font-size:1.35rem;font-weight:900;color:var(--green);margin:6px 0;display:flex;align-items:center;justify-content:center;gap:8px;">
-              <i data-lucide="check-circle" style="width:20px;height:20px;"></i>
+            <div style="display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:999px;background:rgba(16,185,129,0.2);border:1px solid rgba(16,185,129,0.4);color:#34d399;font-weight:800;font-size:0.8rem;margin-bottom:10px;">
+              <i data-lucide="check-circle-2" style="width:14px;height:14px;"></i> Account Linked
+            </div>
+            <div style="font-size:1.5rem;font-weight:900;color:#ffffff;margin:4px 0;">
               ${currentUserData.epicUsername}
             </div>
-            <div style="font-size:0.78rem;color:var(--text-faint);">
-              Opponents use this display name to invite you in Fortnite matches.
+            <div style="font-size:0.8rem;color:var(--text-muted);margin-top:4px;">
+              Your verified Fortnite IGN used for match queueing and party invites.
             </div>
           </div>
           <div style="display:flex;flex-direction:column;gap:10px;">
-            <button type="button" class="btn btn-outline" onclick="startEpicOAuth()" style="width:100%;justify-content:center;">
-              <i data-lucide="refresh-cw"></i> Sync / Re-link Account
+            <button type="button" class="btn btn-outline" onclick="handleSyncEpic();closeLinkEpicModal();" style="width:100%;justify-content:center;">
+              <i data-lucide="refresh-cw"></i> Sync Account
             </button>
             <div>
               <button type="button" class="btn btn-danger" onclick="handleUnlinkEpic()" style="width:100%;justify-content:center;">
