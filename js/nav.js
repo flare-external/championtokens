@@ -33,9 +33,12 @@ function injectNav(activePage = '') {
 
         <div class="ct-nav__user">
           <div class="ct-nav__token-group">
-            <button class="token-pill-btn" onclick="openTokenWalletModal('purchase')" title="Champion Tokens Balance — Click to Purchase / Withdraw">
+            <div class="token-pill" title="Champion Tokens Balance">
               <img src="champion_token_coin.png" alt="CT" class="token-pill-coin-large" />
               <span id="nav-balance">10.00</span>
+            </div>
+            <button class="token-add-btn" onclick="openTokenWalletModal('purchase')" title="Add Tokens">
+              <i data-lucide="plus"></i>
             </button>
           </div>
 
@@ -60,9 +63,6 @@ function injectNav(activePage = '') {
               <a href="profile#profile-settings-hub" class="nav-dropdown-item">
                 <i data-lucide="sliders" style="width:16px;height:16px;"></i> Account Settings
               </a>
-              <div class="nav-dropdown-item gold-highlight" onclick="openTokenWalletModal('purchase')">
-                <i data-lucide="wallet" style="width:16px;height:16px;color:var(--gold-bright);"></i> Token Wallet
-              </div>
               <div class="nav-dropdown-divider"></div>
               <div class="nav-dropdown-item danger-highlight" onclick="handleSignOut()">
                 <i data-lucide="log-out" style="width:16px;height:16px;color:#ef4444;"></i> Sign Out

@@ -55,12 +55,13 @@
       db.collection('transactions')
         .where('userId', '==', user.uid)
         .onSnapshot((snap) => {
-          const txs = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-          txs.sort((a, b) => (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0));
-          renderTransactions(txs.slice(0, 6));
+          allTransactions = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+          allTransactions.sort((a, b) => (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0));
+          renderTransactionsPage(1);
         }, (err) => {
           console.warn('Transactions snapshot error:', err);
-          renderTransactions([]);
+          allTransactions = [];
+          renderTransactionsPage(1);
         });
 
       // Real-time active matches
@@ -68,16 +69,25 @@
         .where('status', '==', 'waiting')
         .onSnapshot((snap) => {
           const all = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-          const mine = all.filter(m => (m.playerUids || []).includes(user.uid) || m.createdBy === user.uid);
-          renderMyMatches(mine.slice(0, 4));
+          allMyMatches = all.filter(m => (m.playerUids || []).includes(user.uid) || m.createdBy === user.uid);
+          renderMyMatchesPage(1);
         }, (err) => {
           console.warn('Matches snapshot error:', err);
-          renderMyMatches([]);
+          allMyMatches = [];
+          renderMyMatchesPage(1);
         });
     }).catch(err => {
       console.error('Auth error:', err);
       document.getElementById('page-loading').classList.add('hidden');
     });
+
+    let allTransactions = [];
+    let txCurrentPage = 1;
+    const TX_PER_PAGE = 5;
+
+    let allMyMatches = [];
+    let mmCurrentPage = 1;
+    const MM_PER_PAGE = 4;
 
     function renderDashboard(userData) {
       const firstName = (userData.displayName || 'Champion').split(' ')[0];
@@ -98,14 +108,24 @@
       if (wrEl) wrEl.textContent = wr + '%';
     }
 
-    function renderTransactions(txs) {
+    function renderTransactionsPage(page) {
+      txCurrentPage = page;
       const el = document.getElementById('tx-list');
-      if (!txs.length) {
+      const pagEl = document.getElementById('tx-pagination');
+      if (!el) return;
+
+      if (!allTransactions.length) {
         el.innerHTML = `<div class="empty-state"><i data-lucide="inbox"></i><p>No transactions yet</p></div>`;
+        if (pagEl) pagEl.innerHTML = '';
         lucide.createIcons();
         return;
       }
-      el.innerHTML = txs.map(tx => {
+
+      const totalPages = Math.max(1, Math.ceil(allTransactions.length / TX_PER_PAGE));
+      const startIdx = (txCurrentPage - 1) * TX_PER_PAGE;
+      const pageTxs = allTransactions.slice(startIdx, startIdx + TX_PER_PAGE);
+
+      el.innerHTML = pageTxs.map(tx => {
         const isCredit = tx.amount > 0;
         const iconName = isCredit ? 'trending-up' : 'trending-down';
         return `
@@ -122,19 +142,39 @@
             </div>
           </div>`;
       }).join('');
+
+      if (pagEl) {
+        pagEl.innerHTML = `
+          <button class="ct-page-btn" onclick="renderTransactionsPage(${txCurrentPage - 1})" ${txCurrentPage <= 1 ? 'disabled' : ''}>
+            <i data-lucide="chevron-left"></i> Prev
+          </button>
+          <span class="ct-page-info">Page ${txCurrentPage} of ${totalPages}</span>
+          <button class="ct-page-btn" onclick="renderTransactionsPage(${txCurrentPage + 1})" ${txCurrentPage >= totalPages ? 'disabled' : ''}>
+            Next <i data-lucide="chevron-right"></i>
+          </button>
+        `;
+      }
       lucide.createIcons();
     }
 
-    function renderMyMatches(matches) {
+    function renderMyMatchesPage(page) {
+      mmCurrentPage = page;
       const el = document.getElementById('my-matches');
-      if (!matches.length) {
+      const pagEl = document.getElementById('mm-pagination');
+      if (!el) return;
+
+      if (!allMyMatches.length) {
         el.innerHTML = `<div class="empty-state"><i data-lucide="swords"></i><p>No active matches. <a href="matches" style="color:var(--gold-bright);font-weight:700;">Create or join one!</a></p></div>`;
+        if (pagEl) pagEl.innerHTML = '';
         lucide.createIcons();
         return;
       }
 
-      el.innerHTML = matches.map(m => {
-        // 30-minute timer calculation
+      const totalPages = Math.max(1, Math.ceil(allMyMatches.length / MM_PER_PAGE));
+      const startIdx = (mmCurrentPage - 1) * MM_PER_PAGE;
+      const pageMatches = allMyMatches.slice(startIdx, startIdx + MM_PER_PAGE);
+
+      el.innerHTML = pageMatches.map(m => {
         let timerDisplay = '30m left';
         if (m.expiresAt) {
           const expMs = m.expiresAt.toDate().getTime() - Date.now();
@@ -182,7 +222,19 @@
         </div>`;
       }).join('');
 
-      window._myMatches = matches;
+      if (pagEl) {
+        pagEl.innerHTML = `
+          <button class="ct-page-btn" onclick="renderMyMatchesPage(${mmCurrentPage - 1})" ${mmCurrentPage <= 1 ? 'disabled' : ''}>
+            <i data-lucide="chevron-left"></i> Prev
+          </button>
+          <span class="ct-page-info">Page ${mmCurrentPage} of ${totalPages}</span>
+          <button class="ct-page-btn" onclick="renderMyMatchesPage(${mmCurrentPage + 1})" ${mmCurrentPage >= totalPages ? 'disabled' : ''}>
+            Next <i data-lucide="chevron-right"></i>
+          </button>
+        `;
+      }
+
+      window._myMatches = allMyMatches;
       lucide.createIcons();
     }
 
@@ -227,7 +279,6 @@
   <main class="page-wrap" id="main-content">
     <div class="page-header">
       <h1>Welcome back, <span id="welcome-name" class="brand-accent">Champion</span> 👋</h1>
-      <p>Your competitive Fortnite tokens dashboard.</p>
     </div>
 
     <!-- Balance hero with Add Tokens CTA -->
@@ -235,9 +286,9 @@
       <div class="balance-label">Current Token Balance</div>
       <div class="balance-amount-wrap">
         <div class="balance-amount" id="stat-tokens">10.00</div>
-        <a href="shop" class="token-add-btn" style="width:36px;height:36px;font-size:1.2rem;" title="Add / Buy Tokens">
+        <button class="token-add-btn" onclick="openTokenWalletModal('purchase')" style="width:36px;height:36px;font-size:1.2rem;cursor:pointer;" title="Add / Buy Tokens">
           <i data-lucide="plus"></i>
-        </a>
+        </button>
       </div>
       <div class="balance-unit">Champion Tokens</div>
     </div>
@@ -276,9 +327,10 @@
         <div class="tx-list" id="tx-list">
           <div class="empty-state"><div class="spinner" style="margin:0 auto"></div></div>
         </div>
+        <div class="ct-pagination" id="tx-pagination"></div>
         <hr class="divider"/>
         <a href="profile" class="btn btn-ghost btn-sm" style="width:100%;justify-content:center;">
-          <i data-lucide="clock"></i> View All Transactions
+          <i data-lucide="clock"></i> View All Transactions in Profile
         </a>
       </div>
 
@@ -290,6 +342,7 @@
         <div id="my-matches" style="display:flex;flex-direction:column;gap:12px;">
           <div class="empty-state"><div class="spinner" style="margin:0 auto"></div></div>
         </div>
+        <div class="ct-pagination" id="mm-pagination"></div>
         <a href="matches" class="btn btn-outline btn-full" style="margin-top:14px;">
           <i data-lucide="plus"></i> Browse or Create Matches
         </a>

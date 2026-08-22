@@ -613,21 +613,25 @@ async function adminResolveDispute(matchId, winningTeam, adminUid) {
 
 // ── Leaderboard ──────────────────────────────────────────────
 
-/** Fetch top 10 real users by token balance */
+/** Fetch real users ordered by matchesWon DESC, then totalEarned DESC */
 async function getLeaderboard() {
-  const snap = await db.collection('users')
-    .orderBy('tokens', 'desc')
-    .limit(50)
-    .get();
-  return snap.docs
+  const snap = await db.collection('users').get();
+  const users = snap.docs
     .map(d => ({ id: d.id, ...d.data() }))
     .filter(u => {
       if (u.isGuest === true || u.id.startsWith('guest_') || u.uid?.startsWith('guest_')) return false;
       const name = (u.displayName || '').toLowerCase();
       if (name.includes('guest') || name.includes('tester') || name.startsWith('guest #') || name.startsWith('guest-')) return false;
       return true;
-    })
-    .slice(0, 10);
+    });
+
+  users.sort((a, b) => {
+    const winsDiff = (Number(b.matchesWon) || 0) - (Number(a.matchesWon) || 0);
+    if (winsDiff !== 0) return winsDiff;
+    return (Number(b.totalEarned) || 0) - (Number(a.totalEarned) || 0);
+  });
+
+  return users;
 }
 
 // ── Transactions ─────────────────────────────────────────────
@@ -1077,7 +1081,7 @@ function getDailyShopTitles(count = 5) {
 /** Get Leaderboard Rank for a User */
 async function getUserLeaderboardRank(uid) {
   try {
-    const snap = await db.collection('users').orderBy('tokens', 'desc').get();
+    const snap = await db.collection('users').get();
     const realUsers = snap.docs
       .map(d => ({ id: d.id, ...d.data() }))
       .filter(u => {
@@ -1086,6 +1090,13 @@ async function getUserLeaderboardRank(uid) {
         if (name.includes('guest') || name.includes('tester') || name.startsWith('guest #') || name.startsWith('guest-')) return false;
         return true;
       });
+
+    realUsers.sort((a, b) => {
+      const winsDiff = (Number(b.matchesWon) || 0) - (Number(a.matchesWon) || 0);
+      if (winsDiff !== 0) return winsDiff;
+      return (Number(b.totalEarned) || 0) - (Number(a.totalEarned) || 0);
+    });
+
     const rankIndex = realUsers.findIndex(d => d.id === uid);
     if (rankIndex === -1) return { rank: 0, display: 'Unranked', badgeClass: 'rank-badge-normal' };
     const rank = rankIndex + 1;

@@ -676,6 +676,7 @@
         <div class="tx-list" id="tx-list">
           <div class="empty-state"><div class="spinner" style="margin:0 auto;"></div></div>
         </div>
+        <div class="ct-pagination" id="profile-tx-pagination"></div>
       </div>
 
       <div class="card">
@@ -685,6 +686,7 @@
         <div class="matches-history" id="match-history">
           <div class="empty-state"><div class="spinner" style="margin:0 auto;"></div></div>
         </div>
+        <div class="ct-pagination" id="profile-mh-pagination"></div>
       </div>
     </div>
 
@@ -1663,15 +1665,37 @@
       }
     }
 
+    let allProfileTxs = [];
+    let profileTxPage = 1;
+    const PROFILE_TX_PER_PAGE = 5;
+
+    let allProfileMatches = [];
+    let profileMhPage = 1;
+    const PROFILE_MH_PER_PAGE = 5;
+
     function renderTransactions(txs) {
+      allProfileTxs = txs || [];
+      renderTransactionsPage(1);
+    }
+
+    function renderTransactionsPage(page) {
+      profileTxPage = page;
       const el = document.getElementById('tx-list');
+      const pagEl = document.getElementById('profile-tx-pagination');
       if (!el) return;
-      if (!txs.length) {
+
+      if (!allProfileTxs.length) {
         el.innerHTML = `<div class="empty-state"><i data-lucide="inbox"></i><p>No transactions recorded yet</p></div>`;
+        if (pagEl) pagEl.innerHTML = '';
         if (window.lucide) lucide.createIcons();
         return;
       }
-      el.innerHTML = txs.map(tx => {
+
+      const totalPages = Math.max(1, Math.ceil(allProfileTxs.length / PROFILE_TX_PER_PAGE));
+      const startIdx = (profileTxPage - 1) * PROFILE_TX_PER_PAGE;
+      const pageTxs = allProfileTxs.slice(startIdx, startIdx + PROFILE_TX_PER_PAGE);
+
+      el.innerHTML = pageTxs.map(tx => {
         const isCredit = tx.amount > 0;
         return `
           <div class="tx-item">
@@ -1687,18 +1711,45 @@
             </div>
           </div>`;
       }).join('');
+
+      if (pagEl) {
+        pagEl.innerHTML = `
+          <button class="ct-page-btn" onclick="renderTransactionsPage(${profileTxPage - 1})" ${profileTxPage <= 1 ? 'disabled' : ''}>
+            <i data-lucide="chevron-left"></i> Prev
+          </button>
+          <span class="ct-page-info">Page ${profileTxPage} of ${totalPages}</span>
+          <button class="ct-page-btn" onclick="renderTransactionsPage(${profileTxPage + 1})" ${profileTxPage >= totalPages ? 'disabled' : ''}>
+            Next <i data-lucide="chevron-right"></i>
+          </button>
+        `;
+      }
+
       if (window.lucide) lucide.createIcons();
     }
 
     function renderMatchHistory(matches) {
+      allProfileMatches = matches || [];
+      renderMatchHistoryPage(1);
+    }
+
+    function renderMatchHistoryPage(page) {
+      profileMhPage = page;
       const el = document.getElementById('match-history');
+      const pagEl = document.getElementById('profile-mh-pagination');
       if (!el) return;
-      if (!matches.length) {
+
+      if (!allProfileMatches.length) {
         el.innerHTML = `<div class="empty-state"><i data-lucide="swords"></i><p>No matches played yet</p></div>`;
+        if (pagEl) pagEl.innerHTML = '';
         if (window.lucide) lucide.createIcons();
         return;
       }
-      el.innerHTML = matches.map(m => {
+
+      const totalPages = Math.max(1, Math.ceil(allProfileMatches.length / PROFILE_MH_PER_PAGE));
+      const startIdx = (profileMhPage - 1) * PROFILE_MH_PER_PAGE;
+      const pageMatches = allProfileMatches.slice(startIdx, startIdx + PROFILE_MH_PER_PAGE);
+
+      el.innerHTML = pageMatches.map(m => {
         const isWinner = m.winner?.uid === targetUid;
         const isHost   = m.createdBy === targetUid;
         const size     = m.size || '1v1';
@@ -1726,6 +1777,19 @@
             </div>
           </div>`;
       }).join('');
+
+      if (pagEl) {
+        pagEl.innerHTML = `
+          <button class="ct-page-btn" onclick="renderMatchHistoryPage(${profileMhPage - 1})" ${profileMhPage <= 1 ? 'disabled' : ''}>
+            <i data-lucide="chevron-left"></i> Prev
+          </button>
+          <span class="ct-page-info">Page ${profileMhPage} of ${totalPages}</span>
+          <button class="ct-page-btn" onclick="renderMatchHistoryPage(${profileMhPage + 1})" ${profileMhPage >= totalPages ? 'disabled' : ''}>
+            Next <i data-lucide="chevron-right"></i>
+          </button>
+        `;
+      }
+
       if (window.lucide) lucide.createIcons();
     }
   </script>

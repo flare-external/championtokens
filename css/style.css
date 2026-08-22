@@ -242,6 +242,45 @@ input[type="range"].ct-slider::-moz-range-thumb {
   flex-shrink: 0;
   margin-right: 12px;
 }
+/* ── Universal Pagination Component ────────────────────────── */
+.ct-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 14px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+.ct-page-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 12px;
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #cbd5e1;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+.ct-page-btn:hover:not(:disabled) {
+  background: rgba(245, 158, 11, 0.2);
+  border-color: var(--gold-bright);
+  color: var(--gold-bright);
+}
+.ct-page-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+.ct-page-info {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
 .brand-logo-img {
   width: 32px;
   height: 32px;

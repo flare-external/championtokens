@@ -126,6 +126,9 @@
 
   <script>
     let currentUser = null;
+    let allLeaderboardUsers = [];
+    let lbCurrentPage = 1;
+    const LB_PER_PAGE = 10;
 
     requireAuth().then(async (user) => {
       currentUser = user;
@@ -136,9 +139,9 @@
 
     async function loadLeaderboard() {
       try {
-        const users = await getLeaderboard();
-        renderPodium(users.slice(0, 3));
-        renderTable(users);
+        allLeaderboardUsers = await getLeaderboard();
+        renderPodium(allLeaderboardUsers.slice(0, 3));
+        renderTablePage(1);
       } catch (err) {
         console.error(err);
         showToast('Failed to load leaderboard', 'error');
@@ -168,26 +171,40 @@
             ${avatarEl(u, 64, `podium-avatar podium-avatar--${pos}`)}
             <div class="podium-name">${u.displayName || 'Unknown'}${isCurrent ? ' <span style="color:var(--gold-bright);font-size:0.75rem;">(You)</span>' : ''}</div>
             ${u.epicUsername ? `<div style="font-size:0.75rem;color:#38bdf8;font-weight:700;">🎮 ${u.epicUsername}</div>` : ''}
-            <div class="podium-tokens">${formatTokens(u.tokens)}</div>
-            <div class="podium-label">Tokens ($${formatTokens(u.tokens)})</div>
-            <div class="podium-label" style="display:flex;gap:6px;align-items:center;margin-top:4px;">
-              <i data-lucide="trophy" style="width:12px;height:12px;color:var(--gold-bright);"></i>
-              ${u.matchesWon || 0} match wins
+            <div class="podium-tokens" style="font-size:1.4rem;color:var(--green);"><i data-lucide="trophy" style="width:18px;height:18px;display:inline;"></i> ${u.matchesWon || 0} Wins</div>
+            <div class="podium-label" style="display:flex;gap:6px;align-items:center;margin-top:2px;">
+              <span>🏆 ${formatTokens(u.totalEarned || 0)} Total Career Tokens</span>
             </div>
           </a>`;
       }).join('');
       lucide.createIcons();
     }
 
-    function renderTable(users) {
+    function renderTablePage(page) {
+      lbCurrentPage = page;
       const tbody = document.getElementById('lb-tbody');
-      tbody.innerHTML = users.map((u, idx) => {
-        const rank = idx + 1;
+      if (!tbody) return;
+
+      const totalItems = allLeaderboardUsers.length;
+      const totalPages = Math.max(1, Math.ceil(totalItems / LB_PER_PAGE));
+      const startIdx = (lbCurrentPage - 1) * LB_PER_PAGE;
+      const pageUsers = allLeaderboardUsers.slice(startIdx, startIdx + LB_PER_PAGE);
+
+      if (!pageUsers.length) {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:24px;color:var(--text-muted);">No competitors on this page</td></tr>`;
+        renderPaginationControls(totalPages);
+        return;
+      }
+
+      tbody.innerHTML = pageUsers.map((u, idx) => {
+        const rank = startIdx + idx + 1;
         const isCurrent = u.id === currentUser?.uid;
         const letter = (u.displayName || '?').charAt(0).toUpperCase();
-        const wr = u.matchesPlayed > 0
-          ? Math.round((u.matchesWon / u.matchesPlayed) * 100) + '%'
-          : '—';
+        const played = Number(u.matchesPlayed || 0);
+        const won = Number(u.matchesWon || 0);
+        const wr = played > 0 ? Math.round((won / played) * 100) + '%' : '0%';
+        const earned = Number(u.totalEarned || 0);
+
         return `
           <tr class="lb-row${isCurrent ? ' current-user' : ''}" onclick="window.location.href='profile?uid=${u.id}'" style="cursor:pointer;" title="View Profile">
             <td>
@@ -202,16 +219,35 @@
                 <div>
                   <div class="lb-name">${u.displayName || 'Unknown'}${isCurrent ? ' <span style="font-size:0.75rem;color:var(--gold-bright);font-weight:700;">(You)</span>' : ''}</div>
                   <div style="font-size:0.75rem;color:var(--text-faint);">
-                    ${u.epicUsername ? `<span style="color:#38bdf8;font-weight:600;">🎮 ${u.epicUsername}</span> · ` : ''}${u.matchesPlayed || 0} matches played
+                    ${u.epicUsername ? `<span style="color:#38bdf8;font-weight:600;">🎮 ${u.epicUsername}</span>` : 'Competitor'}
                   </div>
                 </div>
               </div>
             </td>
-            <td class="lb-tokens">${formatTokens(u.tokens)} <span style="font-size:0.75rem;color:var(--text-muted);">($${formatTokens(u.tokens)})</span></td>
-            <td style="color:var(--green);font-weight:700;">${u.matchesWon || 0}</td>
-            <td style="color:var(--text-muted);font-weight:600;">${wr}</td>
+            <td style="color:var(--green);font-weight:800;font-size:1rem;"><i data-lucide="trophy" style="width:14px;height:14px;display:inline;"></i> ${won}</td>
+            <td style="color:var(--text-muted);font-weight:600;">${played}</td>
+            <td style="color:var(--gold-bright);font-weight:700;">${wr}</td>
+            <td style="color:#fde68a;font-weight:800;">${formatTokens(earned)} Tokens</td>
           </tr>`;
       }).join('');
+
+      renderPaginationControls(totalPages);
+      lucide.createIcons();
+    }
+
+    function renderPaginationControls(totalPages) {
+      const container = document.getElementById('lb-pagination');
+      if (!container) return;
+
+      container.innerHTML = `
+        <button class="ct-page-btn" onclick="renderTablePage(${lbCurrentPage - 1})" ${lbCurrentPage <= 1 ? 'disabled' : ''}>
+          <i data-lucide="chevron-left"></i> Previous
+        </button>
+        <span class="ct-page-info">Page ${lbCurrentPage} of ${totalPages}</span>
+        <button class="ct-page-btn" onclick="renderTablePage(${lbCurrentPage + 1})" ${lbCurrentPage >= totalPages ? 'disabled' : ''}>
+          Next <i data-lucide="chevron-right"></i>
+        </button>
+      `;
       lucide.createIcons();
     }
 
@@ -228,7 +264,7 @@
     <div class="lb-header">
       <div class="page-header" style="margin-bottom:0;">
         <h1><i data-lucide="trophy" style="color:var(--gold-bright);"></i> Leaderboard</h1>
-        <p>Top Fortnite Token Champions.</p>
+        <p>Top Fortnite Match Champions Ranked by Wins.</p>
       </div>
       <button class="refresh-btn" id="refresh-btn" onclick="handleRefresh()">
         <i data-lucide="refresh-cw"></i> Refresh
@@ -240,10 +276,10 @@
       <div class="empty-state" style="grid-column:1/-1;"><div class="spinner" style="margin:0 auto;"></div></div>
     </div>
 
-    <!-- Full Table -->
+    <!-- Full Table with Pagination -->
     <div class="card">
       <div class="section-title" style="margin-bottom:16px;">
-        <i data-lucide="list"></i> Full Rankings
+        <i data-lucide="list"></i> Full Rankings (Most Wins First)
       </div>
       <div class="lb-table-wrap">
         <table class="lb-table">
@@ -251,16 +287,20 @@
             <tr>
               <th>#</th>
               <th>Player</th>
-              <th>Tokens</th>
               <th><i data-lucide="trophy" style="width:13px;height:13px;display:inline;"></i> Wins</th>
+              <th>Matches</th>
               <th>Win Rate</th>
+              <th>Total Career Earned</th>
             </tr>
           </thead>
           <tbody id="lb-tbody">
-            <tr><td colspan="5" style="text-align:center;padding:24px;"><div class="spinner" style="margin:0 auto;"></div></td></tr>
+            <tr><td colspan="6" style="text-align:center;padding:24px;"><div class="spinner" style="margin:0 auto;"></div></td></tr>
           </tbody>
         </table>
       </div>
+
+      <!-- Pagination bar -->
+      <div class="ct-pagination" id="lb-pagination"></div>
     </div>
   </main>
 </body>
