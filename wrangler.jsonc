@@ -6,15 +6,6 @@
     "enabled": true
   },
   "assets": {
-    "directory": ".",
-    "exclude": [
-      "node_modules/**",
-      "functions/**",
-      ".git/**",
-      ".netlify/**",
-      "package.json",
-      "package-lock.json",
-      "*.md"
-    ]
+    "directory": "."
   }
 }
