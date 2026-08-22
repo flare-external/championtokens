@@ -122,11 +122,19 @@
       }
 
       try {
-        // If already signed in and this looks like a stale redirect, go home
+        // Check if already signed in with safety timeout
         await new Promise((resolve) => {
+          let settled = false;
+          const timer = setTimeout(() => {
+            if (!settled) { settled = true; resolve(null); }
+          }, 1200);
           const unsub = auth.onAuthStateChanged((user) => {
-            unsub();
-            resolve(user);
+            if (!settled) {
+              settled = true;
+              clearTimeout(timer);
+              unsub();
+              resolve(user);
+            }
           });
         });
 
