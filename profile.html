@@ -847,12 +847,7 @@
         <label class="form-label">Username Color Theme</label>
         <select class="form-select" id="pref-color-select" onchange="previewStyleModal()">
           <option value="">Default (Clean White)</option>
-          <option value="gold">Champion Gold 🟡</option>
-          <option value="blue">Cyber Cyan 🔵</option>
-          <option value="purple">Royal Purple 🟣</option>
-          <option value="green">Emerald Green 🟢</option>
-          <option value="red">Crimson Flame 🔴</option>
-          <option value="rainbow">Animated Rainbow 🌈</option>
+          <option value="gold">Subscriber Gold ✨ (Requires Premium)</option>
         </select>
       </div>
 
@@ -1110,18 +1105,16 @@
 
       const hubBanner = document.getElementById('hub-current-banner');
       if (hubBanner) {
-        if (data.equippedBanner && SHOP_BANNERS[data.equippedBanner]) {
-          hubBanner.innerHTML = `<span class="chip" style="font-size:0.78rem;font-weight:700;color:#fff;">${SHOP_BANNERS[data.equippedBanner].name}</span>`;
-        } else {
-          hubBanner.innerHTML = `<span class="chip" style="font-size:0.78rem;font-weight:700;">Dark Obsidian (Default)</span>`;
-        }
+        hubBanner.innerHTML = `<span class="chip" style="font-size:0.78rem;font-weight:700;color:var(--gold-bright);">Coming Soon 🎨</span>`;
       }
 
       const hubStyle = document.getElementById('hub-current-style');
       if (hubStyle) {
         const styleObj = data.profileStyle || {};
-        if (styleObj.color || (styleObj.animation && styleObj.animation !== 'none')) {
-          hubStyle.innerHTML = `<span class="chip" style="font-size:0.78rem;font-weight:700;color:var(--gold-bright);">Custom (${styleObj.color || 'white'} · ${styleObj.animation || 'static'})</span>`;
+        if (styleObj.color === 'gold') {
+          hubStyle.innerHTML = `<span class="chip" style="font-size:0.78rem;font-weight:700;color:var(--gold-bright);">Subscriber Gold ✨</span>`;
+        } else if (styleObj.animation && styleObj.animation !== 'none') {
+          hubStyle.innerHTML = `<span class="chip" style="font-size:0.78rem;font-weight:700;color:var(--gold-bright);">${styleObj.animation}</span>`;
         } else {
           hubStyle.innerHTML = `<span class="chip" style="font-size:0.78rem;font-weight:700;">Default</span>`;
         }
@@ -1303,46 +1296,22 @@
         titlesGrid.innerHTML = tHtml;
       }
 
-      // Render Banners
+      // Render Banners (Coming Soon)
       if (bannersGrid) {
-        let bHtml = '';
-
-        // Default Banner
-        const isDefEquipped = !equippedBanner;
-        bHtml += `
-          <div class="cosmetics-option-card ${isDefEquipped ? 'equipped' : ''}" onclick="equipBannerFromModal('')">
-            ${isDefEquipped ? '<span class="equipped-badge-indicator">Equipped ✓</span>' : ''}
-            <span style="font-weight:700;font-size:0.95rem;color:#94a3b8;">Dark Obsidian</span>
-            <div style="font-size:0.75rem;color:var(--text-muted);">Standard sleek theme</div>
-            <button class="btn btn-sm ${isDefEquipped ? 'btn-outline' : 'btn-primary'}" style="margin-top:auto;width:100%;font-size:0.78rem;">
-              ${isDefEquipped ? 'Active' : 'Equip Default'}
-            </button>
+        bannersGrid.innerHTML = `
+          <div style="grid-column:1/-1;text-align:center;padding:32px 18px;background:rgba(14,18,34,0.9);border-radius:var(--radius-lg);border:1px dashed rgba(245,158,11,0.4);display:flex;flex-direction:column;align-items:center;gap:12px;">
+            <div style="width:48px;height:48px;border-radius:50%;background:rgba(245,158,11,0.15);border:1px solid var(--gold-bright);display:flex;align-items:center;justify-content:center;color:var(--gold-bright);font-size:1.4rem;">
+              <i data-lucide="palette"></i>
+            </div>
+            <div style="font-weight:900;font-size:1.15rem;color:#fff;">Profile Banners Coming Soon</div>
+            <div style="font-size:0.82rem;color:var(--text-muted);max-width:340px;line-height:1.5;">
+              Custom handcrafted profile theme banners and arena backdrops are in design and dropping tomorrow!
+            </div>
+            <span class="chip chip-gold" style="font-size:0.75rem;padding:3px 12px;font-weight:800;">
+              🎨 Releasing Tomorrow
+            </span>
           </div>
         `;
-
-        Object.values(SHOP_BANNERS).forEach(banner => {
-          const isUnlocked = unlockedBanners.includes(banner.id);
-          const isEquipped = equippedBanner === banner.id;
-
-          bHtml += `
-            <div class="cosmetics-option-card ${banner.className} ${isEquipped ? 'equipped' : ''}" ${isUnlocked ? `onclick="equipBannerFromModal('${banner.id}')"` : ''} style="border-width:2px;">
-              ${isEquipped ? '<span class="equipped-badge-indicator">Equipped ✓</span>' : ''}
-              <span style="font-weight:800;font-size:1rem;color:#fff;">${banner.name}</span>
-              <div style="font-size:0.75rem;color:var(--text-muted);">${isUnlocked ? 'Unlocked theme' : `Shop Price: ${formatTokens(banner.cost)} Tokens`}</div>
-              ${isUnlocked ? `
-                <button class="btn btn-sm ${isEquipped ? 'btn-gold' : 'btn-outline'}" onclick="event.stopPropagation();equipBannerFromModal('${banner.id}')" style="margin-top:auto;width:100%;font-size:0.78rem;">
-                  ${isEquipped ? 'Equipped ✓' : 'Equip Banner'}
-                </button>
-              ` : `
-                <a href="shop" class="btn btn-gold btn-sm" onclick="event.stopPropagation()" style="margin-top:auto;width:100%;font-size:0.75rem;text-decoration:none;">
-                  <i data-lucide="shopping-cart" style="width:12px;height:12px;"></i> Get in Shop
-                </a>
-              `}
-            </div>
-          `;
-        });
-
-        bannersGrid.innerHTML = bHtml;
       }
 
       if (window.lucide) lucide.createIcons();

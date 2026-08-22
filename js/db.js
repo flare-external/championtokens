@@ -1008,21 +1008,71 @@ async function tipPlayer(senderUid, receiverUid, amount) {
 // ── Shop Titles, Banners, & Daily Mystery Chests ─────────────
 
 const SHOP_TITLES = {
-  'goated':        { id: 'goated',        name: '⚡ GOATED',           cost: 2.50, className: 'title-goated' },
-  'the_boss':      { id: 'the_boss',      name: '👑 The Boss',         cost: 5.00, className: 'title-the-boss' },
-  'unreal':        { id: 'unreal',        name: '🔥 Unreal Legend',    cost: 3.50, className: 'title-unreal' },
-  'prodigy':       { id: 'prodigy',       name: '🏆 The Prodigy',      cost: 2.00, className: 'title-prodigy' },
-  'box_god':       { id: 'box_god',       name: '🎯 Box Fight God',    cost: 2.50, className: 'title-box-god' },
-  'high_roller':   { id: 'high_roller',   name: '💎 High Roller',      cost: 4.00, className: 'title-high-roller' },
-  'beta_pioneer':  { id: 'beta_pioneer',  name: '🌟 Beta Pioneer',     cost: 0.00, className: 'title-beta-pioneer' },
-  'average':       { id: 'average',       name: 'Average',             cost: 1.00, className: 'title-average' }
+  // Fortnite Rank Series
+  'bronze':        { id: 'bronze',        name: '🥉 Bronze',           cost: 1.00,  rarity: 'Common',    weight: 80, className: 'title-bronze' },
+  'silver':        { id: 'silver',        name: '🥈 Silver',           cost: 1.50,  rarity: 'Common',    weight: 70, className: 'title-silver' },
+  'gold':          { id: 'gold',          name: '🥇 Gold',             cost: 2.50,  rarity: 'Uncommon',  weight: 50, className: 'title-gold' },
+  'platinum':      { id: 'platinum',      name: '💎 Platinum',         cost: 3.50,  rarity: 'Rare',      weight: 35, className: 'title-platinum' },
+  'diamond':       { id: 'diamond',       name: '🔷 Diamond',          cost: 5.00,  rarity: 'Epic',      weight: 20, className: 'title-diamond' },
+  'elite':         { id: 'elite',         name: '👑 Elite',            cost: 7.50,  rarity: 'Legendary', weight: 10, className: 'title-elite' },
+  'champion':      { id: 'champion',      name: '🏆 Champion',         cost: 10.00, rarity: 'Mythic',    weight: 5,  className: 'title-champion' },
+  'unreal':        { id: 'unreal',        name: '🌌 Unreal',           cost: 15.00, rarity: 'Exotic',    weight: 2,  className: 'title-unreal' },
+
+  // Special / Legacy Series
+  'goated':        { id: 'goated',        name: '⚡ GOATED',           cost: 2.50,  rarity: 'Uncommon',  weight: 40, className: 'title-goated' },
+  'the_boss':      { id: 'the_boss',      name: '⭐ The Boss',         cost: 5.00,  rarity: 'Epic',      weight: 15, className: 'title-the-boss' },
+  'prodigy':       { id: 'prodigy',       name: '🏆 The Prodigy',      cost: 2.00,  rarity: 'Uncommon',  weight: 50, className: 'title-prodigy' },
+  'box_god':       { id: 'box_god',       name: '🎯 Box Fight God',    cost: 2.50,  rarity: 'Uncommon',  weight: 45, className: 'title-box-god' },
+  'high_roller':   { id: 'high_roller',   name: '💎 High Roller',      cost: 4.00,  rarity: 'Rare',      weight: 25, className: 'title-high-roller' },
+  'average':       { id: 'average',       name: '⚡ Average',          cost: 1.00,  rarity: 'Common',    weight: 60, className: 'title-average' },
+  'beta_pioneer':  { id: 'beta_pioneer',  name: '🌟 Beta Pioneer',     cost: 0.00,  rarity: 'Exclusive', weight: 0,  className: 'title-beta-pioneer' }
 };
 
-const SHOP_BANNERS = {
-  'obsidian_flame': { id: 'obsidian_flame', name: 'Dark Fire', cost: 2.00, className: 'banner-obsidian-flame' },
-  'cyber_matrix':   { id: 'cyber_matrix', name: 'Neon Grid', cost: 2.50, className: 'banner-cyber-matrix' },
-  'golden_royale':  { id: 'golden_royale', name: 'Royal Gold', cost: 4.00, className: 'banner-golden-royale' }
-};
+const BANNERS_COMING_SOON = true;
+const SHOP_BANNERS = {};
+
+/**
+ * Deterministic pseudo-random number generator for daily shop seeds.
+ */
+function seededRandom(seed) {
+  const x = Math.sin(seed++) * 10000;
+  return x - Math.floor(x);
+}
+
+/**
+ * Returns today's featured daily shop items based on UTC date seed and rarity weights.
+ * High-cost items (Unreal, Champion, Elite) have lower weights and appear rarely.
+ */
+function getDailyShopTitles(count = 5) {
+  const now = new Date();
+  const dateKey = `${now.getUTCFullYear()}-${now.getUTCMonth() + 1}-${now.getUTCDate()}`;
+  
+  // Create integer seed from dateKey string
+  let seed = 0;
+  for (let i = 0; i < dateKey.length; i++) {
+    seed = (seed * 31 + dateKey.charCodeAt(i)) >>> 0;
+  }
+
+  const eligible = Object.values(SHOP_TITLES).filter(t => t.weight > 0);
+  const selected = [];
+  const pool = [...eligible];
+
+  for (let step = 0; step < count && pool.length > 0; step++) {
+    const totalWeight = pool.reduce((sum, item) => sum + item.weight, 0);
+    let rand = seededRandom(seed + step * 7) * totalWeight;
+    
+    for (let i = 0; i < pool.length; i++) {
+      rand -= pool[i].weight;
+      if (rand <= 0 || i === pool.length - 1) {
+        selected.push(pool[i]);
+        pool.splice(i, 1);
+        break;
+      }
+    }
+  }
+
+  return selected;
+}
 
 /** Get Leaderboard Rank for a User */
 async function getUserLeaderboardRank(uid) {
