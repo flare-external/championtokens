@@ -169,7 +169,16 @@
     }
 
     async function handleAdminCancelMatch(matchId) {
-      if (!confirm('Force cancel this match and refund all players?')) return;
+      const ok = await showConfirm({
+        title: 'Force Cancel Match?',
+        message: 'Force cancel this match and 100% refund all players?',
+        confirmText: 'Force Cancel & Refund',
+        cancelText: 'Cancel',
+        type: 'danger',
+        icon: 'x-circle'
+      });
+      if (!ok) return;
+
       try {
         await adminForceCancelMatch(matchId, currentUserData?.displayName || 'Admin');
         showToast('Match force cancelled and players refunded!', 'success');

@@ -1280,7 +1280,15 @@
     async function handleReportMatchScore(winningTeam) {
       if (!matchId || !currentUser) return;
       const teamLabel = winningTeam === 'team1' ? 'Team 1 (Host)' : 'Team 2 (Enemy)';
-      if (!confirm(`Confirm reporting that ${teamLabel} WON this match?`)) return;
+      const ok = await showConfirm({
+        title: 'Submit Match Report',
+        message: `Confirm reporting that <strong>${teamLabel}</strong> WON this match?`,
+        confirmText: 'Confirm Winner',
+        cancelText: 'Cancel',
+        type: 'warning',
+        icon: 'trophy'
+      });
+      if (!ok) return;
 
       try {
         const res = await submitMatchReport(matchId, currentUser.uid, winningTeam);
@@ -1299,7 +1307,15 @@
     async function handleAdminResolve(winningTeam) {
       if (!matchId || !currentUser) return;
       const teamLabel = winningTeam === 'team1' ? 'Team 1 (Host)' : 'Team 2 (Enemy)';
-      if (!confirm(`Staff Action: Force resolve match in favor of ${teamLabel}?`)) return;
+      const ok = await showConfirm({
+        title: 'Staff Moderation Action',
+        message: `Force resolve match in favor of <strong>${teamLabel}</strong>?`,
+        confirmText: 'Force Resolve',
+        cancelText: 'Cancel',
+        type: 'danger',
+        icon: 'shield-alert'
+      });
+      if (!ok) return;
 
       try {
         const prize = await adminResolveDispute(matchId, winningTeam, currentUser.uid);
@@ -1333,7 +1349,16 @@
     }
 
     async function handleLeaveOrCancel() {
-      if (!confirm('Are you sure? Your wager will be refunded to your balance.')) return;
+      const ok = await showConfirm({
+        title: 'Cancel Match & Refund',
+        message: 'Are you sure you want to leave / cancel? Your entry tokens will be 100% refunded to your balance.',
+        confirmText: 'Cancel & Refund',
+        cancelText: 'Stay in Match',
+        type: 'danger',
+        icon: 'x-circle'
+      });
+      if (!ok) return;
+
       try {
         const res = await leaveOrCancelMatch(matchId, currentUser.uid);
         showToast(res.message, 'success');
@@ -1347,9 +1372,15 @@
       if (!currentMatch) return;
       currentUserData = await getUser(currentUser.uid);
       if (!currentUserData?.epicUsername) {
-        if (confirm('You must link your Epic Games username first! Go to Profile to link now?')) {
-          window.location.href = 'profile';
-        }
+        const ok = await showConfirm({
+          title: 'Epic Games Account Required',
+          message: 'You must link your Epic Games / Fortnite username before entering matches! Go to Profile to link now?',
+          confirmText: 'Go to Profile',
+          cancelText: 'Cancel',
+          type: 'warning',
+          icon: 'shield-alert'
+        });
+        if (ok) window.location.href = 'profile';
         return;
       }
       if (Number(currentUserData.tokens || 0) < Number(currentMatch.wager)) {
@@ -1515,7 +1546,16 @@
 
     async function handleTipAmount(amount) {
       if (!activeModalUid || !currentUser) return;
-      if (!confirm(`Send a tip of ${formatTokens(amount)} Tokens to this player?`)) return;
+      const ok = await showConfirm({
+        title: 'Tip Player Tokens',
+        message: `Send a tip of <strong>${formatTokens(amount)} Tokens</strong> to this player?`,
+        confirmText: `Send ${formatTokens(amount)} Tokens`,
+        cancelText: 'Cancel',
+        type: 'warning',
+        icon: 'gift'
+      });
+      if (!ok) return;
+
       try {
         await tipPlayer(currentUser.uid, activeModalUid, amount);
         showToast(`Successfully sent ${formatTokens(amount)} Tokens tip!`, 'success');

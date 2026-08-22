@@ -277,7 +277,16 @@
 
     async function handleBuyPremium() {
       if (!currentUser) return;
-      if (!confirm('Unlock Champion Premium for 5.00 Tokens ($5.00) for 30 days?')) return;
+      const ok = await showConfirm({
+        title: 'Unlock Champion Premium',
+        message: 'Unlock Champion Premium for <strong>5.00 Tokens ($5.00)</strong> for 30 days?<br/><span style="color:var(--gold-bright);font-size:0.82rem;display:inline-block;margin-top:8px;">✨ Includes Subscriber Gold username, priority matching & VIP perks!</span>',
+        confirmText: 'Unlock Premium (5.00 Tokens)',
+        cancelText: 'Cancel',
+        type: 'warning',
+        icon: 'sparkles'
+      });
+      if (!ok) return;
+
       try {
         await buyPremiumPass(currentUser.uid);
         showToast('👑 Congratulations! Champion Premium activated!', 'success');

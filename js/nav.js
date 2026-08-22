@@ -410,3 +410,64 @@ function sizeColor(size) {
   };
   return map[size] || 'badge-size-1v1';
 }
+
+/**
+ * Modern Custom Confirmation Modal dialog (Replaces native browser window.confirm).
+ * @param {Object|string} options
+ * @returns {Promise<boolean>}
+ */
+function showConfirm(options = {}) {
+  const config = typeof options === 'string' ? { message: options } : options;
+  const {
+    title = 'Are you sure?',
+    message = '',
+    confirmText = 'Confirm',
+    cancelText = 'Cancel',
+    type = 'warning',
+    icon = type === 'danger' ? 'alert-triangle' : (type === 'success' ? 'check-circle' : 'help-circle'),
+  } = config;
+
+  return new Promise((resolve) => {
+    let overlay = document.getElementById('ct-custom-confirm-modal');
+    if (!overlay) {
+      overlay = document.createElement('div');
+      overlay.id = 'ct-custom-confirm-modal';
+      overlay.className = 'modal-overlay';
+      overlay.style.zIndex = '999999';
+      document.body.appendChild(overlay);
+    }
+
+    const iconColor = type === 'danger' ? 'var(--red)' : (type === 'success' ? 'var(--green)' : 'var(--gold-bright)');
+    const btnClass = type === 'danger' ? 'btn-danger' : 'btn-primary';
+
+    overlay.innerHTML = `
+      <div class="modal" style="max-width:440px;text-align:center;padding:28px 24px;border:1px solid rgba(255,255,255,0.1);box-shadow:0 24px 60px rgba(0,0,0,0.85);backdrop-filter:blur(24px);">
+        <div style="width:54px;height:54px;border-radius:50%;background:rgba(255,255,255,0.05);border:1px solid ${iconColor};display:flex;align-items:center;justify-content:center;margin:0 auto 16px;color:${iconColor};box-shadow:0 0 20px rgba(0,0,0,0.4);">
+          <i data-lucide="${icon}" style="width:26px;height:26px;"></i>
+        </div>
+        <h3 style="font-size:1.25rem;font-weight:900;color:#fff;margin-bottom:8px;">${title}</h3>
+        <div style="font-size:0.88rem;color:var(--text-muted);line-height:1.5;margin-bottom:24px;">${message}</div>
+        <div style="display:flex;gap:10px;justify-content:center;">
+          <button type="button" class="btn btn-outline" id="ct-confirm-cancel-btn" style="flex:1;">${cancelText}</button>
+          <button type="button" class="btn ${btnClass}" id="ct-confirm-accept-btn" style="flex:1;">${confirmText}</button>
+        </div>
+      </div>
+    `;
+
+    overlay.classList.add('open');
+    overlay.classList.add('active');
+    if (window.lucide) lucide.createIcons();
+
+    const cleanup = (res) => {
+      overlay.classList.remove('open');
+      overlay.classList.remove('active');
+      resolve(res);
+    };
+
+    document.getElementById('ct-confirm-cancel-btn').onclick = () => cleanup(false);
+    document.getElementById('ct-confirm-accept-btn').onclick = () => cleanup(true);
+    overlay.onclick = (e) => {
+      if (e.target === overlay) cleanup(false);
+    };
+  });
+}

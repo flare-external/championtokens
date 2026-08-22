@@ -25,15 +25,26 @@ function signInWithEpic() {
 }
 
 /**
- * Initiate official published Epic Games OAuth 2.0 flow.
+ * Get canonical Epic OAuth redirect URI.
  */
-function startEpicOAuth() {
-  const clientId = 'xyza78916i52N8UrLv1m41xvkgeBXfUh';
+function getEpicRedirectUri() {
+  const host = window.location.hostname.toLowerCase();
+  if (host === 'championtokens.fun' || host === 'www.championtokens.fun' || host.includes('netlify.app')) {
+    return 'https://championtokens.fun/epic-callback';
+  }
   let origin = window.location.origin;
   if (!origin.includes('localhost') && !origin.includes('127.0.0.1')) {
     origin = origin.replace(/^http:/, 'https:');
   }
-  const redirectUri = encodeURIComponent(`${origin}/epic-callback`);
+  return `${origin}/epic-callback`;
+}
+
+/**
+ * Initiate official published Epic Games OAuth 2.0 flow.
+ */
+function startEpicOAuth() {
+  const clientId = 'xyza78916i52N8UrLv1m41xvkgeBXfUh';
+  const redirectUri = encodeURIComponent(getEpicRedirectUri());
   const epicAuthUrl = `https://www.epicgames.com/id/authorize?client_id=${clientId}&response_type=code&scope=basic_profile&redirect_uri=${redirectUri}`;
   window.location.href = epicAuthUrl;
 }

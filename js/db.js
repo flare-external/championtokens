@@ -1037,8 +1037,22 @@ async function tipPlayer(senderUid, receiverUid, amount) {
 
 /**
  * Unlink connected Epic Games account from user profile.
+ * Deducts 2.00 Tokens unlinking fee.
  */
 async function unlinkEpicAccount(uid) {
+  const user = await getUser(uid);
+  if (!user) throw new Error('User not found');
+  if (Number(user.tokens || 0) < 2.00) {
+    throw new Error('Insufficient tokens to unlink (Requires 2.00 Tokens fee)');
+  }
+
+  await updateTokens(
+    uid,
+    -2.00,
+    'epic_unlink_fee',
+    '🔌 Unlinked Epic Games account (-2.00 Tokens fee)'
+  );
+
   const userRef = db.collection('users').doc(uid);
   await userRef.update({
     epicUsername:  firebase.firestore.FieldValue.delete(),

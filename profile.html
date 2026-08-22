@@ -1481,9 +1481,12 @@
             <button type="button" class="btn btn-outline" onclick="startEpicOAuth()" style="width:100%;justify-content:center;">
               <i data-lucide="refresh-cw"></i> Switch / Re-Link Account
             </button>
-            <button type="button" class="btn btn-danger" onclick="handleUnlinkEpic()" style="width:100%;justify-content:center;">
-              <i data-lucide="unlink"></i> Unlink Epic Account
-            </button>
+            <div>
+              <button type="button" class="btn btn-danger" onclick="handleUnlinkEpic()" style="width:100%;justify-content:center;">
+                <i data-lucide="unlink"></i> Unlink Epic Account
+              </button>
+              <div style="font-size:0.75rem;color:var(--text-muted);margin-top:6px;">Unlinking fee: 2.00 Tokens</div>
+            </div>
           </div>
         `;
       } else {
@@ -1514,10 +1517,19 @@
     }
 
     async function handleUnlinkEpic() {
-      if (!confirm('Are you sure you want to unlink your Epic Games account?')) return;
+      const ok = await showConfirm({
+        title: 'Unlink Epic Games Account?',
+        message: 'Are you sure you want to unlink your Epic Games account?<br/><span style="display:inline-block;margin-top:10px;padding:5px 12px;background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.35);border-radius:8px;color:#fca5a5;font-weight:800;font-size:0.82rem;">⚡ Unlinking fee: 2.00 Tokens ($2.00)</span>',
+        confirmText: 'Unlink (-2.00 Tokens)',
+        cancelText: 'Keep Connected',
+        type: 'danger',
+        icon: 'unlink'
+      });
+      if (!ok) return;
+
       try {
         await unlinkEpicAccount(currentUser.uid);
-        showToast('Epic Games account unlinked', 'success');
+        showToast('Epic Games account unlinked (-2.00 tokens fee deducted)', 'success');
         closeLinkEpicModal();
         db.collection('users').doc(currentUser.uid).get().then(snap => {
           if (snap.exists) {

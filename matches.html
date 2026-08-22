@@ -271,9 +271,15 @@
     async function handleJoin(code, wager) {
       currentUserData = await getUser(currentUser.uid);
       if (!currentUserData?.epicUsername) {
-        if (confirm('You must link your Epic Games / Fortnite username before entering matches! Go to Profile to link now?')) {
-          window.location.href = 'profile';
-        }
+        const ok = await showConfirm({
+          title: 'Epic Games Account Required',
+          message: 'You must link your Epic Games / Fortnite account before entering token matches! Go to Profile to link now?',
+          confirmText: 'Go to Profile',
+          cancelText: 'Cancel',
+          type: 'warning',
+          icon: 'shield-alert'
+        });
+        if (ok) window.location.href = 'profile';
         return;
       }
       if (Number(currentUserData.tokens || 0) < Number(wager)) {
@@ -304,11 +310,17 @@
     }
 
     // ── Create Match Modal ────────────────────────────────────
-    function openCreateModal() {
+    async function openCreateModal() {
       if (!currentUserData?.epicUsername) {
-        if (confirm('You must link your Epic Games / Fortnite username before creating matches! Go to Profile to link now?')) {
-          window.location.href = 'profile';
-        }
+        const ok = await showConfirm({
+          title: 'Epic Games Account Required',
+          message: 'You must link your Epic Games / Fortnite account before creating matches! Go to Profile to link now?',
+          confirmText: 'Go to Profile',
+          cancelText: 'Cancel',
+          type: 'warning',
+          icon: 'shield-alert'
+        });
+        if (ok) window.location.href = 'profile';
         return;
       }
       document.getElementById('create-modal').classList.add('open');
