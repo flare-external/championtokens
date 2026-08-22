@@ -39,7 +39,7 @@ async function createFirebaseCustomToken(serviceAccount, uid, claims = {}) {
   const payload = {
     iss: serviceAccount.client_email,
     sub: serviceAccount.client_email,
-    aud: 'https://identitytoolkit.googleapis.com/google.identity.google.v1.IdentityToolkit',
+    aud: 'https://identitytoolkit.googleapis.com/google.identity.identitytoolkit.v1.IdentityToolkit',
     iat: now,
     exp: now + 3600,
     uid: uid,
@@ -48,7 +48,7 @@ async function createFirebaseCustomToken(serviceAccount, uid, claims = {}) {
 
   const headerB64 = base64url(JSON.stringify(header));
   const payloadB64 = base64url(JSON.stringify(payload));
-  const data = new TextEncoder().encode(`${headerB64}.${payloadB64}`);
+  const data = new TextEncoder().encode(headerB64 + '.' + payloadB64);
 
   const keyBuffer = pemToArrayBuffer(serviceAccount.private_key);
   const cryptoKey = await crypto.subtle.importKey(
@@ -62,7 +62,7 @@ async function createFirebaseCustomToken(serviceAccount, uid, claims = {}) {
   const signature = await crypto.subtle.sign('RSASSA-PKCS1-v1_5', cryptoKey, data);
   const signatureB64 = base64url(signature);
 
-  return `${headerB64}.${payloadB64}.${signatureB64}`;
+  return headerB64 + '.' + payloadB64 + '.' + signatureB64;
 }
 
 export async function onRequestOptions() {
