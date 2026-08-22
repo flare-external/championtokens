@@ -660,6 +660,22 @@ async function getLeaderboard() {
   return users;
 }
 
+/** Calculate user rank on the leaderboard */
+async function getUserLeaderboardRank(uid) {
+  try {
+    const users = await getLeaderboard();
+    const index = users.findIndex(u => (u.id === uid || u.uid === uid));
+    if (index === -1) {
+      return { rank: null, display: '#--', badgeClass: 'rank-badge-normal' };
+    }
+    const rank = index + 1;
+    const badgeClass = rank === 1 ? 'rank-badge-1' : (rank <= 3 ? 'rank-badge-top' : 'rank-badge-normal');
+    return { rank, display: `#${rank}`, badgeClass };
+  } catch (e) {
+    return { rank: null, display: '#--', badgeClass: 'rank-badge-normal' };
+  }
+}
+
 // ── Transactions ─────────────────────────────────────────────
 
 /** Fetch last N transactions for a user */

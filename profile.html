@@ -1046,13 +1046,20 @@
       if (lostEl) lostEl.textContent = `${lost}`;
       if (wrEl)   wrEl.textContent = wr;
 
-      // Leaderboard Rank Calculation
-      const rankInfo = await getUserLeaderboardRank(targetUid);
-      const rankTextEl = document.getElementById('profile-rank-text');
-      const rankBadgeEl = document.getElementById('profile-rank-badge');
-      if (rankTextEl) rankTextEl.textContent = rankInfo.display;
-      if (rankBadgeEl) {
-        rankBadgeEl.innerHTML = `<span class="rank-badge ${rankInfo.badgeClass}">${rankInfo.display}</span>`;
+      // Render Dedicated Top Epic Card immediately
+      renderEpicTopSection(data);
+
+      // Leaderboard Rank Calculation (Safe async)
+      try {
+        const rankInfo = await getUserLeaderboardRank(targetUid);
+        const rankTextEl = document.getElementById('profile-rank-text');
+        const rankBadgeEl = document.getElementById('profile-rank-badge');
+        if (rankTextEl && rankInfo) rankTextEl.textContent = rankInfo.display;
+        if (rankBadgeEl && rankInfo) {
+          rankBadgeEl.innerHTML = `<span class="rank-badge ${rankInfo.badgeClass}">${rankInfo.display}</span>`;
+        }
+      } catch (rankErr) {
+        console.warn('Rank calculation notice:', rankErr);
       }
 
       // Update Settings Hub values
@@ -1060,9 +1067,6 @@
       if (hubCard) {
         hubCard.style.display = isViewingSelf ? 'block' : 'none';
       }
-
-      // Render Dedicated Top Epic Card
-      renderEpicTopSection(data);
 
       const hubTitle = document.getElementById('hub-current-title');
       if (hubTitle) {
