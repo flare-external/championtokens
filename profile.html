@@ -532,27 +532,29 @@
     <!-- Dedicated Top Showcase: Epic Games Account (Excluded & Prominent) -->
     <div class="epic-top-showcase-card" id="epic-account-top-card" style="margin-bottom:24px;">
       <div id="epic-top-showcase-content">
-        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;">
-          <div style="display:flex;align-items:center;gap:16px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;">
+          <div style="display:flex;align-items:center;gap:18px;">
             <div class="epic-badge-icon-box epic-badge-unlinked">
-              <img src="epic_games_logo.webp" alt="Epic Games" style="width:28px;height:34px;object-fit:contain;"/>
+              <img src="epic_games_logo.webp" alt="Epic Games" style="width:30px;height:38px;object-fit:contain;"/>
             </div>
             <div>
-              <div style="font-size:0.75rem;color:var(--text-muted);text-transform:uppercase;font-weight:800;letter-spacing:0.05em;">
-                Fortnite Account
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+                <span style="font-size:0.75rem;text-transform:uppercase;font-weight:800;letter-spacing:0.08em;color:#38bdf8;">Epic Games Connection</span>
+                <span class="chip" style="font-size:0.68rem;padding:2px 8px;background:rgba(255,255,255,0.06);border-color:rgba(255,255,255,0.12);color:var(--text-muted);">Required for Matches</span>
               </div>
-              <div style="font-size:1.2rem;font-weight:900;color:#fff;margin-top:2px;">
+              <div style="font-size:1.28rem;font-weight:900;color:#fff;letter-spacing:-0.01em;">
                 Connect Epic Games Account
               </div>
-              <div style="font-size:0.8rem;color:var(--text-muted);margin-top:2px;">
-                Link your Fortnite IGN to participate in token matches and party up with opponents.
+              <div style="font-size:0.82rem;color:var(--text-muted);margin-top:3px;max-width:520px;line-height:1.4;">
+                Link your Fortnite display name via Epic Games to queue into token matches and party up with opponents.
               </div>
             </div>
           </div>
           <div>
-            <button class="btn-epic-brand" onclick="startEpicOAuth()" style="width:auto;padding:11px 22px;font-size:0.92rem;">
+            <button class="btn-epic-brand" onclick="startEpicOAuth()" style="padding:12px 26px;font-size:0.92rem;flex-shrink:0;">
               <img src="epic_games_logo.webp" alt="Epic" style="width:18px;height:22px;object-fit:contain;"/>
               <span>Link Account</span>
+              <i data-lucide="arrow-right" style="width:16px;height:16px;margin-left:2px;"></i>
             </button>
           </div>
         </div>
@@ -1416,72 +1418,102 @@
 
     // ── Epic Games Top Showcase Section (Dedicated Top Card) ──────
     function renderEpicTopSection(data) {
+      const card = document.getElementById('epic-account-top-card');
       const content = document.getElementById('epic-top-showcase-content');
       if (!content) return;
 
-      const isLinked = !!data?.epicUsername;
+      const isLinked = !!(data && data.epicUsername);
+
+      if (card) {
+        if (isLinked) card.classList.add('epic-card--linked');
+        else card.classList.remove('epic-card--linked');
+      }
 
       if (isLinked) {
         content.innerHTML = `
-          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;">
-            <div style="display:flex;align-items:center;gap:16px;">
-              <div class="epic-badge-icon-box">
-                <img src="epic_games_logo.webp" alt="Epic Games" style="width:28px;height:34px;object-fit:contain;"/>
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;">
+            <div style="display:flex;align-items:center;gap:18px;">
+              <div class="epic-badge-icon-box epic-badge-verified">
+                <img src="epic_games_logo.webp" alt="Epic Games" style="width:30px;height:38px;object-fit:contain;"/>
               </div>
               <div>
-                <div style="font-size:0.75rem;color:var(--text-muted);text-transform:uppercase;font-weight:800;letter-spacing:0.05em;display:flex;align-items:center;gap:8px;">
-                  <span style="color:#38bdf8;">Epic Games Account</span>
-                  <span class="chip chip-success" style="font-size:0.68rem;padding:2px 8px;"><i data-lucide="check-circle" style="width:11px;height:11px;display:inline;"></i> Verified</span>
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+                  <span style="font-size:0.75rem;text-transform:uppercase;font-weight:800;letter-spacing:0.08em;color:#38bdf8;">Epic Games Account</span>
+                  <span class="chip chip-success" style="font-size:0.68rem;padding:2px 8px;font-weight:800;">
+                    <i data-lucide="check-circle" style="width:11px;height:11px;display:inline;"></i> Verified Account
+                  </span>
                 </div>
-                <div style="font-size:1.4rem;font-weight:900;color:#fff;margin-top:2px;display:flex;align-items:center;gap:8px;">
-                  <span>${escapeHtml(data.epicUsername)}</span>
+                <div style="display:flex;align-items:center;gap:10px;margin-top:2px;">
+                  <div style="font-size:1.45rem;font-weight:900;color:#fff;letter-spacing:-0.01em;">
+                    ${escapeHtml(data.epicUsername)}
+                  </div>
+                  <button class="btn-copy-ign" onclick="copyEpicTag('${escapeHtml(data.epicUsername)}')" title="Copy Fortnite IGN">
+                    <i data-lucide="copy" style="width:12px;height:12px;"></i> Copy IGN
+                  </button>
                 </div>
               </div>
             </div>
             ${isViewingSelf ? `
               <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-                <button class="btn btn-outline btn-sm" onclick="startEpicOAuth()" style="font-size:0.8rem;padding:8px 14px;">
+                <button class="btn btn-outline btn-sm" onclick="startEpicOAuth()" style="font-size:0.8rem;padding:8px 16px;border-color:rgba(255,255,255,0.18);">
                   <i data-lucide="refresh-cw"></i> Switch Account
                 </button>
-                <button class="btn btn-danger btn-sm" onclick="handleUnlinkEpic()" style="font-size:0.8rem;padding:8px 14px;" title="Unlink Epic Games Account">
-                  <i data-lucide="unlink"></i> Unlink <span style="opacity:0.8;font-size:0.72rem;margin-left:2px;">(-2.00 T)</span>
+                <button class="btn btn-danger btn-sm" onclick="handleUnlinkEpic()" style="font-size:0.8rem;padding:8px 16px;" title="Unlink Epic Games Account">
+                  <i data-lucide="unlink"></i> Unlink <span style="opacity:0.8;font-size:0.72rem;margin-left:3px;">(-2.00 T)</span>
                 </button>
               </div>
-            ` : ''}
+            ` : `
+              <button class="btn btn-outline btn-sm" onclick="copyEpicTag('${escapeHtml(data.epicUsername)}')">
+                <i data-lucide="copy"></i> Copy Fortnite IGN
+              </button>
+            `}
           </div>
         `;
       } else {
         content.innerHTML = `
-          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;">
-            <div style="display:flex;align-items:center;gap:16px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;">
+            <div style="display:flex;align-items:center;gap:18px;">
               <div class="epic-badge-icon-box epic-badge-unlinked">
-                <img src="epic_games_logo.webp" alt="Epic Games" style="width:28px;height:34px;object-fit:contain;"/>
+                <img src="epic_games_logo.webp" alt="Epic Games" style="width:30px;height:38px;object-fit:contain;"/>
               </div>
               <div>
-                <div style="font-size:0.75rem;color:var(--text-muted);text-transform:uppercase;font-weight:800;letter-spacing:0.05em;">
-                  Fortnite Account
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+                  <span style="font-size:0.75rem;text-transform:uppercase;font-weight:800;letter-spacing:0.08em;color:#38bdf8;">Epic Games Connection</span>
+                  <span class="chip" style="font-size:0.68rem;padding:2px 8px;background:rgba(255,255,255,0.06);border-color:rgba(255,255,255,0.12);color:var(--text-muted);">Required for Matches</span>
                 </div>
-                <div style="font-size:1.2rem;font-weight:900;color:#fff;margin-top:2px;">
+                <div style="font-size:1.28rem;font-weight:900;color:#fff;letter-spacing:-0.01em;">
                   Connect Epic Games Account
                 </div>
-                <div style="font-size:0.8rem;color:var(--text-muted);margin-top:2px;">
-                  Link your Fortnite IGN to participate in token matches and party up with opponents.
+                <div style="font-size:0.82rem;color:var(--text-muted);margin-top:3px;max-width:520px;line-height:1.4;">
+                  Link your Fortnite display name via Epic Games to queue into token matches and party up with opponents.
                 </div>
               </div>
             </div>
             ${isViewingSelf ? `
-              <button class="btn-epic-brand" onclick="startEpicOAuth()" style="width:auto;padding:11px 22px;font-size:0.92rem;">
+              <button class="btn-epic-brand" onclick="startEpicOAuth()" style="padding:12px 26px;font-size:0.92rem;flex-shrink:0;">
                 <img src="epic_games_logo.webp" alt="Epic" style="width:18px;height:22px;object-fit:contain;"/>
                 <span>Link Account</span>
+                <i data-lucide="arrow-right" style="width:16px;height:16px;margin-left:2px;"></i>
               </button>
             ` : `
-              <span style="color:var(--text-muted);font-size:0.85rem;">No Epic account connected</span>
+              <span class="chip" style="font-size:0.82rem;padding:6px 14px;color:var(--text-muted);">No Epic account linked</span>
             `}
           </div>
         `;
       }
 
       if (window.lucide) lucide.createIcons();
+    }
+
+    function copyEpicTag(tag) {
+      if (!tag) return;
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(tag).then(() => {
+          showToast(`Fortnite IGN "${tag}" copied to clipboard!`, 'info');
+        }).catch(() => {
+          showToast(`Fortnite IGN: ${tag}`, 'info');
+        });
+      }
     }
 
     function openLinkEpicModal() {
