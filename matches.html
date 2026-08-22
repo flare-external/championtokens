@@ -95,6 +95,8 @@
     let currentUserData = null;
     let activeFilter = 'All';
     let allMatches = [];
+    let matchesCurrentPage = 1;
+    const MATCHES_PER_PAGE = 6;
 
     requireAuth().then(async (user) => {
       currentUser = user;
