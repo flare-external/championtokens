@@ -43,10 +43,10 @@
 
     /* Left Stage Area */
     .match-stage-left {
-      padding: 36px 32px 40px;
+      padding: 30px 32px 40px;
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 18px;
       min-width: 0;
       box-sizing: border-box;
       max-width: 1350px;
@@ -55,81 +55,27 @@
     }
     @media (max-width: 768px) {
       .match-stage-left {
-        padding: 24px 14px 28px;
+        padding: 20px 14px 28px;
       }
     }
 
-    /* Top Hero Arena Banner with Map Backdrop */
-    .concept-hero-banner {
-      position: relative;
-      width: 100%;
-      border-radius: 24px;
-      background-size: cover;
-      background-position: center 30%;
-      background-repeat: no-repeat;
-      overflow: hidden;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      box-shadow: 0 16px 45px rgba(0, 0, 0, 0.9), 0 0 35px rgba(34, 197, 94, 0.12);
-      transition: background-image 0.4s ease;
-      margin-bottom: 2px;
-    }
-    .concept-hero-overlay {
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at center top, rgba(5, 7, 10, 0.4) 0%, rgba(0, 0, 0, 0.88) 75%, #000000 100%),
-                  linear-gradient(180deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.75) 60%, #000000 100%);
-      backdrop-filter: blur(1.5px);
-      z-index: 1;
-    }
-    .concept-hero-backdrop-glow {
-      position: absolute;
-      top: -50px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 400px;
-      height: 200px;
-      background: radial-gradient(circle, rgba(34, 197, 94, 0.22) 0%, rgba(34, 197, 94, 0) 70%);
-      pointer-events: none;
-      z-index: 1;
-    }
-    .concept-hero-content {
-      position: relative;
-      z-index: 2;
-      padding: 38px 24px 30px;
+    /* Top Centered Title Section (No Image, Pure CT Aesthetics) */
+    .concept-top-section {
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 12px;
       text-align: center;
-    }
-    @media (max-width: 768px) {
-      .concept-hero-content {
-        padding: 24px 14px 20px;
-        gap: 10px;
-      }
-    }
-    .concept-hero-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 0.72rem;
-      font-weight: 900;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: #22c55e;
-      background: rgba(0, 0, 0, 0.65);
-      border: 1px solid rgba(34, 197, 94, 0.4);
-      padding: 4px 14px;
-      border-radius: 20px;
-      box-shadow: 0 0 16px rgba(34, 197, 94, 0.25);
+      width: 100%;
+      margin-bottom: 2px;
     }
     .concept-main-title {
-      font-size: 2.35rem;
+      font-size: 2.4rem;
       font-weight: 900;
-      color: #22c55e;
-      letter-spacing: 0.07em;
+      color: var(--gold-bright);
+      letter-spacing: 0.06em;
       text-transform: uppercase;
-      text-shadow: 0 0 24px rgba(34, 197, 94, 0.6), 0 0 50px rgba(34, 197, 94, 0.35);
+      text-shadow: 0 0 24px var(--gold-glow), 0 0 50px rgba(245, 158, 11, 0.25);
       margin: 0;
       display: flex;
       align-items: center;
@@ -137,12 +83,12 @@
       gap: 10px;
     }
     @media (max-width: 768px) {
-      .concept-main-title { font-size: 1.6rem; }
+      .concept-main-title { font-size: 1.65rem; }
     }
 
     /* Top Metadata Pill Capsule */
     .concept-meta-bar {
-      background: #05070a;
+      background: rgba(10, 10, 10, 0.85);
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 999px;
       padding: 10px 24px;
@@ -153,7 +99,8 @@
       flex-wrap: wrap;
       color: #94a3b8;
       font-size: 0.88rem;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.8);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.8), 0 0 20px rgba(245, 158, 11, 0.06);
+      backdrop-filter: blur(12px);
     }
     @media (max-width: 768px) {
       .concept-meta-bar { border-radius: 16px; padding: 12px 16px; font-size: 0.82rem; gap: 8px; }
@@ -183,14 +130,15 @@
 
     /* Arena Stage Card */
     .stage-card {
-      background: #000000;
-      border: 1px solid rgba(255, 255, 255, 0.07);
+      background: rgba(8, 8, 8, 0.88);
+      border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 20px;
       padding: 22px 24px;
       display: flex;
       flex-direction: column;
       gap: 18px;
-      box-shadow: 0 14px 45px rgba(0,0,0,0.85);
+      box-shadow: 0 14px 45px rgba(0,0,0,0.9), 0 0 30px rgba(245, 158, 11, 0.04);
+      backdrop-filter: blur(14px);
       position: relative;
     }
     @media (max-width: 768px) {
@@ -217,7 +165,20 @@
 
     /* Team Card */
     .concept-team-card {
-      background: #05070a;
+      background: rgba(10, 10, 10, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 18px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.7);
+      backdrop-filter: blur(12px);
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .concept-team-card:hover {
+      border-color: rgba(245, 158, 11, 0.3);
+      box-shadow: 0 8px 35px rgba(0,0,0,0.8), 0 0 20px rgba(245, 158, 11, 0.08);
+    }
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 16px;
       overflow: hidden;
@@ -380,8 +341,8 @@
       font-size: 2.5rem;
       font-weight: 900;
       font-style: italic;
-      color: #22c55e;
-      text-shadow: 0 0 20px rgba(34, 197, 94, 0.75), 0 0 45px rgba(34, 197, 94, 0.35);
+      color: var(--gold-bright);
+      text-shadow: 0 0 20px var(--gold-glow), 0 0 45px rgba(245, 158, 11, 0.35);
       user-select: none;
       letter-spacing: 0.06em;
     }
@@ -390,8 +351,8 @@
     .concept-bottom-bar {
       margin-top: auto;
       padding: 14px 20px;
-      background: #05070a;
-      border: 1px solid rgba(255, 255, 255, 0.07);
+      background: rgba(10, 10, 10, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 16px;
       display: flex;
       align-items: center;
@@ -414,9 +375,9 @@
       border: 1px solid rgba(255,255,255,0.07);
     }
 
-    /* Primary Action Buttons (Neon Green / Gold) */
+    /* Primary Action Buttons (CT Gold Theme) */
     .concept-btn-ready {
-      background: #22c55e;
+      background: linear-gradient(135deg, #FBBF24, #F59E0B);
       color: #000;
       font-weight: 900;
       font-size: 0.95rem;
@@ -424,16 +385,16 @@
       border-radius: 24px;
       border: none;
       cursor: pointer;
-      box-shadow: 0 0 22px rgba(34, 197, 94, 0.45);
+      box-shadow: 0 0 22px rgba(245, 158, 11, 0.45);
       display: inline-flex;
       align-items: center;
       gap: 8px;
       transition: all 0.15s;
     }
     .concept-btn-ready:hover {
-      background: #16a34a;
       transform: translateY(-1px);
-      box-shadow: 0 0 30px rgba(34, 197, 94, 0.65);
+      box-shadow: 0 0 32px rgba(245, 158, 11, 0.7);
+      filter: brightness(1.08);
     }
     .concept-btn-ready.cancel {
       background: transparent;
@@ -460,7 +421,7 @@
       gap: 8px;
     }
     .concept-btn-victory {
-      background: #22c55e;
+      background: linear-gradient(135deg, #FBBF24, #F59E0B);
       color: #000;
       font-weight: 900;
       font-size: 0.92rem;
@@ -471,13 +432,13 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      box-shadow: 0 0 18px rgba(34, 197, 94, 0.45);
+      box-shadow: 0 0 18px rgba(245, 158, 11, 0.4);
       transition: all 0.15s;
     }
     .concept-btn-victory:hover {
-      background: #16a34a;
       transform: translateY(-1px);
-      box-shadow: 0 0 26px rgba(34, 197, 94, 0.65);
+      box-shadow: 0 0 28px rgba(245, 158, 11, 0.65);
+      filter: brightness(1.08);
     }
     .concept-btn-lose {
       background: rgba(239, 68, 68, 0.12);
@@ -690,14 +651,14 @@
       transition: all 0.2s;
     }
     .chat-input-pill:focus {
-      border-color: #22c55e;
-      box-shadow: 0 0 16px rgba(34, 197, 94, 0.35);
+      border-color: var(--gold-bright);
+      box-shadow: 0 0 16px rgba(245, 158, 11, 0.35);
     }
     .chat-send-btn {
       width: 40px;
       height: 40px;
       border-radius: 50%;
-      background: #22c55e;
+      background: linear-gradient(135deg, #FBBF24, #F59E0B);
       color: #000;
       display: flex;
       align-items: center;
@@ -706,11 +667,11 @@
       cursor: pointer;
       transition: all 0.2s;
       flex-shrink: 0;
-      box-shadow: 0 0 14px rgba(34, 197, 94, 0.35);
+      box-shadow: 0 0 14px rgba(245, 158, 11, 0.4);
     }
     .chat-send-btn:hover {
-      background: #16a34a;
       transform: scale(1.08);
+      box-shadow: 0 0 22px rgba(245, 158, 11, 0.7);
     }
     .chat-send-btn i { width: 18px; height: 18px; stroke-width: 2.5; }
 
@@ -737,6 +698,7 @@
 </head>
 <body>
   <div class="page-bg"></div>
+  <div class="floating-icons-layer" id="floating-icons-layer"></div>
   <div class="page-loading" id="page-loading">
     <div class="spinner"></div>
     <span>Loading match lobby…</span>
@@ -745,38 +707,30 @@
   <main class="match-page-layout" id="match-page-layout">
     <!-- Left Stage Content -->
     <div class="match-stage-left">
-      <!-- Top Header: Hero Arena Banner with Map Backdrop -->
-      <div class="concept-hero-banner" id="concept-hero-banner" style="background-image: url('realistic.png');">
-        <div class="concept-hero-backdrop-glow"></div>
-        <div class="concept-hero-overlay"></div>
-        <div class="concept-hero-content">
-          <div class="concept-hero-badge">
-            <i data-lucide="crosshair" style="width:13px;height:13px;color:#22c55e;"></i>
-            <span id="concept-mode-badge-text">COMPETITIVE ARENA</span>
-          </div>
-          <h1 id="room-title" class="concept-main-title">1V1 REALISTIC</h1>
+      <!-- Top Header: Centered Large Gamemode Title (No Image, CT Gold Theme) -->
+      <div class="concept-top-section">
+        <h1 id="room-title" class="concept-main-title">1V1 REALISTIC</h1>
 
-          <!-- Top Metadata Pill Capsule -->
-          <div class="concept-meta-bar" id="concept-meta-bar">
-            <div class="concept-meta-item">Region: <strong id="meta-region" style="color:#fff;">EU</strong></div>
-            <div class="concept-meta-dot">·</div>
-            <div class="concept-meta-item">Platform: <strong id="meta-platform" style="color:#fff;">All</strong></div>
-            <div class="concept-meta-dot">·</div>
-            <div class="concept-meta-item">Format: <strong id="meta-rounds" style="color:#fff;">First to 5</strong></div>
-            <div class="concept-meta-dot">·</div>
-            <div class="concept-meta-item">
-              Map: <strong id="map-code-display" class="concept-meta-link" onclick="copyMapCode()" title="Click to copy map code">9854-1829-8735</strong>
-              <i data-lucide="copy" style="width:13px;height:13px;cursor:pointer;opacity:0.8;" onclick="copyMapCode()"></i>
-            </div>
-            <div class="concept-meta-dot">·</div>
-            <div class="concept-meta-item">Wager: <strong id="stakes-wager" style="color:#fff;">1.00 Tokens</strong></div>
-            <div class="concept-meta-dot">·</div>
-            <div class="concept-meta-item">Prize: <strong id="stakes-prize" style="color:var(--gold-bright);">1.80 Tokens</strong></div>
-            <div class="concept-meta-dot">·</div>
-            <div class="concept-meta-item">
-              <i data-lucide="clock" style="width:14px;height:14px;color:var(--gold-bright);"></i>
-              <span id="timer-clock" style="font-family:monospace;font-weight:800;color:#fff;">30:00</span>
-            </div>
+        <!-- Top Metadata Pill Capsule -->
+        <div class="concept-meta-bar" id="concept-meta-bar">
+          <div class="concept-meta-item">Region: <strong id="meta-region" style="color:#fff;">EU</strong></div>
+          <div class="concept-meta-dot">·</div>
+          <div class="concept-meta-item">Platform: <strong id="meta-platform" style="color:#fff;">All</strong></div>
+          <div class="concept-meta-dot">·</div>
+          <div class="concept-meta-item">Format: <strong id="meta-rounds" style="color:#fff;">First to 5</strong></div>
+          <div class="concept-meta-dot">·</div>
+          <div class="concept-meta-item">
+            Map: <strong id="map-code-display" class="concept-meta-link" onclick="copyMapCode()" title="Click to copy map code">9854-1829-8735</strong>
+            <i data-lucide="copy" style="width:13px;height:13px;cursor:pointer;opacity:0.8;" onclick="copyMapCode()"></i>
+          </div>
+          <div class="concept-meta-dot">·</div>
+          <div class="concept-meta-item">Wager: <strong id="stakes-wager" style="color:#fff;">1.00 Tokens</strong></div>
+          <div class="concept-meta-dot">·</div>
+          <div class="concept-meta-item">Prize: <strong id="stakes-prize" style="color:var(--gold-bright);">1.80 Tokens</strong></div>
+          <div class="concept-meta-dot">·</div>
+          <div class="concept-meta-item">
+            <i data-lucide="clock" style="width:14px;height:14px;color:var(--gold-bright);"></i>
+            <span id="timer-clock" style="font-family:monospace;font-weight:800;color:#fff;">30:00</span>
           </div>
         </div>
       </div>
@@ -857,7 +811,7 @@
     <div class="session-chat-panel" id="session-chat-panel">
       <div class="session-chat-header" onclick="toggleChatCollapse()" title="Toggle Session Chat">
         <div class="chat-header-title-wrap">
-          <i data-lucide="message-square" style="width:16px;height:16px;color:#22c55e;"></i>
+          <i data-lucide="message-square" style="width:16px;height:16px;color:var(--gold-bright);"></i>
           <span class="chat-header-label">Session Chat</span>
         </div>
         <div class="chat-arrow-btn" id="chat-arrow-btn">
@@ -1018,13 +972,31 @@
 
   <script>
     let currentUser = null;
-    let currentUserData = null;
-    let currentMatch = null;
-    let matchId = null;
-    let timerInterval = null;
-    let activeModalUid = null;
+    function initFloatingBackground() {
+      const layer = document.getElementById('floating-icons-layer');
+      if (!layer) return;
+      const icons = ['trophy', 'swords', 'coins', 'sparkles', 'shield', 'flame', 'zap', 'award', 'target'];
+      let html = '';
+      const count = 18;
+      for (let i = 0; i < count; i++) {
+        const icon = icons[i % icons.length];
+        const top = Math.random() * 95;
+        const left = Math.random() * 95;
+        const size = 18 + Math.floor(Math.random() * 20);
+        const dur = 7 + Math.floor(Math.random() * 9);
+        const delay = (Math.random() * 6).toFixed(1);
+        const opacity = (0.08 + Math.random() * 0.12).toFixed(2);
+        html += `
+          <div class="floating-icon-item" style="top:${top}%;left:${left}%;font-size:${size}px;animation-duration:${dur}s;animation-delay:-${delay}s;opacity:${opacity};">
+            <i data-lucide="${icon}" style="width:${size}px;height:${size}px;"></i>
+          </div>`;
+      }
+      layer.innerHTML = html;
+      if (window.lucide) lucide.createIcons();
+    }
 
     document.addEventListener('DOMContentLoaded', () => {
+      initFloatingBackground();
       requireAuth().then(async (user) => {
         currentUser = user;
         currentUserData = await getUser(user.uid);
@@ -1207,18 +1179,6 @@
       const mapCode = match.mapCode || defaultMapCode;
 
       // 1. Top Header & Metadata Bar
-      const heroBannerEl = document.getElementById('concept-hero-banner');
-      if (heroBannerEl) {
-        let bgImg = 'realistic.png';
-        if (mode === 'Zone Wars') bgImg = 'zonewars.jpeg';
-        else if (mode === 'Box Fights') bgImg = 'boxfights.jpeg';
-        heroBannerEl.style.backgroundImage = `url('${bgImg}')`;
-      }
-      const modeBadgeText = document.getElementById('concept-mode-badge-text');
-      if (modeBadgeText) {
-        modeBadgeText.textContent = `${mode} COMPETITIVE ARENA`.toUpperCase();
-      }
-
       const titleEl = document.getElementById('room-title');
       if (titleEl) titleEl.textContent = `${size} ${mode}`.toUpperCase();
 
