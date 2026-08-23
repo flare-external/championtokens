@@ -9,11 +9,11 @@
  */
 function injectNav(activePage = '') {
   const links = [
-    { href: 'dashboard',   key: 'dashboard',   icon: 'layout-dashboard', label: 'Dashboard'   },
-    { href: 'matches',     key: 'matches',      icon: 'swords',           label: 'Matches'     },
-    { href: 'javascript:void(0)', key: 'tournaments', icon: 'trophy',     label: 'Tournaments', badge: 'SOON', onClick: "showToast('🏆 Tournaments & Bracket Wagers are coming soon!','info');" },
-    { href: 'leaderboard', key: 'leaderboard',  icon: 'medal',            label: 'Leaderboard' },
-    { href: 'shop',        key: 'shop',         icon: 'shopping-cart',    label: 'Shop'        },
+    { href: 'dashboard',   key: 'dashboard',   icon: 'layout-grid',   label: 'Dashboard'   },
+    { href: 'matches',     key: 'matches',      icon: 'swords',        label: 'Matches'     },
+    { href: 'tournaments', key: 'tournaments',  icon: 'trophy',        label: 'Tournaments', badge: 'SOON' },
+    { href: 'leaderboard', key: 'leaderboard',  icon: 'award',         label: 'Leaderboard' },
+    { href: 'shop',        key: 'shop',         icon: 'shopping-bag',  label: 'Shop'        },
   ];
 
   const navLinksHTML = links.map(l => `
@@ -34,15 +34,11 @@ function injectNav(activePage = '') {
         <div class="ct-nav__links">${navLinksHTML}</div>
 
         <div class="ct-nav__user">
-          <div class="ct-nav__token-group">
-            <div class="token-pill" onclick="openTokenWalletModal('purchase')" style="cursor:pointer;" title="Champion Tokens Balance — Click to Add">
-              <img src="champion_token_coin.png" alt="CT" class="token-pill-coin-large" />
-              <span id="nav-balance">10.00</span>
-            </div>
-            <button class="token-add-btn" onclick="openTokenWalletModal('purchase')" title="Add Tokens">
-              <i data-lucide="plus"></i>
-            </button>
-          </div>
+          <button class="nav-token-btn" onclick="openTokenWalletModal('purchase')" title="Add Tokens / View Wallet">
+            <img src="champion_token_coin.png" alt="CT" class="nav-token-coin" />
+            <span id="nav-balance">10.00</span>
+            <span class="nav-token-plus"><i data-lucide="plus"></i></span>
+          </button>
 
           <!-- Notification Bell -->
           <div class="nav-notif-container" id="nav-notif-container">
