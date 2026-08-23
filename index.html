@@ -146,6 +146,13 @@
     // Redirect if already signed in
     redirectIfAuthed('dashboard');
 
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('resync') === '1') {
+      if (typeof showToast === 'function') {
+        showToast('Profile sync update applied. Please click Login with Discord to refresh your Discord profile & avatar!', 'info');
+      }
+    }
+
     function handleSignIn() {
       signInWithDiscord();
     }

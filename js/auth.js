@@ -179,6 +179,11 @@ async function exchangeDiscordCode(code) {
             console.warn('Firestore sync notice:', dbErr);
           }
 
+          // Mark sync version as up to date
+          try {
+            localStorage.setItem('ct_auth_sync_v', AUTH_SYNC_VERSION);
+          } catch (e) {}
+
           return cred.user;
         }
       }
@@ -190,6 +195,9 @@ async function exchangeDiscordCode(code) {
   throw lastError || new Error('Authentication server is connecting, please retry.');
 }
 
+/** One-time session sync version key */
+const AUTH_SYNC_VERSION = '2026_08_23_resync_v3';
+
 /**
  * Require auth on a protected page.
  * Redirects to index.html if the user is not signed in.
@@ -197,12 +205,24 @@ async function exchangeDiscordCode(code) {
  */
 function requireAuth(redirectTo = 'index.html') {
   return new Promise((resolve) => {
-    auth.onAuthStateChanged((user) => {
+    auth.onAuthStateChanged(async (user) => {
       if (!user) {
         window.location.href = redirectTo;
-      } else {
-        resolve(user);
+        return;
       }
+
+      // One-time session reset to re-fetch Discord profile, username, and avatar
+      try {
+        const currentVer = localStorage.getItem('ct_auth_sync_v');
+        if (currentVer !== AUTH_SYNC_VERSION) {
+          localStorage.setItem('ct_auth_sync_v', AUTH_SYNC_VERSION);
+          await auth.signOut();
+          window.location.href = redirectTo + (redirectTo.includes('?') ? '&' : '?') + 'resync=1';
+          return;
+        }
+      } catch (e) {}
+
+      resolve(user);
     });
   });
 }
@@ -227,7 +247,17 @@ function isAdminUser(user, userData = null) {
  * Redirect already-signed-in users away from the landing page.
  */
 function redirectIfAuthed(redirectTo = 'dashboard') {
-  auth.onAuthStateChanged((user) => {
-    if (user) window.location.href = redirectTo;
+  auth.onAuthStateChanged(async (user) => {
+    if (user) {
+      try {
+        const currentVer = localStorage.getItem('ct_auth_sync_v');
+        if (currentVer !== AUTH_SYNC_VERSION) {
+          localStorage.setItem('ct_auth_sync_v', AUTH_SYNC_VERSION);
+          await auth.signOut();
+          return;
+        }
+      } catch (e) {}
+      window.location.href = redirectTo;
+    }
   });
 }
