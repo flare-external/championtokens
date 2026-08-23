@@ -1286,6 +1286,17 @@
         const oppReported = isTeam1 ? match.team2Reported : match.team1Reported;
 
         scoreArea.style.display = 'block';
+
+        const MIN_DURATION_MS = 5 * 60 * 1000;
+        const startedTime = match.startedAt ? (match.startedAt.toDate ? match.startedAt.toDate().getTime() : (match.startedAt.seconds ? match.startedAt.seconds * 1000 : Date.now())) : Date.now();
+        const elapsed = Date.now() - startedTime;
+        const isLocked = elapsed < MIN_DURATION_MS;
+        const remainingSec = isLocked ? Math.ceil((MIN_DURATION_MS - elapsed) / 1000) : 0;
+
+        const mins = Math.floor(remainingSec / 60);
+        const secs = remainingSec % 60;
+        const timeStr = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+
         scoreArea.innerHTML = `
           <div class="score-report-card">
             <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
@@ -1298,6 +1309,11 @@
                   Play your Fortnite match, then mark the winner below. When both sides agree, tokens are instantly paid out!
                 </div>
               </div>
+              ${isLocked ? `
+                <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.3);padding:5px 12px;border-radius:20px;font-size:0.8rem;color:var(--gold-bright);font-weight:800;">
+                  <i data-lucide="clock" style="width:14px;height:14px;"></i>
+                  <span>Reporting unlocks in: <span id="victory-unlock-countdown" style="font-family:monospace;font-size:0.9rem;">${timeStr}</span></span>
+                </div>` : ''}
             </div>
 
             <!-- Confirmation Status Badges -->
@@ -1318,7 +1334,11 @@
             </div>
 
             <!-- Action Buttons -->
-            ${!myReported ? `
+            ${isLocked ? `
+              <div style="display:flex;align-items:center;justify-content:center;gap:10px;padding:16px;background:rgba(245,158,11,0.06);border:1px dashed rgba(245,158,11,0.3);border-radius:10px;font-size:0.85rem;color:var(--gold-light);">
+                <i data-lucide="hourglass" style="width:18px;height:18px;color:var(--gold-bright);"></i>
+                <span>Anti-win-farming protection: Victory reporting unlocks after 5 minutes of genuine match gameplay (<strong id="victory-unlock-text">${timeStr} remaining</strong>).</span>
+              </div>` : (!myReported ? `
               <div style="display:flex;gap:12px;flex-wrap:wrap;">
                 <button class="btn btn-gold btn-lg" style="flex:1;" onclick="handleReportMatchScore('${isTeam1 ? 'team1' : 'team2'}')">
                   <i data-lucide="trophy"></i> 🏆 We Won (Claim Victory)
@@ -1330,8 +1350,30 @@
               <div style="display:flex;align-items:center;gap:10px;font-size:0.85rem;color:var(--text-muted);">
                 <i data-lucide="clock" style="color:var(--gold-bright);"></i>
                 <span>Your report is submitted! Waiting for opponent confirmation. If they dispute or take too long, click <strong>Call Staff</strong>.</span>
-              </div>`}
+              </div>`)}
           </div>`;
+
+        // Start live ticker if locked
+        if (isLocked) {
+          if (window._victoryTimerInterval) clearInterval(window._victoryTimerInterval);
+          window._victoryTimerInterval = setInterval(() => {
+            const curElapsed = Date.now() - startedTime;
+            if (curElapsed >= MIN_DURATION_MS) {
+              clearInterval(window._victoryTimerInterval);
+              renderScoreReportArea(match, scoreArea, alreadyIn, isMatchStarted, prize, players);
+              if (window.lucide) lucide.createIcons();
+              return;
+            }
+            const curRem = Math.ceil((MIN_DURATION_MS - curElapsed) / 1000);
+            const m = Math.floor(curRem / 60);
+            const s = curRem % 60;
+            const str = `${m}:${s < 10 ? '0' : ''}${s}`;
+            const cdEl = document.getElementById('victory-unlock-countdown');
+            const txtEl = document.getElementById('victory-unlock-text');
+            if (cdEl) cdEl.textContent = str;
+            if (txtEl) txtEl.textContent = `${str} remaining`;
+          }, 1000);
+        }
         return;
       }
 
@@ -1766,6 +1808,19 @@
     // ── Declare Winner Modal ─────────────────────────────────
     function openDeclareModal() {
       if (!currentMatch) return;
+      const isStaff = isAdminUser(currentUser, currentUserData);
+      const MIN_DURATION_MS = 5 * 60 * 1000;
+      if (currentMatch.startedAt && !isStaff) {
+        const startedTime = currentMatch.startedAt.toDate ? currentMatch.startedAt.toDate().getTime() : (currentMatch.startedAt.seconds ? currentMatch.startedAt.seconds * 1000 : Date.now());
+        const elapsed = Date.now() - startedTime;
+        if (elapsed < MIN_DURATION_MS) {
+          const remainingSec = Math.ceil((MIN_DURATION_MS - elapsed) / 1000);
+          const mins = Math.floor(remainingSec / 60);
+          const secs = remainingSec % 60;
+          showToast(`Cannot declare winner yet. 5-minute match timer active (${mins}:${secs < 10 ? '0' : ''}${secs} remaining)`, 'warning');
+          return;
+        }
+      }
       const select = document.getElementById('winner-select');
       select.innerHTML = (currentMatch.players || []).map(p =>
         `<option value="${p.uid}">${p.displayName}${p.isHost ? ' (Host)' : ''}</option>`

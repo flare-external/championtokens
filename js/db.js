@@ -926,6 +926,19 @@ async function declareWinner(matchId, winnerUid, hostUid) {
     throw new Error(`Cannot declare winner on an incomplete match (${players.length}/${maxPlayers} players)`);
   }
 
+  // 5-Minute anti-win-farming check (unless platform admin)
+  const MIN_MATCH_DURATION_MS = 5 * 60 * 1000;
+  if (match.startedAt && !ADMIN_DISCORD_IDS.includes((hostUid || '').replace('discord:', ''))) {
+    const startedTime = match.startedAt.toDate ? match.startedAt.toDate().getTime() : (match.startedAt.seconds ? match.startedAt.seconds * 1000 : Date.now());
+    const elapsed = Date.now() - startedTime;
+    if (elapsed < MIN_MATCH_DURATION_MS) {
+      const remainingSec = Math.ceil((MIN_MATCH_DURATION_MS - elapsed) / 1000);
+      const mins = Math.floor(remainingSec / 60);
+      const secs = remainingSec % 60;
+      throw new Error(`Cannot declare victory yet. Match must be in progress for at least 5 minutes (${mins}:${secs < 10 ? '0' : ''}${secs} remaining)`);
+    }
+  }
+
   // Check 30-minute expiration
   const expTime = match.expiresAt ? match.expiresAt.toDate().getTime() : 0;
   if (expTime > 0 && expTime <= Date.now()) {
@@ -979,6 +992,19 @@ async function submitMatchReport(matchId, reporterUid, reportedWinnerTeam) {
   const match = matchSnap.data();
   if (match.status === 'completed') {
     throw new Error('Match is already completed');
+  }
+
+  // 5-Minute anti-win-farming check
+  const MIN_MATCH_DURATION_MS = 5 * 60 * 1000;
+  if (match.startedAt) {
+    const startedTime = match.startedAt.toDate ? match.startedAt.toDate().getTime() : (match.startedAt.seconds ? match.startedAt.seconds * 1000 : Date.now());
+    const elapsed = Date.now() - startedTime;
+    if (elapsed < MIN_MATCH_DURATION_MS) {
+      const remainingSec = Math.ceil((MIN_MATCH_DURATION_MS - elapsed) / 1000);
+      const mins = Math.floor(remainingSec / 60);
+      const secs = remainingSec % 60;
+      throw new Error(`Victory reporting unlocks after 5 minutes of genuine match gameplay (${mins}:${secs < 10 ? '0' : ''}${secs} remaining)`);
+    }
   }
 
   // Check 30-minute expiration
