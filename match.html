@@ -941,7 +941,7 @@
       const isFull = players.length >= maxPlayers;
       const isMatchStarted = match.status === 'in_progress' || match.status === 'completed';
       const prize = Math.round(Number(match.prizePool || match.wager) * 0.90 * 100) / 100;
-      const isExpired = match.isExpired || match.status === 'cancelled' || (match.expiresAt && match.expiresAt.toDate().getTime() <= Date.now() && match.status !== 'completed');
+      const isExpired = (match.status === 'cancelled' && !isMatchStarted && !match.startedAt) || (match.isExpired && match.status === 'cancelled');
 
       // Map Code & Banner
       let defaultMapCode = '9854-1829-8735';
@@ -976,10 +976,10 @@
       if (mapBadgeEl) mapBadgeEl.textContent = defaultCreator;
       if (mapCopyBtn) mapCopyBtn.setAttribute('onclick', `copyMapCode('${mapCode}')`);
 
-      // Expired banner
+      // Expired banner (ONLY show if unstarted lobby was truly cancelled/expired)
       const expiredBanner = document.getElementById('match-expired-banner');
       if (expiredBanner) {
-        expiredBanner.style.display = isExpired ? 'flex' : 'none';
+        expiredBanner.style.display = (isExpired && !isMatchStarted) ? 'flex' : 'none';
       }
 
       // Header Bar
@@ -996,8 +996,8 @@
       if (modeEl)  modeEl.textContent = mode;
       if (sizeEl)  sizeEl.textContent = size;
       if (statEl) {
-        statEl.className = `badge badge-${isExpired ? 'cancelled' : match.status}`;
-        statEl.textContent = isExpired ? 'expired / refunded' : match.status.replace('_', ' ');
+        statEl.className = `badge badge-${match.status}`;
+        statEl.textContent = match.status === 'in_progress' ? 'LIVE IN PROGRESS' : match.status.replace('_', ' ');
       }
 
       // Stakes Bar

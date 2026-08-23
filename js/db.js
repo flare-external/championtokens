@@ -784,7 +784,8 @@ async function leaveOrCancelMatch(matchId, uid) {
 }
 
 /**
- * Auto-expire match after 30 minutes and issue 100% full refund to all players.
+ * Auto-expire waiting lobby after 30 minutes and issue 100% full refund to all players.
+ * NEVER expires running, started, in_progress, disputed, or completed matches.
  */
 async function expireMatch(matchId) {
   const matchRef = db.collection('matches').doc(matchId);
@@ -792,13 +793,14 @@ async function expireMatch(matchId) {
   if (!matchSnap.exists) return;
 
   const match = matchSnap.data();
-  if (match.status === 'completed' || match.status === 'cancelled') return;
+  // ONLY expire lobbies that are waiting and never started!
+  if (match.status !== 'waiting' || match.startedAt) return;
 
   const wager = Number(match.wager);
   const refundPromises = (match.players || []).map(p => {
     const refundAmt = Number(p.paidAmount !== undefined ? p.paidAmount : (p.uid === match.createdBy ? (match.hostCoveredDeposit || wager) : wager));
     if (refundAmt > 0) {
-      return updateTokens(p.uid, refundAmt, 'refund', `⏱️ Match expired (30m limit) — "${match.title}" full refund`);
+      return updateTokens(p.uid, refundAmt, 'refund', `⏱️ Lobby expired (30m wait limit) — "${match.title}" full refund`);
     }
     return Promise.resolve();
   });
@@ -812,7 +814,7 @@ async function expireMatch(matchId) {
 
   await matchRef.collection('messages').add({
     isSystem:  true,
-    text:      '⏱️ MATCH EXPIRED: The 30-minute match timer has elapsed. All participants have received a 100% full token refund.',
+    text:      '⏱️ LOBBY EXPIRED: The 30-minute waiting timer has elapsed. All participants have received a 100% full token refund.',
     timestamp: firebase.firestore.FieldValue.serverTimestamp(),
   }).catch(console.warn);
 }
@@ -939,13 +941,6 @@ async function declareWinner(matchId, winnerUid, hostUid) {
     }
   }
 
-  // Check 30-minute expiration
-  const expTime = match.expiresAt ? match.expiresAt.toDate().getTime() : 0;
-  if (expTime > 0 && expTime <= Date.now()) {
-    await expireMatch(matchId);
-    throw new Error('This match has expired (30-minute limit) and was 100% fully refunded. No winner can be declared.');
-  }
-
   const winner = players.find(p => p.uid === winnerUid);
   if (!winner) throw new Error('Player not found in match');
 
@@ -1005,13 +1000,6 @@ async function submitMatchReport(matchId, reporterUid, reportedWinnerTeam) {
       const secs = remainingSec % 60;
       throw new Error(`Please wait ${mins}:${secs < 10 ? '0' : ''}${secs}`);
     }
-  }
-
-  // Check 30-minute expiration
-  const expTime = match.expiresAt ? match.expiresAt.toDate().getTime() : 0;
-  if (expTime > 0 && expTime <= Date.now()) {
-    await expireMatch(matchId);
-    throw new Error('This match has expired (30-minute limit) and was 100% fully refunded.');
   }
 
   const players = match.players || [];
