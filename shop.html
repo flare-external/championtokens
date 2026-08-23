@@ -1,30 +1,30 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Champion Tokens</title>
-  <meta name="title" content="Champion Tokens"/>
+  <title>Shop & Cosmetics — Champion Tokens</title>
+  <meta name="title" content="Champion Tokens Shop"/>
   <meta name="description" content="Unlock exclusive titles, banners, mystery chests, and cosmetic upgrades using your Champion Tokens!"/>
   <meta name="theme-color" content="#F59E0B"/>
 
   <meta property="og:type" content="website"/>
   <meta property="og:url" content="https://championtokens.fun/shop"/>
   <meta property="og:site_name" content="Champion Tokens"/>
-  <meta property="og:title" content="Champion Tokens"/>
+  <meta property="og:title" content="Champion Tokens Shop"/>
   <meta property="og:description" content="Unlock exclusive titles, banners, mystery chests, and cosmetic upgrades using your Champion Tokens!"/>
   <meta property="og:image" content="https://championtokens.fun/champion_tokens_CT_v4.png"/>
 
   <meta name="twitter:card" content="summary"/>
   <meta name="twitter:url" content="https://championtokens.fun/shop"/>
-  <meta name="twitter:title" content="Champion Tokens"/>
+  <meta name="twitter:title" content="Champion Tokens Shop"/>
   <meta name="twitter:description" content="Unlock exclusive titles, banners, mystery chests, and cosmetic upgrades using your Champion Tokens!"/>
   <meta name="twitter:image" content="https://championtokens.fun/champion_tokens_CT_v4.png"/>
 
   <link rel="icon" type="image/png" href="champion_tokens_CT_v4.png"/>
   <link rel="shortcut icon" type="image/png" href="champion_tokens_CT_v4.png"/>
   <link rel="apple-touch-icon" href="champion_tokens_CT_v4.png"/>
-  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="stylesheet" href="css/style.css?v=3.8"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
@@ -40,53 +40,47 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      background: rgba(245, 158, 11, 0.1);
-      border: 1px solid var(--border-bright);
+      background: rgba(245, 158, 11, 0.08);
+      border: 1px solid rgba(245, 158, 11, 0.35);
       border-radius: var(--radius-full);
       padding: 6px 16px;
       font-size: 0.85rem;
       font-weight: 700;
       color: var(--gold-bright);
     }
-    .shop-grid-chests {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 20px;
-      margin-bottom: 36px;
-    }
     .shop-grid-items {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-      gap: 20px;
+      gap: 18px;
       margin-bottom: 36px;
     }
     .item-card {
-      background: rgba(14, 18, 32, 0.95);
-      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: #080808;
+      border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: var(--radius-xl);
-      padding: 20px;
+      padding: 22px;
       display: flex;
       flex-direction: column;
       align-items: center;
       text-align: center;
-      gap: 12px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
-      transition: all 0.2s;
+      gap: 14px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+      transition: all 0.22s ease;
     }
     .item-card:hover {
-      border-color: var(--border-bright);
-      transform: translateY(-2px);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.6), 0 0 20px rgba(245, 158, 11, 0.15);
+      border-color: rgba(245, 158, 11, 0.45);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.8), 0 0 20px rgba(245, 158, 11, 0.15);
     }
     .item-preview-box {
-      height: 60px;
+      height: 64px;
       width: 100%;
       border-radius: var(--radius-md);
       display: flex;
       align-items: center;
       justify-content: center;
-      background: rgba(0,0,0,0.4);
-      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(0,0,0,0.6);
+      border: 1px solid rgba(255,255,255,0.06);
     }
   </style>
 </head>
@@ -110,24 +104,26 @@
     </div>
 
     <!-- 1. Champion Premium Pass Banner -->
-    <div class="card" style="background:linear-gradient(135deg, rgba(245,158,11,0.18) 0%, rgba(13,16,26,0.95) 100%);border:1px solid rgba(245,158,11,0.5);border-radius:var(--radius-xl);padding:24px 28px;margin-bottom:36px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;box-shadow:0 0 35px rgba(245,158,11,0.15);">
+    <div class="card" style="background:linear-gradient(135deg, rgba(245,158,11,0.12) 0%, #080808 100%);border:1px solid rgba(245,158,11,0.45);border-radius:var(--radius-xl);padding:28px 32px;margin-bottom:36px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;box-shadow:0 0 35px rgba(245,158,11,0.15);">
       <div>
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
-          <span class="badge-premium"><i data-lucide="crown"></i> PREMIUM</span>
+          <span class="badge" style="background:rgba(245,158,11,0.18);color:var(--gold-bright);border:1px solid rgba(245,158,11,0.4);font-size:0.75rem;padding:3px 10px;font-weight:800;letter-spacing:0.05em;"><i data-lucide="crown" style="width:12px;height:12px;"></i> PREMIUM</span>
           <span class="username-premium" style="font-size:1.4rem;">Champion Premium</span>
         </div>
         <p style="font-size:0.875rem;color:var(--text-muted);max-width:540px;line-height:1.5;">
           Unlock exclusive Radiant Gold username styling, custom name animations, the ability to tip tokens to players, and premium profile badges for 30 days.
         </p>
-        <div style="display:flex;gap:16px;margin-top:12px;flex-wrap:wrap;font-size:0.8rem;color:#fde68a;">
-          <span>✨ Exclusive Radiant Gold Name</span>
-          <span>👑 Premium Profile Crown</span>
+        <div style="display:flex;gap:16px;margin-top:14px;flex-wrap:wrap;font-size:0.8rem;color:#fde68a;">
+          <span>✨ Radiant Gold Name</span>
+          <span>👑 VIP Profile Crown</span>
           <span>🎁 Tip Tokens System</span>
         </div>
       </div>
       <div style="text-align:right;flex-shrink:0;">
-        <div style="font-size:1.8rem;font-weight:900;color:var(--gold-bright);margin-bottom:6px;">5.00 Tokens</div>
-        <button class="btn btn-gold btn-lg" id="btn-buy-premium" onclick="handleBuyPremium()">
+        <div style="font-size:1.8rem;font-weight:900;color:var(--gold-bright);margin-bottom:8px;display:flex;align-items:center;gap:6px;justify-content:flex-end;">
+          5.00 <img src="champion_token_coin.png" class="inline-coin-lg" alt="CT" width="20" height="20"/>
+        </div>
+        <button class="btn btn-primary btn-lg" id="btn-buy-premium" onclick="handleBuyPremium()">
           <i data-lucide="crown"></i> Get Premium
         </button>
       </div>
@@ -136,10 +132,10 @@
     <!-- 2. Daily Rotating Titles Section -->
     <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:16px;">
       <div class="section-title" style="margin-bottom:0;">
-        <i data-lucide="award"></i> Today's Daily Titles & Rank Series
+        <i data-lucide="award"></i> Daily Titles & Cosmetics
       </div>
-      <span class="chip chip-gold" style="font-size:0.75rem;font-weight:700;">
-        🔄 Rotates Daily • Higher Ranks are Rare Drops
+      <span class="badge" style="background:rgba(245,158,11,0.12);color:var(--gold-bright);border:1px solid rgba(245,158,11,0.3);font-size:0.75rem;padding:3px 10px;font-weight:700;">
+        🔄 Rotates Daily
       </span>
     </div>
     <div class="shop-grid-items" id="titles-grid">
@@ -148,18 +144,18 @@
 
     <!-- 3. Profile Banners (Coming Soon) -->
     <div class="section-title" style="margin-bottom:16px;">
-      <i data-lucide="image"></i> Profile Banners & Arena Themes
+      <i data-lucide="image"></i> Profile Banners & Themes
     </div>
-    <div class="card" style="background:rgba(14, 18, 34, 0.95);border:1px dashed rgba(245,158,11,0.4);border-radius:var(--radius-xl);padding:36px 28px;text-align:center;margin-bottom:36px;display:flex;flex-direction:column;align-items:center;gap:12px;">
-      <div style="width:54px;height:54px;border-radius:50%;background:rgba(245,158,11,0.15);border:1px solid var(--gold-bright);display:flex;align-items:center;justify-content:center;color:var(--gold-bright);font-size:1.6rem;box-shadow:0 0 20px rgba(245,158,11,0.35);">
-        <i data-lucide="palette"></i>
+    <div class="card" style="background:#080808;border:1px dashed rgba(245,158,11,0.35);border-radius:var(--radius-xl);padding:36px 28px;text-align:center;margin-bottom:36px;display:flex;flex-direction:column;align-items:center;gap:12px;">
+      <div style="width:52px;height:52px;border-radius:50%;background:rgba(245,158,11,0.12);border:1px solid rgba(245,158,11,0.4);display:flex;align-items:center;justify-content:center;color:var(--gold-bright);box-shadow:0 0 20px rgba(245,158,11,0.25);">
+        <i data-lucide="palette" style="width:24px;height:24px;"></i>
       </div>
-      <div style="font-size:1.3rem;font-weight:900;color:#fff;">Profile Banners — Coming Soon</div>
+      <div style="font-size:1.25rem;font-weight:900;color:#fff;">Profile Banners — Coming Soon</div>
       <p style="font-size:0.875rem;color:var(--text-muted);max-width:440px;line-height:1.5;">
-        Custom high-tier artist designs and match arena theme banners are currently in crafting and will drop tomorrow!
+        Custom match arena themes and animated banner artwork will be available in an upcoming update!
       </p>
-      <span class="chip chip-gold" style="font-size:0.75rem;padding:4px 14px;font-weight:800;">
-        🎨 Releasing Tomorrow
+      <span class="badge" style="background:rgba(255,255,255,0.06);color:var(--gold-light);border:1px solid rgba(255,255,255,0.1);font-size:0.72rem;padding:3px 12px;font-weight:700;">
+        🎨 IN DEVELOPMENT
       </span>
     </div>
   </main>
@@ -169,10 +165,10 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
-  <script src="js/firebase-config.js"></script>
-  <script src="js/auth.js"></script>
-  <script src="js/db.js"></script>
-  <script src="js/nav.js"></script>
+  <script src="js/firebase-config.js?v=3.8"></script>
+  <script src="js/auth.js?v=3.8"></script>
+  <script src="js/db.js?v=3.8"></script>
+  <script src="js/nav.js?v=3.8"></script>
 
   <script>
     let currentUser = null;
@@ -227,27 +223,27 @@
 
       titlesGrid.innerHTML = dailyItems.map(item => {
         const isOwned = unlockedTitles.includes(item.id);
-        const rarityBadge = `<span class="chip" style="font-size:0.7rem;font-weight:800;text-transform:uppercase;letter-spacing:0.04em;">${item.rarity || 'Rank'}</span>`;
+        const rarityBadge = `<span class="badge" style="background:rgba(255,255,255,0.06);color:var(--gold-bright);border:1px solid rgba(255,255,255,0.1);font-size:0.68rem;font-weight:800;text-transform:uppercase;letter-spacing:0.04em;">${item.rarity || 'Rank'}</span>`;
         
         return `
           <div class="item-card">
             <div class="item-preview-box">
-              <span class="player-title-tag ${item.className}">${item.name}</span>
+              <span class="player-title-tag ${item.className}">${escapeHtml(item.name)}</span>
             </div>
-            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
-              <div style="font-weight:800;font-size:1rem;color:#fff;">${item.name} Title</div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+              <div style="font-weight:800;font-size:1rem;color:#fff;">${escapeHtml(item.name)}</div>
               ${rarityBadge}
             </div>
-            <div style="font-size:1.25rem;font-weight:900;color:var(--gold-bright);margin-top:auto;">
-              ${formatTokens(item.cost)} Tokens
+            <div style="font-size:1.25rem;font-weight:900;color:var(--gold-bright);margin-top:auto;display:flex;align-items:center;gap:5px;">
+              ${formatTokens(item.cost)} <img src="champion_token_coin.png" class="inline-coin" alt="CT" width="14" height="14"/>
             </div>
             <button
-              class="btn ${isOwned ? 'btn-outline' : 'btn-gold'} btn-full"
+              class="btn ${isOwned ? 'btn-outline' : 'btn-primary'} btn-full btn-sm"
               id="btn-title-${item.id}"
               ${isOwned ? 'disabled' : ''}
               onclick="handleBuyTitle('${item.id}')"
             >
-              ${isOwned ? '<i data-lucide="check"></i> Owned' : `<i data-lucide="tag"></i> Buy for ${formatTokens(item.cost)}`}
+              ${isOwned ? '<i data-lucide="check"></i> Owned' : `<i data-lucide="tag"></i> Unlock Title`}
             </button>
           </div>`;
       }).join('');
@@ -257,7 +253,7 @@
       if (premBtn && currentUserData?.isPremium) {
         premBtn.innerHTML = '<i data-lucide="check-circle"></i> Active (30 Days)';
         premBtn.disabled = true;
-        premBtn.classList.replace('btn-gold', 'btn-outline');
+        premBtn.classList.replace('btn-primary', 'btn-outline');
       }
 
       if (window.lucide) lucide.createIcons();
@@ -279,7 +275,7 @@
       if (!currentUser) return;
       const ok = await showConfirm({
         title: 'Unlock Champion Premium',
-        message: 'Unlock Champion Premium for <strong>5.00 Tokens ($5.00)</strong> for 30 days?<br/><span style="color:var(--gold-bright);font-size:0.82rem;display:inline-block;margin-top:8px;">✨ Includes Subscriber Gold username, priority matching & VIP perks!</span>',
+        message: 'Unlock Champion Premium for <strong>5.00 Tokens ($5.00)</strong> for 30 days?<br/><span style="color:var(--gold-bright);font-size:0.82rem;display:inline-block;margin-top:8px;">✨ Includes Radiant Gold username, VIP profile crown & perks!</span>',
         confirmText: 'Unlock Premium (5.00 Tokens)',
         cancelText: 'Cancel',
         type: 'warning',

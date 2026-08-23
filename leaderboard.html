@@ -1,30 +1,30 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Champion Tokens</title>
-  <meta name="title" content="Champion Tokens"/>
+  <title>Leaderboard — Champion Tokens</title>
+  <meta name="title" content="Champion Tokens Leaderboard"/>
   <meta name="description" content="View top ranked Fortnite players, biggest token earners, win streaks, and champion podium standings on Champion Tokens!"/>
   <meta name="theme-color" content="#F59E0B"/>
 
   <meta property="og:type" content="website"/>
   <meta property="og:url" content="https://championtokens.fun/leaderboard"/>
   <meta property="og:site_name" content="Champion Tokens"/>
-  <meta property="og:title" content="Champion Tokens"/>
+  <meta property="og:title" content="Champion Tokens Leaderboard"/>
   <meta property="og:description" content="View top ranked Fortnite players, biggest token earners, win streaks, and champion podium standings on Champion Tokens!"/>
   <meta property="og:image" content="https://championtokens.fun/champion_tokens_CT_v4.png"/>
 
   <meta name="twitter:card" content="summary"/>
   <meta name="twitter:url" content="https://championtokens.fun/leaderboard"/>
-  <meta name="twitter:title" content="Champion Tokens"/>
+  <meta name="twitter:title" content="Champion Tokens Leaderboard"/>
   <meta name="twitter:description" content="View top ranked Fortnite players, biggest token earners, win streaks, and champion podium standings on Champion Tokens!"/>
   <meta name="twitter:image" content="https://championtokens.fun/champion_tokens_CT_v4.png"/>
 
   <link rel="icon" type="image/png" href="champion_tokens_CT_v4.png"/>
   <link rel="shortcut icon" type="image/png" href="champion_tokens_CT_v4.png"/>
   <link rel="apple-touch-icon" href="champion_tokens_CT_v4.png"/>
-  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="stylesheet" href="css/style.css?v=3.8"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
@@ -34,46 +34,63 @@
       justify-content: space-between;
       flex-wrap: wrap;
       gap: 12px;
-      margin-bottom: 24px;
+      margin-bottom: 20px;
     }
     .podium {
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
       gap: 16px;
-      margin-bottom: 32px;
+      margin-bottom: 30px;
       align-items: end;
     }
     .podium-card {
-      background: rgba(14, 18, 32, 0.95);
-      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: #080808;
+      border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: var(--radius-xl);
-      padding: 20px 16px;
+      padding: 22px 18px;
       text-align: center;
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 8px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.5);
-      transition: transform 0.2s;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+      text-decoration: none;
+      color: inherit;
     }
-    .podium-card:hover { transform: translateY(-3px); }
+    .podium-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 14px 40px rgba(0,0,0,0.9);
+    }
     .podium-card--1 {
-      border-color: var(--gold-bright);
-      background: linear-gradient(180deg, rgba(245,158,11,0.18) 0%, rgba(14,18,32,0.95) 100%);
-      padding-top: 28px;
-      box-shadow: 0 0 35px rgba(245,158,11,0.22);
+      border-color: rgba(245, 158, 11, 0.45);
+      background: linear-gradient(180deg, rgba(245,158,11,0.12) 0%, #080808 100%);
+      padding-top: 30px;
+      padding-bottom: 26px;
+      box-shadow: 0 0 35px rgba(245,158,11,0.18), 0 10px 30px rgba(0,0,0,0.8);
     }
-    .podium-card--2 { border-color: rgba(192,192,192,0.5); background: linear-gradient(180deg, rgba(192,192,192,0.1) 0%, rgba(14,18,32,0.95) 100%); }
-    .podium-card--3 { border-color: rgba(205,127,50,0.5); background: linear-gradient(180deg, rgba(205,127,50,0.1) 0%, rgba(14,18,32,0.95) 100%); }
+    .podium-card--1:hover {
+      border-color: var(--gold-bright);
+      box-shadow: 0 0 45px rgba(245,158,11,0.3);
+    }
+    .podium-card--2 {
+      border-color: rgba(226, 232, 240, 0.25);
+      background: linear-gradient(180deg, rgba(226, 232, 240, 0.06) 0%, #080808 100%);
+    }
+    .podium-card--3 {
+      border-color: rgba(217, 119, 6, 0.3);
+      background: linear-gradient(180deg, rgba(217, 119, 6, 0.06) 0%, #080808 100%);
+    }
     .podium-rank {
-      font-size: 1.5rem;
+      font-size: 1.6rem;
       line-height: 1;
+      margin-bottom: 2px;
     }
     .podium-avatar {
-      width: 64px; height: 64px;
+      width: 68px; height: 68px;
       border-radius: 50%;
       overflow: hidden;
-      background: var(--bg-card-hover);
+      background: #111;
       display: flex; align-items: center; justify-content: center;
       font-size: 1.4rem;
       font-weight: 900;
@@ -82,29 +99,33 @@
     }
     .podium-avatar img { width: 100%; height: 100%; object-fit: cover; }
     .podium-avatar--1 { border: 3px solid var(--gold-bright); box-shadow: 0 0 20px var(--gold-glow); }
-    .podium-avatar--2 { border: 3px solid #c0c0c0; }
-    .podium-avatar--3 { border: 3px solid #cd7f32; }
-    .podium-name   { font-weight: 800; font-size: 0.95rem; }
-    .podium-tokens { font-size: 1.2rem; font-weight: 900; color: var(--gold-bright); }
-    .podium-label  { font-size: 0.7rem; color: var(--text-muted); }
+    .podium-avatar--2 { border: 3px solid #cbd5e1; box-shadow: 0 0 12px rgba(203, 213, 225, 0.25); }
+    .podium-avatar--3 { border: 3px solid #d97706; box-shadow: 0 0 12px rgba(217, 119, 6, 0.25); }
+    .podium-name   { font-weight: 800; font-size: 1rem; color: #fff; }
+    .podium-tokens { font-size: 1.3rem; font-weight: 900; color: var(--gold-bright); display: inline-flex; align-items: center; gap: 6px; }
+    .podium-label  { font-size: 0.72rem; color: var(--text-muted); }
 
     .lb-table-wrap { overflow-x: auto; }
-    .lb-table { min-width: 500px; }
+    .lb-table { min-width: 540px; }
 
     .refresh-btn {
       display: flex; align-items: center; gap: 6px;
       font-size: 0.8125rem;
+      font-weight: 700;
       color: var(--text-muted);
-      padding: 6px 12px;
+      padding: 8px 14px;
       border-radius: var(--radius-sm);
-      border: 1px solid var(--border);
-      transition: all 0.2s;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(8, 8, 8, 0.95);
+      cursor: pointer;
+      transition: all 0.2s ease;
     }
-    .refresh-btn:hover { color: var(--gold-bright); border-color: var(--gold-bright); background: var(--gold-dim); }
+    .refresh-btn:hover { color: var(--gold-bright); border-color: var(--gold-bright); background: rgba(245, 158, 11, 0.12); }
     .refresh-btn i { width: 14px; height: 14px; }
 
-    @media (max-width:600px) {
+    @media (max-width:680px) {
       .podium { grid-template-columns: 1fr; }
+      .podium-card--1 { order: -1; }
     }
   </style>
 </head>
@@ -119,14 +140,16 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
-  <script src="js/firebase-config.js"></script>
-  <script src="js/auth.js"></script>
-  <script src="js/db.js"></script>
-  <script src="js/nav.js"></script>
+  <script src="js/firebase-config.js?v=3.8"></script>
+  <script src="js/auth.js?v=3.8"></script>
+  <script src="js/db.js?v=3.8"></script>
+  <script src="js/nav.js?v=3.8"></script>
 
   <script>
     let currentUser = null;
     let allLeaderboardUsers = [];
+    let filteredUsers = [];
+    let lbSearchQuery = '';
     let lbCurrentPage = 1;
     const LB_PER_PAGE = 10;
 
@@ -140,12 +163,29 @@
     async function loadLeaderboard() {
       try {
         allLeaderboardUsers = await getLeaderboard();
-        renderPodium(allLeaderboardUsers.slice(0, 3));
+        filteredUsers = allLeaderboardUsers;
+        renderPodium(filteredUsers.slice(0, 3));
         renderTablePage(1);
       } catch (err) {
         console.error(err);
         showToast('Failed to load leaderboard', 'error');
       }
+    }
+
+    function handleSearchLeaderboard(val) {
+      lbSearchQuery = (val || '').toLowerCase().trim();
+      if (!lbSearchQuery) {
+        filteredUsers = allLeaderboardUsers;
+      } else {
+        filteredUsers = allLeaderboardUsers.filter(u => {
+          const name = (u.displayName || '').toLowerCase();
+          const epic = (u.epicUsername || '').toLowerCase();
+          const discord = (u.discordUsername || '').toLowerCase();
+          return name.includes(lbSearchQuery) || epic.includes(lbSearchQuery) || discord.includes(lbSearchQuery);
+        });
+      }
+      lbCurrentPage = 1;
+      renderTablePage(1);
     }
 
     const RANK_ICONS = { 1: '🥇', 2: '🥈', 3: '🥉' };
@@ -158,26 +198,36 @@
     }
 
     function renderPodium(top3) {
+      const podiumEl = document.getElementById('podium');
+      if (!podiumEl) return;
+
+      if (!top3 || !top3.length) {
+        podiumEl.innerHTML = `<div class="empty-state" style="grid-column:1/-1;"><p>No ranked champions yet</p></div>`;
+        return;
+      }
+
       const order = [top3[1], top3[0], top3[2]].filter(Boolean);
       const posClass = { 0: '2', 1: '1', 2: '3' };
 
-      document.getElementById('podium').innerHTML = order.map((u, i) => {
+      podiumEl.innerHTML = order.map((u, i) => {
         const rank = u === top3[0] ? 1 : u === top3[1] ? 2 : 3;
         const pos  = posClass[i];
         const isCurrent = u.id === currentUser?.uid;
         return `
-          <a href="profile?uid=${u.id}" class="podium-card podium-card--${pos}${isCurrent ? ' current-user' : ''}" style="text-decoration:none;color:inherit;cursor:pointer;" title="View ${u.displayName}'s Profile">
+          <a href="profile?uid=${u.id}" class="podium-card podium-card--${pos}${isCurrent ? ' current-user' : ''}" title="View ${escapeHtml(u.displayName)}'s Profile">
             <div class="podium-rank">${RANK_ICONS[rank] || rank}</div>
-            ${avatarEl(u, 64, `podium-avatar podium-avatar--${pos}`)}
-            <div class="podium-name">${u.displayName || 'Unknown'}${isCurrent ? ' <span style="color:var(--gold-bright);font-size:0.75rem;">(You)</span>' : ''}</div>
-            ${u.epicUsername ? `<div style="font-size:0.75rem;color:#38bdf8;font-weight:700;">🎮 ${u.epicUsername}</div>` : ''}
-            <div class="podium-tokens" style="font-size:1.4rem;color:var(--green);"><i data-lucide="trophy" style="width:18px;height:18px;display:inline;"></i> ${u.matchesWon || 0} Wins</div>
+            ${avatarEl(u, 68, `podium-avatar podium-avatar--${pos}`)}
+            <div class="podium-name">${escapeHtml(u.displayName || 'Unknown')}${isCurrent ? ' <span style="color:var(--gold-bright);font-size:0.75rem;">(You)</span>' : ''}</div>
+            ${u.epicUsername ? `<div style="font-size:0.72rem;color:#38bdf8;font-weight:700;display:inline-flex;align-items:center;gap:3px;padding:2px 7px;background:rgba(56,189,248,0.1);border-radius:4px;border:1px solid rgba(56,189,248,0.25);"><i data-lucide="gamepad-2" style="width:11px;height:11px;"></i> ${escapeHtml(u.epicUsername)}</div>` : ''}
+            <div class="podium-tokens" style="font-size:1.3rem;color:var(--gold-bright);">
+              <i data-lucide="trophy" style="width:17px;height:17px;color:var(--gold-bright);"></i> ${u.matchesWon || 0} Wins
+            </div>
             <div class="podium-label" style="display:flex;gap:6px;align-items:center;margin-top:2px;">
-              <span>🏆 ${formatTokens(u.totalEarned || 0)} Total Career Tokens</span>
+              <span>Earned ${formatTokens(u.totalEarned || 0)} <img src="champion_token_coin.png" class="inline-coin" alt="CT" width="14" height="14"/></span>
             </div>
           </a>`;
       }).join('');
-      lucide.createIcons();
+      if (window.lucide) lucide.createIcons();
     }
 
     function renderTablePage(page) {
@@ -185,13 +235,13 @@
       const tbody = document.getElementById('lb-tbody');
       if (!tbody) return;
 
-      const totalItems = allLeaderboardUsers.length;
+      const totalItems = filteredUsers.length;
       const totalPages = Math.max(1, Math.ceil(totalItems / LB_PER_PAGE));
       const startIdx = (lbCurrentPage - 1) * LB_PER_PAGE;
-      const pageUsers = allLeaderboardUsers.slice(startIdx, startIdx + LB_PER_PAGE);
+      const pageUsers = filteredUsers.slice(startIdx, startIdx + LB_PER_PAGE);
 
       if (!pageUsers.length) {
-        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:24px;color:var(--text-muted);">No competitors on this page</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:28px;color:var(--text-muted);">No competitors found${lbSearchQuery ? ` matching "${escapeHtml(lbSearchQuery)}"` : ''}</td></tr>`;
         renderPaginationControls(totalPages);
         return;
       }
@@ -217,22 +267,28 @@
                   ${letter}
                 </div>
                 <div>
-                  <div class="lb-name">${u.displayName || 'Unknown'}${isCurrent ? ' <span style="font-size:0.75rem;color:var(--gold-bright);font-weight:700;">(You)</span>' : ''}</div>
-                  <div style="font-size:0.75rem;color:var(--text-faint);">
-                    ${u.epicUsername ? `<span style="color:#38bdf8;font-weight:600;">🎮 ${u.epicUsername}</span>` : 'Competitor'}
+                  <div class="lb-name">${escapeHtml(u.displayName || 'Unknown')}${isCurrent ? ' <span style="font-size:0.75rem;color:var(--gold-bright);font-weight:700;">(You)</span>' : ''}</div>
+                  <div style="font-size:0.72rem;color:var(--text-faint);">
+                    ${u.epicUsername ? `<span style="color:#38bdf8;font-weight:600;"><i data-lucide="gamepad-2" style="width:10px;height:10px;display:inline;"></i> ${escapeHtml(u.epicUsername)}</span>` : 'Competitor'}
                   </div>
                 </div>
               </div>
             </td>
-            <td style="color:var(--green);font-weight:800;font-size:1rem;"><i data-lucide="trophy" style="width:14px;height:14px;display:inline;"></i> ${won}</td>
+            <td style="color:var(--gold-bright);font-weight:800;font-size:0.95rem;">
+              <span style="display:inline-flex;align-items:center;gap:4px;"><i data-lucide="trophy" style="width:14px;height:14px;color:var(--gold-bright);"></i> ${won}</span>
+            </td>
             <td style="color:var(--text-muted);font-weight:600;">${played}</td>
-            <td style="color:var(--gold-bright);font-weight:700;">${wr}</td>
-            <td style="color:#fde68a;font-weight:800;">${formatTokens(earned)} Tokens</td>
+            <td style="color:#fff;font-weight:700;">${wr}</td>
+            <td style="color:var(--gold-bright);font-weight:800;">
+              <span style="display:inline-flex;align-items:center;gap:5px;">
+                ${formatTokens(earned)} <img src="champion_token_coin.png" class="inline-coin" alt="CT" width="14" height="14"/>
+              </span>
+            </td>
           </tr>`;
       }).join('');
 
       renderPaginationControls(totalPages);
-      lucide.createIcons();
+      if (window.lucide) lucide.createIcons();
     }
 
     function renderPaginationControls(totalPages) {
@@ -248,7 +304,7 @@
           Next <i data-lucide="chevron-right"></i>
         </button>
       `;
-      lucide.createIcons();
+      if (window.lucide) lucide.createIcons();
     }
 
     async function handleRefresh() {
@@ -264,11 +320,25 @@
     <div class="lb-header">
       <div class="page-header" style="margin-bottom:0;">
         <h1><i data-lucide="trophy" style="color:var(--gold-bright);"></i> Leaderboard</h1>
-        <p>Top Fortnite Match Champions Ranked by Wins.</p>
+        <p>Top Ranked Fortnite Token Champions Ranked by Arena Wins.</p>
       </div>
       <button class="refresh-btn" id="refresh-btn" onclick="handleRefresh()">
         <i data-lucide="refresh-cw"></i> Refresh
       </button>
+    </div>
+
+    <!-- Search Bar -->
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:24px;">
+      <div style="position:relative;flex:1;">
+        <i data-lucide="search" style="position:absolute;left:14px;top:50%;transform:translateY(-50%);width:16px;height:16px;color:var(--text-faint);"></i>
+        <input
+          id="player-search-input"
+          class="form-input"
+          style="padding-left:42px;background:rgba(8,8,8,0.95);border-color:rgba(255,255,255,0.08);font-size:0.88rem;"
+          placeholder="Search players by name, Discord handle, or Epic Games username…"
+          oninput="handleSearchLeaderboard(this.value)"
+        />
+      </div>
     </div>
 
     <!-- Podium -->
@@ -277,9 +347,9 @@
     </div>
 
     <!-- Full Table with Pagination -->
-    <div class="card">
+    <div class="card" style="background:#080808;border-color:rgba(255,255,255,0.08);">
       <div class="section-title" style="margin-bottom:16px;">
-        <i data-lucide="list"></i> Full Rankings (Most Wins First)
+        <i data-lucide="list"></i> Full Rankings
       </div>
       <div class="lb-table-wrap">
         <table class="lb-table">
@@ -287,10 +357,10 @@
             <tr>
               <th>#</th>
               <th>Player</th>
-              <th><i data-lucide="trophy" style="width:13px;height:13px;display:inline;"></i> Wins</th>
+              <th>Wins</th>
               <th>Matches</th>
               <th>Win Rate</th>
-              <th>Total Career Earned</th>
+              <th>Total Earned</th>
             </tr>
           </thead>
           <tbody id="lb-tbody">
