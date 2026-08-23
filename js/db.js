@@ -53,8 +53,8 @@ async function ensureUserRecord(user) {
       photoURL: photoURL,
       discordId: discordId,
       discordUsername: discordUsername,
-      tokens: 10.00,
-      totalEarned: 10.00,
+      tokens: 1.00,
+      totalEarned: 0.00,
       totalSpent: 0.00,
       matchesPlayed: 0,
       matchesWon: 0,
@@ -64,9 +64,9 @@ async function ensureUserRecord(user) {
     await userRef.set(newUser);
     await db.collection('transactions').add({
       userId: user.uid,
-      amount: 10.00,
+      amount: 1.00,
       type: 'bonus',
-      description: '🎉 10.00 Free Starter Tokens',
+      description: '🎉 1.00 Free Starter Token',
       timestamp: firebase.firestore.FieldValue.serverTimestamp()
     });
     return { id: user.uid, ...newUser };
@@ -134,7 +134,7 @@ async function updateTokens(uid, amount, type, description) {
   const update  = {
     tokens: firebase.firestore.FieldValue.increment(roundedAmount),
   };
-  if (roundedAmount > 0 && type !== 'refund') {
+  if (roundedAmount > 0 && type === 'match_win') {
     update.totalEarned = firebase.firestore.FieldValue.increment(roundedAmount);
   }
   if (roundedAmount < 0) {
@@ -572,8 +572,19 @@ async function declareWinner(matchId, winnerUid, hostUid) {
   if (!matchSnap.exists) throw new Error('Match not found');
 
   const match = matchSnap.data();
-  if (match.createdBy !== hostUid) throw new Error('Only the host can declare a winner');
-  if (match.status === 'completed')  throw new Error('Match is already completed');
+  if (match.status === 'completed') throw new Error('Match is already completed');
+  if (match.status === 'cancelled') throw new Error('Match is cancelled');
+
+  // Prevent win farming: match must be in_progress and have full players
+  if (match.status !== 'in_progress' && match.status !== 'disputed') {
+    throw new Error('Winner can only be declared after match has started with all players readied up');
+  }
+
+  const players = match.players || [];
+  const maxPlayers = Number(match.maxPlayers || 2);
+  if (players.length < maxPlayers) {
+    throw new Error(`Cannot declare winner on an incomplete match (${players.length}/${maxPlayers} players)`);
+  }
 
   // Check 30-minute expiration
   const expTime = match.expiresAt ? match.expiresAt.toDate().getTime() : 0;
@@ -582,7 +593,7 @@ async function declareWinner(matchId, winnerUid, hostUid) {
     throw new Error('This match has expired (30-minute limit) and was 100% fully refunded. No winner can be declared.');
   }
 
-  const winner = match.players.find(p => p.uid === winnerUid);
+  const winner = players.find(p => p.uid === winnerUid);
   if (!winner) throw new Error('Player not found in match');
 
   const rawPrize = Number(match.prizePool || 0) * 0.90; // 90% to winner
@@ -597,7 +608,7 @@ async function declareWinner(matchId, winnerUid, hostUid) {
   await updateTokens(winnerUid, prize, 'match_win', `🏆 Won match — "${match.title}"`);
 
   // Update stats for all players
-  const statsUpdates = match.players.map(player => {
+  const statsUpdates = players.map(player => {
     const ref = db.collection('users').doc(player.uid);
     return ref.update({
       matchesPlayed: firebase.firestore.FieldValue.increment(1),
@@ -1620,8 +1631,8 @@ async function fullDatabaseReset() {
           userBatch.delete(doc.ref);
         } else {
           userBatch.update(doc.ref, {
-            tokens: 10.00,
-            totalEarned: 10.00,
+            tokens: 1.00,
+            totalEarned: 0.00,
             totalSpent: 0.00,
             matchesPlayed: 0,
             matchesWon: 0,
@@ -1638,9 +1649,9 @@ async function fullDatabaseReset() {
           // Add clean initial bonus transaction
           await db.collection('transactions').add({
             userId: doc.id,
-            amount: 10.00,
+            amount: 1.00,
             type: 'bonus',
-            description: '🎁 10.00 Starter Tokens (Beta Launch Reset)',
+            description: '🎁 1.00 Starter Token',
             timestamp: firebase.firestore.FieldValue.serverTimestamp()
           });
         }

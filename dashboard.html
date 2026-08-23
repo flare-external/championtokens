@@ -144,31 +144,6 @@
     </div>
   </main>
 
-  <!-- Declare Winner Modal -->
-  <div class="modal-overlay" id="declare-modal" onclick="if(event.target===this)closeDeclareModal()">
-    <div class="modal">
-      <div class="modal-header">
-        <div class="modal-title"><i data-lucide="trophy"></i> Declare Winner</div>
-        <button class="modal-close" onclick="closeDeclareModal()"><i data-lucide="x"></i></button>
-      </div>
-      <p style="font-size:0.875rem;color:var(--text-muted);margin-bottom:20px;">
-        Select the winning player/team of "<strong id="declare-match-title"></strong>". 90% of the prize pool will be paid out immediately.
-      </p>
-      <div class="modal-form">
-        <div class="form-group">
-          <label class="form-label">Winner</label>
-          <select class="form-select" id="winner-select"></select>
-        </div>
-        <div class="modal-actions">
-          <button class="btn btn-outline" onclick="closeDeclareModal()">Cancel</button>
-          <button class="btn btn-gold" id="declare-btn" onclick="handleDeclareWinner()">
-            <i data-lucide="trophy"></i> Declare Winner
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <!-- Firebase SDKs & Core Scripts (Placed at end of body) -->
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
@@ -205,7 +180,7 @@
     }
 
     function renderStats(data) {
-      safeSetText('stat-earned', formatTokens(data.totalEarned ?? 10.00));
+      safeSetText('stat-earned', formatTokens(data.totalEarned ?? 0.00));
       safeSetText('stat-played', data.matchesPlayed ?? 0);
       safeSetText('stat-won', data.matchesWon ?? 0);
 
@@ -346,11 +321,9 @@
           <div style="display:flex;gap:6px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding-top:2px;">
             <div class="match-code-badge" style="font-size:0.72rem;padding:2px 6px;border-radius:6px;"><i data-lucide="hash" style="width:10px;height:10px;"></i>${m.code}</div>
             <div style="display:flex;gap:6px;margin-left:auto;">
-              <a href="match?id=${m.id}" class="btn btn-sm btn-primary" style="font-size:0.75rem;padding:3px 10px;height:28px;">
+              <a href="match?id=${m.id}" class="btn btn-sm btn-primary" style="font-size:0.75rem;padding:3px 12px;height:28px;">
                 <i data-lucide="play" style="width:12px;height:12px;"></i> Enter Match
               </a>
-              ${!isExpired && m.createdBy === currentUser?.uid && m.status !== 'completed' ? `
-                <button class="btn btn-sm btn-outline" style="font-size:0.75rem;padding:3px 8px;height:28px;" onclick="openDeclareModal('${m.id}', '${escapeHtml(m.title)}')">Declare</button>` : ''}
             </div>
           </div>
         </div>`;
@@ -372,47 +345,6 @@
       if (window.lucide) lucide.createIcons();
     }
 
-    function openDeclareModal(matchId, matchTitle) {
-      const match = window._myMatches?.find(m => m.id === matchId);
-      if (!match) return;
-
-      const titleEl = document.getElementById('declare-match-title');
-      if (titleEl) titleEl.textContent = matchTitle;
-      const select = document.getElementById('winner-select');
-      if (select) {
-        select.innerHTML = match.players.map(p =>
-          `<option value="${p.uid}">${p.displayName}${p.isHost ? ' (Host)' : ''}</option>`
-        ).join('');
-        select.dataset.matchId = matchId;
-      }
-
-      const modal = document.getElementById('declare-modal');
-      if (modal) modal.classList.add('open');
-    }
-
-    function closeDeclareModal() {
-      const modal = document.getElementById('declare-modal');
-      if (modal) modal.classList.remove('open');
-    }
-
-    async function handleDeclareWinner() {
-      const select    = document.getElementById('winner-select');
-      if (!select) return;
-      const matchId   = select.dataset.matchId;
-      const winnerUid = select.value;
-      const btn = document.getElementById('declare-btn');
-      if (btn) btn.disabled = true;
-      try {
-        const prize = await declareWinner(matchId, winnerUid, currentUser.uid);
-        showToast(`Winner declared! +${formatTokens(prize)} tokens awarded.`, 'success');
-        closeDeclareModal();
-      } catch (err) {
-        showToast(err.message, 'error');
-      } finally {
-        if (btn) btn.disabled = false;
-      }
-    }
-
     document.addEventListener('DOMContentLoaded', () => {
       requireAuth().then(async (user) => {
         currentUser = user;
@@ -422,10 +354,10 @@
 
         try {
           const userData = await getUser(user.uid);
-          renderDashboard(userData || { displayName: user.displayName || 'Player', tokens: 10.00, totalEarned: 10.00, matchesPlayed: 0, matchesWon: 0 });
+          renderDashboard(userData || { displayName: user.displayName || 'Player', tokens: 1.00, totalEarned: 0.00, matchesPlayed: 0, matchesWon: 0 });
         } catch (err) {
           console.error('Error fetching initial user:', err);
-          renderDashboard({ displayName: user.displayName || 'Player', tokens: 10.00, totalEarned: 10.00, matchesPlayed: 0, matchesWon: 0 });
+          renderDashboard({ displayName: user.displayName || 'Player', tokens: 1.00, totalEarned: 0.00, matchesPlayed: 0, matchesWon: 0 });
         }
 
         // Real-time balance update

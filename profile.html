@@ -753,6 +753,12 @@
               <i data-lucide="copy" id="profile-account-id-icon" style="width:12px;height:12px;opacity:0.7;"></i>
             </button>
           </div>
+          <div id="hero-admin-token-pill" style="display:none;margin-top:6px;">
+            <span style="display:inline-flex;align-items:center;gap:6px;background:rgba(245,158,11,0.14);border:1px solid rgba(245,158,11,0.45);border-radius:6px;padding:3px 10px;font-size:0.75rem;color:var(--gold-bright);font-weight:800;">
+              <i data-lucide="shield" style="width:12px;height:12px;color:var(--red);"></i>
+              <span>Admin Balance View: <strong id="hero-admin-token-val" style="color:#fff;">0.00 Tokens</strong></span>
+            </span>
+          </div>
           <div style="font-size:0.75rem;color:var(--text-faint);margin-top:4px;" id="profile-since"></div>
         </div>
       </div>
@@ -776,7 +782,7 @@
     <!-- Profile Subtabs Bar -->
     <div class="profile-subtabs-bar">
       <button class="profile-subtab-btn active" id="btn-subtab-overview" data-tab="overview" onclick="switchProfileSubtab('overview')">
-        <i data-lucide="user"></i> My Profile
+        <i data-lucide="user"></i> Overview
       </button>
       <button class="profile-subtab-btn" id="btn-subtab-history" data-tab="history" onclick="switchProfileSubtab('history')">
         <i data-lucide="history"></i> History
@@ -788,6 +794,25 @@
 
     <!-- 1. TAB: Overview (My Profile) -->
     <div id="profile-tab-overview" class="profile-subtab-content">
+      <!-- Balance & Lifetime Match Earnings Grid (Visible to Self & Admins) -->
+      <div class="grid-2" style="margin-bottom:16px;" id="profile-balance-section">
+        <div class="card stat-card" style="border-color:rgba(245,158,11,0.3);background:linear-gradient(135deg,rgba(245,158,11,0.08) 0%,rgba(8,8,8,0.95) 100%);">
+          <div class="stat-icon stat-icon--gold"><i data-lucide="coins"></i></div>
+          <div class="stat-label">Token Balance <span id="profile-tokens-admin-badge" style="display:none;color:var(--red);font-size:0.7rem;margin-left:6px;font-weight:800;">(Admin View)</span></div>
+          <div class="stat-value stat-value--gold" id="profile-tokens-stat">0.00 Tokens</div>
+          <div id="profile-admin-adjust-wrap" style="display:none;margin-top:8px;">
+            <button type="button" class="btn btn-gold btn-sm" onclick="openProfileTokenAdjustModal()" style="font-size:0.75rem;padding:4px 12px;gap:5px;">
+              <i data-lucide="zap"></i> Admin Adjust Balance
+            </button>
+          </div>
+        </div>
+        <div class="card stat-card" style="border-color:rgba(16,185,129,0.3);background:linear-gradient(135deg,rgba(16,185,129,0.08) 0%,rgba(8,8,8,0.95) 100%);">
+          <div class="stat-icon stat-icon--green"><i data-lucide="trending-up"></i></div>
+          <div class="stat-label">Match Win Earnings</div>
+          <div class="stat-value" style="color:var(--green);" id="profile-earnings-stat">0.00 Tokens</div>
+        </div>
+      </div>
+
       <!-- Stats grid (Wins, Losses, Win Rate %, Leaderboard Rank) -->
       <div class="grid-4" style="margin-bottom:24px;">
         <div class="card stat-card">
@@ -1343,8 +1368,47 @@
       if (idEl) idEl.textContent = `Discord ID: ${discordId}`;
       if (accountIdEl) accountIdEl.textContent = `UID: ${fullAccountId}`;
 
+      const tokVal = Number(data.tokens ?? 1.00);
+      const earnedVal = Number(data.totalEarned ?? 0.00);
+
       const tokEl = document.getElementById('profile-tokens');
-      if (tokEl) tokEl.textContent = formatTokens(data.tokens ?? 10.00);
+      if (tokEl) tokEl.textContent = formatTokens(tokVal);
+
+      const tokStatEl = document.getElementById('profile-tokens-stat');
+      const earnedStatEl = document.getElementById('profile-earnings-stat');
+      const adminTokBadge = document.getElementById('profile-tokens-admin-badge');
+      const adminAdjustWrap = document.getElementById('profile-admin-adjust-wrap');
+      const heroAdminPill = document.getElementById('hero-admin-token-pill');
+      const heroAdminVal = document.getElementById('hero-admin-token-val');
+      const balanceSection = document.getElementById('profile-balance-section');
+
+      const isCallerAdmin = currentUser && currentUserData && isAdminUser(currentUser, currentUserData);
+
+      if (earnedStatEl) earnedStatEl.textContent = `${formatTokens(earnedVal)} Tokens`;
+
+      if (isViewingSelf) {
+        if (tokStatEl) tokStatEl.textContent = `${formatTokens(tokVal)} Tokens`;
+        if (adminTokBadge) adminTokBadge.style.display = 'none';
+        if (adminAdjustWrap) adminAdjustWrap.style.display = 'none';
+        if (heroAdminPill) heroAdminPill.style.display = 'none';
+        if (balanceSection) balanceSection.style.display = 'grid';
+      } else if (isCallerAdmin) {
+        // Admin viewing someone else's account
+        if (tokStatEl) tokStatEl.textContent = `${formatTokens(tokVal)} Tokens`;
+        if (adminTokBadge) adminTokBadge.style.display = 'inline';
+        if (adminAdjustWrap) adminAdjustWrap.style.display = 'block';
+        if (heroAdminPill) {
+          heroAdminPill.style.display = 'block';
+          if (heroAdminVal) heroAdminVal.textContent = `${formatTokens(tokVal)} Tokens`;
+        }
+        if (balanceSection) balanceSection.style.display = 'grid';
+      } else {
+        // Non-admin viewing someone else's account
+        if (heroAdminPill) heroAdminPill.style.display = 'none';
+        if (adminTokBadge) adminTokBadge.style.display = 'none';
+        if (adminAdjustWrap) adminAdjustWrap.style.display = 'none';
+        if (tokStatEl) tokStatEl.innerHTML = '<span style="color:var(--text-faint);font-size:0.95rem;font-weight:700;">Private 🔒</span>';
+      }
 
       // Matches Stats: Wins, Losses, Win Rate %
       const played = Number(data.matchesPlayed || 0);
@@ -1416,6 +1480,32 @@
         } catch (e) {}
       }
       if (window.lucide) lucide.createIcons();
+    }
+
+    /** Admin quick token adjustment directly from user's profile */
+    async function openProfileTokenAdjustModal() {
+      const currentTokens = Number(currentViewingUserData?.tokens ?? 1.00);
+      const choice = prompt(`Admin Balance Control for ${currentViewingUserData?.displayName || 'User'} (Current: ${formatTokens(currentTokens)} Tokens):\n\n• To SET EXACT balance, type "=" before amount (e.g. "=50")\n• To ADD or DEDUCT, type "+10" or "-5"`, `+10`);
+      if (!choice) return;
+      const clean = choice.trim();
+      try {
+        if (clean.startsWith('=')) {
+          const exact = parseFloat(clean.slice(1).trim());
+          if (isNaN(exact) || exact < 0) throw new Error('Please enter a valid token amount');
+          await adminSetTokens(targetUid, exact, currentUserData?.displayName || 'Admin', 'Admin set balance from profile');
+          showToast(`Balance set to ${exact.toFixed(2)} Tokens!`, 'success');
+          if (currentViewingUserData) currentViewingUserData.tokens = exact;
+        } else {
+          const delta = parseFloat(clean.replace('+', ''));
+          if (isNaN(delta) || delta === 0) throw new Error('Please enter a valid adjustment amount');
+          const res = await adminAdjustTokens(targetUid, delta, 'Admin adjustment from profile');
+          showToast(`${delta > 0 ? '+' : ''}${delta.toFixed(2)} tokens applied! New balance: ${formatTokens(res.newTokens)}`, 'success');
+          if (currentViewingUserData) currentViewingUserData.tokens = res.newTokens;
+        }
+        renderUserProfile(currentViewingUserData);
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
     }
 
     /** Copy Account UID with 1-click feedback */
