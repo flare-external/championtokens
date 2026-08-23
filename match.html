@@ -11,358 +11,448 @@
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
-    /* Esports Arena Dashboard Layout (Full Viewport, Zero Page Scroll) */
+    /* Concept Match Lobby Layout */
     body {
-      height: 100vh;
+      min-height: 100vh;
+      background: #090b10;
+      color: #f1f5f9;
       overflow-x: hidden;
     }
     .match-page-wrap {
-      max-width: 1720px;
+      max-width: 1600px;
       margin: 0 auto;
-      padding: 14px 24px 20px;
-      height: calc(100vh - var(--nav-h));
+      padding: 18px 24px 24px;
       display: flex;
       flex-direction: column;
       gap: 16px;
+      min-height: calc(100vh - var(--nav-h));
       box-sizing: border-box;
-      overflow: hidden;
     }
-    @media (max-width: 1100px) {
-      body { height: auto; }
-      .match-page-wrap {
-        height: auto;
-        overflow: visible;
-        padding: 16px;
-      }
+    @media (max-width: 1024px) {
+      .match-page-wrap { padding: 14px; }
     }
 
-    /* Top Full-Width Compact Bar */
-    .arena-top-header {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-xl);
-      padding: 12px 22px;
+    /* Top Centered Title */
+    .concept-top-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      text-align: center;
+    }
+    .concept-main-title {
+      font-size: 2rem;
+      font-weight: 900;
+      color: #22c55e;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      text-shadow: 0 0 28px rgba(34, 197, 94, 0.45);
+      margin: 0;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 12px;
-      flex-shrink: 0;
-      box-shadow: var(--shadow-card);
+      gap: 10px;
     }
-    .arena-title-group {
+
+    /* Top Metadata Pill Capsule */
+    .concept-meta-bar {
+      background: #131620;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 12px 24px;
       display: flex;
       align-items: center;
-      gap: 12px;
+      justify-content: center;
+      gap: 14px;
       flex-wrap: wrap;
+      color: #94a3b8;
+      font-size: 0.88rem;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.4);
     }
-    .match-tag-pill {
+    .concept-meta-item {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      background: rgba(255, 255, 255, 0.04);
-      border-radius: var(--radius-sm);
-      padding: 5px 12px;
-      font-size: 0.8rem;
+    }
+    .concept-meta-dot {
+      color: rgba(255, 255, 255, 0.2);
+      font-weight: 900;
+    }
+    .concept-meta-link {
+      color: var(--gold-bright);
+      font-weight: 800;
+      cursor: pointer;
       font-family: monospace;
-      color: var(--text-muted);
+      border-bottom: 1px dashed rgba(245, 158, 11, 0.4);
+      transition: color 0.15s;
+    }
+    .concept-meta-link:hover {
+      color: #fff;
     }
 
-    /* 2-Column Split: Dominant Match Info Stage & Balanced Chat */
+    /* Main Grid: Left Arena vs Right Session Chat */
     .arena-main-grid {
       display: grid;
-      grid-template-columns: 1fr 430px;
-      gap: 24px;
+      grid-template-columns: 1fr 380px;
+      gap: 20px;
       flex: 1;
       min-height: 0;
       align-items: stretch;
     }
-    @media (max-width: 1100px) {
+    @media (max-width: 1024px) {
       .arena-main-grid {
         grid-template-columns: 1fr;
-        flex: none;
       }
     }
 
-    /* Arena Center Stage (Grand & Prominent) */
+    /* Arena Stage Card */
     .stage-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-2xl);
-      padding: 32px 36px;
+      background: #0f121a;
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 20px;
+      padding: 24px;
       display: flex;
       flex-direction: column;
-      gap: 24px;
-      box-shadow: var(--shadow-card);
-      backdrop-filter: blur(24px);
-      height: 100%;
-      overflow-y: auto;
-      box-sizing: border-box;
+      gap: 18px;
+      box-shadow: 0 10px 35px rgba(0,0,0,0.5);
+      position: relative;
     }
-    .stage-card::-webkit-scrollbar { width: 5px; }
-    .stage-card::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 10px; }
 
-    /* VS Battle Matchup Layout (Grand Scale) */
-    .vs-arena-layout {
+    /* Concept VS 2-Card Grid */
+    .concept-vs-grid {
       display: grid;
       grid-template-columns: 1fr auto 1fr;
-      gap: 28px;
-      align-items: center;
-      padding: 32px 28px;
-      background: linear-gradient(135deg, rgba(245, 158, 11, 0.04) 0%, rgba(10, 14, 24, 0.7) 100%);
-      border-radius: var(--radius-xl);
-    }
-    @media (max-width: 720px) {
-      .vs-arena-layout { grid-template-columns: 1fr; }
-      .vs-ring { margin: 10px auto; }
-    }
-
-    .vs-ring {
-      width: 72px;
-      height: 72px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #FBBF24 0%, #D97706 100%);
-      color: #000;
-      font-weight: 900;
-      font-size: 1.5rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 0 32px var(--gold-glow);
-      flex-shrink: 0;
-    }
-
-    .team-squad-column {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    /* Modern Player Card (Grand & Spacious) */
-    .player-slot-box {
-      background: rgba(16, 21, 36, 0.75);
-      border-radius: var(--radius-xl);
-      padding: 20px 24px;
-      display: flex;
-      align-items: center;
-      gap: 18px;
-      transition: all 0.2s;
-      cursor: pointer;
-    }
-    .player-slot-box:hover {
-      background: rgba(24, 30, 52, 0.95);
-      transform: translateY(-1px);
-    }
-    .player-slot-box.hidden-opp {
-      background: rgba(168, 85, 247, 0.05);
-      cursor: default;
-    }
-    .player-slot-box.empty-slot {
-      border: 1px dashed rgba(255,255,255,0.08);
-      opacity: 0.55;
-      cursor: default;
-    }
-
-    .slot-avatar-img {
-      width: 58px;
-      height: 58px;
-      border-radius: 50%;
-      background: var(--bg-card-hover);
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.4rem;
-      font-weight: 900;
-      color: var(--gold-bright);
-      flex-shrink: 0;
-    }
-    .slot-avatar-img img { width: 100%; height: 100%; object-fit: cover; }
-    .slot-avatar-img.host { box-shadow: 0 0 16px var(--gold-glow); }
-
-    /* Prize & Stakes Mini Card (Grand) */
-    .stakes-summary-bar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
       gap: 20px;
-      background: rgba(255, 255, 255, 0.02);
-      border-radius: var(--radius-xl);
-      padding: 22px 32px;
-    }
-
-    /* Big Ready Action Bar */
-    .ready-action-card {
-      background: linear-gradient(135deg, rgba(16, 185, 129, 0.14) 0%, rgba(245, 158, 11, 0.08) 100%);
-      border-radius: var(--radius-xl);
-      padding: 22px 28px;
-      display: flex;
       align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 16px;
-    }
-
-    /* Dual-Score Submission Card */
-    .score-report-card {
-      background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(10, 14, 26, 0.95) 100%);
-      border-radius: var(--radius-xl);
-      padding: 24px 28px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.5);
-    }
-    .dispute-alert-card {
-      background: linear-gradient(135deg, rgba(239, 68, 68, 0.16) 0%, rgba(20, 10, 14, 0.95) 100%);
-      border-radius: var(--radius-xl);
-      padding: 24px 28px;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-      animation: alertPulse 2s infinite alternate;
-    }
-    @keyframes alertPulse {
-      0% { box-shadow: 0 0 20px rgba(239,68,68,0.2); }
-      100% { box-shadow: 0 0 35px rgba(239,68,68,0.45); }
-    }
-    .winner-banner-card {
-      background: linear-gradient(135deg, rgba(245, 158, 11, 0.25) 0%, rgba(217, 119, 6, 0.1) 100%);
-      border-radius: var(--radius-xl);
-      padding: 24px 28px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      flex-wrap: wrap;
-      box-shadow: 0 0 35px rgba(245, 158, 11, 0.25);
-    }
-
-    /* Official Fortnite Map Arena & Match Settings Showcase Card */
-    .map-arena-card {
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(10, 14, 26, 0.95) 100%);
-      border: 1px solid rgba(255, 255, 255, 0.04);
-      border-radius: var(--radius-xl);
-      padding: 18px 24px;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.5);
-    }
-    .map-arena-header {
-      display: flex;
-      align-items: center;
-      gap: 18px;
-      flex-wrap: wrap;
-    }
-    .map-arena-thumb-wrap {
-      position: relative;
-      width: 110px;
-      height: 68px;
-      border-radius: var(--radius-md);
-      overflow: hidden;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-    .map-mode-badge {
-      background: rgba(0, 0, 0, 0.7);
-      backdrop-filter: blur(4px);
-      border-radius: 6px;
-      padding: 3px 8px;
-      font-size: 0.72rem;
-      font-weight: 800;
-      color: var(--gold-bright);
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-    .map-details-wrap {
       flex: 1;
-      min-width: 220px;
+      margin: 10px 0;
     }
-    .map-code-row {
+    @media (max-width: 768px) {
+      .concept-vs-grid {
+        grid-template-columns: 1fr;
+      }
+      .concept-vs-center {
+        margin: 6px auto;
+      }
+    }
+
+    /* Team Card */
+    .concept-team-card {
+      background: #12151f;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+      transition: border-color 0.2s;
+      min-height: 260px;
+    }
+    .concept-team-card:hover {
+      border-color: rgba(255, 255, 255, 0.15);
+    }
+    .concept-card-header {
+      background: #171b26;
+      padding: 14px 20px;
       display: flex;
       align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-top: 4px;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     }
-    .map-code-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(245, 158, 11, 0.08);
-      border: 1px solid rgba(245, 158, 11, 0.25);
-      border-radius: var(--radius-sm);
-      padding: 5px 12px;
-      font-family: monospace;
-      font-size: 0.88rem;
-      font-weight: 800;
-      color: var(--gold-bright);
-    }
-    .map-rules-strip {
+    .team-header-name {
+      font-weight: 900;
+      font-size: 1.15rem;
+      color: #fff;
       display: flex;
       align-items: center;
       gap: 8px;
-      flex-wrap: wrap;
-      border-top: 1px solid rgba(255, 255, 255, 0.04);
-      padding-top: 12px;
     }
-    .rule-chip {
+    .team-header-status-badge {
+      font-size: 0.78rem;
+      font-weight: 800;
+      padding: 4px 12px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .team-header-status-badge.ready {
+      background: rgba(34, 197, 94, 0.16);
+      color: #4ade80;
+      border: 1px solid rgba(34, 197, 94, 0.35);
+    }
+    .team-header-status-badge.waiting {
+      background: rgba(245, 158, 11, 0.14);
+      color: #fbbf24;
+      border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+    .team-header-status-badge.victory {
+      background: rgba(34, 197, 94, 0.22);
+      color: #22c55e;
+      border: 1px solid rgba(34, 197, 94, 0.5);
+      font-weight: 900;
+    }
+    .team-header-status-badge.lose {
+      background: rgba(239, 68, 68, 0.18);
+      color: #f87171;
+      border: 1px solid rgba(239, 68, 68, 0.4);
+    }
+
+    .concept-card-body {
+      padding: 16px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      flex: 1;
+    }
+
+    /* Player Row in Team Card */
+    .concept-player-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 12px 14px;
+      background: rgba(255, 255, 255, 0.025);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.18s;
+    }
+    .concept-player-row:hover {
+      background: rgba(255, 255, 255, 0.055);
+      border-color: rgba(255, 255, 255, 0.1);
+      transform: translateY(-1px);
+    }
+    .concept-player-pfp {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      overflow: hidden;
+      background: #1c2130;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.15rem;
+      font-weight: 900;
+      color: var(--gold-bright);
+      flex-shrink: 0;
+      border: 2px solid rgba(255,255,255,0.08);
+    }
+    .concept-player-pfp img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .concept-player-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      flex: 1;
+      min-width: 0;
+    }
+    .concept-player-name-line {
+      font-weight: 800;
+      font-size: 0.96rem;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .concept-player-title {
+      font-size: 0.76rem;
+      font-weight: 800;
+      color: #22c55e;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    .concept-epic-row {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      background: rgba(0,0,0,0.35);
+      padding: 2px 8px;
+      border-radius: 6px;
+      width: fit-content;
+      margin-top: 2px;
+      border: 1px solid rgba(255,255,255,0.05);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .concept-epic-row:hover {
+      color: #fff;
+      border-color: rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.08);
+    }
+
+    /* Center VS Indicator */
+    .concept-vs-center {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 6px;
+    }
+    .concept-vs-glow-text {
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: #22c55e;
+      text-shadow: 0 0 25px rgba(34, 197, 94, 0.65);
+      user-select: none;
+      letter-spacing: 0.05em;
+    }
+
+    /* Bottom Bar */
+    .concept-bottom-bar {
+      margin-top: auto;
+      padding: 14px 20px;
+      background: #12151f;
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+    .concept-bottom-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      font-size: 0.85rem;
+      color: #94a3b8;
+    }
+    .match-info-tag {
+      background: rgba(255,255,255,0.03);
+      padding: 4px 10px;
+      border-radius: 6px;
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+
+    /* Primary Action Buttons (Neon Green / Gold) */
+    .concept-btn-ready {
+      background: #22c55e;
+      color: #000;
+      font-weight: 900;
+      font-size: 0.95rem;
+      padding: 10px 26px;
+      border-radius: 24px;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 0 22px rgba(34, 197, 94, 0.45);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.15s;
+    }
+    .concept-btn-ready:hover {
+      background: #16a34a;
+      transform: translateY(-1px);
+      box-shadow: 0 0 30px rgba(34, 197, 94, 0.65);
+    }
+    .concept-btn-ready.cancel {
+      background: transparent;
+      color: #f87171;
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      box-shadow: none;
+    }
+    .concept-btn-ready.cancel:hover {
+      background: rgba(239, 68, 68, 0.12);
+      transform: translateY(-1px);
+    }
+
+    .concept-btn-locked {
+      background: rgba(245, 158, 11, 0.12);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      color: var(--gold-bright);
+      font-weight: 800;
+      font-size: 0.92rem;
+      padding: 10px 22px;
+      border-radius: 22px;
+      cursor: not-allowed;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .concept-btn-victory {
+      background: #22c55e;
+      color: #000;
+      font-weight: 900;
+      font-size: 0.92rem;
+      padding: 9px 20px;
+      border-radius: 20px;
+      border: none;
+      cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      background: rgba(255, 255, 255, 0.03);
-      border-radius: var(--radius-sm);
-      padding: 4px 10px;
-      font-size: 0.76rem;
-      color: var(--text-muted);
+      box-shadow: 0 0 16px rgba(34, 197, 94, 0.4);
+      transition: all 0.15s;
     }
-    .rule-chip strong {
-      color: #fff;
+    .concept-btn-victory:hover {
+      background: #16a34a;
+      transform: translateY(-1px);
+      box-shadow: 0 0 24px rgba(34, 197, 94, 0.6);
     }
-    .rule-chip i {
-      width: 13px;
-      height: 13px;
-      color: var(--gold-bright);
+    .concept-btn-lose {
+      background: rgba(239, 68, 68, 0.12);
+      color: #fca5a5;
+      border: 1px solid rgba(239, 68, 68, 0.35);
+      font-weight: 800;
+      font-size: 0.92rem;
+      padding: 9px 20px;
+      border-radius: 20px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s;
+    }
+    .concept-btn-lose:hover {
+      background: rgba(239, 68, 68, 0.22);
+      transform: translateY(-1px);
     }
 
-    /* Clean, Significantly Wider & Bigger Esports Match Chat (Equal Height to Stage) */
-    .live-chat-panel {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-2xl);
+    /* Session Chat Panel (Right) */
+    .session-chat-panel {
+      background: #0e1119;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 20px;
       display: flex;
       flex-direction: column;
       height: 100%;
-      box-shadow: var(--shadow-card);
       overflow: hidden;
-      backdrop-filter: blur(24px);
+      box-shadow: 0 10px 35px rgba(0,0,0,0.5);
       box-sizing: border-box;
-      min-height: 0;
+      min-height: 480px;
+    }
+    .session-chat-header {
+      padding: 16px 20px;
+      background: #141824;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      font-weight: 800;
+      font-size: 0.95rem;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
     .chat-msg-stream {
       flex: 1;
       overflow-y: auto;
-      padding: 20px 24px;
+      padding: 16px 18px;
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 14px;
       min-height: 0;
     }
     .chat-msg-stream::-webkit-scrollbar { width: 5px; }
     .chat-msg-stream::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
-    .chat-msg-stream::-webkit-scrollbar-thumb:hover { background: var(--gold-bright); }
 
-    /* Chat Message Row */
     .chat-item-row {
       display: flex;
       align-items: flex-start;
-      gap: 14px;
+      gap: 12px;
       width: 100%;
       animation: fadeInMsg 0.15s ease-out;
     }
@@ -371,40 +461,34 @@
       to { opacity: 1; transform: translateY(0); }
     }
     .chat-pfp-avatar {
-      width: 42px;
-      height: 42px;
+      width: 38px;
+      height: 38px;
       border-radius: 50%;
-      background: var(--bg-card-hover);
+      background: #1e2433;
       overflow: hidden;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       font-weight: 900;
       color: var(--gold-bright);
       flex-shrink: 0;
       cursor: pointer;
-      transition: all 0.2s;
-    }
-    .chat-pfp-avatar:hover {
-      transform: scale(1.1);
     }
     .chat-pfp-avatar img { width: 100%; height: 100%; object-fit: cover; }
-    
     .chat-content-wrap {
       flex: 1;
       min-width: 0;
       display: flex;
       flex-direction: column;
-      gap: 5px;
+      gap: 3px;
     }
     .chat-author-line {
       display: flex;
       align-items: center;
       gap: 8px;
-      font-size: 0.88rem;
+      font-size: 0.82rem;
       color: var(--text-muted);
-      flex-wrap: wrap;
     }
     .chat-author-name {
       font-weight: 800;
@@ -413,68 +497,60 @@
     }
     .chat-author-name:hover {
       color: var(--gold-bright);
-      text-decoration: underline;
     }
     .chat-text-bubble {
-      background: rgba(255, 255, 255, 0.04);
-      border-radius: 4px 16px 16px 16px;
-      padding: 12px 18px;
-      font-size: 0.98rem;
-      color: var(--text);
-      line-height: 1.55;
+      background: rgba(255, 255, 255, 0.035);
+      border-radius: 4px 14px 14px 14px;
+      padding: 10px 14px;
+      font-size: 0.92rem;
+      color: #e2e8f0;
+      line-height: 1.45;
       word-break: break-word;
-      transition: all 0.15s;
     }
     .chat-item-row.mine .chat-text-bubble {
-      background: rgba(245, 158, 11, 0.08);
-      border-left: 3.5px solid var(--gold-bright);
+      background: rgba(34, 197, 94, 0.08);
+      border-left: 3px solid #22c55e;
     }
     .chat-item-row.staff-msg .chat-text-bubble {
       background: rgba(239, 68, 68, 0.09);
-      border-left: 3.5px solid var(--red);
+      border-left: 3px solid var(--red);
     }
-
-    /* System Broadcast Banner */
     .chat-system-announcement {
-      background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(10, 14, 26, 0.98) 100%);
-      border-radius: var(--radius-lg);
-      padding: 14px 18px;
-      margin: 4px 0;
-      font-size: 0.88rem;
-      line-height: 1.55;
+      background: rgba(245, 158, 11, 0.1);
+      border-radius: var(--radius-md);
+      padding: 10px 14px;
+      font-size: 0.82rem;
       color: #fde68a;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.5);
     }
-
-    /* Chat Input Form */
     .chat-bottom-input {
-      padding: 16px 22px;
-      background: rgba(255, 255, 255, 0.02);
+      padding: 14px 18px;
+      background: #141824;
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
       flex-shrink: 0;
+      border-top: 1px solid rgba(255,255,255,0.06);
     }
     .chat-input-pill {
       flex: 1;
       background: rgba(12, 16, 28, 0.9);
-      border: 1px solid var(--border);
+      border: 1px solid rgba(255,255,255,0.08);
       border-radius: var(--radius-full);
-      padding: 14px 22px;
+      padding: 10px 18px;
       color: #fff;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       outline: none;
       transition: all 0.2s;
     }
     .chat-input-pill:focus {
-      border-color: var(--gold-bright);
-      box-shadow: 0 0 20px var(--gold-glow);
+      border-color: #22c55e;
+      box-shadow: 0 0 16px rgba(34, 197, 94, 0.35);
     }
     .chat-send-btn {
-      width: 46px;
-      height: 46px;
+      width: 40px;
+      height: 40px;
       border-radius: 50%;
-      background: linear-gradient(135deg, #FBBF24 0%, #D97706 100%);
+      background: #22c55e;
       color: #000;
       display: flex;
       align-items: center;
@@ -483,21 +559,32 @@
       cursor: pointer;
       transition: all 0.2s;
       flex-shrink: 0;
-      box-shadow: 0 0 16px var(--gold-glow);
+      box-shadow: 0 0 14px rgba(34, 197, 94, 0.35);
     }
     .chat-send-btn:hover {
+      background: #16a34a;
       transform: scale(1.08);
-      box-shadow: 0 0 26px var(--gold-glow);
     }
-    .chat-send-btn i { width: 20px; height: 20px; stroke-width: 2.5; }
-    /* Tipping Section in Modal */
-    .tip-box {
-      background: rgba(245, 158, 11, 0.06);
-      border: 1px solid rgba(245, 158, 11, 0.25);
-      border-radius: var(--radius-md);
-      padding: 14px;
-      margin-top: 14px;
-      text-align: left;
+    .chat-send-btn i { width: 18px; height: 18px; stroke-width: 2.5; }
+
+    /* Alert Banner */
+    .concept-alert-banner {
+      border-radius: 12px;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.88rem;
+    }
+    .concept-alert-banner.expired {
+      background: rgba(239, 68, 68, 0.12);
+      border: 1px solid rgba(239, 68, 68, 0.35);
+      color: #fca5a5;
+    }
+    .concept-alert-banner.dispute {
+      background: rgba(239, 68, 68, 0.18);
+      border: 1px solid rgba(239, 68, 68, 0.45);
+      color: #fca5a5;
     }
   </style>
 </head>
@@ -509,119 +596,122 @@
   </div>
 
   <main class="match-page-wrap">
-    <!-- Top Full-Width Header Bar -->
-    <div class="arena-top-header">
-      <div class="arena-title-group">
-        <h1 id="room-title" style="font-size:1.55rem;font-weight:900;">1v1 Realistic</h1>
-        <span class="match-tag-pill" id="room-id">ID: --</span>
-        <span class="match-code-badge"><i data-lucide="hash"></i><span id="room-code">------</span></span>
-        <span id="room-size-badge" class="badge">1v1</span>
-        <span id="room-mode-badge" class="badge">Realistic</span>
-        <span id="room-status-badge" class="badge">waiting</span>
-        <span id="staff-alert-tag" class="badge" style="display:none;background:rgba(239,68,68,0.2);color:#fca5a5;border:1px solid rgba(239,68,68,0.35);">
-          <i data-lucide="shield-alert" style="width:13px;height:13px;"></i> Staff Alert Active
-        </span>
+    <!-- Top Header: Centered Large 0v0 GAMEMODE -->
+    <div class="concept-top-section">
+      <h1 id="room-title" class="concept-main-title">1V1 REALISTIC</h1>
+
+      <!-- Top Metadata Pill Capsule -->
+      <div class="concept-meta-bar" id="concept-meta-bar">
+        <div class="concept-meta-item">Region: <strong id="meta-region" style="color:#fff;">EU</strong></div>
+        <div class="concept-meta-dot">·</div>
+        <div class="concept-meta-item">Platform: <strong id="meta-platform" style="color:#fff;">All</strong></div>
+        <div class="concept-meta-dot">·</div>
+        <div class="concept-meta-item">Format: <strong id="meta-rounds" style="color:#fff;">First to 5</strong></div>
+        <div class="concept-meta-dot">·</div>
+        <div class="concept-meta-item">
+          Map: <strong id="map-code-display" class="concept-meta-link" onclick="copyMapCode()" title="Click to copy map code">9854-1829-8735</strong>
+          <i data-lucide="copy" style="width:13px;height:13px;cursor:pointer;opacity:0.8;" onclick="copyMapCode()"></i>
+        </div>
+        <div class="concept-meta-dot">·</div>
+        <div class="concept-meta-item">Wager: <strong id="stakes-wager" style="color:#fff;">1.00 Tokens</strong></div>
+        <div class="concept-meta-dot">·</div>
+        <div class="concept-meta-item">Prize: <strong id="stakes-prize" style="color:var(--gold-bright);">1.80 Tokens</strong></div>
+        <div class="concept-meta-dot">·</div>
+        <div class="concept-meta-item">
+          <i data-lucide="clock" style="width:14px;height:14px;color:var(--gold-bright);"></i>
+          <span id="timer-clock" style="font-family:monospace;font-weight:800;color:#fff;">30:00</span>
+        </div>
       </div>
-      <div id="arena-actions" style="display:flex;gap:8px;flex-wrap:wrap;"></div>
     </div>
 
-    <!-- 2-Column Equal Grid: Battle Stage & Big Wide Chat Side-by-Side -->
+    <!-- Main Grid: Match Arena (Left) & Session Chat (Right) -->
     <div class="arena-main-grid">
-      <!-- Left: Match Stage Card -->
+      <!-- Left: Match Stage & VS Cards -->
       <div class="stage-card">
-        <!-- Stakes Summary Bar -->
-        <div class="stakes-summary-bar">
-          <div style="display:flex;align-items:center;gap:12px;">
-            <img src="champion_token_coin.png" alt="CT" style="width:36px;height:36px;object-fit:contain;" />
-            <div>
-              <div style="font-size:0.72rem;color:var(--text-muted);font-weight:700;text-transform:uppercase;">Entry Tokens</div>
-              <div style="font-size:1.15rem;font-weight:900;color:#fff;" id="stakes-wager">1.00 Tokens</div>
-            </div>
-          </div>
-          <div style="text-align:center;">
-            <div style="font-size:0.72rem;color:var(--text-muted);font-weight:700;text-transform:uppercase;">Total Pool</div>
-            <div style="font-size:1.15rem;font-weight:800;color:var(--text);" id="stakes-pool">2.00 Tokens</div>
-          </div>
-          <div style="text-align:right;">
-            <div style="font-size:0.72rem;color:var(--gold-bright);font-weight:700;text-transform:uppercase;">Winner Prize (90%)</div>
-            <div style="font-size:1.45rem;font-weight:900;color:var(--gold-bright);" id="stakes-prize">1.80 Tokens</div>
-          </div>
-        </div>
-
-        <!-- Official Fortnite Map Arena Showcase Banner -->
-        <div class="map-arena-card realistic-stage-banner" id="map-arena-card">
-          <div class="map-arena-header" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;">
-            <div style="display:flex;align-items:center;gap:14px;">
-              <div style="width:48px;height:48px;border-radius:var(--radius-md);background:rgba(245,158,11,0.2);border:1px solid var(--gold-bright);display:flex;align-items:center;justify-content:center;color:var(--gold-bright);flex-shrink:0;">
-                <i data-lucide="crosshair" style="width:24px;height:24px;"></i>
-              </div>
-              <div>
-                <div style="font-weight:900;font-size:1.05rem;color:#fff;display:flex;align-items:center;gap:8px;">
-                  <span id="map-banner-title">1V1-4V4 REALISTICS</span>
-                  <span class="badge" id="map-banner-badge" style="background:var(--gold-dim);color:var(--gold-bright);font-size:0.68rem;padding:2px 8px;">FINEST</span>
-                </div>
-                <div style="font-size:0.78rem;color:var(--text-muted);margin-top:2px;">
-                  Fortnite Creative Island Code — Party up with opponent to battle
-                </div>
-              </div>
-            </div>
-            <div style="display:flex;align-items:center;gap:8px;">
-              <span class="map-code-pill" id="map-code-display" style="font-size:1rem;font-weight:900;letter-spacing:0.05em;padding:6px 14px;">
-                <i data-lucide="map-pin" style="width:15px;height:15px;"></i> 9854-1829-8735
-              </span>
-              <button class="btn btn-gold btn-sm" id="map-code-copy-btn" onclick="copyMapCode('9854-1829-8735')" style="padding:6px 14px;font-size:0.8rem;">
-                <i data-lucide="copy"></i> Copy Code
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Expired Notice Banner (Hidden by default) -->
-        <div id="match-expired-banner" style="display:none;background:rgba(239,68,68,0.14);border:1px solid rgba(239,68,68,0.4);border-radius:var(--radius-xl);padding:16px 20px;align-items:center;gap:14px;color:#fca5a5;">
-          <div style="width:40px;height:40px;border-radius:50%;background:rgba(239,68,68,0.2);display:flex;align-items:center;justify-content:center;color:var(--red);flex-shrink:0;">
-            <i data-lucide="clock" style="width:22px;height:22px;"></i>
-          </div>
+        <!-- Expired Notice Banner -->
+        <div id="match-expired-banner" style="display:none;" class="concept-alert-banner expired">
+          <i data-lucide="clock" style="width:20px;height:20px;color:var(--red);"></i>
           <div>
-            <div style="font-weight:900;font-size:1rem;color:#fff;">Match Expired (30-Minute Limit Elapsed)</div>
-            <div style="font-size:0.8rem;color:#fca5a5;margin-top:2px;">
-              All participants have received a 100% full token refund back to their balance. No winner can be declared.
+            <div style="font-weight:900;">Match Cancelled / Expired</div>
+            <div style="font-size:0.78rem;">All participants received a 100% full token refund.</div>
+          </div>
+        </div>
+
+        <!-- Dispute Notice Banner -->
+        <div id="dispute-alert-banner" style="display:none;" class="concept-alert-banner dispute">
+          <i data-lucide="shield-alert" style="width:20px;height:20px;color:var(--red);"></i>
+          <div style="flex:1;">
+            <div style="font-weight:900;">⚠️ Score Dispute Detected — Staff Summoned</div>
+            <div style="font-size:0.78rem;">Conflicting winner reports submitted. A moderator has been alerted.</div>
+            <div id="dispute-admin-actions" style="margin-top:6px;display:none;"></div>
+          </div>
+        </div>
+
+        <!-- VS Battle Matchup Layout (2 Cards + VS) -->
+        <div class="concept-vs-grid">
+          <!-- Team 1 Card -->
+          <div class="concept-team-card" id="team1-card">
+            <div class="concept-card-header">
+              <span id="team1-card-name" class="team-header-name">Team 1</span>
+              <span id="team1-status-pill" class="team-header-status-badge waiting">Waiting</span>
+            </div>
+            <div class="concept-card-body" id="team1-squad">
+              <!-- Player slots -->
+            </div>
+          </div>
+
+          <!-- Center VS Divider -->
+          <div class="concept-vs-center">
+            <div class="concept-vs-glow-text">VS</div>
+          </div>
+
+          <!-- Team 2 Card -->
+          <div class="concept-team-card" id="team2-card">
+            <div class="concept-card-header">
+              <span id="team2-card-name" class="team-header-name">Team 2</span>
+              <span id="team2-status-pill" class="team-header-status-badge waiting">Waiting</span>
+            </div>
+            <div class="concept-card-body" id="team2-squad">
+              <!-- Player slots -->
             </div>
           </div>
         </div>
 
-        <!-- Ready Action Area -->
-        <div class="ready-action-card" id="ready-action-area" style="display:none;"></div>
-
-        <!-- Score Reporting / Dispute Area (Dual-Confirmation Protocol) -->
-        <div id="score-report-area" style="display:none;"></div>
-
-        <!-- VS Battle Matchup (Center Dominant) -->
-        <div class="vs-arena-layout">
-          <div class="team-squad-column" id="team1-squad"></div>
-          <div class="vs-ring">VS</div>
-          <div class="team-squad-column" id="team2-squad"></div>
-        </div>
-
-        <!-- Footer Timer & Quick Guide -->
-        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:0.8rem;color:var(--text-muted);border-top:1px solid rgba(255,255,255,0.05);padding-top:14px;margin-top:auto;">
-          <div style="display:flex;align-items:center;gap:6px;">
-            <i data-lucide="clock" style="color:var(--gold-bright);width:15px;height:15px;"></i>
-            <span>Queue Auto-Refund Timer: <strong id="timer-clock" style="color:#fff;font-family:monospace;">30:00</strong></span>
+        <!-- Bottom Action & Details Bar -->
+        <div class="concept-bottom-bar">
+          <div class="concept-bottom-meta">
+            <span class="match-info-tag">ID: <strong id="room-id" style="color:#fff;">--</strong></span>
+            <span class="match-info-tag">Code: <strong id="room-code" style="color:var(--gold-bright);font-family:monospace;">------</strong></span>
+            <button class="btn btn-outline btn-sm" onclick="copyMatchLink()" style="padding:4px 10px;font-size:0.78rem;">
+              <i data-lucide="share-2"></i> Share Link
+            </button>
+            <button class="btn btn-danger btn-sm" onclick="openCallStaffModal()" style="padding:4px 10px;font-size:0.78rem;">
+              <i data-lucide="shield-alert"></i> Call Staff
+            </button>
+            <div id="arena-extra-actions" style="display:inline-flex;gap:6px;"></div>
           </div>
-          <div>
-            <span>Copy opponent Epic IGN to party up in Fortnite</span>
+
+          <div class="concept-bottom-actions" id="bottom-primary-action">
+            <!-- Ready Up / Vote buttons rendered dynamically -->
           </div>
         </div>
       </div>
 
-      <!-- Right: Large Wide Live Match Chat -->
-      <div class="live-chat-panel">
+      <!-- Right: Session Chat Panel -->
+      <div class="session-chat-panel">
+        <div class="session-chat-header">
+          <div style="display:flex;align-items:center;gap:8px;">
+            <i data-lucide="message-square" style="width:16px;height:16px;color:#22c55e;"></i>
+            <span>Session Chat</span>
+          </div>
+          <i data-lucide="chevron-right" style="width:16px;height:16px;color:var(--text-muted);"></i>
+        </div>
         <div class="chat-msg-stream" id="chat-messages"></div>
         <form class="chat-bottom-input" onsubmit="sendChatMessage(event)">
           <input
             id="chat-input"
             class="chat-input-pill"
-            placeholder="Type message or Epic IGN (Enter to send)…"
+            placeholder="Type message or Epic IGN…"
             autocomplete="off"
             required
           />
@@ -943,103 +1033,74 @@
       const prize = Math.round(Number(match.prizePool || match.wager) * 0.90 * 100) / 100;
       const isExpired = (match.status === 'cancelled' && !isMatchStarted && !match.startedAt) || (match.isExpired && match.status === 'cancelled');
 
-      // Map Code & Banner
+      // Map Code
       let defaultMapCode = '9854-1829-8735';
-      let defaultCreator = 'FINEST';
-      let defaultTitle   = '1V1-4V4 REALISTICS';
-      let bannerCls      = 'stage-banner-realistic';
-
       if (mode === 'Zone Wars') {
         defaultMapCode = '3537-4087-0888';
-        defaultCreator = 'CHAP';
-        defaultTitle   = 'ZONE WARS';
-        bannerCls      = 'stage-banner-zonewars';
       } else if (mode === 'Box Fights') {
         defaultMapCode = '2355-0939-8965';
-        defaultCreator = 'CHAP';
-        defaultTitle   = 'BOX FIGHTS';
-        bannerCls      = 'stage-banner-boxfights';
       }
-
       const mapCode = match.mapCode || defaultMapCode;
+
+      // 1. Top Header & Metadata Bar
+      const titleEl = document.getElementById('room-title');
+      if (titleEl) titleEl.textContent = `${size} ${mode}`.toUpperCase();
+
+      const regionEl = document.getElementById('meta-region');
+      if (regionEl) regionEl.textContent = match.region || 'EU';
+
+      const platformEl = document.getElementById('meta-platform');
+      if (platformEl) platformEl.textContent = match.platform || 'All';
+
+      const roundsEl = document.getElementById('meta-rounds');
+      if (roundsEl) roundsEl.textContent = match.rounds || (mode === 'Box Fights' ? 'First to 5' : (mode === 'Zone Wars' ? 'Best of 5' : 'First to 5'));
+
       const mapCodeEl = document.getElementById('map-code-display');
-      const mapTitleEl = document.getElementById('map-banner-title');
-      const mapCopyBtn = document.getElementById('map-code-copy-btn');
-      const mapBadgeEl = document.getElementById('map-banner-badge');
-      const mapCardEl = document.getElementById('map-arena-card');
-
-      if (mapCardEl) {
-        mapCardEl.className = `map-arena-card realistic-stage-banner ${bannerCls}`;
+      if (mapCodeEl) {
+        mapCodeEl.textContent = mapCode;
+        mapCodeEl.setAttribute('onclick', `copyMapCode('${mapCode}')`);
       }
-      if (mapCodeEl) mapCodeEl.innerHTML = `<i data-lucide="map-pin" style="width:15px;height:15px;"></i> ${mapCode}`;
-      if (mapTitleEl) mapTitleEl.textContent = defaultTitle;
-      if (mapBadgeEl) mapBadgeEl.textContent = defaultCreator;
-      if (mapCopyBtn) mapCopyBtn.setAttribute('onclick', `copyMapCode('${mapCode}')`);
 
-      // Expired banner (ONLY show if unstarted lobby was truly cancelled/expired)
+      const wagerEl = document.getElementById('stakes-wager');
+      if (wagerEl) wagerEl.textContent = `${formatTokens(match.wager)} Tokens`;
+
+      const prizeEl = document.getElementById('stakes-prize');
+      if (prizeEl) prizeEl.textContent = `${formatTokens(prize)} Tokens`;
+
+      const idEl = document.getElementById('room-id');
+      if (idEl) idEl.textContent = `#${match.id.substring(0, 8)}`;
+
+      const codeEl = document.getElementById('room-code');
+      if (codeEl) codeEl.textContent = match.code;
+
+      // 2. Expired & Dispute Banners
       const expiredBanner = document.getElementById('match-expired-banner');
       if (expiredBanner) {
         expiredBanner.style.display = (isExpired && !isMatchStarted) ? 'flex' : 'none';
       }
 
-      // Header Bar
-      const titleEl = document.getElementById('room-title');
-      const idEl    = document.getElementById('room-id');
-      const codeEl  = document.getElementById('room-code');
-      const modeEl  = document.getElementById('room-mode-badge');
-      const sizeEl  = document.getElementById('room-size-badge');
-      const statEl  = document.getElementById('room-status-badge');
-
-      if (titleEl) titleEl.textContent = match.title || `${size} ${mode}`;
-      if (idEl)    idEl.textContent = `ID: ${match.id.substring(0, 8)}`;
-      if (codeEl)  codeEl.textContent = match.code;
-      if (modeEl)  modeEl.textContent = mode;
-      if (sizeEl)  sizeEl.textContent = size;
-      if (statEl) {
-        statEl.className = `badge badge-${match.status}`;
-        statEl.textContent = match.status === 'in_progress' ? 'LIVE IN PROGRESS' : match.status.replace('_', ' ');
-      }
-
-      // Stakes Bar
-      const wEl = document.getElementById('stakes-wager');
-      const pEl = document.getElementById('stakes-pool');
-      const zEl = document.getElementById('stakes-prize');
-      if (wEl) wEl.textContent = `${formatTokens(match.wager)} Tokens`;
-      if (pEl) pEl.textContent = `${formatTokens(match.prizePool)} Tokens`;
-      if (zEl) zEl.textContent = `${formatTokens(prize)} Tokens`;
-
-      // Ready Up Action Area
-      const readyBanner = document.getElementById('ready-action-area');
-      if (readyBanner) {
-        if (alreadyIn && match.status === 'waiting') {
-          const mySlot = players.find(p => p.uid === currentUser?.uid);
-          const amIReady = !!mySlot?.ready;
-          readyBanner.style.display = 'flex';
-          readyBanner.innerHTML = `
-            <div>
-              <div style="font-weight:800;font-size:1.05rem;color:#fff;display:flex;align-items:center;gap:8px;">
-                <i data-lucide="${amIReady ? 'check-circle' : 'clock'}" style="color:${amIReady ? 'var(--green)' : 'var(--gold-bright)'};"></i>
-                ${amIReady ? 'You are READY! Waiting for opponent…' : 'Match Queue: Click Ready Up to start!'}
-              </div>
-              <div style="font-size:0.8rem;color:var(--text-muted);margin-top:2px;">
-                Opponent identities & Epic tags unlock once BOTH sides click Ready.
-              </div>
-            </div>
-            <button class="btn ${amIReady ? 'btn-outline' : 'btn-primary'} btn-lg" onclick="handleReadyToggle(${!amIReady})">
-              <i data-lucide="${amIReady ? 'x' : 'check'}"></i> ${amIReady ? 'Cancel Ready' : 'Ready Up Now'}
-            </button>`;
-        } else {
-          readyBanner.style.display = 'none';
+      const disputeBanner = document.getElementById('dispute-alert-banner');
+      const disputeAdminActions = document.getElementById('dispute-admin-actions');
+      if (disputeBanner) {
+        const isDisputed = match.status === 'disputed' || match.isDisputed;
+        disputeBanner.style.display = isDisputed ? 'flex' : 'none';
+        if (isDisputed && disputeAdminActions) {
+          const isStaff = isAdminUser(currentUser, currentUserData);
+          if (isStaff) {
+            disputeAdminActions.style.display = 'flex';
+            disputeAdminActions.innerHTML = `
+              <div style="display:flex;align-items:center;gap:8px;margin-top:6px;flex-wrap:wrap;">
+                <span style="font-weight:800;font-size:0.78rem;color:#fca5a5;">Staff Force Resolve:</span>
+                <button class="btn btn-xs btn-gold" onclick="handleAdminResolve('team1')">Award Team 1</button>
+                <button class="btn btn-xs btn-gold" onclick="handleAdminResolve('team2')">Award Team 2</button>
+              </div>`;
+          } else {
+            disputeAdminActions.style.display = 'none';
+          }
         }
       }
 
-      // Dual-Confirmation Score Reporting & Dispute Area
-      const scoreArea = document.getElementById('score-report-area');
-      if (scoreArea) {
-        renderScoreReportArea(match, scoreArea, alreadyIn, isMatchStarted, prize, players);
-      }
-
-      // Render Teams VS Matchup (Center Stage)
+      // 3. Teams Matching Logic
       const halfCount = maxPlayers / 2;
       const team1Players = players.filter(p => p.team === 1 || p.isHost || p.isTeammate || p.uid === match.createdBy || (match.teamId && p.teamId === match.teamId));
       const team2Players = players.filter(p => !team1Players.includes(p));
@@ -1047,7 +1108,58 @@
       const isUserInTeam1 = team1Players.some(p => p.uid === currentUser?.uid);
       const isUserInTeam2 = team2Players.some(p => p.uid === currentUser?.uid);
       const myTeamNum = isUserInTeam1 ? 1 : (isUserInTeam2 ? 2 : 0);
+      const myTeamKey = isUserInTeam1 ? 'team1' : 'team2';
+      const oppTeamKey = isUserInTeam1 ? 'team2' : 'team1';
 
+      // Team 1 Header Status
+      const t1StatusPill = document.getElementById('team1-status-pill');
+      const t1Name = document.getElementById('team1-card-name');
+      if (t1Name) t1Name.innerHTML = `Team 1 ${match.teamTag ? `<span class="badge" style="background:var(--purple);color:#fff;font-size:0.7rem;padding:2px 7px;">[${escapeHtml(match.teamTag)}]</span>` : ''}`;
+      if (t1StatusPill) {
+        if (match.status === 'completed') {
+          const t1Won = (match.winnerTeam === 'team1' || match.winner?.uid === match.createdBy);
+          t1StatusPill.className = `team-header-status-badge ${t1Won ? 'victory' : 'lose'}`;
+          t1StatusPill.textContent = t1Won ? '👑 VICTORY' : 'DEFEAT';
+        } else if (match.status === 'in_progress') {
+          if (match.team1Reported) {
+            t1StatusPill.className = `team-header-status-badge ${match.team1Reported === 'team1' ? 'victory' : 'lose'}`;
+            t1StatusPill.textContent = match.team1Reported === 'team1' ? '🏆 Voted Victory' : '❌ Voted Lose';
+          } else {
+            t1StatusPill.className = 'team-header-status-badge ready';
+            t1StatusPill.textContent = '⚔️ In Battle';
+          }
+        } else {
+          const t1Ready = team1Players.length > 0 && team1Players.every(p => p.ready);
+          t1StatusPill.className = `team-header-status-badge ${t1Ready ? 'ready' : 'waiting'}`;
+          t1StatusPill.textContent = t1Ready ? '✅ Ready' : '⏳ Waiting';
+        }
+      }
+
+      // Team 2 Header Status
+      const t2StatusPill = document.getElementById('team2-status-pill');
+      const t2Name = document.getElementById('team2-card-name');
+      if (t2Name) t2Name.innerHTML = `Team 2 ${match.enemyTeamTag ? `<span class="badge" style="background:var(--purple);color:#fff;font-size:0.7rem;padding:2px 7px;">[${escapeHtml(match.enemyTeamTag)}]</span>` : ''}`;
+      if (t2StatusPill) {
+        if (match.status === 'completed') {
+          const t2Won = (match.winnerTeam === 'team2');
+          t2StatusPill.className = `team-header-status-badge ${t2Won ? 'victory' : 'lose'}`;
+          t2StatusPill.textContent = t2Won ? '👑 VICTORY' : 'DEFEAT';
+        } else if (match.status === 'in_progress') {
+          if (match.team2Reported) {
+            t2StatusPill.className = `team-header-status-badge ${match.team2Reported === 'team2' ? 'victory' : 'lose'}`;
+            t2StatusPill.textContent = match.team2Reported === 'team2' ? '🏆 Voted Victory' : '❌ Voted Lose';
+          } else {
+            t2StatusPill.className = 'team-header-status-badge ready';
+            t2StatusPill.textContent = '⚔️ In Battle';
+          }
+        } else {
+          const t2Ready = team2Players.length > 0 && team2Players.every(p => p.ready);
+          t2StatusPill.className = `team-header-status-badge ${t2Ready ? 'ready' : 'waiting'}`;
+          t2StatusPill.textContent = t2Ready ? '✅ Ready' : '⏳ Waiting';
+        }
+      }
+
+      // Player Slot Renderer
       function renderPlayerSlot(player, slotIndex, teamName) {
         if (player) {
           const isPlayerHost = player.isHost || player.uid === match.createdBy;
@@ -1064,60 +1176,40 @@
           let epicChipHTML = '';
           if (realEpicUsername) {
             epicChipHTML = `
-              <span class="epic-copy-chip" onclick="event.stopPropagation();copyEpicTag('${realEpicUsername}')" title="Click to copy Epic IGN">
-                <img src="epic_games_logo.webp" alt="" style="width:13px;height:15px;object-fit:contain;"/>
+              <div class="concept-epic-row" onclick="event.stopPropagation();copyEpicTag('${realEpicUsername}')" title="Click to copy Epic IGN">
+                <img src="epic_games_logo.webp" alt="" style="width:12px;height:14px;object-fit:contain;"/>
                 <span>${realEpicUsername}</span>
                 <i data-lucide="copy" style="width:11px;height:11px;opacity:0.7;"></i>
-              </span>`;
+              </div>`;
           } else {
             epicChipHTML = isMe
-              ? `<span class="epic-copy-chip" style="opacity:0.8;border-style:dashed;color:var(--gold-bright);" onclick="event.stopPropagation();window.location.href='profile?tab=connections'" title="Click to link Epic in profile"><img src="epic_games_logo.webp" alt="" style="width:13px;height:15px;object-fit:contain;"/> <span>Link Epic IGN</span></span>`
-              : `<span class="epic-copy-chip" style="opacity:0.6;border-style:dashed;" onclick="event.stopPropagation();showToast('Player has not linked their Epic account yet','info')"><img src="epic_games_logo.webp" alt="" style="width:13px;height:15px;object-fit:contain;"/> <span>No Epic Linked</span></span>`;
+              ? `<div class="concept-epic-row" style="color:var(--gold-bright);border-style:dashed;" onclick="event.stopPropagation();window.location.href='profile?tab=connections'" title="Click to link Epic in profile"><img src="epic_games_logo.webp" alt="" style="width:12px;height:14px;object-fit:contain;"/> <span>Link Epic IGN</span></div>`
+              : `<div class="concept-epic-row" style="opacity:0.5;border-style:dashed;" onclick="event.stopPropagation();showToast('Player has not linked their Epic account yet','info')"><img src="epic_games_logo.webp" alt="" style="width:12px;height:14px;object-fit:contain;"/> <span>No Epic Linked</span></div>`;
           }
 
-          let bannerClass = '';
-          if (liveData.equippedBanner && SHOP_BANNERS[liveData.equippedBanner]) {
-            bannerClass = SHOP_BANNERS[liveData.equippedBanner].className;
-          }
-
-          let titleTagHTML = '';
+          let titleText = 'GLADIATOR';
           if (liveData.equippedTitle && SHOP_TITLES[liveData.equippedTitle]) {
-            const t = SHOP_TITLES[liveData.equippedTitle];
-            titleTagHTML = `<span class="player-title-tag ${t.className}">${t.name}</span>`;
-          }
-
-          // Relationship tag (Teammate vs Opponent)
-          let relationshipBadge = '';
-          if (isMe) {
-            relationshipBadge = `<span style="color:var(--gold-bright);font-size:0.75rem;font-weight:800;">(You)</span>`;
-          } else if (isSameTeam) {
-            relationshipBadge = `<span class="badge" style="background:rgba(59,130,246,0.22);color:#93c5fd;padding:1px 6px;font-size:0.65rem;font-weight:800;border:1px solid rgba(59,130,246,0.4);">TEAMMATE</span>`;
-          } else if (myTeamNum !== 0) {
-            relationshipBadge = `<span class="badge" style="background:rgba(239,68,68,0.2);color:#fca5a5;padding:1px 6px;font-size:0.65rem;font-weight:800;border:1px solid rgba(239,68,68,0.35);">OPPONENT</span>`;
+            titleText = SHOP_TITLES[liveData.equippedTitle].name;
           }
 
           return `
-            <div class="player-slot-box ${bannerClass}" onclick="openUserProfileModal('${player.uid}')" title="Click to view stats & tip player">
-              <div class="slot-avatar-img ${isPlayerHost ? 'host' : ''}">
+            <div class="concept-player-row" onclick="openUserProfileModal('${player.uid}')" title="Click to view profile & stats">
+              <div class="concept-player-pfp">
                 ${(liveData.photoURL || player.photoURL) ? `<img src="${liveData.photoURL || player.photoURL}" onerror="this.style.display='none'"/>` : realDisplayName.charAt(0)}
               </div>
-              <div style="flex:1;min-width:0;">
-                <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
-                  ${player.teamTag ? `<span class="badge" style="background:var(--purple);color:#fff;padding:1px 6px;font-size:0.68rem;font-weight:800;">[${escapeHtml(player.teamTag)}]</span>` : ''}
-                  <span class="${isPremium ? 'username-premium' : ''}" style="font-weight:800;font-size:0.95rem;">${realDisplayName}</span>
-                  ${titleTagHTML}
-                  ${relationshipBadge}
-                  ${player.isCovered ? `<span class="badge" style="background:rgba(134,239,172,0.15);color:#86efac;padding:1px 6px;font-size:0.65rem;font-weight:700;" title="Entry token cost covered by captain">COVERED</span>` : ''}
-                  ${isPlayerHost ? '<span class="badge" style="background:var(--gold-dim);color:var(--gold-bright);padding:1px 6px;font-size:0.65rem;font-weight:800;">HOST</span>' : ''}
+              <div class="concept-player-info">
+                <div class="concept-player-name-line">
+                  <span class="${isPremium ? 'username-premium' : ''}">${escapeHtml(realDisplayName)}</span>
+                  ${isMe ? '<span style="color:var(--gold-bright);font-size:0.72rem;font-weight:900;">(You)</span>' : ''}
+                  ${isPlayerHost ? '<span class="badge" style="background:var(--gold-dim);color:var(--gold-bright);padding:1px 5px;font-size:0.62rem;font-weight:800;">HOST</span>' : ''}
+                  ${player.isCovered ? '<span class="badge" style="background:rgba(134,239,172,0.15);color:#86efac;padding:1px 5px;font-size:0.62rem;font-weight:700;">COVERED</span>' : ''}
                 </div>
-                <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:3px;">
-                  ${epicChipHTML}
-                  <span style="font-size:0.75rem;color:var(--text-muted);">
-                    ${isReady ? '✅ <span style="color:var(--green);font-weight:700;">READY</span>' : '⏳ Not Ready'}
-                  </span>
-                </div>
+                <div class="concept-player-title">${escapeHtml(titleText)}</div>
+                ${epicChipHTML}
               </div>
-              <i data-lucide="chevron-right" style="width:14px;height:14px;color:var(--text-muted);"></i>
+              <div style="font-size:0.8rem;margin-left:auto;flex-shrink:0;">
+                ${isReady ? '<span style="color:#4ade80;font-weight:800;">✅ READY</span>' : '<span style="color:var(--text-muted);font-size:0.75rem;">⏳ Not Ready</span>'}
+              </div>
             </div>`;
         } else {
           const isSlotTeam1 = (teamName === 'Team 1');
@@ -1126,33 +1218,31 @@
           if (invitedTeammate && invitedTeammate.status === 'pending') {
             const pfp = invitedTeammate.photoURL;
             const initChar = (invitedTeammate.displayName || 'T').charAt(0).toUpperCase();
-            const isMyTeamInvite = (isSlotTeam1 && isUserInTeam1) || (!isSlotTeam1 && isUserInTeam2);
             return `
-              <div class="player-slot-box" style="border:1px dashed rgba(245,158,11,0.4);background:rgba(245,158,11,0.04);">
-                <div class="slot-avatar-img" style="background:rgba(245,158,11,0.12);color:var(--gold-bright);border-color:rgba(245,158,11,0.35);">
+              <div class="concept-player-row" style="border:1px dashed rgba(245,158,11,0.4);background:rgba(245,158,11,0.04);">
+                <div class="concept-player-pfp" style="background:rgba(245,158,11,0.12);color:var(--gold-bright);">
                   ${pfp ? `<img src="${escapeHtml(pfp)}" alt=""/>` : initChar}
                 </div>
-                <div style="flex:1;min-width:0;">
-                  <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
-                    <span style="font-weight:800;font-size:0.95rem;color:#fff;">${escapeHtml(invitedTeammate.displayName)}</span>
-                    ${isMyTeamInvite ? '<span class="badge" style="background:rgba(59,130,246,0.22);color:#93c5fd;font-size:0.65rem;font-weight:800;border:1px solid rgba(59,130,246,0.4);">TEAMMATE</span>' : '<span class="badge" style="background:rgba(239,68,68,0.2);color:#fca5a5;font-size:0.65rem;font-weight:800;border:1px solid rgba(239,68,68,0.35);">OPPONENT</span>'}
-                    <span class="badge" style="background:rgba(245,158,11,0.18);color:var(--gold-bright);font-size:0.65rem;font-weight:700;">INVITED</span>
+                <div class="concept-player-info">
+                  <div class="concept-player-name-line">
+                    <span>${escapeHtml(invitedTeammate.displayName)}</span>
+                    <span class="badge" style="background:rgba(245,158,11,0.18);color:var(--gold-bright);font-size:0.62rem;font-weight:700;">INVITED</span>
                   </div>
-                  <div style="font-size:0.75rem;color:var(--gold-light);margin-top:2px;">
-                    ⏳ Pending Acceptance in Notifications…
+                  <div style="font-size:0.72rem;color:var(--gold-light);margin-top:2px;">
+                    ⏳ Pending acceptance in notifications…
                   </div>
                 </div>
               </div>`;
           }
 
           return `
-            <div class="player-slot-box empty-slot">
-              <div class="slot-avatar-img">
-                <i data-lucide="user-plus" style="width:18px;height:18px;opacity:0.5;"></i>
+            <div class="concept-player-row" style="border:1px dashed rgba(255,255,255,0.08);opacity:0.6;cursor:default;">
+              <div class="concept-player-pfp" style="border-style:dashed;">
+                <i data-lucide="user-plus" style="width:16px;height:16px;opacity:0.4;"></i>
               </div>
-              <div>
-                <div style="font-weight:700;color:var(--text-muted);">${teamName} Slot #${slotIndex}</div>
-                <div style="font-size:0.75rem;color:var(--text-faint);">Waiting for player…</div>
+              <div class="concept-player-info">
+                <div style="font-weight:700;font-size:0.9rem;color:var(--text-muted);">${teamName} Slot #${slotIndex}</div>
+                <div style="font-size:0.72rem;color:var(--text-faint);">Waiting for player to join…</div>
               </div>
             </div>`;
         }
@@ -1173,211 +1263,129 @@
       if (t1El) t1El.innerHTML = team1HTML;
       if (t2El) t2El.innerHTML = team2HTML;
 
-      // Arena Action Buttons
-      const actionsContainer = document.getElementById('arena-actions');
-      if (actionsContainer) {
-        let actionsHTML = `
-          <button class="btn btn-danger btn-sm" onclick="openCallStaffModal()">
-            <i data-lucide="shield-alert"></i> Call Staff
-          </button>
-          <button class="btn btn-outline btn-sm" onclick="copyMatchLink()">
-            <i data-lucide="share-2"></i> Share Link
-          </button>`;
-
-        if (!isExpired && !alreadyIn && !isFull && match.status === 'waiting') {
-          if (match.size !== '1v1' && currentUserData?.teamId) {
-            actionsHTML += `
-              <button class="btn btn-primary btn-sm" onclick="handleJoinArena('solo')">
-                <i data-lucide="user"></i> Join Solo ($${formatTokens(match.wager)})
-              </button>
-              <button class="btn btn-gold btn-sm" onclick="handleJoinArena('team')">
-                <i data-lucide="users"></i> Join with Team ($${formatTokens(match.wager)})
-              </button>`;
-          } else {
-            actionsHTML += `
-              <button class="btn btn-primary btn-sm" onclick="handleJoinArena('solo')">
-                <i data-lucide="log-in"></i> Join Match ($${formatTokens(match.wager)})
-              </button>`;
-          }
-        }
-
+      // 4. Bottom Extra Actions (Leave/Cancel, Declare Winner)
+      const extraActionsContainer = document.getElementById('arena-extra-actions');
+      if (extraActionsContainer) {
+        let extraHTML = '';
         if (!isExpired && alreadyIn && match.status === 'waiting') {
-          actionsHTML += `
-            <button class="btn btn-danger btn-sm" onclick="handleLeaveOrCancel()">
-              <i data-lucide="x-circle"></i> ${isHost ? 'Cancel & Refund' : 'Leave & Refund'} ($${formatTokens(match.wager)})
+          extraHTML += `
+            <button class="btn btn-danger btn-xs" onclick="handleLeaveOrCancel()">
+              <i data-lucide="x-circle"></i> ${isHost ? 'Cancel' : 'Leave'}
             </button>`;
         }
-
         if (!isExpired && isHost && isMatchStarted && match.status !== 'completed') {
-          actionsHTML += `
-            <button class="btn btn-gold btn-sm" onclick="openDeclareModal()">
+          extraHTML += `
+            <button class="btn btn-gold btn-xs" onclick="openDeclareModal()">
               <i data-lucide="trophy"></i> Declare Winner
             </button>`;
         }
-
-        actionsContainer.innerHTML = actionsHTML;
-      }
-      if (window.lucide) lucide.createIcons();
-    }
-
-    // ── Dual-Confirmation Score Reporting System ─────────────
-    function renderScoreReportArea(match, scoreArea, alreadyIn, isMatchStarted, prize, players) {
-      if (match.status === 'completed') {
-        const winnerDisplay = match.winner?.displayName || (match.winnerTeam === 'team1' ? 'Team 1 (Host)' : 'Team 2 (Enemy)');
-        scoreArea.style.display = 'block';
-        scoreArea.innerHTML = `
-          <div class="winner-banner-card">
-            <div style="display:flex;align-items:center;gap:16px;">
-              <i data-lucide="trophy" style="width:36px;height:36px;color:var(--gold-bright);flex-shrink:0;"></i>
-              <div>
-                <div style="font-size:0.75rem;font-weight:800;color:var(--gold-light);text-transform:uppercase;letter-spacing:0.08em;">Match Completed</div>
-                <div style="font-size:1.35rem;font-weight:900;color:#fff;">Winner: <span style="color:var(--gold-bright);">${escapeHtml(winnerDisplay)}</span></div>
-              </div>
-            </div>
-            <div style="font-size:1.3rem;font-weight:900;color:var(--gold-bright);">
-              +${formatTokens(prize)} Tokens Paid
-            </div>
-          </div>`;
-        return;
+        extraActionsContainer.innerHTML = extraHTML;
       }
 
-      if (match.status === 'disputed' || match.isDisputed) {
-        const isStaff = isAdminUser(currentUser, currentUserData);
-        scoreArea.style.display = 'block';
-        scoreArea.innerHTML = `
-          <div class="dispute-alert-card">
-            <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
-              <div style="display:flex;align-items:center;gap:14px;">
-                <i data-lucide="shield-alert" style="width:34px;height:34px;color:var(--red);flex-shrink:0;"></i>
-                <div>
-                  <div style="font-size:1.2rem;font-weight:900;color:#fca5a5;">⚠️ Dispute Active — Staff Summoned</div>
-                  <div style="font-size:0.82rem;color:var(--text-muted);margin-top:2px;">
-                    Both sides submitted conflicting winner reports. A Staff Moderator has been auto-called to inspect evidence.
-                  </div>
-                </div>
-              </div>
-              <div style="font-size:0.75rem;color:var(--red);font-weight:900;background:rgba(239,68,68,0.18);padding:6px 14px;border-radius:var(--radius-full);letter-spacing:0.05em;">
-                UNDER REVIEW
-              </div>
-            </div>
-            <div style="display:flex;gap:18px;font-size:0.85rem;background:rgba(0,0,0,0.45);padding:12px 18px;border-radius:var(--radius-md);flex-wrap:wrap;">
-              <div>Team 1 Claimed: <strong style="color:var(--gold-bright);">${match.team1Reported === 'team1' ? 'Team 1 Won' : match.team1Reported ? 'Team 2 Won' : 'No report yet'}</strong></div>
-              <div>·</div>
-              <div>Team 2 Claimed: <strong style="color:var(--gold-bright);">${match.team2Reported === 'team1' ? 'Team 1 Won' : match.team2Reported ? 'Team 2 Won' : 'No report yet'}</strong></div>
-            </div>
-            ${isStaff ? `
-              <div style="border-top:1px solid rgba(239,68,68,0.25);padding-top:14px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
-                <span style="font-weight:800;color:#fca5a5;font-size:0.85rem;">🛡️ Staff Ruling Override:</span>
-                <button class="btn btn-sm btn-gold" onclick="handleAdminResolve('team1')">Award Team 1 Win ($${formatTokens(prize)})</button>
-                <button class="btn btn-sm btn-gold" onclick="handleAdminResolve('team2')">Award Team 2 Win ($${formatTokens(prize)})</button>
-              </div>` : ''}
-          </div>`;
-        return;
-      }
+      // 5. Bottom Primary Action Button
+      const primaryActionContainer = document.getElementById('bottom-primary-action');
+      if (primaryActionContainer) {
+        if (match.status === 'completed') {
+          const winDisplay = match.winner?.displayName || (match.winnerTeam === 'team1' ? 'Team 1' : 'Team 2');
+          primaryActionContainer.innerHTML = `
+            <div class="concept-btn-locked" style="background:rgba(245,158,11,0.18);border-color:rgba(245,158,11,0.5);color:var(--gold-bright);font-weight:900;">
+              <i data-lucide="trophy"></i> Winner: ${escapeHtml(winDisplay)} (+${formatTokens(prize)} Tokens Paid)
+            </div>`;
+        } else if (match.status === 'in_progress') {
+          if (!alreadyIn) {
+            primaryActionContainer.innerHTML = `
+              <div class="concept-btn-locked" style="background:rgba(34,197,94,0.12);border-color:rgba(34,197,94,0.3);color:#4ade80;">
+                <i data-lucide="swords"></i> Match Currently In Progress
+              </div>`;
+          } else {
+            const mySlot = players.find(p => p.uid === currentUser?.uid);
+            const isTeam1 = mySlot?.team === 'team1' || mySlot?.isHost || mySlot?.uid === match.createdBy;
+            const myReported = isTeam1 ? match.team1Reported : match.team2Reported;
 
-      if (match.status === 'in_progress') {
-        if (!alreadyIn) {
-          scoreArea.style.display = 'none';
-          return;
-        }
-        const mySlot = players.find(p => p.uid === currentUser?.uid);
-        const isTeam1 = mySlot?.team === 'team1' || mySlot?.isHost || mySlot?.uid === match.createdBy;
-        const myReported = isTeam1 ? match.team1Reported : match.team2Reported;
-        const oppReported = isTeam1 ? match.team2Reported : match.team1Reported;
+            const MIN_DURATION_MS = 5 * 60 * 1000;
+            const startedTime = match.startedAt ? (match.startedAt.toDate ? match.startedAt.toDate().getTime() : (match.startedAt.seconds ? match.startedAt.seconds * 1000 : Date.now())) : Date.now();
+            const elapsed = Date.now() - startedTime;
+            const isLocked = elapsed < MIN_DURATION_MS;
+            const remainingSec = isLocked ? Math.ceil((MIN_DURATION_MS - elapsed) / 1000) : 0;
+            const mins = Math.floor(remainingSec / 60);
+            const secs = remainingSec % 60;
+            const timeStr = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
 
-        scoreArea.style.display = 'block';
+            if (isLocked) {
+              primaryActionContainer.innerHTML = `
+                <button class="concept-btn-locked" disabled>
+                  <i data-lucide="hourglass"></i>
+                  <span>Please wait <strong id="victory-unlock-text" style="color:var(--gold-bright);font-family:monospace;font-size:0.98rem;font-weight:900;">${timeStr}</strong></span>
+                </button>`;
 
-        const MIN_DURATION_MS = 5 * 60 * 1000;
-        const startedTime = match.startedAt ? (match.startedAt.toDate ? match.startedAt.toDate().getTime() : (match.startedAt.seconds ? match.startedAt.seconds * 1000 : Date.now())) : Date.now();
-        const elapsed = Date.now() - startedTime;
-        const isLocked = elapsed < MIN_DURATION_MS;
-        const remainingSec = isLocked ? Math.ceil((MIN_DURATION_MS - elapsed) / 1000) : 0;
-
-        const mins = Math.floor(remainingSec / 60);
-        const secs = remainingSec % 60;
-        const timeStr = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
-
-        scoreArea.innerHTML = `
-          <div class="score-report-card">
-            <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
-              <div>
-                <div style="font-size:1.15rem;font-weight:900;color:#fff;display:flex;align-items:center;gap:8px;">
-                  <i data-lucide="swords" style="color:var(--gold-bright);"></i>
-                  <span>Submit Match Winner (Both Sides Must Confirm)</span>
-                </div>
-                <div style="font-size:0.8rem;color:var(--text-muted);margin-top:2px;">
-                  Play your Fortnite match, then mark the winner below. When both sides agree, tokens are instantly paid out!
-                </div>
-              </div>
-              ${isLocked ? `
-                <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.3);padding:5px 12px;border-radius:20px;font-size:0.8rem;color:var(--gold-bright);font-weight:800;">
-                  <i data-lucide="clock" style="width:14px;height:14px;"></i>
-                  <span>Reporting unlocks in: <span id="victory-unlock-countdown" style="font-family:monospace;font-size:0.9rem;">${timeStr}</span></span>
-                </div>` : ''}
-            </div>
-
-            <!-- Confirmation Status Badges -->
-            <div style="display:flex;gap:16px;flex-wrap:wrap;background:rgba(0,0,0,0.35);padding:12px 18px;border-radius:var(--radius-md);font-size:0.85rem;">
-              <div style="display:flex;align-items:center;gap:6px;">
-                <span style="color:var(--text-muted);">Your Team:</span>
-                ${myReported
-                  ? `<span style="color:var(--green);font-weight:800;">✅ ${myReported === (isTeam1 ? 'team1' : 'team2') ? 'Voted Victory' : 'Voted Lose'}</span>`
-                  : `<span style="color:var(--gold-bright);font-weight:700;">⏳ Awaiting your submission</span>`}
-              </div>
-              <div style="color:rgba(255,255,255,0.2);">|</div>
-              <div style="display:flex;align-items:center;gap:6px;">
-                <span style="color:var(--text-muted);">Opponent Team:</span>
-                ${oppReported
-                  ? `<span style="color:var(--green);font-weight:800;">✅ Submitted</span>`
-                  : `<span style="color:var(--text-muted);">⏳ Awaiting opponent</span>`}
-              </div>
-            </div>
-
-            <!-- Action Buttons -->
-            ${isLocked ? `
-              <div style="display:flex;align-items:center;justify-content:center;gap:10px;padding:16px;background:rgba(245,158,11,0.06);border:1px dashed rgba(245,158,11,0.3);border-radius:10px;font-size:0.92rem;color:var(--gold-light);">
-                <i data-lucide="hourglass" style="width:18px;height:18px;color:var(--gold-bright);"></i>
-                <span>Please wait <strong id="victory-unlock-text" style="color:var(--gold-bright);font-family:monospace;font-size:1rem;font-weight:900;">${timeStr}</strong></span>
-              </div>` : (!myReported ? `
-              <div style="display:flex;gap:12px;flex-wrap:wrap;">
-                <button class="btn btn-gold btn-lg" style="flex:1;" onclick="handleReportMatchScore('${isTeam1 ? 'team1' : 'team2'}')">
-                  <i data-lucide="trophy"></i> 🏆 Vote Victory
-                </button>
-                <button class="btn btn-outline btn-lg" style="flex:1;" onclick="handleReportMatchScore('${isTeam1 ? 'team2' : 'team1'}')">
-                  <i data-lucide="x-circle"></i> ❌ Vote Lose
-                </button>
-              </div>` : `
-              <div style="display:flex;align-items:center;gap:10px;font-size:0.85rem;color:var(--text-muted);">
-                <i data-lucide="clock" style="color:var(--gold-bright);"></i>
-                <span>Your report is submitted! Waiting for opponent confirmation. If they dispute or take too long, click <strong>Call Staff</strong>.</span>
-              </div>`)}
-          </div>`;
-
-        // Start live ticker if locked
-        if (isLocked) {
-          if (window._victoryTimerInterval) clearInterval(window._victoryTimerInterval);
-          window._victoryTimerInterval = setInterval(() => {
-            const curElapsed = Date.now() - startedTime;
-            if (curElapsed >= MIN_DURATION_MS) {
-              clearInterval(window._victoryTimerInterval);
-              renderScoreReportArea(match, scoreArea, alreadyIn, isMatchStarted, prize, players);
-              if (window.lucide) lucide.createIcons();
-              return;
+              if (window._victoryTimerInterval) clearInterval(window._victoryTimerInterval);
+              window._victoryTimerInterval = setInterval(() => {
+                const curElapsed = Date.now() - startedTime;
+                if (curElapsed >= MIN_DURATION_MS) {
+                  clearInterval(window._victoryTimerInterval);
+                  renderMatchRoom(match);
+                  if (window.lucide) lucide.createIcons();
+                  return;
+                }
+                const curRem = Math.ceil((MIN_DURATION_MS - curElapsed) / 1000);
+                const m = Math.floor(curRem / 60);
+                const s = curRem % 60;
+                const str = `${m}:${s < 10 ? '0' : ''}${s}`;
+                const txtEl = document.getElementById('victory-unlock-text');
+                if (txtEl) txtEl.textContent = str;
+              }, 1000);
+            } else if (!myReported) {
+              primaryActionContainer.innerHTML = `
+                <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+                  <button class="concept-btn-victory" onclick="handleReportMatchScore('${isTeam1 ? 'team1' : 'team2'}')">
+                    <i data-lucide="trophy"></i> Vote Victory
+                  </button>
+                  <button class="concept-btn-lose" onclick="handleReportMatchScore('${isTeam1 ? 'team2' : 'team1'}')">
+                    <i data-lucide="x-circle"></i> Vote Lose
+                  </button>
+                </div>`;
+            } else {
+              primaryActionContainer.innerHTML = `
+                <div class="concept-btn-locked" style="background:rgba(34,197,94,0.12);border-color:rgba(34,197,94,0.35);color:#4ade80;">
+                  <i data-lucide="check-circle"></i>
+                  <span>${myReported === (isTeam1 ? 'team1' : 'team2') ? 'Voted Victory' : 'Voted Lose'} (Waiting for Opponent)</span>
+                </div>`;
             }
-            const curRem = Math.ceil((MIN_DURATION_MS - curElapsed) / 1000);
-            const m = Math.floor(curRem / 60);
-            const s = curRem % 60;
-            const str = `${m}:${s < 10 ? '0' : ''}${s}`;
-            const cdEl = document.getElementById('victory-unlock-countdown');
-            const txtEl = document.getElementById('victory-unlock-text');
-            if (cdEl) cdEl.textContent = str;
-            if (txtEl) txtEl.textContent = str;
-          }, 1000);
+          }
+        } else if (match.status === 'waiting') {
+          if (alreadyIn) {
+            const mySlot = players.find(p => p.uid === currentUser?.uid);
+            const amIReady = !!mySlot?.ready;
+            primaryActionContainer.innerHTML = `
+              <button class="concept-btn-ready ${amIReady ? 'cancel' : ''}" onclick="handleReadyToggle(${!amIReady})">
+                <i data-lucide="${amIReady ? 'x' : 'zap'}"></i>
+                <span>${amIReady ? 'Cancel Ready' : '⚡ Ready Up Now'}</span>
+              </button>`;
+          } else if (!isFull && !isExpired) {
+            if (match.size !== '1v1' && currentUserData?.teamId) {
+              primaryActionContainer.innerHTML = `
+                <div style="display:flex;gap:8px;">
+                  <button class="concept-btn-ready" onclick="handleJoinArena('solo')">
+                    <i data-lucide="user"></i> Join Solo ($${formatTokens(match.wager)})
+                  </button>
+                  <button class="btn btn-gold btn-sm" onclick="handleJoinArena('team')" style="border-radius:20px;">
+                    <i data-lucide="users"></i> Join with Team
+                  </button>
+                </div>`;
+            } else {
+              primaryActionContainer.innerHTML = `
+                <button class="concept-btn-ready" onclick="handleJoinArena('solo')">
+                  <i data-lucide="log-in"></i> Join Match ($${formatTokens(match.wager)})
+                </button>`;
+            }
+          } else {
+            primaryActionContainer.innerHTML = `
+              <div class="concept-btn-locked">Match Full</div>`;
+          }
         }
-        return;
       }
 
-      scoreArea.style.display = 'none';
+      if (window.lucide) lucide.createIcons();
     }
 
     async function handleReportMatchScore(winningTeam) {
