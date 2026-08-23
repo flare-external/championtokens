@@ -536,35 +536,16 @@
       const btnTeam = document.getElementById('btn-queue-team');
       const teamOnlyNote = document.getElementById('queue-team-only-note');
 
-      if (size === '2v2' || size === '3v3') {
-        if (btnSolo) {
-          btnSolo.disabled = true;
-          btnSolo.classList.remove('btn-primary');
-          btnSolo.classList.add('btn-outline');
-          btnSolo.style.opacity = '0.4';
-          btnSolo.style.cursor = 'not-allowed';
-        }
-        if (teamOnlyNote) teamOnlyNote.style.display = 'inline';
-        setQueueType('team');
-      } else {
-        if (btnSolo) {
-          btnSolo.disabled = false;
-          btnSolo.style.opacity = '1';
-          btnSolo.style.cursor = 'pointer';
-        }
-        if (teamOnlyNote) teamOnlyNote.style.display = 'none';
-        setQueueType('solo');
+      if (btnSolo) {
+        btnSolo.disabled = false;
+        btnSolo.style.opacity = '1';
+        btnSolo.style.cursor = 'pointer';
       }
+      if (teamOnlyNote) teamOnlyNote.style.display = 'none';
       updateCreatePreview();
     }
 
     function setQueueType(type) {
-      const size = document.getElementById('size-select')?.value || '1v1';
-      if ((size === '2v2' || size === '3v3') && type === 'solo') {
-        type = 'team';
-      } else if (size === '1v1' && type === 'team') {
-        type = 'solo';
-      }
       selectedQueueType = type;
       const btnSolo = document.getElementById('btn-queue-solo');
       const btnTeam = document.getElementById('btn-queue-team');
@@ -667,8 +648,8 @@
         return;
       }
 
-      if ((size === '2v2' || size === '3v3' || selectedQueueType === 'team') && !currentUserData?.teamId) {
-        alert('2v2 and 3v3 matches require a team. Please create or join a team in Profile > Teams first.');
+      if (selectedQueueType === 'team' && !currentUserData?.teamId) {
+        alert('Team Queue requires a team. Please create or join a team in Profile > Teams first, or use Solo Queue.');
         return;
       }
 
