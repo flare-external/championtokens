@@ -11,14 +11,16 @@ function injectNav(activePage = '') {
   const links = [
     { href: 'dashboard',   key: 'dashboard',   icon: 'layout-dashboard', label: 'Dashboard'   },
     { href: 'matches',     key: 'matches',      icon: 'swords',           label: 'Matches'     },
-    { href: 'leaderboard', key: 'leaderboard',  icon: 'trophy',           label: 'Leaderboard' },
+    { href: 'javascript:void(0)', key: 'tournaments', icon: 'trophy',     label: 'Tournaments', badge: 'SOON', onClick: "showToast('🏆 Tournaments & Bracket Wagers are coming soon!','info');" },
+    { href: 'leaderboard', key: 'leaderboard',  icon: 'medal',            label: 'Leaderboard' },
     { href: 'shop',        key: 'shop',         icon: 'shopping-cart',    label: 'Shop'        },
   ];
 
   const navLinksHTML = links.map(l => `
-    <a href="${l.href}" class="nav-link${activePage === l.key ? ' active' : ''}">
+    <a href="${l.href}" class="nav-link${activePage === l.key ? ' active' : ''}" ${l.onClick ? `onclick="${l.onClick}"` : ''}>
       <i data-lucide="${l.icon}"></i>
       <span>${l.label}</span>
+      ${l.badge ? `<span class="nav-soon-badge">${l.badge}</span>` : ''}
     </a>`).join('');
 
   const navHTML = `
@@ -33,7 +35,7 @@ function injectNav(activePage = '') {
 
         <div class="ct-nav__user">
           <div class="ct-nav__token-group">
-            <div class="token-pill" title="Champion Tokens Balance">
+            <div class="token-pill" onclick="openTokenWalletModal('purchase')" style="cursor:pointer;" title="Champion Tokens Balance — Click to Add">
               <img src="champion_token_coin.png" alt="CT" class="token-pill-coin-large" />
               <span id="nav-balance">10.00</span>
             </div>

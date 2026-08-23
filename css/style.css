@@ -333,18 +333,54 @@ input[type="range"].ct-slider::-moz-range-thumb {
   gap: 6px;
 }
 
+.inline-coin {
+  width: 14px;
+  height: 14px;
+  object-fit: contain;
+  display: inline-block;
+  vertical-align: -2px;
+  filter: drop-shadow(0 0 4px rgba(245, 158, 11, 0.45));
+}
+.inline-coin-lg {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+  display: inline-block;
+  vertical-align: -3px;
+  filter: drop-shadow(0 0 6px rgba(245, 158, 11, 0.55));
+}
+
+.nav-soon-badge {
+  font-size: 0.6rem;
+  font-weight: 800;
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: rgba(245, 158, 11, 0.18);
+  color: var(--gold-bright);
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  letter-spacing: 0.06em;
+  line-height: 1.2;
+  margin-left: 2px;
+}
+
 .token-pill {
   display: flex;
   align-items: center;
   gap: 7px;
   padding: 6px 14px;
-  background: linear-gradient(135deg, rgba(245, 158, 11, 0.18) 0%, rgba(217, 119, 6, 0.08) 100%);
+  background: rgba(245, 158, 11, 0.1);
   border: 1px solid rgba(245, 158, 11, 0.35);
   border-radius: 999px;
   font-size: 0.9rem;
   font-weight: 800;
   color: var(--gold-bright);
   box-shadow: 0 0 14px rgba(245, 158, 11, 0.15);
+  transition: all 0.2s;
+}
+.token-pill:hover {
+  background: rgba(245, 158, 11, 0.18);
+  border-color: var(--gold-bright);
+  box-shadow: 0 0 20px rgba(245, 158, 11, 0.3);
 }
 .token-pill-coin {
   width: 18px;

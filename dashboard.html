@@ -64,7 +64,7 @@
       <div class="card stat-card">
         <div class="stat-icon stat-icon--gold"><i data-lucide="trending-up"></i></div>
         <div class="stat-label">Total Earned</div>
-        <div class="stat-value stat-value--gold" id="stat-earned">10.00 T</div>
+        <div class="stat-value stat-value--gold" style="display:flex;align-items:center;gap:6px;"><span id="stat-earned">10.00</span> <img src="champion_token_coin.png" class="inline-coin-lg" alt="CT"/></div>
       </div>
       <div class="card stat-card">
         <div class="stat-icon stat-icon--accent"><i data-lucide="swords"></i></div>
@@ -201,7 +201,7 @@
     }
 
     function renderStats(data) {
-      safeSetText('stat-earned', formatTokens(data.totalEarned ?? 10.00) + ' T');
+      safeSetText('stat-earned', formatTokens(data.totalEarned ?? 10.00));
       safeSetText('stat-played', data.matchesPlayed ?? 0);
       safeSetText('stat-won', data.matchesWon ?? 0);
 
@@ -270,7 +270,7 @@
               <div class="tx-time">${formatTime(tx.timestamp)}</div>
             </div>
             <div class="tx-amount ${isCredit ? 'tx-amount--credit' : 'tx-amount--debit'}">
-              ${isCredit ? '+' : ''}${formatTokens(tx.amount)} T
+              ${isCredit ? '+' : ''}${formatTokens(tx.amount)} <img src="champion_token_coin.png" class="inline-coin" alt="CT"/>
             </div>
           </div>`;
       }).join('');
@@ -331,7 +331,7 @@
             </div>
           </div>
           <div class="match-card__meta" style="font-size:0.75rem;justify-content:space-between;">
-            <span class="match-meta-item"><i data-lucide="coins" style="width:13px;height:13px;"></i><span class="gold">${formatTokens(m.wager)} T</span></span>
+            <span class="match-meta-item"><i data-lucide="coins" style="width:13px;height:13px;"></i><span class="gold">${formatTokens(m.wager)}</span> <img src="champion_token_coin.png" class="inline-coin" alt="CT"/></span>
             <span style="color:var(--gold-bright);font-weight:700;font-size:0.7rem;display:inline-flex;align-items:center;gap:3px;padding:2px 6px;background:rgba(0,0,0,0.35);border-radius:4px;border:1px solid rgba(255,255,255,0.06);">
               <i data-lucide="map-pin" style="width:10px;height:10px;"></i> Map: ${mapCode}
             </span>
