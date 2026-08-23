@@ -737,6 +737,26 @@ async function setPlayerReady(matchId, uid, isReady = true) {
     ...(allReady ? { startedAt: firebase.firestore.FieldValue.serverTimestamp() } : {}),
   });
 
+  // Automated System Announcements on match start
+  if (allReady) {
+    const hostPlayer = updatedPlayers.find(p => p.isHost || p.uid === match.createdBy) || updatedPlayers[0];
+    const oppPlayer = updatedPlayers.find(p => p.uid !== hostPlayer?.uid) || updatedPlayers[1];
+    const hostName = hostPlayer ? (hostPlayer.epicUsername || hostPlayer.displayName) : 'Host';
+    const oppName  = oppPlayer ? (oppPlayer.epicUsername || oppPlayer.displayName) : 'Opponent';
+
+    const msgRef = matchRef.collection('messages');
+    await msgRef.add({
+      isSystem:  true,
+      text:      '⏰ Players have 10 minutes to queue into a game. If your opponent does not join within 10 minutes, click "Call Staff" to report and a moderator will resolve the situation.',
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+    }).catch(console.warn);
+    await msgRef.add({
+      isSystem:  true,
+      text:      `👑 Team ${hostName} is host, so ${oppName} has to add them in Fortnite!`,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+    }).catch(console.warn);
+  }
+
   return { allReady, newStatus };
 }
 

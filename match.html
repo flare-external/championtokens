@@ -43,7 +43,7 @@
 
     /* Left Stage Area */
     .match-stage-left {
-      padding: 20px 32px 40px;
+      padding: 36px 32px 40px;
       display: flex;
       flex-direction: column;
       gap: 16px;
@@ -55,19 +55,37 @@
     }
     @media (max-width: 768px) {
       .match-stage-left {
-        padding: 14px 14px 28px;
+        padding: 24px 14px 28px;
       }
     }
 
-    /* Top Centered Title */
+    /* Top Centered Title & Gamemode Banner */
     .concept-top-section {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
       text-align: center;
       width: 100%;
       margin-bottom: 2px;
+    }
+    .concept-mode-thumb-wrap {
+      width: 68px;
+      height: 68px;
+      border-radius: 18px;
+      overflow: hidden;
+      border: 2px solid rgba(34, 197, 94, 0.4);
+      box-shadow: 0 0 25px rgba(34, 197, 94, 0.3);
+      background: #080a10;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 2px;
+    }
+    .concept-mode-thumb-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
     .concept-main-title {
       font-size: 2.2rem;
@@ -171,7 +189,6 @@
       flex-direction: column;
       box-shadow: 0 8px 30px rgba(0,0,0,0.6);
       transition: border-color 0.2s;
-      min-height: 240px;
     }
     .concept-team-card:hover {
       border-color: rgba(255, 255, 255, 0.15);
@@ -193,12 +210,15 @@
       gap: 8px;
     }
     .team-header-status-badge {
-      font-size: 0.76rem;
+      font-size: 0.75rem;
       font-weight: 800;
       padding: 4px 12px;
       border-radius: 20px;
       text-transform: uppercase;
       letter-spacing: 0.04em;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
     }
     .team-header-status-badge.ready {
       background: rgba(34, 197, 94, 0.16);
@@ -217,9 +237,10 @@
       font-weight: 900;
     }
     .team-header-status-badge.lose {
-      background: rgba(239, 68, 68, 0.18);
+      background: rgba(239, 68, 68, 0.22);
       color: #f87171;
-      border: 1px solid rgba(239, 68, 68, 0.4);
+      border: 1px solid rgba(239, 68, 68, 0.5);
+      font-weight: 900;
     }
 
     .concept-card-body {
@@ -230,22 +251,22 @@
       flex: 1;
     }
 
-    /* Player Row in Team Card (Compact & Sleek) */
+    /* Player Row in Team Card (Clean & Borderless, No Outline / Bg) */
     .concept-player-row {
       display: flex;
       align-items: center;
       gap: 10px;
-      padding: 8px 12px;
-      background: #0a0c12;
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      border-radius: 10px;
+      padding: 6px 4px;
+      background: transparent;
+      border: none;
+      border-radius: 0;
       cursor: pointer;
-      transition: all 0.18s;
+      transition: none;
     }
     .concept-player-row:hover {
-      background: #11141d;
-      border-color: rgba(255, 255, 255, 0.12);
-      transform: translateY(-1px);
+      background: transparent;
+      border-color: transparent;
+      transform: none;
     }
     .concept-player-pfp {
       width: 34px;
@@ -690,6 +711,9 @@
     <div class="match-stage-left">
       <!-- Top Header: Centered Large 0v0 GAMEMODE -->
       <div class="concept-top-section">
+        <div class="concept-mode-thumb-wrap">
+          <img id="concept-mode-img" src="realistic.png" alt="Mode Image" onerror="this.style.display='none'"/>
+        </div>
         <h1 id="room-title" class="concept-main-title">1V1 REALISTIC</h1>
 
         <!-- Top Metadata Pill Capsule -->
@@ -809,7 +833,7 @@
           required
         />
         <button type="submit" class="chat-send-btn" title="Send message">
-          <i data-lucide="send"></i>
+          <i data-lucide="send-horizontal"></i>
         </button>
       </form>
     </div>
@@ -1142,6 +1166,13 @@
       const mapCode = match.mapCode || defaultMapCode;
 
       // 1. Top Header & Metadata Bar
+      const modeImgEl = document.getElementById('concept-mode-img');
+      if (modeImgEl) {
+        if (mode === 'Zone Wars') modeImgEl.src = 'zonewars.jpeg';
+        else if (mode === 'Box Fights') modeImgEl.src = 'boxfights.jpeg';
+        else modeImgEl.src = 'realistic.png';
+      }
+
       const titleEl = document.getElementById('room-title');
       if (titleEl) titleEl.textContent = `${size} ${mode}`.toUpperCase();
 
@@ -1228,21 +1259,21 @@
       if (t1Name) t1Name.innerHTML = `Team 1 ${match.teamTag ? `<span class="badge" style="background:var(--purple);color:#fff;font-size:0.7rem;padding:2px 7px;">[${escapeHtml(match.teamTag)}]</span>` : ''}`;
       if (t1StatusPill) {
         if (match.status === 'completed') {
+          t1StatusPill.style.display = 'inline-flex';
           const t1Won = (match.winnerTeam === 'team1' || match.winner?.uid === match.createdBy);
           t1StatusPill.className = `team-header-status-badge ${t1Won ? 'victory' : 'lose'}`;
-          t1StatusPill.textContent = t1Won ? '👑 VICTORY' : 'DEFEAT';
+          t1StatusPill.innerHTML = t1Won
+            ? '<i data-lucide="trophy" style="width:12px;height:12px;"></i> Victory'
+            : '<i data-lucide="x" style="width:12px;height:12px;"></i> Defeat';
         } else if (match.status === 'in_progress') {
-          if (match.team1Reported) {
-            t1StatusPill.className = `team-header-status-badge ${match.team1Reported === 'team1' ? 'victory' : 'lose'}`;
-            t1StatusPill.textContent = match.team1Reported === 'team1' ? '🏆 Voted Victory' : '❌ Voted Lose';
-          } else {
-            t1StatusPill.className = 'team-header-status-badge ready';
-            t1StatusPill.textContent = '⚔️ In Battle';
-          }
+          t1StatusPill.style.display = 'none';
         } else {
+          t1StatusPill.style.display = 'inline-flex';
           const t1Ready = team1Players.length > 0 && team1Players.every(p => p.ready);
           t1StatusPill.className = `team-header-status-badge ${t1Ready ? 'ready' : 'waiting'}`;
-          t1StatusPill.textContent = t1Ready ? '✅ Ready' : '⏳ Waiting';
+          t1StatusPill.innerHTML = t1Ready
+            ? '<i data-lucide="check" style="width:12px;height:12px;"></i> Ready'
+            : '<i data-lucide="clock" style="width:12px;height:12px;"></i> Waiting';
         }
       }
 
@@ -1252,21 +1283,21 @@
       if (t2Name) t2Name.innerHTML = `Team 2 ${match.enemyTeamTag ? `<span class="badge" style="background:var(--purple);color:#fff;font-size:0.7rem;padding:2px 7px;">[${escapeHtml(match.enemyTeamTag)}]</span>` : ''}`;
       if (t2StatusPill) {
         if (match.status === 'completed') {
+          t2StatusPill.style.display = 'inline-flex';
           const t2Won = (match.winnerTeam === 'team2');
           t2StatusPill.className = `team-header-status-badge ${t2Won ? 'victory' : 'lose'}`;
-          t2StatusPill.textContent = t2Won ? '👑 VICTORY' : 'DEFEAT';
+          t2StatusPill.innerHTML = t2Won
+            ? '<i data-lucide="trophy" style="width:12px;height:12px;"></i> Victory'
+            : '<i data-lucide="x" style="width:12px;height:12px;"></i> Defeat';
         } else if (match.status === 'in_progress') {
-          if (match.team2Reported) {
-            t2StatusPill.className = `team-header-status-badge ${match.team2Reported === 'team2' ? 'victory' : 'lose'}`;
-            t2StatusPill.textContent = match.team2Reported === 'team2' ? '🏆 Voted Victory' : '❌ Voted Lose';
-          } else {
-            t2StatusPill.className = 'team-header-status-badge ready';
-            t2StatusPill.textContent = '⚔️ In Battle';
-          }
+          t2StatusPill.style.display = 'none';
         } else {
+          t2StatusPill.style.display = 'inline-flex';
           const t2Ready = team2Players.length > 0 && team2Players.every(p => p.ready);
           t2StatusPill.className = `team-header-status-badge ${t2Ready ? 'ready' : 'waiting'}`;
-          t2StatusPill.textContent = t2Ready ? '✅ Ready' : '⏳ Waiting';
+          t2StatusPill.innerHTML = t2Ready
+            ? '<i data-lucide="check" style="width:12px;height:12px;"></i> Ready'
+            : '<i data-lucide="clock" style="width:12px;height:12px;"></i> Waiting';
         }
       }
 
@@ -1303,6 +1334,14 @@
             titleText = SHOP_TITLES[liveData.equippedTitle].name;
           }
 
+          let readyStatusHTML = '';
+          if (match.status === 'waiting') {
+            readyStatusHTML = `
+              <div style="font-size:0.75rem;margin-left:auto;flex-shrink:0;">
+                ${isReady ? '<span style="color:#4ade80;font-weight:800;display:inline-flex;align-items:center;gap:3px;"><i data-lucide="check" style="width:12px;height:12px;"></i> Ready</span>' : '<span style="color:var(--text-muted);font-size:0.72rem;display:inline-flex;align-items:center;gap:3px;"><i data-lucide="clock" style="width:11px;height:11px;"></i> Not Ready</span>'}
+              </div>`;
+          }
+
           return `
             <div class="concept-player-row" onclick="openUserProfileModal('${player.uid}')" title="Click to view profile & stats">
               <div class="concept-player-pfp">
@@ -1318,9 +1357,7 @@
                 <div class="concept-player-title">${escapeHtml(titleText)}</div>
                 ${epicChipHTML}
               </div>
-              <div style="font-size:0.8rem;margin-left:auto;flex-shrink:0;">
-                ${isReady ? '<span style="color:#4ade80;font-weight:800;">✅ READY</span>' : '<span style="color:var(--text-muted);font-size:0.75rem;">⏳ Not Ready</span>'}
-              </div>
+              ${readyStatusHTML}
             </div>`;
         } else {
           const isSlotTeam1 = (teamName === 'Team 1');
@@ -1820,7 +1857,7 @@
           <div style="margin:auto;font-size:0.8rem;color:var(--text-faint);text-align:center;padding:20px 10px;">
             <i data-lucide="message-square-dashed" style="width:28px;height:28px;margin:0 auto 8px;opacity:0.4;"></i>
             <div>Match lobby chat active.</div>
-            <div style="font-size:0.75rem;margin-top:4px;color:var(--text-muted);">Share your Fortnite Epic tag to party up!</div>
+            <div style="font-size:0.75rem;margin-top:4px;color:var(--text-muted);">Be friendly, please.</div>
           </div>`;
         if (window.lucide) lucide.createIcons();
         return;
