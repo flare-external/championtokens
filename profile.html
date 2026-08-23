@@ -472,6 +472,59 @@
       box-shadow: 0 0 14px rgba(245, 158, 11, 0.45);
     }
     .setting-pen-btn svg { display: block; flex-shrink: 0; }
+
+    /* Profile Subtabs Navigation */
+    .profile-subtabs-bar {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 24px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding-bottom: 2px;
+      overflow-x: auto;
+    }
+    .profile-subtab-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid transparent;
+      color: #94a3b8;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.18s ease;
+      white-space: nowrap;
+    }
+    .profile-subtab-btn i {
+      width: 16px;
+      height: 16px;
+      color: #64748b;
+      transition: transform 0.18s ease, color 0.18s ease;
+    }
+    .profile-subtab-btn:hover {
+      color: #ffffff;
+    }
+    .profile-subtab-btn:hover i {
+      color: #ffffff;
+      transform: translateY(-1px);
+    }
+    .profile-subtab-btn.active {
+      color: var(--gold-bright);
+      border-bottom-color: var(--gold-bright);
+    }
+    .profile-subtab-btn.active i {
+      color: var(--gold-bright);
+    }
+    .profile-subtab-content {
+      animation: tabFadeIn 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    @keyframes tabFadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
   </style>
 </head>
 <body>
@@ -525,177 +578,221 @@
       </div>
     </div>
 
-    <!-- Dedicated Top Showcase: Epic Games Account (Excluded & Prominent) -->
-    <div class="epic-top-showcase-card" id="epic-account-top-card" style="margin-bottom:24px;">
-      <div id="epic-top-showcase-content">
-        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;">
-          <div style="display:flex;align-items:center;gap:18px;">
-            <div class="epic-badge-icon-box epic-badge-unlinked">
-              <img src="epic_games_logo.webp" alt="Epic Games" style="width:30px;height:38px;object-fit:contain;"/>
+    <!-- Profile Subtabs Bar -->
+    <div class="profile-subtabs-bar">
+      <button class="profile-subtab-btn active" id="btn-subtab-overview" data-tab="overview" onclick="switchProfileSubtab('overview')">
+        <i data-lucide="user"></i> My Profile
+      </button>
+      <button class="profile-subtab-btn" id="btn-subtab-history" data-tab="history" onclick="switchProfileSubtab('history')">
+        <i data-lucide="history"></i> History
+      </button>
+      <button class="profile-subtab-btn" id="btn-subtab-connections" data-tab="connections" onclick="switchProfileSubtab('connections')">
+        <i data-lucide="link-2"></i> Connections
+      </button>
+    </div>
+
+    <!-- 1. TAB: Overview (My Profile) -->
+    <div id="profile-tab-overview" class="profile-subtab-content">
+      <!-- Stats grid (Wins, Losses, Win Rate %, Leaderboard Rank) -->
+      <div class="grid-4" style="margin-bottom:24px;">
+        <div class="card stat-card">
+          <div class="stat-icon stat-icon--green"><i data-lucide="trophy"></i></div>
+          <div class="stat-label">Matches Won</div>
+          <div class="stat-value" style="color:var(--green);" id="profile-won">0</div>
+        </div>
+        <div class="card stat-card">
+          <div class="stat-icon stat-icon--accent"><i data-lucide="x-circle"></i></div>
+          <div class="stat-label">Matches Lost</div>
+          <div class="stat-value" style="color:var(--red);" id="profile-lost">0</div>
+        </div>
+        <div class="card stat-card">
+          <div class="stat-icon stat-icon--gold"><i data-lucide="activity"></i></div>
+          <div class="stat-label">Win Rate</div>
+          <div class="stat-value stat-value--gold" id="profile-winrate">0%</div>
+        </div>
+        <div class="card stat-card">
+          <div class="stat-icon stat-icon--purple"><i data-lucide="award"></i></div>
+          <div class="stat-label">Leaderboard Rank</div>
+          <div class="stat-value" style="color:#c084fc;font-size:1.4rem;" id="profile-rank-text">#--</div>
+        </div>
+      </div>
+
+      <!-- Unified Player Customization & Settings Hub -->
+      <div class="profile-settings-card" id="profile-settings-hub" style="margin-bottom:24px;">
+        <div class="section-title" style="margin-bottom:16px;color:#fff;">
+          <i data-lucide="settings" style="color:var(--gold-bright);"></i> Customization & Settings
+        </div>
+
+        <div class="settings-grid">
+          <!-- Setting 1: Player Title -->
+          <div class="setting-item-row" onclick="openCosmeticsModal('titles')">
+            <div class="setting-left">
+              <div class="setting-icon-box" style="color:var(--gold-bright);">
+                <i data-lucide="award"></i>
+              </div>
+              <div>
+                <div class="setting-title">Player Title</div>
+                <div class="setting-desc">Equipped cosmetic title shown on matches and leaderboard</div>
+              </div>
+            </div>
+            <div class="setting-right">
+              <div id="hub-current-title"><span class="title-empty-placeholder">+ Set Title</span></div>
+              <button class="setting-pen-btn" title="Customize Player Title" onclick="event.stopPropagation();openCosmeticsModal('titles')">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Setting 2: Match & Profile Banner -->
+          <div class="setting-item-row" onclick="openCosmeticsModal('banners')">
+            <div class="setting-left">
+              <div class="setting-icon-box" style="color:#c084fc;">
+                <i data-lucide="palette"></i>
+              </div>
+              <div>
+                <div class="setting-title">Profile & Match Theme Banner</div>
+                <div class="setting-desc">Custom background color theme for your profile card</div>
+              </div>
+            </div>
+            <div class="setting-right">
+              <div id="hub-current-banner"><span class="chip" style="font-size:0.78rem;font-weight:700;">Coming Soon 🎨</span></div>
+              <button class="setting-pen-btn" title="Customize Theme Banner" onclick="event.stopPropagation();openCosmeticsModal('banners')">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Setting 3: Username Color -->
+          <div class="setting-item-row" onclick="openStyleModal()">
+            <div class="setting-left">
+              <div class="setting-icon-box" style="color:var(--gold-bright);">
+                <i data-lucide="sparkles"></i>
+              </div>
+              <div>
+                <div class="setting-title">Subscriber Name Color</div>
+                <div class="setting-desc">Subscriber Gold username styling for Premium pass holders</div>
+              </div>
+            </div>
+            <div class="setting-right">
+              <div id="hub-current-style"><span class="chip" style="font-size:0.78rem;font-weight:700;">Default</span></div>
+              <button class="setting-pen-btn" title="Customize Username Color" onclick="event.stopPropagation();openStyleModal()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Setting 4: Squad Team -->
+          <div class="setting-item-row" onclick="handleTeamRowClick()">
+            <div class="setting-left">
+              <div class="setting-icon-box" style="color:#34d399;">
+                <i data-lucide="users"></i>
+              </div>
+              <div>
+                <div class="setting-title">Squad Team & Clan Tag</div>
+                <div class="setting-desc">Your 2v2 duos and 3v3 squad tournament roster</div>
+              </div>
+            </div>
+            <div class="setting-right">
+              <div id="hub-current-team"><span style="color:var(--text-muted);font-size:0.82rem;">No Squad</span></div>
+              <button class="setting-pen-btn" title="Create or Join Team" onclick="event.stopPropagation();handleTeamRowClick()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Squad Team Details Section (When on a team or viewing others) -->
+      <div class="team-section-card" id="team-section-card" style="display:none;">
+        <div class="section-title" style="margin-bottom:12px;color:#fff;">
+          <i data-lucide="shield" style="color:var(--purple);"></i> Squad Team Roster
+        </div>
+        <div id="team-content">
+          <div class="spinner" style="margin:12px 0;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. TAB: History -->
+    <div id="profile-tab-history" class="profile-subtab-content" style="display:none;">
+      <div class="grid-2" style="align-items:stretch;gap:20px;">
+        <div class="card" id="tx-card" style="display:flex;flex-direction:column;">
+          <div class="section-title" style="margin-bottom:14px;">
+            <i data-lucide="activity"></i> Transaction History
+          </div>
+          <div class="tx-list" id="tx-list" style="flex:1;overflow-y:auto;max-height:460px;min-height:220px;">
+            <div class="empty-state"><div class="spinner" style="margin:0 auto;"></div></div>
+          </div>
+          <div class="ct-pagination" id="profile-tx-pagination"></div>
+        </div>
+
+        <div class="card" style="display:flex;flex-direction:column;">
+          <div class="section-title" style="margin-bottom:14px;">
+            <i data-lucide="swords"></i> Match History
+          </div>
+          <div class="matches-history" id="match-history" style="flex:1;overflow-y:auto;max-height:460px;min-height:220px;">
+            <div class="empty-state"><div class="spinner" style="margin:0 auto;"></div></div>
+          </div>
+          <div class="ct-pagination" id="profile-mh-pagination"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. TAB: Connections -->
+    <div id="profile-tab-connections" class="profile-subtab-content" style="display:none;">
+      <!-- Dedicated Top Showcase: Epic Games Account -->
+      <div class="epic-top-showcase-card" id="epic-account-top-card" style="margin-bottom:20px;">
+        <div id="epic-top-showcase-content">
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;">
+            <div style="display:flex;align-items:center;gap:18px;">
+              <div class="epic-badge-icon-box epic-badge-unlinked">
+                <img src="epic_games_logo.webp" alt="Epic Games" style="width:30px;height:38px;object-fit:contain;"/>
+              </div>
+              <div>
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+                  <span style="font-size:0.75rem;text-transform:uppercase;font-weight:800;letter-spacing:0.08em;color:#38bdf8;">Epic Games Connection</span>
+                  <span class="chip" style="font-size:0.68rem;padding:2px 8px;background:rgba(255,255,255,0.06);border-color:rgba(255,255,255,0.12);color:var(--text-muted);">Required for Matches</span>
+                </div>
+                <div style="font-size:1.28rem;font-weight:900;color:#fff;letter-spacing:-0.01em;">
+                  Connect Epic Games Account
+                </div>
+                <div style="font-size:0.82rem;color:var(--text-muted);margin-top:3px;max-width:520px;line-height:1.4;">
+                  Link your Fortnite display name via Epic Games to queue into token matches and party up with opponents.
+                </div>
+              </div>
+            </div>
+            <div>
+              <button class="btn-epic-brand" onclick="startEpicOAuth()" style="padding:12px 26px;font-size:0.92rem;flex-shrink:0;">
+                <img src="epic_games_logo.webp" alt="Epic" style="width:18px;height:22px;object-fit:contain;"/>
+                <span>Link Account</span>
+                <i data-lucide="arrow-right" style="width:16px;height:16px;margin-left:2px;"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Discord Account Connection Card -->
+      <div class="card" style="background:#080808;border:1px solid rgba(255,255,255,0.08);padding:24px;border-radius:var(--radius-xl);margin-bottom:20px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;">
+          <div style="display:flex;align-items:center;gap:16px;">
+            <div style="width:52px;height:52px;border-radius:14px;background:rgba(88,101,242,0.12);border:1px solid rgba(88,101,242,0.35);display:flex;align-items:center;justify-content:center;color:#5865F2;">
+              <i data-lucide="message-square" style="width:24px;height:24px;"></i>
             </div>
             <div>
               <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
-                <span style="font-size:0.75rem;text-transform:uppercase;font-weight:800;letter-spacing:0.08em;color:#38bdf8;">Epic Games Connection</span>
-                <span class="chip" style="font-size:0.68rem;padding:2px 8px;background:rgba(255,255,255,0.06);border-color:rgba(255,255,255,0.12);color:var(--text-muted);">Required for Matches</span>
+                <span style="font-size:0.75rem;text-transform:uppercase;font-weight:800;letter-spacing:0.08em;color:#5865F2;">Discord Account</span>
+                <span class="chip chip-success" style="font-size:0.68rem;padding:2px 8px;">Connected</span>
               </div>
-              <div style="font-size:1.28rem;font-weight:900;color:#fff;letter-spacing:-0.01em;">
-                Connect Epic Games Account
+              <div style="font-size:1.15rem;font-weight:900;color:#fff;" id="conn-discord-tag">
+                @discord
               </div>
-              <div style="font-size:0.82rem;color:var(--text-muted);margin-top:3px;max-width:520px;line-height:1.4;">
-                Link your Fortnite display name via Epic Games to queue into token matches and party up with opponents.
+              <div style="font-size:0.8rem;color:var(--text-muted);margin-top:3px;">
+                Primary account authenticated through Discord OAuth2.
               </div>
             </div>
           </div>
-          <div>
-            <button class="btn-epic-brand" onclick="startEpicOAuth()" style="padding:12px 26px;font-size:0.92rem;flex-shrink:0;">
-              <img src="epic_games_logo.webp" alt="Epic" style="width:18px;height:22px;object-fit:contain;"/>
-              <span>Link Account</span>
-              <i data-lucide="arrow-right" style="width:16px;height:16px;margin-left:2px;"></i>
-            </button>
-          </div>
         </div>
-      </div>
-    </div>
-
-    <!-- Unified Player Customization & Settings Hub -->
-    <div class="profile-settings-card" id="profile-settings-hub">
-      <div class="section-title" style="margin-bottom:16px;color:#fff;">
-        <i data-lucide="settings" style="color:var(--gold-bright);"></i> Customization & Settings
-      </div>
-
-      <div class="settings-grid">
-        <!-- Setting 1: Player Title -->
-        <div class="setting-item-row" onclick="openCosmeticsModal('titles')">
-          <div class="setting-left">
-            <div class="setting-icon-box" style="color:var(--gold-bright);">
-              <i data-lucide="award"></i>
-            </div>
-            <div>
-              <div class="setting-title">Player Title</div>
-              <div class="setting-desc">Equipped cosmetic title shown on matches and leaderboard</div>
-            </div>
-          </div>
-          <div class="setting-right">
-            <div id="hub-current-title"><span class="title-empty-placeholder">+ Set Title</span></div>
-            <button class="setting-pen-btn" title="Customize Player Title" onclick="event.stopPropagation();openCosmeticsModal('titles')">
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-            </button>
-          </div>
-        </div>
-
-        <!-- Setting 2: Match & Profile Banner -->
-        <div class="setting-item-row" onclick="openCosmeticsModal('banners')">
-          <div class="setting-left">
-            <div class="setting-icon-box" style="color:#c084fc;">
-              <i data-lucide="palette"></i>
-            </div>
-            <div>
-              <div class="setting-title">Profile & Match Theme Banner</div>
-              <div class="setting-desc">Custom background color theme for your profile card</div>
-            </div>
-          </div>
-          <div class="setting-right">
-            <div id="hub-current-banner"><span class="chip" style="font-size:0.78rem;font-weight:700;">Coming Soon 🎨</span></div>
-            <button class="setting-pen-btn" title="Customize Theme Banner" onclick="event.stopPropagation();openCosmeticsModal('banners')">
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-            </button>
-          </div>
-        </div>
-
-        <!-- Setting 3: Username Color -->
-        <div class="setting-item-row" onclick="openStyleModal()">
-          <div class="setting-left">
-            <div class="setting-icon-box" style="color:var(--gold-bright);">
-              <i data-lucide="sparkles"></i>
-            </div>
-            <div>
-              <div class="setting-title">Subscriber Name Color</div>
-              <div class="setting-desc">Subscriber Gold username styling for Premium pass holders</div>
-            </div>
-          </div>
-          <div class="setting-right">
-            <div id="hub-current-style"><span class="chip" style="font-size:0.78rem;font-weight:700;">Default</span></div>
-            <button class="setting-pen-btn" title="Customize Username Color" onclick="event.stopPropagation();openStyleModal()">
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-            </button>
-          </div>
-        </div>
-
-        <!-- Setting 4: Squad Team -->
-        <div class="setting-item-row" onclick="handleTeamRowClick()">
-          <div class="setting-left">
-            <div class="setting-icon-box" style="color:#34d399;">
-              <i data-lucide="users"></i>
-            </div>
-            <div>
-              <div class="setting-title">Squad Team & Clan Tag</div>
-              <div class="setting-desc">Your 2v2 duos and 3v3 squad tournament roster</div>
-            </div>
-          </div>
-          <div class="setting-right">
-            <div id="hub-current-team"><span style="color:var(--text-muted);font-size:0.82rem;">No Squad</span></div>
-            <button class="setting-pen-btn" title="Create or Join Team" onclick="event.stopPropagation();handleTeamRowClick()">
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Squad Team Details Section (When on a team or viewing others) -->
-    <div class="team-section-card" id="team-section-card" style="display:none;">
-      <div class="section-title" style="margin-bottom:12px;color:#fff;">
-        <i data-lucide="shield" style="color:var(--purple);"></i> Squad Team Roster
-      </div>
-      <div id="team-content">
-        <div class="spinner" style="margin:12px 0;"></div>
-      </div>
-    </div>
-
-    <!-- Stats grid (Wins, Losses, Win Rate %, Leaderboard Rank) -->
-    <div class="grid-4" style="margin-bottom:24px;">
-      <div class="card stat-card">
-        <div class="stat-icon stat-icon--green"><i data-lucide="trophy"></i></div>
-        <div class="stat-label">Matches Won</div>
-        <div class="stat-value" style="color:var(--green);" id="profile-won">0</div>
-      </div>
-      <div class="card stat-card">
-        <div class="stat-icon stat-icon--accent"><i data-lucide="x-circle"></i></div>
-        <div class="stat-label">Matches Lost</div>
-        <div class="stat-value" style="color:var(--red);" id="profile-lost">0</div>
-      </div>
-      <div class="card stat-card">
-        <div class="stat-icon stat-icon--gold"><i data-lucide="activity"></i></div>
-        <div class="stat-label">Win Rate</div>
-        <div class="stat-value stat-value--gold" id="profile-winrate">0%</div>
-      </div>
-      <div class="card stat-card">
-        <div class="stat-icon stat-icon--purple"><i data-lucide="award"></i></div>
-        <div class="stat-label">Leaderboard Rank</div>
-        <div class="stat-value" style="color:#c084fc;font-size:1.4rem;" id="profile-rank-text">#--</div>
-      </div>
-    </div>
-
-    <!-- Transactions + Match History -->
-    <div class="grid-2" style="align-items:stretch;gap:20px;">
-      <div class="card" id="tx-card" style="display:flex;flex-direction:column;">
-        <div class="section-title" style="margin-bottom:14px;">
-          <i data-lucide="activity"></i> Transaction History
-        </div>
-        <div class="tx-list" id="tx-list" style="flex:1;overflow-y:auto;max-height:420px;min-height:180px;">
-          <div class="empty-state"><div class="spinner" style="margin:0 auto;"></div></div>
-        </div>
-        <div class="ct-pagination" id="profile-tx-pagination"></div>
-      </div>
-
-      <div class="card" style="display:flex;flex-direction:column;">
-        <div class="section-title" style="margin-bottom:14px;">
-          <i data-lucide="swords"></i> Match History
-        </div>
-        <div class="matches-history" id="match-history" style="flex:1;overflow-y:auto;max-height:420px;min-height:180px;">
-          <div class="empty-state"><div class="spinner" style="margin:0 auto;"></div></div>
-        </div>
-        <div class="ct-pagination" id="profile-mh-pagination"></div>
       </div>
     </div>
 
@@ -889,6 +986,33 @@
     let currentUserData = null;
     let isViewingSelf = true;
 
+    function switchProfileSubtab(tabName) {
+      const validTabs = ['overview', 'history', 'connections'];
+      if (!validTabs.includes(tabName)) tabName = 'overview';
+
+      // Update button active states
+      document.querySelectorAll('.profile-subtab-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.tab === tabName);
+      });
+
+      // Update tab views
+      validTabs.forEach(t => {
+        const el = document.getElementById(`profile-tab-${t}`);
+        if (el) {
+          el.style.display = t === tabName ? 'block' : 'none';
+        }
+      });
+
+      // Update URL search param without scrolling
+      if (window.history && window.history.replaceState) {
+        const url = new URL(window.location.href);
+        url.searchParams.set('tab', tabName);
+        window.history.replaceState(null, '', url.toString());
+      }
+
+      if (window.lucide) lucide.createIcons();
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
       requireAuth().then(async (user) => {
         currentUser = user;
@@ -897,6 +1021,17 @@
         const urlParams = new URLSearchParams(window.location.search);
         targetUid = urlParams.get('uid') || user.uid;
         isViewingSelf = targetUid === user.uid;
+
+        // Initialize active subtab
+        const initialTab = urlParams.get('tab') || window.location.hash.replace('#', '') || 'overview';
+        switchProfileSubtab(initialTab);
+
+        window.addEventListener('hashchange', () => {
+          const tab = window.location.hash.replace('#', '');
+          if (['overview', 'history', 'connections'].includes(tab)) {
+            switchProfileSubtab(tab);
+          }
+        });
 
         const pendingEpic = localStorage.getItem('ct_epic_username');
         if (pendingEpic && isViewingSelf) {
@@ -1089,10 +1224,12 @@
       }
 
       const tagEl = document.getElementById('profile-discord-tag');
+      const connTagEl = document.getElementById('conn-discord-tag');
       const idEl  = document.getElementById('discord-id-text');
       const discordId = data.discordId || (targetUid || '').replace('discord:', '');
       const discordHandle = data.discordUsername ? `@${data.discordUsername}` : (data.displayName || 'user');
       if (tagEl) tagEl.textContent = discordHandle;
+      if (connTagEl) connTagEl.textContent = discordHandle;
       if (idEl) idEl.textContent = `Discord ID: ${discordId}`;
 
       const tokEl = document.getElementById('profile-tokens');

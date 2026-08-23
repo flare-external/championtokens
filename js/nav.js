@@ -75,13 +75,13 @@ function injectNav(activePage = '') {
                 <div style="font-weight:800;font-size:0.92rem;color:#fff;" id="nav-menu-username">Champion</div>
                 <div style="font-size:0.75rem;color:var(--text-muted);" id="nav-menu-handle">@user</div>
               </div>
-              <a href="profile" class="nav-dropdown-item">
+              <a href="profile?tab=overview" class="nav-dropdown-item">
                 <i data-lucide="user"></i> My Profile
               </a>
-              <a href="profile#tx-card" class="nav-dropdown-item">
+              <a href="profile?tab=history" class="nav-dropdown-item">
                 <i data-lucide="history"></i> History
               </a>
-              <a href="profile#epic-account-top-card" class="nav-dropdown-item">
+              <a href="profile?tab=connections" class="nav-dropdown-item">
                 <i data-lucide="link-2"></i> Connections
               </a>
               <div class="nav-dropdown-divider"></div>
