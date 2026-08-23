@@ -1035,6 +1035,8 @@
             const cleanUrl = window.location.pathname + (urlParams.get('uid') ? `?uid=${urlParams.get('uid')}` : '');
             window.history.replaceState({}, document.title, cleanUrl);
           } catch (e) {}
+        }
+
         // Check and auto-refund any duplicate premium pass clicks
         if (isViewingSelf) {
           try {
