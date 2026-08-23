@@ -742,9 +742,6 @@
         <div>
           <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
             <span style="font-size:1.6rem;font-weight:900;" id="profile-name">--</span>
-            <button id="edit-name-btn" class="conn-icon-btn" style="width:28px;height:28px;border-radius:8px;display:none;" onclick="openEditNameModal()" title="Edit Display Name">
-              <i data-lucide="edit-2" style="width:13px;height:13px;"></i>
-            </button>
             <div id="profile-title-slot" style="display:none;"></div>
             <div id="profile-badges-row" style="display:inline-flex;gap:6px;align-items:center;"></div>
           </div>
@@ -941,43 +938,6 @@
       <div id="invite-player-results" style="max-height:340px;overflow-y:auto;min-height:120px;">
         <div class="spinner" style="margin:20px auto;"></div>
       </div>
-    </div>
-  </div>
-
-  <!-- Edit Display Name Modal -->
-  <div class="modal-overlay" id="edit-name-modal" onclick="if(event.target===this)closeEditNameModal()">
-    <div class="modal" style="max-width:400px;">
-      <div class="modal-header">
-        <div class="modal-title" style="display:flex;align-items:center;gap:8px;">
-          <i data-lucide="edit-3" style="color:var(--gold-bright);"></i>
-          <span>Edit Display Name</span>
-        </div>
-        <button class="modal-close" onclick="closeEditNameModal()"><i data-lucide="x"></i></button>
-      </div>
-      <form class="modal-form" onsubmit="submitEditDisplayName(event)">
-        <div class="form-group" style="margin-bottom:18px;">
-          <label class="form-label">Display Name</label>
-          <input
-            id="edit-name-input"
-            class="form-input"
-            maxlength="24"
-            minlength="2"
-            placeholder="Enter display name…"
-            required
-            autocomplete="off"
-            style="width:100%;"
-          />
-          <div style="font-size:0.75rem;color:var(--text-muted);margin-top:6px;line-height:1.4;">
-            2–24 characters. This name is shown across your profile, matches, teams, and leaderboards.
-          </div>
-        </div>
-        <div class="modal-actions" style="display:flex;gap:10px;justify-content:flex-end;">
-          <button type="button" class="btn btn-outline" onclick="closeEditNameModal()">Cancel</button>
-          <button type="submit" class="btn btn-primary" id="save-name-btn">
-            <i data-lucide="check"></i> Save Name
-          </button>
-        </div>
-      </form>
     </div>
   </div>
 
@@ -1302,11 +1262,6 @@
         nameEl.className = isPremium ? 'username-premium' : '';
       }
 
-      const editBtn = document.getElementById('edit-name-btn');
-      if (editBtn) {
-        editBtn.style.display = isViewingSelf ? 'inline-flex' : 'none';
-      }
-
       // Title Tag
       const titleSlot = document.getElementById('profile-title-slot');
       if (titleSlot) {
@@ -1476,64 +1431,6 @@
       }).catch(e => {
         showToast('Could not copy Discord ID', 'error');
       });
-    }
-
-    // ── Edit Display Name Modal ─────────────────────────────────
-    function openEditNameModal() {
-      if (!isViewingSelf || !currentUserData) return;
-      const inp = document.getElementById('edit-name-input');
-      if (inp) {
-        let cur = currentUserData.displayName;
-        if (!cur || cur === 'Champion' || cur === 'Player') {
-          cur = currentUserData.discordUsername || '';
-        }
-        inp.value = cur;
-      }
-      const modal = document.getElementById('edit-name-modal');
-      if (modal) {
-        modal.classList.add('open');
-        modal.classList.add('active');
-      }
-      if (inp) setTimeout(() => inp.focus(), 80);
-      if (window.lucide) lucide.createIcons();
-    }
-
-    function closeEditNameModal() {
-      const modal = document.getElementById('edit-name-modal');
-      if (modal) {
-        modal.classList.remove('open');
-        modal.classList.remove('active');
-      }
-    }
-
-    async function submitEditDisplayName(e) {
-      e.preventDefault();
-      const inp = document.getElementById('edit-name-input');
-      const newName = (inp?.value || '').trim();
-      if (!newName || newName.length < 2) {
-        showToast('Display name must be at least 2 characters', 'error');
-        return;
-      }
-      if (newName.length > 24) {
-        showToast('Display name cannot exceed 24 characters', 'error');
-        return;
-      }
-
-      const btn = document.getElementById('save-name-btn');
-      if (btn) btn.disabled = true;
-
-      try {
-        await updateUserDisplayName(currentUser.uid, newName);
-        if (currentUserData) currentUserData.displayName = newName;
-        const nameEl = document.getElementById('profile-name');
-        if (nameEl) nameEl.textContent = newName;
-        showToast('Display name updated successfully!', 'success');
-        closeEditNameModal();
-      } catch (err) {
-        showToast(err.message || 'Failed to update display name', 'error');
-      } finally {
-        if (btn) btn.disabled = false;
-      }
     }
 
     // ── Cosmetics Customizer Studio Modal ───────────────────────

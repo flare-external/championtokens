@@ -121,25 +121,6 @@ async function getUser(uid) {
   return null;
 }
 
-/** Update user's custom display name */
-async function updateUserDisplayName(uid, newName) {
-  const cleanName = (newName || '').trim();
-  if (!cleanName || cleanName.length < 2) {
-    throw new Error('Display name must be at least 2 characters long');
-  }
-  if (cleanName.length > 24) {
-    throw new Error('Display name cannot exceed 24 characters');
-  }
-  await db.collection('users').doc(uid).update({
-    displayName: cleanName
-  });
-  const authUser = firebase.auth().currentUser;
-  if (authUser && authUser.updateProfile) {
-    await authUser.updateProfile({ displayName: cleanName }).catch(console.warn);
-  }
-  return cleanName;
-}
-
 /**
  * Update a user's token balance and log a transaction.
  * @param {string} uid
