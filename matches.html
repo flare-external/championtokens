@@ -283,7 +283,7 @@
               <div style="display:flex;align-items:center;gap:6px;">
                 <div class="match-code-badge" style="font-size:0.72rem;padding:2px 6px;border-radius:6px;"><i data-lucide="hash" style="width:10px;height:10px;"></i>${m.code}</div>
                 ${effectiveCanJoin ? `
-                  <button class="btn btn-sm btn-primary" style="font-size:0.75rem;padding:3px 10px;height:28px;" onclick="handleJoin('${m.code}', ${m.wager})">
+                  <button class="btn btn-sm btn-primary" style="font-size:0.75rem;padding:3px 10px;height:28px;" onclick="handleJoin('${m.code}', ${m.wager}, '${m.size}')">
                     <i data-lucide="log-in" style="width:12px;height:12px;"></i> Join
                   </button>` : `
                   <a href="match?id=${m.id}" class="btn btn-sm ${alreadyIn || isMine ? 'btn-primary' : 'btn-outline'}" style="font-size:0.75rem;padding:3px 10px;height:28px;" title="Open match room">
@@ -328,10 +328,10 @@
       const input = document.getElementById('join-code-input');
       const code  = input.value.trim().toUpperCase();
       if (code.length !== 6) { showToast('Enter a valid 6-character code', 'error'); return; }
-      await attemptJoin(code);
+      await handleJoin(code, 0, '2v2');
     }
 
-    async function handleJoin(code, wager) {
+    async function handleJoin(code, wager, size = '1v1') {
       currentUserData = await getUser(currentUser.uid);
       if (!currentUserData?.epicUsername) {
         const ok = await showConfirm({
@@ -345,7 +345,36 @@
         if (ok) window.location.href = 'profile';
         return;
       }
+
+      if (size !== '1v1' && currentUserData?.teamId) {
+        const joinWithTeamChoice = await showConfirm({
+          title: 'Join Match Queue',
+          message: `Do you want to queue with your team <strong>${escapeHtml(currentUserData.teamName || 'Your Team')} [${escapeHtml(currentUserData.teamTag || '')}]</strong> and invite your squad, or enter solo?`,
+          confirmText: 'Join with Team',
+          cancelText: 'Join Solo',
+          type: 'warning',
+          icon: 'users'
+        });
+        if (joinWithTeamChoice) {
+          await attemptJoinWithTeam(code);
+          return;
+        }
+      }
+
       await attemptJoin(code);
+    }
+
+    async function attemptJoinWithTeam(code) {
+      currentUserData = await getUser(currentUser.uid);
+      try {
+        await joinMatchWithTeam(code, currentUserData);
+        showToast('Joined with team! Invitations sent to your squad. Opening room…', 'success');
+        const joinInput = document.getElementById('join-code-input');
+        if (joinInput) joinInput.value = '';
+        setTimeout(() => window.location.href = `match?code=${code}`, 500);
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
     }
 
     async function attemptJoin(code) {

@@ -1120,10 +1120,13 @@
               <i data-lucide="chevron-right" style="width:14px;height:14px;color:var(--text-muted);"></i>
             </div>`;
         } else {
-          const invitedTeammate = (teamName === 'Team 1' && match.invitedTeammates && match.invitedTeammates[slotIndex - 2]) ? match.invitedTeammates[slotIndex - 2] : null;
+          const isSlotTeam1 = (teamName === 'Team 1');
+          const invitedTeammatesForThisTeam = (match.invitedTeammates || []).filter(tm => isSlotTeam1 ? (tm.team !== 2) : (tm.team === 2));
+          const invitedTeammate = invitedTeammatesForThisTeam[slotIndex - 2];
           if (invitedTeammate && invitedTeammate.status === 'pending') {
             const pfp = invitedTeammate.photoURL;
             const initChar = (invitedTeammate.displayName || 'T').charAt(0).toUpperCase();
+            const isMyTeamInvite = (isSlotTeam1 && isUserInTeam1) || (!isSlotTeam1 && isUserInTeam2);
             return `
               <div class="player-slot-box" style="border:1px dashed rgba(245,158,11,0.4);background:rgba(245,158,11,0.04);">
                 <div class="slot-avatar-img" style="background:rgba(245,158,11,0.12);color:var(--gold-bright);border-color:rgba(245,158,11,0.35);">
@@ -1132,7 +1135,7 @@
                 <div style="flex:1;min-width:0;">
                   <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
                     <span style="font-weight:800;font-size:0.95rem;color:#fff;">${escapeHtml(invitedTeammate.displayName)}</span>
-                    <span class="badge" style="background:rgba(59,130,246,0.22);color:#93c5fd;font-size:0.65rem;font-weight:800;border:1px solid rgba(59,130,246,0.4);">TEAMMATE</span>
+                    ${isMyTeamInvite ? '<span class="badge" style="background:rgba(59,130,246,0.22);color:#93c5fd;font-size:0.65rem;font-weight:800;border:1px solid rgba(59,130,246,0.4);">TEAMMATE</span>' : '<span class="badge" style="background:rgba(239,68,68,0.2);color:#fca5a5;font-size:0.65rem;font-weight:800;border:1px solid rgba(239,68,68,0.35);">OPPONENT</span>'}
                     <span class="badge" style="background:rgba(245,158,11,0.18);color:var(--gold-bright);font-size:0.65rem;font-weight:700;">INVITED</span>
                   </div>
                   <div style="font-size:0.75rem;color:var(--gold-light);margin-top:2px;">
@@ -1182,10 +1185,20 @@
           </button>`;
 
         if (!isExpired && !alreadyIn && !isFull && match.status === 'waiting') {
-          actionsHTML += `
-            <button class="btn btn-primary btn-sm" onclick="handleJoinArena()">
-              <i data-lucide="log-in"></i> Join Match ($${formatTokens(match.wager)})
-            </button>`;
+          if (match.size !== '1v1' && currentUserData?.teamId) {
+            actionsHTML += `
+              <button class="btn btn-primary btn-sm" onclick="handleJoinArena('solo')">
+                <i data-lucide="user"></i> Join Solo ($${formatTokens(match.wager)})
+              </button>
+              <button class="btn btn-gold btn-sm" onclick="handleJoinArena('team')">
+                <i data-lucide="users"></i> Join with Team ($${formatTokens(match.wager)})
+              </button>`;
+          } else {
+            actionsHTML += `
+              <button class="btn btn-primary btn-sm" onclick="handleJoinArena('solo')">
+                <i data-lucide="log-in"></i> Join Match ($${formatTokens(match.wager)})
+              </button>`;
+          }
         }
 
         if (!isExpired && alreadyIn && match.status === 'waiting') {
@@ -1416,7 +1429,7 @@
       }
     }
 
-    async function handleJoinArena() {
+    async function handleJoinArena(mode = 'solo') {
       if (!currentMatch) return;
       currentUserData = await getUser(currentUser.uid);
       if (!currentUserData?.epicUsername) {
@@ -1431,17 +1444,20 @@
         if (ok) window.location.href = 'profile';
         return;
       }
-      const isHostSquadTeammate = (currentMatch.players?.length < (currentMatch.maxPlayers / 2));
-      const isCovered = (currentMatch.tokenCoverage === 'all' && isHostSquadTeammate) ||
-        (currentMatch.tokenCoverage === 'custom' && (currentMatch.coveredMemberUids || []).includes(currentUserData.uid));
 
-      if (!isCovered && Number(currentUserData.tokens || 0) < Number(currentMatch.wager)) {
+      if (Number(currentUserData.tokens || 0) < Number(currentMatch.wager)) {
         showToast(`Insufficient tokens (Need ${formatTokens(currentMatch.wager)} tokens)`, 'error');
         return;
       }
+
       try {
-        await joinMatch(currentMatch.code, currentUserData);
-        showToast(isCovered ? 'Joined match! (Covered by Captain) Click Ready Up to begin.' : 'Joined match! Click Ready Up to begin.', 'success');
+        if (mode === 'team') {
+          await joinMatchWithTeam(currentMatch.code, currentUserData);
+          showToast('Joined match with team! Invitations sent to your squad.', 'success');
+        } else {
+          await joinMatch(currentMatch.code, currentUserData);
+          showToast('Joined match! Click Ready Up to begin.', 'success');
+        }
       } catch (err) {
         showToast(err.message, 'error');
       }

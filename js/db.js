@@ -401,6 +401,152 @@ async function joinMatch(code, joiningUser) {
 }
 
 /**
+ * Join a match with your team (places joiningUser in Team 2 and auto-invites team roster).
+ */
+async function joinMatchWithTeam(codeOrId, joiningUser) {
+  if (!joiningUser?.teamId) {
+    throw new Error('You must be in a team to join with your team. Go to Profile > Teams to create or join one.');
+  }
+
+  let matchDoc = null;
+  if (codeOrId.length === 6 && !codeOrId.includes('-')) {
+    const snap = await db.collection('matches')
+      .where('code', '==', codeOrId.toUpperCase())
+      .where('status', '==', 'waiting')
+      .limit(1)
+      .get();
+    if (!snap.empty) matchDoc = snap.docs[0];
+  }
+  if (!matchDoc) {
+    const docSnap = await db.collection('matches').doc(codeOrId).get();
+    if (docSnap.exists) matchDoc = docSnap;
+  }
+
+  if (!matchDoc || !matchDoc.exists) throw new Error('Match not found, started, or expired');
+
+  const match = matchDoc.data();
+  const wager = Number(match.wager || 0);
+
+  if (match.status !== 'waiting') throw new Error('This match has already started or ended');
+
+  if (match.expiresAt && match.expiresAt.toDate() < new Date()) {
+    await expireMatch(matchDoc.id);
+    throw new Error('This match has expired and is no longer available');
+  }
+
+  if ((match.players || []).find(p => p.uid === joiningUser.uid)) {
+    throw new Error('You are already in this match');
+  }
+
+  const halfCount = (match.maxPlayers || 2) / 2;
+  const existingTeam2Count = (match.players || []).filter(p => p.team === 2 || (p.teamId && p.teamId === joiningUser.teamId && p.uid !== match.createdBy)).length;
+
+  if (existingTeam2Count >= halfCount) {
+    throw new Error('Opponent squad (Team 2) is already full');
+  }
+
+  if (Number(joiningUser.tokens || 0) < wager) {
+    throw new Error(`Insufficient tokens (Requires ${formatTokens(wager)} tokens to join)`);
+  }
+
+  // Fetch joining user's team details & members
+  let invitedTeammates = [];
+  let teamName = joiningUser.teamName || 'Team 2';
+  let teamTag = joiningUser.teamTag || '';
+
+  try {
+    const teamSnap = await db.collection('teams').doc(joiningUser.teamId).get();
+    if (teamSnap.exists) {
+      const tData = teamSnap.data();
+      teamName = tData.name || teamName;
+      teamTag = tData.tag || teamTag;
+      const needed = Math.max(0, halfCount - 1);
+      const otherMembers = (tData.members || []).filter(m => m.uid !== joiningUser.uid);
+      invitedTeammates = otherMembers.slice(0, needed).map(m => ({
+        uid: m.uid,
+        displayName: m.displayName || 'Teammate',
+        photoURL: m.photoURL || '',
+        epicUsername: m.epicUsername || '',
+        team: 2,
+        teamId: joiningUser.teamId,
+        status: 'pending'
+      }));
+    }
+  } catch (e) {
+    console.warn('joinMatchWithTeam team fetch notice:', e);
+  }
+
+  const newPlayer = {
+    uid:          joiningUser.uid,
+    displayName:  joiningUser.displayName || 'Player',
+    epicUsername: joiningUser.epicUsername || '',
+    isPremium:    !!joiningUser.isPremium,
+    photoURL:     joiningUser.photoURL || '',
+    isHost:       false,
+    ready:        false,
+    team:         2,
+    teamId:       joiningUser.teamId,
+    teamTag:      teamTag,
+    isTeamCaptain:true,
+    paidAmount:   wager,
+    isCovered:    false,
+  };
+
+  const existingInvited = match.invitedTeammates || [];
+  const combinedInvited = [...existingInvited, ...invitedTeammates];
+
+  const updateFields = {
+    players:          firebase.firestore.FieldValue.arrayUnion(newPlayer),
+    playerUids:       firebase.firestore.FieldValue.arrayUnion(joiningUser.uid),
+    prizePool:        firebase.firestore.FieldValue.increment(wager),
+    invitedTeammates: combinedInvited,
+    team2Id:          joiningUser.teamId,
+    team2Name:        teamName,
+    team2Tag:         teamTag,
+  };
+
+  await matchDoc.ref.update(updateFields);
+
+  if (wager > 0) {
+    await updateTokens(
+      joiningUser.uid,
+      -wager,
+      'match_wager',
+      `🎮 Joined match with team — "${match.title}" (${match.code})`
+    );
+  }
+
+  // Send notifications to all invited Team 2 teammates
+  if (invitedTeammates.length > 0) {
+    for (const tm of invitedTeammates) {
+      try {
+        await db.collection('users').doc(tm.uid).collection('notifications').add({
+          type: 'match_team_invite',
+          title: '⚔️ Team Match Invite',
+          body: `${joiningUser.displayName || 'Your Captain'} invited you to join team match "${match.title}" (${formatTokens(wager)} Tokens)`,
+          matchId: matchDoc.id,
+          matchCode: match.code,
+          matchTitle: match.title,
+          wager: wager,
+          hostName: joiningUser.displayName || 'Captain',
+          hostUid: joiningUser.uid,
+          teamName: teamName,
+          team: 2,
+          read: false,
+          accepted: false,
+          declined: false,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        });
+      } catch (notifErr) {
+        console.warn('Failed to send team invite notification to', tm.uid, notifErr);
+      }
+    }
+  }
+
+  return matchDoc.id;
+}
+
+/**
  * Teammate accepts a match team invite from the notification menu.
  */
 async function acceptMatchTeamInvite(matchId, acceptingUser, notifId = null) {
@@ -434,6 +580,10 @@ async function acceptMatchTeamInvite(matchId, acceptingUser, notifId = null) {
     throw new Error(`Insufficient tokens (Requires ${formatTokens(wager)} Tokens to enter)`);
   }
 
+  const invitedEntry = (match.invitedTeammates || []).find(tm => tm.uid === acceptingUser.uid);
+  const targetTeam = invitedEntry?.team || (match.team2Id && match.team2Id === acceptingUser.teamId ? 2 : 1);
+  const targetTeamTag = targetTeam === 1 ? (match.teamTag || '') : (match.team2Tag || acceptingUser.teamTag || '');
+
   const newPlayer = {
     uid: acceptingUser.uid,
     displayName: acceptingUser.displayName || 'Teammate',
@@ -442,8 +592,9 @@ async function acceptMatchTeamInvite(matchId, acceptingUser, notifId = null) {
     photoURL: acceptingUser.photoURL || '',
     isHost: false,
     ready: false,
-    team: 1,
-    teamTag: match.teamTag || '',
+    team: targetTeam,
+    teamId: acceptingUser.teamId || null,
+    teamTag: targetTeamTag,
     paidAmount: wager,
     isTeammate: true,
   };
