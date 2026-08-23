@@ -710,23 +710,26 @@ async function createTeam(user, { name, tag }) {
 
   const leader = {
     uid:         user.uid,
-    displayName: user.displayName,
+    displayName: user.displayName || 'Leader',
     photoURL:    user.photoURL || '',
     isLeader:    true,
   };
 
   const teamRef = await db.collection('teams').add({
-    name:       name.trim(),
-    tag:        cleanTag,
+    name:              name.trim(),
+    tag:               cleanTag,
     code,
-    ownerUid:   user.uid,
-    ownerName:  user.displayName,
-    members:    [leader],
-    memberUids: [user.uid],
-    createdAt:  firebase.firestore.FieldValue.serverTimestamp(),
+    ownerUid:          user.uid,
+    ownerName:         user.displayName || 'Leader',
+    members:           [leader],
+    memberUids:        [user.uid],
+    wagerCoverage:     'none',
+    coveredMemberUids: [],
+    splitRule:         'equal',
+    createdAt:         firebase.firestore.FieldValue.serverTimestamp(),
   });
 
-  // Link team to user document
+  // Link active team to user document
   await db.collection('users').doc(user.uid).update({
     teamId:   teamRef.id,
     teamName: name.trim(),
@@ -736,7 +739,32 @@ async function createTeam(user, { name, tag }) {
   return { id: teamRef.id, code, name: name.trim(), tag: cleanTag };
 }
 
-/** Fetch a user's current team */
+/** Fetch all teams a user belongs to or owns */
+async function getUserTeams(uid) {
+  const teams = [];
+  const seen = new Set();
+  try {
+    const snap = await db.collection('teams').where('memberUids', 'array-contains', uid).get();
+    snap.docs.forEach(doc => {
+      if (!seen.has(doc.id)) {
+        seen.add(doc.id);
+        teams.push({ id: doc.id, ...doc.data() });
+      }
+    });
+    const ownerSnap = await db.collection('teams').where('ownerUid', '==', uid).get();
+    ownerSnap.docs.forEach(doc => {
+      if (!seen.has(doc.id)) {
+        seen.add(doc.id);
+        teams.push({ id: doc.id, ...doc.data() });
+      }
+    });
+  } catch (e) {
+    console.warn('getUserTeams notice:', e.message);
+  }
+  return teams;
+}
+
+/** Fetch a user's current active team */
 async function getUserTeam(uid) {
   try {
     const user = await getUser(uid);
@@ -756,6 +784,26 @@ async function getUserTeam(uid) {
   return null;
 }
 
+/** Update team wager coverage and earnings split settings */
+async function updateTeamSettings(teamId, settings) {
+  const teamRef = db.collection('teams').doc(teamId);
+  await teamRef.update({
+    wagerCoverage:     settings.wagerCoverage || 'none', // 'none' | 'all' | 'custom'
+    coveredMemberUids: settings.coveredMemberUids || [],
+    splitRule:         settings.splitRule || 'equal',     // 'equal' | 'captain_first' | 'captain_70'
+    updatedAt:         firebase.firestore.FieldValue.serverTimestamp(),
+  });
+}
+
+/** Set user active team */
+async function setActiveTeam(uid, team) {
+  await db.collection('users').doc(uid).update({
+    teamId:   team.id,
+    teamName: team.name,
+    teamTag:  team.tag,
+  });
+}
+
 /** Join a team using invite code */
 async function joinTeamByCode(code, user) {
   const cleanCode = code.trim().toUpperCase();
@@ -769,12 +817,14 @@ async function joinTeamByCode(code, user) {
     throw new Error('This team is already at max roster capacity (6 players)');
   }
   if (team.members && team.members.some(m => m.uid === user.uid)) {
-    throw new Error('You are already on this team');
+    // Already on team, switch active
+    await setActiveTeam(user.uid, { id: teamDoc.id, name: team.name, tag: team.tag });
+    return { id: teamDoc.id, name: team.name, tag: team.tag, code: team.code };
   }
 
   const newMember = {
     uid:         user.uid,
-    displayName: user.displayName,
+    displayName: user.displayName || 'Champion',
     photoURL:    user.photoURL || '',
     isLeader:    false,
   };
@@ -790,7 +840,7 @@ async function joinTeamByCode(code, user) {
     teamTag:  team.tag,
   });
 
-  return { id: teamDoc.id, name: team.name, tag: team.tag };
+  return { id: teamDoc.id, name: team.name, tag: team.tag, code: team.code };
 }
 
 /** Leave or disband team */
@@ -823,12 +873,14 @@ async function leaveTeam(teamId, uid) {
       memberUids: updatedUids,
     });
 
-    await db.collection('users').doc(uid).update({
-      teamId:   firebase.firestore.FieldValue.delete(),
-      teamName: firebase.firestore.FieldValue.delete(),
-      teamTag:  firebase.firestore.FieldValue.delete(),
-    });
-
+    const u = await getUser(uid);
+    if (u?.teamId === teamId) {
+      await db.collection('users').doc(uid).update({
+        teamId:   firebase.firestore.FieldValue.delete(),
+        teamName: firebase.firestore.FieldValue.delete(),
+        teamTag:  firebase.firestore.FieldValue.delete(),
+      }).catch(() => {});
+    }
     return { action: 'left' };
   }
 }
@@ -1525,12 +1577,23 @@ async function adminUnbanUser(targetUid) {
 // ── Admin: Search Users ───────────────────────────────────────
 
 /**
- * Search users by display name, discord username, or epic username (prefix-match on displayName).
- * Returns up to 10 results.
+ * Search users by display name, discord username, or epic username (single-letter prefix matching).
+ * Returns up to 15 results.
  */
 async function searchUsers(query) {
-  if (!query || query.trim().length < 2) return [];
+  if (!query || !query.trim()) {
+    try {
+      const snap = await db.collection('users').orderBy('matchesWon', 'desc').limit(10).get();
+      return snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    } catch (e) {
+      return [];
+    }
+  }
+
   const q = query.trim();
+  const qCap = q.charAt(0).toUpperCase() + q.slice(1);
+  const qLow = q.toLowerCase();
+  const qUp = q.toUpperCase();
   const results = [];
   const seen = new Set();
 
@@ -1542,33 +1605,44 @@ async function searchUsers(query) {
   };
 
   try {
-    // Exact UID match
-    const byUid = await db.collection('users').doc(q).get();
-    if (byUid.exists) addResult(byUid);
+    // 1. Exact UID match
+    if (q.length > 10) {
+      const byUid = await db.collection('users').doc(q).get();
+      if (byUid.exists) addResult(byUid);
+    }
 
-    // Prefix-match on displayName
-    const byName = await db.collection('users')
-      .where('displayName', '>=', q)
-      .where('displayName', '<=', q + '\uf8ff')
-      .limit(8).get();
-    byName.docs.forEach(addResult);
+    // 2. Prefix queries on displayName
+    const prefixes = [...new Set([q, qCap, qLow, qUp])];
+    for (const prefix of prefixes) {
+      const snap = await db.collection('users')
+        .where('displayName', '>=', prefix)
+        .where('displayName', '<=', prefix + '\uf8ff')
+        .limit(8).get();
+      snap.docs.forEach(addResult);
+    }
 
-    // Exact discordUsername match
-    const byDiscord = await db.collection('users')
-      .where('discordUsername', '==', q)
-      .limit(3).get();
-    byDiscord.docs.forEach(addResult);
+    // 3. Discord username prefix query
+    for (const prefix of prefixes) {
+      const snap = await db.collection('users')
+        .where('discordUsername', '>=', prefix)
+        .where('discordUsername', '<=', prefix + '\uf8ff')
+        .limit(6).get();
+      snap.docs.forEach(addResult);
+    }
 
-    // Exact epicUsername match
-    const byEpic = await db.collection('users')
-      .where('epicUsername', '==', q)
-      .limit(3).get();
-    byEpic.docs.forEach(addResult);
+    // 4. Epic username prefix query
+    for (const prefix of prefixes) {
+      const snap = await db.collection('users')
+        .where('epicUsername', '>=', prefix)
+        .where('epicUsername', '<=', prefix + '\uf8ff')
+        .limit(6).get();
+      snap.docs.forEach(addResult);
+    }
   } catch (e) {
     console.warn('searchUsers error:', e);
   }
 
-  return results.slice(0, 10);
+  return results.slice(0, 15);
 }
 
 // ── Teams: Invite by search ───────────────────────────────────
@@ -1578,10 +1652,6 @@ async function searchUsers(query) {
  */
 async function sendTeamInvite(teamId, teamName, teamTag, inviterUid, inviterName, targetUid) {
   if (!targetUid || targetUid === inviterUid) throw new Error('Invalid invite target');
-
-  // Check if already on a team
-  const targetUser = await getUser(targetUid);
-  if (targetUser?.teamId) throw new Error('This player is already in a team');
 
   await pushNotification(targetUid, 'team_invite',
     `Team Invite: ${teamName}`,

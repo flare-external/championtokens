@@ -220,29 +220,49 @@
       flex-shrink: 0;
     }
 
-    /* Team Card */
+    /* Teams Section & Cards */
     .team-section-card {
-      background: rgba(14, 18, 34, 0.95);
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      border-radius: var(--radius-lg);
-      padding: 22px 24px;
+      background: #080808;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-xl);
+      padding: 24px;
       margin-bottom: 24px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    }
+    .team-item-card {
+      background: #000000;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 20px 22px;
+      margin-bottom: 16px;
+      transition: all 0.2s ease;
+    }
+    .team-item-card:hover {
+      border-color: rgba(255, 255, 255, 0.16);
+    }
+    .team-item-card.is-active-team {
+      border-color: rgba(245, 158, 11, 0.4);
+      background: #030303;
+      box-shadow: 0 0 20px rgba(245, 158, 11, 0.04);
     }
     .team-roster-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
       gap: 10px;
-      margin-top: 14px;
+      margin-top: 12px;
     }
     .team-member-chip {
       display: flex;
       align-items: center;
+      justify-content: space-between;
       gap: 8px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--border-bright);
-      border-radius: var(--radius-sm);
-      padding: 8px 12px;
+      background: #080808;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      padding: 9px 13px;
+      transition: border-color 0.16s ease;
+    }
+    .team-member-chip:hover {
+      border-color: rgba(255, 255, 255, 0.16);
     }
 
     .matches-history { display: flex; flex-direction: column; gap: 10px; overflow-x: hidden; }
@@ -787,10 +807,21 @@
         </div>
       </div>
 
-      <!-- Squad Team Section Card -->
-      <div class="card" id="team-section-card" style="background:#080808;border:1px solid rgba(255,255,255,0.08);padding:24px;border-radius:var(--radius-xl);margin-bottom:24px;">
-        <div class="section-title" style="margin-bottom:14px;color:#fff;display:flex;align-items:center;gap:10px;">
-          <i data-lucide="shield" style="color:var(--purple);"></i> Squad Team Roster
+      <!-- Teams Section Card -->
+      <div class="card team-section-card" id="team-section-card">
+        <div class="section-title" style="margin-bottom:18px;color:#fff;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <i data-lucide="users" style="color:var(--gold-bright);"></i>
+            <span>Teams</span>
+          </div>
+          <div id="team-top-actions" style="display:flex;gap:8px;">
+            <button class="btn btn-primary btn-sm" onclick="openCreateTeamModal()" style="font-size:0.82rem;gap:6px;">
+              <i data-lucide="plus"></i> Create Team
+            </button>
+            <button class="btn btn-outline btn-sm" onclick="openJoinTeamModal()" style="font-size:0.82rem;gap:6px;">
+              <i data-lucide="log-in"></i> Join Team
+            </button>
+          </div>
         </div>
         <div id="team-content">
           <div class="spinner" style="margin:12px auto;"></div>
@@ -854,7 +885,7 @@
   <div class="modal-overlay" id="create-team-modal" onclick="if(event.target===this)closeCreateTeamModal()">
     <div class="modal">
       <div class="modal-header">
-        <div class="modal-title"><i data-lucide="shield"></i> Create Squad Team</div>
+        <div class="modal-title"><i data-lucide="users"></i> Create Team</div>
         <button class="modal-close" onclick="closeCreateTeamModal()"><i data-lucide="x"></i></button>
       </div>
       <form class="modal-form" onsubmit="submitCreateTeam(event)">
@@ -883,7 +914,7 @@
       </div>
       <form class="modal-form" onsubmit="submitJoinTeam(event)">
         <div class="form-group">
-          <label class="form-label">Team Invite Code</label>
+          <label class="form-label">Team Invite Code or Link</label>
           <input class="form-input" id="join-team-input" placeholder="e.g. TM-AB123" required oninput="this.value=this.value.toUpperCase()" />
         </div>
         <div class="modal-actions">
@@ -896,16 +927,104 @@
 
   <!-- Invite Player to Team Modal -->
   <div class="modal-overlay" id="invite-player-modal" onclick="if(event.target===this)closeInvitePlayerModal()">
-    <div class="modal" style="max-width:440px;">
+    <div class="modal" style="max-width:460px;">
       <div class="modal-header">
         <div class="modal-title"><i data-lucide="user-plus"></i> Invite Player to Team</div>
         <button class="modal-close" onclick="closeInvitePlayerModal()"><i data-lucide="x"></i></button>
       </div>
-      <form onsubmit="handleInviteSearch(event)" style="display:flex;gap:8px;margin-bottom:10px;">
-        <input class="form-input" id="invite-player-search-input" placeholder="Search by name, @discord, or Epic username…" autocomplete="off" style="flex:1;"/>
-        <button type="submit" class="btn btn-primary btn-sm"><i data-lucide="search"></i></button>
+      <div style="margin-bottom:14px;">
+        <input class="form-input" id="invite-player-search-input" placeholder="Type letters to search players live (e.g. A, F, Epic)…" autocomplete="off" oninput="handleInviteSearchLive(this.value)" style="width:100%;" />
+      </div>
+      <div id="invite-player-results" style="max-height:340px;overflow-y:auto;min-height:120px;">
+        <div class="spinner" style="margin:20px auto;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Team Wager & Split Settings Modal -->
+  <div class="modal-overlay" id="team-wager-modal" onclick="if(event.target===this)closeTeamWagerModal()">
+    <div class="modal" style="max-width:480px;">
+      <div class="modal-header">
+        <div class="modal-title" style="display:flex;align-items:center;gap:8px;">
+          <i data-lucide="coins" style="color:var(--gold-bright);"></i> Team Match Wager & Split Settings
+        </div>
+        <button class="modal-close" onclick="closeTeamWagerModal()"><i data-lucide="x"></i></button>
+      </div>
+      <form class="modal-form" onsubmit="submitTeamWagerSettings(event)">
+        <input type="hidden" id="wager-settings-team-id" />
+        
+        <div class="form-group" style="margin-bottom:18px;">
+          <label class="form-label" style="font-size:0.88rem;font-weight:800;color:#fff;margin-bottom:8px;">
+            💰 Token Entry Fee Coverage
+          </label>
+          <div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:10px;">
+            Choose who covers the token entry cost when joining squad & duo matches.
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <label style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:#000;border:1px solid rgba(255,255,255,0.08);border-radius:10px;cursor:pointer;">
+              <input type="radio" name="wagerCoverage" value="none" onchange="toggleCoverCheckboxes(this.value)" checked />
+              <div>
+                <div style="font-weight:700;font-size:0.85rem;color:#fff;">Each Player Pays Own Entry</div>
+                <div style="font-size:0.75rem;color:var(--text-muted);">Every teammate pays their own wager tokens.</div>
+              </div>
+            </label>
+            <label style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:#000;border:1px solid rgba(255,255,255,0.08);border-radius:10px;cursor:pointer;">
+              <input type="radio" name="wagerCoverage" value="all" onchange="toggleCoverCheckboxes(this.value)" />
+              <div>
+                <div style="font-weight:700;font-size:0.85rem;color:#fff;">Cover All Teammates (Captain Pays Total)</div>
+                <div style="font-size:0.75rem;color:var(--text-muted);">Leader pays the full squad entry tokens.</div>
+              </div>
+            </label>
+            <label style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:#000;border:1px solid rgba(255,255,255,0.08);border-radius:10px;cursor:pointer;">
+              <input type="radio" name="wagerCoverage" value="custom" onchange="toggleCoverCheckboxes(this.value)" />
+              <div>
+                <div style="font-weight:700;font-size:0.85rem;color:#fff;">Choose Specific Teammates to Cover</div>
+                <div style="font-size:0.75rem;color:var(--text-muted);">Select individual squad members you will cover for.</div>
+              </div>
+            </label>
+          </div>
+          <div id="wager-cover-members-list" style="display:none;margin-top:10px;padding:10px;background:#080808;border:1px solid rgba(255,255,255,0.08);border-radius:10px;">
+            <!-- Checkboxes rendered dynamically per member -->
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom:20px;">
+          <label class="form-label" style="font-size:0.88rem;font-weight:800;color:#fff;margin-bottom:8px;">
+            🏆 Earnings & Prize Distribution
+          </label>
+          <div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:10px;">
+            How match victory tokens are split among the team upon winning.
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <label style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:#000;border:1px solid rgba(255,255,255,0.08);border-radius:10px;cursor:pointer;">
+              <input type="radio" name="splitRule" value="equal" checked />
+              <div>
+                <div style="font-weight:700;font-size:0.85rem;color:#fff;">Equal Split (100% Shared Evenly)</div>
+                <div style="font-size:0.75rem;color:var(--text-muted);">All playing teammates receive an equal share of the prize pool.</div>
+              </div>
+            </label>
+            <label style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:#000;border:1px solid rgba(255,255,255,0.08);border-radius:10px;cursor:pointer;">
+              <input type="radio" name="splitRule" value="captain_first" />
+              <div>
+                <div style="font-weight:700;font-size:0.85rem;color:#fff;">Cover Payback First (Reimburse Covered Fees)</div>
+                <div style="font-size:0.75rem;color:var(--text-muted);">Captain gets covered token costs back first, then remainder split evenly.</div>
+              </div>
+            </label>
+            <label style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:#000;border:1px solid rgba(255,255,255,0.08);border-radius:10px;cursor:pointer;">
+              <input type="radio" name="splitRule" value="captain_70" />
+              <div>
+                <div style="font-weight:700;font-size:0.85rem;color:#fff;">70 / 30 Captain Split</div>
+                <div style="font-size:0.75rem;color:var(--text-muted);">Captain receives 70% of prize tokens, team splits the rest (30%).</div>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn btn-outline" onclick="closeTeamWagerModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="save-wager-settings-btn">Save Settings</button>
+        </div>
       </form>
-      <div id="invite-player-results" style="max-height:320px;overflow-y:auto;"></div>
     </div>
   </div>
 
@@ -1178,6 +1297,14 @@
         subscribeUserMatches(targetUid, (matches) => {
           renderMatchHistory(matches.slice(0, 10));
         });
+
+        // Auto-open Join Team modal if opened via invite link
+        const joinTeamCode = urlParams.get('joinTeam') || urlParams.get('team');
+        if (joinTeamCode) {
+          openJoinTeamModal();
+          const joinInput = document.getElementById('join-team-input');
+          if (joinInput) joinInput.value = joinTeamCode.toUpperCase();
+        }
       }).catch(err => {
         console.error('Profile auth error:', err);
         if (loadingEl) loadingEl.classList.add('hidden');
@@ -1834,23 +1961,31 @@
     }
 
     // ── Teams Section ────────────────────────────────────────
+    let _userTeamsList = [];
+    let _inviteTeamId = '', _inviteTeamName = '', _inviteTeamTag = '';
+    let _inviteDebounceTimer = null;
+
     async function loadUserTeam(uid) {
       try {
-        const team = await getUserTeam(uid);
-        renderTeamSection(team);
+        const teams = await getUserTeams(uid);
+        _userTeamsList = teams || [];
+        const activeTeamId = (currentUserData && currentUserData.teamId) || (_userTeamsList[0]?.id || null);
+        renderTeamsList(_userTeamsList, activeTeamId);
       } catch (e) {
-        renderTeamSection(null);
+        console.warn('loadUserTeam error:', e);
+        _userTeamsList = [];
+        renderTeamsList([], null);
       }
     }
 
-    function renderTeamSection(team) {
-      currentTeamData = team;
-
+    function renderTeamsList(teams, activeTeamId) {
       const hubTeam = document.getElementById('hub-current-team');
       const teamCard = document.getElementById('team-section-card');
+      const activeTeam = (teams || []).find(t => t.id === activeTeamId) || teams?.[0] || null;
+
       if (hubTeam) {
-        if (team) {
-          hubTeam.innerHTML = `<span class="chip" style="font-size:0.78rem;font-weight:700;color:var(--gold-bright);border-color:rgba(245,158,11,0.4);">[${team.tag}] ${team.name}</span>`;
+        if (activeTeam) {
+          hubTeam.innerHTML = `<span class="chip" style="font-size:0.78rem;font-weight:700;color:var(--gold-bright);border-color:rgba(245,158,11,0.4);">[${escapeHtml(activeTeam.tag)}] ${escapeHtml(activeTeam.name)}</span>`;
         } else {
           hubTeam.innerHTML = `<span style="color:var(--text-muted);font-size:0.82rem;">No Squad</span>`;
         }
@@ -1862,67 +1997,146 @@
       const el = document.getElementById('team-content');
       if (!el) return;
 
-      if (!team) {
+      if (!teams || !teams.length) {
         el.innerHTML = isViewingSelf ? `
-          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
-            <div style="font-size:0.875rem;color:var(--text-muted);">
-              Create or join a squad team to play <strong>2v2 Duos</strong> and <strong>3v3 Squads</strong> matches.
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;padding:8px 0;">
+            <div>
+              <div style="font-weight:800;font-size:0.95rem;color:#fff;margin-bottom:4px;">No Teams Created Yet</div>
+              <div style="font-size:0.82rem;color:var(--text-muted);">
+                Create or join squad teams to compete in <strong>2v2 Duos</strong> and <strong>3v3 Squads</strong> with custom token coverage & prize split rules.
+              </div>
             </div>
-            <div style="display:flex;gap:10px;">
+            <div style="display:flex;gap:10px;flex-wrap:wrap;">
               <button class="btn btn-primary btn-sm" onclick="openCreateTeamModal()"><i data-lucide="plus"></i> Create Team</button>
-              <button class="btn btn-outline btn-sm" onclick="openJoinTeamModal()"><i data-lucide="log-in"></i> Join with Code</button>
+              <button class="btn btn-outline btn-sm" onclick="openJoinTeamModal()"><i data-lucide="log-in"></i> Join Team</button>
             </div>
-          </div>` : `<span style="color:var(--text-muted);font-size:0.875rem;">Not currently on any squad team.</span>`;
+          </div>` : `<span style="color:var(--text-muted);font-size:0.875rem;">Not currently on any team.</span>`;
       } else {
-        const isOwner = team.ownerUid === currentUser?.uid;
-        const membersHTML = (team.members || []).map(m => `
-          <div class="team-member-chip">
-            <span style="font-weight:700;font-size:0.85rem;color:#fff;">${m.displayName}</span>
-            ${m.isLeader || m.uid === team.ownerUid ? '<span class="badge" style="background:var(--gold-dim);color:var(--gold-bright);font-size:0.65rem;padding:1px 6px;">LEADER</span>' : ''}
-          </div>
-        `).join('');
+        el.innerHTML = teams.map(team => {
+          const isOwner = team.ownerUid === currentUser?.uid;
+          const isActive = team.id === activeTeamId;
+          const coveredCount = (team.coveredMemberUids || []).length;
 
-        el.innerHTML = `
-          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:12px;">
-            <div style="display:flex;align-items:center;gap:10px;">
-              <span class="badge" style="background:var(--purple);color:#fff;font-size:0.8rem;padding:4px 10px;">[${team.tag}]</span>
-              <span style="font-size:1.15rem;font-weight:900;color:#fff;">${team.name}</span>
+          // Wager coverage tag
+          let coverageTag = '';
+          if (team.wagerCoverage === 'all') {
+            coverageTag = `<span class="chip chip-gold" style="font-size:0.72rem;font-weight:800;"><i data-lucide="shield-check" style="width:12px;height:12px;"></i> Captain Covers All</span>`;
+          } else if (team.wagerCoverage === 'custom') {
+            coverageTag = `<span class="chip" style="font-size:0.72rem;font-weight:700;color:#86efac;border-color:rgba(134,239,172,0.3);"><i data-lucide="users" style="width:12px;height:12px;"></i> Covered (${coveredCount} Players)</span>`;
+          } else {
+            coverageTag = `<span class="chip" style="font-size:0.72rem;color:var(--text-muted);"><i data-lucide="coins" style="width:12px;height:12px;"></i> Player Pays Own Entry</span>`;
+          }
+
+          // Split rule tag
+          let splitTag = '';
+          if (team.splitRule === 'captain_first') {
+            splitTag = `<span class="chip chip-gold" style="font-size:0.72rem;font-weight:800;"><i data-lucide="refresh-cw" style="width:12px;height:12px;"></i> Cover Payback First</span>`;
+          } else if (team.splitRule === 'captain_70') {
+            splitTag = `<span class="chip" style="font-size:0.72rem;font-weight:800;color:#c084fc;border-color:rgba(192,132,252,0.3);"><i data-lucide="crown" style="width:12px;height:12px;"></i> 70/30 Captain Split</span>`;
+          } else {
+            splitTag = `<span class="chip" style="font-size:0.72rem;color:var(--text-muted);"><i data-lucide="trophy" style="width:12px;height:12px;"></i> Equal Split (100%)</span>`;
+          }
+
+          const membersHTML = (team.members || []).map(m => {
+            const isMemberCovered = (team.wagerCoverage === 'all' && m.uid !== team.ownerUid) ||
+              (team.wagerCoverage === 'custom' && (team.coveredMemberUids || []).includes(m.uid));
+            return `
+              <div class="team-member-chip">
+                <div style="display:flex;align-items:center;gap:8px;min-width:0;">
+                  <div style="width:24px;height:24px;border-radius:50%;background:rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0;">
+                    ${m.photoURL ? `<img src="${escapeHtml(m.photoURL)}" style="width:100%;height:100%;object-fit:cover;" alt=""/>` : `<i data-lucide="user" style="width:12px;height:12px;color:var(--text-faint);"></i>`}
+                  </div>
+                  <span style="font-weight:700;font-size:0.85rem;color:#fff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${escapeHtml(m.displayName || 'Player')}</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:5px;flex-shrink:0;">
+                  ${isMemberCovered ? '<span class="badge" style="background:rgba(134,239,172,0.15);color:#86efac;font-size:0.62rem;padding:1px 5px;" title="Match entry token cost covered by captain">COVERED</span>' : ''}
+                  ${m.isLeader || m.uid === team.ownerUid ? '<span class="badge" style="background:var(--gold-dim);color:var(--gold-bright);font-size:0.65rem;padding:1px 6px;">LEADER</span>' : ''}
+                </div>
+              </div>
+            `;
+          }).join('');
+
+          return `
+            <div class="team-item-card ${isActive ? 'is-active-team' : ''}">
+              <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:14px;">
+                <div>
+                  <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:6px;">
+                    <span class="badge" style="background:var(--purple);color:#fff;font-size:0.8rem;padding:4px 10px;font-weight:800;">[${escapeHtml(team.tag)}]</span>
+                    <span style="font-size:1.2rem;font-weight:900;color:#fff;">${escapeHtml(team.name)}</span>
+                    ${isActive ? `<span class="badge" style="background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.4);color:var(--gold-bright);font-size:0.68rem;padding:3px 8px;font-weight:800;">✨ ACTIVE SQUAD</span>` : ''}
+                  </div>
+                  <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                    ${coverageTag}
+                    ${splitTag}
+                  </div>
+                </div>
+
+                ${isViewingSelf ? `
+                  <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+                    ${!isActive ? `
+                      <button class="btn btn-gold btn-sm" onclick="handleSetActiveTeam('${team.id}')" style="font-size:0.78rem;padding:6px 12px;gap:5px;">
+                        <i data-lucide="check-circle"></i> Set Active
+                      </button>
+                    ` : ''}
+                    <button class="btn btn-outline btn-sm" onclick="copyTeamInviteLink('${team.code}','${escapeHtml(team.name)}')" style="font-size:0.78rem;padding:6px 12px;gap:5px;" title="Copy 1-Click Join Link">
+                      <i data-lucide="link"></i> Copy Link
+                    </button>
+                    <span class="match-code-badge" title="Click to copy team code" onclick="copyTeamCode('${team.code}')" style="cursor:pointer;padding:5px 10px;font-size:0.8rem;">
+                      <i data-lucide="hash"></i>${team.code}
+                    </span>
+                    <button class="btn btn-primary btn-sm" onclick="openInvitePlayerModal('${team.id}','${escapeHtml(team.name)}','${escapeHtml(team.tag)}')" style="font-size:0.78rem;padding:6px 12px;gap:5px;">
+                      <i data-lucide="user-plus"></i> Invite
+                    </button>
+                    ${isOwner ? `
+                      <button class="btn btn-outline btn-sm" onclick="openTeamWagerModal('${team.id}')" style="font-size:0.78rem;padding:6px 12px;gap:5px;" title="Configure Wager Coverage and Prize Splits">
+                        <i data-lucide="settings"></i> Wager & Splits
+                      </button>
+                    ` : ''}
+                    <button class="btn btn-danger btn-sm" onclick="handleLeaveTeam('${team.id}')" style="font-size:0.78rem;padding:6px 10px;gap:4px;">
+                      <i data-lucide="log-out"></i> ${isOwner ? 'Disband' : 'Leave'}
+                    </button>
+                  </div>
+                ` : ''}
+              </div>
+
+              <div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:8px;font-weight:700;">
+                Roster (${team.members?.length || 1}/6 Players):
+              </div>
+              <div class="team-roster-grid">${membersHTML}</div>
             </div>
-            ${isViewingSelf ? `
-              <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
-                <span class="match-code-badge" title="Team Invite Code" onclick="copyTeamCode('${team.code}')" style="cursor:pointer;">
-                  <i data-lucide="hash"></i>${team.code} <span style="font-size:0.7rem;opacity:0.7;">(Copy)</span>
-                </span>
-                ${isOwner ? `<button class="btn btn-outline btn-sm" onclick="openInvitePlayerModal('${team.id}','${team.name}','${team.tag}')">
-                  <i data-lucide="user-plus"></i> Invite Player
-                </button>` : ''}
-                <button class="btn btn-danger btn-sm" onclick="handleLeaveTeam('${team.id}')">
-                  <i data-lucide="log-out"></i> ${isOwner ? 'Disband' : 'Leave'}
-                </button>
-              </div>` : ''}
-          </div>
-          <div style="font-size:0.8rem;color:var(--text-muted);">Roster (${team.members?.length || 1}/6 Players):</div>
-          <div class="team-roster-grid">${membersHTML}</div>`;
+          `;
+        }).join('');
       }
+
       if (window.lucide) lucide.createIcons();
+    }
+
+    function copyTeamInviteLink(code, teamName) {
+      const link = window.location.origin + '/profile?joinTeam=' + encodeURIComponent(code);
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(link).then(() => {
+          showToast(`Invite link for "${teamName}" copied to clipboard! Share it anywhere.`, 'success');
+        });
+      } else {
+        copyTeamCode(code);
+      }
     }
 
     function copyTeamCode(code) {
       if (navigator.clipboard) {
-        navigator.clipboard.writeText(code).then(() => showToast(`Team Code "${code}" copied to clipboard! Share it with teammates.`, 'info'));
+        navigator.clipboard.writeText(code).then(() => showToast(`Team Code "${code}" copied to clipboard!`, 'info'));
       }
     }
-
-    let _inviteTeamId = '', _inviteTeamName = '', _inviteTeamTag = '';
 
     function openInvitePlayerModal(teamId, teamName, teamTag) {
       _inviteTeamId = teamId;
       _inviteTeamName = teamName;
       _inviteTeamTag = teamTag;
-      document.getElementById('invite-player-search-input').value = '';
-      document.getElementById('invite-player-results').innerHTML = '';
+      const inp = document.getElementById('invite-player-search-input');
+      if (inp) inp.value = '';
       const m = document.getElementById('invite-player-modal');
       if (m) { m.classList.add('open'); m.classList.add('active'); }
+      handleInviteSearchLive('');
       if (window.lucide) lucide.createIcons();
     }
 
@@ -1931,35 +2145,48 @@
       if (m) { m.classList.remove('open'); m.classList.remove('active'); }
     }
 
-    async function handleInviteSearch(e) {
-      if (e) e.preventDefault();
-      const q = document.getElementById('invite-player-search-input').value.trim();
-      if (!q || q.length < 2) return;
-      document.getElementById('invite-player-results').innerHTML = '<div style="text-align:center;padding:12px;color:var(--text-muted);font-size:0.85rem;">Searching…</div>';
-      try {
-        const results = await searchUsers(q);
-        const filtered = results.filter(u => u.id !== currentUser?.uid);
-        if (!filtered.length) {
-          document.getElementById('invite-player-results').innerHTML = '<div style="text-align:center;padding:12px;color:var(--text-muted);font-size:0.85rem;">No players found.</div>';
-          return;
-        }
-        document.getElementById('invite-player-results').innerHTML = filtered.map(u => `
-          <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.07);">
-            <div style="width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;">
-              ${u.photoURL ? `<img src="${escapeHtml(u.photoURL)}" style="width:100%;height:100%;object-fit:cover;" alt=""/>` : `<i data-lucide="user" style="width:16px;height:16px;color:var(--text-faint);"></i>`}
-            </div>
-            <div style="flex:1;min-width:0;">
-              <div style="font-weight:800;font-size:0.9rem;color:#fff;">${escapeHtml(u.displayName || 'Unknown')}</div>
-              <div style="font-size:0.75rem;color:var(--text-muted);">${u.discordUsername ? '@' + escapeHtml(u.discordUsername) : ''}</div>
-            </div>
-            <button class="btn btn-primary btn-sm" style="font-size:0.78rem;" onclick="handleSendTeamInvite('${u.id}','${escapeHtml(u.displayName || 'Player')}')">
-              <i data-lucide="user-plus"></i> Invite
-            </button>
-          </div>`).join('');
-        if (window.lucide) lucide.createIcons();
-      } catch (err) {
-        document.getElementById('invite-player-results').innerHTML = '<div style="color:var(--red);font-size:0.85rem;padding:8px 0;">' + escapeHtml(err.message) + '</div>';
+    function handleInviteSearchLive(query) {
+      clearTimeout(_inviteDebounceTimer);
+      const resEl = document.getElementById('invite-player-results');
+      if (resEl) {
+        resEl.innerHTML = '<div style="text-align:center;padding:16px;color:var(--text-muted);font-size:0.85rem;"><div class="spinner" style="margin:0 auto 8px;"></div>Searching players…</div>';
       }
+
+      _inviteDebounceTimer = setTimeout(async () => {
+        try {
+          const q = (query || '').trim();
+          const results = await searchUsers(q);
+          const currentTeam = _userTeamsList.find(t => t.id === _inviteTeamId);
+          const memberUids = new Set((currentTeam?.members || []).map(m => m.uid));
+          memberUids.add(currentUser?.uid);
+
+          const filtered = results.filter(u => !memberUids.has(u.id));
+
+          if (!filtered.length) {
+            resEl.innerHTML = '<div style="text-align:center;padding:20px;color:var(--text-muted);font-size:0.85rem;">No players found matching your search.</div>';
+            return;
+          }
+
+          resEl.innerHTML = filtered.map(u => `
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 12px;border-bottom:1px solid rgba(255,255,255,0.06);background:#000;border-radius:10px;margin-bottom:6px;">
+              <div style="display:flex;align-items:center;gap:10px;min-width:0;">
+                <div style="width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;">
+                  ${u.photoURL ? `<img src="${escapeHtml(u.photoURL)}" style="width:100%;height:100%;object-fit:cover;" alt=""/>` : `<i data-lucide="user" style="width:16px;height:16px;color:var(--text-faint);"></i>`}
+                </div>
+                <div style="min-width:0;">
+                  <div style="font-weight:800;font-size:0.88rem;color:#fff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${escapeHtml(u.displayName || 'Player')}</div>
+                  <div style="font-size:0.75rem;color:var(--text-muted);">${u.discordUsername ? '@' + escapeHtml(u.discordUsername) : (u.epicUsername ? 'Epic: ' + escapeHtml(u.epicUsername) : '')}</div>
+                </div>
+              </div>
+              <button class="btn btn-primary btn-sm" style="font-size:0.78rem;padding:6px 14px;gap:5px;flex-shrink:0;" onclick="handleSendTeamInvite('${u.id}','${escapeHtml(u.displayName || 'Player')}')">
+                <i data-lucide="user-plus"></i> Invite
+              </button>
+            </div>`).join('');
+          if (window.lucide) lucide.createIcons();
+        } catch (err) {
+          if (resEl) resEl.innerHTML = '<div style="color:var(--red);font-size:0.85rem;padding:12px 0;">' + escapeHtml(err.message) + '</div>';
+        }
+      }, 150);
     }
 
     async function handleSendTeamInvite(targetUid, targetName) {
@@ -1976,11 +2203,108 @@
       }
     }
 
+    async function handleSetActiveTeam(teamId) {
+      try {
+        const team = _userTeamsList.find(t => t.id === teamId);
+        if (!team) return;
+        await setActiveTeam(currentUser.uid, team);
+        if (currentUserData) currentUserData.teamId = teamId;
+        showToast(`Active squad switched to [${team.tag}] ${team.name}!`, 'success');
+        renderTeamsList(_userTeamsList, teamId);
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
+    }
+
+    // ── Team Wager & Split Settings ──────────────────────────────
+    function openTeamWagerModal(teamId) {
+      const team = _userTeamsList.find(t => t.id === teamId);
+      if (!team) return;
+
+      document.getElementById('wager-settings-team-id').value = teamId;
+
+      // Set Wager Coverage Radios
+      const covVal = team.wagerCoverage || 'none';
+      const covRadios = document.querySelectorAll('input[name="wagerCoverage"]');
+      covRadios.forEach(r => { r.checked = r.value === covVal; });
+
+      // Set Split Rule Radios
+      const splitVal = team.splitRule || 'equal';
+      const splitRadios = document.querySelectorAll('input[name="splitRule"]');
+      splitRadios.forEach(r => { r.checked = r.value === splitVal; });
+
+      // Populate member checkboxes
+      const otherMembers = (team.members || []).filter(m => m.uid !== currentUser.uid);
+      const listEl = document.getElementById('wager-cover-members-list');
+      const coveredUids = new Set(team.coveredMemberUids || []);
+
+      if (otherMembers.length) {
+        listEl.innerHTML = `
+          <div style="font-size:0.75rem;font-weight:700;color:var(--text-muted);margin-bottom:8px;text-transform:uppercase;">Select teammates you will cover:</div>
+          ${otherMembers.map(m => `
+            <label style="display:flex;align-items:center;justify-content:space-between;padding:8px 10px;background:#000;border:1px solid rgba(255,255,255,0.06);border-radius:8px;margin-bottom:6px;cursor:pointer;">
+              <span style="font-size:0.85rem;font-weight:700;color:#fff;">${escapeHtml(m.displayName || 'Player')}</span>
+              <input type="checkbox" class="covered-member-check" value="${m.uid}" ${coveredUids.has(m.uid) ? 'checked' : ''} />
+            </label>
+          `).join('')}
+        `;
+      } else {
+        listEl.innerHTML = '<div style="font-size:0.8rem;color:var(--text-muted);padding:6px 0;">No other teammates on roster yet. Invite players to select who you cover.</div>';
+      }
+
+      toggleCoverCheckboxes(covVal);
+
+      const m = document.getElementById('team-wager-modal');
+      if (m) { m.classList.add('open'); m.classList.add('active'); }
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function closeTeamWagerModal() {
+      const m = document.getElementById('team-wager-modal');
+      if (m) { m.classList.remove('open'); m.classList.remove('active'); }
+    }
+
+    function toggleCoverCheckboxes(val) {
+      const listEl = document.getElementById('wager-cover-members-list');
+      if (listEl) {
+        listEl.style.display = val === 'custom' ? 'block' : 'none';
+      }
+    }
+
+    async function submitTeamWagerSettings(e) {
+      e.preventDefault();
+      const teamId = document.getElementById('wager-settings-team-id').value;
+      const covEl = document.querySelector('input[name="wagerCoverage"]:checked');
+      const splitEl = document.querySelector('input[name="splitRule"]:checked');
+      const wagerCoverage = covEl ? covEl.value : 'none';
+      const splitRule = splitEl ? splitEl.value : 'equal';
+
+      const coveredMemberUids = [];
+      if (wagerCoverage === 'custom') {
+        document.querySelectorAll('.covered-member-check:checked').forEach(cb => {
+          coveredMemberUids.push(cb.value);
+        });
+      }
+
+      const btn = document.getElementById('save-wager-settings-btn');
+      btn.disabled = true;
+      try {
+        await updateTeamSettings(teamId, { wagerCoverage, splitRule, coveredMemberUids });
+        showToast('Team wager & earnings settings updated!', 'success');
+        closeTeamWagerModal();
+        await loadUserTeam(currentUser.uid);
+      } catch (err) {
+        showToast(err.message, 'error');
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
     async function handleLeaveTeam(teamId) {
       if (!confirm('Are you sure you want to leave or disband this team?')) return;
       try {
         await leaveTeam(teamId, currentUser.uid);
-        showToast('You left the team', 'success');
+        showToast('Updated team membership', 'success');
         await loadUserTeam(currentUser.uid);
       } catch (err) {
         showToast(err.message, 'error');
@@ -2004,8 +2328,6 @@
       if (m) { m.classList.remove('open'); m.classList.remove('active'); }
     }
 
-
-
     async function submitCreateTeam(e) {
       e.preventDefault();
       const name = document.getElementById('team-name-input').value.trim();
@@ -2026,7 +2348,16 @@
 
     async function submitJoinTeam(e) {
       e.preventDefault();
-      const code = document.getElementById('join-team-input').value.trim().toUpperCase();
+      const rawInput = document.getElementById('join-team-input').value.trim();
+      // Handle either direct code or full invite URL
+      let code = rawInput;
+      if (code.includes('joinTeam=')) {
+        code = code.split('joinTeam=')[1].split('&')[0];
+      } else if (code.includes('team=')) {
+        code = code.split('team=')[1].split('&')[0];
+      }
+      code = code.toUpperCase();
+
       const btn = document.getElementById('submit-join-team-btn');
       btn.disabled = true;
       try {
