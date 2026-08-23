@@ -106,6 +106,20 @@
       injectNav('matches');
       document.getElementById('page-loading').classList.add('hidden');
 
+      const isOwnerAdmin = (user.uid === 'discord:1121188319410278420' || isAdminUser(user, currentUserData));
+      if (!isOwnerAdmin) {
+        const mainContent = document.getElementById('matches-main-content');
+        if (mainContent) {
+          mainContent.innerHTML = `
+            <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:55vh;text-align:center;">
+              <div style="font-size:2rem;font-weight:900;color:var(--gold-bright);letter-spacing:0.02em;">
+                🔄 Under update.
+              </div>
+            </div>`;
+        }
+        return;
+      }
+
       // Subscribe to open matches
       subscribeOpenMatches((matches) => {
         allMatches = matches;
@@ -576,7 +590,7 @@
     }
   </script>
 
-  <main class="page-wrap">
+  <main class="page-wrap" id="matches-main-content">
     <div class="page-header" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;">
       <div>
         <h1><i data-lucide="swords" style="color:var(--gold-bright);"></i> Matches</h1>

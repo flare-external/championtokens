@@ -165,6 +165,11 @@ function generateMatchCode() {
  * @param {object} matchData { mode: 'Realistic'|'Zone Wars'|'Box Fights', size: '1v1'|'2v2'|'3v3', wager: number }
  */
 async function createMatch(hostUser, matchData) {
+  const isOwnerAdmin = (hostUser.uid === 'discord:1121188319410278420' || ADMIN_DISCORD_IDS.includes((hostUser.uid || '').replace('discord:', '')));
+  if (!isOwnerAdmin) {
+    throw new Error('🔄 Under update.');
+  }
+
   const wager = Math.round(parseFloat(matchData.wager) * 100) / 100;
   if (isNaN(wager) || wager < 0.50) {
     throw new Error('Minimum entry is 0.50 tokens ($0.50)');
@@ -314,6 +319,11 @@ async function createMatch(hostUser, matchData) {
  * Join a match by its 6-character code.
  */
 async function joinMatch(code, joiningUser) {
+  const isOwnerAdmin = (joiningUser.uid === 'discord:1121188319410278420' || ADMIN_DISCORD_IDS.includes((joiningUser.uid || '').replace('discord:', '')));
+  if (!isOwnerAdmin) {
+    throw new Error('🔄 Under update.');
+  }
+
   const snap = await db.collection('matches')
     .where('code', '==', code.toUpperCase())
     .where('status', '==', 'waiting')
@@ -404,6 +414,11 @@ async function joinMatch(code, joiningUser) {
  * Join a match with your team (places joiningUser in Team 2 and auto-invites team roster).
  */
 async function joinMatchWithTeam(codeOrId, joiningUser) {
+  const isOwnerAdmin = (joiningUser.uid === 'discord:1121188319410278420' || ADMIN_DISCORD_IDS.includes((joiningUser.uid || '').replace('discord:', '')));
+  if (!isOwnerAdmin) {
+    throw new Error('🔄 Under update.');
+  }
+
   if (!joiningUser?.teamId) {
     throw new Error('You must be in a team to join with your team. Go to Profile > Teams to create or join one.');
   }
@@ -670,7 +685,7 @@ async function declineMatchTeamInvite(matchId, userUid, notifId = null) {
 
 /**
  * Player toggles or sets Ready status in a match.
- * If all players are ready, match status automatically becomes 'in_progress'.
+ * If all players are ready (or owner/admin starts test), match status automatically becomes 'in_progress'.
  */
 async function setPlayerReady(matchId, uid, isReady = true) {
   const matchRef = db.collection('matches').doc(matchId);
@@ -682,14 +697,34 @@ async function setPlayerReady(matchId, uid, isReady = true) {
     throw new Error('Cannot change ready state once match has started or ended');
   }
 
-  const updatedPlayers = (match.players || []).map(p => {
+  let updatedPlayers = (match.players || []).map(p => {
     if (p.uid === uid) {
       return { ...p, ready: isReady };
     }
     return p;
   });
 
-  const allReady = updatedPlayers.length === match.maxPlayers && updatedPlayers.every(p => p.ready);
+  const isOwnerAdmin = (uid === 'discord:1121188319410278420' || ADMIN_DISCORD_IDS.includes((uid || '').replace('discord:', '')));
+
+  // If owner/admin is testing and readies up, populate opponent slots if missing so they see full in-progress arena
+  if (isOwnerAdmin && isReady && updatedPlayers.length < match.maxPlayers) {
+    const halfCount = match.maxPlayers / 2;
+    while (updatedPlayers.length < match.maxPlayers) {
+      const isTeam2 = updatedPlayers.filter(p => p.team === 1 || p.isHost).length >= halfCount;
+      const idx = updatedPlayers.length + 1;
+      updatedPlayers.push({
+        uid: `test_enemy_${idx}`,
+        displayName: `Enemy Player ${idx}`,
+        team: isTeam2 ? 2 : 1,
+        isHost: false,
+        ready: true,
+        paidAmount: Number(match.wager || 1),
+        epicUsername: `EpicRival${idx}`
+      });
+    }
+  }
+
+  const allReady = (updatedPlayers.length === match.maxPlayers && updatedPlayers.every(p => p.ready)) || (isOwnerAdmin && isReady);
   const newStatus = allReady ? 'in_progress' : 'waiting';
 
   await matchRef.update({
@@ -710,12 +745,12 @@ async function setPlayerReady(matchId, uid, isReady = true) {
       isSystem:  true,
       text:      '⏰ Players have 10 minutes to queue into a game. If your opponent does not join within 10 minutes, click "Call Staff" to report and a moderator will resolve the situation.',
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-    });
+    }).catch(console.warn);
     await msgRef.add({
       isSystem:  true,
       text:      `👑 Team ${hostName} is host, so ${oppName} has to add them in Fortnite!`,
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-    });
+    }).catch(console.warn);
   }
 
   return { allReady, newStatus };
