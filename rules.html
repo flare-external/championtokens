@@ -34,22 +34,7 @@
     }
     .rules-header {
       text-align: center;
-      margin-bottom: 36px;
-    }
-    .rules-header-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 6px 14px;
-      border-radius: 20px;
-      background: rgba(245, 158, 11, 0.12);
-      border: 1px solid rgba(245, 158, 11, 0.35);
-      color: var(--gold-bright);
-      font-size: 0.8rem;
-      font-weight: 800;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      margin-bottom: 12px;
+      margin-bottom: 30px;
     }
     .rules-header h1 {
       font-size: 2.5rem;
@@ -66,7 +51,7 @@
       line-height: 1.6;
     }
 
-    /* Quick Jump Nav */
+    /* Quick Jump Nav (Clean transparent button group) */
     .rules-nav-pill-row {
       display: flex;
       align-items: center;
@@ -74,23 +59,10 @@
       flex-wrap: wrap;
       gap: 8px;
       margin-bottom: 34px;
-      position: sticky;
-      top: calc(var(--nav-h) + 8px);
-      z-index: 900;
-      background: rgba(0, 0, 0, 0.88);
-      backdrop-filter: blur(16px);
-      padding: 10px 14px;
-      border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7);
-    }
-    @media (max-width: 768px) {
-      .rules-nav-pill-row {
-        position: relative;
-        top: 0;
-        border-radius: 16px;
-        padding: 8px;
-      }
+      background: transparent;
+      border: none;
+      box-shadow: none;
+      padding: 0;
     }
     .rules-nav-pill {
       background: rgba(16, 18, 27, 0.8);
@@ -266,9 +238,6 @@
 
   <main class="rules-page-wrap">
     <div class="rules-header">
-      <div class="rules-header-badge">
-        <i data-lucide="shield-check" style="width:14px;height:14px;"></i> Official Rulebook
-      </div>
       <h1>Champion Tokens Competitive Rules</h1>
       <p>Please review and follow all tournament rules below. Failure to comply with platform guidelines will result in round forfeitures, match loss, or account penalties.</p>
     </div>
