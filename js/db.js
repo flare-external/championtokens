@@ -1227,6 +1227,121 @@ async function adminResolveDispute(matchId, winningTeam, adminUid) {
   return rawPrize;
 }
 
+/**
+ * Handles voting for Rematch or Double Down after match completion.
+ * Checks player token balances, logs chat vote progress, and starts the rematch when all players agree.
+ * @param {string} matchId
+ * @param {string} uid
+ * @param {'rematch'|'double'} voteType
+ */
+async function voteMatchRematch(matchId, uid, voteType = 'rematch') {
+  const matchRef = db.collection('matches').doc(matchId);
+  const snap = await matchRef.get();
+  if (!snap.exists) throw new Error('Match not found');
+  const match = snap.data();
+
+  if (match.status !== 'completed') {
+    throw new Error('Rematch voting is only available for completed matches');
+  }
+
+  const players = match.players || [];
+  const player = players.find(p => p.uid === uid);
+  if (!player) throw new Error('You are not a participant in this match');
+
+  const currentWager = Number(match.wager || 1.00);
+  const requiredTokens = voteType === 'double' ? currentWager * 2 : currentWager;
+
+  // Check user balance
+  const userSnap = await db.collection('users').doc(uid).get();
+  const userTokens = Number(userSnap.data()?.tokens || 0);
+  if (userTokens < requiredTokens) {
+    throw new Error(`Insufficient tokens to ${voteType === 'double' ? 'double down' : 'rematch'} (Need ${formatTokens(requiredTokens)} Tokens, You have ${formatTokens(userTokens)} Tokens)`);
+  }
+
+  let rematchVotes = Array.isArray(match.rematchVotes) ? [...match.rematchVotes] : [];
+  let doubleVotes  = Array.isArray(match.doubleVotes)  ? [...match.doubleVotes]  : [];
+
+  if (voteType === 'rematch') {
+    if (!rematchVotes.includes(uid)) rematchVotes.push(uid);
+    doubleVotes = doubleVotes.filter(id => id !== uid);
+  } else {
+    if (!doubleVotes.includes(uid)) doubleVotes.push(uid);
+    rematchVotes = rematchVotes.filter(id => id !== uid);
+  }
+
+  const totalPlayers = match.maxPlayers || players.length || 2;
+  const playerName = player.displayName || 'Player';
+  const userDiscordId = userSnap.data()?.discordId || '';
+  const isOwnerAdmin = ['1121188319410278420'].includes(userDiscordId) || uid === '1121188319410278420' || userSnap.data()?.isAdmin === true;
+
+  const currentVotes = voteType === 'rematch' ? rematchVotes : doubleVotes;
+
+  // Cast vote announcement to chat
+  await matchRef.collection('messages').add({
+    isSystem: true,
+    text: `🗳️ ${playerName} voted to ${voteType === 'double' ? 'DOUBLE DOWN (2x Entry)' : 'REMATCH'} (${currentVotes.length}/${totalPlayers})`,
+    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+  });
+
+  // Check if all players agreed (or if owner testing)
+  if (currentVotes.length >= totalPlayers || (isOwnerAdmin && currentVotes.length >= 1)) {
+    const newWager = voteType === 'double' ? currentWager * 2 : currentWager;
+    const newPrizePool = newWager * totalPlayers;
+
+    // Check balances for all participants
+    for (const p of players) {
+      const pSnap = await db.collection('users').doc(p.uid).get();
+      const pBal = Number(pSnap.data()?.tokens || 0);
+      if (pBal < newWager) {
+        throw new Error(`${p.displayName || 'A player'} does not have sufficient tokens (${formatTokens(newWager)} Tokens required)`);
+      }
+    }
+
+    // Deduct entry fee from each player
+    for (const p of players) {
+      await updateTokens(p.uid, -newWager, 'match_wager', `🎮 ${voteType === 'double' ? 'Double Down Entry' : 'Rematch Entry'} — ${match.title || 'Arena Match'}`);
+    }
+
+    // Reset match state
+    await matchRef.update({
+      wager: newWager,
+      prizePool: newPrizePool,
+      status: 'in_progress',
+      team1Reported: null,
+      team2Reported: null,
+      team1ReportedBy: null,
+      team2ReportedBy: null,
+      team1ReportedByName: null,
+      team2ReportedByName: null,
+      team1ReportedAt: null,
+      team2ReportedAt: null,
+      winner: null,
+      winnerTeam: null,
+      isDisputed: false,
+      disputedAt: null,
+      rematchVotes: [],
+      doubleVotes: [],
+      startedAt: firebase.firestore.FieldValue.serverTimestamp(),
+      completedAt: null,
+    });
+
+    // Announce rematch start in chat
+    await matchRef.collection('messages').add({
+      isSystem: true,
+      text: `🔄 REMATCH STARTED: All players confirmed! Entry: ${formatTokens(newWager)} Tokens · Total Prize: ${formatTokens(newPrizePool * 0.90)} Tokens. Good luck!`,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+    });
+
+    return { started: true, voteType, newWager };
+  } else {
+    await matchRef.update({
+      rematchVotes,
+      doubleVotes,
+    });
+    return { started: false, voteType, votes: currentVotes.length, total: totalPlayers };
+  }
+}
+
 // ── Leaderboard ──────────────────────────────────────────────
 
 /** Fetch real users ordered by matchesWon DESC, then totalEarned DESC */

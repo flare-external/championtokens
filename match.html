@@ -43,10 +43,10 @@
 
     /* Left Stage Area */
     .match-stage-left {
-      padding: 30px 32px 40px;
+      padding: 44px 32px 48px;
       display: flex;
       flex-direction: column;
-      gap: 18px;
+      gap: 20px;
       min-width: 0;
       box-sizing: border-box;
       max-width: 1350px;
@@ -55,22 +55,97 @@
     }
     @media (max-width: 768px) {
       .match-stage-left {
-        padding: 20px 14px 28px;
+        padding: 24px 14px 32px;
+        gap: 16px;
       }
     }
 
-    /* Top Centered Title Section (No Image, Pure CT Aesthetics) */
-    .concept-top-section {
-      display: flex;
-      flex-direction: column;
+    /* Top Row Layout: Left Big Entry, Center Title & Pill, Right Big Prize */
+    .concept-top-row {
+      display: grid;
+      grid-template-columns: 190px 1fr 190px;
       align-items: center;
-      gap: 12px;
-      text-align: center;
+      gap: 20px;
       width: 100%;
       margin-bottom: 2px;
     }
+    @media (max-width: 1024px) {
+      .concept-top-row {
+        grid-template-columns: 1fr;
+        gap: 14px;
+      }
+    }
+    .concept-stakes-widget {
+      background: rgba(10, 10, 10, 0.88);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 18px;
+      padding: 14px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+    }
+    .concept-stakes-widget.left {
+      align-items: flex-start;
+      text-align: left;
+    }
+    .concept-stakes-widget.right {
+      align-items: flex-end;
+      text-align: right;
+      border-color: rgba(245, 158, 11, 0.25);
+      box-shadow: 0 8px 28px rgba(0,0,0,0.7), 0 0 20px rgba(245, 158, 11, 0.08);
+    }
+    @media (max-width: 1024px) {
+      .concept-stakes-widget.left,
+      .concept-stakes-widget.right {
+        align-items: center;
+        text-align: center;
+      }
+    }
+    .stakes-widget-label {
+      font-size: 0.72rem;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #94a3b8;
+    }
+    .stakes-widget-label.gold {
+      color: var(--gold-bright);
+    }
+    .stakes-widget-val {
+      font-size: 1.55rem;
+      font-weight: 900;
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+    }
+    .stakes-widget-val.gold {
+      color: var(--gold-bright);
+      text-shadow: 0 0 16px var(--gold-glow);
+    }
+    .stakes-sub {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #94a3b8;
+      margin-left: 3px;
+    }
+    .stakes-sub.gold {
+      color: var(--gold-light);
+    }
+
+    /* Top Centered Title Section */
+    .concept-top-center {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      text-align: center;
+      width: 100%;
+    }
     .concept-main-title {
-      font-size: 2.4rem;
+      font-size: 2.2rem;
       font-weight: 900;
       color: var(--gold-bright);
       letter-spacing: 0.06em;
@@ -91,14 +166,14 @@
       background: rgba(10, 10, 10, 0.85);
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 999px;
-      padding: 10px 24px;
+      padding: 8px 22px;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 12px;
       flex-wrap: wrap;
       color: #94a3b8;
-      font-size: 0.88rem;
+      font-size: 0.85rem;
       box-shadow: 0 8px 30px rgba(0,0,0,0.8), 0 0 20px rgba(245, 158, 11, 0.06);
       backdrop-filter: blur(12px);
     }
@@ -444,6 +519,59 @@
       transform: translateY(-1px);
     }
 
+    /* Rematch & Double Action Buttons */
+    .concept-btn-rematch {
+      background: rgba(245, 158, 11, 0.12);
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      color: var(--gold-bright);
+      font-weight: 800;
+      font-size: 0.92rem;
+      padding: 10px 22px;
+      border-radius: 20px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      transition: all 0.15s;
+    }
+    .concept-btn-rematch:hover {
+      background: rgba(245, 158, 11, 0.22);
+      border-color: var(--gold-bright);
+      transform: translateY(-1px);
+      box-shadow: 0 0 20px rgba(245, 158, 11, 0.35);
+    }
+    .concept-btn-rematch.voted {
+      background: rgba(34, 197, 94, 0.2);
+      border-color: #22c55e;
+      color: #4ade80;
+      box-shadow: 0 0 16px rgba(34, 197, 94, 0.3);
+    }
+    .concept-btn-double {
+      background: linear-gradient(135deg, #FBBF24, #F59E0B);
+      border: none;
+      color: #000;
+      font-weight: 900;
+      font-size: 0.92rem;
+      padding: 10px 24px;
+      border-radius: 20px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      box-shadow: 0 0 20px rgba(245, 158, 11, 0.45);
+      transition: all 0.15s;
+    }
+    .concept-btn-double:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 0 32px rgba(245, 158, 11, 0.7);
+      filter: brightness(1.08);
+    }
+    .concept-btn-double.voted {
+      background: linear-gradient(135deg, #4ade80, #22c55e);
+      box-shadow: 0 0 25px rgba(34, 197, 94, 0.6);
+      color: #000;
+    }
+
     /* Session Chat Panel (Right Column — Full Height) */
     .session-chat-panel {
       position: sticky;
@@ -691,31 +819,42 @@
   <main class="match-page-layout" id="match-page-layout">
     <!-- Left Stage Content -->
     <div class="match-stage-left">
-      <!-- Top Header: Centered Large Gamemode Title (No Image, CT Gold Theme) -->
-      <div class="concept-top-section">
-        <h1 id="room-title" class="concept-main-title">1V1 REALISTIC</h1>
+      <!-- Top Header Row: Left Big Entry, Center Gamemode & Capsule, Right Big Prize -->
+      <div class="concept-top-row">
+        <!-- Big Entry Fee (Top Left) -->
+        <div class="concept-stakes-widget left">
+          <div class="stakes-widget-label">ENTRY FEE</div>
+          <div class="stakes-widget-val" id="big-entry-val">1.00 <span class="stakes-sub">Tokens</span></div>
+        </div>
 
-        <!-- Top Metadata Pill Capsule -->
-        <div class="concept-meta-bar" id="concept-meta-bar">
-          <div class="concept-meta-item">Region: <strong id="meta-region" style="color:#fff;">EU</strong></div>
-          <div class="concept-meta-dot">·</div>
-          <div class="concept-meta-item">Platform: <strong id="meta-platform" style="color:#fff;">All</strong></div>
-          <div class="concept-meta-dot">·</div>
-          <div class="concept-meta-item">Format: <strong id="meta-rounds" style="color:#fff;">First to 5</strong></div>
-          <div class="concept-meta-dot">·</div>
-          <div class="concept-meta-item">
-            Map: <strong id="map-code-display" class="concept-meta-link" onclick="copyMapCode()" title="Click to copy map code">9854-1829-8735</strong>
-            <i data-lucide="copy" style="width:13px;height:13px;cursor:pointer;opacity:0.8;" onclick="copyMapCode()"></i>
+        <!-- Centered Gamemode Title & Metadata Bar -->
+        <div class="concept-top-center">
+          <h1 id="room-title" class="concept-main-title">1V1 REALISTIC</h1>
+
+          <!-- Top Metadata Pill Capsule -->
+          <div class="concept-meta-bar" id="concept-meta-bar">
+            <div class="concept-meta-item">Region: <strong id="meta-region" style="color:#fff;">EU</strong></div>
+            <div class="concept-meta-dot">·</div>
+            <div class="concept-meta-item">Platform: <strong id="meta-platform" style="color:#fff;">All</strong></div>
+            <div class="concept-meta-dot">·</div>
+            <div class="concept-meta-item">Format: <strong id="meta-rounds" style="color:#fff;">First to 5</strong></div>
+            <div class="concept-meta-dot">·</div>
+            <div class="concept-meta-item">
+              Map: <strong id="map-code-display" class="concept-meta-link" onclick="copyMapCode()" title="Click to copy map code">9854-1829-8735</strong>
+              <i data-lucide="copy" style="width:13px;height:13px;cursor:pointer;opacity:0.8;" onclick="copyMapCode()"></i>
+            </div>
+            <div class="concept-meta-item" id="meta-timer-item">
+              <span class="concept-meta-dot" style="margin-right:6px;">·</span>
+              <i data-lucide="clock" style="width:14px;height:14px;color:var(--gold-bright);"></i>
+              <span id="timer-clock" style="font-family:monospace;font-weight:800;color:#fff;">30:00</span>
+            </div>
           </div>
-          <div class="concept-meta-dot">·</div>
-          <div class="concept-meta-item">Wager: <strong id="stakes-wager" style="color:#fff;">1.00 Tokens</strong></div>
-          <div class="concept-meta-dot">·</div>
-          <div class="concept-meta-item">Prize: <strong id="stakes-prize" style="color:var(--gold-bright);">1.80 Tokens</strong></div>
-          <div class="concept-meta-item" id="meta-timer-item">
-            <span class="concept-meta-dot" style="margin-right:6px;">·</span>
-            <i data-lucide="clock" style="width:14px;height:14px;color:var(--gold-bright);"></i>
-            <span id="timer-clock" style="font-family:monospace;font-weight:800;color:#fff;">30:00</span>
-          </div>
+        </div>
+
+        <!-- Big Prize Pool (Top Right) -->
+        <div class="concept-stakes-widget right">
+          <div class="stakes-widget-label gold">PRIZE POOL</div>
+          <div class="stakes-widget-val gold" id="big-prize-val">1.80 <span class="stakes-sub gold">Tokens</span></div>
         </div>
       </div>
 
@@ -1151,6 +1290,12 @@
       const titleEl = document.getElementById('room-title');
       if (titleEl) titleEl.textContent = `${size} ${mode}`.toUpperCase();
 
+      const bigEntryEl = document.getElementById('big-entry-val');
+      if (bigEntryEl) bigEntryEl.innerHTML = `${formatTokens(match.wager)} <span class="stakes-sub">Tokens</span>`;
+
+      const bigPrizeEl = document.getElementById('big-prize-val');
+      if (bigPrizeEl) bigPrizeEl.innerHTML = `${formatTokens(prize)} <span class="stakes-sub gold">Tokens</span>`;
+
       const regionEl = document.getElementById('meta-region');
       if (regionEl) regionEl.textContent = match.region || 'EU';
 
@@ -1165,12 +1310,6 @@
         mapCodeEl.textContent = mapCode;
         mapCodeEl.setAttribute('onclick', `copyMapCode('${mapCode}')`);
       }
-
-      const wagerEl = document.getElementById('stakes-wager');
-      if (wagerEl) wagerEl.textContent = `${formatTokens(match.wager)} Tokens`;
-
-      const prizeEl = document.getElementById('stakes-prize');
-      if (prizeEl) prizeEl.textContent = `${formatTokens(prize)} Tokens`;
 
       const idEl = document.getElementById('room-id');
       if (idEl) idEl.textContent = `#${match.id.substring(0, 8)}`;
@@ -1404,9 +1543,33 @@
       if (primaryActionContainer) {
         if (match.status === 'completed') {
           const winDisplay = match.winner?.displayName || (match.winnerTeam === 'team1' ? 'Team 1' : 'Team 2');
+          const rematchVotes = match.rematchVotes || [];
+          const doubleVotes = match.doubleVotes || [];
+          const myUid = currentUser?.uid;
+          const isParticipant = players.some(p => p.uid === myUid);
+          const totalPlayers = maxPlayers || players.length || 2;
+          const hasVotedRematch = rematchVotes.includes(myUid);
+          const hasVotedDouble = doubleVotes.includes(myUid);
+
+          let rematchControlsHTML = '';
+          if (isParticipant) {
+            rematchControlsHTML = `
+              <button class="concept-btn-rematch ${hasVotedRematch ? 'voted' : ''}" onclick="handleVoteRematch('rematch')">
+                <i data-lucide="rotate-ccw"></i>
+                <span>${hasVotedRematch ? '✓ Voted Rematch' : 'Rematch'} (${rematchVotes.length}/${totalPlayers})</span>
+              </button>
+              <button class="concept-btn-double ${hasVotedDouble ? 'voted' : ''}" onclick="handleVoteRematch('double')">
+                <i data-lucide="zap"></i>
+                <span>${hasVotedDouble ? '⚡ Voted Double' : 'Double Down (2x Entry)'} (${doubleVotes.length}/${totalPlayers})</span>
+              </button>`;
+          }
+
           primaryActionContainer.innerHTML = `
-            <div class="concept-btn-locked" style="background:rgba(245,158,11,0.18);border-color:rgba(245,158,11,0.5);color:var(--gold-bright);font-weight:900;">
-              <i data-lucide="trophy"></i> Winner: ${escapeHtml(winDisplay)} (+${formatTokens(prize)} Tokens Paid)
+            <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+              <div class="concept-btn-locked" style="background:rgba(245,158,11,0.14);border-color:rgba(245,158,11,0.4);color:var(--gold-bright);font-weight:900;">
+                <i data-lucide="trophy"></i> Winner: ${escapeHtml(winDisplay)} (+${formatTokens(prize)} Tokens)
+              </div>
+              ${rematchControlsHTML}
             </div>`;
         } else if (match.status === 'in_progress') {
           if (!alreadyIn) {
@@ -1530,6 +1693,20 @@
         }
       } catch (err) {
         showToast(err.message, 'error');
+      }
+    }
+
+    async function handleVoteRematch(voteType) {
+      if (!matchId || !currentUser) return;
+      try {
+        const res = await voteMatchRematch(matchId, currentUser.uid, voteType);
+        if (res.started) {
+          showToast(`🚀 ${voteType === 'double' ? 'Double Down' : 'Rematch'} started! Entry: ${formatTokens(res.newWager)} Tokens`, 'success');
+        } else {
+          showToast(`Voted to ${voteType === 'double' ? 'Double Down' : 'Rematch'} (${res.votes}/${res.total} voted)`, 'info');
+        }
+      } catch (err) {
+        showToast(err.message || 'Could not cast vote', 'error');
       }
     }
 
