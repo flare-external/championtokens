@@ -482,10 +482,39 @@
 
     let selectedQueueType = 'solo';
 
+    function onSizeChange() {
+      const size = document.getElementById('size-select')?.value || '1v1';
+      const btnSolo = document.getElementById('btn-queue-solo');
+      const btnTeam = document.getElementById('btn-queue-team');
+      const teamOnlyNote = document.getElementById('queue-team-only-note');
+
+      if (size === '2v2' || size === '3v3') {
+        if (btnSolo) {
+          btnSolo.disabled = true;
+          btnSolo.classList.remove('btn-primary');
+          btnSolo.classList.add('btn-outline');
+          btnSolo.style.opacity = '0.4';
+          btnSolo.style.cursor = 'not-allowed';
+        }
+        if (teamOnlyNote) teamOnlyNote.style.display = 'inline';
+        setQueueType('team');
+      } else {
+        if (btnSolo) {
+          btnSolo.disabled = false;
+          btnSolo.style.opacity = '1';
+          btnSolo.style.cursor = 'pointer';
+        }
+        if (teamOnlyNote) teamOnlyNote.style.display = 'none';
+        setQueueType('solo');
+      }
+      updateCreatePreview();
+    }
+
     function setQueueType(type) {
-      const size = document.getElementById('size-select').value;
-      if (size === '1v1' && type === 'team') {
-        showToast('1v1 matches are strictly Solo Queue. Choose 2v2 or 3v3 to queue with your team.', 'info');
+      const size = document.getElementById('size-select')?.value || '1v1';
+      if ((size === '2v2' || size === '3v3') && type === 'solo') {
+        type = 'team';
+      } else if (size === '1v1' && type === 'team') {
         type = 'solo';
       }
       selectedQueueType = type;
@@ -550,14 +579,9 @@
     }
 
     function updateCreatePreview() {
-      const size  = document.getElementById('size-select').value;
-      const mode  = document.getElementById('mode-select').value;
-      const wager = parseFloat(document.getElementById('wager-input').value) || 0.50;
-
-      // Auto-revert 1v1 from team queue
-      if (size === '1v1' && selectedQueueType === 'team') {
-        setQueueType('solo');
-      }
+      const size  = document.getElementById('size-select')?.value || '1v1';
+      const mode  = document.getElementById('mode-select')?.value || 'Realistic';
+      const wager = parseFloat(document.getElementById('wager-input')?.value) || 0.50;
 
       const playersMap = { '1v1': 2, '2v2': 4, '3v3': 6 };
       const players    = playersMap[size] || 2;
@@ -565,10 +589,15 @@
       const winPrize   = totalPool * 0.90;
 
       const queueLabel = selectedQueueType === 'team' ? ' (Team Queue)' : '';
-      document.getElementById('preview-title').textContent = `${size} ${mode}${queueLabel}`;
-      document.getElementById('preview-players').textContent = `${players} Players (${size})`;
-      document.getElementById('preview-pool').textContent = `${formatTokens(totalPool)} Tokens ($${formatTokens(totalPool)})`;
-      document.getElementById('preview-prize').textContent = `${formatTokens(winPrize)} Tokens ($${formatTokens(winPrize)})`;
+      const titleEl = document.getElementById('preview-title');
+      const playersEl = document.getElementById('preview-players');
+      const poolEl = document.getElementById('preview-pool');
+      const prizeEl = document.getElementById('preview-prize');
+
+      if (titleEl) titleEl.textContent = `${size} ${mode}${queueLabel}`;
+      if (playersEl) playersEl.textContent = `${players} Players (${size})`;
+      if (poolEl) poolEl.textContent = `${formatTokens(totalPool)} Tokens ($${formatTokens(totalPool)})`;
+      if (prizeEl) prizeEl.textContent = `${formatTokens(winPrize)} Tokens ($${formatTokens(winPrize)})`;
     }
 
     async function handleCreateMatch(e) {
@@ -590,13 +619,13 @@
         return;
       }
 
-      if (selectedQueueType === 'team' && !currentUserData?.teamId) {
-        showToast('You must join or create a team in Profile before using Team Queue', 'error');
+      if ((size === '2v2' || size === '3v3' || selectedQueueType === 'team') && !currentUserData?.teamId) {
+        alert('2v2 and 3v3 matches require a team. Please create or join a team in Profile > Teams first.');
         return;
       }
 
       if (Number(currentUserData.tokens || 0) < wager) {
-        showToast(`Not enough tokens (Requires ${formatTokens(wager)} tokens for entry deposit)`, 'error');
+        alert(`Not enough tokens (Requires ${formatTokens(wager)} tokens for entry deposit)`);
         return;
       }
 
@@ -709,163 +738,170 @@
     <div class="ct-pagination" id="matches-pagination" style="margin-top:20px;"></div>
   </main>
 
-  <!-- Create Match Modal -->
+  <!-- Create Match Modal (Wide, Compact 2-Column Esports Layout) -->
   <div class="modal-overlay" id="create-modal" onclick="if(event.target===this)closeCreateModal()">
-    <div class="modal">
-      <div class="modal-header">
-        <div class="modal-title"><i data-lucide="swords"></i> Create Token Match</div>
+    <div class="modal" style="max-width: 740px; width: 95%; padding: 24px 28px; max-height: 90vh; overflow-y: auto;">
+      <div class="modal-header" style="margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.06);">
+        <div class="modal-title" style="font-size: 1.22rem;"><i data-lucide="swords"></i> Create Token Match</div>
         <button class="modal-close" onclick="closeCreateModal()"><i data-lucide="x"></i></button>
       </div>
-      <form class="modal-form" id="create-form" onsubmit="handleCreateMatch(event)">
-        <!-- Team Size -->
-        <div class="form-group">
-          <label class="form-label">Team Size</label>
-          <select class="form-select" id="size-select" onchange="updateCreatePreview()">
-            <option value="1v1">1v1 (2 Players)</option>
-            <option value="2v2">2v2 (4 Players)</option>
-            <option value="3v3">3v3 (6 Players)</option>
-          </select>
-        </div>
 
-        <!-- Queue Type (Solo vs Team Queue) -->
-        <div class="form-group" id="queue-type-group">
-          <label class="form-label" style="display:flex;align-items:center;justify-content:space-between;">
-            <span>Queue Type</span>
-            <span id="queue-type-team-tag" style="display:none;font-size:0.75rem;color:var(--gold-bright);font-weight:800;"></span>
-          </label>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-            <button type="button" class="btn btn-sm btn-primary" id="btn-queue-solo" onclick="setQueueType('solo')" style="justify-content:center;font-size:0.82rem;gap:6px;">
-              <i data-lucide="user"></i> Solo Queue
-            </button>
-            <button type="button" class="btn btn-sm btn-outline" id="btn-queue-team" onclick="setQueueType('team')" style="justify-content:center;font-size:0.82rem;gap:6px;">
-              <i data-lucide="users"></i> Team Queue
-            </button>
-          </div>
-          <!-- Team Queue Info Box -->
-          <div id="team-queue-info-box" style="display:none;margin-top:10px;padding:12px;background:rgba(245,158,11,0.06);border:1px solid rgba(245,158,11,0.25);border-radius:8px;">
-            <div id="team-queue-active-view" style="display:none;">
-              <div style="font-size:0.8rem;color:#fff;font-weight:800;display:flex;align-items:center;gap:6px;">
-                <i data-lucide="users" style="width:14px;height:14px;color:var(--gold-bright);"></i>
-                <span>Queueing with: <strong id="team-queue-name" style="color:var(--gold-bright);">Your Team</strong></span>
+      <form id="create-form" onsubmit="handleCreateMatch(event)">
+        <div style="display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 20px; align-items: start;">
+          <!-- Left Column: Gamemode & Match Setup -->
+          <div style="display: flex; flex-direction: column; gap: 11px;">
+            <!-- Team Size -->
+            <div class="form-group" style="margin-bottom: 0;">
+              <label class="form-label" style="margin-bottom: 4px; font-size: 0.78rem;">Team Size</label>
+              <select class="form-select" id="size-select" onchange="onSizeChange()" style="padding: 7px 10px; font-size: 0.85rem;">
+                <option value="1v1">1v1 (2 Players - Solo)</option>
+                <option value="2v2">2v2 (4 Players - Team Queue)</option>
+                <option value="3v3">3v3 (6 Players - Team Queue)</option>
+              </select>
+            </div>
+
+            <!-- Queue Type -->
+            <div class="form-group" id="queue-type-group" style="margin-bottom: 0;">
+              <label class="form-label" style="display:flex;align-items:center;justify-content:space-between;margin-bottom: 4px; font-size: 0.78rem;">
+                <span>Queue Type</span>
+                <span id="queue-team-only-note" style="display:none;font-size:0.72rem;color:var(--gold-bright);font-weight:800;">(2v2 & 3v3 requires Team)</span>
+              </label>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+                <button type="button" class="btn btn-sm btn-primary" id="btn-queue-solo" onclick="setQueueType('solo')" style="justify-content:center;font-size:0.78rem;padding:6px 8px;gap:5px;">
+                  <i data-lucide="user" style="width:13px;height:13px;"></i> Solo Queue
+                </button>
+                <button type="button" class="btn btn-sm btn-outline" id="btn-queue-team" onclick="setQueueType('team')" style="justify-content:center;font-size:0.78rem;padding:6px 8px;gap:5px;">
+                  <i data-lucide="users" style="width:13px;height:13px;"></i> Team Queue
+                </button>
               </div>
-              <div style="font-size:0.75rem;color:var(--text-muted);margin-top:4px;" id="team-queue-roster-desc">
-                Your teammates will automatically receive a match invite in their Notifications menu to accept and join!
+              <!-- Team Queue Info Box -->
+              <div id="team-queue-info-box" style="display:none;margin-top:6px;padding:7px 10px;background:rgba(245,158,11,0.06);border:1px solid rgba(245,158,11,0.2);border-radius:8px;">
+                <div id="team-queue-active-view" style="display:none;">
+                  <div style="font-size:0.75rem;color:#fff;font-weight:800;display:flex;align-items:center;gap:5px;">
+                    <i data-lucide="users" style="width:12px;height:12px;color:var(--gold-bright);"></i>
+                    <span>Roster: <strong id="team-queue-name" style="color:var(--gold-bright);">Your Team</strong></span>
+                  </div>
+                </div>
+                <div id="team-queue-no-team-view" style="display:none;">
+                  <div style="font-size:0.75rem;color:#fca5a5;font-weight:800;display:flex;align-items:center;gap:4px;">
+                    <i data-lucide="alert-triangle" style="width:12px;height:12px;color:var(--red);"></i>
+                    <span>You need a team for 2v2/3v3</span>
+                  </div>
+                  <div style="font-size:0.7rem;color:var(--text-muted);margin-top:2px;">
+                    <a href="profile?tab=overview" target="_blank" style="color:var(--gold-bright);text-decoration:underline;">Create or join a team</a> in Profile first.
+                  </div>
+                </div>
               </div>
             </div>
-            <div id="team-queue-no-team-view" style="display:none;">
-              <div style="font-size:0.8rem;color:#fca5a5;font-weight:800;display:flex;align-items:center;gap:6px;">
-                <i data-lucide="alert-triangle" style="width:14px;height:14px;color:var(--red);"></i>
-                <span>You are not in a team yet</span>
+
+            <!-- Game Mode -->
+            <div class="form-group" style="margin-bottom: 0;">
+              <label class="form-label" style="margin-bottom: 4px; font-size: 0.78rem;">Game Mode</label>
+              <select class="form-select" id="mode-select" onchange="updateLootOptions(); updateCreatePreview();" style="padding: 7px 10px; font-size: 0.85rem;">
+                <option value="Realistic">Realistic</option>
+                <option value="Zone Wars">Zone Wars</option>
+                <option value="Box Fights">Box Fights</option>
+              </select>
+            </div>
+
+            <!-- Loot Pool -->
+            <div class="form-group" style="margin-bottom: 0;">
+              <label class="form-label" style="margin-bottom: 4px; font-size: 0.78rem;">Loot Pool</label>
+              <select class="form-select" id="loot-pool-select" style="padding: 7px 10px; font-size: 0.82rem;">
+                <option value="Iron pump (Default AR)">Iron pump (Default AR)</option>
+                <option value="Iron pump (Tactical pistol)">Iron pump (Tactical pistol)</option>
+                <option value="Sentinel pump (Default AR)">Sentinel pump (Default AR)</option>
+                <option value="Havoc (Default AR)">Havoc (Default AR)</option>
+                <option value="Boxfight loot (Default AR)">Boxfight loot (Default AR)</option>
+                <option value="Striker pump (Default AR)">Striker pump (Default AR)</option>
+                <option value="Striker pump (Tactical pistol)">Striker pump (Tactical pistol)</option>
+                <option value="Pump (Default AR)">Pump (Default AR)</option>
+              </select>
+            </div>
+
+            <!-- Simple Edit -->
+            <div class="form-group" style="margin-bottom: 0;">
+              <label class="form-label" style="margin-bottom: 4px; font-size: 0.78rem;">Simple Edit</label>
+              <select class="form-select" id="simple-edit-select" style="padding: 7px 10px; font-size: 0.85rem;">
+                <option value="Disabled">Disabled</option>
+                <option value="Enabled">Enabled</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Right Column: Stakes, Summary & Actions -->
+          <div style="display: flex; flex-direction: column; gap: 11px;">
+            <!-- Entry Tokens Slider & Input -->
+            <div class="form-group" style="margin-bottom: 0;">
+              <div class="slider-wrap" style="margin: 0 0 5px;">
+                <div class="slider-header" style="font-size: 0.78rem;">
+                  <span>Entry Fee per Player</span>
+                  <span class="slider-val-badge" id="slider-val-display" style="font-size: 0.82rem; padding: 2px 8px;">1.00 Tokens</span>
+                </div>
+                <input
+                  type="range"
+                  class="ct-slider"
+                  id="wager-slider"
+                  min="0.50"
+                  max="25.00"
+                  step="0.25"
+                  value="1.00"
+                  oninput="syncSlider(this.value)"
+                />
               </div>
-              <div style="font-size:0.75rem;color:var(--text-muted);margin-top:4px;">
-                Go to <a href="profile?tab=overview" target="_blank" style="color:var(--gold-bright);text-decoration:underline;">Profile &gt; Teams</a> to create or join a team first, or use Solo Queue.
+
+              <div style="display:flex;align-items:center;gap:6px;">
+                <input
+                  class="form-input"
+                  id="wager-input"
+                  type="number"
+                  step="0.25"
+                  min="0.50"
+                  max="100.00"
+                  value="1.00"
+                  oninput="syncInput(this.value)"
+                  required
+                  style="font-weight:800;font-size:0.92rem;padding:6px 8px;width:85px;"
+                />
+                <div class="wager-shortcuts" style="margin:0;gap:3px;flex:1;justify-content:flex-end;">
+                  <span class="wager-pill" onclick="setWager(0.50)" style="padding:3px 6px;font-size:0.72rem;">0.50</span>
+                  <span class="wager-pill" onclick="setWager(1.00)" style="padding:3px 6px;font-size:0.72rem;">1.00</span>
+                  <span class="wager-pill" onclick="setWager(2.50)" style="padding:3px 6px;font-size:0.72rem;">2.50</span>
+                  <span class="wager-pill" onclick="setWager(5.00)" style="padding:3px 6px;font-size:0.72rem;">5.00</span>
+                  <span class="wager-pill" onclick="setWager(10.00)" style="padding:3px 6px;font-size:0.72rem;">10.00</span>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
 
-        <!-- Game Mode -->
-        <div class="form-group">
-          <label class="form-label">Game Mode</label>
-          <select class="form-select" id="mode-select" onchange="updateLootOptions(); updateCreatePreview();">
-            <option value="Realistic">Realistic</option>
-            <option value="Zone Wars">Zone Wars</option>
-            <option value="Box Fights">Box Fights</option>
-          </select>
-        </div>
-
-        <!-- Loot Pool -->
-        <div class="form-group">
-          <label class="form-label">Loot Pool</label>
-          <select class="form-select" id="loot-pool-select">
-            <option value="Iron pump (Default AR)">Iron pump (Default AR)</option>
-            <option value="Iron pump (Tactical pistol)">Iron pump (Tactical pistol)</option>
-            <option value="Sentinel pump (Default AR)">Sentinel pump (Default AR)</option>
-            <option value="Havoc (Default AR)">Havoc (Default AR)</option>
-            <option value="Boxfight loot (Default AR)">Boxfight loot (Default AR)</option>
-            <option value="Striker pump (Default AR)">Striker pump (Default AR)</option>
-            <option value="Striker pump (Tactical pistol)">Striker pump (Tactical pistol)</option>
-            <option value="Pump (Default AR)">Pump (Default AR)</option>
-          </select>
-        </div>
-
-        <!-- Simple Edit -->
-        <div class="form-group">
-          <label class="form-label">Simple Edit</label>
-          <select class="form-select" id="simple-edit-select">
-            <option value="Disabled">Disabled</option>
-            <option value="Enabled">Enabled</option>
-          </select>
-        </div>
-
-        <!-- Entry Tokens Amount with Custom Theme Slider -->
-        <div class="form-group">
-          <div class="slider-wrap">
-            <div class="slider-header">
-              <span>Entry Fee per Player</span>
-              <span class="slider-val-badge" id="slider-val-display">1.00 Tokens</span>
+            <!-- Match Preview Summary Box -->
+            <div class="card" style="padding:10px 12px;background:rgba(245,158,11,0.05);border:1px solid rgba(245,158,11,0.2);border-radius:10px;">
+              <div style="font-size:0.72rem;font-weight:800;color:var(--gold-bright);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:5px;">Match Summary</div>
+              <div style="display:flex;justify-content:space-between;font-size:0.78rem;margin-bottom:3px;">
+                <span style="color:var(--text-muted);">Match:</span>
+                <strong id="preview-title" style="color:#fff;">1v1 Realistic</strong>
+              </div>
+              <div style="display:flex;justify-content:space-between;font-size:0.78rem;margin-bottom:3px;">
+                <span style="color:var(--text-muted);">Capacity:</span>
+                <span id="preview-players">2 Players</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;font-size:0.78rem;margin-bottom:3px;">
+                <span style="color:var(--text-muted);">Prize Pool:</span>
+                <span id="preview-pool">2.00 Tokens</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;font-size:0.78rem;border-top:1px solid rgba(255,255,255,0.06);padding-top:4px;margin-top:3px;">
+                <span style="color:var(--gold-bright);font-weight:700;">Winner (90%):</span>
+                <strong id="preview-prize" style="color:var(--green);font-size:0.85rem;">1.80 Tokens</strong>
+              </div>
             </div>
-            <input
-              type="range"
-              class="ct-slider"
-              id="wager-slider"
-              min="0.50"
-              max="25.00"
-              step="0.25"
-              value="1.00"
-              oninput="syncSlider(this.value)"
-            />
-          </div>
 
-          <div style="display:flex;align-items:center;gap:10px;margin-top:6px;">
-            <input
-              class="form-input"
-              id="wager-input"
-              type="number"
-              step="0.25"
-              min="0.50"
-              max="100.00"
-              value="1.00"
-              oninput="syncInput(this.value)"
-              required
-              style="font-weight:800;font-size:1rem;"
-            />
-            <div class="wager-shortcuts" style="margin:0;">
-              <span class="wager-pill" onclick="setWager(0.50)">0.50</span>
-              <span class="wager-pill" onclick="setWager(1.00)">1.00</span>
-              <span class="wager-pill" onclick="setWager(2.50)">2.50</span>
-              <span class="wager-pill" onclick="setWager(5.00)">5.00</span>
-              <span class="wager-pill" onclick="setWager(10.00)">10.00</span>
+            <!-- Modal Action Buttons -->
+            <div style="display:flex;align-items:center;gap:8px;margin-top:2px;">
+              <button type="button" class="btn btn-outline btn-sm" onclick="closeCreateModal()" style="flex:1;padding:8px;justify-content:center;">Cancel</button>
+              <button type="submit" class="btn btn-gold btn-sm" id="create-submit" style="flex:1.4;padding:8px;justify-content:center;font-weight:900;">
+                <i data-lucide="swords" style="width:14px;height:14px;"></i> Create Match
+              </button>
             </div>
           </div>
-        </div>
-
-        <!-- Match Preview Summary -->
-        <div class="card" style="padding:16px;background:rgba(245,158,11,0.06);border-color:rgba(245,158,11,0.25);">
-          <div style="font-size:0.8rem;font-weight:700;color:var(--gold-bright);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;">Match Summary</div>
-          <div style="display:flex;justify-content:space-between;font-size:0.875rem;margin-bottom:4px;">
-            <span style="color:var(--text-muted);">Match Name:</span>
-            <strong id="preview-title">1v1 Realistic</strong>
-          </div>
-          <div style="display:flex;justify-content:space-between;font-size:0.875rem;margin-bottom:4px;">
-            <span style="color:var(--text-muted);">Capacity:</span>
-            <span id="preview-players">2 Players</span>
-          </div>
-          <div style="display:flex;justify-content:space-between;font-size:0.875rem;margin-bottom:4px;">
-            <span style="color:var(--text-muted);">Total Prize Pool:</span>
-            <span id="preview-pool">2.00 Tokens ($2.00)</span>
-          </div>
-          <div style="display:flex;justify-content:space-between;font-size:0.875rem;border-top:1px solid var(--border);padding-top:6px;margin-top:6px;">
-            <span style="color:var(--gold-bright);font-weight:700;">Winner Payout (90%):</span>
-            <strong id="preview-prize" style="color:var(--green);">1.80 Tokens ($1.80)</strong>
-          </div>
-        </div>
-
-        <div class="modal-actions">
-          <button type="button" class="btn btn-outline" onclick="closeCreateModal()">Cancel</button>
-          <button type="submit" class="btn btn-primary" id="create-submit">
-            <i data-lucide="swords"></i> Create Match
-          </button>
         </div>
       </form>
     </div>
