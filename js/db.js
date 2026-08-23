@@ -234,6 +234,7 @@ async function createMatch(hostUser, matchData) {
     photoURL:     hostUser.photoURL || '',
     isHost:       true,
     ready:        false,
+    team:         1,
     teamTag:      teamTag || '',
     paidAmount:   hostDeposit,
   };
@@ -337,7 +338,24 @@ async function joinMatch(code, joiningUser) {
     throw new Error('You are already in this match');
 
   // Check if this joining player is covered by host's squad entry setting
-  const isHostSquadTeammate = (match.players.length < (match.maxPlayers / 2));
+  const halfCount = (match.maxPlayers || 2) / 2;
+  const existingTeam1Count = (match.players || []).filter(p => p.team === 1 || p.isHost || p.isTeammate || p.uid === match.createdBy || (match.teamId && p.teamId === match.teamId)).length;
+  
+  let assignedTeam = 2;
+  let isTeammate = false;
+  if (match.queueType === 'team') {
+    if (match.teamId && joiningUser.teamId === match.teamId && existingTeam1Count < halfCount) {
+      assignedTeam = 1;
+      isTeammate = true;
+    } else {
+      assignedTeam = 2;
+    }
+  } else {
+    // Solo queue: fill Team 1 first, then Team 2
+    assignedTeam = existingTeam1Count < halfCount ? 1 : 2;
+  }
+
+  const isHostSquadTeammate = (assignedTeam === 1);
   const isCovered = (match.tokenCoverage === 'all' && isHostSquadTeammate) ||
     (match.tokenCoverage === 'custom' && (match.coveredMemberUids || []).includes(joiningUser.uid));
 
@@ -354,6 +372,8 @@ async function joinMatch(code, joiningUser) {
     photoURL:     joiningUser.photoURL || '',
     isHost:       false,
     ready:        false,
+    team:         assignedTeam,
+    isTeammate:   isTeammate,
     paidAmount:   playerDeduction,
     isCovered:    isCovered,
   };
@@ -422,6 +442,7 @@ async function acceptMatchTeamInvite(matchId, acceptingUser, notifId = null) {
     photoURL: acceptingUser.photoURL || '',
     isHost: false,
     ready: false,
+    team: 1,
     teamTag: match.teamTag || '',
     paidAmount: wager,
     isTeammate: true,

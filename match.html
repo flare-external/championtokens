@@ -1041,84 +1041,84 @@
 
       // Render Teams VS Matchup (Center Stage)
       const halfCount = maxPlayers / 2;
-      const team1Players = players.slice(0, halfCount);
-      const team2Players = players.slice(halfCount);
+      const team1Players = players.filter(p => p.team === 1 || p.isHost || p.isTeammate || p.uid === match.createdBy || (match.teamId && p.teamId === match.teamId));
+      const team2Players = players.filter(p => !team1Players.includes(p));
+
+      const isUserInTeam1 = team1Players.some(p => p.uid === currentUser?.uid);
+      const isUserInTeam2 = team2Players.some(p => p.uid === currentUser?.uid);
+      const myTeamNum = isUserInTeam1 ? 1 : (isUserInTeam2 ? 2 : 0);
 
       function renderPlayerSlot(player, slotIndex, teamName) {
         if (player) {
           const isPlayerHost = player.isHost || player.uid === match.createdBy;
           const isMe = player.uid === currentUser?.uid;
           const isReady = !!player.ready;
-          const hideOpponent = !isMatchStarted && !isMe;
+          const isSlotTeam1 = (teamName === 'Team 1');
+          const isSameTeam = (isSlotTeam1 && isUserInTeam1) || (!isSlotTeam1 && isUserInTeam2);
 
           const liveData = (isMe ? currentUserData : playersUserCache[player.uid]) || {};
           const isPremium = !!(liveData.isPremium ?? player.isPremium);
           const realDisplayName = liveData.displayName || player.displayName || 'Player';
           const realEpicUsername = liveData.epicUsername || player.epicUsername || '';
 
-          if (hideOpponent) {
-            return `
-              <div class="player-slot-box hidden-opp">
-                <div class="slot-avatar-img" style="background:rgba(168,85,247,0.15);border-color:rgba(168,85,247,0.4);color:#c084fc;">
-                  <i data-lucide="lock" style="width:20px;height:20px;"></i>
-                </div>
-                <div style="flex:1;min-width:0;">
-                  <div style="font-weight:800;font-size:0.95rem;color:#c084fc;">Opponent [Hidden]</div>
-                  <div style="font-size:0.75rem;color:var(--text-muted);margin-top:2px;">
-                    ${isReady ? '✅ <span style="color:var(--green);font-weight:700;">READY</span>' : '⏳ Waiting to Ready Up…'}
-                  </div>
-                </div>
-              </div>`;
+          let epicChipHTML = '';
+          if (realEpicUsername) {
+            epicChipHTML = `
+              <span class="epic-copy-chip" onclick="event.stopPropagation();copyEpicTag('${realEpicUsername}')" title="Click to copy Epic IGN">
+                <img src="epic_games_logo.webp" alt="" style="width:13px;height:15px;object-fit:contain;"/>
+                <span>${realEpicUsername}</span>
+                <i data-lucide="copy" style="width:11px;height:11px;opacity:0.7;"></i>
+              </span>`;
           } else {
-            let epicChipHTML = '';
-            if (realEpicUsername) {
-              epicChipHTML = `
-                <span class="epic-copy-chip" onclick="event.stopPropagation();copyEpicTag('${realEpicUsername}')" title="Click to copy Epic IGN">
-                  <img src="epic_games_logo.webp" alt="" style="width:13px;height:15px;object-fit:contain;"/>
-                  <span>${realEpicUsername}</span>
-                  <i data-lucide="copy" style="width:11px;height:11px;opacity:0.7;"></i>
-                </span>`;
-            } else {
-              epicChipHTML = isMe
-                ? `<span class="epic-copy-chip" style="opacity:0.8;border-style:dashed;color:var(--gold-bright);" onclick="event.stopPropagation();window.location.href='profile?tab=connections'" title="Click to link Epic in profile"><img src="epic_games_logo.webp" alt="" style="width:13px;height:15px;object-fit:contain;"/> <span>Link Epic IGN</span></span>`
-                : `<span class="epic-copy-chip" style="opacity:0.6;border-style:dashed;" onclick="event.stopPropagation();showToast('Opponent has not linked their Epic account yet','info')"><img src="epic_games_logo.webp" alt="" style="width:13px;height:15px;object-fit:contain;"/> <span>No Epic Linked</span></span>`;
-            }
-
-            let bannerClass = '';
-            if (liveData.equippedBanner && SHOP_BANNERS[liveData.equippedBanner]) {
-              bannerClass = SHOP_BANNERS[liveData.equippedBanner].className;
-            }
-
-            let titleTagHTML = '';
-            if (liveData.equippedTitle && SHOP_TITLES[liveData.equippedTitle]) {
-              const t = SHOP_TITLES[liveData.equippedTitle];
-              titleTagHTML = `<span class="player-title-tag ${t.className}">${t.name}</span>`;
-            }
-
-            return `
-              <div class="player-slot-box ${bannerClass}" onclick="openUserProfileModal('${player.uid}')" title="Click to view stats & tip player">
-                <div class="slot-avatar-img ${isPlayerHost ? 'host' : ''}">
-                  ${(liveData.photoURL || player.photoURL) ? `<img src="${liveData.photoURL || player.photoURL}" onerror="this.style.display='none'"/>` : realDisplayName.charAt(0)}
-                </div>
-                <div style="flex:1;min-width:0;">
-                  <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
-                    ${player.teamTag ? `<span class="badge" style="background:var(--purple);color:#fff;padding:1px 6px;font-size:0.68rem;font-weight:800;">[${escapeHtml(player.teamTag)}]</span>` : ''}
-                    <span class="${isPremium ? 'username-premium' : ''}" style="font-weight:800;font-size:0.95rem;">${realDisplayName}</span>
-                    ${titleTagHTML}
-                    ${player.isCovered ? `<span class="badge" style="background:rgba(134,239,172,0.15);color:#86efac;padding:1px 6px;font-size:0.65rem;font-weight:700;" title="Entry token cost covered by captain">COVERED</span>` : ''}
-                    ${isPlayerHost ? '<span class="badge" style="background:var(--gold-dim);color:var(--gold-bright);padding:1px 6px;font-size:0.65rem;">HOST</span>' : ''}
-                    ${isMe ? '<span style="color:var(--gold-bright);font-size:0.75rem;">(You)</span>' : ''}
-                  </div>
-                  <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:3px;">
-                    ${epicChipHTML}
-                    <span style="font-size:0.75rem;color:var(--text-muted);">
-                      ${isReady ? '✅ <span style="color:var(--green);font-weight:700;">READY</span>' : '⏳ Not Ready'}
-                    </span>
-                  </div>
-                </div>
-                <i data-lucide="chevron-right" style="width:14px;height:14px;color:var(--text-muted);"></i>
-              </div>`;
+            epicChipHTML = isMe
+              ? `<span class="epic-copy-chip" style="opacity:0.8;border-style:dashed;color:var(--gold-bright);" onclick="event.stopPropagation();window.location.href='profile?tab=connections'" title="Click to link Epic in profile"><img src="epic_games_logo.webp" alt="" style="width:13px;height:15px;object-fit:contain;"/> <span>Link Epic IGN</span></span>`
+              : `<span class="epic-copy-chip" style="opacity:0.6;border-style:dashed;" onclick="event.stopPropagation();showToast('Player has not linked their Epic account yet','info')"><img src="epic_games_logo.webp" alt="" style="width:13px;height:15px;object-fit:contain;"/> <span>No Epic Linked</span></span>`;
           }
+
+          let bannerClass = '';
+          if (liveData.equippedBanner && SHOP_BANNERS[liveData.equippedBanner]) {
+            bannerClass = SHOP_BANNERS[liveData.equippedBanner].className;
+          }
+
+          let titleTagHTML = '';
+          if (liveData.equippedTitle && SHOP_TITLES[liveData.equippedTitle]) {
+            const t = SHOP_TITLES[liveData.equippedTitle];
+            titleTagHTML = `<span class="player-title-tag ${t.className}">${t.name}</span>`;
+          }
+
+          // Relationship tag (Teammate vs Opponent)
+          let relationshipBadge = '';
+          if (isMe) {
+            relationshipBadge = `<span style="color:var(--gold-bright);font-size:0.75rem;font-weight:800;">(You)</span>`;
+          } else if (isSameTeam) {
+            relationshipBadge = `<span class="badge" style="background:rgba(59,130,246,0.22);color:#93c5fd;padding:1px 6px;font-size:0.65rem;font-weight:800;border:1px solid rgba(59,130,246,0.4);">TEAMMATE</span>`;
+          } else if (myTeamNum !== 0) {
+            relationshipBadge = `<span class="badge" style="background:rgba(239,68,68,0.2);color:#fca5a5;padding:1px 6px;font-size:0.65rem;font-weight:800;border:1px solid rgba(239,68,68,0.35);">OPPONENT</span>`;
+          }
+
+          return `
+            <div class="player-slot-box ${bannerClass}" onclick="openUserProfileModal('${player.uid}')" title="Click to view stats & tip player">
+              <div class="slot-avatar-img ${isPlayerHost ? 'host' : ''}">
+                ${(liveData.photoURL || player.photoURL) ? `<img src="${liveData.photoURL || player.photoURL}" onerror="this.style.display='none'"/>` : realDisplayName.charAt(0)}
+              </div>
+              <div style="flex:1;min-width:0;">
+                <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+                  ${player.teamTag ? `<span class="badge" style="background:var(--purple);color:#fff;padding:1px 6px;font-size:0.68rem;font-weight:800;">[${escapeHtml(player.teamTag)}]</span>` : ''}
+                  <span class="${isPremium ? 'username-premium' : ''}" style="font-weight:800;font-size:0.95rem;">${realDisplayName}</span>
+                  ${titleTagHTML}
+                  ${relationshipBadge}
+                  ${player.isCovered ? `<span class="badge" style="background:rgba(134,239,172,0.15);color:#86efac;padding:1px 6px;font-size:0.65rem;font-weight:700;" title="Entry token cost covered by captain">COVERED</span>` : ''}
+                  ${isPlayerHost ? '<span class="badge" style="background:var(--gold-dim);color:var(--gold-bright);padding:1px 6px;font-size:0.65rem;font-weight:800;">HOST</span>' : ''}
+                </div>
+                <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:3px;">
+                  ${epicChipHTML}
+                  <span style="font-size:0.75rem;color:var(--text-muted);">
+                    ${isReady ? '✅ <span style="color:var(--green);font-weight:700;">READY</span>' : '⏳ Not Ready'}
+                  </span>
+                </div>
+              </div>
+              <i data-lucide="chevron-right" style="width:14px;height:14px;color:var(--text-muted);"></i>
+            </div>`;
         } else {
           const invitedTeammate = (teamName === 'Team 1' && match.invitedTeammates && match.invitedTeammates[slotIndex - 2]) ? match.invitedTeammates[slotIndex - 2] : null;
           if (invitedTeammate && invitedTeammate.status === 'pending') {
@@ -1132,6 +1132,7 @@
                 <div style="flex:1;min-width:0;">
                   <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
                     <span style="font-weight:800;font-size:0.95rem;color:#fff;">${escapeHtml(invitedTeammate.displayName)}</span>
+                    <span class="badge" style="background:rgba(59,130,246,0.22);color:#93c5fd;font-size:0.65rem;font-weight:800;border:1px solid rgba(59,130,246,0.4);">TEAMMATE</span>
                     <span class="badge" style="background:rgba(245,158,11,0.18);color:var(--gold-bright);font-size:0.65rem;font-weight:700;">INVITED</span>
                   </div>
                   <div style="font-size:0.75rem;color:var(--gold-light);margin-top:2px;">
