@@ -104,10 +104,7 @@ function generateMatchCode() {
 async function createMatch(hostUser, matchData) {
   const wager = Math.round(parseFloat(matchData.wager) * 100) / 100;
   if (isNaN(wager) || wager < 0.50) {
-    throw new Error('Minimum wager is 0.50 tokens ($0.50)');
-  }
-  if (Number(hostUser.tokens || 0) < wager) {
-    throw new Error('Insufficient tokens to create this match');
+    throw new Error('Minimum entry is 0.50 tokens ($0.50)');
   }
 
   const size = matchData.size || '1v1';
@@ -115,6 +112,29 @@ async function createMatch(hostUser, matchData) {
   const maxPlayers = size === '1v1' ? 2 : size === '2v2' ? 4 : 6;
   const title = `${size} ${mode}`;
   const code = generateMatchCode();
+
+  // Squad / Team queue settings
+  const teamId = matchData.teamId || null;
+  const teamName = matchData.teamName || null;
+  const teamTag = matchData.teamTag || null;
+  const tokenCoverage = matchData.tokenCoverage || 'none'; // 'none' | 'all' | 'custom'
+  const coveredMemberUids = matchData.coveredMemberUids || [];
+  const splitRule = matchData.splitRule || 'equal'; // 'equal' | 'captain_first' | 'captain_70'
+
+  // Calculate upfront tokens host needs to deposit
+  let hostDeposit = wager;
+  if (size !== '1v1' && teamId) {
+    if (tokenCoverage === 'all') {
+      const squadTeammates = Math.max(1, (maxPlayers / 2) - 1);
+      hostDeposit = wager * (1 + squadTeammates);
+    } else if (tokenCoverage === 'custom') {
+      hostDeposit = wager * (1 + coveredMemberUids.length);
+    }
+  }
+
+  if (Number(hostUser.tokens || 0) < hostDeposit) {
+    throw new Error(`Insufficient tokens (Requires ${formatTokens(hostDeposit)} tokens to create match & cover squad)`);
+  }
 
   // 30 Minutes from now
   const expiresAt = new Date(Date.now() + 30 * 60 * 1000);
@@ -127,6 +147,8 @@ async function createMatch(hostUser, matchData) {
     photoURL:     hostUser.photoURL || '',
     isHost:       true,
     ready:        false,
+    teamTag:      teamTag || '',
+    paidAmount:   hostDeposit,
   };
 
   const defaultMapCode = mode === 'Realistic' ? '9854-1829-8735' : (mode === 'Zone Wars' ? '7264-2987-0382' : '8234-9102-4419');
@@ -139,23 +161,30 @@ async function createMatch(hostUser, matchData) {
     wager,
     maxPlayers,
     mapCode,
+    teamId,
+    teamName,
+    teamTag,
+    tokenCoverage,
+    coveredMemberUids,
+    splitRule,
+    hostCoveredDeposit: hostDeposit,
     players:    [hostPlayer],
     playerUids: [hostUser.uid],
     status:     'waiting', // waiting | in_progress | completed | cancelled
     createdBy:  hostUser.uid,
     hostName:   hostUser.displayName,
     code,
-    prizePool:  wager,
+    prizePool:  hostDeposit,
     winner:     null,
     createdAt:  firebase.firestore.FieldValue.serverTimestamp(),
     expiresAt:  firebase.firestore.Timestamp.fromDate(expiresAt),
     completedAt:null,
   });
 
-  // Hold the host's wager
+  // Hold the host's tokens
   await updateTokens(
     hostUser.uid,
-    -wager,
+    -hostDeposit,
     'match_wager',
     `🎮 Created match — "${title}" (${code})`
   );
@@ -189,8 +218,16 @@ async function joinMatch(code, joiningUser) {
     throw new Error('This match is already full');
   if (match.players.find(p => p.uid === joiningUser.uid))
     throw new Error('You are already in this match');
-  if (Number(joiningUser.tokens || 0) < wager)
-    throw new Error(`Insufficient tokens to join (Requires ${formatTokens(wager)} tokens)`);
+
+  // Check if this joining player is covered by host's squad entry setting
+  const isHostSquadTeammate = (match.players.length < (match.maxPlayers / 2));
+  const isCovered = (match.tokenCoverage === 'all' && isHostSquadTeammate) ||
+    (match.tokenCoverage === 'custom' && (match.coveredMemberUids || []).includes(joiningUser.uid));
+
+  const playerDeduction = isCovered ? 0 : wager;
+
+  if (playerDeduction > 0 && Number(joiningUser.tokens || 0) < playerDeduction)
+    throw new Error(`Insufficient tokens to join (Requires ${formatTokens(playerDeduction)} tokens)`);
 
   const newPlayer = {
     uid:          joiningUser.uid,
@@ -200,20 +237,28 @@ async function joinMatch(code, joiningUser) {
     photoURL:     joiningUser.photoURL || '',
     isHost:       false,
     ready:        false,
+    paidAmount:   playerDeduction,
+    isCovered:    isCovered,
   };
 
-  await matchDoc.ref.update({
+  const updateFields = {
     players:    firebase.firestore.FieldValue.arrayUnion(newPlayer),
     playerUids: firebase.firestore.FieldValue.arrayUnion(joiningUser.uid),
-    prizePool:  firebase.firestore.FieldValue.increment(wager),
-  });
+  };
+  if (playerDeduction > 0) {
+    updateFields.prizePool = firebase.firestore.FieldValue.increment(playerDeduction);
+  }
 
-  await updateTokens(
-    joiningUser.uid,
-    -wager,
-    'match_wager',
-    `🎮 Joined match — "${match.title}" (${match.code})`
-  );
+  await matchDoc.ref.update(updateFields);
+
+  if (playerDeduction > 0) {
+    await updateTokens(
+      joiningUser.uid,
+      -playerDeduction,
+      'match_wager',
+      `🎮 Joined match — "${match.title}" (${match.code})`
+    );
+  }
 
   return matchDoc.id;
 }
@@ -273,8 +318,8 @@ async function setPlayerReady(matchId, uid, isReady = true) {
 
 /**
  * Leave or cancel a match with full token refund.
- * - If Host leaves: cancels match & refunds everyone.
- * - If Joined player leaves: removes player, reduces prizePool, refunds player.
+ * - If Host leaves: cancels match & refunds everyone (including host covered deposits).
+ * - If Joined player leaves: removes player, reduces prizePool, refunds player if they paid.
  */
 async function leaveOrCancelMatch(matchId, uid) {
   const matchRef = db.collection('matches').doc(matchId);
@@ -290,10 +335,14 @@ async function leaveOrCancelMatch(matchId, uid) {
   const wager  = Number(match.wager);
 
   if (isHost) {
-    // Cancel match and refund ALL players in the match
-    const refundPromises = (match.players || []).map(p =>
-      updateTokens(p.uid, wager, 'refund', `↩️ Match cancelled by host — "${match.title}" refund`)
-    );
+    // Cancel match and refund ALL players who paid tokens
+    const refundPromises = (match.players || []).map(p => {
+      const refundAmt = Number(p.paidAmount !== undefined ? p.paidAmount : (p.uid === match.createdBy ? (match.hostCoveredDeposit || wager) : wager));
+      if (refundAmt > 0) {
+        return updateTokens(p.uid, refundAmt, 'refund', `↩️ Match cancelled by host — "${match.title}" refund`);
+      }
+      return Promise.resolve();
+    });
     await Promise.all(refundPromises);
 
     await matchRef.update({
@@ -304,20 +353,28 @@ async function leaveOrCancelMatch(matchId, uid) {
     return { action: 'cancelled', message: 'Match cancelled and your tokens were refunded.' };
   } else {
     // Non-host player leaving
+    const leavingPlayer = (match.players || []).find(p => p.uid === uid);
     const updatedPlayers = (match.players || []).filter(p => p.uid !== uid);
     const updatedUids    = (match.playerUids || []).filter(u => u !== uid);
+    const playerPaid = leavingPlayer?.paidAmount !== undefined ? Number(leavingPlayer.paidAmount) : (leavingPlayer?.isCovered ? 0 : wager);
 
-    await matchRef.update({
+    const updateFields = {
       players:    updatedPlayers,
       playerUids: updatedUids,
-      prizePool:  firebase.firestore.FieldValue.increment(-wager),
       status:     'waiting',
-    });
+    };
+    if (playerPaid > 0) {
+      updateFields.prizePool = firebase.firestore.FieldValue.increment(-playerPaid);
+    }
 
-    // Refund player wager
-    await updateTokens(uid, wager, 'refund', `↩️ Left match — "${match.title}" refund`);
+    await matchRef.update(updateFields);
 
-    return { action: 'left', message: 'You left the match and your wager was refunded.' };
+    // Refund player if they paid tokens
+    if (playerPaid > 0) {
+      await updateTokens(uid, playerPaid, 'refund', `↩️ Left match — "${match.title}" refund`);
+    }
+
+    return { action: 'left', message: 'You left the match and your tokens were refunded.' };
   }
 }
 
@@ -333,9 +390,13 @@ async function expireMatch(matchId) {
   if (match.status === 'completed' || match.status === 'cancelled') return;
 
   const wager = Number(match.wager);
-  const refundPromises = (match.players || []).map(p =>
-    updateTokens(p.uid, wager, 'refund', `⏱️ Match expired (30m limit) — "${match.title}" full refund`)
-  );
+  const refundPromises = (match.players || []).map(p => {
+    const refundAmt = Number(p.paidAmount !== undefined ? p.paidAmount : (p.uid === match.createdBy ? (match.hostCoveredDeposit || wager) : wager));
+    if (refundAmt > 0) {
+      return updateTokens(p.uid, refundAmt, 'refund', `⏱️ Match expired (30m limit) — "${match.title}" full refund`);
+    }
+    return Promise.resolve();
+  });
   await Promise.all(refundPromises);
 
   await matchRef.update({
@@ -349,6 +410,43 @@ async function expireMatch(matchId) {
     text:      '⏱️ MATCH EXPIRED: The 30-minute match timer has elapsed. All participants have received a 100% full token refund.',
     timestamp: firebase.firestore.FieldValue.serverTimestamp(),
   }).catch(console.warn);
+}
+
+/** Helper to calculate earnings distribution based on team split rule */
+function calculateTeamPayouts(winningPlayers, totalPrize, match) {
+  if (!winningPlayers || !winningPlayers.length) return [];
+  const splitRule = match.splitRule || 'equal';
+  const captain = winningPlayers.find(p => p.isHost || p.uid === match.createdBy);
+  const teammates = winningPlayers.filter(p => p.uid !== captain?.uid);
+
+  if (!captain || winningPlayers.length <= 1 || splitRule === 'equal') {
+    const each = Math.round((totalPrize / winningPlayers.length) * 100) / 100;
+    return winningPlayers.map(p => ({ uid: p.uid, amount: each }));
+  }
+
+  if (splitRule === 'captain_70') {
+    const captainShare = Math.round(totalPrize * 0.70 * 100) / 100;
+    const teamRemainder = Math.max(0, totalPrize - captainShare);
+    const eachTeammate = teammates.length ? Math.round((teamRemainder / teammates.length) * 100) / 100 : 0;
+    return [
+      { uid: captain.uid, amount: captainShare },
+      ...teammates.map(p => ({ uid: p.uid, amount: eachTeammate }))
+    ];
+  }
+
+  if (splitRule === 'captain_first') {
+    const coveredDeposit = Number(match.hostCoveredDeposit || match.wager || 0);
+    const reimbursement = Math.min(totalPrize, coveredDeposit);
+    const remainder = Math.max(0, totalPrize - reimbursement);
+    const each = Math.round((remainder / winningPlayers.length) * 100) / 100;
+    return [
+      { uid: captain.uid, amount: reimbursement + each },
+      ...teammates.map(p => ({ uid: p.uid, amount: each }))
+    ];
+  }
+
+  const each = Math.round((totalPrize / winningPlayers.length) * 100) / 100;
+  return winningPlayers.map(p => ({ uid: p.uid, amount: each }));
 }
 
 /**
@@ -512,7 +610,7 @@ async function submitMatchReport(matchId, reporterUid, reportedWinnerTeam) {
 
       const totalPool = Number(match.prizePool || (Number(match.wager) * players.length));
       const rawPrize = totalPool * 0.90; // 90% payout
-      const prizePerPlayer = Math.round((rawPrize / Math.max(1, winningPlayers.length)) * 100) / 100;
+      const payouts = calculateTeamPayouts(winningPlayers, rawPrize, match);
 
       updatePayload.status = 'completed';
       updatePayload.isDisputed = false;
@@ -522,9 +620,11 @@ async function submitMatchReport(matchId, reporterUid, reportedWinnerTeam) {
 
       await matchRef.update(updatePayload);
 
-      // Distribute prize tokens
-      for (const wp of winningPlayers) {
-        await updateTokens(wp.uid, prizePerPlayer, 'match_win', `🏆 Won match — "${match.title}"`);
+      // Distribute prize tokens according to team split rules
+      for (const p of payouts) {
+        if (p.amount > 0) {
+          await updateTokens(p.uid, p.amount, 'match_win', `🏆 Won match — "${match.title}"`);
+        }
       }
 
       // Update win/loss stats
@@ -609,7 +709,7 @@ async function adminResolveDispute(matchId, winningTeam, adminUid) {
 
   const totalPool = Number(match.prizePool || (Number(match.wager) * players.length));
   const rawPrize = totalPool * 0.90;
-  const prizePerPlayer = Math.round((rawPrize / Math.max(1, winningPlayers.length)) * 100) / 100;
+  const payouts = calculateTeamPayouts(winningPlayers, rawPrize, match);
 
   await matchRef.update({
     status: 'completed',
@@ -620,8 +720,10 @@ async function adminResolveDispute(matchId, winningTeam, adminUid) {
     completedAt: firebase.firestore.FieldValue.serverTimestamp(),
   });
 
-  for (const wp of winningPlayers) {
-    await updateTokens(wp.uid, prizePerPlayer, 'match_win', `🏆 Won match (Staff Decision) — "${match.title}"`);
+  for (const p of payouts) {
+    if (p.amount > 0) {
+      await updateTokens(p.uid, p.amount, 'match_win', `🏆 Won match (Staff Decision) — "${match.title}"`);
+    }
   }
   for (const p of winningPlayers) {
     await db.collection('users').doc(p.uid).update({

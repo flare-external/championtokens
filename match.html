@@ -1080,8 +1080,10 @@
                 </div>
                 <div style="flex:1;min-width:0;">
                   <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+                    ${player.teamTag ? `<span class="badge" style="background:var(--purple);color:#fff;padding:1px 6px;font-size:0.68rem;font-weight:800;">[${escapeHtml(player.teamTag)}]</span>` : ''}
                     <span class="${isPremium ? 'username-premium' : ''}" style="font-weight:800;font-size:0.95rem;">${realDisplayName}</span>
                     ${titleTagHTML}
+                    ${player.isCovered ? `<span class="badge" style="background:rgba(134,239,172,0.15);color:#86efac;padding:1px 6px;font-size:0.65rem;font-weight:700;" title="Entry token cost covered by captain">COVERED</span>` : ''}
                     ${isPlayerHost ? '<span class="badge" style="background:var(--gold-dim);color:var(--gold-bright);padding:1px 6px;font-size:0.65rem;">HOST</span>' : ''}
                     ${isMe ? '<span style="color:var(--gold-bright);font-size:0.75rem;">(You)</span>' : ''}
                   </div>
@@ -1385,13 +1387,17 @@
         if (ok) window.location.href = 'profile';
         return;
       }
-      if (Number(currentUserData.tokens || 0) < Number(currentMatch.wager)) {
+      const isHostSquadTeammate = (currentMatch.players?.length < (currentMatch.maxPlayers / 2));
+      const isCovered = (currentMatch.tokenCoverage === 'all' && isHostSquadTeammate) ||
+        (currentMatch.tokenCoverage === 'custom' && (currentMatch.coveredMemberUids || []).includes(currentUserData.uid));
+
+      if (!isCovered && Number(currentUserData.tokens || 0) < Number(currentMatch.wager)) {
         showToast(`Insufficient tokens (Need ${formatTokens(currentMatch.wager)} tokens)`, 'error');
         return;
       }
       try {
         await joinMatch(currentMatch.code, currentUserData);
-        showToast('Joined match! Click Ready Up to begin.', 'success');
+        showToast(isCovered ? 'Joined match! (Covered by Captain) Click Ready Up to begin.' : 'Joined match! Click Ready Up to begin.', 'success');
       } catch (err) {
         showToast(err.message, 'error');
       }
