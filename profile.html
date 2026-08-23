@@ -527,48 +527,41 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background: #080808;
+      background: #000000;
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 16px;
-      padding: 14px 18px;
-      margin-bottom: 12px;
+      padding: 14px 20px;
+      margin-bottom: 14px;
       transition: border-color 0.2s ease, background 0.2s ease;
     }
     .conn-card:hover {
-      background: #0c0c0c;
-      border-color: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.14);
     }
     .conn-card__left {
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 16px;
     }
     .conn-card__logo {
       width: 44px;
       height: 44px;
-      border-radius: 10px;
-      background: #000000;
-      border: 1px solid rgba(255, 255, 255, 0.08);
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-      overflow: hidden;
-      padding: 4px;
     }
     .conn-card__logo img {
       width: 100%;
       height: 100%;
       object-fit: contain;
-      border-radius: 6px;
     }
     .conn-card__info {
       display: flex;
       flex-direction: column;
-      gap: 2px;
+      gap: 3px;
     }
     .conn-card__name {
-      font-size: 0.92rem;
+      font-size: 0.95rem;
       font-weight: 800;
       color: #ffffff;
       letter-spacing: 0.04em;
@@ -576,19 +569,19 @@
       line-height: 1.2;
     }
     .conn-card__username {
-      font-size: 0.84rem;
+      font-size: 0.86rem;
       font-weight: 600;
-      color: #86efac; /* Soft green */
+      color: #86efac; /* Soft green from user reference image */
       line-height: 1.2;
     }
     .conn-card__username--unlinked {
-      color: var(--text-muted);
+      color: #64748b;
       font-weight: 500;
     }
     .conn-card__actions {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 12px;
     }
     .conn-icon-btn {
       display: inline-flex;
@@ -596,46 +589,27 @@
       justify-content: center;
       width: 36px;
       height: 36px;
-      border-radius: 10px;
       background: transparent;
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      border: none;
       color: #ffffff;
       cursor: pointer;
-      transition: all 0.16s ease;
+      padding: 0;
+      border-radius: 8px;
+      transition: opacity 0.16s ease, transform 0.16s ease;
     }
     .conn-icon-btn i {
-      width: 17px;
-      height: 17px;
-      color: #cbd5e1;
-      transition: transform 0.16s ease, color 0.16s ease;
+      width: 22px;
+      height: 22px;
+      stroke-width: 2.4;
+      color: #ffffff;
+      transition: transform 0.18s ease, color 0.18s ease;
     }
     .conn-icon-btn:hover {
-      background: rgba(255, 255, 255, 0.08);
-      border-color: rgba(255, 255, 255, 0.2);
-      color: #ffffff;
-      transform: translateY(-1px);
-    }
-    .conn-icon-btn:hover i {
-      color: #ffffff;
-    }
-    .conn-icon-btn--danger:hover {
-      background: rgba(239, 68, 68, 0.14);
-      border-color: rgba(239, 68, 68, 0.4);
+      opacity: 0.85;
+      transform: scale(1.1);
     }
     .conn-icon-btn--danger:hover i {
       color: #f87171;
-    }
-    .conn-status-chip {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 6px 12px;
-      border-radius: 8px;
-      background: rgba(16, 185, 129, 0.1);
-      border: 1px solid rgba(16, 185, 129, 0.25);
-      color: #34d399;
-      font-size: 0.78rem;
-      font-weight: 700;
     }
   </style>
 </head>
@@ -769,8 +743,8 @@
       <!-- Discord Account Connection Card -->
       <div class="conn-card">
         <div class="conn-card__left">
-          <div class="conn-card__logo" style="background:#5865F2;border-color:rgba(88,101,242,0.4);">
-            <i data-lucide="message-square" style="width:22px;height:22px;color:#ffffff;"></i>
+          <div class="conn-card__logo">
+            <img src="discord-icon.svg" alt="Discord" style="width:38px;height:38px;object-fit:contain;"/>
           </div>
           <div class="conn-card__info">
             <div class="conn-card__name">DISCORD</div>
@@ -778,8 +752,8 @@
           </div>
         </div>
         <div class="conn-card__actions">
-          <span class="conn-status-chip" title="Connected via Discord OAuth">
-            <i data-lucide="check" style="width:14px;height:14px;"></i> Connected
+          <span style="display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;" title="Connected via Discord OAuth">
+            <i data-lucide="check" style="width:22px;height:22px;color:#86efac;stroke-width:3;"></i>
           </span>
         </div>
       </div>
@@ -1614,7 +1588,7 @@
           <div class="conn-card">
             <div class="conn-card__left">
               <div class="conn-card__logo">
-                <img src="epicgamesblack.webp" alt="Epic Games"/>
+                <img src="epic_games_logo.webp" alt="Epic Games" style="width:34px;height:42px;object-fit:contain;"/>
               </div>
               <div class="conn-card__info">
                 <div class="conn-card__name">EPIC GAMES</div>
@@ -1623,9 +1597,6 @@
             </div>
             <div class="conn-card__actions">
               ${isViewingSelf ? `
-                <button class="conn-icon-btn" onclick="copyEpicTag('${escapeHtml(data.epicUsername)}')" title="Copy Fortnite IGN">
-                  <i data-lucide="copy"></i>
-                </button>
                 <button class="conn-icon-btn" id="sync-epic-btn" onclick="handleSyncEpic()" title="Sync Account">
                   <i data-lucide="rotate-cw"></i>
                 </button>
@@ -1645,7 +1616,7 @@
           <div class="conn-card">
             <div class="conn-card__left">
               <div class="conn-card__logo">
-                <img src="epicgamesblack.webp" alt="Epic Games"/>
+                <img src="epic_games_logo.webp" alt="Epic Games" style="width:34px;height:42px;object-fit:contain;"/>
               </div>
               <div class="conn-card__info">
                 <div class="conn-card__name">EPIC GAMES</div>
