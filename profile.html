@@ -1067,7 +1067,8 @@
       if (window.lucide) lucide.createIcons();
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
+    function initProfile() {
+      const loadingEl = document.getElementById('page-loading');
       requireAuth().then(async (user) => {
         currentUser = user;
         injectNav('profile');
@@ -1125,7 +1126,6 @@
 
         // Real-time target user data
         db.collection('users').doc(targetUid).onSnapshot(async (snap) => {
-          const loadingEl = document.getElementById('page-loading');
           if (loadingEl) loadingEl.classList.add('hidden');
 
           if (snap.exists) {
@@ -1133,8 +1133,16 @@
             if (isViewingSelf && !currentUserData.epicUsername && pendingEpic) {
               currentUserData.epicUsername = pendingEpic;
             }
-            renderProfile(currentUserData);
-            renderEpicTopSection(currentUserData);
+            try {
+              renderProfile(currentUserData);
+            } catch (err) {
+              console.error('renderProfile error:', err);
+            }
+            try {
+              renderEpicTopSection(currentUserData);
+            } catch (err) {
+              console.error('renderEpicTopSection error:', err);
+            }
             try {
               await loadUserTeam(targetUid);
             } catch (e) {
@@ -1148,7 +1156,6 @@
           }
         }, (err) => {
           console.warn('User profile snapshot error:', err);
-          const loadingEl = document.getElementById('page-loading');
           if (loadingEl) loadingEl.classList.add('hidden');
           renderEpicTopSection({});
           renderTeamSection(null);
@@ -1173,10 +1180,15 @@
         });
       }).catch(err => {
         console.error('Profile auth error:', err);
-        const loadingEl = document.getElementById('page-loading');
         if (loadingEl) loadingEl.classList.add('hidden');
       });
-    });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initProfile);
+    } else {
+      initProfile();
+    }
 
     async function renderProfile(data) {
       if (!data) return;
@@ -1339,9 +1351,12 @@
 
       const sinceEl = document.getElementById('profile-since');
       if (sinceEl && data.createdAt) {
-        const d = data.createdAt.toDate();
-        sinceEl.textContent =
-          'Member since ' + d.toLocaleDateString('en-US', { year:'numeric', month:'short', day:'numeric' });
+        try {
+          const d = typeof data.createdAt.toDate === 'function' ? data.createdAt.toDate() : new Date(data.createdAt);
+          if (!isNaN(d.getTime())) {
+            sinceEl.textContent = 'Member since ' + d.toLocaleDateString('en-US', { year:'numeric', month:'short', day:'numeric' });
+          }
+        } catch (e) {}
       }
       if (window.lucide) lucide.createIcons();
     }
