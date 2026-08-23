@@ -437,17 +437,58 @@
       updateCreatePreview();
     }
 
+    let selectedQueueType = 'solo';
+
+    function setQueueType(type) {
+      const size = document.getElementById('size-select').value;
+      if (size === '1v1' && type === 'team') {
+        showToast('1v1 matches are strictly Solo Queue. Choose 2v2 or 3v3 to queue with your team.', 'info');
+        type = 'solo';
+      }
+      selectedQueueType = type;
+      const btnSolo = document.getElementById('btn-queue-solo');
+      const btnTeam = document.getElementById('btn-queue-team');
+      if (btnSolo && btnTeam) {
+        btnSolo.className = `btn btn-sm ${type === 'solo' ? 'btn-primary' : 'btn-outline'}`;
+        btnTeam.className = `btn btn-sm ${type === 'team' ? 'btn-primary' : 'btn-outline'}`;
+      }
+      const infoBox = document.getElementById('team-queue-info-box');
+      const activeView = document.getElementById('team-queue-active-view');
+      const noTeamView = document.getElementById('team-queue-no-team-view');
+      if (infoBox) infoBox.style.display = type === 'team' ? 'block' : 'none';
+
+      if (type === 'team') {
+        if (currentUserData?.teamId) {
+          if (activeView) activeView.style.display = 'block';
+          if (noTeamView) noTeamView.style.display = 'none';
+          const teamNameEl = document.getElementById('team-queue-name');
+          if (teamNameEl) teamNameEl.textContent = currentUserData.teamName ? `${currentUserData.teamName} [${currentUserData.teamTag || ''}]` : 'Your Team';
+        } else {
+          if (activeView) activeView.style.display = 'none';
+          if (noTeamView) noTeamView.style.display = 'block';
+        }
+      }
+      updateCreatePreview();
+      if (window.lucide) lucide.createIcons();
+    }
+
     function updateCreatePreview() {
       const size  = document.getElementById('size-select').value;
       const mode  = document.getElementById('mode-select').value;
       const wager = parseFloat(document.getElementById('wager-input').value) || 0.50;
+
+      // Auto-revert 1v1 from team queue
+      if (size === '1v1' && selectedQueueType === 'team') {
+        setQueueType('solo');
+      }
 
       const playersMap = { '1v1': 2, '2v2': 4, '3v3': 6 };
       const players    = playersMap[size] || 2;
       const totalPool  = wager * players;
       const winPrize   = totalPool * 0.90;
 
-      document.getElementById('preview-title').textContent = `${size} ${mode}`;
+      const queueLabel = selectedQueueType === 'team' ? ' (Team Queue)' : '';
+      document.getElementById('preview-title').textContent = `${size} ${mode}${queueLabel}`;
       document.getElementById('preview-players').textContent = `${players} Players (${size})`;
       document.getElementById('preview-pool').textContent = `${formatTokens(totalPool)} Tokens ($${formatTokens(totalPool)})`;
       document.getElementById('preview-prize').textContent = `${formatTokens(winPrize)} Tokens ($${formatTokens(winPrize)})`;
@@ -470,6 +511,11 @@
         return;
       }
 
+      if (selectedQueueType === 'team' && !currentUserData?.teamId) {
+        showToast('You must join or create a team in Profile before using Team Queue', 'error');
+        return;
+      }
+
       if (Number(currentUserData.tokens || 0) < wager) {
         showToast(`Not enough tokens (Requires ${formatTokens(wager)} tokens for entry deposit)`, 'error');
         return;
@@ -483,6 +529,10 @@
           size,
           mode,
           wager,
+          queueType: selectedQueueType,
+          teamId: currentUserData?.teamId || null,
+          teamName: currentUserData?.teamName || null,
+          teamTag: currentUserData?.teamTag || null,
         });
         showToast(`Match "${title}" created! Opening room…`, 'success');
         closeCreateModal();
@@ -594,6 +644,43 @@
             <option value="2v2">2v2 (4 Players)</option>
             <option value="3v3">3v3 (6 Players)</option>
           </select>
+        </div>
+
+        <!-- Queue Type (Solo vs Team Queue) -->
+        <div class="form-group" id="queue-type-group">
+          <label class="form-label" style="display:flex;align-items:center;justify-content:space-between;">
+            <span>Queue Type</span>
+            <span id="queue-type-team-tag" style="display:none;font-size:0.75rem;color:var(--gold-bright);font-weight:800;"></span>
+          </label>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+            <button type="button" class="btn btn-sm btn-primary" id="btn-queue-solo" onclick="setQueueType('solo')" style="justify-content:center;font-size:0.82rem;gap:6px;">
+              <i data-lucide="user"></i> Solo Queue
+            </button>
+            <button type="button" class="btn btn-sm btn-outline" id="btn-queue-team" onclick="setQueueType('team')" style="justify-content:center;font-size:0.82rem;gap:6px;">
+              <i data-lucide="users"></i> Team Queue
+            </button>
+          </div>
+          <!-- Team Queue Info Box -->
+          <div id="team-queue-info-box" style="display:none;margin-top:10px;padding:12px;background:rgba(245,158,11,0.06);border:1px solid rgba(245,158,11,0.25);border-radius:8px;">
+            <div id="team-queue-active-view" style="display:none;">
+              <div style="font-size:0.8rem;color:#fff;font-weight:800;display:flex;align-items:center;gap:6px;">
+                <i data-lucide="users" style="width:14px;height:14px;color:var(--gold-bright);"></i>
+                <span>Queueing with: <strong id="team-queue-name" style="color:var(--gold-bright);">Your Team</strong></span>
+              </div>
+              <div style="font-size:0.75rem;color:var(--text-muted);margin-top:4px;" id="team-queue-roster-desc">
+                Your teammates will automatically receive a match invite in their Notifications menu to accept and join!
+              </div>
+            </div>
+            <div id="team-queue-no-team-view" style="display:none;">
+              <div style="font-size:0.8rem;color:#fca5a5;font-weight:800;display:flex;align-items:center;gap:6px;">
+                <i data-lucide="alert-triangle" style="width:14px;height:14px;color:var(--red);"></i>
+                <span>You are not in a team yet</span>
+              </div>
+              <div style="font-size:0.75rem;color:var(--text-muted);margin-top:4px;">
+                Go to <a href="profile?tab=overview" target="_blank" style="color:var(--gold-bright);text-decoration:underline;">Profile &gt; Teams</a> to create or join a team first, or use Solo Queue.
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- Game Mode -->

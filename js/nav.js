@@ -308,6 +308,7 @@ function renderNavNotifications(uid, notifs) {
   const iconMap = {
     match_win: '🏆',
     match_join: '🎮',
+    match_team_invite: '⚔️',
     team_invite: '🤝',
     income: '💰',
     system: '📢',
@@ -318,6 +319,7 @@ function renderNavNotifications(uid, notifs) {
     const icon = iconMap[n.type] || '🔔';
     const timeStr = n.createdAt ? formatTime(n.createdAt) : '';
     const isTeamInvite = n.type === 'team_invite' && !n.read && !n.accepted && !n.declined;
+    const isMatchTeamInvite = n.type === 'match_team_invite' && !n.read && !n.accepted && !n.declined;
 
     return `
       <div class="nav-notif-item${n.read ? '' : ' unread'}" data-id="${n.id}">
@@ -334,9 +336,18 @@ function renderNavNotifications(uid, notifs) {
                 Decline
               </button>
             </div>` : ''}
+          ${isMatchTeamInvite ? `
+            <div style="display:flex;gap:6px;margin-top:8px;">
+              <button class="btn btn-primary btn-sm" style="font-size:0.75rem;padding:4px 12px;gap:4px;" onclick="handleAcceptMatchTeamInvite('${n.id}','${n.matchId}','${n.matchCode || ''}',${n.wager || 0},event)">
+                <i data-lucide="play" style="width:12px;height:12px;"></i> Accept & Join
+              </button>
+              <button class="btn btn-outline btn-sm" style="font-size:0.75rem;padding:4px 10px;gap:4px;" onclick="handleDeclineMatchTeamInvite('${n.id}','${n.matchId}',event)">
+                <i data-lucide="x" style="width:12px;height:12px;"></i> Decline
+              </button>
+            </div>` : ''}
           ${timeStr ? `<div style="font-size:0.72rem;color:var(--text-faint);margin-top:4px;">${timeStr}</div>` : ''}
         </div>
-        ${!n.read && !isTeamInvite ? `<div class="nav-notif-dot"></div>` : ''}
+        ${!n.read && !isTeamInvite && !isMatchTeamInvite ? `<div class="nav-notif-dot"></div>` : ''}
       </div>`;
   }).join('');
 
@@ -347,6 +358,51 @@ async function handleMarkAllRead() {
   if (!_notifCurrentUid) return;
   if (typeof markNotificationsRead === 'function') {
     await markNotificationsRead(_notifCurrentUid);
+  }
+}
+
+async function handleAcceptMatchTeamInvite(notifId, matchId, matchCode, wager, e) {
+  if (e) e.stopPropagation();
+  const user = auth.currentUser;
+  if (!user || !_notifCurrentUid) return;
+
+  try {
+    const uData = await getUser(user.uid);
+    if (!uData?.epicUsername) {
+      showToast('Please link your Epic Games username in Profile before entering matches', 'error');
+      setTimeout(() => window.location.href = 'profile?tab=connections', 1000);
+      return;
+    }
+    if (Number(uData.tokens || 0) < Number(wager)) {
+      showToast(`Insufficient tokens (Requires ${formatTokens(wager)} Tokens entry fee)`, 'error');
+      return;
+    }
+
+    showToast('Joining team match…', 'info');
+    await acceptMatchTeamInvite(matchId, uData, notifId);
+    showToast('Accepted! Opening match arena…', 'success');
+
+    const dd = document.getElementById('nav-notif-dropdown');
+    if (dd) dd.classList.remove('open');
+
+    setTimeout(() => {
+      window.location.href = `match?id=${matchId}`;
+    }, 400);
+  } catch (err) {
+    showToast(err.message, 'error');
+  }
+}
+
+async function handleDeclineMatchTeamInvite(notifId, matchId, e) {
+  if (e) e.stopPropagation();
+  if (!_notifCurrentUid) return;
+  try {
+    await declineMatchTeamInvite(matchId, _notifCurrentUid, notifId);
+    showToast('Match invitation declined.', 'info');
+    const dd = document.getElementById('nav-notif-dropdown');
+    if (dd) dd.classList.remove('open');
+  } catch (err) {
+    showToast(err.message, 'error');
   }
 }
 

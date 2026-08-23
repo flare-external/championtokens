@@ -1120,6 +1120,27 @@
               </div>`;
           }
         } else {
+          const invitedTeammate = (teamName === 'Team 1' && match.invitedTeammates && match.invitedTeammates[slotIndex - 2]) ? match.invitedTeammates[slotIndex - 2] : null;
+          if (invitedTeammate && invitedTeammate.status === 'pending') {
+            const pfp = invitedTeammate.photoURL;
+            const initChar = (invitedTeammate.displayName || 'T').charAt(0).toUpperCase();
+            return `
+              <div class="player-slot-box" style="border:1px dashed rgba(245,158,11,0.4);background:rgba(245,158,11,0.04);">
+                <div class="slot-avatar-img" style="background:rgba(245,158,11,0.12);color:var(--gold-bright);border-color:rgba(245,158,11,0.35);">
+                  ${pfp ? `<img src="${escapeHtml(pfp)}" alt=""/>` : initChar}
+                </div>
+                <div style="flex:1;min-width:0;">
+                  <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+                    <span style="font-weight:800;font-size:0.95rem;color:#fff;">${escapeHtml(invitedTeammate.displayName)}</span>
+                    <span class="badge" style="background:rgba(245,158,11,0.18);color:var(--gold-bright);font-size:0.65rem;font-weight:700;">INVITED</span>
+                  </div>
+                  <div style="font-size:0.75rem;color:var(--gold-light);margin-top:2px;">
+                    ⏳ Pending Acceptance in Notifications…
+                  </div>
+                </div>
+              </div>`;
+          }
+
           return `
             <div class="player-slot-box empty-slot">
               <div class="slot-avatar-img">
