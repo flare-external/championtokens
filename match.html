@@ -1359,7 +1359,7 @@
             primaryActionContainer.innerHTML = `
               <button class="concept-btn-ready ${amIReady ? 'cancel' : ''}" onclick="handleReadyToggle(${!amIReady})">
                 <i data-lucide="${amIReady ? 'x' : 'check'}"></i>
-                <span>${amIReady ? 'Cancel Ready' : 'Ready'}</span>
+                <span>${amIReady ? 'Cancel' : 'Ready'}</span>
               </button>`;
           } else if (!isFull && !isExpired) {
             if (match.size !== '1v1' && currentUserData?.teamId) {
@@ -1440,7 +1440,7 @@
       if (!tag) return;
       if (navigator.clipboard) {
         navigator.clipboard.writeText(tag).then(() => {
-          showToast(`Epic IGN "${tag}" copied! Paste in Fortnite party finder.`, 'info');
+          showToast(`Epic IGN copied!`, 'info');
         });
       }
     }
@@ -1448,12 +1448,7 @@
     async function handleReadyToggle(isReady) {
       if (!matchId || !currentUser) return;
       try {
-        const res = await setPlayerReady(matchId, currentUser.uid, isReady);
-        if (res.allReady) {
-          showToast('Both teams READY! Match started & Fortnite tags unlocked!', 'success');
-        } else {
-          showToast(isReady ? 'Marked as Ready!' : 'Ready status cancelled', 'info');
-        }
+        await setPlayerReady(matchId, currentUser.uid, isReady);
       } catch (err) {
         showToast(err.message, 'error');
       }

@@ -1170,7 +1170,6 @@
         }
 
         if (urlParams.get('linked') === '1') {
-          showToast('Epic Games account verified & linked!', 'success');
           try {
             const cleanUrl = window.location.pathname + (urlParams.get('uid') ? `?uid=${urlParams.get('uid')}&tab=connections` : '?tab=connections');
             window.history.replaceState({}, document.title, cleanUrl);
