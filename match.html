@@ -18,19 +18,45 @@
       color: #f1f5f9;
       overflow-x: hidden;
     }
-    .match-page-wrap {
+    .match-page-layout {
       position: relative;
       z-index: 1;
-      max-width: 1540px;
-      margin: 0 auto;
-      padding: 16px 24px 36px;
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      min-height: calc(100vh - var(--nav-h));
+      width: 100%;
+      background: #000000;
+      box-sizing: border-box;
+      transition: grid-template-columns 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .match-page-layout.chat-collapsed {
+      grid-template-columns: 1fr 48px;
+    }
+    @media (max-width: 1080px) {
+      .match-page-layout {
+        grid-template-columns: 1fr;
+      }
+      .match-page-layout.chat-collapsed {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Left Stage Area */
+    .match-stage-left {
+      padding: 20px 32px 40px;
       display: flex;
       flex-direction: column;
       gap: 16px;
+      min-width: 0;
       box-sizing: border-box;
+      max-width: 1350px;
+      margin: 0 auto;
+      width: 100%;
     }
-    @media (max-width: 1024px) {
-      .match-page-wrap { padding: 12px 14px 28px; }
+    @media (max-width: 768px) {
+      .match-stage-left {
+        padding: 14px 14px 28px;
+      }
     }
 
     /* Top Centered Title */
@@ -99,27 +125,6 @@
     .concept-meta-link:hover {
       color: #fff;
       border-bottom-color: #fff;
-    }
-
-    /* Main Grid: Left Arena vs Right Session Chat */
-    .arena-main-grid {
-      display: grid;
-      grid-template-columns: 1fr 370px;
-      gap: 18px;
-      width: 100%;
-      align-items: stretch;
-      transition: grid-template-columns 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    .arena-main-grid.chat-collapsed {
-      grid-template-columns: 1fr 48px;
-    }
-    @media (max-width: 1024px) {
-      .arena-main-grid {
-        grid-template-columns: 1fr;
-      }
-      .arena-main-grid.chat-collapsed {
-        grid-template-columns: 1fr;
-      }
     }
 
     /* Arena Stage Card */
@@ -436,31 +441,40 @@
       transform: translateY(-1px);
     }
 
-    /* Session Chat Panel (Right) */
+    /* Session Chat Panel (Right Column — Full Height) */
     .session-chat-panel {
+      position: sticky;
+      top: var(--nav-h);
+      height: calc(100vh - var(--nav-h));
       background: #000000;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 20px;
+      border-left: 1px solid rgba(255, 255, 255, 0.08);
       display: flex;
       flex-direction: column;
-      height: 100%;
-      min-height: 520px;
       overflow: hidden;
-      box-shadow: 0 14px 45px rgba(0,0,0,0.85);
+      box-shadow: -8px 0 35px rgba(0,0,0,0.85);
       box-sizing: border-box;
+      z-index: 10;
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
-    .arena-main-grid.chat-collapsed .session-chat-panel {
-      border-radius: 16px;
-      cursor: pointer;
-      background: #05070a;
+    @media (max-width: 1080px) {
+      .session-chat-panel {
+        position: relative;
+        top: 0;
+        height: 480px;
+        border-left: none;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+      }
     }
-    .arena-main-grid.chat-collapsed .chat-msg-stream,
-    .arena-main-grid.chat-collapsed .chat-bottom-input,
-    .arena-main-grid.chat-collapsed .chat-header-label {
+    .match-page-layout.chat-collapsed .session-chat-panel {
+      background: #05070a;
+      cursor: pointer;
+    }
+    .match-page-layout.chat-collapsed .chat-msg-stream,
+    .match-page-layout.chat-collapsed .chat-bottom-input,
+    .match-page-layout.chat-collapsed .chat-header-label {
       display: none !important;
     }
-    .arena-main-grid.chat-collapsed .session-chat-header {
+    .match-page-layout.chat-collapsed .session-chat-header {
       padding: 16px 0;
       flex-direction: column;
       height: 100%;
@@ -471,9 +485,9 @@
       border-bottom: none;
     }
     .session-chat-header {
-      padding: 14px 18px;
+      padding: 16px 20px;
       background: #06080d;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
       font-weight: 800;
       font-size: 0.95rem;
       color: #fff;
@@ -483,6 +497,7 @@
       cursor: pointer;
       user-select: none;
       transition: background 0.15s;
+      flex-shrink: 0;
     }
     .session-chat-header:hover {
       background: #0c0f17;
@@ -513,7 +528,7 @@
     .chat-msg-stream {
       flex: 1;
       overflow-y: auto;
-      padding: 16px 18px;
+      padding: 18px 20px;
       display: flex;
       flex-direction: column;
       gap: 14px;
@@ -604,7 +619,7 @@
       align-items: center;
       gap: 10px;
       flex-shrink: 0;
-      border-top: 1px solid rgba(255,255,255,0.06);
+      border-top: 1px solid rgba(255,255,255,0.07);
     }
     .chat-input-pill {
       flex: 1;
@@ -670,58 +685,58 @@
     <span>Loading match lobby…</span>
   </div>
 
-  <main class="match-page-wrap">
-    <!-- Top Header: Centered Large 0v0 GAMEMODE -->
-    <div class="concept-top-section">
-      <h1 id="room-title" class="concept-main-title">1V1 REALISTIC</h1>
+  <main class="match-page-layout" id="match-page-layout">
+    <!-- Left Stage Content -->
+    <div class="match-stage-left">
+      <!-- Top Header: Centered Large 0v0 GAMEMODE -->
+      <div class="concept-top-section">
+        <h1 id="room-title" class="concept-main-title">1V1 REALISTIC</h1>
 
-      <!-- Top Metadata Pill Capsule -->
-      <div class="concept-meta-bar" id="concept-meta-bar">
-        <div class="concept-meta-item">Region: <strong id="meta-region" style="color:#fff;">EU</strong></div>
-        <div class="concept-meta-dot">·</div>
-        <div class="concept-meta-item">Platform: <strong id="meta-platform" style="color:#fff;">All</strong></div>
-        <div class="concept-meta-dot">·</div>
-        <div class="concept-meta-item">Format: <strong id="meta-rounds" style="color:#fff;">First to 5</strong></div>
-        <div class="concept-meta-dot">·</div>
-        <div class="concept-meta-item">
-          Map: <strong id="map-code-display" class="concept-meta-link" onclick="copyMapCode()" title="Click to copy map code">9854-1829-8735</strong>
-          <i data-lucide="copy" style="width:13px;height:13px;cursor:pointer;opacity:0.8;" onclick="copyMapCode()"></i>
-        </div>
-        <div class="concept-meta-dot">·</div>
-        <div class="concept-meta-item">Wager: <strong id="stakes-wager" style="color:#fff;">1.00 Tokens</strong></div>
-        <div class="concept-meta-dot">·</div>
-        <div class="concept-meta-item">Prize: <strong id="stakes-prize" style="color:var(--gold-bright);">1.80 Tokens</strong></div>
-        <div class="concept-meta-dot">·</div>
-        <div class="concept-meta-item">
-          <i data-lucide="clock" style="width:14px;height:14px;color:var(--gold-bright);"></i>
-          <span id="timer-clock" style="font-family:monospace;font-weight:800;color:#fff;">30:00</span>
+        <!-- Top Metadata Pill Capsule -->
+        <div class="concept-meta-bar" id="concept-meta-bar">
+          <div class="concept-meta-item">Region: <strong id="meta-region" style="color:#fff;">EU</strong></div>
+          <div class="concept-meta-dot">·</div>
+          <div class="concept-meta-item">Platform: <strong id="meta-platform" style="color:#fff;">All</strong></div>
+          <div class="concept-meta-dot">·</div>
+          <div class="concept-meta-item">Format: <strong id="meta-rounds" style="color:#fff;">First to 5</strong></div>
+          <div class="concept-meta-dot">·</div>
+          <div class="concept-meta-item">
+            Map: <strong id="map-code-display" class="concept-meta-link" onclick="copyMapCode()" title="Click to copy map code">9854-1829-8735</strong>
+            <i data-lucide="copy" style="width:13px;height:13px;cursor:pointer;opacity:0.8;" onclick="copyMapCode()"></i>
+          </div>
+          <div class="concept-meta-dot">·</div>
+          <div class="concept-meta-item">Wager: <strong id="stakes-wager" style="color:#fff;">1.00 Tokens</strong></div>
+          <div class="concept-meta-dot">·</div>
+          <div class="concept-meta-item">Prize: <strong id="stakes-prize" style="color:var(--gold-bright);">1.80 Tokens</strong></div>
+          <div class="concept-meta-dot">·</div>
+          <div class="concept-meta-item">
+            <i data-lucide="clock" style="width:14px;height:14px;color:var(--gold-bright);"></i>
+            <span id="timer-clock" style="font-family:monospace;font-weight:800;color:#fff;">30:00</span>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- Main Grid: Match Arena (Left) & Session Chat (Right) -->
-    <div class="arena-main-grid">
-      <!-- Left: Match Stage & VS Cards -->
+      <!-- Expired Notice Banner -->
+      <div id="match-expired-banner" style="display:none;" class="concept-alert-banner expired">
+        <i data-lucide="clock" style="width:20px;height:20px;color:var(--red);"></i>
+        <div>
+          <div style="font-weight:900;">Match Cancelled / Expired</div>
+          <div style="font-size:0.78rem;">All participants received a 100% full token refund.</div>
+        </div>
+      </div>
+
+      <!-- Dispute Notice Banner -->
+      <div id="dispute-alert-banner" style="display:none;" class="concept-alert-banner dispute">
+        <i data-lucide="shield-alert" style="width:20px;height:20px;color:var(--red);"></i>
+        <div style="flex:1;">
+          <div style="font-weight:900;">⚠️ Score Dispute Detected — Staff Summoned</div>
+          <div style="font-size:0.78rem;">Conflicting winner reports submitted. A moderator has been alerted.</div>
+          <div id="dispute-admin-actions" style="margin-top:6px;display:none;"></div>
+        </div>
+      </div>
+
+      <!-- Stage Card: VS Matchup + Bottom Action Bar -->
       <div class="stage-card">
-        <!-- Expired Notice Banner -->
-        <div id="match-expired-banner" style="display:none;" class="concept-alert-banner expired">
-          <i data-lucide="clock" style="width:20px;height:20px;color:var(--red);"></i>
-          <div>
-            <div style="font-weight:900;">Match Cancelled / Expired</div>
-            <div style="font-size:0.78rem;">All participants received a 100% full token refund.</div>
-          </div>
-        </div>
-
-        <!-- Dispute Notice Banner -->
-        <div id="dispute-alert-banner" style="display:none;" class="concept-alert-banner dispute">
-          <i data-lucide="shield-alert" style="width:20px;height:20px;color:var(--red);"></i>
-          <div style="flex:1;">
-            <div style="font-weight:900;">⚠️ Score Dispute Detected — Staff Summoned</div>
-            <div style="font-size:0.78rem;">Conflicting winner reports submitted. A moderator has been alerted.</div>
-            <div id="dispute-admin-actions" style="margin-top:6px;display:none;"></div>
-          </div>
-        </div>
-
         <!-- VS Battle Matchup Layout (2 Cards + VS) -->
         <div class="concept-vs-grid">
           <!-- Team 1 Card -->
@@ -771,32 +786,32 @@
           </div>
         </div>
       </div>
+    </div>
 
-      <!-- Right: Session Chat Panel -->
-      <div class="session-chat-panel" id="session-chat-panel">
-        <div class="session-chat-header" onclick="toggleChatCollapse()" title="Toggle Session Chat">
-          <div class="chat-header-title-wrap">
-            <i data-lucide="message-square" style="width:16px;height:16px;color:#22c55e;"></i>
-            <span class="chat-header-label">Session Chat</span>
-          </div>
-          <div class="chat-arrow-btn" id="chat-arrow-btn">
-            <i data-lucide="chevron-right" id="chat-arrow-icon" style="width:16px;height:16px;"></i>
-          </div>
+    <!-- Right Side: Full-height session chat from top nav bottom line to page bottom -->
+    <div class="session-chat-panel" id="session-chat-panel">
+      <div class="session-chat-header" onclick="toggleChatCollapse()" title="Toggle Session Chat">
+        <div class="chat-header-title-wrap">
+          <i data-lucide="message-square" style="width:16px;height:16px;color:#22c55e;"></i>
+          <span class="chat-header-label">Session Chat</span>
         </div>
-        <div class="chat-msg-stream" id="chat-messages"></div>
-        <form class="chat-bottom-input" onsubmit="sendChatMessage(event)">
-          <input
-            id="chat-input"
-            class="chat-input-pill"
-            placeholder="Type message.."
-            autocomplete="off"
-            required
-          />
-          <button type="submit" class="chat-send-btn" title="Send message">
-            <i data-lucide="send"></i>
-          </button>
-        </form>
+        <div class="chat-arrow-btn" id="chat-arrow-btn">
+          <i data-lucide="chevron-right" id="chat-arrow-icon" style="width:16px;height:16px;"></i>
+        </div>
       </div>
+      <div class="chat-msg-stream" id="chat-messages"></div>
+      <form class="chat-bottom-input" onsubmit="sendChatMessage(event)">
+        <input
+          id="chat-input"
+          class="chat-input-pill"
+          placeholder="Type message.."
+          autocomplete="off"
+          required
+        />
+        <button type="submit" class="chat-send-btn" title="Send message">
+          <i data-lucide="send"></i>
+        </button>
+      </form>
     </div>
   </main>
 
@@ -951,9 +966,9 @@
         injectNav('matches');
 
         if (localStorage.getItem('ct_chat_collapsed') === '1') {
-          const grid = document.querySelector('.arena-main-grid');
+          const layout = document.querySelector('.match-page-layout');
           const arrow = document.getElementById('chat-arrow-icon');
-          if (grid) grid.classList.add('chat-collapsed');
+          if (layout) layout.classList.add('chat-collapsed');
           if (arrow) arrow.setAttribute('data-lucide', 'chevron-left');
         }
 
@@ -1770,11 +1785,11 @@
 
     // ── Chat System with Modern Esports Stream Layout ────────
     function toggleChatCollapse() {
-      const grid = document.querySelector('.arena-main-grid');
+      const layout = document.querySelector('.match-page-layout');
       const arrow = document.getElementById('chat-arrow-icon');
-      if (!grid) return;
-      grid.classList.toggle('chat-collapsed');
-      const isCollapsed = grid.classList.contains('chat-collapsed');
+      if (!layout) return;
+      layout.classList.toggle('chat-collapsed');
+      const isCollapsed = layout.classList.contains('chat-collapsed');
       try {
         localStorage.setItem('ct_chat_collapsed', isCollapsed ? '1' : '0');
       } catch (e) {}
