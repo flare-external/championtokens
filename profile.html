@@ -519,11 +519,7 @@
       color: var(--gold-bright);
     }
     .profile-subtab-content {
-      animation: tabFadeIn 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    @keyframes tabFadeIn {
-      from { opacity: 0; transform: translateY(4px); }
-      to { opacity: 1; transform: translateY(0); }
+      /* Instant seamless tab display */
     }
   </style>
 </head>
@@ -546,17 +542,7 @@
         <div>
           <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
             <span style="font-size:1.6rem;font-weight:900;" id="profile-name">--</span>
-            
-            <!-- Interactive Title Tag & Animated Pen -->
-            <div class="title-interactive-container" id="title-interactive-container">
-              <div id="profile-title-slot" class="title-chip-clickable" onclick="openCosmeticsModal('titles')" title="Click to Change Title">
-                <span class="title-empty-placeholder">+ Set Title</span>
-              </div>
-              <button class="title-edit-pen-btn" id="title-edit-pen-btn" onclick="openCosmeticsModal('titles')" title="Customize Player Title">
-                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-              </button>
-            </div>
-
+            <div id="profile-title-slot" style="display:none;"></div>
             <div id="profile-badges-row" style="display:inline-flex;gap:6px;align-items:center;"></div>
           </div>
           <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:4px;">
@@ -565,16 +551,20 @@
           <div style="font-size:0.75rem;color:var(--text-faint);margin-top:4px;" id="profile-since"></div>
         </div>
       </div>
-      <div style="text-align:right;flex-shrink:0;display:flex;flex-direction:column;align-items:flex-end;gap:8px;">
-        <div id="profile-balance-box">
-          <div style="font-size:0.75rem;color:var(--text-muted);text-transform:uppercase;font-weight:700;">Token Balance</div>
-          <div style="font-size:2.2rem;font-weight:900;" class="stat-value--gold" id="profile-tokens">10.00</div>
+      <div style="text-align:right;flex-shrink:0;display:flex;flex-direction:column;align-items:flex-end;justify-content:space-between;gap:12px;min-height:75px;">
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;">
+          <div id="profile-rank-box" style="display:none;">
+            <div style="font-size:0.75rem;color:var(--text-muted);text-transform:uppercase;font-weight:700;">Leaderboard Rank</div>
+            <div id="profile-rank-badge" style="margin-top:4px;"></div>
+          </div>
+          <div id="premium-action-wrap"></div>
         </div>
-        <div id="profile-rank-box" style="display:none;">
-          <div style="font-size:0.75rem;color:var(--text-muted);text-transform:uppercase;font-weight:700;">Leaderboard Rank</div>
-          <div id="profile-rank-badge" style="margin-top:4px;"></div>
+        <div id="profile-customize-action">
+          <button class="btn btn-outline btn-sm" onclick="openCosmeticsModal('titles')" style="border-color:rgba(255,255,255,0.18);padding:7px 16px;font-size:0.82rem;gap:7px;">
+            <i data-lucide="palette" style="width:14px;height:14px;color:var(--gold-bright);"></i>
+            <span>Customize</span>
+          </button>
         </div>
-        <div id="premium-action-wrap"></div>
       </div>
     </div>
 
@@ -617,98 +607,13 @@
         </div>
       </div>
 
-      <!-- Unified Player Customization & Settings Hub -->
-      <div class="profile-settings-card" id="profile-settings-hub" style="margin-bottom:24px;">
-        <div class="section-title" style="margin-bottom:16px;color:#fff;">
-          <i data-lucide="settings" style="color:var(--gold-bright);"></i> Customization & Settings
-        </div>
-
-        <div class="settings-grid">
-          <!-- Setting 1: Player Title -->
-          <div class="setting-item-row" onclick="openCosmeticsModal('titles')">
-            <div class="setting-left">
-              <div class="setting-icon-box" style="color:var(--gold-bright);">
-                <i data-lucide="award"></i>
-              </div>
-              <div>
-                <div class="setting-title">Player Title</div>
-                <div class="setting-desc">Equipped cosmetic title shown on matches and leaderboard</div>
-              </div>
-            </div>
-            <div class="setting-right">
-              <div id="hub-current-title"><span class="title-empty-placeholder">+ Set Title</span></div>
-              <button class="setting-pen-btn" title="Customize Player Title" onclick="event.stopPropagation();openCosmeticsModal('titles')">
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-              </button>
-            </div>
-          </div>
-
-          <!-- Setting 2: Match & Profile Banner -->
-          <div class="setting-item-row" onclick="openCosmeticsModal('banners')">
-            <div class="setting-left">
-              <div class="setting-icon-box" style="color:#c084fc;">
-                <i data-lucide="palette"></i>
-              </div>
-              <div>
-                <div class="setting-title">Profile & Match Theme Banner</div>
-                <div class="setting-desc">Custom background color theme for your profile card</div>
-              </div>
-            </div>
-            <div class="setting-right">
-              <div id="hub-current-banner"><span class="chip" style="font-size:0.78rem;font-weight:700;">Coming Soon 🎨</span></div>
-              <button class="setting-pen-btn" title="Customize Theme Banner" onclick="event.stopPropagation();openCosmeticsModal('banners')">
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-              </button>
-            </div>
-          </div>
-
-          <!-- Setting 3: Username Color -->
-          <div class="setting-item-row" onclick="openStyleModal()">
-            <div class="setting-left">
-              <div class="setting-icon-box" style="color:var(--gold-bright);">
-                <i data-lucide="sparkles"></i>
-              </div>
-              <div>
-                <div class="setting-title">Subscriber Name Color</div>
-                <div class="setting-desc">Subscriber Gold username styling for Premium pass holders</div>
-              </div>
-            </div>
-            <div class="setting-right">
-              <div id="hub-current-style"><span class="chip" style="font-size:0.78rem;font-weight:700;">Default</span></div>
-              <button class="setting-pen-btn" title="Customize Username Color" onclick="event.stopPropagation();openStyleModal()">
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-              </button>
-            </div>
-          </div>
-
-          <!-- Setting 4: Squad Team -->
-          <div class="setting-item-row" onclick="handleTeamRowClick()">
-            <div class="setting-left">
-              <div class="setting-icon-box" style="color:#34d399;">
-                <i data-lucide="users"></i>
-              </div>
-              <div>
-                <div class="setting-title">Squad Team & Clan Tag</div>
-                <div class="setting-desc">Your 2v2 duos and 3v3 squad tournament roster</div>
-              </div>
-            </div>
-            <div class="setting-right">
-              <div id="hub-current-team"><span style="color:var(--text-muted);font-size:0.82rem;">No Squad</span></div>
-              <button class="setting-pen-btn" title="Create or Join Team" onclick="event.stopPropagation();handleTeamRowClick()">
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Squad Team Details Section (When on a team or viewing others) -->
-      <div class="team-section-card" id="team-section-card" style="display:none;">
-        <div class="section-title" style="margin-bottom:12px;color:#fff;">
+      <!-- Squad Team Section Card -->
+      <div class="card" id="team-section-card" style="background:#080808;border:1px solid rgba(255,255,255,0.08);padding:24px;border-radius:var(--radius-xl);margin-bottom:24px;">
+        <div class="section-title" style="margin-bottom:14px;color:#fff;display:flex;align-items:center;gap:10px;">
           <i data-lucide="shield" style="color:var(--purple);"></i> Squad Team Roster
         </div>
         <div id="team-content">
-          <div class="spinner" style="margin:12px 0;"></div>
+          <div class="spinner" style="margin:12px auto;"></div>
         </div>
       </div>
     </div>
@@ -891,10 +796,13 @@
       <!-- Tab Switcher -->
       <div class="cosmetics-modal-tabs">
         <button class="cosmetics-tab-btn active" id="tab-btn-titles" onclick="switchCosmeticsTab('titles')">
-          <i data-lucide="award"></i> Player Titles
+          <i data-lucide="award"></i> Titles
         </button>
         <button class="cosmetics-tab-btn" id="tab-btn-banners" onclick="switchCosmeticsTab('banners')">
-          <i data-lucide="palette"></i> Profile Banners
+          <i data-lucide="palette"></i> Banners
+        </button>
+        <button class="cosmetics-tab-btn" id="tab-btn-other" onclick="switchCosmeticsTab('other')">
+          <i data-lucide="sparkles"></i> Other
         </button>
       </div>
 
@@ -927,6 +835,10 @@
         <div class="cosmetics-item-grid" id="banners-grid-list">
           <div class="spinner" style="margin:20px auto;"></div>
         </div>
+      </div>
+
+      <!-- Other View -->
+      <div id="cosmetics-other-view" style="display:none;min-height:120px;">
       </div>
     </div>
   </div>
@@ -1153,24 +1065,24 @@
         nameEl.className = isPremium ? 'username-premium' : '';
       }
 
-      // Title Tag & Interactive Quick-Edit Pen
+      // Title Tag
       const titleSlot = document.getElementById('profile-title-slot');
-      const penBtn = document.getElementById('title-edit-pen-btn');
-      const themeBtn = document.getElementById('hero-theme-palette-btn');
-
       if (titleSlot) {
         if (data.equippedTitle && SHOP_TITLES[data.equippedTitle]) {
           const t = SHOP_TITLES[data.equippedTitle];
           titleSlot.innerHTML = `<span class="player-title-tag ${t.className}">${t.name}</span>`;
-        } else if (isViewingSelf) {
-          titleSlot.innerHTML = `<span class="title-empty-placeholder"><i data-lucide="plus" style="width:11px;height:11px;"></i> Set Title</span>`;
+          titleSlot.style.display = 'inline-flex';
         } else {
           titleSlot.innerHTML = '';
+          titleSlot.style.display = 'none';
         }
       }
 
-      if (penBtn) penBtn.style.display = isViewingSelf ? 'inline-flex' : 'none';
-      if (themeBtn) themeBtn.style.display = isViewingSelf ? 'inline-flex' : 'none';
+      // Customize Button (Account owner only)
+      const custAction = document.getElementById('profile-customize-action');
+      if (custAction) {
+        custAction.style.display = isViewingSelf ? 'block' : 'none';
+      }
 
       // Banner Theme on Hero
       const heroCard = document.getElementById('profile-hero');
@@ -1190,20 +1102,13 @@
         badgesRow.innerHTML = bHtml;
       }
 
-      // Token Balance (Private: only for account owner)
-      const balBox = document.getElementById('profile-balance-box');
+      // Rank Box
       const rankBox = document.getElementById('profile-rank-box');
-      if (balBox && rankBox) {
-        if (isViewingSelf) {
-          balBox.style.display = 'block';
-          rankBox.style.display = 'none';
-        } else {
-          balBox.style.display = 'none';
-          rankBox.style.display = 'block';
-        }
+      if (rankBox) {
+        rankBox.style.display = 'block';
       }
 
-      // Premium Action Button (Remove "Premium Active" text completely per user request)
+      // Premium Action Button
       const premWrap = document.getElementById('premium-action-wrap');
       if (premWrap) {
         if (isViewingSelf) {
@@ -1355,24 +1260,19 @@
     }
 
     function switchCosmeticsTab(tab) {
+      const validTabs = ['titles', 'banners', 'other'];
+      if (!validTabs.includes(tab)) tab = 'titles';
       currentCosmeticsTab = tab;
-      const tabTitles = document.getElementById('tab-btn-titles');
-      const tabBanners = document.getElementById('tab-btn-banners');
-      const viewTitles = document.getElementById('cosmetics-titles-view');
-      const viewBanners = document.getElementById('cosmetics-banners-view');
 
-      if (tab === 'titles') {
-        if (tabTitles) tabTitles.classList.add('active');
-        if (tabBanners) tabBanners.classList.remove('active');
-        if (viewTitles) viewTitles.style.display = 'block';
-        if (viewBanners) viewBanners.style.display = 'none';
-      } else {
-        if (tabTitles) tabTitles.classList.remove('active');
-        if (tabBanners) tabBanners.classList.add('active');
-        if (viewTitles) viewTitles.style.display = 'none';
-        if (viewBanners) viewBanners.style.display = 'block';
-      }
+      validTabs.forEach(t => {
+        const btn = document.getElementById(`tab-btn-${t}`);
+        const view = document.getElementById(`cosmetics-${t}-view`);
+        if (btn) btn.classList.toggle('active', t === tab);
+        if (view) view.style.display = t === tab ? 'block' : 'none';
+      });
+
       updateCosmeticsPreview();
+      if (window.lucide) lucide.createIcons();
     }
 
     function updateCosmeticsPreview() {
@@ -1835,7 +1735,7 @@
         }
       }
       if (teamCard) {
-        teamCard.style.display = (team || !isViewingSelf) ? 'block' : 'none';
+        teamCard.style.display = 'block';
       }
 
       const el = document.getElementById('team-content');
