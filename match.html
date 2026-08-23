@@ -59,48 +59,77 @@
       }
     }
 
-    /* Top Centered Title & Gamemode Banner */
-    .concept-top-section {
+    /* Top Hero Arena Banner with Map Backdrop */
+    .concept-hero-banner {
+      position: relative;
+      width: 100%;
+      border-radius: 24px;
+      background-size: cover;
+      background-position: center 30%;
+      background-repeat: no-repeat;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 16px 45px rgba(0, 0, 0, 0.9), 0 0 35px rgba(34, 197, 94, 0.12);
+      transition: background-image 0.4s ease;
+      margin-bottom: 2px;
+    }
+    .concept-hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at center top, rgba(5, 7, 10, 0.4) 0%, rgba(0, 0, 0, 0.88) 75%, #000000 100%),
+                  linear-gradient(180deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.75) 60%, #000000 100%);
+      backdrop-filter: blur(1.5px);
+      z-index: 1;
+    }
+    .concept-hero-backdrop-glow {
+      position: absolute;
+      top: -50px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 400px;
+      height: 200px;
+      background: radial-gradient(circle, rgba(34, 197, 94, 0.22) 0%, rgba(34, 197, 94, 0) 70%);
+      pointer-events: none;
+      z-index: 1;
+    }
+    .concept-hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 38px 24px 30px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
       text-align: center;
-      width: 100%;
-      margin-bottom: 2px;
-    }
-    .concept-mode-thumb-wrap {
-      width: 260px;
-      height: 130px;
-      border-radius: 20px;
-      overflow: hidden;
-      border: 2px solid rgba(34, 197, 94, 0.45);
-      box-shadow: 0 0 35px rgba(34, 197, 94, 0.35), 0 10px 25px rgba(0,0,0,0.8);
-      background: #080a10;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 4px;
     }
     @media (max-width: 768px) {
-      .concept-mode-thumb-wrap {
-        width: 190px;
-        height: 100px;
-        border-radius: 16px;
+      .concept-hero-content {
+        padding: 24px 14px 20px;
+        gap: 10px;
       }
     }
-    .concept-mode-thumb-wrap img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+    .concept-hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.72rem;
+      font-weight: 900;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #22c55e;
+      background: rgba(0, 0, 0, 0.65);
+      border: 1px solid rgba(34, 197, 94, 0.4);
+      padding: 4px 14px;
+      border-radius: 20px;
+      box-shadow: 0 0 16px rgba(34, 197, 94, 0.25);
     }
     .concept-main-title {
-      font-size: 2.2rem;
+      font-size: 2.35rem;
       font-weight: 900;
       color: #22c55e;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.07em;
       text-transform: uppercase;
-      text-shadow: 0 0 24px rgba(34, 197, 94, 0.55), 0 0 50px rgba(34, 197, 94, 0.3);
+      text-shadow: 0 0 24px rgba(34, 197, 94, 0.6), 0 0 50px rgba(34, 197, 94, 0.35);
       margin: 0;
       display: flex;
       align-items: center;
@@ -716,33 +745,38 @@
   <main class="match-page-layout" id="match-page-layout">
     <!-- Left Stage Content -->
     <div class="match-stage-left">
-      <!-- Top Header: Centered Large 0v0 GAMEMODE -->
-      <div class="concept-top-section">
-        <div class="concept-mode-thumb-wrap">
-          <img id="concept-mode-img" src="realistic.png" alt="Mode Image" onerror="this.style.display='none'"/>
-        </div>
-        <h1 id="room-title" class="concept-main-title">1V1 REALISTIC</h1>
-
-        <!-- Top Metadata Pill Capsule -->
-        <div class="concept-meta-bar" id="concept-meta-bar">
-          <div class="concept-meta-item">Region: <strong id="meta-region" style="color:#fff;">EU</strong></div>
-          <div class="concept-meta-dot">·</div>
-          <div class="concept-meta-item">Platform: <strong id="meta-platform" style="color:#fff;">All</strong></div>
-          <div class="concept-meta-dot">·</div>
-          <div class="concept-meta-item">Format: <strong id="meta-rounds" style="color:#fff;">First to 5</strong></div>
-          <div class="concept-meta-dot">·</div>
-          <div class="concept-meta-item">
-            Map: <strong id="map-code-display" class="concept-meta-link" onclick="copyMapCode()" title="Click to copy map code">9854-1829-8735</strong>
-            <i data-lucide="copy" style="width:13px;height:13px;cursor:pointer;opacity:0.8;" onclick="copyMapCode()"></i>
+      <!-- Top Header: Hero Arena Banner with Map Backdrop -->
+      <div class="concept-hero-banner" id="concept-hero-banner" style="background-image: url('realistic.png');">
+        <div class="concept-hero-backdrop-glow"></div>
+        <div class="concept-hero-overlay"></div>
+        <div class="concept-hero-content">
+          <div class="concept-hero-badge">
+            <i data-lucide="crosshair" style="width:13px;height:13px;color:#22c55e;"></i>
+            <span id="concept-mode-badge-text">COMPETITIVE ARENA</span>
           </div>
-          <div class="concept-meta-dot">·</div>
-          <div class="concept-meta-item">Wager: <strong id="stakes-wager" style="color:#fff;">1.00 Tokens</strong></div>
-          <div class="concept-meta-dot">·</div>
-          <div class="concept-meta-item">Prize: <strong id="stakes-prize" style="color:var(--gold-bright);">1.80 Tokens</strong></div>
-          <div class="concept-meta-dot">·</div>
-          <div class="concept-meta-item">
-            <i data-lucide="clock" style="width:14px;height:14px;color:var(--gold-bright);"></i>
-            <span id="timer-clock" style="font-family:monospace;font-weight:800;color:#fff;">30:00</span>
+          <h1 id="room-title" class="concept-main-title">1V1 REALISTIC</h1>
+
+          <!-- Top Metadata Pill Capsule -->
+          <div class="concept-meta-bar" id="concept-meta-bar">
+            <div class="concept-meta-item">Region: <strong id="meta-region" style="color:#fff;">EU</strong></div>
+            <div class="concept-meta-dot">·</div>
+            <div class="concept-meta-item">Platform: <strong id="meta-platform" style="color:#fff;">All</strong></div>
+            <div class="concept-meta-dot">·</div>
+            <div class="concept-meta-item">Format: <strong id="meta-rounds" style="color:#fff;">First to 5</strong></div>
+            <div class="concept-meta-dot">·</div>
+            <div class="concept-meta-item">
+              Map: <strong id="map-code-display" class="concept-meta-link" onclick="copyMapCode()" title="Click to copy map code">9854-1829-8735</strong>
+              <i data-lucide="copy" style="width:13px;height:13px;cursor:pointer;opacity:0.8;" onclick="copyMapCode()"></i>
+            </div>
+            <div class="concept-meta-dot">·</div>
+            <div class="concept-meta-item">Wager: <strong id="stakes-wager" style="color:#fff;">1.00 Tokens</strong></div>
+            <div class="concept-meta-dot">·</div>
+            <div class="concept-meta-item">Prize: <strong id="stakes-prize" style="color:var(--gold-bright);">1.80 Tokens</strong></div>
+            <div class="concept-meta-dot">·</div>
+            <div class="concept-meta-item">
+              <i data-lucide="clock" style="width:14px;height:14px;color:var(--gold-bright);"></i>
+              <span id="timer-clock" style="font-family:monospace;font-weight:800;color:#fff;">30:00</span>
+            </div>
           </div>
         </div>
       </div>
@@ -1173,11 +1207,16 @@
       const mapCode = match.mapCode || defaultMapCode;
 
       // 1. Top Header & Metadata Bar
-      const modeImgEl = document.getElementById('concept-mode-img');
-      if (modeImgEl) {
-        if (mode === 'Zone Wars') modeImgEl.src = 'zonewars.jpeg';
-        else if (mode === 'Box Fights') modeImgEl.src = 'boxfights.jpeg';
-        else modeImgEl.src = 'realistic.png';
+      const heroBannerEl = document.getElementById('concept-hero-banner');
+      if (heroBannerEl) {
+        let bgImg = 'realistic.png';
+        if (mode === 'Zone Wars') bgImg = 'zonewars.jpeg';
+        else if (mode === 'Box Fights') bgImg = 'boxfights.jpeg';
+        heroBannerEl.style.backgroundImage = `url('${bgImg}')`;
+      }
+      const modeBadgeText = document.getElementById('concept-mode-badge-text');
+      if (modeBadgeText) {
+        modeBadgeText.textContent = `${mode} COMPETITIVE ARENA`.toUpperCase();
       }
 
       const titleEl = document.getElementById('room-title');
