@@ -1200,9 +1200,21 @@
       }
 
       // 3. Teams Matching Logic
-      const halfCount = maxPlayers / 2;
-      const team1Players = players.filter(p => p.team === 1 || p.isHost || p.isTeammate || p.uid === match.createdBy || (match.teamId && p.teamId === match.teamId));
-      const team2Players = players.filter(p => !team1Players.includes(p));
+      const halfCount = Math.max(1, (maxPlayers || 2) / 2);
+      const team1Players = [];
+      const team2Players = [];
+
+      players.forEach(p => {
+        if (p.team === 2 || p.team === 'team2') {
+          team2Players.push(p);
+        } else if (p.team === 1 || p.team === 'team1') {
+          team1Players.push(p);
+        } else if (p.isHost || p.uid === match.createdBy || p.isTeammate || (match.teamId && p.teamId === match.teamId)) {
+          team1Players.push(p);
+        } else {
+          team2Players.push(p);
+        }
+      });
 
       const isUserInTeam1 = team1Players.some(p => p.uid === currentUser?.uid);
       const isUserInTeam2 = team2Players.some(p => p.uid === currentUser?.uid);
