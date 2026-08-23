@@ -227,16 +227,31 @@ function requireAuth(redirectTo = 'index.html') {
   });
 }
 
+/** Platform Owner / Highest Admin Discord ID & UID */
+const OWNER_DISCORD_ID = '1121188319410278420';
+const OWNER_UID = 'discord:1121188319410278420';
+
 /** Admin Discord IDs list */
 const ADMIN_DISCORD_IDS = ['1121188319410278420'];
+
+/**
+ * Check if the given user is the Platform Owner / Highest Admin
+ */
+function isOwnerUser(user, userData = null) {
+  if (!user && !userData) return false;
+  const uid = user?.uid || userData?.uid || userData?.id || '';
+  const discordId = userData?.discordId || (uid.startsWith('discord:') ? uid.replace('discord:', '') : '');
+  return discordId === OWNER_DISCORD_ID || uid === OWNER_UID || uid === OWNER_DISCORD_ID;
+}
 
 /**
  * Check if the given user is an administrator
  */
 function isAdminUser(user, userData = null) {
   if (!user && !userData) return false;
-  const uid = user?.uid || userData?.uid || '';
-  const discordId = userData?.discordId || uid.replace('discord:', '');
+  if (isOwnerUser(user, userData)) return true;
+  const uid = user?.uid || userData?.uid || userData?.id || '';
+  const discordId = userData?.discordId || (uid.startsWith('discord:') ? uid.replace('discord:', '') : '');
   if (user?.isAnonymous || userData?.isGuest === true || uid.startsWith('guest_') || discordId.startsWith('guest_')) {
     return false;
   }

@@ -1728,9 +1728,24 @@ async function markNotificationsRead(uid) {
 
 /**
  * Ban a user. Sets banned:true and records the reason.
+ * Hierarchy rules: Owner can never be banned. Admins cannot ban other admins.
  */
-async function adminBanUser(targetUid, adminName, reason = 'Violation of terms') {
+async function adminBanUser(targetUid, adminName, reason = 'Violation of terms', callerUid = null) {
   if (!targetUid) throw new Error('Target UID required');
+  if (targetUid === OWNER_UID || targetUid.includes(OWNER_DISCORD_ID)) {
+    throw new Error('The Platform Owner cannot be banned.');
+  }
+
+  const targetSnap = await db.collection('users').doc(targetUid).get();
+  const targetData = targetSnap.data() || {};
+
+  const isTargetAdmin = isOwnerUser(null, targetData) || isAdminUser(null, targetData);
+  const isCallerOwner = callerUid ? (callerUid === OWNER_UID || callerUid.includes(OWNER_DISCORD_ID)) : false;
+
+  if (isTargetAdmin && !isCallerOwner) {
+    throw new Error('Administrators cannot ban other administrators.');
+  }
+
   await db.collection('users').doc(targetUid).update({
     banned: true,
     bannedAt: firebase.firestore.FieldValue.serverTimestamp(),
@@ -1754,12 +1769,24 @@ async function adminUnbanUser(targetUid) {
 
 /**
  * Delete a user account from Firestore completely.
+ * Hierarchy rules: Owner cannot be deleted. Admins cannot delete other admins.
  */
-async function adminDeleteUser(targetUid, adminName) {
+async function adminDeleteUser(targetUid, adminName, callerUid = null) {
   if (!targetUid) throw new Error('Target UID required');
+  if (targetUid === OWNER_UID || targetUid.includes(OWNER_DISCORD_ID)) {
+    throw new Error('The Platform Owner account cannot be deleted.');
+  }
+
   const userRef = db.collection('users').doc(targetUid);
   const userSnap = await userRef.get();
   const userData = userSnap.data() || {};
+
+  const isTargetAdmin = isOwnerUser(null, userData) || isAdminUser(null, userData);
+  const isCallerOwner = callerUid ? (callerUid === OWNER_UID || callerUid.includes(OWNER_DISCORD_ID)) : false;
+
+  if (isTargetAdmin && !isCallerOwner) {
+    throw new Error('Administrators cannot delete other administrators.');
+  }
 
   // Clean up any team owned by this user
   try {
@@ -1857,9 +1884,19 @@ async function adminUnlinkEpic(targetUid) {
 
 /**
  * Toggle Admin/Staff status for a user.
+ * Hierarchy rules: Only the Platform Owner can grant or revoke admin privileges.
  */
-async function adminToggleAdmin(targetUid, makeAdmin) {
+async function adminToggleAdmin(targetUid, makeAdmin, callerUid = null) {
   if (!targetUid) throw new Error('Target UID required');
+  if (targetUid === OWNER_UID || targetUid.includes(OWNER_DISCORD_ID)) {
+    throw new Error('The Platform Owner permissions cannot be modified.');
+  }
+
+  const isCallerOwner = callerUid ? (callerUid === OWNER_UID || callerUid.includes(OWNER_DISCORD_ID)) : false;
+  if (callerUid && !isCallerOwner) {
+    throw new Error('Only the Platform Owner can promote or demote administrators.');
+  }
+
   await db.collection('users').doc(targetUid).update({
     isAdmin: !!makeAdmin,
   });

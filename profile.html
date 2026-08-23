@@ -1324,7 +1324,11 @@
       const badgesRow = document.getElementById('profile-badges-row');
       if (badgesRow) {
         let bHtml = '';
-        if (isStaff) bHtml += `<span class="badge-staff"><i data-lucide="shield-check" style="width:12px;height:12px;"></i> STAFF</span>`;
+        if (isOwnerUser(null, data) || targetUid === OWNER_UID || (targetUid && targetUid.includes(OWNER_DISCORD_ID))) {
+          bHtml += `<span class="badge-staff" style="background:rgba(245,158,11,0.22);color:var(--gold-bright);border:1px solid var(--gold-bright);box-shadow:0 0 12px var(--gold-glow);"><i data-lucide="crown" style="width:12px;height:12px;"></i> OWNER</span>`;
+        } else if (isStaff) {
+          bHtml += `<span class="badge-staff"><i data-lucide="shield-check" style="width:12px;height:12px;"></i> STAFF</span>`;
+        }
         if (isPremium) bHtml += `<span class="badge-premium"><i data-lucide="crown" style="width:12px;height:12px;"></i> PREMIUM</span>`;
         badgesRow.innerHTML = bHtml;
       }
