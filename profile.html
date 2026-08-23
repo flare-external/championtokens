@@ -245,21 +245,21 @@
       padding: 8px 12px;
     }
 
-    .matches-history { display: flex; flex-direction: column; gap: 10px; }
+    .matches-history { display: flex; flex-direction: column; gap: 10px; overflow-x: hidden; }
     .mh-card {
-      background: rgba(14, 18, 34, 0.95);
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      border-radius: var(--radius-md);
+      background: #000000;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
       padding: 14px 16px;
       display: flex;
       align-items: center;
       gap: 12px;
-      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all 0.18s ease;
     }
     .mh-card:hover {
-      border-color: var(--border-bright);
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(0,0,0,0.6);
+      background: #080808;
+      border-color: rgba(255, 255, 255, 0.16);
+      transform: translateY(-1px);
     }
 
     /* Cosmetics Studio Modal Tabs & Grids */
@@ -529,9 +529,10 @@
       justify-content: space-between;
       background: #000000;
       border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 14px;
-      padding: 12px 18px;
-      margin-bottom: 12px;
+      border-radius: 16px;
+      padding: 18px 22px;
+      min-height: 74px;
+      margin-bottom: 14px;
       transition: border-color 0.2s ease, background 0.2s ease;
     }
     .conn-card:hover {
@@ -540,32 +541,32 @@
     .conn-card__left {
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 16px;
     }
     .conn-card__logo {
-      width: 38px;
-      height: 38px;
-      border-radius: 10px;
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
       background: #080808;
       border: 1px solid rgba(255, 255, 255, 0.08);
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-      padding: 4px;
+      padding: 6px;
     }
     .conn-card__logo img {
-      max-width: 24px;
-      max-height: 24px;
+      max-width: 28px;
+      max-height: 28px;
       object-fit: contain;
     }
     .conn-card__info {
       display: flex;
       flex-direction: column;
-      gap: 2px;
+      gap: 3px;
     }
     .conn-card__name {
-      font-size: 0.90rem;
+      font-size: 0.94rem;
       font-weight: 800;
       color: #ffffff;
       letter-spacing: 0.04em;
@@ -573,7 +574,7 @@
       line-height: 1.2;
     }
     .conn-card__username {
-      font-size: 0.82rem;
+      font-size: 0.86rem;
       font-weight: 600;
       color: #86efac; /* Soft green */
       line-height: 1.2;
@@ -585,15 +586,15 @@
     .conn-card__actions {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
     }
     .conn-icon-btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 32px;
-      height: 32px;
-      border-radius: 8px;
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
       background: rgba(255, 255, 255, 0.04);
       border: 1px solid rgba(255, 255, 255, 0.08);
       color: #ffffff;
@@ -602,8 +603,8 @@
       transition: all 0.16s ease;
     }
     .conn-icon-btn i {
-      width: 15px;
-      height: 15px;
+      width: 17px;
+      height: 17px;
       stroke-width: 2.2;
       color: #e2e8f0;
       transition: transform 0.16s ease, color 0.16s ease;
@@ -623,6 +624,82 @@
     }
     .conn-icon-btn--danger:hover i {
       color: #f87171;
+    }
+
+    /* ── Activity / Transaction Feed ── */
+    .tx-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      overflow-x: hidden !important;
+    }
+    .tx-item {
+      background: #000000;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: all 0.18s ease;
+    }
+    .tx-item:hover {
+      background: #080808;
+      border-color: rgba(255, 255, 255, 0.16);
+    }
+
+    /* ── Pagination Buttons ── */
+    .ct-pagination {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 16px;
+      padding: 8px 0;
+    }
+    .ct-page-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 7px 16px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #e2e8f0;
+      background: #080808;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.18s ease;
+      user-select: none;
+    }
+    .ct-page-btn i {
+      width: 14px;
+      height: 14px;
+      color: var(--gold-bright);
+      stroke-width: 2.5;
+    }
+    .ct-page-btn:hover:not(:disabled) {
+      background: #141414;
+      border-color: rgba(245, 158, 11, 0.45);
+      color: #ffffff;
+      transform: translateY(-1px);
+    }
+    .ct-page-btn:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+      border-color: rgba(255, 255, 255, 0.05);
+      background: transparent;
+      color: #64748b;
+    }
+    .ct-page-btn:disabled i {
+      color: #64748b;
+    }
+    .ct-page-info {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #94a3b8;
+      padding: 0 4px;
     }
   </style>
 </head>
@@ -728,7 +805,7 @@
           <div class="section-title" style="margin-bottom:14px;">
             <i data-lucide="activity"></i> Transaction History
           </div>
-          <div class="tx-list" id="tx-list" style="flex:1;overflow-y:auto;max-height:460px;min-height:220px;">
+          <div class="tx-list" id="tx-list" style="flex:1;overflow-y:auto;overflow-x:hidden;max-height:460px;min-height:220px;">
             <div class="empty-state"><div class="spinner" style="margin:0 auto;"></div></div>
           </div>
           <div class="ct-pagination" id="profile-tx-pagination"></div>
@@ -738,7 +815,7 @@
           <div class="section-title" style="margin-bottom:14px;">
             <i data-lucide="swords"></i> Match History
           </div>
-          <div class="matches-history" id="match-history" style="flex:1;overflow-y:auto;max-height:460px;min-height:220px;">
+          <div class="matches-history" id="match-history" style="flex:1;overflow-y:auto;overflow-x:hidden;max-height:460px;min-height:220px;">
             <div class="empty-state"><div class="spinner" style="margin:0 auto;"></div></div>
           </div>
           <div class="ct-pagination" id="profile-mh-pagination"></div>
@@ -1032,7 +1109,7 @@
         if (urlParams.get('linked') === '1') {
           showToast('Epic Games account verified & linked!', 'success');
           try {
-            const cleanUrl = window.location.pathname + (urlParams.get('uid') ? `?uid=${urlParams.get('uid')}` : '');
+            const cleanUrl = window.location.pathname + (urlParams.get('uid') ? `?uid=${urlParams.get('uid')}&tab=connections` : '?tab=connections');
             window.history.replaceState({}, document.title, cleanUrl);
           } catch (e) {}
         }
