@@ -71,22 +71,25 @@ function injectNav(activePage = '') {
 
             <!-- Dropdown Menu -->
             <div class="nav-dropdown-menu" id="nav-profile-dropdown">
-              <div style="padding:4px 10px 8px;border-bottom:1px solid rgba(255,255,255,0.08);margin-bottom:4px;">
+              <div class="nav-dropdown-header">
                 <div style="font-weight:800;font-size:0.92rem;color:#fff;" id="nav-menu-username">Champion</div>
                 <div style="font-size:0.75rem;color:var(--text-muted);" id="nav-menu-handle">@user</div>
               </div>
               <a href="profile" class="nav-dropdown-item">
-                <i data-lucide="user" style="width:16px;height:16px;"></i> My Profile
+                <i data-lucide="user"></i> My Profile
               </a>
-              <a href="profile#profile-settings-hub" class="nav-dropdown-item">
-                <i data-lucide="sliders" style="width:16px;height:16px;"></i> Account Settings
+              <a href="profile#tx-card" class="nav-dropdown-item">
+                <i data-lucide="history"></i> History
+              </a>
+              <a href="profile#epic-account-top-card" class="nav-dropdown-item">
+                <i data-lucide="link-2"></i> Connections
               </a>
               <div class="nav-dropdown-divider"></div>
               <a href="admin" class="nav-dropdown-item" id="nav-admin-link" style="display:none;color:var(--red);">
-                <i data-lucide="shield-check" style="width:16px;height:16px;color:var(--red);"></i> Admin Panel
+                <i data-lucide="shield-check" style="color:var(--red);"></i> Admin Panel
               </a>
               <div class="nav-dropdown-item danger-highlight" onclick="handleSignOut()">
-                <i data-lucide="log-out" style="width:16px;height:16px;color:#ef4444;"></i> Sign Out
+                <i data-lucide="log-out" style="color:#ef4444;"></i> Sign Out
               </div>
             </div>
           </div>
@@ -261,12 +264,16 @@ function injectNav(activePage = '') {
 function toggleNavProfileDropdown(e) {
   if (e) e.stopPropagation();
   const dropdown = document.getElementById('nav-profile-dropdown');
+  const notifDropdown = document.getElementById('nav-notif-dropdown');
+  if (notifDropdown) notifDropdown.classList.remove('open');
   if (dropdown) dropdown.classList.toggle('open');
 }
 
 function toggleNotifDropdown(e) {
   if (e) e.stopPropagation();
+  const dropdown = document.getElementById('nav-profile-dropdown');
   const dd = document.getElementById('nav-notif-dropdown');
+  if (dropdown) dropdown.classList.remove('open');
   if (dd) dd.classList.toggle('open');
 }
 
