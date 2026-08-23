@@ -257,11 +257,11 @@ input[type="range"].ct-slider::-moz-range-thumb {
 .ct-nav__brand {
   display: flex;
   align-items: center;
-  gap: 10px;
-  font-size: 1.18rem;
+  gap: 9px;
+  font-size: 0.98rem;
   font-weight: 900;
   font-style: italic;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
   text-transform: uppercase;
   color: #ffffff;
   flex-shrink: 0;
@@ -275,8 +275,8 @@ input[type="range"].ct-slider::-moz-range-thumb {
 }
 
 .brand-logo-img {
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   object-fit: cover;
   flex-shrink: 0;
@@ -285,9 +285,10 @@ input[type="range"].ct-slider::-moz-range-thumb {
 }
 .brand-text {
   font-family: var(--font);
+  font-size: 0.98rem;
   font-weight: 900;
   font-style: italic;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
   text-transform: uppercase;
   color: #ffffff;
 }
@@ -1308,18 +1309,18 @@ input[type="range"].ct-slider::-moz-range-thumb {
 .landing-brand {
   display: flex;
   align-items: center;
-  gap: 12px;
-  font-size: 1.25rem;
+  gap: 10px;
+  font-size: 1.05rem;
   font-weight: 900;
   font-style: italic;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
   text-transform: uppercase;
   color: #ffffff;
   text-decoration: none;
 }
 .landing-brand-logo {
-  width: 34px;
-  height: 34px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   object-fit: cover;
   flex-shrink: 0;
