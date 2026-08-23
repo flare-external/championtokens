@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Official Tournament Rules · Champion Tokens</title>
+  <link rel="icon" type="image/png" href="champion_tokens_CT_v4.png"/>
+  <link rel="shortcut icon" type="image/png" href="champion_tokens_CT_v4.png"/>
+  <link rel="apple-touch-icon" href="champion_tokens_CT_v4.png"/>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <style>
+    .rules-page-wrap {
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 40px 20px 90px;
+    }
+    .rules-header {
+      text-align: center;
+      margin-bottom: 36px;
+    }
+    .rules-header-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 20px;
+      background: rgba(245, 158, 11, 0.12);
+      border: 1px solid rgba(245, 158, 11, 0.35);
+      color: var(--gold-bright);
+      font-size: 0.8rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .rules-header h1 {
+      font-size: 2.5rem;
+      font-weight: 900;
+      color: #fff;
+      margin-bottom: 10px;
+      letter-spacing: -0.02em;
+    }
+    .rules-header p {
+      font-size: 1rem;
+      color: var(--text-muted);
+      max-width: 680px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    /* Quick Jump Nav */
+    .rules-nav-pill-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 34px;
+    }
+    .rules-nav-pill {
+      background: rgba(16, 18, 27, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: #cbd5e1;
+      padding: 8px 14px;
+      border-radius: 20px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.15s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .rules-nav-pill:hover {
+      background: rgba(245, 158, 11, 0.15);
+      border-color: rgba(245, 158, 11, 0.4);
+      color: var(--gold-bright);
+      transform: translateY(-1px);
+    }
+
+    /* Rule Section Cards */
+    .rule-card {
+      background: rgba(12, 14, 20, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 18px;
+      padding: 28px 30px;
+      margin-bottom: 24px;
+      box-shadow: 0 10px 32px rgba(0,0,0,0.6);
+      backdrop-filter: blur(16px);
+      transition: border-color 0.2s;
+    }
+    .rule-card:hover {
+      border-color: rgba(245, 158, 11, 0.25);
+    }
+    .rule-card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .rule-card-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: rgba(245, 158, 11, 0.14);
+      color: var(--gold-bright);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+    .rule-card-title {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: #fff;
+      margin: 0;
+    }
+
+    /* List items */
+    .rule-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .rule-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 0.94rem;
+      color: #cbd5e1;
+      line-height: 1.6;
+    }
+    .rule-bullet {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--gold-bright);
+      margin-top: 10px;
+      flex-shrink: 0;
+      box-shadow: 0 0 8px var(--gold-glow);
+    }
+
+    /* Numbered Mode Rules */
+    .numbered-rule-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 10px;
+    }
+    .numbered-rule-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      padding: 14px 16px;
+      font-size: 0.92rem;
+      color: #cbd5e1;
+      line-height: 1.6;
+    }
+    .rule-num-badge {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: rgba(245, 158, 11, 0.18);
+      color: var(--gold-bright);
+      font-weight: 900;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    /* Callout Note */
+    .rule-callout {
+      background: rgba(239, 68, 68, 0.1);
+      border-left: 3px solid #ef4444;
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin-top: 14px;
+      font-size: 0.88rem;
+      color: #fca5a5;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .rule-callout.gold {
+      background: rgba(245, 158, 11, 0.08);
+      border-left-color: var(--gold-bright);
+      color: #fde68a;
+    }
+
+    @media (max-width: 768px) {
+      .rules-header h1 { font-size: 1.85rem; }
+      .rule-card { padding: 20px 18px; border-radius: 14px; }
+      .rule-card-title { font-size: 1.18rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-bg"></div>
+
+  <!-- Header / Navigation -->
+  <header class="landing-nav" style="border-bottom: 1px solid var(--border);">
+    <a href="/" class="landing-brand">
+      <img src="champion_tokens_CT_v4.png" alt="Champion Tokens" class="landing-brand-logo"/>
+      <span>Champion <span class="brand-accent">Tokens</span></span>
+    </a>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <a href="matches" class="btn btn-outline btn-sm">
+        <i data-lucide="swords"></i> Matches
+      </a>
+      <a href="dashboard" class="btn btn-primary btn-sm">
+        <i data-lucide="layout-dashboard"></i> Dashboard
+      </a>
+    </div>
+  </header>
+
+  <main class="rules-page-wrap">
+    <div class="rules-header">
+      <div class="rules-header-badge">
+        <i data-lucide="shield-check" style="width:14px;height:14px;"></i> Official Rulebook
+      </div>
+      <h1>Champion Tokens Competitive Rules</h1>
+      <p>Please review and follow all tournament rules below. Failure to comply with platform guidelines will result in round forfeitures, match loss, or account penalties.</p>
+    </div>
+
+    <!-- Quick Navigation Pills -->
+    <div class="rules-nav-pill-row">
+      <a href="#availability" class="rules-nav-pill"><i data-lucide="clock" style="width:13px;height:13px;"></i> Availability & AFK</a>
+      <a href="#disconnections" class="rules-nav-pill"><i data-lucide="wifi-off" style="width:13px;height:13px;"></i> Disconnections</a>
+      <a href="#connected-accounts" class="rules-nav-pill"><i data-lucide="user-check" style="width:13px;height:13px;"></i> Connected Account</a>
+      <a href="#bugs-glitches" class="rules-nav-pill"><i data-lucide="bug" style="width:13px;height:13px;"></i> Bugs & Glitches</a>
+      <a href="#lobby-rules" class="rules-nav-pill"><i data-lucide="map" style="width:13px;height:13px;"></i> Lobby & Map</a>
+      <a href="#gamemodes" class="rules-nav-pill"><i data-lucide="target" style="width:13px;height:13px;"></i> Mode Specific</a>
+      <a href="#conduct" class="rules-nav-pill"><i data-lucide="users" style="width:13px;height:13px;"></i> Conduct & Staff</a>
+      <a href="#reporting" class="rules-nav-pill"><i data-lucide="shield-alert" style="width:13px;height:13px;"></i> Reporting</a>
+    </div>
+
+    <!-- 1. Availability & AFK -->
+    <section class="rule-card" id="availability">
+      <div class="rule-card-header">
+        <div class="rule-card-icon"><i data-lucide="clock"></i></div>
+        <h2 class="rule-card-title">Availability & AFK</h2>
+      </div>
+      <ul class="rule-list">
+        <li class="rule-item">
+          <div class="rule-bullet"></div>
+          <div>Players have a <strong>maximum of 10 minutes</strong> from the match starting to get into the lobby. If you aren't ready within this time, you will be forfeited.</div>
+        </li>
+        <li class="rule-item">
+          <div class="rule-bullet"></div>
+          <div>If your opponent did not join within the given 10 minutes, you'll need to verify this by providing photo evidence to moderators.</div>
+        </li>
+        <li class="rule-item">
+          <div class="rule-bullet"></div>
+          <div>In leaderboard tournaments, this maximum time for players to join the lobby is reduced to <strong>5 minutes</strong>.</div>
+        </li>
+        <li class="rule-item">
+          <div class="rule-bullet"></div>
+          <div>If teammates do not arrive in time, the match can proceed without them.</div>
+        </li>
+        <li class="rule-item">
+          <div class="rule-bullet"></div>
+          <div>Each time an opponent goes AFK during the game, you can kill them a maximum of once.</div>
+        </li>
+        <li class="rule-item">
+          <div class="rule-bullet"></div>
+          <div>Cancellation of the match can only occur if both parties agree.</div>
+        </li>
+      </ul>
+    </section>
+
+    <!-- 2. Disconnections -->
+    <section class="rule-card" id="disconnections">
+      <div class="rule-card-header">
+        <div class="rule-card-icon"><i data-lucide="wifi-off"></i></div>
+        <h2 class="rule-card-title">Disconnections & Pauses</h2>
+      </div>
+      <ul class="rule-list">
+        <li class="rule-item">
+          <div class="rule-bullet"></div>
+          <div>In all cases where a player goes AFK or disconnects midgame, the game can be paused for <strong>up to 6 minutes</strong>. After this period of time, the game must either continue or the absent player will be forfeited.</div>
+        </li>
+        <li class="rule-item">
+          <div class="rule-bullet"></div>
+          <div>This 6 minute time period is <strong>cumulative per team</strong>. A player or teammate may leave more than once, as long as it does not exceed the 6 minute limit. Once the 6 minutes are up, the match must continue or the absent player will be forfeited.</div>
+        </li>
+        <li class="rule-item">
+          <div class="rule-bullet"></div>
+          <div>To prevent siphon being awarded to opponents, you <strong>cannot respawn during a round</strong>.</div>
+        </li>
+        <li class="rule-item">
+          <div class="rule-bullet"></div>
+          <div>If a team member leaves during a round, the round must continue without them and will be counted.</div>
+        </li>
+        <li class="rule-item">
+          <div class="rule-bullet"></div>
+          <div>If a team member leaves before a round starts, the game is paused.</div>
+        </li>
+      </ul>
+    </section>
+
+    <!-- 3. Connected Account -->
+    <section class="rule-card" id="connected-accounts">
+      <div class="rule-card-header">
+        <div class="rule-card-icon"><i data-lucide="user-check"></i></div>
+        <h2 class="rule-card-title">Connected Account</h2>
+      </div>
+      <ul class="rule-list">
+        <li class="rule-item">
+          <div class="rule-bullet"></div>
+          <div>If a player has linked an Epic account with the incorrect platform or name, they have <strong>5 minutes</strong> to rectify this from the time a Staff member arrives.</div>
+        </li>
+        <li class="rule-item">
+          <div class="rule-bullet"></div>
+          <div>Upon fixing this issue, the game must be restarted using the correct account, but the current score line will remain the same.</div>
+        </li>
+      </ul>
+    </section>
+
+    <!-- 4. Exploiting Bugs/Glitches -->
+    <section class="rule-card" id="bugs-glitches">
+      <div class="rule-card-header">
+        <div class="rule-card-icon"><i data-lucide="bug"></i></div>
+        <h2 class="rule-card-title">Exploiting Bugs & Glitches</h2>
+      </div>
+      <ul class="rule-list">
+        <li class="rule-item">
+          <div class="rule-bullet"></div>
+          <div>If a bug occurs during a round negatively affecting either player, the round will not count. If required, you may reset the game to fix the bug but resume from the current score line.</div>
+        </li>
+        <li class="rule-item">
+          <div class="rule-bullet"></div>
+          <div>Anyone exploiting a bug for their own benefit will be punished.</div>
+        </li>
+        <li class="rule-item">
+          <div class="rule-bullet"></div>
+          <div>Game crashes and other system errors are not treated as bugs, but as going AFK/disconnecting.</div>
+        </li>
+      </ul>
+    </section>
+
+    <!-- 5. Lobby/Map Rules -->
+    <section class="rule-card" id="lobby-rules">
+      <div class="rule-card-header">
+        <div class="rule-card-icon"><i data-lucide="map"></i></div>
+        <h2 class="rule-card-title">Lobby & Map Rules</h2>
+      </div>
+      <ul class="rule-list">
+        <li class="rule-item">
+          <div class="rule-bullet"></div>
+          <div>The match must be played on the listed region and official island map code.</div>
+        </li>
+        <li class="rule-item">
+          <div class="rule-bullet"></div>
+          <div>The host should play as <strong>Team 1</strong> in game, whilst their opponents should play as <strong>Team 2</strong>. Rounds awarded to the incorrect team will count.</div>
+        </li>
+        <li class="rule-item">
+          <div class="rule-bullet"></div>
+          <div>If the map is incorrect, you must resume on the correct map from the current score line.</div>
+        </li>
+        <li class="rule-item">
+          <div class="rule-bullet"></div>
+          <div>Removing your opponent from the party during the game will result in a round loss.</div>
+        </li>
+        <li class="rule-item">
+          <div class="rule-bullet"></div>
+          <div>Any rounds or matches played with incorrect game or host settings will still be considered valid and will count.</div>
+        </li>
+        <li class="rule-item">
+          <div class="rule-bullet"></div>
+          <div>When the <strong>"No Simple Edit"</strong> option is selected (Simple Edit: Disabled), if any team member uses Simple Edit, their team will <strong>forfeit the entire match</strong>.</div>
+        </li>
+      </ul>
+    </section>
+
+    <!-- 6. Gamemode Specific Rules -->
+    <section class="rule-card" id="gamemodes">
+      <div class="rule-card-header">
+        <div class="rule-card-icon"><i data-lucide="target"></i></div>
+        <h2 class="rule-card-title">Gamemode Rules</h2>
+      </div>
+
+      <div style="margin-bottom:24px;">
+        <h3 style="font-size:1.15rem;font-weight:800;color:var(--gold-bright);margin-bottom:8px;display:flex;align-items:center;gap:8px;">
+          <i data-lucide="swords" style="width:16px;height:16px;"></i> Realistic Rules
+        </h3>
+        <div class="numbered-rule-list">
+          <div class="numbered-rule-item">
+            <div class="rule-num-badge">1</div>
+            <div>Opening chests, ammo crates, collecting floor loot, or using slurp barrels during a round will lead to forfeiture of that round.</div>
+          </div>
+          <div class="numbered-rule-item">
+            <div class="rule-num-badge">2</div>
+            <div>If a player leaves once loot has been distributed, the round must continue. Do not exit the match.</div>
+          </div>
+          <div class="numbered-rule-item">
+            <div class="rule-num-badge">3</div>
+            <div>Respawning during an active round will result in forfeiting the round.</div>
+          </div>
+          <div class="numbered-rule-item">
+            <div class="rule-num-badge">4</div>
+            <div>'Zone Wars' and 'Comp Mode' options must be enabled.</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-bottom:24px;">
+        <h3 style="font-size:1.15rem;font-weight:800;color:var(--gold-bright);margin-bottom:8px;display:flex;align-items:center;gap:8px;">
+          <i data-lucide="box" style="width:16px;height:16px;"></i> Boxfight Rules
+        </h3>
+        <div class="numbered-rule-list">
+          <div class="numbered-rule-item">
+            <div class="rule-num-badge">1</div>
+            <div>When the "No Simple Edit" option is selected, if any team member uses Simple Edit, their team will forfeit the entire match.</div>
+          </div>
+          <div class="numbered-rule-item">
+            <div class="rule-num-badge">2</div>
+            <div>You must not exploit bugs to keep extra loot from round to round.</div>
+          </div>
+          <div class="numbered-rule-item">
+            <div class="rule-num-badge">3</div>
+            <div>If a player leaves once the barrier falls, the round must continue. Do not exit the match.</div>
+          </div>
+          <div class="numbered-rule-item">
+            <div class="rule-num-badge">4</div>
+            <div>Respawning during an active round will result in forfeiting the round.</div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <h3 style="font-size:1.15rem;font-weight:800;color:var(--gold-bright);margin-bottom:8px;display:flex;align-items:center;gap:8px;">
+          <i data-lucide="cloud-lightning" style="width:16px;height:16px;"></i> Zone Wars Rules
+        </h3>
+        <div class="numbered-rule-list">
+          <div class="numbered-rule-item">
+            <div class="rule-num-badge">1</div>
+            <div>Standard competitive Zone Wars settings and siphon mechanics must be active.</div>
+          </div>
+          <div class="numbered-rule-item">
+            <div class="rule-num-badge">2</div>
+            <div>If a player leaves once the round begins, the round must continue. Do not exit the match.</div>
+          </div>
+          <div class="numbered-rule-item">
+            <div class="rule-num-badge">3</div>
+            <div>Respawning during an active round will result in forfeiting the round.</div>
+          </div>
+          <div class="numbered-rule-item">
+            <div class="rule-num-badge">4</div>
+            <div>Teaming or griefing outside of designated squad allocation is strictly prohibited.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. Miscellaneous & Conduct -->
+    <section class="rule-card" id="conduct">
+      <div class="rule-card-header">
+        <div class="rule-card-icon"><i data-lucide="users"></i></div>
+        <h2 class="rule-card-title">Miscellaneous & Sportsmanship</h2>
+      </div>
+      <ul class="rule-list">
+        <li class="rule-item">
+          <div class="rule-bullet"></div>
+          <div>Spectators are not allowed. If a round is played with a spectator, they must be removed and the team that didn't invite the spectator will be granted a round win.</div>
+        </li>
+        <li class="rule-item">
+          <div class="rule-bullet"></div>
+          <div>Toxicity is allowed. However, any forms of racism, homophobia, or hate speech will result in a platform mute. The win will be awarded to the user who won the match.</div>
+        </li>
+        <li class="rule-item">
+          <div class="rule-bullet"></div>
+          <div>You must not attempt to deceive your opponent by lying about the match rules for your own advantage.</div>
+        </li>
+        <li class="rule-item">
+          <div class="rule-bullet"></div>
+          <div>Staff will take into account the context and make appropriate decisions such as giving round wins or deciding an overall winner. This includes reasons such as time wasting, repeated disconnections without reason, unsportsmanlike conduct, etc.</div>
+        </li>
+        <li class="rule-item">
+          <div class="rule-bullet"></div>
+          <div>All staff decisions are final and must be respected.</div>
+        </li>
+      </ul>
+    </section>
+
+    <!-- 8. Reporting Opponents -->
+    <section class="rule-card" id="reporting">
+      <div class="rule-card-header">
+        <div class="rule-card-icon"><i data-lucide="shield-alert"></i></div>
+        <h2 class="rule-card-title">Reporting Opponents</h2>
+      </div>
+      <ul class="rule-list">
+        <li class="rule-item">
+          <div class="rule-bullet"></div>
+          <div>If you're certain that your opponent has broken the rules, you should immediately stop playing and report your opponent.</div>
+        </li>
+        <li class="rule-item">
+          <div class="rule-bullet"></div>
+          <div>If you're unsure, please play the match out and report them once you've finished the game.</div>
+        </li>
+      </ul>
+      <div class="rule-callout gold">
+        <i data-lucide="info" style="width:18px;height:18px;flex-shrink:0;"></i>
+        <span>Need moderator assistance during an active match? Click the <strong>"Call Staff"</strong> button inside your match lobby chat panel.</span>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>
+    if (window.lucide) lucide.createIcons();
+  </script>
+</body>
+</html>
