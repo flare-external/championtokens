@@ -11,7 +11,7 @@ function injectNav(activePage = '') {
   const links = [
     { href: 'dashboard',   key: 'dashboard',   icon: 'layout-grid',   label: 'Dashboard'   },
     { href: 'matches',     key: 'matches',      icon: 'swords',        label: 'Matches'     },
-    { href: 'tournaments', key: 'tournaments',  icon: 'trophy',        label: 'Tournaments', badge: 'SOON' },
+    { href: 'tournaments', key: 'tournaments',  icon: 'trophy',        label: 'Tournaments' },
     { href: 'leaderboard', key: 'leaderboard',  icon: 'award',         label: 'Leaderboard' },
     { href: 'shop',        key: 'shop',         icon: 'shopping-bag',  label: 'Shop'        },
   ];
@@ -27,7 +27,7 @@ function injectNav(activePage = '') {
     <nav class="ct-nav" id="ct-nav">
       <div class="ct-nav__inner">
         <a href="dashboard" class="ct-nav__brand">
-          <img src="champion_tokens_CT_v4.png" alt="Champion Tokens" class="brand-logo-img" />
+          <img src="champion_tokens_CT_v4.png" alt="Champion Tokens" class="brand-logo-img" width="32" height="32" />
           <span class="brand-text">Champion <span class="brand-accent">Tokens</span></span>
         </a>
 
@@ -35,9 +35,9 @@ function injectNav(activePage = '') {
 
         <div class="ct-nav__user">
           <button class="nav-token-btn" onclick="openTokenWalletModal('purchase')" title="Add Tokens / View Wallet">
-            <img src="champion_token_coin.png" alt="CT" class="nav-token-coin" />
+            <img src="champion_token_coin.png" alt="CT" class="nav-token-coin" width="20" height="20" />
             <span id="nav-balance">10.00</span>
-            <span class="nav-token-plus"><i data-lucide="plus"></i></span>
+            <span class="nav-token-plus">+</span>
           </button>
 
           <!-- Notification Bell -->

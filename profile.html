@@ -1955,7 +1955,7 @@
               <div class="tx-time">${formatTime(tx.timestamp)}</div>
             </div>
             <div class="tx-amount ${isCredit ? 'tx-amount--credit' : 'tx-amount--debit'}">
-              ${isCredit ? '+' : ''}${formatTokens(tx.amount)} <img src="champion_token_coin.png" class="inline-coin" alt="CT"/>
+              ${isCredit ? '+' : ''}${formatTokens(tx.amount)} <img src="champion_token_coin.png" class="inline-coin" alt="CT" width="14" height="14"/>
             </div>
           </div>`;
       }).join('');
@@ -2011,15 +2011,15 @@
               <div style="font-size:0.78rem;color:var(--text-muted);margin-top:2px;">
                 <span class="badge ${sizeColor(size)}" style="padding:1px 8px;font-size:0.7rem;">${size}</span>
                 <span class="badge ${modeColor(mode)}" style="padding:1px 8px;font-size:0.7rem;">${mode}</span>
-                · ${formatTokens(m.wager)} <img src="champion_token_coin.png" class="inline-coin" alt="CT"/> wager · ${formatTime(m.createdAt)}
+                · ${formatTokens(m.wager)} <img src="champion_token_coin.png" class="inline-coin" alt="CT" width="14" height="14"/> wager · ${formatTime(m.createdAt)}
                 ${isHost ? ' · <span style="color:var(--gold-bright);font-weight:700;">Host</span>' : ''}
               </div>
             </div>
             <div style="text-align:right;flex-shrink:0;">
               ${m.status === 'completed'
                 ? isWinner
-                  ? `<div style="color:var(--green);font-weight:800;">+${formatTokens(winPrize)} <img src="champion_token_coin.png" class="inline-coin" alt="CT"/></div><div style="font-size:0.75rem;color:var(--green);">Victory!</div>`
-                  : `<div style="color:var(--red);font-weight:700;">-${formatTokens(m.wager)} <img src="champion_token_coin.png" class="inline-coin" alt="CT"/></div><div style="font-size:0.75rem;color:var(--text-muted);">Defeat</div>`
+                  ? `<div style="color:var(--green);font-weight:800;">+${formatTokens(winPrize)} <img src="champion_token_coin.png" class="inline-coin" alt="CT" width="14" height="14"/></div><div style="font-size:0.75rem;color:var(--green);">Victory!</div>`
+                  : `<div style="color:var(--red);font-weight:700;">-${formatTokens(m.wager)} <img src="champion_token_coin.png" class="inline-coin" alt="CT" width="14" height="14"/></div><div style="font-size:0.75rem;color:var(--text-muted);">Defeat</div>`
                 : `<span class="badge badge-${m.status}">${m.status.replace('_',' ')}</span>`
               }
             </div>
