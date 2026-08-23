@@ -1358,8 +1358,8 @@
             const amIReady = !!mySlot?.ready;
             primaryActionContainer.innerHTML = `
               <button class="concept-btn-ready ${amIReady ? 'cancel' : ''}" onclick="handleReadyToggle(${!amIReady})">
-                <i data-lucide="${amIReady ? 'x' : 'zap'}"></i>
-                <span>${amIReady ? 'Cancel Ready' : '⚡ Ready Up Now'}</span>
+                <i data-lucide="${amIReady ? 'x' : 'check'}"></i>
+                <span>${amIReady ? 'Cancel Ready' : 'Ready'}</span>
               </button>`;
           } else if (!isFull && !isExpired) {
             if (match.size !== '1v1' && currentUserData?.teamId) {
