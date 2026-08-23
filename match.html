@@ -1321,7 +1321,7 @@
               <div style="display:flex;align-items:center;gap:6px;">
                 <span style="color:var(--text-muted);">Your Team:</span>
                 ${myReported
-                  ? `<span style="color:var(--green);font-weight:800;">✅ ${myReported === (isTeam1 ? 'team1' : 'team2') ? 'Reported Victory (We Won)' : 'Reported Defeat (Enemy Won)'}</span>`
+                  ? `<span style="color:var(--green);font-weight:800;">✅ ${myReported === (isTeam1 ? 'team1' : 'team2') ? 'Voted Victory' : 'Voted Lose'}</span>`
                   : `<span style="color:var(--gold-bright);font-weight:700;">⏳ Awaiting your submission</span>`}
               </div>
               <div style="color:rgba(255,255,255,0.2);">|</div>
@@ -1341,10 +1341,10 @@
               </div>` : (!myReported ? `
               <div style="display:flex;gap:12px;flex-wrap:wrap;">
                 <button class="btn btn-gold btn-lg" style="flex:1;" onclick="handleReportMatchScore('${isTeam1 ? 'team1' : 'team2'}')">
-                  <i data-lucide="trophy"></i> 🏆 We Won (Claim Victory)
+                  <i data-lucide="trophy"></i> 🏆 Vote Victory
                 </button>
                 <button class="btn btn-outline btn-lg" style="flex:1;" onclick="handleReportMatchScore('${isTeam1 ? 'team2' : 'team1'}')">
-                  <i data-lucide="x-circle"></i> ❌ Enemy Won (Concede)
+                  <i data-lucide="x-circle"></i> ❌ Vote Lose
                 </button>
               </div>` : `
               <div style="display:flex;align-items:center;gap:10px;font-size:0.85rem;color:var(--text-muted);">
