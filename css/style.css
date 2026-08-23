@@ -4,46 +4,46 @@
 
 /* ── Custom Properties ─────────────────────────────────────── */
 :root {
-  --bg-base:       #020306;
-  --bg-surface:    #080b16;
-  --bg-card:       rgba(14, 18, 32, 0.94);
-  --bg-card-hover: rgba(20, 26, 46, 0.98);
-  --border:        rgba(255, 255, 255, 0.12);
-  --border-bright: rgba(245, 158, 11, 0.45);
+  --bg-base:       #000000;
+  --bg-surface:    #070707;
+  --bg-card:       rgba(10, 10, 10, 0.95);
+  --bg-card-hover: rgba(18, 18, 18, 0.98);
+  --border:        rgba(255, 255, 255, 0.08);
+  --border-bright: rgba(245, 158, 11, 0.35);
 
   --gold:          #F59E0B;
   --gold-light:    #FDE68A;
   --gold-bright:   #FBBF24;
   --gold-dark:     #B45309;
-  --gold-dim:      rgba(245, 158, 11, 0.15);
-  --gold-glow:     rgba(245, 158, 11, 0.4);
+  --gold-dim:      rgba(245, 158, 11, 0.12);
+  --gold-glow:     rgba(245, 158, 11, 0.35);
 
   --accent:        #F59E0B;
-  --accent-dim:    rgba(245, 158, 11, 0.15);
+  --accent-dim:    rgba(245, 158, 11, 0.12);
   --accent-glow:   rgba(245, 158, 11, 0.35);
 
   --blue:          #38bdf8;
-  --blue-dim:      rgba(56, 189, 248, 0.14);
+  --blue-dim:      rgba(56, 189, 248, 0.12);
   --purple:        #818cf8;
-  --purple-dim:    rgba(129, 140, 248, 0.14);
+  --purple-dim:    rgba(129, 140, 248, 0.12);
   --green:         #10b981;
-  --green-dim:     rgba(16, 185, 129, 0.14);
+  --green-dim:     rgba(16, 185, 129, 0.12);
   --red:           #ef4444;
-  --red-dim:       rgba(239, 68, 68, 0.14);
+  --red-dim:       rgba(239, 68, 68, 0.12);
 
   --text:          #f8fafc;
-  --text-muted:    #cbd5e1;
-  --text-faint:    #94a3b8;
+  --text-muted:    #94a3b8;
+  --text-faint:    #64748b;
 
-  --radius-sm:     10px;
-  --radius-md:     16px;
-  --radius-lg:     24px;
-  --radius-xl:     34px;
-  --radius-2xl:    44px;
+  --radius-sm:     8px;
+  --radius-md:     12px;
+  --radius-lg:     18px;
+  --radius-xl:     24px;
+  --radius-2xl:    32px;
   --radius-full:   9999px;
 
-  --shadow-card:   0 18px 50px rgba(0, 0, 0, 0.85);
-  --shadow-gold:   0 0 35px var(--gold-glow);
+  --shadow-card:   0 18px 50px rgba(0, 0, 0, 0.95);
+  --shadow-gold:   0 0 30px var(--gold-glow);
 
   --nav-h:         70px;
   --font:          'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -56,33 +56,33 @@ html { scroll-behavior: smooth; }
 
 /* ── Custom Sleek Dark & Gold Scrollbars ───────────────────── */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 7px;
+  height: 7px;
 }
 ::-webkit-scrollbar-track {
-  background: rgba(4, 6, 12, 0.95);
+  background: #000000;
   border-radius: 999px;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(245, 158, 11, 0.35);
+  background: rgba(245, 158, 11, 0.3);
   border-radius: 999px;
-  border: 2px solid rgba(4, 6, 12, 0.95);
+  border: 2px solid #000000;
   transition: all 0.25s ease;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(245, 158, 11, 0.75);
+  background: rgba(245, 158, 11, 0.7);
   box-shadow: 0 0 10px rgba(245, 158, 11, 0.5);
 }
 
 /* Firefox scrollbar */
 * {
   scrollbar-width: thin;
-  scrollbar-color: rgba(245, 158, 11, 0.35) rgba(4, 6, 12, 0.95);
+  scrollbar-color: rgba(245, 158, 11, 0.3) #000000;
 }
 
 body {
   font-family: var(--font);
-  background:  var(--bg-base);
+  background:  #000000;
   color:       var(--text);
   min-height:  100vh;
   line-height: 1.6;
@@ -101,13 +101,13 @@ ul { list-style: none; }
 .page-bg {
   position: fixed;
   inset: 0;
-  background-color: var(--bg-base);
+  background-color: #000000;
   background-image:
-    radial-gradient(circle at 50% -12%, rgba(245, 158, 11, 0.15), transparent 55%),
-    radial-gradient(circle at 95% 30%, rgba(56, 189, 248, 0.07), transparent 45%),
-    radial-gradient(circle at 5% 75%, rgba(129, 140, 248, 0.06), transparent 50%),
-    linear-gradient(rgba(255, 255, 255, 0.018) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.018) 1px, transparent 1px);
+    radial-gradient(circle at 50% -8%, rgba(245, 158, 11, 0.12), transparent 45%),
+    radial-gradient(circle at 90% 25%, rgba(245, 158, 11, 0.03), transparent 35%),
+    radial-gradient(circle at 10% 75%, rgba(245, 158, 11, 0.03), transparent 35%),
+    linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
   background-size: 100% 100%, 100% 100%, 100% 100%, 48px 48px, 48px 48px;
   pointer-events: none;
   z-index: 0;
@@ -942,35 +942,77 @@ input[type="range"].ct-slider::-moz-range-thumb {
 }
 .match-code-badge i { width: 12px; height: 12px; }
 
+/* ── Dashboard News Showcase Banner ────────────────────────── */
+.news-banner-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-xl);
+  padding: 30px 34px;
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.94) 0%, rgba(5, 5, 5, 0.82) 55%, rgba(245, 158, 11, 0.14) 100%),
+              url('/realistic.png') center/cover no-repeat;
+  box-shadow: 0 14px 45px rgba(0, 0, 0, 0.95), 0 0 35px rgba(245, 158, 11, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.news-banner-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: radial-gradient(circle at 85% 15%, rgba(245, 158, 11, 0.15), transparent 60%);
+  pointer-events: none;
+}
+.news-banner-card > * {
+  position: relative;
+  z-index: 1;
+}
+@media (max-width: 768px) {
+  .news-banner-card {
+    padding: 20px 18px;
+  }
+}
+
 /* ── Activity / Transaction Feed ───────────────────────────── */
-.tx-list { display: flex; flex-direction: column; gap: 4px; }
+.tx-list { display: flex; flex-direction: column; gap: 6px; }
 
 .tx-item {
   display: flex;
   align-items: center;
-  gap: 14px;
-  padding: 12px 16px;
+  gap: 12px;
+  padding: 10px 14px;
   border-radius: var(--radius-md);
-  transition: background 0.15s;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  transition: all 0.18s;
 }
-.tx-item:hover { background: var(--bg-card); }
+.tx-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.08);
+  transform: translateX(2px);
+}
 
 .tx-icon {
-  width: 36px; height: 36px; flex-shrink: 0;
-  border-radius: var(--radius-sm);
+  width: 32px; height: 32px; flex-shrink: 0;
+  border-radius: 8px;
   display: flex; align-items: center; justify-content: center;
+  font-size: 0.9rem;
+  border: 1px solid rgba(255, 255, 255, 0.06);
 }
-.tx-icon i { width: 16px; height: 16px; }
-.tx-icon--credit { background: var(--green-dim); color: var(--green); }
-.tx-icon--debit  { background: var(--red-dim);   color: var(--red);   }
+.tx-icon i { width: 15px; height: 15px; }
+.tx-icon--credit { background: rgba(16, 185, 129, 0.1); color: #34d399; border-color: rgba(16, 185, 129, 0.25); }
+.tx-icon--debit  { background: rgba(239, 68, 68, 0.1); color: #f87171; border-color: rgba(239, 68, 68, 0.25); }
+.tx-icon--gold   { background: rgba(245, 158, 11, 0.1); color: var(--gold-bright); border-color: rgba(245, 158, 11, 0.25); }
+.tx-icon--blue   { background: rgba(56, 189, 248, 0.1); color: #38bdf8; border-color: rgba(56, 189, 248, 0.25); }
 
 .tx-info { flex: 1; min-width: 0; }
-.tx-desc { font-size: 0.875rem; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.tx-time { font-size: 0.75rem; color: var(--text-faint); margin-top: 1px; }
+.tx-desc { font-size: 0.825rem; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tx-time { font-size: 0.72rem; color: var(--text-faint); margin-top: 1px; }
 
-.tx-amount { font-size: 0.925rem; font-weight: 800; white-space: nowrap; }
-.tx-amount--credit { color: var(--green); }
-.tx-amount--debit  { color: var(--red);   }
+.tx-amount { font-size: 0.85rem; font-weight: 800; white-space: nowrap; }
+.tx-amount--credit { color: #34d399; }
+.tx-amount--debit  { color: #f87171; }
 
 /* ── Leaderboard ───────────────────────────────────────────── */
 .lb-table { width: 100%; border-collapse: separate; border-spacing: 0 6px; }

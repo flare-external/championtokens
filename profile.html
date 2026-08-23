@@ -1914,18 +1914,48 @@
       const pageTxs = allProfileTxs.slice(startIdx, startIdx + PROFILE_TX_PER_PAGE);
 
       el.innerHTML = pageTxs.map(tx => {
-        const isCredit = tx.amount > 0;
+        const isCredit = Number(tx.amount || 0) > 0;
+        let iconName = isCredit ? 'arrow-up-right' : 'arrow-down-left';
+        let iconType = isCredit ? 'tx-icon--credit' : 'tx-icon--debit';
+        
+        let label = tx.description || txTypeLabel(tx.type);
+        if (tx.type === 'match_win' || (label && label.toLowerCase().includes('won match'))) {
+          iconName = 'trophy';
+          iconType = 'tx-icon--gold';
+          label = label.replace(/Won match\s*"?([^"]*)"?.*$/i, 'Victory · $1').replace(/🏆\s*/g, '');
+        } else if (tx.type === 'match_wager' || (label && label.toLowerCase().includes('wager'))) {
+          iconName = 'swords';
+          iconType = 'tx-icon--debit';
+          label = label.replace(/Match wager for\s*"?([^"]*)"?.*$/i, 'Match Entry · $1').replace(/🎮\s*/g, '');
+        } else if (label && label.toLowerCase().includes('refund')) {
+          iconName = 'rotate-ccw';
+          iconType = 'tx-icon--blue';
+          label = label.replace(/.*refund.*?"?([^"]*)"?.*$/i, 'Refund · $1').replace(/↩️|⏱️\s*/g, '');
+        } else if (tx.type === 'bonus' || (label && label.toLowerCase().includes('bonus'))) {
+          iconName = 'sparkles';
+          iconType = 'tx-icon--gold';
+          label = 'Welcome Starter Bonus';
+        } else if (tx.type === 'purchase') {
+          iconName = 'plus-circle';
+          iconType = 'tx-icon--credit';
+          label = 'Token Purchase';
+        } else if (tx.type === 'admin') {
+          iconName = 'zap';
+          iconType = 'tx-icon--gold';
+          label = 'Admin Adjustment';
+        }
+
         return `
           <div class="tx-item">
-            <div class="tx-icon ${isCredit ? 'tx-icon--credit' : 'tx-icon--debit'}">
-              <i data-lucide="${isCredit ? 'trending-up' : 'trending-down'}"></i>
+            <div class="tx-icon ${iconType}">
+              <i data-lucide="${iconName}"></i>
             </div>
             <div class="tx-info">
-              <div class="tx-desc">${tx.description || txTypeLabel(tx.type)}</div>
+              <div class="tx-desc">${escapeHtml(label)}</div>
               <div class="tx-time">${formatTime(tx.timestamp)}</div>
             </div>
             <div class="tx-amount ${isCredit ? 'tx-amount--credit' : 'tx-amount--debit'}">
-              ${isCredit ? '+' : ''}${formatTokens(tx.amount)} Tokens
+              ${isCredit ? '+' : ''}${formatTokens(tx.amount)} T
             </div>
           </div>`;
       }).join('');

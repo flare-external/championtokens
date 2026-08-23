@@ -26,16 +26,37 @@
       <h1>Welcome back, <span id="welcome-name" class="brand-accent">Champion</span> 👋</h1>
     </div>
 
-    <!-- Balance hero with Add Tokens CTA -->
-    <div class="balance-card" style="margin-bottom:24px;">
-      <div class="balance-label">Current Token Balance</div>
-      <div class="balance-amount-wrap">
-        <div class="balance-amount" id="stat-tokens">10.00</div>
-        <button class="token-add-btn" onclick="openTokenWalletModal('purchase')" style="width:36px;height:36px;font-size:1.2rem;cursor:pointer;" title="Add / Buy Tokens">
-          <i data-lucide="plus"></i>
-        </button>
+    <!-- News & Announcements Showcase Banner (Realistic background) -->
+    <div class="news-banner-card">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+        <span class="badge" style="background:rgba(245,158,11,0.18);color:var(--gold-bright);border:1px solid rgba(245,158,11,0.4);font-size:0.7rem;padding:3px 10px;font-weight:800;letter-spacing:0.05em;">
+          <i data-lucide="sparkles" style="width:12px;height:12px;"></i> SEASON 1 LIVE
+        </span>
+        <span style="font-size:0.75rem;color:var(--text-faint);display:inline-flex;align-items:center;gap:4px;">
+          <i data-lucide="flame" style="width:12px;height:12px;color:var(--gold-bright);"></i> Featured Arena
+        </span>
       </div>
-      <div class="balance-unit">Champion Tokens</div>
+
+      <div>
+        <h2 style="font-size:1.5rem;font-weight:900;color:#fff;margin:4px 0 8px;letter-spacing:-0.02em;">
+          1V1 - 4V4 FINEST REALISTICS ARENA
+        </h2>
+        <p style="color:var(--text-muted);font-size:0.875rem;max-width:640px;line-height:1.55;">
+          Queue into high-stakes Realistic, Zone Wars, and Box Fight matches with instant token payouts. Link your Epic Games account, challenge rivals or squad up, and battle for Champion glory.
+        </p>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:4px;">
+        <a href="matches" class="btn btn-primary btn-sm">
+          <i data-lucide="swords"></i> Play Realistics
+        </a>
+        <button class="btn btn-outline btn-sm" onclick="openTokenWalletModal('purchase')">
+          <i data-lucide="coins"></i> Add Tokens
+        </button>
+        <a href="shop" class="btn btn-ghost btn-sm">
+          <i data-lucide="shopping-cart"></i> Token Shop
+        </a>
+      </div>
     </div>
 
     <!-- Stats row -->
@@ -43,7 +64,7 @@
       <div class="card stat-card">
         <div class="stat-icon stat-icon--gold"><i data-lucide="trending-up"></i></div>
         <div class="stat-label">Total Earned</div>
-        <div class="stat-value stat-value--gold" id="stat-earned">10.00</div>
+        <div class="stat-value stat-value--gold" id="stat-earned">10.00 T</div>
       </div>
       <div class="card stat-card">
         <div class="stat-icon stat-icon--accent"><i data-lucide="swords"></i></div>
@@ -75,7 +96,7 @@
         <div class="ct-pagination" id="tx-pagination"></div>
         <hr class="divider"/>
         <a href="profile" class="btn btn-ghost btn-sm" style="width:100%;justify-content:center;">
-          <i data-lucide="clock"></i> View All Transactions in Profile
+          <i data-lucide="clock"></i> View All Activity in Profile
         </a>
       </div>
 
@@ -99,24 +120,24 @@
       <a href="matches" class="card" style="display:flex;align-items:center;gap:14px;text-decoration:none;">
         <div class="stat-icon stat-icon--accent"><i data-lucide="swords"></i></div>
         <div>
-          <div style="font-weight:700;">Matches</div>
-          <div style="font-size:0.8125rem;color:var(--text-muted);">1v1, 2v2, 3v3 Arenas</div>
+          <div style="font-weight:800;font-size:0.95rem;">Token Arenas</div>
+          <div style="font-size:0.78rem;color:var(--text-muted);">1v1 - 4v4 Realistics</div>
         </div>
         <i data-lucide="chevron-right" style="margin-left:auto;color:var(--text-muted);width:16px;height:16px;"></i>
       </a>
       <a href="leaderboard" class="card" style="display:flex;align-items:center;gap:14px;text-decoration:none;">
         <div class="stat-icon stat-icon--gold"><i data-lucide="trophy"></i></div>
         <div>
-          <div style="font-weight:700;">Leaderboard</div>
-          <div style="font-size:0.8125rem;color:var(--text-muted);">Top Token Earners</div>
+          <div style="font-weight:800;font-size:0.95rem;">Rankings</div>
+          <div style="font-size:0.78rem;color:var(--text-muted);">Top Token Earners</div>
         </div>
         <i data-lucide="chevron-right" style="margin-left:auto;color:var(--text-muted);width:16px;height:16px;"></i>
       </a>
       <a href="shop" class="card" style="display:flex;align-items:center;gap:14px;text-decoration:none;">
         <div class="stat-icon stat-icon--purple"><i data-lucide="shopping-cart"></i></div>
         <div>
-          <div style="font-weight:700;">Token Shop</div>
-          <div style="font-size:0.8125rem;color:var(--text-muted);">Cosmetics & Upgrades</div>
+          <div style="font-weight:800;font-size:0.95rem;">Token Shop</div>
+          <div style="font-size:0.78rem;color:var(--text-muted);">Titles & Profile Themes</div>
         </div>
         <i data-lucide="chevron-right" style="margin-left:auto;color:var(--text-muted);width:16px;height:16px;"></i>
       </a>
@@ -180,8 +201,7 @@
     }
 
     function renderStats(data) {
-      safeSetText('stat-tokens', formatTokens(data.tokens ?? 10.00));
-      safeSetText('stat-earned', formatTokens(data.totalEarned ?? 10.00));
+      safeSetText('stat-earned', formatTokens(data.totalEarned ?? 10.00) + ' T');
       safeSetText('stat-played', data.matchesPlayed ?? 0);
       safeSetText('stat-won', data.matchesWon ?? 0);
 
@@ -198,7 +218,7 @@
       if (!el) return;
 
       if (!allTransactions.length) {
-        el.innerHTML = `<div class="empty-state"><i data-lucide="inbox"></i><p>No transactions yet</p></div>`;
+        el.innerHTML = `<div class="empty-state"><i data-lucide="inbox"></i><p>No activity recorded yet</p></div>`;
         if (pagEl) pagEl.innerHTML = '';
         if (window.lucide) lucide.createIcons();
         return;
@@ -209,19 +229,48 @@
       const pageTxs = allTransactions.slice(startIdx, startIdx + TX_PER_PAGE);
 
       el.innerHTML = pageTxs.map(tx => {
-        const isCredit = tx.amount > 0;
-        const iconName = isCredit ? 'trending-up' : 'trending-down';
+        const isCredit = Number(tx.amount || 0) > 0;
+        let iconName = isCredit ? 'arrow-up-right' : 'arrow-down-left';
+        let iconType = isCredit ? 'tx-icon--credit' : 'tx-icon--debit';
+        
+        let label = tx.description || txTypeLabel(tx.type);
+        if (tx.type === 'match_win' || (label && label.toLowerCase().includes('won match'))) {
+          iconName = 'trophy';
+          iconType = 'tx-icon--gold';
+          label = label.replace(/Won match\s*"?([^"]*)"?.*$/i, 'Victory · $1').replace(/🏆\s*/g, '');
+        } else if (tx.type === 'match_wager' || (label && label.toLowerCase().includes('wager'))) {
+          iconName = 'swords';
+          iconType = 'tx-icon--debit';
+          label = label.replace(/Match wager for\s*"?([^"]*)"?.*$/i, 'Match Entry · $1').replace(/🎮\s*/g, '');
+        } else if (label && label.toLowerCase().includes('refund')) {
+          iconName = 'rotate-ccw';
+          iconType = 'tx-icon--blue';
+          label = label.replace(/.*refund.*?"?([^"]*)"?.*$/i, 'Refund · $1').replace(/↩️|⏱️\s*/g, '');
+        } else if (tx.type === 'bonus' || (label && label.toLowerCase().includes('bonus'))) {
+          iconName = 'sparkles';
+          iconType = 'tx-icon--gold';
+          label = 'Welcome Starter Bonus';
+        } else if (tx.type === 'purchase') {
+          iconName = 'plus-circle';
+          iconType = 'tx-icon--credit';
+          label = 'Token Purchase';
+        } else if (tx.type === 'admin') {
+          iconName = 'zap';
+          iconType = 'tx-icon--gold';
+          label = 'Admin Adjustment';
+        }
+
         return `
           <div class="tx-item">
-            <div class="tx-icon ${isCredit ? 'tx-icon--credit' : 'tx-icon--debit'}">
+            <div class="tx-icon ${iconType}">
               <i data-lucide="${iconName}"></i>
             </div>
             <div class="tx-info">
-              <div class="tx-desc">${tx.description || txTypeLabel(tx.type)}</div>
+              <div class="tx-desc">${escapeHtml(label)}</div>
               <div class="tx-time">${formatTime(tx.timestamp)}</div>
             </div>
             <div class="tx-amount ${isCredit ? 'tx-amount--credit' : 'tx-amount--debit'}">
-              ${isCredit ? '+' : ''}${formatTokens(tx.amount)} Tokens
+              ${isCredit ? '+' : ''}${formatTokens(tx.amount)} T
             </div>
           </div>`;
       }).join('');
@@ -260,39 +309,41 @@
       const nowSeconds = Math.floor(Date.now() / 1000);
 
       el.innerHTML = pageMatches.map(m => {
-        const createdAtSec = m.createdAt?.seconds || nowSeconds;
-        const diffSec = nowSeconds - createdAtSec;
+        const size = m.size || '1v1';
+        const mode = m.mode || 'Realistic';
+        const mapCode = (mode === 'Realistic' || !mode) ? '9854-1829-8735' : (m.mapCode || 'Auto Host');
+        const now = Date.now();
+        const createdAtMs = m.createdAt?.toDate ? m.createdAt.toDate().getTime() : (m.createdAt?.seconds ? m.createdAt.seconds * 1000 : now);
+        const diffSec = Math.floor((now - createdAtMs) / 1000);
         const thirtyMin = 30 * 60;
-        const isExpired = diffSec >= thirtyMin;
-        const remainingSec = Math.max(0, thirtyMin - diffSec);
-        const remMin = Math.floor(remainingSec / 60);
-        const remSec = remainingSec % 60;
-        const timerDisplay = `${remMin}:${remSec < 10 ? '0' : ''}${remSec}`;
-        const mapCode = (m.mode === 'Realistics' || m.mode === 'Realistic' || !m.mode) ? '9854-1829-8735' : (m.mapCode || 'Auto Host');
+        const isExpired = m.status === 'cancelled' || m.isExpired || diffSec >= thirtyMin;
 
         return `
-        <div class="card match-card" style="padding:16px;">
+        <div class="card match-card" style="padding:14px 16px;gap:8px;">
           <div class="match-card__header">
-            <div>
-              <div class="match-card__title">${escapeHtml(m.title)}</div>
-              <div class="match-card__host">Created by ${escapeHtml(m.hostName || 'Host')}</div>
+            <div style="min-width:0;">
+              <div class="match-card__title" style="font-size:0.92rem;font-weight:800;">${escapeHtml(m.title || `${size} ${mode}`)}</div>
+              <div class="match-card__host" style="font-size:0.7rem;">by <strong>${escapeHtml(m.hostName || 'Host')}</strong></div>
             </div>
             <div class="badge-group">
-              <span class="badge ${sizeColor(m.size || '1v1')}">${m.size || '1v1'}</span>
-              <span class="badge ${modeColor(m.mode)}">${modeColor(m.mode) ? m.mode : 'Realistic'}</span>
+              <span class="badge ${sizeColor(size)}" style="font-size:0.68rem;padding:2px 7px;">${size}</span>
+              <span class="badge ${modeColor(mode)}" style="font-size:0.68rem;padding:2px 7px;">${mode}</span>
             </div>
           </div>
-          <div class="match-card__meta">
-            <span class="match-meta-item"><i data-lucide="coins"></i><span class="gold">${formatTokens(m.wager)}</span> tokens</span>
-            <span class="match-meta-item"><i data-lucide="map-pin"></i>Map: <strong style="color:var(--gold-bright);">${mapCode}</strong></span>
-            <span class="badge badge-${isExpired ? 'cancelled' : m.status}" style="margin-left:auto;">${isExpired ? 'expired' : m.status.replace('_',' ')}</span>
+          <div class="match-card__meta" style="font-size:0.75rem;justify-content:space-between;">
+            <span class="match-meta-item"><i data-lucide="coins" style="width:13px;height:13px;"></i><span class="gold">${formatTokens(m.wager)} T</span></span>
+            <span style="color:var(--gold-bright);font-weight:700;font-size:0.7rem;display:inline-flex;align-items:center;gap:3px;padding:2px 6px;background:rgba(0,0,0,0.35);border-radius:4px;border:1px solid rgba(255,255,255,0.06);">
+              <i data-lucide="map-pin" style="width:10px;height:10px;"></i> Map: ${mapCode}
+            </span>
           </div>
-          <div style="display:flex;gap:8px;align-items:center;justify-content:space-between;flex-wrap:wrap;">
-            <div class="match-code-badge"><i data-lucide="hash"></i>${m.code}</div>
+          <div style="display:flex;gap:6px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding-top:2px;">
+            <div class="match-code-badge" style="font-size:0.72rem;padding:2px 6px;border-radius:6px;"><i data-lucide="hash" style="width:10px;height:10px;"></i>${m.code}</div>
             <div style="display:flex;gap:6px;margin-left:auto;">
-              <a href="match?id=${m.id}" target="_blank" class="btn btn-sm btn-outline">Arena</a>
+              <a href="match?id=${m.id}" class="btn btn-sm btn-primary" style="font-size:0.75rem;padding:3px 10px;height:28px;">
+                <i data-lucide="play" style="width:12px;height:12px;"></i> Enter Match
+              </a>
               ${!isExpired && m.createdBy === currentUser?.uid && m.status !== 'completed' ? `
-                <button class="btn btn-sm btn-primary" onclick="openDeclareModal('${m.id}', '${m.title}')">Declare</button>` : ''}
+                <button class="btn btn-sm btn-outline" style="font-size:0.75rem;padding:3px 8px;height:28px;" onclick="openDeclareModal('${m.id}', '${escapeHtml(m.title)}')">Declare</button>` : ''}
             </div>
           </div>
         </div>`;
