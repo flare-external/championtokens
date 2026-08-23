@@ -257,8 +257,8 @@ input[type="range"].ct-slider::-moz-range-thumb {
 .ct-nav__brand {
   display: flex;
   align-items: center;
-  gap: 9px;
-  font-size: 0.98rem;
+  gap: 10px;
+  font-size: 0.85rem;
   font-weight: 900;
   font-style: italic;
   letter-spacing: -0.01em;
@@ -275,8 +275,8 @@ input[type="range"].ct-slider::-moz-range-thumb {
 }
 
 .brand-logo-img {
-  width: 28px;
-  height: 28px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   object-fit: cover;
   flex-shrink: 0;
@@ -285,7 +285,7 @@ input[type="range"].ct-slider::-moz-range-thumb {
 }
 .brand-text {
   font-family: var(--font);
-  font-size: 0.98rem;
+  font-size: 0.85rem;
   font-weight: 900;
   font-style: italic;
   letter-spacing: -0.01em;
@@ -1310,7 +1310,7 @@ input[type="range"].ct-slider::-moz-range-thumb {
   display: flex;
   align-items: center;
   gap: 10px;
-  font-size: 1.05rem;
+  font-size: 0.9rem;
   font-weight: 900;
   font-style: italic;
   letter-spacing: -0.01em;
@@ -1319,8 +1319,8 @@ input[type="range"].ct-slider::-moz-range-thumb {
   text-decoration: none;
 }
 .landing-brand-logo {
-  width: 28px;
-  height: 28px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   object-fit: cover;
   flex-shrink: 0;

@@ -27,7 +27,7 @@ function injectNav(activePage = '') {
     <nav class="ct-nav" id="ct-nav">
       <div class="ct-nav__inner">
         <a href="dashboard" class="ct-nav__brand">
-          <img src="champion-tokens_new.png" alt="Champion Tokens" class="brand-logo-img" width="32" height="32" />
+          <img src="champion-tokens_new.png" alt="Champion Tokens" class="brand-logo-img" width="36" height="36" />
           <span class="brand-text">Champion <span class="brand-accent">Tokens</span></span>
         </a>
 
