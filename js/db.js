@@ -249,6 +249,16 @@ async function createMatch(hostUser, matchData) {
   else if (mode === 'Box Fights') defaultMapCode = '2355-0939-8965';
   const mapCode = matchData.mapCode || defaultMapCode;
 
+  const region = matchData.region || 'EU';
+  const platform = matchData.platform || 'All';
+  const rounds = matchData.rounds || (mode === 'Box Fights' ? 'First to 5' : (mode === 'Zone Wars' ? 'Best of 5' : 'First to 5'));
+  
+  let defaultLoot = 'Iron pump (Default AR)';
+  if (mode === 'Zone Wars') defaultLoot = 'Pump (AR)';
+  else if (mode === 'Box Fights') defaultLoot = 'Havoc only';
+  const lootPool = matchData.lootPool || defaultLoot;
+  const simpleEdit = matchData.simpleEdit || 'Disabled';
+
   const matchRef = await db.collection('matches').add({
     title,
     size,
@@ -260,6 +270,11 @@ async function createMatch(hostUser, matchData) {
     teamId,
     teamName,
     teamTag,
+    region,
+    platform,
+    rounds,
+    lootPool,
+    simpleEdit,
     invitedTeammates,
     tokenCoverage,
     coveredMemberUids,
@@ -1279,7 +1294,7 @@ async function voteMatchRematch(matchId, uid, voteType = 'rematch') {
   // Cast vote announcement to chat
   await matchRef.collection('messages').add({
     isSystem: true,
-    text: `🗳️ ${playerName} voted to ${voteType === 'double' ? 'DOUBLE DOWN (2x Entry)' : 'REMATCH'} (${currentVotes.length}/${totalPlayers})`,
+    text: `${playerName} voted to ${voteType === 'double' ? 'DOUBLE' : 'REMATCH'} ${currentVotes.length}/${totalPlayers}`,
     timestamp: firebase.firestore.FieldValue.serverTimestamp(),
   });
 

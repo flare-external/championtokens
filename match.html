@@ -177,7 +177,45 @@
       backdrop-filter: blur(12px);
     }
     @media (max-width: 768px) {
-      .concept-meta-bar { border-radius: 16px; padding: 12px 16px; font-size: 0.82rem; gap: 8px; }
+      .concept-meta-bar { border-radius: 16px; padding: 10px 16px; font-size: 0.82rem; gap: 8px; }
+    }
+    .concept-back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #94a3b8;
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-decoration: none;
+      padding: 6px 14px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.04);
+      transition: all 0.15s;
+      width: fit-content;
+      margin-bottom: 4px;
+      border: none;
+      outline: none;
+    }
+    .concept-back-btn:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.08);
+      transform: translateX(-2px);
+    }
+    .concept-meta-bar.secondary {
+      margin-top: 6px;
+      padding: 6px 18px;
+      font-size: 0.82rem;
+    }
+    .rules-blue-btn {
+      color: #60a5fa;
+      font-weight: 800;
+      cursor: pointer;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      transition: color 0.15s;
+    }
+    .rules-blue-btn:hover {
+      color: #93c5fd;
     }
     .concept-meta-item {
       display: inline-flex;
@@ -843,6 +881,14 @@
   <main class="match-page-layout" id="match-page-layout">
     <!-- Left Stage Content -->
     <div class="match-stage-left">
+      <!-- Back Button -->
+      <div>
+        <a href="matches" class="concept-back-btn" title="Return to Matches Lobby">
+          <i data-lucide="arrow-left" style="width:14px;height:14px;"></i>
+          <span>Back to Matches</span>
+        </a>
+      </div>
+
       <!-- Top Header Row: Left Big Entry, Center Gamemode & Capsule, Right Big Prize -->
       <div class="concept-top-row">
         <!-- Big Entry Fee (Top Left) -->
@@ -851,17 +897,19 @@
           <div class="stakes-widget-val" id="big-entry-val">1.00 <span class="stakes-sub">Tokens</span></div>
         </div>
 
-        <!-- Centered Gamemode Title & Metadata Bar -->
+        <!-- Centered Gamemode Title & Metadata Bars -->
         <div class="concept-top-center">
           <h1 id="room-title" class="concept-main-title">1V1 REALISTIC</h1>
 
-          <!-- Top Metadata Pill Capsule -->
+          <!-- Top Primary Metadata Pill Capsule -->
           <div class="concept-meta-bar" id="concept-meta-bar">
             <div class="concept-meta-item">Region: <strong id="meta-region" style="color:#fff;">EU</strong></div>
             <div class="concept-meta-dot">·</div>
             <div class="concept-meta-item">Platform: <strong id="meta-platform" style="color:#fff;">All</strong></div>
             <div class="concept-meta-dot">·</div>
             <div class="concept-meta-item">Format: <strong id="meta-rounds" style="color:#fff;">First to 5</strong></div>
+            <div class="concept-meta-dot">·</div>
+            <div class="concept-meta-item">Simple Edit: <strong id="meta-simple-edit" style="color:#fff;">Disabled</strong></div>
             <div class="concept-meta-dot">·</div>
             <div class="concept-meta-item">
               Map: <strong id="map-code-display" class="concept-meta-link" onclick="copyMapCode()" title="Click to copy map code">9854-1829-8735</strong>
@@ -871,6 +919,17 @@
               <span class="concept-meta-dot" style="margin-right:6px;">·</span>
               <i data-lucide="clock" style="width:14px;height:14px;color:var(--gold-bright);"></i>
               <span id="timer-clock" style="font-family:monospace;font-weight:800;color:#fff;">30:00</span>
+            </div>
+          </div>
+
+          <!-- Secondary Metadata Pill Capsule (Rules & Loot) -->
+          <div class="concept-meta-bar secondary" id="concept-meta-secondary">
+            <div class="concept-meta-item">
+              <span id="mode-rules-label" style="font-weight:700;">Realistic</span>&nbsp;<span class="rules-blue-btn" onclick="openRulesModal()" title="View Competitive Rules">Rules</span>
+            </div>
+            <div class="concept-meta-dot">·</div>
+            <div class="concept-meta-item">
+              Loot: <strong id="meta-loot" style="color:#fff;font-weight:800;">Iron pump (Default AR)</strong>
             </div>
           </div>
         </div>
@@ -1107,6 +1166,39 @@
     </div>
   </div>
 
+  <!-- Competitive Rules Modal -->
+  <div class="modal-overlay" id="rules-modal" onclick="if(event.target===this)closeRulesModal()">
+    <div class="modal" style="max-width:540px;">
+      <div class="modal-header">
+        <div class="modal-title" style="display:flex;align-items:center;gap:8px;color:var(--gold-bright);">
+          <i data-lucide="book-open"></i>
+          <span id="rules-modal-title">Realistic Competitive Rules</span>
+        </div>
+        <button class="modal-close" onclick="closeRulesModal()"><i data-lucide="x"></i></button>
+      </div>
+      <div style="padding:14px 4px;font-size:0.88rem;color:#cbd5e1;line-height:1.6;display:flex;flex-direction:column;gap:12px;" id="rules-modal-content">
+        <div style="background:rgba(255,255,255,0.03);padding:14px 16px;border-radius:12px;">
+          <div style="font-weight:800;color:#fff;margin-bottom:6px;display:flex;align-items:center;gap:6px;">
+            <i data-lucide="shield-check" style="width:16px;height:16px;color:var(--gold-bright);"></i> General Tournament & Match Conduct
+          </div>
+          <p style="color:var(--text-muted);font-size:0.82rem;margin:0;">
+            Play fair and respect all opponents. Ensure your Epic Games tag matches your linked profile tag. Both sides must queue with the island map code and specified loot pool.
+          </p>
+        </div>
+
+        <div style="background:rgba(255,255,255,0.03);padding:14px 16px;border-radius:12px;">
+          <div style="font-weight:800;color:#fff;margin-bottom:6px;display:flex;align-items:center;gap:6px;">
+            <i data-lucide="crosshair" style="width:16px;height:16px;color:var(--gold-bright);"></i> Scoring & Dispute Resolution
+          </div>
+          <p style="color:var(--text-muted);font-size:0.82rem;margin:0;">
+            Winner is decided by round limit. Submit honest match results after completion. False reports, quitting early, or intentional griefing will trigger staff arbitration and profile penalties.
+          </p>
+        </div>
+      </div>
+      <button class="btn btn-primary btn-full" style="margin-top:16px;" onclick="closeRulesModal()">Got it</button>
+    </div>
+  </div>
+
   <!-- Core Scripts -->
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
@@ -1328,6 +1420,19 @@
 
       const roundsEl = document.getElementById('meta-rounds');
       if (roundsEl) roundsEl.textContent = match.rounds || (mode === 'Box Fights' ? 'First to 5' : (mode === 'Zone Wars' ? 'Best of 5' : 'First to 5'));
+
+      const simpleEditEl = document.getElementById('meta-simple-edit');
+      if (simpleEditEl) simpleEditEl.textContent = match.simpleEdit || 'Disabled';
+
+      const rulesLabelEl = document.getElementById('mode-rules-label');
+      if (rulesLabelEl) rulesLabelEl.textContent = mode;
+
+      const rulesTitleEl = document.getElementById('rules-modal-title');
+      if (rulesTitleEl) rulesTitleEl.textContent = `${mode} Competitive Rules`;
+
+      const defaultLoot = (mode === 'Zone Wars' ? 'Pump (AR)' : (mode === 'Box Fights' ? 'Havoc only' : 'Iron pump (Default AR)'));
+      const lootEl = document.getElementById('meta-loot');
+      if (lootEl) lootEl.textContent = match.lootPool || defaultLoot;
 
       const mapCodeEl = document.getElementById('map-code-display');
       if (mapCodeEl) {
@@ -1968,6 +2073,16 @@
       } catch (err) {
         listEl.innerHTML = `<div style="font-size:0.75rem;color:var(--text-faint);text-align:center;">No past match records found.</div>`;
       }
+    }
+
+    function openRulesModal() {
+      const m = document.getElementById('rules-modal');
+      if (m) m.classList.add('open');
+    }
+
+    function closeRulesModal() {
+      const m = document.getElementById('rules-modal');
+      if (m) m.classList.remove('open');
     }
 
     function closeUserProfileModal() {

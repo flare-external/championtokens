@@ -515,6 +515,40 @@
       if (window.lucide) lucide.createIcons();
     }
 
+    const lootPoolsByMode = {
+      'Realistic': [
+        'Iron pump (Default AR)',
+        'Iron pump (Tactical pistol)',
+        'Sentinel pump (Default AR)',
+        'Havoc (Default AR)',
+        'Boxfight loot (Default AR)',
+        'Striker pump (Default AR)',
+        'Striker pump (Tactical pistol)',
+        'Pump (Default AR)'
+      ],
+      'Zone Wars': [
+        'Pump (AR)',
+        'Pump (Ranger AR)',
+        'Boxfight loot (Default AR)'
+      ],
+      'Box Fights': [
+        'Havoc only',
+        'Havoc (Default AR)',
+        'Pump (Ranger AR)',
+        'Pump (Tactical pistol)',
+        'Boxfight loot (Ranger AR)',
+        'Boxfight loot (Default AR)'
+      ]
+    };
+
+    function updateLootOptions() {
+      const mode = document.getElementById('mode-select')?.value || 'Realistic';
+      const lootSelect = document.getElementById('loot-pool-select');
+      if (!lootSelect) return;
+      const options = lootPoolsByMode[mode] || lootPoolsByMode['Realistic'];
+      lootSelect.innerHTML = options.map(opt => `<option value="${escapeHtml(opt)}">${escapeHtml(opt)}</option>`).join('');
+    }
+
     function updateCreatePreview() {
       const size  = document.getElementById('size-select').value;
       const mode  = document.getElementById('mode-select').value;
@@ -542,6 +576,8 @@
       const size  = document.getElementById('size-select').value;
       const mode  = document.getElementById('mode-select').value;
       const wager = parseFloat(document.getElementById('wager-input').value);
+      const lootPool = document.getElementById('loot-pool-select')?.value || (lootPoolsByMode[mode]?.[0] || 'Iron pump (Default AR)');
+      const simpleEdit = document.getElementById('simple-edit-select')?.value || 'Disabled';
 
       if (isNaN(wager) || wager < 0.50) {
         showToast('Minimum entry is 0.50 tokens ($0.50)', 'error');
@@ -572,6 +608,8 @@
           size,
           mode,
           wager,
+          lootPool,
+          simpleEdit,
           queueType: selectedQueueType,
           teamId: currentUserData?.teamId || null,
           teamName: currentUserData?.teamName || null,
@@ -729,10 +767,34 @@
         <!-- Game Mode -->
         <div class="form-group">
           <label class="form-label">Game Mode</label>
-          <select class="form-select" id="mode-select" onchange="updateCreatePreview()">
+          <select class="form-select" id="mode-select" onchange="updateLootOptions(); updateCreatePreview();">
             <option value="Realistic">Realistic</option>
             <option value="Zone Wars">Zone Wars</option>
             <option value="Box Fights">Box Fights</option>
+          </select>
+        </div>
+
+        <!-- Loot Pool -->
+        <div class="form-group">
+          <label class="form-label">Loot Pool</label>
+          <select class="form-select" id="loot-pool-select">
+            <option value="Iron pump (Default AR)">Iron pump (Default AR)</option>
+            <option value="Iron pump (Tactical pistol)">Iron pump (Tactical pistol)</option>
+            <option value="Sentinel pump (Default AR)">Sentinel pump (Default AR)</option>
+            <option value="Havoc (Default AR)">Havoc (Default AR)</option>
+            <option value="Boxfight loot (Default AR)">Boxfight loot (Default AR)</option>
+            <option value="Striker pump (Default AR)">Striker pump (Default AR)</option>
+            <option value="Striker pump (Tactical pistol)">Striker pump (Tactical pistol)</option>
+            <option value="Pump (Default AR)">Pump (Default AR)</option>
+          </select>
+        </div>
+
+        <!-- Simple Edit -->
+        <div class="form-group">
+          <label class="form-label">Simple Edit</label>
+          <select class="form-select" id="simple-edit-select">
+            <option value="Disabled">Disabled</option>
+            <option value="Enabled">Enabled</option>
           </select>
         </div>
 
