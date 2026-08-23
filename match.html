@@ -41,12 +41,12 @@
       }
     }
 
-    /* Left Stage Area */
+    /* Left Stage Area — Comfortably Centered & Lowered */
     .match-stage-left {
-      padding: 44px 32px 48px;
+      padding: 72px 32px 64px;
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 26px;
       min-width: 0;
       box-sizing: border-box;
       max-width: 1350px;
@@ -55,8 +55,8 @@
     }
     @media (max-width: 768px) {
       .match-stage-left {
-        padding: 24px 14px 32px;
-        gap: 16px;
+        padding: 36px 14px 40px;
+        gap: 18px;
       }
     }
 
@@ -67,7 +67,7 @@
       align-items: center;
       gap: 20px;
       width: 100%;
-      margin-bottom: 2px;
+      margin-bottom: 4px;
     }
     @media (max-width: 1024px) {
       .concept-top-row {
@@ -75,16 +75,16 @@
         gap: 14px;
       }
     }
+    /* Clean text-only display (No background box/rectangle) */
     .concept-stakes-widget {
-      background: rgba(10, 10, 10, 0.88);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 18px;
-      padding: 14px 18px;
+      background: transparent;
+      border: none;
+      outline: none;
+      box-shadow: none;
+      padding: 0;
       display: flex;
       flex-direction: column;
-      gap: 3px;
-      backdrop-filter: blur(12px);
-      box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+      gap: 2px;
     }
     .concept-stakes-widget.left {
       align-items: flex-start;
@@ -93,8 +93,6 @@
     .concept-stakes-widget.right {
       align-items: flex-end;
       text-align: right;
-      border-color: rgba(245, 158, 11, 0.25);
-      box-shadow: 0 8px 28px rgba(0,0,0,0.7), 0 0 20px rgba(245, 158, 11, 0.08);
     }
     @media (max-width: 1024px) {
       .concept-stakes-widget.left,
@@ -104,9 +102,9 @@
       }
     }
     .stakes-widget-label {
-      font-size: 0.72rem;
+      font-size: 0.75rem;
       font-weight: 900;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
       color: #94a3b8;
     }
@@ -114,7 +112,7 @@
       color: var(--gold-bright);
     }
     .stakes-widget-val {
-      font-size: 1.55rem;
+      font-size: 1.7rem;
       font-weight: 900;
       color: #fff;
       font-family: 'Inter', sans-serif;
@@ -123,7 +121,7 @@
     }
     .stakes-widget-val.gold {
       color: var(--gold-bright);
-      text-shadow: 0 0 16px var(--gold-glow);
+      text-shadow: 0 0 18px var(--gold-glow);
     }
     .stakes-sub {
       font-size: 0.85rem;
@@ -145,7 +143,7 @@
       width: 100%;
     }
     .concept-main-title {
-      font-size: 2.2rem;
+      font-size: 2.3rem;
       font-weight: 900;
       color: var(--gold-bright);
       letter-spacing: 0.06em;
@@ -161,10 +159,11 @@
       .concept-main-title { font-size: 1.65rem; }
     }
 
-    /* Top Metadata Pill Capsule */
+    /* Top Metadata Pill Capsule (Border-Free) */
     .concept-meta-bar {
       background: rgba(10, 10, 10, 0.85);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      border: none;
+      outline: none;
       border-radius: 999px;
       padding: 8px 22px;
       display: flex;
@@ -203,10 +202,11 @@
       border-bottom-color: #fff;
     }
 
-    /* Arena Stage Card */
+    /* Arena Stage Card (Borderless Dark Glass) */
     .stage-card {
       background: rgba(8, 8, 8, 0.88);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      border: none;
+      outline: none;
       border-radius: 20px;
       padding: 22px 24px;
       display: flex;
@@ -239,10 +239,11 @@
       }
     }
 
-    /* Team Card (Clean, Static & Solid — No Hover Animation) */
+    /* Team Card (Clean, Static, Borderless Glass) */
     .concept-team-card {
       background: rgba(10, 10, 10, 0.85);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      border: none;
+      outline: none;
       border-radius: 18px;
       overflow: hidden;
       display: flex;
@@ -256,7 +257,8 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      border: none;
+      outline: none;
     }
     .team-header-name {
       font-weight: 900;
@@ -276,27 +278,25 @@
       display: inline-flex;
       align-items: center;
       gap: 5px;
+      border: none;
+      outline: none;
     }
     .team-header-status-badge.ready {
       background: rgba(34, 197, 94, 0.16);
       color: #4ade80;
-      border: 1px solid rgba(34, 197, 94, 0.35);
     }
     .team-header-status-badge.waiting {
       background: rgba(245, 158, 11, 0.14);
       color: #fbbf24;
-      border: 1px solid rgba(245, 158, 11, 0.3);
     }
     .team-header-status-badge.victory {
       background: rgba(34, 197, 94, 0.22);
       color: #22c55e;
-      border: 1px solid rgba(34, 197, 94, 0.5);
       font-weight: 900;
     }
     .team-header-status-badge.lose {
       background: rgba(239, 68, 68, 0.22);
       color: #f87171;
-      border: 1px solid rgba(239, 68, 68, 0.5);
       font-weight: 900;
     }
 
@@ -308,7 +308,7 @@
       flex: 1;
     }
 
-    /* Player Row in Team Card (Clean & Borderless, No Outline / Bg) */
+    /* Player Row in Team Card (Clean & Borderless) */
     .concept-player-row {
       display: flex;
       align-items: center;
@@ -316,6 +316,7 @@
       padding: 6px 4px;
       background: transparent;
       border: none;
+      outline: none;
       border-radius: 0;
       cursor: pointer;
       transition: none;
@@ -338,7 +339,8 @@
       font-weight: 900;
       color: var(--gold-bright);
       flex-shrink: 0;
-      border: 1.5px solid rgba(255,255,255,0.08);
+      border: none;
+      outline: none;
     }
     .concept-player-pfp img {
       width: 100%;
@@ -379,13 +381,13 @@
       border-radius: 4px;
       width: fit-content;
       margin-top: 1px;
-      border: 1px solid rgba(255,255,255,0.06);
+      border: none;
+      outline: none;
       cursor: pointer;
       transition: all 0.15s;
     }
     .concept-epic-row:hover {
       color: #fff;
-      border-color: rgba(255,255,255,0.18);
       background: rgba(255,255,255,0.08);
     }
 
@@ -407,12 +409,13 @@
       letter-spacing: 0.06em;
     }
 
-    /* Bottom Bar */
+    /* Bottom Bar (Borderless) */
     .concept-bottom-bar {
       margin-top: auto;
       padding: 14px 20px;
       background: rgba(10, 10, 10, 0.85);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      border: none;
+      outline: none;
       border-radius: 16px;
       display: flex;
       align-items: center;
@@ -432,7 +435,8 @@
       background: rgba(255,255,255,0.04);
       padding: 5px 12px;
       border-radius: 8px;
-      border: 1px solid rgba(255,255,255,0.07);
+      border: none;
+      outline: none;
     }
 
     /* Primary Action Buttons (CT Gold Theme) */
@@ -444,6 +448,7 @@
       padding: 10px 28px;
       border-radius: 24px;
       border: none;
+      outline: none;
       cursor: pointer;
       box-shadow: 0 0 22px rgba(245, 158, 11, 0.45);
       display: inline-flex;
@@ -456,20 +461,37 @@
       box-shadow: 0 0 32px rgba(245, 158, 11, 0.7);
       filter: brightness(1.08);
     }
-    .concept-btn-ready.cancel {
-      background: transparent;
-      color: #f87171;
-      border: 1px solid rgba(239, 68, 68, 0.4);
-      box-shadow: none;
+    .concept-btn-ready.is-ready {
+      background: linear-gradient(135deg, #4ade80, #22c55e);
+      color: #000;
+      box-shadow: 0 0 22px rgba(34, 197, 94, 0.5);
     }
-    .concept-btn-ready.cancel:hover {
-      background: rgba(239, 68, 68, 0.12);
+
+    .concept-btn-cancel-small {
+      background: rgba(239, 68, 68, 0.14);
+      color: #f87171;
+      border: none;
+      outline: none;
+      font-weight: 800;
+      font-size: 0.8rem;
+      padding: 8px 14px;
+      border-radius: 20px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.15s;
+    }
+    .concept-btn-cancel-small:hover {
+      background: rgba(239, 68, 68, 0.26);
+      color: #fff;
       transform: translateY(-1px);
     }
 
     .concept-btn-locked {
       background: rgba(245, 158, 11, 0.12);
-      border: 1px solid rgba(245, 158, 11, 0.35);
+      border: none;
+      outline: none;
       color: var(--gold-bright);
       font-weight: 800;
       font-size: 0.92rem;
@@ -488,6 +510,7 @@
       padding: 10px 22px;
       border-radius: 20px;
       border: none;
+      outline: none;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
@@ -501,9 +524,10 @@
       filter: brightness(1.08);
     }
     .concept-btn-lose {
-      background: rgba(239, 68, 68, 0.12);
+      background: rgba(239, 68, 68, 0.14);
       color: #fca5a5;
-      border: 1px solid rgba(239, 68, 68, 0.35);
+      border: none;
+      outline: none;
       font-weight: 800;
       font-size: 0.92rem;
       padding: 10px 22px;
@@ -515,14 +539,15 @@
       transition: all 0.15s;
     }
     .concept-btn-lose:hover {
-      background: rgba(239, 68, 68, 0.22);
+      background: rgba(239, 68, 68, 0.24);
       transform: translateY(-1px);
     }
 
-    /* Rematch & Double Action Buttons */
+    /* Rematch & Double Action Buttons (Clean & Borderless) */
     .concept-btn-rematch {
-      background: rgba(245, 158, 11, 0.12);
-      border: 1px solid rgba(245, 158, 11, 0.4);
+      background: rgba(245, 158, 11, 0.14);
+      border: none;
+      outline: none;
       color: var(--gold-bright);
       font-weight: 800;
       font-size: 0.92rem;
@@ -535,20 +560,19 @@
       transition: all 0.15s;
     }
     .concept-btn-rematch:hover {
-      background: rgba(245, 158, 11, 0.22);
-      border-color: var(--gold-bright);
+      background: rgba(245, 158, 11, 0.25);
       transform: translateY(-1px);
       box-shadow: 0 0 20px rgba(245, 158, 11, 0.35);
     }
     .concept-btn-rematch.voted {
-      background: rgba(34, 197, 94, 0.2);
-      border-color: #22c55e;
+      background: rgba(34, 197, 94, 0.22);
       color: #4ade80;
       box-shadow: 0 0 16px rgba(34, 197, 94, 0.3);
     }
     .concept-btn-double {
       background: linear-gradient(135deg, #FBBF24, #F59E0B);
       border: none;
+      outline: none;
       color: #000;
       font-weight: 900;
       font-size: 0.92rem;
@@ -1525,17 +1549,10 @@
       if (t1El) t1El.innerHTML = team1HTML;
       if (t2El) t2El.innerHTML = team2HTML;
 
-      // 4. Bottom Extra Actions (Leave/Cancel)
+      // 4. Bottom Extra Actions (Share & Staff links)
       const extraActionsContainer = document.getElementById('arena-extra-actions');
       if (extraActionsContainer) {
-        let extraHTML = '';
-        if (!isExpired && alreadyIn && match.status === 'waiting') {
-          extraHTML += `
-            <button class="btn btn-danger btn-xs" onclick="handleLeaveOrCancel()">
-              <i data-lucide="x-circle"></i> ${isHost ? 'Cancel' : 'Leave'}
-            </button>`;
-        }
-        extraActionsContainer.innerHTML = extraHTML;
+        extraActionsContainer.innerHTML = '';
       }
 
       // 5. Bottom Primary Action Button
@@ -1556,17 +1573,17 @@
             rematchControlsHTML = `
               <button class="concept-btn-rematch ${hasVotedRematch ? 'voted' : ''}" onclick="handleVoteRematch('rematch')">
                 <i data-lucide="rotate-ccw"></i>
-                <span>${hasVotedRematch ? '✓ Voted Rematch' : 'Rematch'} (${rematchVotes.length}/${totalPlayers})</span>
+                <span>${hasVotedRematch ? '✓ ' : ''}Rematch ${rematchVotes.length}/${totalPlayers}</span>
               </button>
               <button class="concept-btn-double ${hasVotedDouble ? 'voted' : ''}" onclick="handleVoteRematch('double')">
                 <i data-lucide="zap"></i>
-                <span>${hasVotedDouble ? '⚡ Voted Double' : 'Double Down (2x Entry)'} (${doubleVotes.length}/${totalPlayers})</span>
+                <span>${hasVotedDouble ? '⚡ ' : ''}Double ${doubleVotes.length}/${totalPlayers}</span>
               </button>`;
           }
 
           primaryActionContainer.innerHTML = `
             <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-              <div class="concept-btn-locked" style="background:rgba(245,158,11,0.14);border-color:rgba(245,158,11,0.4);color:var(--gold-bright);font-weight:900;">
+              <div class="concept-btn-locked" style="background:rgba(245,158,11,0.14);color:var(--gold-bright);font-weight:900;">
                 <i data-lucide="trophy"></i> Winner: ${escapeHtml(winDisplay)} (+${formatTokens(prize)} Tokens)
               </div>
               ${rematchControlsHTML}
@@ -1574,7 +1591,7 @@
         } else if (match.status === 'in_progress') {
           if (!alreadyIn) {
             primaryActionContainer.innerHTML = `
-              <div class="concept-btn-locked" style="background:rgba(34,197,94,0.12);border-color:rgba(34,197,94,0.3);color:#4ade80;">
+              <div class="concept-btn-locked" style="background:rgba(34,197,94,0.12);color:#4ade80;">
                 <i data-lucide="swords"></i> Match Currently In Progress
               </div>`;
           } else {
@@ -1627,7 +1644,7 @@
                 </div>`;
             } else {
               primaryActionContainer.innerHTML = `
-                <div class="concept-btn-locked" style="background:rgba(34,197,94,0.12);border-color:rgba(34,197,94,0.35);color:#4ade80;">
+                <div class="concept-btn-locked" style="background:rgba(34,197,94,0.12);color:#4ade80;">
                   <i data-lucide="check-circle"></i>
                   <span>${myReported === (isTeam1 ? 'team1' : 'team2') ? 'Voted Victory' : 'Voted Lose'} (Waiting for Opponent)</span>
                 </div>`;
@@ -1638,25 +1655,31 @@
             const mySlot = players.find(p => p.uid === currentUser?.uid);
             const amIReady = !!mySlot?.ready;
             primaryActionContainer.innerHTML = `
-              <button class="concept-btn-ready ${amIReady ? 'cancel' : ''}" onclick="handleReadyToggle(${!amIReady})">
-                <i data-lucide="${amIReady ? 'x' : 'check'}"></i>
-                <span>${amIReady ? 'Cancel' : 'Ready'}</span>
-              </button>`;
+              <div style="display:flex;align-items:center;gap:8px;">
+                <button class="concept-btn-ready ${amIReady ? 'is-ready' : ''}" onclick="handleReadyToggle(${!amIReady})">
+                  <i data-lucide="${amIReady ? 'check-circle-2' : 'check'}"></i>
+                  <span>${amIReady ? 'Ready' : 'Ready Up'}</span>
+                </button>
+                <button class="concept-btn-cancel-small" onclick="handleLeaveOrCancel()" title="Leave / Cancel Match">
+                  <i data-lucide="x" style="width:14px;height:14px;"></i>
+                  <span>Cancel</span>
+                </button>
+              </div>`;
           } else if (!isFull && !isExpired) {
             if (match.size !== '1v1' && currentUserData?.teamId) {
               primaryActionContainer.innerHTML = `
                 <div style="display:flex;gap:8px;">
                   <button class="concept-btn-ready" onclick="handleJoinArena('solo')">
-                    <i data-lucide="user"></i> Join Solo ($${formatTokens(match.wager)})
+                    <i data-lucide="user"></i> Join Solo (${formatTokens(match.wager)} Tokens)
                   </button>
-                  <button class="btn btn-gold btn-sm" onclick="handleJoinArena('team')" style="border-radius:20px;">
+                  <button class="btn btn-gold btn-sm" onclick="handleJoinArena('team')" style="border-radius:20px;border:none;">
                     <i data-lucide="users"></i> Join with Team
                   </button>
                 </div>`;
             } else {
               primaryActionContainer.innerHTML = `
                 <button class="concept-btn-ready" onclick="handleJoinArena('solo')">
-                  <i data-lucide="log-in"></i> Join Match ($${formatTokens(match.wager)})
+                  <i data-lucide="log-in"></i> Join Match (${formatTokens(match.wager)} Tokens)
                 </button>`;
             }
           } else {
