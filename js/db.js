@@ -737,26 +737,6 @@ async function setPlayerReady(matchId, uid, isReady = true) {
     ...(allReady ? { startedAt: firebase.firestore.FieldValue.serverTimestamp() } : {}),
   });
 
-  // Automated System Announcements on match start
-  if (allReady) {
-    const hostPlayer = updatedPlayers.find(p => p.isHost || p.uid === match.createdBy) || updatedPlayers[0];
-    const oppPlayer = updatedPlayers.find(p => p.uid !== hostPlayer?.uid) || updatedPlayers[1];
-    const hostName = hostPlayer ? (hostPlayer.epicUsername || hostPlayer.displayName) : 'Host';
-    const oppName  = oppPlayer ? (oppPlayer.epicUsername || oppPlayer.displayName) : 'Opponent';
-
-    const msgRef = matchRef.collection('messages');
-    await msgRef.add({
-      isSystem:  true,
-      text:      '⏰ Players have 10 minutes to queue into a game. If your opponent does not join within 10 minutes, click "Call Staff" to report and a moderator will resolve the situation.',
-      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-    }).catch(console.warn);
-    await msgRef.add({
-      isSystem:  true,
-      text:      `👑 Team ${hostName} is host, so ${oppName} has to add them in Fortnite!`,
-      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-    }).catch(console.warn);
-  }
-
   return { allReady, newStatus };
 }
 
@@ -1028,9 +1008,11 @@ async function submitMatchReport(matchId, reporterUid, reportedWinnerTeam) {
     throw new Error('Match is already completed');
   }
 
-  // 5-Minute anti-win-farming check
-  const MIN_MATCH_DURATION_MS = 5 * 60 * 1000;
-  if (match.startedAt) {
+  const isOwnerAdmin = (reporterUid === 'discord:1121188319410278420' || ADMIN_DISCORD_IDS.includes((reporterUid || '').replace('discord:', '')));
+
+  // 5-Minute anti-win-farming check (bypassed for owner testing)
+  const MIN_MATCH_DURATION_MS = isOwnerAdmin ? 0 : 5 * 60 * 1000;
+  if (match.startedAt && !isOwnerAdmin) {
     const startedTime = match.startedAt.toDate ? match.startedAt.toDate().getTime() : (match.startedAt.seconds ? match.startedAt.seconds * 1000 : Date.now());
     const elapsed = Date.now() - startedTime;
     if (elapsed < MIN_MATCH_DURATION_MS) {
@@ -1050,7 +1032,17 @@ async function submitMatchReport(matchId, reporterUid, reportedWinnerTeam) {
   const reporterTeamName = isTeam1 ? 'Team 1 (Host)' : 'Team 2 (Enemy)';
 
   const updatePayload = {};
-  if (isTeam1) {
+  if (isOwnerAdmin) {
+    // Owner testing phase: immediately confirm and complete match
+    updatePayload.team1Reported = reportedWinnerTeam;
+    updatePayload.team2Reported = reportedWinnerTeam;
+    updatePayload.team1ReportedBy = reporterUid;
+    updatePayload.team2ReportedBy = reporterUid;
+    updatePayload.team1ReportedByName = reporterPlayer.displayName || 'Owner (Test)';
+    updatePayload.team2ReportedByName = reporterPlayer.displayName || 'Owner (Test)';
+    updatePayload.team1ReportedAt = firebase.firestore.FieldValue.serverTimestamp();
+    updatePayload.team2ReportedAt = firebase.firestore.FieldValue.serverTimestamp();
+  } else if (isTeam1) {
     updatePayload.team1Reported = reportedWinnerTeam;
     updatePayload.team1ReportedBy = reporterUid;
     updatePayload.team1ReportedByName = reporterPlayer.displayName || 'Player';
@@ -1062,8 +1054,8 @@ async function submitMatchReport(matchId, reporterUid, reportedWinnerTeam) {
     updatePayload.team2ReportedAt = firebase.firestore.FieldValue.serverTimestamp();
   }
 
-  const currentTeam1Report = isTeam1 ? reportedWinnerTeam : match.team1Reported;
-  const currentTeam2Report = isTeam1 ? match.team2Reported : reportedWinnerTeam;
+  const currentTeam1Report = isOwnerAdmin ? reportedWinnerTeam : (isTeam1 ? reportedWinnerTeam : match.team1Reported);
+  const currentTeam2Report = isOwnerAdmin ? reportedWinnerTeam : (isTeam1 ? match.team2Reported : reportedWinnerTeam);
 
   const msgRef = matchRef.collection('messages');
 
