@@ -238,9 +238,13 @@ function injectNav(activePage = '') {
       }
 
       // Username in dropdown
+      let displayName = data.displayName;
+      if (!displayName || displayName === 'Champion' || displayName === 'Player') {
+        displayName = data.discordUsername || user.displayName || 'Player';
+      }
       const menuName = document.getElementById('nav-menu-username');
       const menuHandle = document.getElementById('nav-menu-handle');
-      if (menuName) menuName.textContent = data.displayName || 'Champion';
+      if (menuName) menuName.textContent = displayName;
       if (menuHandle) menuHandle.textContent = data.discordUsername ? `@${data.discordUsername}` : (data.email || `@${user.uid.slice(0, 8)}`);
 
       // Admin link — show if isAdmin flag OR hardcoded Discord ID

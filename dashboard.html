@@ -195,7 +195,11 @@
     }
 
     function renderDashboard(userData) {
-      const firstName = ((userData && userData.displayName) || 'Champion').split(' ')[0];
+      let name = (userData && userData.displayName) || '';
+      if (!name || name === 'Champion' || name === 'Player') {
+        name = userData?.discordUsername || (currentUser && currentUser.displayName) || 'Player';
+      }
+      const firstName = name.split(' ')[0];
       safeSetText('welcome-name', firstName);
       renderStats(userData || {});
     }
@@ -415,10 +419,10 @@
 
         try {
           const userData = await getUser(user.uid);
-          renderDashboard(userData || { displayName: user.displayName || 'Champion', tokens: 10.00, totalEarned: 10.00, matchesPlayed: 0, matchesWon: 0 });
+          renderDashboard(userData || { displayName: user.displayName || 'Player', tokens: 10.00, totalEarned: 10.00, matchesPlayed: 0, matchesWon: 0 });
         } catch (err) {
           console.error('Error fetching initial user:', err);
-          renderDashboard({ displayName: user.displayName || 'Champion', tokens: 10.00, totalEarned: 10.00, matchesPlayed: 0, matchesWon: 0 });
+          renderDashboard({ displayName: user.displayName || 'Player', tokens: 10.00, totalEarned: 10.00, matchesPlayed: 0, matchesWon: 0 });
         }
 
         // Real-time balance update

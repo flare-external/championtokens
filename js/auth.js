@@ -94,7 +94,7 @@ async function exchangeDiscordCode(code) {
   for (const endpoint of endpoints) {
     try {
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 5000);
+      const timeoutId = setTimeout(() => controller.abort(), 6000);
       const response = await fetch(endpoint, {
         method:  'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -107,6 +107,78 @@ async function exchangeDiscordCode(code) {
         const data = await response.json();
         if (data.token) {
           const cred = await auth.signInWithCustomToken(data.token);
+          const uInfo = data.user || {};
+          const realName = uInfo.displayName || uInfo.discordUsername || 'Player';
+
+          // Cache Discord profile locally
+          try {
+            if (data.user) {
+              localStorage.setItem('ct_cached_discord_user', JSON.stringify(data.user));
+            }
+          } catch (e) {}
+
+          // Update client auth user profile
+          try {
+            if (cred.user && cred.user.updateProfile) {
+              await cred.user.updateProfile({
+                displayName: realName,
+                photoURL: uInfo.photoURL || ''
+              });
+            }
+          } catch (e) {}
+
+          // Sync into Firestore user record
+          try {
+            if (typeof db !== 'undefined' && cred.user) {
+              const userRef = db.collection('users').doc(cred.user.uid);
+              const snap = await userRef.get();
+              if (!snap.exists) {
+                await userRef.set({
+                  uid: cred.user.uid,
+                  displayName: realName,
+                  email: uInfo.email || cred.user.email || '',
+                  photoURL: uInfo.photoURL || cred.user.photoURL || '',
+                  discordId: uInfo.discordId || cred.user.uid.replace('discord:', ''),
+                  discordUsername: uInfo.discordUsername || '',
+                  tokens: 10.00,
+                  totalEarned: 10.00,
+                  totalSpent: 0.00,
+                  matchesPlayed: 0,
+                  matchesWon: 0,
+                  createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                  lastLoginAt: firebase.firestore.FieldValue.serverTimestamp(),
+                });
+                await db.collection('transactions').add({
+                  userId: cred.user.uid,
+                  amount: 10.00,
+                  type: 'bonus',
+                  description: '🎉 Welcome bonus (10.00 Starter Tokens)',
+                  timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                });
+              } else {
+                const existing = snap.data() || {};
+                const updates = {
+                  lastLoginAt: firebase.firestore.FieldValue.serverTimestamp(),
+                };
+                if (!existing.displayName || existing.displayName === 'Champion' || existing.displayName === 'Player') {
+                  updates.displayName = realName;
+                }
+                if (uInfo.discordUsername && !existing.discordUsername) {
+                  updates.discordUsername = uInfo.discordUsername;
+                }
+                if (uInfo.discordId && !existing.discordId) {
+                  updates.discordId = uInfo.discordId;
+                }
+                if (uInfo.photoURL && (!existing.photoURL || existing.photoURL.includes('default'))) {
+                  updates.photoURL = uInfo.photoURL;
+                }
+                await userRef.update(updates);
+              }
+            }
+          } catch (dbErr) {
+            console.warn('Firestore sync notice:', dbErr);
+          }
+
           return cred.user;
         }
       }

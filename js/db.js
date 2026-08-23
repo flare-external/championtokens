@@ -13,23 +13,53 @@ function escapeHtml(str) {
 
 /**
  * Ensures user document exists with 10.00 Tokens starter balance.
+ * Resolves best available display name from Discord profile, email, or cache.
  */
 async function ensureUserRecord(user) {
   if (!user || !user.uid) return null;
   const userRef = db.collection('users').doc(user.uid);
   const snap = await userRef.get();
+
+  let discordUserCache = null;
+  try {
+    const raw = localStorage.getItem('ct_cached_discord_user');
+    if (raw) discordUserCache = JSON.parse(raw);
+  } catch (e) {}
+
+  let bestName = (user.displayName && user.displayName !== 'Champion' && user.displayName !== 'Player') ? user.displayName : null;
+  if (!bestName) {
+    if (discordUserCache?.displayName && discordUserCache.displayName !== 'Champion') {
+      bestName = discordUserCache.displayName;
+    } else if (discordUserCache?.discordUsername) {
+      bestName = discordUserCache.discordUsername;
+    } else if (user.email && user.email.includes('@')) {
+      bestName = user.email.split('@')[0];
+    } else if (user.uid.startsWith('discord:')) {
+      bestName = `Player_${user.uid.replace('discord:', '').slice(0, 5)}`;
+    } else {
+      bestName = 'Player';
+    }
+  }
+
+  const photoURL = user.photoURL || discordUserCache?.photoURL || '';
+  const discordId = discordUserCache?.discordId || (user.uid.startsWith('discord:') ? user.uid.replace('discord:', '') : '');
+  const discordUsername = discordUserCache?.discordUsername || '';
+
   if (!snap.exists) {
     const newUser = {
       uid: user.uid,
-      displayName: user.displayName || 'Champion',
-      email: user.email || '',
-      photoURL: user.photoURL || '',
+      displayName: bestName,
+      email: user.email || discordUserCache?.email || '',
+      photoURL: photoURL,
+      discordId: discordId,
+      discordUsername: discordUsername,
       tokens: 10.00,
       totalEarned: 10.00,
       totalSpent: 0.00,
       matchesPlayed: 0,
       matchesWon: 0,
-      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      lastLoginAt: firebase.firestore.FieldValue.serverTimestamp()
     };
     await userRef.set(newUser);
     await db.collection('transactions').add({
@@ -40,8 +70,22 @@ async function ensureUserRecord(user) {
       timestamp: firebase.firestore.FieldValue.serverTimestamp()
     });
     return { id: user.uid, ...newUser };
+  } else {
+    // Existing document — auto-repair if displayName is 'Champion' or 'Player'
+    const existing = snap.data();
+    if (!existing.displayName || existing.displayName === 'Champion' || existing.displayName === 'Player') {
+      if (bestName && bestName !== 'Champion' && bestName !== 'Player') {
+        await userRef.update({
+          displayName: bestName,
+          ...(discordUsername && !existing.discordUsername ? { discordUsername } : {}),
+          ...(discordId && !existing.discordId ? { discordId } : {}),
+          ...(photoURL && (!existing.photoURL || existing.photoURL.includes('default')) ? { photoURL } : {})
+        });
+        existing.displayName = bestName;
+      }
+    }
+    return { id: snap.id, ...existing };
   }
-  return { id: snap.id, ...snap.data() };
 }
 
 /** Fetch a user document by UID (or create with 10.00 starter tokens if missing) */
@@ -49,13 +93,51 @@ async function getUser(uid) {
   if (!uid) return null;
   const snap = await db.collection('users').doc(uid).get();
   if (snap.exists) {
-    return { id: snap.id, ...snap.data() };
+    const data = snap.data();
+    // Auto-repair if displayName is 'Champion' or 'Player'
+    if (!data.displayName || data.displayName === 'Champion' || data.displayName === 'Player') {
+      let repairName = data.discordUsername;
+      if (!repairName) {
+        try {
+          const raw = localStorage.getItem('ct_cached_discord_user');
+          if (raw) {
+            const cached = JSON.parse(raw);
+            if (cached.displayName && cached.displayName !== 'Champion') repairName = cached.displayName;
+            else if (cached.discordUsername) repairName = cached.discordUsername;
+          }
+        } catch (e) {}
+      }
+      if (repairName && repairName !== 'Champion' && repairName !== 'Player') {
+        data.displayName = repairName;
+        db.collection('users').doc(uid).update({ displayName: repairName }).catch(console.warn);
+      }
+    }
+    return { id: snap.id, ...data };
   }
   const authUser = (typeof firebase !== 'undefined' && firebase.auth) ? firebase.auth().currentUser : null;
   if (authUser && authUser.uid === uid) {
     return await ensureUserRecord(authUser);
   }
   return null;
+}
+
+/** Update user's custom display name */
+async function updateUserDisplayName(uid, newName) {
+  const cleanName = (newName || '').trim();
+  if (!cleanName || cleanName.length < 2) {
+    throw new Error('Display name must be at least 2 characters long');
+  }
+  if (cleanName.length > 24) {
+    throw new Error('Display name cannot exceed 24 characters');
+  }
+  await db.collection('users').doc(uid).update({
+    displayName: cleanName
+  });
+  const authUser = firebase.auth().currentUser;
+  if (authUser && authUser.updateProfile) {
+    await authUser.updateProfile({ displayName: cleanName }).catch(console.warn);
+  }
+  return cleanName;
 }
 
 /**
