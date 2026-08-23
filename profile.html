@@ -941,12 +941,12 @@
     </div>
   </div>
 
-  <!-- Team Wager & Split Settings Modal -->
+  <!-- Team Tokens & Split Settings Modal -->
   <div class="modal-overlay" id="team-wager-modal" onclick="if(event.target===this)closeTeamWagerModal()">
     <div class="modal" style="max-width:480px;">
       <div class="modal-header">
         <div class="modal-title" style="display:flex;align-items:center;gap:8px;">
-          <i data-lucide="coins" style="color:var(--gold-bright);"></i> Team Match Wager & Split Settings
+          <i data-lucide="coins" style="color:var(--gold-bright);"></i> Team Match Tokens & Split Settings
         </div>
         <button class="modal-close" onclick="closeTeamWagerModal()"><i data-lucide="x"></i></button>
       </div>
@@ -955,31 +955,31 @@
         
         <div class="form-group" style="margin-bottom:18px;">
           <label class="form-label" style="font-size:0.88rem;font-weight:800;color:#fff;margin-bottom:8px;">
-            💰 Token Entry Fee Coverage
+            💰 Token Cost Coverage
           </label>
           <div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:10px;">
-            Choose who covers the token entry cost when joining squad & duo matches.
+            Choose who covers match tokens when entering squad & duo matches.
           </div>
           <div style="display:flex;flex-direction:column;gap:8px;">
             <label style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:#000;border:1px solid rgba(255,255,255,0.08);border-radius:10px;cursor:pointer;">
               <input type="radio" name="wagerCoverage" value="none" onchange="toggleCoverCheckboxes(this.value)" checked />
               <div>
-                <div style="font-weight:700;font-size:0.85rem;color:#fff;">Each Player Pays Own Entry</div>
-                <div style="font-size:0.75rem;color:var(--text-muted);">Every teammate pays their own wager tokens.</div>
+                <div style="font-weight:700;font-size:0.85rem;color:#fff;">Each Player Pays Own Tokens</div>
+                <div style="font-size:0.75rem;color:var(--text-muted);">Every teammate pays their own match tokens.</div>
               </div>
             </label>
             <label style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:#000;border:1px solid rgba(255,255,255,0.08);border-radius:10px;cursor:pointer;">
               <input type="radio" name="wagerCoverage" value="all" onchange="toggleCoverCheckboxes(this.value)" />
               <div>
-                <div style="font-weight:700;font-size:0.85rem;color:#fff;">Cover All Teammates (Captain Pays Total)</div>
-                <div style="font-size:0.75rem;color:var(--text-muted);">Leader pays the full squad entry tokens.</div>
+                <div style="font-weight:700;font-size:0.85rem;color:#fff;">Cover All Teammates (Captain Pays Total Tokens)</div>
+                <div style="font-size:0.75rem;color:var(--text-muted);">Leader covers the full squad match tokens.</div>
               </div>
             </label>
             <label style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:#000;border:1px solid rgba(255,255,255,0.08);border-radius:10px;cursor:pointer;">
               <input type="radio" name="wagerCoverage" value="custom" onchange="toggleCoverCheckboxes(this.value)" />
               <div>
                 <div style="font-weight:700;font-size:0.85rem;color:#fff;">Choose Specific Teammates to Cover</div>
-                <div style="font-size:0.75rem;color:var(--text-muted);">Select individual squad members you will cover for.</div>
+                <div style="font-size:0.75rem;color:var(--text-muted);">Select individual squad members you will cover tokens for.</div>
               </div>
             </label>
           </div>
@@ -1000,14 +1000,14 @@
               <input type="radio" name="splitRule" value="equal" checked />
               <div>
                 <div style="font-weight:700;font-size:0.85rem;color:#fff;">Equal Split (100% Shared Evenly)</div>
-                <div style="font-size:0.75rem;color:var(--text-muted);">All playing teammates receive an equal share of the prize pool.</div>
+                <div style="font-size:0.75rem;color:var(--text-muted);">All playing teammates receive an equal share of the prize tokens.</div>
               </div>
             </label>
             <label style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:#000;border:1px solid rgba(255,255,255,0.08);border-radius:10px;cursor:pointer;">
               <input type="radio" name="splitRule" value="captain_first" />
               <div>
-                <div style="font-weight:700;font-size:0.85rem;color:#fff;">Cover Payback First (Reimburse Covered Fees)</div>
-                <div style="font-size:0.75rem;color:var(--text-muted);">Captain gets covered token costs back first, then remainder split evenly.</div>
+                <div style="font-weight:700;font-size:0.85rem;color:#fff;">Cover Payback First (Reimburse Covered Tokens)</div>
+                <div style="font-size:0.75rem;color:var(--text-muted);">Captain gets covered tokens reimbursed from winnings first, then remainder is split evenly.</div>
               </div>
             </label>
             <label style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:#000;border:1px solid rgba(255,255,255,0.08);border-radius:10px;cursor:pointer;">
@@ -2017,14 +2017,14 @@
           const isActive = team.id === activeTeamId;
           const coveredCount = (team.coveredMemberUids || []).length;
 
-          // Wager coverage tag
+          // Token coverage tag
           let coverageTag = '';
           if (team.wagerCoverage === 'all') {
             coverageTag = `<span class="chip chip-gold" style="font-size:0.72rem;font-weight:800;"><i data-lucide="shield-check" style="width:12px;height:12px;"></i> Captain Covers All</span>`;
           } else if (team.wagerCoverage === 'custom') {
             coverageTag = `<span class="chip" style="font-size:0.72rem;font-weight:700;color:#86efac;border-color:rgba(134,239,172,0.3);"><i data-lucide="users" style="width:12px;height:12px;"></i> Covered (${coveredCount} Players)</span>`;
           } else {
-            coverageTag = `<span class="chip" style="font-size:0.72rem;color:var(--text-muted);"><i data-lucide="coins" style="width:12px;height:12px;"></i> Player Pays Own Entry</span>`;
+            coverageTag = `<span class="chip" style="font-size:0.72rem;color:var(--text-muted);"><i data-lucide="coins" style="width:12px;height:12px;"></i> Player Pays Own Tokens</span>`;
           }
 
           // Split rule tag
@@ -2049,7 +2049,7 @@
                   <span style="font-weight:700;font-size:0.85rem;color:#fff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${escapeHtml(m.displayName || 'Player')}</span>
                 </div>
                 <div style="display:flex;align-items:center;gap:5px;flex-shrink:0;">
-                  ${isMemberCovered ? '<span class="badge" style="background:rgba(134,239,172,0.15);color:#86efac;font-size:0.62rem;padding:1px 5px;" title="Match entry token cost covered by captain">COVERED</span>' : ''}
+                  ${isMemberCovered ? '<span class="badge" style="background:rgba(134,239,172,0.15);color:#86efac;font-size:0.62rem;padding:1px 5px;" title="Match token cost covered by captain">COVERED</span>' : ''}
                   ${m.isLeader || m.uid === team.ownerUid ? '<span class="badge" style="background:var(--gold-dim);color:var(--gold-bright);font-size:0.65rem;padding:1px 6px;">LEADER</span>' : ''}
                 </div>
               </div>
@@ -2088,8 +2088,8 @@
                       <i data-lucide="user-plus"></i> Invite
                     </button>
                     ${isOwner ? `
-                      <button class="btn btn-outline btn-sm" onclick="openTeamWagerModal('${team.id}')" style="font-size:0.78rem;padding:6px 12px;gap:5px;" title="Configure Wager Coverage and Prize Splits">
-                        <i data-lucide="settings"></i> Wager & Splits
+                      <button class="btn btn-outline btn-sm" onclick="openTeamWagerModal('${team.id}')" style="font-size:0.78rem;padding:6px 12px;gap:5px;" title="Configure Token Coverage and Prize Splits">
+                        <i data-lucide="settings"></i> Tokens & Splits
                       </button>
                     ` : ''}
                     <button class="btn btn-danger btn-sm" onclick="handleLeaveTeam('${team.id}')" style="font-size:0.78rem;padding:6px 10px;gap:4px;">
@@ -2290,7 +2290,7 @@
       btn.disabled = true;
       try {
         await updateTeamSettings(teamId, { wagerCoverage, splitRule, coveredMemberUids });
-        showToast('Team wager & earnings settings updated!', 'success');
+        showToast('Team token & earnings settings updated!', 'success');
         closeTeamWagerModal();
         await loadUserTeam(currentUser.uid);
       } catch (err) {
@@ -2500,7 +2500,7 @@
               <div style="font-size:0.78rem;color:var(--text-muted);margin-top:2px;">
                 <span class="badge ${sizeColor(size)}" style="padding:1px 8px;font-size:0.7rem;">${size}</span>
                 <span class="badge ${modeColor(mode)}" style="padding:1px 8px;font-size:0.7rem;">${mode}</span>
-                · ${formatTokens(m.wager)} <img src="champion_token_coin.png" class="inline-coin" alt="CT" width="14" height="14"/> wager · ${formatTime(m.createdAt)}
+                · ${formatTokens(m.wager)} <img src="champion_token_coin.png" class="inline-coin" alt="CT" width="14" height="14"/> · ${formatTime(m.createdAt)}
                 ${isHost ? ' · <span style="color:var(--gold-bright);font-weight:700;">Host</span>' : ''}
               </div>
             </div>
