@@ -93,7 +93,8 @@
   <script>
     let currentUser = null;
     let currentUserData = null;
-    let activeFilter = 'All';
+    let activeSizeFilter = 'All';
+    let activeModeFilter = 'All';
     let searchQuery = '';
     let allMatches = [];
     let matchesCurrentPage = 1;
@@ -112,11 +113,20 @@
       });
     });
 
-    function setFilter(filter) {
-      activeFilter = filter;
+    function setSizeFilter(size) {
+      activeSizeFilter = size;
       matchesCurrentPage = 1;
-      document.querySelectorAll('.filter-btn').forEach(b => {
-        b.classList.toggle('active', b.dataset.filter === filter);
+      document.querySelectorAll('.filter-size-btn').forEach(b => {
+        b.classList.toggle('active', b.dataset.size === size);
+      });
+      renderMatchesPage(1);
+    }
+
+    function setModeFilter(mode) {
+      activeModeFilter = mode;
+      matchesCurrentPage = 1;
+      document.querySelectorAll('.filter-mode-btn').forEach(b => {
+        b.classList.toggle('active', b.dataset.mode === mode);
       });
       renderMatchesPage(1);
     }
@@ -138,8 +148,11 @@
       if (!grid) return;
 
       let filtered = allMatches;
-      if (activeFilter !== 'All') {
-        filtered = filtered.filter(m => m.size === activeFilter || m.mode === activeFilter);
+      if (activeSizeFilter !== 'All') {
+        filtered = filtered.filter(m => m.size === activeSizeFilter);
+      }
+      if (activeModeFilter !== 'All') {
+        filtered = filtered.filter(m => m.mode === activeModeFilter);
       }
       if (searchQuery) {
         filtered = filtered.filter(m => {
@@ -194,8 +207,28 @@
         }
 
         const isRealistic = mode === 'Realistic';
-        const cardClass = isRealistic ? 'match-card match-card-realistic' : 'match-card';
-        const mapCode = isRealistic ? '9854-1829-8735' : (m.mapCode || '9854-1829-8735');
+        const isZoneWars  = mode === 'Zone Wars';
+        const isBoxFights = mode === 'Box Fights';
+
+        let cardClass = 'match-card';
+        let defaultMapCode = '9854-1829-8735';
+        let creatorName = 'FINEST';
+
+        if (isRealistic) {
+          cardClass = 'match-card match-card-realistic';
+          defaultMapCode = '9854-1829-8735';
+          creatorName = 'FINEST';
+        } else if (isZoneWars) {
+          cardClass = 'match-card match-card-zonewars';
+          defaultMapCode = '3537-4087-0888';
+          creatorName = 'CHAP';
+        } else if (isBoxFights) {
+          cardClass = 'match-card match-card-boxfights';
+          defaultMapCode = '2355-0939-8965';
+          creatorName = 'CHAP';
+        }
+
+        const mapCode = m.mapCode || defaultMapCode;
         const isExpired   = timerDisplay === 'Expired';
         const effectiveCanJoin = canJoin && !isExpired;
 
@@ -642,15 +675,33 @@
       </div>
     </div>
 
-    <!-- Filters -->
-    <div class="filters">
-      <button class="filter-btn active" data-filter="All" onclick="setFilter('All')">All Matches</button>
-      <button class="filter-btn" data-filter="1v1" onclick="setFilter('1v1')">1v1</button>
-      <button class="filter-btn" data-filter="2v2" onclick="setFilter('2v2')">2v2</button>
-      <button class="filter-btn" data-filter="3v3" onclick="setFilter('3v3')">3v3</button>
-      <button class="filter-btn" data-filter="Realistic" onclick="setFilter('Realistic')">Realistic</button>
-      <button class="filter-btn" data-filter="Zone Wars" onclick="setFilter('Zone Wars')">Zone Wars</button>
-      <button class="filter-btn" data-filter="Box Fights" onclick="setFilter('Box Fights')">Box Fights</button>
+    <!-- Filters (Simultaneous Team Size + Game Mode) -->
+    <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:14px;padding:12px 16px;">
+      <!-- Size Filter Row -->
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+        <span style="font-size:0.75rem;font-weight:800;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em;min-width:65px;display:flex;align-items:center;gap:5px;">
+          <i data-lucide="users" style="width:13px;height:13px;color:var(--gold-bright);"></i> Size:
+        </span>
+        <div class="filters" style="margin-bottom:0;display:flex;gap:6px;flex-wrap:wrap;">
+          <button class="filter-btn filter-size-btn active" data-size="All" onclick="setSizeFilter('All')">All Sizes</button>
+          <button class="filter-btn filter-size-btn" data-size="1v1" onclick="setSizeFilter('1v1')">1v1</button>
+          <button class="filter-btn filter-size-btn" data-size="2v2" onclick="setSizeFilter('2v2')">2v2</button>
+          <button class="filter-btn filter-size-btn" data-size="3v3" onclick="setSizeFilter('3v3')">3v3</button>
+        </div>
+      </div>
+
+      <!-- Mode Filter Row -->
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;border-top:1px solid rgba(255,255,255,0.04);padding-top:10px;">
+        <span style="font-size:0.75rem;font-weight:800;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em;min-width:65px;display:flex;align-items:center;gap:5px;">
+          <i data-lucide="gamepad-2" style="width:13px;height:13px;color:var(--gold-bright);"></i> Mode:
+        </span>
+        <div class="filters" style="margin-bottom:0;display:flex;gap:6px;flex-wrap:wrap;">
+          <button class="filter-btn filter-mode-btn active" data-mode="All" onclick="setModeFilter('All')">All Modes</button>
+          <button class="filter-btn filter-mode-btn" data-mode="Realistic" onclick="setModeFilter('Realistic')">Realistic</button>
+          <button class="filter-btn filter-mode-btn" data-mode="Zone Wars" onclick="setModeFilter('Zone Wars')">Zone Wars</button>
+          <button class="filter-btn filter-mode-btn" data-mode="Box Fights" onclick="setModeFilter('Box Fights')">Box Fights</button>
+        </div>
+      </div>
     </div>
 
     <!-- Match grid -->

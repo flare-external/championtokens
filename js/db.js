@@ -214,7 +214,9 @@ async function createMatch(hostUser, matchData) {
     paidAmount:   hostDeposit,
   };
 
-  const defaultMapCode = mode === 'Realistic' ? '9854-1829-8735' : (mode === 'Zone Wars' ? '7264-2987-0382' : '8234-9102-4419');
+  let defaultMapCode = '9854-1829-8735';
+  if (mode === 'Zone Wars') defaultMapCode = '3537-4087-0888';
+  else if (mode === 'Box Fights') defaultMapCode = '2355-0939-8965';
   const mapCode = matchData.mapCode || defaultMapCode;
 
   const matchRef = await db.collection('matches').add({

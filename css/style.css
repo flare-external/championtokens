@@ -618,7 +618,7 @@ input[type="range"].ct-slider::-moz-range-thumb {
 }
 .epic-logo { width: 22px; height: 22px; flex-shrink: 0; }
 
-/* ── Realistic Map Arena Banner Styling ─────────────────────── */
+/* ── Map Arena Backgrounds & Stage Banner Styling ───────────── */
 .match-card-realistic {
   position: relative;
   overflow: hidden;
@@ -628,13 +628,53 @@ input[type="range"].ct-slider::-moz-range-thumb {
   content: '';
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 0;
-  background: url('/realistic.png') center/cover no-repeat;
-  filter: blur(12px) brightness(0.18);
+  background: url('realistic.jpeg') center/cover no-repeat, url('realistic.png') center/cover no-repeat;
+  filter: blur(10px) brightness(0.20);
   transform: scale(1.15);
   pointer-events: none;
   z-index: 0;
 }
 .match-card-realistic > * {
+  position: relative;
+  z-index: 1;
+}
+
+.match-card-zonewars {
+  position: relative;
+  overflow: hidden;
+  border-color: rgba(239, 68, 68, 0.38) !important;
+}
+.match-card-zonewars::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: url('zonewars.jpeg') center/cover no-repeat;
+  filter: blur(10px) brightness(0.20);
+  transform: scale(1.15);
+  pointer-events: none;
+  z-index: 0;
+}
+.match-card-zonewars > * {
+  position: relative;
+  z-index: 1;
+}
+
+.match-card-boxfights {
+  position: relative;
+  overflow: hidden;
+  border-color: rgba(168, 85, 247, 0.38) !important;
+}
+.match-card-boxfights::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: url('boxfights.jpeg') center/cover no-repeat;
+  filter: blur(10px) brightness(0.20);
+  transform: scale(1.15);
+  pointer-events: none;
+  z-index: 0;
+}
+.match-card-boxfights > * {
   position: relative;
   z-index: 1;
 }
@@ -655,8 +695,8 @@ input[type="range"].ct-slider::-moz-range-thumb {
   content: '';
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 0;
-  background: url('/realistic.png') center/cover no-repeat;
-  filter: blur(8px) brightness(0.22);
+  background: url('realistic.jpeg') center/cover no-repeat, url('realistic.png') center/cover no-repeat;
+  filter: blur(8px) brightness(0.25);
   transform: scale(1.1);
   pointer-events: none;
   z-index: 0;
@@ -664,6 +704,22 @@ input[type="range"].ct-slider::-moz-range-thumb {
 .realistic-stage-banner > * {
   position: relative;
   z-index: 1;
+}
+
+.stage-banner-zonewars {
+  border-color: rgba(239, 68, 68, 0.4) !important;
+}
+.stage-banner-zonewars::before {
+  background: url('zonewars.jpeg') center/cover no-repeat !important;
+  filter: blur(8px) brightness(0.25);
+}
+
+.stage-banner-boxfights {
+  border-color: rgba(168, 85, 247, 0.4) !important;
+}
+.stage-banner-boxfights::before {
+  background: url('boxfights.jpeg') center/cover no-repeat !important;
+  filter: blur(8px) brightness(0.25);
 }
 
 /* ── Forms ─────────────────────────────────────────────────── */

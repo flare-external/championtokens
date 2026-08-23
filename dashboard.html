@@ -315,7 +315,10 @@
       el.innerHTML = pageMatches.map(m => {
         const size = m.size || '1v1';
         const mode = m.mode || 'Realistic';
-        const mapCode = (mode === 'Realistic' || !mode) ? '9854-1829-8735' : (m.mapCode || 'Auto Host');
+        let defaultMapCode = '9854-1829-8735';
+        if (mode === 'Zone Wars') defaultMapCode = '3537-4087-0888';
+        else if (mode === 'Box Fights') defaultMapCode = '2355-0939-8965';
+        const mapCode = m.mapCode || defaultMapCode;
         const now = Date.now();
         const createdAtMs = m.createdAt?.toDate ? m.createdAt.toDate().getTime() : (m.createdAt?.seconds ? m.createdAt.seconds * 1000 : now);
         const diffSec = Math.floor((now - createdAtMs) / 1000);

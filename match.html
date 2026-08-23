@@ -944,14 +944,36 @@
       const isExpired = match.isExpired || match.status === 'cancelled' || (match.expiresAt && match.expiresAt.toDate().getTime() <= Date.now() && match.status !== 'completed');
 
       // Map Code & Banner
-      const mapCode = match.mapCode || (mode === 'Realistic' ? '9854-1829-8735' : (mode === 'Zone Wars' ? '7264-2987-0382' : '8234-9102-4419'));
+      let defaultMapCode = '9854-1829-8735';
+      let defaultCreator = 'FINEST';
+      let defaultTitle   = '1V1-4V4 REALISTICS';
+      let bannerCls      = 'stage-banner-realistic';
+
+      if (mode === 'Zone Wars') {
+        defaultMapCode = '3537-4087-0888';
+        defaultCreator = 'CHAP';
+        defaultTitle   = 'ZONE WARS';
+        bannerCls      = 'stage-banner-zonewars';
+      } else if (mode === 'Box Fights') {
+        defaultMapCode = '2355-0939-8965';
+        defaultCreator = 'CHAP';
+        defaultTitle   = 'BOX FIGHTS';
+        bannerCls      = 'stage-banner-boxfights';
+      }
+
+      const mapCode = match.mapCode || defaultMapCode;
       const mapCodeEl = document.getElementById('map-code-display');
       const mapTitleEl = document.getElementById('map-banner-title');
       const mapCopyBtn = document.getElementById('map-code-copy-btn');
-      if (mapCodeEl) mapCodeEl.innerHTML = `<i data-lucide="map-pin" style="width:15px;height:15px;"></i> ${mapCode}`;
-      if (mapTitleEl) mapTitleEl.textContent = (mode === 'Realistic') ? '1V1-4V4 REALISTICS' : `${mode} Arena (${size})`;
       const mapBadgeEl = document.getElementById('map-banner-badge');
-      if (mapBadgeEl) mapBadgeEl.textContent = (mode === 'Realistic') ? 'FINEST' : 'Official Map';
+      const mapCardEl = document.getElementById('map-arena-card');
+
+      if (mapCardEl) {
+        mapCardEl.className = `map-arena-card realistic-stage-banner ${bannerCls}`;
+      }
+      if (mapCodeEl) mapCodeEl.innerHTML = `<i data-lucide="map-pin" style="width:15px;height:15px;"></i> ${mapCode}`;
+      if (mapTitleEl) mapTitleEl.textContent = defaultTitle;
+      if (mapBadgeEl) mapBadgeEl.textContent = defaultCreator;
       if (mapCopyBtn) mapCopyBtn.setAttribute('onclick', `copyMapCode('${mapCode}')`);
 
       // Expired banner
