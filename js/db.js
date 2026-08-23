@@ -1741,7 +1741,147 @@ async function adminUnbanUser(targetUid) {
   return true;
 }
 
-// ── Admin: Search Users ───────────────────────────────────────
+/**
+ * Delete a user account from Firestore completely.
+ */
+async function adminDeleteUser(targetUid, adminName) {
+  if (!targetUid) throw new Error('Target UID required');
+  const userRef = db.collection('users').doc(targetUid);
+  const userSnap = await userRef.get();
+  const userData = userSnap.data() || {};
+
+  // Clean up any team owned by this user
+  try {
+    const teamsSnap = await db.collection('teams').where('ownerUid', '==', targetUid).get();
+    for (const tDoc of teamsSnap.docs) {
+      await tDoc.ref.delete();
+    }
+  } catch (e) {
+    console.warn('adminDeleteUser team cleanup error:', e);
+  }
+
+  // Remove from other teams
+  try {
+    const allTeamsSnap = await db.collection('teams').where('memberUids', 'array-contains', targetUid).get();
+    for (const tDoc of allTeamsSnap.docs) {
+      const tData = tDoc.data();
+      const updatedMembers = (tData.members || []).filter(m => m.uid !== targetUid);
+      const updatedUids = (tData.memberUids || []).filter(u => u !== targetUid);
+      await tDoc.ref.update({ members: updatedMembers, memberUids: updatedUids });
+    }
+  } catch (e) {
+    console.warn('adminDeleteUser team member cleanup error:', e);
+  }
+
+  // Delete user document
+  await userRef.delete();
+
+  // Record admin audit log
+  try {
+    await db.collection('admin_audit_logs').add({
+      action: 'delete_user',
+      targetUid,
+      targetName: userData.displayName || 'User',
+      performedBy: adminName || 'Admin',
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+    });
+  } catch (e) {}
+
+  return true;
+}
+
+/**
+ * Directly set exact token balance for a user.
+ */
+async function adminSetTokens(targetUid, exactAmount, adminName, reason = 'Admin set balance') {
+  if (!targetUid) throw new Error('Target UID required');
+  const num = Math.max(0, parseFloat(exactAmount) || 0);
+  const userRef = db.collection('users').doc(targetUid);
+  const userSnap = await userRef.get();
+  if (!userSnap.exists) throw new Error('User not found');
+  const oldTokens = Number(userSnap.data()?.tokens || 0);
+
+  await userRef.update({
+    tokens: num,
+    updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+  });
+
+  await recordTransaction(targetUid, {
+    type: 'admin_adjustment',
+    amount: num - oldTokens,
+    tokensAfter: num,
+    description: `Admin balance set: ${reason} (by ${adminName || 'Admin'})`,
+    meta: { adminName, reason, oldTokens, newTokens: num },
+  });
+
+  return { oldTokens, newTokens: num, userName: userSnap.data()?.displayName };
+}
+
+/**
+ * Directly set or edit Epic Games username for a user.
+ */
+async function adminSetEpic(targetUid, epicUsername) {
+  if (!targetUid) throw new Error('Target UID required');
+  const cleanEpic = (epicUsername || '').trim();
+  await db.collection('users').doc(targetUid).update({
+    epicUsername: cleanEpic,
+    epicVerified: !!cleanEpic,
+    epicLinkedAt: firebase.firestore.FieldValue.serverTimestamp(),
+  });
+  return true;
+}
+
+/**
+ * Unlink Epic Games account from a user.
+ */
+async function adminUnlinkEpic(targetUid) {
+  if (!targetUid) throw new Error('Target UID required');
+  await db.collection('users').doc(targetUid).update({
+    epicUsername: firebase.firestore.FieldValue.delete(),
+    epicAccountId: firebase.firestore.FieldValue.delete(),
+    epicVerified: false,
+  });
+  return true;
+}
+
+/**
+ * Toggle Admin/Staff status for a user.
+ */
+async function adminToggleAdmin(targetUid, makeAdmin) {
+  if (!targetUid) throw new Error('Target UID required');
+  await db.collection('users').doc(targetUid).update({
+    isAdmin: !!makeAdmin,
+  });
+  return true;
+}
+
+/**
+ * Reset match stats for a user.
+ */
+async function adminResetUserStats(targetUid) {
+  if (!targetUid) throw new Error('Target UID required');
+  await db.collection('users').doc(targetUid).update({
+    matchesPlayed: 0,
+    matchesWon: 0,
+    earnings: 0,
+  });
+  return true;
+}
+
+/**
+ * Fetch recent users for the admin user directory.
+ */
+async function adminFetchRecentUsers(limitCount = 40) {
+  try {
+    const snap = await db.collection('users')
+      .limit(limitCount)
+      .get();
+    return snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+  } catch (e) {
+    console.warn('adminFetchRecentUsers error:', e);
+    return [];
+  }
+}
 
 /**
  * Search users by display name, discord username, or epic username (single-letter prefix matching).

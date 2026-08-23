@@ -2378,29 +2378,38 @@ div[class*="netlify-drawer"],
 .admin-player-card {
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
   gap: 14px;
-  padding: 14px 16px;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
+  padding: 16px 18px;
+  background: #060606;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 14px;
-  margin-bottom: 10px;
-  transition: border-color 0.2s;
+  margin-bottom: 12px;
+  transition: all 0.2s ease;
+}
+.admin-player-card:hover {
+  border-color: rgba(245, 158, 11, 0.35);
+  background: #090909;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
 }
 .admin-player-card.banned {
-  border-color: rgba(239,68,68,0.4);
-  background: rgba(239,68,68,0.04);
+  border-color: rgba(239, 68, 68, 0.4) !important;
+  background: rgba(239, 68, 68, 0.04) !important;
 }
 .admin-player-avatar {
-  width: 42px;
-  height: 42px;
+  width: 46px;
+  height: 46px;
   border-radius: 50%;
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1.5px solid rgba(245, 158, 11, 0.4);
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
   overflow: hidden;
+  font-weight: 900;
+  color: var(--gold-bright);
 }
 .admin-player-avatar img {
   width: 100%;
@@ -2414,4 +2423,41 @@ div[class*="netlify-drawer"],
 }
 .admin-search-bar input {
   flex: 1;
+}
+.admin-badge-role {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 7px;
+  border-radius: 6px;
+  font-size: 0.68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.admin-badge-admin {
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.45);
+  color: #f87171;
+}
+.admin-badge-epic {
+  background: rgba(56, 189, 248, 0.12);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  color: #38bdf8;
+}
+.admin-badge-discord {
+  background: rgba(88, 101, 242, 0.12);
+  border: 1px solid rgba(88, 101, 242, 0.35);
+  color: #818cf8;
+}
+.admin-badge-tokens {
+  background: rgba(245, 158, 11, 0.12);
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  color: var(--gold-bright);
+}
+.admin-quick-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
 }
