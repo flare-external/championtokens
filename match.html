@@ -849,6 +849,13 @@
       border-color: var(--gold-bright);
       box-shadow: 0 0 16px rgba(245, 158, 11, 0.35);
     }
+    .chat-input-pill:disabled {
+      background: rgba(255, 255, 255, 0.02);
+      border-color: rgba(255, 255, 255, 0.05);
+      color: rgba(255, 255, 255, 0.35);
+      cursor: not-allowed;
+      box-shadow: none;
+    }
     .chat-send-btn {
       width: 40px;
       height: 40px;
@@ -867,6 +874,13 @@
     .chat-send-btn:hover {
       transform: scale(1.08);
       box-shadow: 0 0 22px rgba(245, 158, 11, 0.7);
+    }
+    .chat-send-btn:disabled {
+      background: rgba(255, 255, 255, 0.05);
+      color: rgba(255, 255, 255, 0.2);
+      cursor: not-allowed;
+      box-shadow: none;
+      transform: none;
     }
     .chat-send-btn i { width: 18px; height: 18px; stroke-width: 2.5; }
 
@@ -1824,6 +1838,26 @@
         }
       }
 
+      // Chat input locks until all players are ready or match is in progress
+      const chatInput = document.getElementById('chat-input');
+      const chatSendBtn = document.querySelector('.chat-send-btn');
+      const urlParams = new URLSearchParams(window.location.search);
+      const isStaffMode = urlParams.get('staff') === 'true' || urlParams.get('call') !== null;
+      const isMatchLive = (match.status === 'in_progress' || match.status === 'completed' || match.status === 'disputed');
+      const allPlayersReady = isMatchLive || (players.length >= maxPlayers && players.every(p => p.ready));
+
+      if (chatInput) {
+        if (allPlayersReady || isStaffMode) {
+          chatInput.disabled = false;
+          chatInput.placeholder = "Type message..";
+          if (chatSendBtn) chatSendBtn.disabled = false;
+        } else {
+          chatInput.disabled = true;
+          chatInput.placeholder = "Chat locked — Waiting for all players to ready up";
+          if (chatSendBtn) chatSendBtn.disabled = true;
+        }
+      }
+
       if (window.lucide) lucide.createIcons();
     }
 
@@ -2274,10 +2308,19 @@
       const text = input.value.trim();
       if (!text || !matchId) return;
 
-      input.value = '';
       const urlParams = new URLSearchParams(window.location.search);
       const isStaffCall = urlParams.get('staff') === 'true' || urlParams.get('call') !== null;
-      const isParticipant = (currentMatchData?.players || []).some(p => p.uid === currentUser?.uid);
+      const isMatchLive = (currentMatchData?.status === 'in_progress' || currentMatchData?.status === 'completed' || currentMatchData?.status === 'disputed');
+      const matchPlayers = currentMatchData?.players || [];
+      const allPlayersReady = isMatchLive || (matchPlayers.length >= (currentMatchData?.maxPlayers || 2) && matchPlayers.every(p => p.ready));
+
+      if (!allPlayersReady && !isStaffCall) {
+        showToast('Chat unlocks when all players are ready', 'error');
+        return;
+      }
+
+      input.value = '';
+      const isParticipant = matchPlayers.some(p => p.uid === currentUser?.uid);
       const isStaffMsg = Boolean((isStaffCall || !isParticipant) && isAdminUser(currentUser, currentUserData));
       const isPremium = !!currentUserData?.isPremium;
 
