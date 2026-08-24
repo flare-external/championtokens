@@ -1605,15 +1605,14 @@
 
           const liveData = (isMe ? currentUserData : playersUserCache[player.uid]) || {};
           const isPremium = !isHiddenEnemy && !!(liveData.isPremium ?? player.isPremium);
-          const realDisplayName = isHiddenEnemy ? 'Opponent' : (liveData.displayName || player.displayName || 'Player');
+          const realDisplayName = isHiddenEnemy ? 'Anonymous' : (liveData.displayName || player.displayName || 'Player');
           const realEpicUsername = isHiddenEnemy ? '' : (liveData.epicUsername || player.epicUsername || '');
 
           let epicChipHTML = '';
           if (isHiddenEnemy) {
             epicChipHTML = `
-              <div class="concept-epic-row" style="opacity:0.6;border-style:dashed;">
-                <i data-lucide="lock" style="width:11px;height:11px;color:var(--gold-bright);"></i>
-                <span>Hidden until match starts</span>
+              <div class="concept-epic-row" style="opacity:0.5;border-style:dashed;">
+                <span>Hidden</span>
               </div>`;
           } else if (realEpicUsername) {
             epicChipHTML = `
@@ -1628,7 +1627,7 @@
               : `<div class="concept-epic-row" style="opacity:0.5;border-style:dashed;" onclick="event.stopPropagation();showToast('Player has not linked their Epic account yet','info')"><img src="epic_games_logo.webp" alt="" style="width:12px;height:14px;object-fit:contain;"/> <span>No Epic Linked</span></div>`;
           }
 
-          let titleText = isHiddenEnemy ? 'OPPONENT' : 'GLADIATOR';
+          let titleText = isHiddenEnemy ? 'Hidden' : 'GLADIATOR';
           if (!isHiddenEnemy && liveData.equippedTitle && SHOP_TITLES[liveData.equippedTitle]) {
             titleText = SHOP_TITLES[liveData.equippedTitle].name;
           }
@@ -1642,11 +1641,11 @@
           }
 
           const clickAttr = isHiddenEnemy
-            ? `onclick="showToast('Opponent details are hidden until match starts','info')"`
+            ? `style="cursor:default;"`
             : `onclick="openUserProfileModal('${player.uid}')" title="Click to view profile & stats"`;
 
           const pfpContent = isHiddenEnemy
-            ? `<div class="concept-player-pfp" style="background:rgba(255,255,255,0.06);color:var(--text-muted);display:flex;align-items:center;justify-content:center;"><i data-lucide="user" style="width:20px;height:20px;opacity:0.5;"></i></div>`
+            ? `<div class="concept-player-pfp" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);"></div>`
             : `<div class="concept-player-pfp">${(liveData.photoURL || player.photoURL) ? `<img src="${liveData.photoURL || player.photoURL}" onerror="this.style.display='none'"/>` : realDisplayName.charAt(0)}</div>`;
 
           return `
