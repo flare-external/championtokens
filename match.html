@@ -7,7 +7,7 @@
   <link rel="icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
-  <link rel="stylesheet" href="css/style.css?v=4.0.1787589089445"/>
+  <link rel="stylesheet" href="css/style.css?v=4.0.1787589894672"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
@@ -1197,15 +1197,15 @@
   </div>
 
   <!-- Wide Player Profile Modal (Clean Esports Style) -->
-  <!-- Player Profile Modal (Pixel-Perfect Match with Mockup) -->
+  <!-- Player Profile Modal (Pixel-Perfect Match with Mockup & Social Connections) -->
   <div class="modal-overlay" id="profile-modal" onclick="if(event.target===this)closeUserProfileModal()">
-    <div class="modal" style="max-width:440px;width:100%;padding:22px 24px 26px;background:#0d0e12;border:1px solid rgba(255,255,255,0.08);border-radius:24px;box-shadow:0 24px 60px rgba(0,0,0,0.9);">
+    <div class="modal" style="max-width:500px;width:100%;padding:26px 28px 28px;background:linear-gradient(180deg, #101217 0%, #08090c 100%);border:1px solid rgba(255,255,255,0.1);border-radius:24px;box-shadow:0 24px 60px rgba(0,0,0,0.95);">
       
       <!-- Top Title Bar -->
       <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:18px;">
         <div>
-          <div style="font-size:1.25rem;font-weight:900;color:#ffffff;line-height:1.2;">Player profile</div>
-          <div id="modal-subtitle" style="font-size:0.8rem;color:#94a3b8;margin-top:2px;">View username's statistics</div>
+          <div style="font-size:1.3rem;font-weight:900;color:#ffffff;line-height:1.2;">Player profile</div>
+          <div id="modal-subtitle" style="font-size:0.82rem;color:#94a3b8;margin-top:2px;">View username's statistics</div>
         </div>
         <button class="modal-close" onclick="closeUserProfileModal()" style="background:transparent;border:none;color:#ffffff;cursor:pointer;padding:4px;display:flex;align-items:center;justify-content:center;opacity:0.8;transition:opacity 0.2s;" onmouseenter="this.style.opacity='1'" onmouseleave="this.style.opacity='0.8'">
           <i data-lucide="x" style="width:20px;height:20px;"></i>
@@ -1213,28 +1213,28 @@
       </div>
 
       <!-- Top User Card (Dark Rounded Background) -->
-      <div style="background:#1e2025;border:1px solid rgba(255,255,255,0.05);border-radius:18px;padding:16px 18px;margin-bottom:14px;position:relative;">
+      <div style="background:rgba(22, 25, 33, 0.95);border:1px solid rgba(255,255,255,0.08);border-radius:20px;padding:18px 20px;margin-bottom:16px;position:relative;">
         <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;">
           
           <!-- Avatar + User Info -->
           <div style="display:flex;align-items:center;gap:14px;min-width:0;">
-            <div style="width:58px;height:58px;border-radius:50%;overflow:hidden;background:#2a2d35;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:2px solid rgba(255,255,255,0.08);">
+            <div style="width:60px;height:60px;border-radius:50%;overflow:hidden;background:#2a2d35;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:2px solid rgba(255,255,255,0.1);">
               <img id="modal-user-avatar-img" src="" alt="" style="width:100%;height:100%;object-fit:cover;display:none;"/>
-              <i data-lucide="user" id="modal-user-avatar-icon" style="width:26px;height:26px;color:#94a3b8;"></i>
+              <i data-lucide="user" id="modal-user-avatar-icon" style="width:28px;height:28px;color:#94a3b8;"></i>
             </div>
             <div style="min-width:0;">
-              <div id="modal-user-name" style="font-size:1.18rem;font-weight:900;color:#ffffff;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">username</div>
-              <div id="modal-user-discord" style="font-size:0.75rem;color:#94a3b8;margin-top:2px;display:flex;align-items:center;gap:4px;">
-                <i data-lucide="globe" style="width:12px;height:12px;opacity:0.7;"></i>
+              <div id="modal-user-name" style="font-size:1.22rem;font-weight:900;color:#ffffff;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">username</div>
+              <div id="modal-user-discord" style="font-size:0.78rem;color:#94a3b8;margin-top:3px;display:flex;align-items:center;gap:5px;">
+                <i data-lucide="globe" style="width:13px;height:13px;opacity:0.7;"></i>
                 <span id="modal-user-discord-text">@user · ID: 000000000</span>
               </div>
             </div>
           </div>
 
           <!-- Tip Tokens Action -->
-          <div id="modal-tip-action-btn" onclick="toggleModalTipBox()" style="display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;flex-shrink:0;padding:4px 6px;border-radius:10px;transition:all 0.15s;" onmouseenter="this.style.background='rgba(34,197,94,0.1)'" onmouseleave="this.style.background='transparent'">
+          <div id="modal-tip-action-btn" onclick="toggleModalTipBox()" style="display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;flex-shrink:0;padding:5px 8px;border-radius:10px;transition:all 0.15s;" onmouseenter="this.style.background='rgba(34,197,94,0.1)'" onmouseleave="this.style.background='transparent'">
             <i data-lucide="gift" style="width:24px;height:24px;color:#ffffff;"></i>
-            <span style="font-size:0.72rem;font-weight:800;color:#22c55e;white-space:nowrap;">Tip tokens</span>
+            <span style="font-size:0.75rem;font-weight:800;color:#22c55e;white-space:nowrap;">Tip tokens</span>
           </div>
         </div>
 
@@ -1249,18 +1249,30 @@
             <span id="modal-user-epic-text">epic user</span>
             <i data-lucide="copy" style="width:13px;height:13px;"></i>
           </div>
-          <!-- Tracker / Twitch Chip -->
+          <!-- Fortnite Tracker Chip -->
           <a id="modal-user-tracker-chip" href="#" target="_blank" rel="noopener noreferrer" style="background:rgba(255,255,255,0.08);color:#22c55e;font-size:0.75rem;font-weight:800;padding:4px 12px;border-radius:20px;text-decoration:none;display:inline-flex;align-items:center;gap:6px;transition:background 0.15s;">
             <img src="icon-192x192.webp" alt="TRN" style="width:14px;height:14px;object-fit:contain;border-radius:3px;" />
             <span>fortnitetracker</span>
+            <i data-lucide="external-link" style="width:11px;height:11px;opacity:0.8;"></i>
+          </a>
+          <!-- Twitch Stream Chip -->
+          <a id="modal-user-twitch-chip" href="#" target="_blank" rel="noopener noreferrer" style="display:none;background:rgba(145,70,255,0.14);border:1px solid rgba(145,70,255,0.35);color:#c084fc;font-size:0.75rem;font-weight:800;padding:4px 12px;border-radius:20px;text-decoration:none;align-items:center;gap:6px;transition:background 0.15s;">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="#c084fc"><path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714z"/></svg>
+            <span id="modal-user-twitch-text">twitch</span>
+            <i data-lucide="external-link" style="width:11px;height:11px;opacity:0.8;"></i>
+          </a>
+          <!-- X (Twitter) Chip -->
+          <a id="modal-user-x-chip" href="#" target="_blank" rel="noopener noreferrer" style="display:none;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.18);color:#ffffff;font-size:0.75rem;font-weight:800;padding:4px 12px;border-radius:20px;text-decoration:none;align-items:center;gap:6px;transition:background 0.15s;">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="#ffffff"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            <span id="modal-user-x-text">@x</span>
             <i data-lucide="external-link" style="width:11px;height:11px;opacity:0.8;"></i>
           </a>
         </div>
       </div>
 
       <!-- Inline Tipping Box (Expands when Tip tokens is clicked) -->
-      <div id="modal-tip-expand-box" style="display:none;background:rgba(34,197,94,0.06);border:1px solid rgba(34,197,94,0.25);border-radius:16px;padding:14px 16px;margin-bottom:14px;">
-        <div style="font-size:0.8rem;font-weight:800;color:#22c55e;margin-bottom:8px;display:flex;align-items:center;gap:6px;">
+      <div id="modal-tip-expand-box" style="display:none;background:rgba(34,197,94,0.06);border:1px solid rgba(34,197,94,0.25);border-radius:16px;padding:14px 16px;margin-bottom:16px;">
+        <div style="font-size:0.82rem;font-weight:800;color:#22c55e;margin-bottom:8px;display:flex;align-items:center;gap:6px;">
           <i data-lucide="gift" style="width:14px;height:14px;"></i> Send Tokens to <span id="modal-tip-target-name">Player</span>
         </div>
         <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
@@ -1273,30 +1285,30 @@
       </div>
 
       <!-- 2-Column Stats Grid (Performance & Token Stats) -->
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
         
         <!-- Left: Performance Card -->
-        <div style="background:#1e2025;border:1px solid rgba(255,255,255,0.05);border-radius:18px;padding:16px 18px;display:flex;flex-direction:column;justify-content:space-between;min-height:160px;">
+        <div style="background:rgba(22, 25, 33, 0.95);border:1px solid rgba(255,255,255,0.08);border-radius:20px;padding:18px 20px;display:flex;flex-direction:column;justify-content:space-between;min-height:170px;">
           <div>
-            <div style="font-size:0.88rem;font-weight:900;color:#ffffff;margin-bottom:10px;">Performance</div>
+            <div style="font-size:0.92rem;font-weight:900;color:#ffffff;margin-bottom:12px;">Performance</div>
             
             <!-- Win Rate & Total Matches -->
             <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;">
               <div>
-                <div style="font-size:0.72rem;color:#94a3b8;font-weight:600;">Win rate</div>
-                <div id="modal-stat-winrate" style="font-size:1.25rem;font-weight:900;color:#22c55e;margin-top:2px;">00.0%</div>
+                <div style="font-size:0.74rem;color:#94a3b8;font-weight:600;">Win rate</div>
+                <div id="modal-stat-winrate" style="font-size:1.35rem;font-weight:900;color:#22c55e;margin-top:2px;">00.0%</div>
               </div>
               <div style="text-align:right;">
-                <div style="font-size:0.72rem;color:#94a3b8;font-weight:600;">Total matches</div>
-                <div id="modal-stat-total-matches" style="font-size:1.25rem;font-weight:900;color:#ffffff;margin-top:2px;">0000</div>
+                <div style="font-size:0.74rem;color:#94a3b8;font-weight:600;">Total matches</div>
+                <div id="modal-stat-total-matches" style="font-size:1.35rem;font-weight:900;color:#ffffff;margin-top:2px;">0000</div>
               </div>
             </div>
 
             <!-- Wins, W/L, Losses -->
             <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:8px;">
-              <span id="modal-stat-wins" style="font-size:1.18rem;font-weight:900;color:#22c55e;">00W</span>
-              <span style="font-size:0.75rem;font-weight:700;color:#64748b;">W/L</span>
-              <span id="modal-stat-losses" style="font-size:1.18rem;font-weight:900;color:#ef4444;">00L</span>
+              <span id="modal-stat-wins" style="font-size:1.22rem;font-weight:900;color:#22c55e;">00W</span>
+              <span style="font-size:0.78rem;font-weight:700;color:#64748b;">W/L</span>
+              <span id="modal-stat-losses" style="font-size:1.22rem;font-weight:900;color:#ef4444;">00L</span>
             </div>
 
             <!-- Progress Bar -->
@@ -1306,23 +1318,23 @@
           </div>
 
           <!-- Member Since -->
-          <div id="modal-member-since" style="font-size:0.72rem;color:#64748b;margin-top:14px;">
+          <div id="modal-member-since" style="font-size:0.74rem;color:#64748b;margin-top:14px;">
             Member since 0.00.0000
           </div>
         </div>
 
         <!-- Right: Token Stats Card -->
-        <div style="background:#1e2025;border:1px solid rgba(255,255,255,0.05);border-radius:18px;padding:16px 18px;display:flex;flex-direction:column;justify-content:flex-start;min-height:160px;">
-          <div style="font-size:0.88rem;font-weight:900;color:#ffffff;margin-bottom:10px;">Token stats</div>
+        <div style="background:rgba(22, 25, 33, 0.95);border:1px solid rgba(255,255,255,0.08);border-radius:20px;padding:18px 20px;display:flex;flex-direction:column;justify-content:flex-start;min-height:170px;">
+          <div style="font-size:0.92rem;font-weight:900;color:#ffffff;margin-bottom:12px;">Token stats</div>
           
           <div style="display:flex;justify-content:space-between;align-items:flex-start;">
             <div>
-              <div style="font-size:0.72rem;color:#94a3b8;font-weight:600;">Total profit</div>
-              <div id="modal-stat-profit" style="font-size:1.15rem;font-weight:900;color:#22c55e;margin-top:2px;">+00.00</div>
+              <div style="font-size:0.74rem;color:#94a3b8;font-weight:600;">Total profit</div>
+              <div id="modal-stat-profit" style="font-size:1.35rem;font-weight:900;color:#22c55e;margin-top:2px;">+00.00</div>
             </div>
             <div style="text-align:right;">
-              <div style="font-size:0.72rem;color:#94a3b8;font-weight:600;">Total earned</div>
-              <div id="modal-stat-earned" style="font-size:1.15rem;font-weight:900;color:#22c55e;margin-top:2px;">+00.00</div>
+              <div style="font-size:0.74rem;color:#94a3b8;font-weight:600;">Total earned</div>
+              <div id="modal-stat-earned" style="font-size:1.35rem;font-weight:900;color:#22c55e;margin-top:2px;">+00.00</div>
             </div>
           </div>
         </div>
@@ -1425,9 +1437,9 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="js/firebase-config.js"></script>
-  <script src="js/auth.js?v=4.0.1787589089445"></script>
-  <script src="js/db.js?v=4.0.1787589089445"></script>
-  <script src="js/nav.js?v=4.0.1787589089445"></script>
+  <script src="js/auth.js?v=4.0.1787589894672"></script>
+  <script src="js/db.js?v=4.0.1787589894672"></script>
+  <script src="js/nav.js?v=4.0.1787589894672"></script>
 
   <script>
     let currentUser = null;
@@ -2570,6 +2582,32 @@
             trackerChip.style.display = 'inline-flex';
           } else {
             trackerChip.style.display = 'none';
+          }
+        }
+
+        // Twitch Chip
+        const twitchChip = document.getElementById('modal-user-twitch-chip');
+        const twitchText = document.getElementById('modal-user-twitch-text');
+        if (twitchChip) {
+          if (u.twitchUsername) {
+            twitchChip.href = `https://twitch.tv/${encodeURIComponent(u.twitchUsername)}`;
+            if (twitchText) twitchText.textContent = u.twitchUsername;
+            twitchChip.style.display = 'inline-flex';
+          } else {
+            twitchChip.style.display = 'none';
+          }
+        }
+
+        // X (Twitter) Chip
+        const xChip = document.getElementById('modal-user-x-chip');
+        const xText = document.getElementById('modal-user-x-text');
+        if (xChip) {
+          if (u.xUsername) {
+            xChip.href = `https://x.com/${encodeURIComponent(u.xUsername)}`;
+            if (xText) xText.textContent = `@${u.xUsername}`;
+            xChip.style.display = 'inline-flex';
+          } else {
+            xChip.style.display = 'none';
           }
         }
 

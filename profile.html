@@ -7,7 +7,7 @@
   <link rel="icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
-  <link rel="stylesheet" href="css/style.css?v=4.0.1787589089445"/>
+  <link rel="stylesheet" href="css/style.css?v=4.0.1787589894672"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
@@ -908,6 +908,16 @@
           </div>
         </div>
       </div>
+
+      <!-- Twitch Account Connection Card Container -->
+      <div id="twitch-connection-card-wrap">
+        <!-- Rendered dynamically by renderSocialConnections -->
+      </div>
+
+      <!-- X (Twitter) Account Connection Card Container -->
+      <div id="x-connection-card-wrap">
+        <!-- Rendered dynamically by renderSocialConnections -->
+      </div>
     </div>
   </main>
 
@@ -983,6 +993,29 @@
       </div>
 
       <div id="modal-epic-content" style="padding:10px 0 6px;"></div>
+    </div>
+  </div>
+
+  <!-- Link Social Modal (Twitch / X) -->
+  <div class="modal-overlay" id="link-social-modal" onclick="if(event.target===this)closeLinkSocialModal()">
+    <div class="modal" style="max-width:420px;">
+      <div class="modal-header">
+        <div class="modal-title" id="social-modal-title" style="display:flex;align-items:center;gap:10px;">
+          <span>Connect Social Account</span>
+        </div>
+        <button class="modal-close" onclick="closeLinkSocialModal()"><i data-lucide="x"></i></button>
+      </div>
+      <form class="modal-form" onsubmit="submitLinkSocial(event)">
+        <div class="form-group">
+          <label class="form-label" id="social-modal-label">Username / Handle</label>
+          <input class="form-input" id="social-handle-input" placeholder="e.g. streamer123" required />
+          <div id="social-modal-hint" style="font-size:0.75rem;color:var(--text-muted);margin-top:4px;">Enter your username or profile handle without @ or URL.</div>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-outline" onclick="closeLinkSocialModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="social-modal-submit-btn">Save Connection</button>
+        </div>
+      </form>
     </div>
   </div>
 
@@ -1092,9 +1125,9 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="js/firebase-config.js?v=3.2"></script>
-  <script src="js/auth.js?v=4.0.1787589089445"></script>
-  <script src="js/db.js?v=4.0.1787589089445"></script>
-  <script src="js/nav.js?v=4.0.1787589089445"></script>
+  <script src="js/auth.js?v=4.0.1787589894672"></script>
+  <script src="js/db.js?v=4.0.1787589894672"></script>
+  <script src="js/nav.js?v=4.0.1787589894672"></script>
 
   <script>
     let currentUser = null;
@@ -1417,6 +1450,7 @@
 
       // Render Dedicated Top Epic Card immediately
       renderEpicTopSection(data);
+      renderSocialConnections(data);
 
       // Leaderboard Rank Calculation (Safe async)
       try {
@@ -1873,6 +1907,204 @@
       }
 
       if (window.lucide) lucide.createIcons();
+    }
+
+    let currentSocialModalPlatform = 'twitch';
+
+    function renderSocialConnections(data) {
+      const twitchWrap = document.getElementById('twitch-connection-card-wrap');
+      const xWrap = document.getElementById('x-connection-card-wrap');
+
+      const twitchUser = data?.twitchUsername || '';
+      const xUser = data?.xUsername || '';
+
+      // 1. Twitch Card
+      if (twitchWrap) {
+        if (twitchUser) {
+          twitchWrap.innerHTML = `
+            <div class="conn-card">
+              <div class="conn-card__left">
+                <div class="conn-card__logo" style="background:rgba(145,70,255,0.12);border-color:rgba(145,70,255,0.3);">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="#a855f7"><path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714z"/></svg>
+                </div>
+                <div class="conn-card__info">
+                  <div class="conn-card__name">TWITCH</div>
+                  <div class="conn-card__username" style="color:#c084fc;">@${escapeHtml(twitchUser)}</div>
+                </div>
+              </div>
+              <div class="conn-card__actions">
+                <a class="conn-icon-btn" href="https://twitch.tv/${encodeURIComponent(twitchUser)}" target="_blank" rel="noopener noreferrer" title="Open Twitch Stream">
+                  <i data-lucide="external-link"></i>
+                </a>
+                ${isViewingSelf ? `
+                  <button class="conn-icon-btn" onclick="openLinkSocialModal('twitch')" title="Edit Twitch Handle">
+                    <i data-lucide="edit-3"></i>
+                  </button>
+                  <button class="conn-icon-btn conn-icon-btn--danger" onclick="handleUnlinkSocial('twitch')" title="Disconnect Twitch">
+                    <i data-lucide="x"></i>
+                  </button>
+                ` : ''}
+              </div>
+            </div>`;
+        } else {
+          twitchWrap.innerHTML = `
+            <div class="conn-card">
+              <div class="conn-card__left">
+                <div class="conn-card__logo">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="#94a3b8"><path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714z"/></svg>
+                </div>
+                <div class="conn-card__info">
+                  <div class="conn-card__name">TWITCH</div>
+                  <div class="conn-card__username conn-card__username--unlinked">Not connected</div>
+                </div>
+              </div>
+              <div class="conn-card__actions">
+                ${isViewingSelf ? `
+                  <button class="btn btn-primary btn-sm" onclick="openLinkSocialModal('twitch')" style="padding:7px 16px;font-size:0.82rem;gap:6px;">
+                    <i data-lucide="plus"></i> Connect
+                  </button>
+                ` : `
+                  <span class="conn-card__username--unlinked" style="font-size:0.8rem;">Unlinked</span>
+                `}
+              </div>
+            </div>`;
+        }
+      }
+
+      // 2. X (Twitter) Card
+      if (xWrap) {
+        if (xUser) {
+          xWrap.innerHTML = `
+            <div class="conn-card">
+              <div class="conn-card__left">
+                <div class="conn-card__logo" style="background:rgba(255,255,255,0.08);border-color:rgba(255,255,255,0.2);">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="#ffffff"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                </div>
+                <div class="conn-card__info">
+                  <div class="conn-card__name">X (TWITTER)</div>
+                  <div class="conn-card__username" style="color:#ffffff;">@${escapeHtml(xUser)}</div>
+                </div>
+              </div>
+              <div class="conn-card__actions">
+                <a class="conn-icon-btn" href="https://x.com/${encodeURIComponent(xUser)}" target="_blank" rel="noopener noreferrer" title="Open X Profile">
+                  <i data-lucide="external-link"></i>
+                </a>
+                ${isViewingSelf ? `
+                  <button class="conn-icon-btn" onclick="openLinkSocialModal('x')" title="Edit X Handle">
+                    <i data-lucide="edit-3"></i>
+                  </button>
+                  <button class="conn-icon-btn conn-icon-btn--danger" onclick="handleUnlinkSocial('x')" title="Disconnect X">
+                    <i data-lucide="x"></i>
+                  </button>
+                ` : ''}
+              </div>
+            </div>`;
+        } else {
+          xWrap.innerHTML = `
+            <div class="conn-card">
+              <div class="conn-card__left">
+                <div class="conn-card__logo">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="#94a3b8"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                </div>
+                <div class="conn-card__info">
+                  <div class="conn-card__name">X (TWITTER)</div>
+                  <div class="conn-card__username conn-card__username--unlinked">Not connected</div>
+                </div>
+              </div>
+              <div class="conn-card__actions">
+                ${isViewingSelf ? `
+                  <button class="btn btn-primary btn-sm" onclick="openLinkSocialModal('x')" style="padding:7px 16px;font-size:0.82rem;gap:6px;">
+                    <i data-lucide="plus"></i> Connect
+                  </button>
+                ` : `
+                  <span class="conn-card__username--unlinked" style="font-size:0.8rem;">Unlinked</span>
+                `}
+              </div>
+            </div>`;
+        }
+      }
+
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function openLinkSocialModal(platform) {
+      currentSocialModalPlatform = platform;
+      const modal = document.getElementById('link-social-modal');
+      const titleEl = document.getElementById('social-modal-title');
+      const labelEl = document.getElementById('social-modal-label');
+      const inputEl = document.getElementById('social-handle-input');
+      const hintEl = document.getElementById('social-modal-hint');
+
+      const isTwitch = platform === 'twitch';
+      if (titleEl) {
+        titleEl.innerHTML = isTwitch
+          ? `<svg width="20" height="20" viewBox="0 0 24 24" fill="#a855f7"><path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714z"/></svg> <span>Connect Twitch Account</span>`
+          : `<svg width="18" height="18" viewBox="0 0 24 24" fill="#ffffff"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg> <span>Connect X (Twitter) Account</span>`;
+      }
+      if (labelEl) {
+        labelEl.textContent = isTwitch ? 'Twitch Channel Username' : 'X (Twitter) Handle';
+      }
+      if (inputEl) {
+        inputEl.value = isTwitch ? (currentUserData?.twitchUsername || '') : (currentUserData?.xUsername || '');
+        inputEl.placeholder = isTwitch ? 'e.g. your_stream_name' : 'e.g. your_x_handle';
+      }
+      if (hintEl) {
+        hintEl.textContent = isTwitch
+          ? 'Enter your Twitch username (e.g. streamer123). Do not enter full URL.'
+          : 'Enter your X username or handle (e.g. player_x).';
+      }
+
+      if (modal) modal.classList.add('open');
+    }
+
+    function closeLinkSocialModal() {
+      const modal = document.getElementById('link-social-modal');
+      if (modal) modal.classList.remove('open');
+    }
+
+    async function submitLinkSocial(e) {
+      e.preventDefault();
+      if (!currentUser) return;
+      const input = document.getElementById('social-handle-input');
+      const val = (input ? input.value : '').trim();
+
+      const btn = document.getElementById('social-modal-submit-btn');
+      if (btn) { btn.disabled = true; btn.textContent = 'Saving...'; }
+
+      try {
+        await linkSocialAccount(currentUser.uid, currentSocialModalPlatform, val);
+        showToast(`${currentSocialModalPlatform === 'twitch' ? 'Twitch' : 'X'} account connected successfully!`, 'success');
+        closeLinkSocialModal();
+        currentUserData = await getUser(currentUser.uid);
+        renderSocialConnections(currentUserData);
+      } catch (err) {
+        showToast(err.message, 'error');
+      } finally {
+        if (btn) { btn.disabled = false; btn.textContent = 'Save Connection'; }
+      }
+    }
+
+    async function handleUnlinkSocial(platform) {
+      if (!currentUser) return;
+      const name = platform === 'twitch' ? 'Twitch' : 'X';
+      const ok = await showConfirm({
+        title: `Disconnect ${name}`,
+        message: `Are you sure you want to disconnect your ${name} account?`,
+        confirmText: 'Disconnect',
+        cancelText: 'Cancel',
+        type: 'danger',
+        icon: 'x-circle'
+      });
+      if (!ok) return;
+
+      try {
+        await unlinkSocialAccount(currentUser.uid, platform);
+        showToast(`${name} disconnected`, 'info');
+        currentUserData = await getUser(currentUser.uid);
+        renderSocialConnections(currentUserData);
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
     }
 
     function renderEpicSection(data) {

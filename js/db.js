@@ -1909,6 +1909,56 @@ async function unlinkEpicAccount(uid) {
   return { success: true };
 }
 
+/**
+ * Link social media account (Twitch or X / Twitter).
+ */
+async function linkSocialAccount(uid, platform, handle) {
+  if (!uid) throw new Error('User ID is required');
+  let cleanHandle = (handle || '').trim();
+  cleanHandle = cleanHandle.replace(/^https?:\/\/(www\.)?(twitch\.tv\/|x\.com\/|twitter\.com\/)/i, '');
+  cleanHandle = cleanHandle.replace(/^@+/, '').trim();
+
+  if (!cleanHandle || cleanHandle.length < 1) {
+    throw new Error(`Please enter a valid ${platform === 'twitch' ? 'Twitch' : 'X (Twitter)'} username`);
+  }
+
+  const userRef = db.collection('users').doc(uid);
+  const updateData = {};
+  if (platform === 'twitch') {
+    updateData.twitchUsername = cleanHandle;
+    updateData.twitchLinkedAt = firebase.firestore.FieldValue.serverTimestamp();
+  } else if (platform === 'x' || platform === 'twitter') {
+    updateData.xUsername = cleanHandle;
+    updateData.xLinkedAt = firebase.firestore.FieldValue.serverTimestamp();
+  } else {
+    throw new Error('Unsupported platform');
+  }
+
+  await userRef.set(updateData, { merge: true });
+  return { success: true, handle: cleanHandle };
+}
+
+/**
+ * Unlink social media account (Twitch or X / Twitter).
+ */
+async function unlinkSocialAccount(uid, platform) {
+  if (!uid) throw new Error('User ID is required');
+  const userRef = db.collection('users').doc(uid);
+  const updateData = {};
+  if (platform === 'twitch') {
+    updateData.twitchUsername = firebase.firestore.FieldValue.delete();
+    updateData.twitchLinkedAt = firebase.firestore.FieldValue.delete();
+  } else if (platform === 'x' || platform === 'twitter') {
+    updateData.xUsername = firebase.firestore.FieldValue.delete();
+    updateData.xLinkedAt = firebase.firestore.FieldValue.delete();
+  } else {
+    throw new Error('Unsupported platform');
+  }
+
+  await userRef.update(updateData);
+  return { success: true };
+}
+
 // ── Shop Titles, Banners, & Daily Mystery Chests ─────────────
 
 const SHOP_TITLES = {
