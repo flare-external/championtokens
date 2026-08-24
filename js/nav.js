@@ -10,12 +10,25 @@
  * @param {string} activePage  'dashboard' | 'matches' | 'leaderboard' | 'shop' | 'profile'
  */
 function injectNav(activePage = '') {
+  let isOwner = false;
+  try {
+    const cached = localStorage.getItem('ct_cached_discord_user');
+    const parsed = cached ? JSON.parse(cached) : null;
+    const curUser = (typeof auth !== 'undefined' && auth.currentUser) ? auth.currentUser : null;
+    const curData = (typeof currentUserData !== 'undefined') ? currentUserData : null;
+    if (typeof isOwnerUser === 'function') {
+      isOwner = isOwnerUser(curUser, curData) || parsed?.discordId === '1121188319410278420';
+    } else {
+      isOwner = parsed?.discordId === '1121188319410278420';
+    }
+  } catch (e) {}
+
   const links = [
     { href: 'dashboard',   key: 'dashboard',   icon: 'layout-grid',   label: 'Dashboard'   },
     { href: 'matches',     key: 'matches',      icon: 'swords',        label: 'Matches'     },
-    { href: 'tournaments', key: 'tournaments',  icon: 'trophy',        label: 'Tournaments' },
+    { href: 'tournaments', key: 'tournaments',  icon: 'trophy',        label: 'Tournaments', badge: 'UPDATE' },
     { href: 'leaderboard', key: 'leaderboard',  icon: 'award',         label: 'Leaderboard' },
-    { href: 'shop',        key: 'shop',         icon: 'shopping-cart', label: 'Shop'        },
+    { href: 'shop',        key: 'shop',         icon: 'shopping-cart', label: 'Shop',        badge: isOwner ? '' : 'UPDATE' },
   ];
 
   const navLinksHTML = links.map(l => `

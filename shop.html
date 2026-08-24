@@ -24,7 +24,7 @@
   <link rel="icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
-  <link rel="stylesheet" href="css/style.css?v=4.0.1787602695386"/>
+  <link rel="stylesheet" href="css/style.css?v=4.0.1787602754705"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
@@ -92,60 +92,70 @@
   </div>
 
   <main class="page-wrap">
-    <div class="shop-header-flex">
-      <div class="page-header" style="margin-bottom:0;">
-        <h1><i data-lucide="shopping-cart" style="color:var(--gold-bright);"></i> Token Shop</h1>
-        <p>Unlock Champion Premium, exclusive perks, and upcoming upgrades.</p>
+    <!-- Under update screen for non-owners -->
+    <div id="shop-update-screen" style="display:none;flex-direction:column;align-items:center;justify-content:center;min-height:55vh;text-align:center;">
+      <div style="font-size:2rem;font-weight:900;color:var(--gold-bright);letter-spacing:0.02em;">
+        🔄 Under update.
       </div>
     </div>
 
-    <!-- 1. Champion Premium Pass Banner -->
-    <div class="card" style="background:linear-gradient(135deg, rgba(245,158,11,0.12) 0%, #080808 100%);border:1px solid rgba(245,158,11,0.45);border-radius:var(--radius-xl);padding:28px 32px;margin-bottom:36px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;box-shadow:0 0 35px rgba(245,158,11,0.15);">
-      <div>
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
-          <span class="badge" style="background:rgba(245,158,11,0.18);color:var(--gold-bright);border:1px solid rgba(245,158,11,0.4);font-size:0.75rem;padding:3px 10px;font-weight:800;letter-spacing:0.05em;"><i data-lucide="crown" style="width:12px;height:12px;"></i> PREMIUM</span>
-          <span class="username-premium" style="font-size:1.4rem;">Champion Premium</span>
-        </div>
-        <p style="font-size:0.875rem;color:var(--text-muted);max-width:540px;line-height:1.5;">
-          Unlock exclusive Radiant Gold username styling, custom name animations, the ability to tip tokens to players, and premium profile badges for 30 days.
-        </p>
-        <div style="display:flex;gap:16px;margin-top:14px;flex-wrap:wrap;font-size:0.8rem;color:#fde68a;">
-          <span>✨ Radiant Gold Name</span>
-          <span>👑 VIP Profile Crown</span>
-          <span>🎁 Tip Tokens System</span>
+    <!-- Full Shop for Platform Owner -->
+    <div id="shop-owner-content" style="display:none;">
+      <div class="shop-header-flex">
+        <div class="page-header" style="margin-bottom:0;">
+          <h1><i data-lucide="shopping-cart" style="color:var(--gold-bright);"></i> Token Shop</h1>
+          <p>Unlock Champion Premium, exclusive perks, and upcoming upgrades.</p>
         </div>
       </div>
-      <div style="text-align:right;flex-shrink:0;">
-        <div style="font-size:1.8rem;font-weight:900;color:var(--gold-bright);margin-bottom:8px;display:flex;align-items:center;gap:8px;justify-content:flex-end;">
-          5.00 <img src="new_token.png" style="width:48px;height:48px;object-fit:contain;vertical-align:middle;filter:drop-shadow(0 0 10px rgba(245,158,11,0.7));" alt="CT"/>
-        </div>
-        <button class="btn btn-primary btn-lg" id="btn-buy-premium" onclick="handleBuyPremium()">
-          <i data-lucide="crown"></i> Get Premium
-        </button>
-      </div>
-    </div>
 
-    <!-- 2. Daily Avatar Shop -->
-    <div style="margin-bottom:28px;">
-      <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:18px;flex-wrap:wrap;gap:12px;">
+      <!-- 1. Champion Premium Pass Banner -->
+      <div class="card" style="background:linear-gradient(135deg, rgba(245,158,11,0.12) 0%, #080808 100%);border:1px solid rgba(245,158,11,0.45);border-radius:var(--radius-xl);padding:28px 32px;margin-bottom:36px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;box-shadow:0 0 35px rgba(245,158,11,0.15);">
         <div>
-          <div style="display:flex;align-items:center;gap:8px;">
-            <span class="badge" style="background:rgba(245,158,11,0.18);color:var(--gold-bright);font-size:0.7rem;font-weight:800;letter-spacing:0.06em;padding:2px 8px;">DAILY ROTATION</span>
-            <h2 style="font-size:1.45rem;font-weight:900;margin:0;color:#fff;">Daily Avatar Shop</h2>
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+            <span class="badge" style="background:rgba(245,158,11,0.18);color:var(--gold-bright);border:1px solid rgba(245,158,11,0.4);font-size:0.75rem;padding:3px 10px;font-weight:800;letter-spacing:0.05em;"><i data-lucide="crown" style="width:12px;height:12px;"></i> PREMIUM</span>
+            <span class="username-premium" style="font-size:1.4rem;">Champion Premium</span>
           </div>
-          <p style="font-size:0.85rem;color:var(--text-muted);margin:4px 0 0;">
-            Featured avatar cosmetics refreshed daily at 00:00 UTC. Equip your unlocked avatars in your Profile.
+          <p style="font-size:0.875rem;color:var(--text-muted);max-width:540px;line-height:1.5;">
+            Unlock exclusive Radiant Gold username styling, custom name animations, the ability to tip tokens to players, and premium profile badges for 30 days.
           </p>
+          <div style="display:flex;gap:16px;margin-top:14px;flex-wrap:wrap;font-size:0.8rem;color:#fde68a;">
+            <span>✨ Radiant Gold Name</span>
+            <span>👑 VIP Profile Crown</span>
+            <span>🎁 Tip Tokens System</span>
+          </div>
         </div>
-        <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);padding:6px 14px;border-radius:20px;font-size:0.8rem;color:#cbd5e1;display:flex;align-items:center;gap:6px;">
-          <i data-lucide="clock" style="width:14px;height:14px;color:var(--gold-bright);"></i>
-          <span>Resets in: <strong id="daily-shop-timer" style="color:var(--gold-bright);font-family:monospace;font-weight:800;">--:--:--</strong></span>
+        <div style="text-align:right;flex-shrink:0;">
+          <div style="font-size:1.8rem;font-weight:900;color:var(--gold-bright);margin-bottom:8px;display:flex;align-items:center;gap:8px;justify-content:flex-end;">
+            5.00 <img src="new_token.png" style="width:48px;height:48px;object-fit:contain;vertical-align:middle;filter:drop-shadow(0 0 10px rgba(245,158,11,0.7));" alt="CT"/>
+          </div>
+          <button class="btn btn-primary btn-lg" id="btn-buy-premium" onclick="handleBuyPremium()">
+            <i data-lucide="crown"></i> Get Premium
+          </button>
         </div>
       </div>
 
-      <!-- Daily Avatar Items Grid (5 Items) -->
-      <div class="shop-grid-items" id="daily-pfps-grid" style="grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));">
-        <!-- Rendered dynamically -->
+      <!-- 2. Daily Avatar Shop -->
+      <div style="margin-bottom:28px;">
+        <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:18px;flex-wrap:wrap;gap:12px;">
+          <div>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span class="badge" style="background:rgba(245,158,11,0.18);color:var(--gold-bright);font-size:0.7rem;font-weight:800;letter-spacing:0.06em;padding:2px 8px;">DAILY ROTATION</span>
+              <h2 style="font-size:1.45rem;font-weight:900;margin:0;color:#fff;">Daily Avatar Shop</h2>
+            </div>
+            <p style="font-size:0.85rem;color:var(--text-muted);margin:4px 0 0;">
+              Featured avatar cosmetics refreshed daily at 00:00 UTC. Equip your unlocked avatars in your Profile.
+            </p>
+          </div>
+          <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);padding:6px 14px;border-radius:20px;font-size:0.8rem;color:#cbd5e1;display:flex;align-items:center;gap:6px;">
+            <i data-lucide="clock" style="width:14px;height:14px;color:var(--gold-bright);"></i>
+            <span>Resets in: <strong id="daily-shop-timer" style="color:var(--gold-bright);font-family:monospace;font-weight:800;">--:--:--</strong></span>
+          </div>
+        </div>
+
+        <!-- Daily Avatar Items Grid (5 Items) -->
+        <div class="shop-grid-items" id="daily-pfps-grid" style="grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));">
+          <!-- Rendered dynamically -->
+        </div>
       </div>
     </div>
   </main>
@@ -156,9 +166,9 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="js/firebase-config.js?v=3.8"></script>
-  <script src="js/auth.js?v=4.0.1787602695386"></script>
-  <script src="js/db.js?v=4.0.1787602695386"></script>
-  <script src="js/nav.js?v=4.0.1787602695386"></script>
+  <script src="js/auth.js?v=4.0.1787602754705"></script>
+  <script src="js/db.js?v=4.0.1787602754705"></script>
+  <script src="js/nav.js?v=4.0.1787602754705"></script>
 
   <script>
     let currentUser = null;
@@ -175,9 +185,20 @@
         currentUserData = await getUser(user.uid);
         injectNav('shop');
         document.getElementById('page-loading').classList.add('hidden');
-        checkPremiumStatus();
-        renderDailyPfps();
-        startShopTimer();
+
+        const isOwner = (typeof isOwnerUser === 'function' && isOwnerUser(user, currentUserData)) || user?.uid === 'discord:1121188319410278420' || currentUserData?.discordId === '1121188319410278420';
+
+        if (!isOwner) {
+          document.getElementById('shop-update-screen').style.display = 'flex';
+          document.getElementById('shop-owner-content').style.display = 'none';
+        } else {
+          document.getElementById('shop-update-screen').style.display = 'none';
+          document.getElementById('shop-owner-content').style.display = 'block';
+          checkPremiumStatus();
+          renderDailyPfps();
+          startShopTimer();
+        }
+        if (window.lucide) lucide.createIcons();
       }).catch(err => {
         console.error('Shop auth error:', err);
         const loadingEl = document.getElementById('page-loading');
