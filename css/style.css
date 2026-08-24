@@ -257,17 +257,19 @@ input[type="range"].ct-slider::-moz-range-thumb {
 .ct-nav__brand {
   display: flex;
   align-items: center;
-  gap: 10px;
-  font-size: 0.85rem;
+  gap: 12px;
+  font-size: 1.22rem;
   font-weight: 900;
   font-style: italic;
   letter-spacing: -0.01em;
   text-transform: uppercase;
   color: #ffffff;
   flex-shrink: 0;
-  margin-right: 14px;
+  margin-right: 18px;
   transition: opacity 0.2s ease, transform 0.2s ease;
   text-decoration: none;
+  overflow: visible;
+  white-space: nowrap;
 }
 .ct-nav__brand:hover {
   opacity: 0.92;
@@ -275,8 +277,8 @@ input[type="range"].ct-slider::-moz-range-thumb {
 }
 
 .brand-logo-img {
-  width: 36px;
-  height: 36px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   object-fit: cover;
   flex-shrink: 0;
@@ -285,20 +287,28 @@ input[type="range"].ct-slider::-moz-range-thumb {
 }
 .brand-text {
   font-family: var(--font);
-  font-size: 0.85rem;
+  font-size: 1.22rem;
   font-weight: 900;
   font-style: italic;
   letter-spacing: -0.01em;
   text-transform: uppercase;
   color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  padding-right: 6px;
+  padding-left: 2px;
+  overflow: visible;
 }
 .brand-accent {
   color: #F59E0B;
-  background: linear-gradient(135deg, #FDE68A 0%, #F59E0B 50%, #D97706 100%);
+  background: linear-gradient(135deg, #FFF9DB 0%, #FDE68A 30%, #F59E0B 75%, #D97706 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   font-style: italic;
   font-weight: 900;
+  display: inline-block;
+  padding-right: 6px;
+  margin-left: 4px;
 }
 
 .ct-nav__links {
@@ -1309,18 +1319,27 @@ input[type="range"].ct-slider::-moz-range-thumb {
 .landing-brand {
   display: flex;
   align-items: center;
-  gap: 10px;
-  font-size: 0.9rem;
+  gap: 12px;
+  font-size: 1.25rem;
   font-weight: 900;
   font-style: italic;
   letter-spacing: -0.01em;
   text-transform: uppercase;
   color: #ffffff;
   text-decoration: none;
+  overflow: visible;
+  white-space: nowrap;
+}
+.landing-brand span {
+  display: inline-flex;
+  align-items: center;
+  padding-right: 6px;
+  padding-left: 2px;
+  overflow: visible;
 }
 .landing-brand-logo {
-  width: 36px;
-  height: 36px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   object-fit: cover;
   flex-shrink: 0;

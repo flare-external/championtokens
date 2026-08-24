@@ -915,6 +915,7 @@
         <div class="concept-stakes-widget left">
           <div class="stakes-widget-label">ENTRY FEE</div>
           <div class="stakes-widget-val" id="big-entry-val">1.00 <span class="stakes-sub">Tokens</span></div>
+          <div style="font-size:0.75rem;font-weight:800;color:#64748b;letter-spacing:0.06em;text-transform:uppercase;">EACH</div>
         </div>
 
         <!-- Centered Gamemode Title & Metadata Bars -->
@@ -958,8 +959,9 @@
 
         <!-- Big Prize Pool (Top Right) -->
         <div class="concept-stakes-widget right">
-          <div class="stakes-widget-label gold">PRIZE POOL</div>
+          <div class="stakes-widget-label gold">PRIZE</div>
           <div class="stakes-widget-val gold" id="big-prize-val">1.80 <span class="stakes-sub gold">Tokens</span></div>
+          <div style="font-size:0.75rem;font-weight:800;color:var(--gold-bright);opacity:0.9;letter-spacing:0.06em;text-transform:uppercase;">EACH</div>
         </div>
       </div>
 
@@ -1418,7 +1420,8 @@
       const alreadyIn = players.some(p => p.uid === currentUser?.uid);
       const isFull = players.length >= maxPlayers;
       const isMatchStarted = match.status === 'in_progress' || match.status === 'completed';
-      const prize = Math.round(Number(match.prizePool || match.wager) * 0.90 * 100) / 100;
+      const wager = Number(match.wager || 1.00);
+      const prizePerPlayer = Math.round(wager * 1.80 * 100) / 100;
       const isExpired = (match.status === 'cancelled' && !isMatchStarted && !match.startedAt) || (match.isExpired && match.status === 'cancelled');
 
       // Map Code
@@ -1435,10 +1438,10 @@
       if (titleEl) titleEl.textContent = `${size} ${mode}`.toUpperCase();
 
       const bigEntryEl = document.getElementById('big-entry-val');
-      if (bigEntryEl) bigEntryEl.innerHTML = `${formatTokens(match.wager)} <span class="stakes-sub">Tokens</span>`;
+      if (bigEntryEl) bigEntryEl.innerHTML = `${formatTokens(wager)} <span class="stakes-sub">Tokens</span>`;
 
       const bigPrizeEl = document.getElementById('big-prize-val');
-      if (bigPrizeEl) bigPrizeEl.innerHTML = `${formatTokens(prize)} <span class="stakes-sub gold">Tokens</span>`;
+      if (bigPrizeEl) bigPrizeEl.innerHTML = `${formatTokens(prizePerPlayer)} <span class="stakes-sub gold">Tokens</span>`;
 
       const regionEl = document.getElementById('meta-region');
       if (regionEl) regionEl.textContent = match.region || 'EU';
