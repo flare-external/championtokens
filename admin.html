@@ -523,7 +523,7 @@
               </div>
             </div>
             <div style="display:flex;gap:8px;">
-              <a href="match?id=${m.id}" target="_blank" class="btn btn-outline btn-sm"><i data-lucide="external-link"></i> Inspect</a>
+              <a href="match?id=${m.id}&staff=true" target="_blank" class="btn btn-outline btn-sm"><i data-lucide="external-link"></i> Inspect</a>
               <button class="btn btn-danger btn-sm" onclick="handleAdminCancelMatch('${m.id}')"><i data-lucide="slash"></i> Force Cancel & Refund</button>
             </div>
           </div>`;
@@ -625,7 +625,7 @@
               ${call.resolvedBy ? `<div style="color:var(--green);margin-top:2px;"><strong>Resolved by:</strong> ${escapeHtml(call.resolvedBy)} (${escapeHtml(call.resolutionNotes || '')})</div>` : ''}
             </div>
             <div style="display:flex;gap:8px;flex-wrap:wrap;">
-              <a href="match?id=${call.matchId}" target="_blank" class="btn btn-outline btn-sm"><i data-lucide="external-link"></i> Inspect Match</a>
+              <a href="match?id=${call.matchId}&staff=true" target="_blank" class="btn btn-outline btn-sm"><i data-lucide="external-link"></i> Inspect Match</a>
               ${isOpen ? `
                 <button class="btn btn-primary btn-sm" onclick="handleResolveTicket('${call.id}')"><i data-lucide="check"></i> Mark Resolved</button>
                 <button class="btn btn-danger btn-sm" onclick="handleAdminCancelMatch('${call.matchId}')"><i data-lucide="slash"></i> Force Cancel Match</button>

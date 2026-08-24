@@ -1019,11 +1019,9 @@ async function submitMatchReport(matchId, reporterUid, reportedWinnerTeam) {
     throw new Error('Match is already completed');
   }
 
-  const isOwnerAdmin = (reporterUid === 'discord:1121188319410278420' || ADMIN_DISCORD_IDS.includes((reporterUid || '').replace('discord:', '')) || reporterPlayer.isAdmin === true || (typeof isAdminUser === 'function' && isAdminUser(reporterPlayer, reporterPlayer)));
-
-  // 5-Minute anti-win-farming check (bypassed for admins during testing)
-  const MIN_MATCH_DURATION_MS = isOwnerAdmin ? 0 : 5 * 60 * 1000;
-  if (match.startedAt && !isOwnerAdmin) {
+  // 5-Minute anti-win-farming check
+  const MIN_MATCH_DURATION_MS = 5 * 60 * 1000;
+  if (match.startedAt) {
     const startedTime = match.startedAt.toDate ? match.startedAt.toDate().getTime() : (match.startedAt.seconds ? match.startedAt.seconds * 1000 : Date.now());
     const elapsed = Date.now() - startedTime;
     if (elapsed < MIN_MATCH_DURATION_MS) {
@@ -1043,17 +1041,7 @@ async function submitMatchReport(matchId, reporterUid, reportedWinnerTeam) {
   const reporterTeamName = isTeam1 ? 'Team 1 (Host)' : 'Team 2 (Enemy)';
 
   const updatePayload = {};
-  if (isOwnerAdmin) {
-    // Owner testing phase: immediately confirm and complete match
-    updatePayload.team1Reported = reportedWinnerTeam;
-    updatePayload.team2Reported = reportedWinnerTeam;
-    updatePayload.team1ReportedBy = reporterUid;
-    updatePayload.team2ReportedBy = reporterUid;
-    updatePayload.team1ReportedByName = reporterPlayer.displayName || 'Owner (Test)';
-    updatePayload.team2ReportedByName = reporterPlayer.displayName || 'Owner (Test)';
-    updatePayload.team1ReportedAt = firebase.firestore.FieldValue.serverTimestamp();
-    updatePayload.team2ReportedAt = firebase.firestore.FieldValue.serverTimestamp();
-  } else if (isTeam1) {
+  if (isTeam1) {
     updatePayload.team1Reported = reportedWinnerTeam;
     updatePayload.team1ReportedBy = reporterUid;
     updatePayload.team1ReportedByName = reporterPlayer.displayName || 'Player';
@@ -1065,8 +1053,8 @@ async function submitMatchReport(matchId, reporterUid, reportedWinnerTeam) {
     updatePayload.team2ReportedAt = firebase.firestore.FieldValue.serverTimestamp();
   }
 
-  const currentTeam1Report = isOwnerAdmin ? reportedWinnerTeam : (isTeam1 ? reportedWinnerTeam : match.team1Reported);
-  const currentTeam2Report = isOwnerAdmin ? reportedWinnerTeam : (isTeam1 ? match.team2Reported : reportedWinnerTeam);
+  const currentTeam1Report = isTeam1 ? reportedWinnerTeam : match.team1Reported;
+  const currentTeam2Report = isTeam1 ? match.team2Reported : reportedWinnerTeam;
 
   const msgRef = matchRef.collection('messages');
 
@@ -1274,8 +1262,8 @@ async function voteMatchRematch(matchId, uid, voteType = 'rematch') {
     timestamp: firebase.firestore.FieldValue.serverTimestamp(),
   });
 
-  // Check if all players agreed (or if owner testing)
-  if (currentVotes.length >= totalPlayers || (isOwnerAdmin && currentVotes.length >= 1)) {
+  // Check if all players agreed
+  if (currentVotes.length >= totalPlayers) {
     const newWager = voteType === 'double' ? currentWager * 2 : currentWager;
     const newPrizePool = newWager * totalPlayers;
 

@@ -1735,11 +1735,10 @@
             const isTeam1 = mySlot?.team === 'team1' || mySlot?.isHost || mySlot?.uid === match.createdBy;
             const myReported = isTeam1 ? match.team1Reported : match.team2Reported;
 
-            const isOwnerAdmin = (currentUser?.uid === 'discord:1121188319410278420' || ADMIN_DISCORD_IDS.includes((currentUser?.uid || '').replace('discord:', '')) || currentUserData?.isAdmin === true || (typeof isAdminUser === 'function' && isAdminUser(currentUser, currentUserData)));
-            const MIN_DURATION_MS = isOwnerAdmin ? 0 : 5 * 60 * 1000;
+            const MIN_DURATION_MS = 5 * 60 * 1000;
             const startedTime = match.startedAt ? (match.startedAt.toDate ? match.startedAt.toDate().getTime() : (match.startedAt.seconds ? match.startedAt.seconds * 1000 : Date.now())) : Date.now();
             const elapsed = Date.now() - startedTime;
-            const isLocked = !isOwnerAdmin && (elapsed < MIN_DURATION_MS);
+            const isLocked = (elapsed < MIN_DURATION_MS);
             const remainingSec = isLocked ? Math.ceil((MIN_DURATION_MS - elapsed) / 1000) : 0;
             const mins = Math.floor(remainingSec / 60);
             const secs = remainingSec % 60;
@@ -2240,7 +2239,7 @@
         }
 
         const isMine = m.senderUid === currentUser?.uid;
-        const isStaff = m.isStaff || ADMIN_DISCORD_IDS.includes((m.senderUid || '').replace('discord:', ''));
+        const isStaff = (m.isStaff === true);
         const isPremium = !!m.isPremium;
 
         const pfpHTML = m.photoURL
@@ -2276,7 +2275,10 @@
       if (!text || !matchId) return;
 
       input.value = '';
-      const isStaff = isAdminUser(currentUser, currentUserData);
+      const urlParams = new URLSearchParams(window.location.search);
+      const isStaffCall = urlParams.get('staff') === 'true' || urlParams.get('call') !== null;
+      const isParticipant = (currentMatchData?.players || []).some(p => p.uid === currentUser?.uid);
+      const isStaffMsg = Boolean((isStaffCall || !isParticipant) && isAdminUser(currentUser, currentUserData));
       const isPremium = !!currentUserData?.isPremium;
 
       await db.collection('matches').doc(matchId).collection('messages').add({
@@ -2284,7 +2286,7 @@
         senderUid:  currentUser.uid,
         senderName: currentUserData?.displayName || 'Player',
         photoURL:   currentUserData?.photoURL || currentUser?.photoURL || '',
-        isStaff:    isStaff,
+        isStaff:    isStaffMsg,
         isPremium:  isPremium,
         timestamp:  firebase.firestore.FieldValue.serverTimestamp(),
       });
