@@ -83,37 +83,7 @@
       </div>
     </div>
 
-    <!-- Two-col: activity + my matches -->
-    <div class="grid-2" style="align-items:start;">
-      <!-- Recent Activity -->
-      <div class="card">
-        <div class="section-title">
-          <i data-lucide="activity"></i> Recent Activity
-        </div>
-        <div class="tx-list" id="tx-list">
-          <div class="empty-state"><div class="spinner" style="margin:0 auto"></div></div>
-        </div>
-        <div class="ct-pagination" id="tx-pagination"></div>
-        <hr class="divider"/>
-        <a href="profile" class="btn btn-ghost btn-sm" style="width:100%;justify-content:center;">
-          <i data-lucide="clock"></i> View All Activity in Profile
-        </a>
-      </div>
 
-      <!-- My Active Matches -->
-      <div>
-        <div class="section-title" style="margin-bottom:14px;">
-          <i data-lucide="swords"></i> My Active Matches
-        </div>
-        <div id="my-matches" style="display:flex;flex-direction:column;gap:12px;">
-          <div class="empty-state"><div class="spinner" style="margin:0 auto"></div></div>
-        </div>
-        <div class="ct-pagination" id="mm-pagination"></div>
-        <a href="matches" class="btn btn-outline btn-full" style="margin-top:14px;">
-          <i data-lucide="plus"></i> Browse or Create Matches
-        </a>
-      </div>
-    </div>
 
     <!-- Quick action links -->
     <div class="grid-3" style="margin-top:24px;">
@@ -156,16 +126,9 @@
 
   <script>
     let currentUser = null;
-    let allTransactions = [];
-    let txCurrentPage = 1;
-    const TX_PER_PAGE = 5;
-
-    let allMyMatches = [];
-    let mmCurrentPage = 1;
-    const MM_PER_PAGE = 4;
 
     function safeSetText(id, text) {
-      const el = document.getElementById(id);
+      const el = document.getElementById('id');
       if (el) el.textContent = text;
     }
 
@@ -175,174 +138,26 @@
         name = userData?.discordUsername || (currentUser && currentUser.displayName) || 'Player';
       }
       const firstName = name.split(' ')[0];
-      safeSetText('welcome-name', firstName);
+      const nameEl = document.getElementById('welcome-name');
+      if (nameEl) nameEl.textContent = firstName;
       renderStats(userData || {});
     }
 
     function renderStats(data) {
-      safeSetText('stat-earned', formatTokens(data.totalEarned ?? 0.00));
-      safeSetText('stat-played', data.matchesPlayed ?? 0);
-      safeSetText('stat-won', data.matchesWon ?? 0);
+      const earnedEl = document.getElementById('stat-earned');
+      if (earnedEl) earnedEl.textContent = formatTokens(data.totalEarned ?? 0.00);
+
+      const playedEl = document.getElementById('stat-played');
+      if (playedEl) playedEl.textContent = data.matchesPlayed ?? 0;
+
+      const wonEl = document.getElementById('stat-won');
+      if (wonEl) wonEl.textContent = data.matchesWon ?? 0;
 
       const played = data.matchesPlayed || 0;
       const won = data.matchesWon || 0;
       const wr = played > 0 ? Math.round((won / played) * 100) : 0;
-      safeSetText('stat-winrate', wr + '%');
-    }
-
-    function renderTransactionsPage(page) {
-      txCurrentPage = page;
-      const el = document.getElementById('tx-list');
-      const pagEl = document.getElementById('tx-pagination');
-      if (!el) return;
-
-      if (!allTransactions.length) {
-        el.innerHTML = `<div class="empty-state"><i data-lucide="inbox"></i><p>No activity recorded yet</p></div>`;
-        if (pagEl) pagEl.innerHTML = '';
-        if (window.lucide) lucide.createIcons();
-        return;
-      }
-
-      const totalPages = Math.max(1, Math.ceil(allTransactions.length / TX_PER_PAGE));
-      const startIdx = (txCurrentPage - 1) * TX_PER_PAGE;
-      const pageTxs = allTransactions.slice(startIdx, startIdx + TX_PER_PAGE);
-
-      el.innerHTML = pageTxs.map(tx => {
-        const isCredit = Number(tx.amount || 0) > 0;
-        let iconName = isCredit ? 'arrow-up-right' : 'arrow-down-left';
-        let iconType = isCredit ? 'tx-icon--credit' : 'tx-icon--debit';
-        
-        let label = tx.description || txTypeLabel(tx.type);
-        if (tx.type === 'match_win' || (label && label.toLowerCase().includes('won match'))) {
-          iconName = 'trophy';
-          iconType = 'tx-icon--gold';
-          label = label.replace(/Won match\s*"?([^"]*)"?.*$/i, 'Victory · $1').replace(/🏆\s*/g, '');
-        } else if (tx.type === 'match_wager' || (label && label.toLowerCase().includes('wager'))) {
-          iconName = 'swords';
-          iconType = 'tx-icon--debit';
-          label = label.replace(/Match wager for\s*"?([^"]*)"?.*$/i, 'Match Entry · $1').replace(/🎮\s*/g, '');
-        } else if (label && label.toLowerCase().includes('refund')) {
-          iconName = 'rotate-ccw';
-          iconType = 'tx-icon--blue';
-          label = label.replace(/.*refund.*?"?([^"]*)"?.*$/i, 'Refund · $1').replace(/↩️|⏱️\s*/g, '');
-        } else if (tx.type === 'bonus' || (label && label.toLowerCase().includes('bonus'))) {
-          iconName = 'sparkles';
-          iconType = 'tx-icon--gold';
-          label = 'Welcome Starter Bonus';
-        } else if (tx.type === 'purchase') {
-          iconName = 'plus-circle';
-          iconType = 'tx-icon--credit';
-          label = 'Token Purchase';
-        } else if (tx.type === 'admin') {
-          iconName = 'zap';
-          iconType = 'tx-icon--gold';
-          label = 'Admin Adjustment';
-        }
-
-        return `
-          <div class="tx-item">
-            <div class="tx-icon ${iconType}">
-              <i data-lucide="${iconName}"></i>
-            </div>
-            <div class="tx-info">
-              <div class="tx-desc">${escapeHtml(label)}</div>
-              <div class="tx-time">${formatTime(tx.timestamp)}</div>
-            </div>
-            <div class="tx-amount ${isCredit ? 'tx-amount--credit' : 'tx-amount--debit'}">
-              ${isCredit ? '+' : ''}${formatTokens(tx.amount)} <img src="new_token.png" class="inline-coin" alt="CT" width="14" height="14"/>
-            </div>
-          </div>`;
-      }).join('');
-
-      if (pagEl) {
-        pagEl.innerHTML = `
-          <button class="ct-page-btn" onclick="renderTransactionsPage(${txCurrentPage - 1})" ${txCurrentPage <= 1 ? 'disabled' : ''}>
-            <i data-lucide="chevron-left"></i> Prev
-          </button>
-          <span class="ct-page-info">Page ${txCurrentPage} of ${totalPages}</span>
-          <button class="ct-page-btn" onclick="renderTransactionsPage(${txCurrentPage + 1})" ${txCurrentPage >= totalPages ? 'disabled' : ''}>
-            Next <i data-lucide="chevron-right"></i>
-          </button>
-        `;
-      }
-      if (window.lucide) lucide.createIcons();
-    }
-
-    function renderMyMatchesPage(page) {
-      mmCurrentPage = page;
-      const el = document.getElementById('my-matches');
-      const pagEl = document.getElementById('mm-pagination');
-      if (!el) return;
-
-      if (!allMyMatches.length) {
-        el.innerHTML = `<div class="empty-state"><i data-lucide="swords"></i><p>No active matches. Join or create one!</p></div>`;
-        if (pagEl) pagEl.innerHTML = '';
-        if (window.lucide) lucide.createIcons();
-        return;
-      }
-
-      const totalPages = Math.max(1, Math.ceil(allMyMatches.length / MM_PER_PAGE));
-      const startIdx = (mmCurrentPage - 1) * MM_PER_PAGE;
-      const pageMatches = allMyMatches.slice(startIdx, startIdx + MM_PER_PAGE);
-
-      const nowSeconds = Math.floor(Date.now() / 1000);
-
-      el.innerHTML = pageMatches.map(m => {
-        const size = m.size || '1v1';
-        const mode = m.mode || 'Realistic';
-        let defaultMapCode = '9854-1829-8735';
-        if (mode === 'Zone Wars') defaultMapCode = '3537-4087-0888';
-        else if (mode === 'Box Fights') defaultMapCode = '2355-0939-8965';
-        const mapCode = m.mapCode || defaultMapCode;
-        const now = Date.now();
-        const createdAtMs = m.createdAt?.toDate ? m.createdAt.toDate().getTime() : (m.createdAt?.seconds ? m.createdAt.seconds * 1000 : now);
-        const diffSec = Math.floor((now - createdAtMs) / 1000);
-        const thirtyMin = 30 * 60;
-        const isExpired = m.status === 'cancelled' || m.isExpired || diffSec >= thirtyMin;
-
-        return `
-        <div class="card match-card" style="padding:14px 16px;gap:8px;">
-          <div class="match-card__header">
-            <div style="min-width:0;">
-              <div class="match-card__title" style="font-size:0.92rem;font-weight:800;">${escapeHtml(m.title || `${size} ${mode}`)}</div>
-              <div class="match-card__host" style="font-size:0.7rem;">by <strong>${escapeHtml(m.hostName || 'Host')}</strong></div>
-            </div>
-            <div class="badge-group">
-              <span class="badge ${sizeColor(size)}" style="font-size:0.68rem;padding:2px 7px;">${size}</span>
-              <span class="badge ${modeColor(mode)}" style="font-size:0.68rem;padding:2px 7px;">${mode}</span>
-            </div>
-          </div>
-          <div class="match-card__meta" style="font-size:0.75rem;justify-content:space-between;">
-            <span class="match-meta-item"><i data-lucide="coins" style="width:13px;height:13px;"></i><span class="gold">${formatTokens(m.wager)}</span> <img src="new_token.png" class="inline-coin" alt="CT" width="14" height="14"/></span>
-            <span style="color:var(--gold-bright);font-weight:700;font-size:0.7rem;display:inline-flex;align-items:center;gap:3px;padding:2px 6px;background:rgba(0,0,0,0.35);border-radius:4px;border:1px solid rgba(255,255,255,0.06);">
-              <i data-lucide="map-pin" style="width:10px;height:10px;"></i> Map: ${mapCode}
-            </span>
-          </div>
-          <div style="display:flex;gap:6px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding-top:2px;">
-            <div class="match-code-badge" style="font-size:0.72rem;padding:2px 6px;border-radius:6px;"><i data-lucide="hash" style="width:10px;height:10px;"></i>${m.code}</div>
-            <div style="display:flex;gap:6px;margin-left:auto;">
-              <a href="match?id=${m.id}" class="btn btn-sm btn-primary" style="font-size:0.75rem;padding:3px 12px;height:28px;">
-                <i data-lucide="play" style="width:12px;height:12px;"></i> Enter Match
-              </a>
-            </div>
-          </div>
-        </div>`;
-      }).join('');
-
-      if (pagEl) {
-        pagEl.innerHTML = `
-          <button class="ct-page-btn" onclick="renderMyMatchesPage(${mmCurrentPage - 1})" ${mmCurrentPage <= 1 ? 'disabled' : ''}>
-            <i data-lucide="chevron-left"></i> Prev
-          </button>
-          <span class="ct-page-info">Page ${mmCurrentPage} of ${totalPages}</span>
-          <button class="ct-page-btn" onclick="renderMyMatchesPage(${mmCurrentPage + 1})" ${mmCurrentPage >= totalPages ? 'disabled' : ''}>
-            Next <i data-lucide="chevron-right"></i>
-          </button>
-        `;
-      }
-
-      window._myMatches = allMyMatches;
-      if (window.lucide) lucide.createIcons();
+      const wrEl = document.getElementById('stat-winrate');
+      if (wrEl) wrEl.textContent = wr + '%';
     }
 
     document.addEventListener('DOMContentLoaded', () => {
@@ -364,32 +179,6 @@
         db.collection('users').doc(user.uid).onSnapshot((snap) => {
           if (snap.exists) renderStats(snap.data());
         }, (err) => console.warn('Users snapshot error:', err));
-
-        // Real-time recent transactions
-        db.collection('transactions')
-          .where('userId', '==', user.uid)
-          .onSnapshot((snap) => {
-            allTransactions = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-            allTransactions.sort((a, b) => (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0));
-            renderTransactionsPage(1);
-          }, (err) => {
-            console.warn('Transactions snapshot error:', err);
-            allTransactions = [];
-            renderTransactionsPage(1);
-          });
-
-        // Real-time active matches
-        db.collection('matches')
-          .where('status', '==', 'waiting')
-          .onSnapshot((snap) => {
-            const all = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-            allMyMatches = all.filter(m => (m.playerUids || []).includes(user.uid) || m.createdBy === user.uid);
-            renderMyMatchesPage(1);
-          }, (err) => {
-            console.warn('Matches snapshot error:', err);
-            allMyMatches = [];
-            renderMyMatchesPage(1);
-          });
       }).catch(err => {
         console.error('Auth error:', err);
         const loadingEl = document.getElementById('page-loading');

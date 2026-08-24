@@ -2,18 +2,7 @@
 //  CHAMPION TOKENS — Shared Navigation + UI Helpers
 // ============================================================
 
-// ── Maintenance Mode Guard ───────────────────────────────────
-const MAINTENANCE_MODE_ACTIVE = false;
 
-(function checkMaintenanceRedirect() {
-  if (!MAINTENANCE_MODE_ACTIVE) return;
-  const path = window.location.pathname.toLowerCase();
-  const isMaintenancePage = path.endsWith('maintenance') || path.endsWith('maintenance.html');
-  const isCallback = path.includes('callback') || path.includes('auth');
-  if (!isMaintenancePage && !isCallback) {
-    window.location.replace('maintenance');
-  }
-})();
 
 /**
  * Inject the top navigation bar into the page.
