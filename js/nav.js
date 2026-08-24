@@ -37,7 +37,7 @@ function injectNav(activePage = '') {
 
         <div class="ct-nav__user">
           <button class="nav-token-btn" onclick="openTokenWalletModal('purchase')" title="Add Tokens / View Wallet">
-            <img src="new_token.png" alt="CT" class="nav-token-coin" width="22" height="22" />
+            <img src="new_token.png" alt="CT" class="nav-token-coin" width="28" height="28" />
             <span id="nav-balance">10.00</span>
             <span class="nav-token-plus">+</span>
           </button>
@@ -779,7 +779,7 @@ function injectGlobalFooter() {
   if (document.querySelector('.ct-footer')) return;
   const footer = document.createElement('footer');
   footer.className = 'ct-footer';
-  footer.style.cssText = 'margin-top:56px;border-top:1px solid rgba(255,255,255,0.06);padding:36px 20px 48px;background:rgba(0,0,0,0.5);width:100%;';
+  footer.style.cssText = 'position:relative;z-index:999;width:100%;margin-top:64px;border-top:1px solid rgba(255,255,255,0.08);padding:38px 24px 52px;background:rgba(0,0,0,0.85);display:block;visibility:visible;opacity:1;';
   footer.innerHTML = `
     <div style="max-width:1120px;margin:0 auto;display:flex;flex-direction:column;gap:24px;">
       <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:18px;">

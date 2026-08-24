@@ -515,19 +515,19 @@ input[type="range"].ct-slider::-moz-range-thumb {
   }
 }
 
-/* Unified Token Button (Smaller, No Outline, Animated + Only) */
+/* Unified Token Button (Balanced, No Outline, Animated + Only) */
 .nav-token-btn {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   background: rgba(245, 158, 11, 0.08);
   border: none !important;
   outline: none !important;
   box-shadow: none !important;
   border-radius: 999px;
-  padding: 3px 10px 3px 5px;
+  padding: 4px 14px 4px 7px;
   color: var(--gold-bright);
-  font-size: 0.88rem;
+  font-size: 1.02rem;
   font-weight: 800;
   cursor: pointer;
   transition: background 0.15s ease;
@@ -540,14 +540,14 @@ input[type="range"].ct-slider::-moz-range-thumb {
   transform: none !important;
 }
 .nav-token-coin {
-  width: 20px !important;
-  height: 20px !important;
+  width: 28px !important;
+  height: 28px !important;
   object-fit: contain;
   filter: none !important;
 }
 .nav-token-plus {
   color: var(--gold-bright);
-  font-size: 0.92rem;
+  font-size: 1.15rem;
   font-weight: 900;
   line-height: 1;
   margin-left: 2px;
@@ -2331,12 +2331,14 @@ div[class*="netlify-drawer"],
 
 .nav-notif-btn {
   position: relative;
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: #080808;
-  color: #e2e8f0;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  color: var(--text-muted);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -2345,20 +2347,38 @@ div[class*="netlify-drawer"],
   transition: all 0.16s ease;
 }
 .nav-notif-btn:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.08) !important;
   color: #ffffff;
-  border-color: rgba(255, 255, 255, 0.2);
-  transform: translateY(-1px);
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  transform: none !important;
 }
 .nav-notif-btn i {
-  width: 17px;
-  height: 17px;
+  width: 16px;
+  height: 16px;
   stroke-width: 2.2;
-  color: #e2e8f0;
-  transition: transform 0.16s ease, color 0.16s ease;
+  color: var(--text-muted);
+  transition: color 0.16s ease;
 }
 .nav-notif-btn:hover i {
   color: #ffffff;
+}
+
+/* ── Platform Universal Footer ─────────────────────────────── */
+.ct-footer {
+  position: relative !important;
+  z-index: 999 !important;
+  width: 100%;
+  margin-top: 56px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 38px 24px 52px;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
 }
 
 .nav-notif-badge {
