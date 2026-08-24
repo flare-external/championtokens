@@ -85,3 +85,9 @@
   from   = "/callback"
   to     = "/callback.html"
   status = 200
+
+[[redirects]]
+  from   = "/social-callback"
+  to     = "/social-callback.html"
+  status = 200
+

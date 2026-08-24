@@ -63,6 +63,69 @@ function startEpicOAuth(uidOverride, forceRelink = false) {
   window.location.href = epicAuthUrl;
 }
 
+/**
+ * Canonical redirect URI for Social Account linking (Twitch / X).
+ */
+function getSocialRedirectUri() {
+  const host = window.location.hostname.toLowerCase();
+  if (host === 'championtokens.fun' || host === 'www.championtokens.fun' || host.includes('netlify.app')) {
+    return 'https://championtokens.fun/social-callback';
+  }
+  let origin = window.location.origin;
+  if (!origin.includes('localhost') && !origin.includes('127.0.0.1')) {
+    origin = origin.replace(/^http:/, 'https:');
+  }
+  return `${origin}/social-callback`;
+}
+
+/**
+ * Initiate official Twitch OAuth flow to verify and connect Twitch account.
+ */
+function startTwitchOAuth(uidOverride) {
+  const uid = uidOverride || (auth.currentUser ? auth.currentUser.uid : (typeof currentUser !== 'undefined' && currentUser ? currentUser.uid : ''));
+  if (!uid) {
+    if (typeof showToast === 'function') showToast('Please log in to Champion Tokens first', 'error');
+    return;
+  }
+
+  const clientId = 'champion_tokens_twitch';
+  const redirectUri = encodeURIComponent(getSocialRedirectUri());
+  const state = encodeURIComponent(btoa(JSON.stringify({ platform: 'twitch', uid })));
+
+  try {
+    localStorage.setItem('ct_social_linking_platform', 'twitch');
+    localStorage.setItem('ct_social_linking_uid', uid);
+  } catch (e) {}
+
+  const twitchAuthUrl = `https://id.twitch.tv/oauth2/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&scope=user:read:email&state=${state}&force_verify=true`;
+  window.location.href = twitchAuthUrl;
+}
+
+/**
+ * Initiate official X OAuth 2.0 PKCE flow to verify and connect X account.
+ */
+function startXOAuth(uidOverride) {
+  const uid = uidOverride || (auth.currentUser ? auth.currentUser.uid : (typeof currentUser !== 'undefined' && currentUser ? currentUser.uid : ''));
+  if (!uid) {
+    if (typeof showToast === 'function') showToast('Please log in to Champion Tokens first', 'error');
+    return;
+  }
+
+  const clientId = 'champion_tokens_x';
+  const redirectUri = encodeURIComponent(getSocialRedirectUri());
+  const state = encodeURIComponent(btoa(JSON.stringify({ platform: 'x', uid })));
+  const codeVerifier = Math.random().toString(36).substring(2) + Math.random().toString(36).substring(2);
+
+  try {
+    localStorage.setItem('ct_social_linking_platform', 'x');
+    localStorage.setItem('ct_social_linking_uid', uid);
+    localStorage.setItem('ct_x_code_verifier', codeVerifier);
+  } catch (e) {}
+
+  const xAuthUrl = `https://twitter.com/i/oauth2/authorize?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&scope=users.read%20tweet.read&state=${state}&code_challenge=${codeVerifier}&code_challenge_method=plain`;
+  window.location.href = xAuthUrl;
+}
+
 /** The OAuth redirect URI — must match what's set in Discord Developer Portal */
 function getRedirectUri() {
   let origin = window.location.origin;

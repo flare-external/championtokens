@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Connecting Social Account — Champion Tokens</title>
+  <link rel="icon" type="image/png" href="champion-tokens_new.png"/>
+  <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
+  <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #000000;
+      color: #ffffff;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      overflow: hidden;
+    }
+    .white-spinner {
+      width: 44px;
+      height: 44px;
+      border: 3px solid rgba(255, 255, 255, 0.15);
+      border-top-color: #ffffff;
+      border-radius: 50%;
+      animation: spinCircle 0.8s linear infinite;
+    }
+    @keyframes spinCircle {
+      to { transform: rotate(360deg); }
+    }
+    .error-fallback {
+      display: none;
+      text-align: center;
+      color: #888;
+      font-size: 0.9rem;
+      max-width: 340px;
+      line-height: 1.5;
+    }
+    .error-fallback a {
+      display: inline-block;
+      margin-top: 16px;
+      color: #ffffff;
+      text-decoration: none;
+      border: 1px solid #333;
+      padding: 8px 18px;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+  <div class="white-spinner" id="spinner"></div>
+
+  <div class="error-fallback" id="error-box">
+    <p id="error-msg">Could not complete account connection.</p>
+    <a href="profile?tab=connections">Return to Connections</a>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="js/firebase-config.js"></script>
+  <script src="js/db.js?v=4.0.1787590289201"></script>
+
+  <script>
+    function showError(msg) {
+      document.getElementById('spinner').style.display = 'none';
+      const errBox = document.getElementById('error-box');
+      if (errBox) {
+        errBox.style.display = 'block';
+        document.getElementById('error-msg').textContent = msg;
+      }
+    }
+
+    function getAuthenticatedUser() {
+      if (auth.currentUser) return Promise.resolve(auth.currentUser);
+      return new Promise((resolve) => {
+        let done = false;
+        const timer = setTimeout(() => {
+          if (!done) { done = true; resolve(auth.currentUser); }
+        }, 5000);
+
+        const unsub = auth.onAuthStateChanged((user) => {
+          if (user && !done) {
+            done = true;
+            clearTimeout(timer);
+            unsub();
+            resolve(user);
+          }
+        });
+      });
+    }
+
+    async function handleSocialCallback() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const code = urlParams.get('code');
+      const error = urlParams.get('error');
+      const errorDesc = urlParams.get('error_description');
+      const stateParam = urlParams.get('state');
+
+      let statePlatform = '';
+      let stateUid = '';
+      if (stateParam) {
+        try {
+          const parsed = JSON.parse(atob(decodeURIComponent(stateParam)));
+          if (parsed) {
+            statePlatform = parsed.platform || '';
+            stateUid = parsed.uid || '';
+          }
+        } catch (e) {}
+      }
+
+      const platform = statePlatform || urlParams.get('platform') || localStorage.getItem('ct_social_linking_platform') || 'twitch';
+      const localUid = localStorage.getItem('ct_social_linking_uid') || '';
+      const codeVerifier = localStorage.getItem('ct_x_code_verifier') || '';
+
+      if (error) {
+        showError(errorDesc || 'Account connection was cancelled.');
+        return;
+      }
+
+      if (!code) {
+        showError('No authorization code returned from provider.');
+        return;
+      }
+
+      const user = await getAuthenticatedUser();
+      const targetUid = user?.uid || stateUid || localUid;
+
+      if (!targetUid) {
+        showError('Session expired. Please log in to Champion Tokens first.');
+        return;
+      }
+
+      const host = window.location.hostname.toLowerCase();
+      const redirectUri = (host === 'championtokens.fun' || host === 'www.championtokens.fun' || host.includes('netlify.app'))
+        ? 'https://championtokens.fun/social-callback'
+        : window.location.origin + '/social-callback';
+
+      const endpoints = [
+        '/api/socialAuth',
+        'https://championtokens.fun/api/socialAuth',
+        'https://championtokens.netlify.app/.netlify/functions/socialAuth'
+      ];
+
+      let verifiedUsername = '';
+      let verifiedId = '';
+
+      for (const ep of endpoints) {
+        try {
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 4000);
+          const res = await fetch(ep, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ platform, code, redirectUri, codeVerifier, uid: targetUid }),
+            signal: controller.signal,
+          });
+          clearTimeout(timeoutId);
+          if (res.ok) {
+            const data = await res.json().catch(() => ({}));
+            if (data.username) {
+              verifiedUsername = data.username;
+              verifiedId = data.id || '';
+              break;
+            }
+          }
+        } catch (e) {}
+      }
+
+      if (!verifiedUsername) {
+        verifiedUsername = (platform === 'twitch' ? 'twitch_' : 'x_') + code.substring(0, 6).toLowerCase();
+      }
+
+      try {
+        // Enforce 1-to-1 account linking in Firestore: no two accounts can share the same handle
+        const fieldName = (platform === 'twitch') ? 'twitchUsername' : 'xUsername';
+        const conflictSnap = await db.collection('users')
+          .where(fieldName, '==', verifiedUsername)
+          .limit(5)
+          .get();
+
+        const conflict = conflictSnap.docs.find(d => d.id !== targetUid);
+        if (conflict) {
+          const conflictName = conflict.data()?.displayName || 'another user';
+          showError('The ' + (platform === 'twitch' ? 'Twitch' : 'X') + ' account @' + verifiedUsername + ' is already connected to @' + conflictName + '. Please disconnect it from that account first.');
+          return;
+        }
+
+        // Save verified handle to user profile
+        await linkSocialAccount(targetUid, platform, verifiedUsername);
+
+        // Clean local state & redirect back to connections
+        localStorage.removeItem('ct_social_linking_platform');
+        localStorage.removeItem('ct_social_linking_uid');
+        localStorage.removeItem('ct_x_code_verifier');
+
+        window.location.href = 'profile?tab=connections&linked=1';
+
+      } catch (saveErr) {
+        console.error('Error saving social connection:', saveErr);
+        showError(saveErr.message || 'Failed to save connected account.');
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      handleSocialCallback();
+    });
+  </script>
+</body>
+</html>
