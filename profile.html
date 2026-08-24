@@ -7,7 +7,7 @@
   <link rel="icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
-  <link rel="stylesheet" href="css/style.css?v=4.0.1787603560488"/>
+  <link rel="stylesheet" href="css/style.css?v=4.0.1787604240225"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
@@ -358,10 +358,9 @@
       position: relative;
     }
     .cosmetics-option-card:hover {
-      border-color: var(--gold-bright);
-      transform: translateY(-3px) scale(1.02);
-      background: rgba(26, 34, 62, 0.95);
-      box-shadow: 0 8px 24px rgba(0,0,0,0.5), 0 0 20px rgba(245, 158, 11, 0.18);
+      border-color: rgba(245, 158, 11, 0.45);
+      transform: translateY(-4px) scale(1.02);
+      box-shadow: 0 10px 26px rgba(0,0,0,0.7);
     }
     .cosmetics-option-card.equipped {
       border-color: var(--gold-bright);
@@ -1121,9 +1120,9 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="js/firebase-config.js?v=3.2"></script>
-  <script src="js/auth.js?v=4.0.1787603560488"></script>
-  <script src="js/db.js?v=4.0.1787603560488"></script>
-  <script src="js/nav.js?v=4.0.1787603560488"></script>
+  <script src="js/auth.js?v=4.0.1787604240225"></script>
+  <script src="js/db.js?v=4.0.1787604240225"></script>
+  <script src="js/nav.js?v=4.0.1787604240225"></script>
 
   <script>
     let currentUser = null;
@@ -1675,12 +1674,12 @@
 
           let borderStyle = isEquipped ? '2px solid var(--gold-bright)' : '1px solid rgba(255,255,255,0.09)';
           let bgStyle = isEquipped ? 'rgba(245,158,11,0.12)' : '#0b0d14';
-          const onClickAction = isOwned ? `equipPfpFromModal('${item.id}')` : `buyPfpFromModal('${item.id}')`;
+          const onClickAction = isOwned ? `equipPfpFromModal('${item.id}')` : `showToast('Avatar ${item.name} is exclusive to the Daily Shop rotation!', 'info')`;
 
           return `
             <div class="cosmetics-option-card ${isEquipped ? 'equipped' : ''}" 
                  onclick="${onClickAction}"
-                 style="border:${borderStyle};background:${bgStyle};padding:9px 9px 12px 9px;display:flex;flex-direction:column;align-items:center;text-align:center;border-radius:18px;cursor:pointer;position:relative;transition:all 0.18s ease;box-shadow:0 6px 18px rgba(0,0,0,0.5);">
+                 style="border:${borderStyle};background:${bgStyle};padding:9px 9px 12px 9px;display:flex;flex-direction:column;align-items:center;text-align:center;border-radius:18px;cursor:pointer;position:relative;transition:all 0.18s ease;box-shadow:0 6px 18px rgba(0,0,0,0.5);${!isOwned ? 'opacity:0.72;' : ''}">
               
               <!-- Large Rounded Image -->
               <div style="position:relative;width:100%;aspect-ratio:1/1;border-radius:14px;overflow:hidden;background:#141721;margin-bottom:8px;">
@@ -1693,16 +1692,15 @@
                 </span>
               </div>
 
-              <!-- Bottom: Token icon and price / Status -->
+              <!-- Bottom: Status / Daily Shop Lock -->
               <div style="width:100%;display:flex;align-items:center;justify-content:center;min-height:26px;">
                 ${isEquipped ? `
                   <span style="font-size:0.85rem;font-weight:900;color:var(--gold-bright);letter-spacing:0.02em;">Equipped ✓</span>
                 ` : isOwned ? `
                   <span style="font-size:0.85rem;font-weight:800;color:#60a5fa;">Equip</span>
                 ` : `
-                  <div style="display:flex;align-items:center;gap:6px;font-size:0.95rem;font-weight:900;color:#fff;">
-                    <img src="new_token.png" style="width:18px;height:18px;object-fit:contain;vertical-align:middle;" alt="CT" />
-                    <span>${formatTokens(item.cost)}</span>
+                  <div style="display:flex;align-items:center;gap:4px;font-size:0.75rem;font-weight:700;color:#64748b;">
+                    <i data-lucide="lock" style="width:12px;height:12px;"></i> Daily Shop
                   </div>
                 `}
               </div>

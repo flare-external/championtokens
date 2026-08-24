@@ -24,7 +24,7 @@
   <link rel="icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
-  <link rel="stylesheet" href="css/style.css?v=4.0.1787603560488"/>
+  <link rel="stylesheet" href="css/style.css?v=4.0.1787604240225"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
@@ -71,6 +71,14 @@
       border-color: rgba(245, 158, 11, 0.45);
       transform: translateY(-3px);
       box-shadow: 0 12px 32px rgba(0,0,0,0.8), 0 0 20px rgba(245, 158, 11, 0.15);
+    }
+    .cosmetics-option-card {
+      transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.18s ease, box-shadow 0.18s ease;
+    }
+    .cosmetics-option-card:hover {
+      transform: translateY(-5px) scale(1.02);
+      border-color: rgba(245, 158, 11, 0.45) !important;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.8) !important;
     }
     .item-preview-box {
       height: 64px;
@@ -166,9 +174,9 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="js/firebase-config.js?v=3.8"></script>
-  <script src="js/auth.js?v=4.0.1787603560488"></script>
-  <script src="js/db.js?v=4.0.1787603560488"></script>
-  <script src="js/nav.js?v=4.0.1787603560488"></script>
+  <script src="js/auth.js?v=4.0.1787604240225"></script>
+  <script src="js/db.js?v=4.0.1787604240225"></script>
+  <script src="js/nav.js?v=4.0.1787604240225"></script>
 
   <script>
     let currentUser = null;
@@ -296,9 +304,24 @@
       if (!item) return;
 
       const ok = await showConfirm({
-        title: `Unlock ${item.name}`,
-        message: `Unlock the <strong>${item.rarity}</strong> avatar <strong>"${item.name}"</strong> for <strong>${formatTokens(item.cost)} Tokens</strong>?`,
-        confirmText: `Unlock (${formatTokens(item.cost)} Tokens)`,
+        title: `Unlock Avatar ${item.name}`,
+        message: `
+          <div style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px;margin:8px 0 10px;">
+            <div style="width:110px;height:110px;border-radius:18px;overflow:hidden;border:2px solid ${item.color || 'var(--gold-bright)'};background:#0e1017;box-shadow:0 8px 24px rgba(0,0,0,0.6);">
+              <img src="${encodeURI(item.file)}" alt="${escapeHtml(item.name)}" style="width:100%;height:100%;object-fit:cover;display:block;" />
+            </div>
+            <div>
+              <div style="font-weight:900;font-size:1.2rem;color:#fff;">${escapeHtml(item.name)}</div>
+              <span class="badge" style="font-size:0.68rem;padding:2px 8px;color:${item.color || '#fff'};border:1px solid ${item.color || '#fff'};background:rgba(255,255,255,0.04);margin-top:4px;">
+                ${item.rarity.toUpperCase()}
+              </span>
+            </div>
+            <div style="font-size:0.95rem;color:#cbd5e1;line-height:1.5;">
+              Unlock this avatar for <strong style="color:var(--gold-bright);">${formatTokens(item.cost)} Tokens</strong>?
+            </div>
+          </div>
+        `,
+        confirmText: `Unlock for ${formatTokens(item.cost)} Tokens`,
         cancelText: 'Cancel',
         type: 'warning',
         icon: 'shopping-cart'
