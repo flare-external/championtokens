@@ -2056,6 +2056,29 @@ const SHOP_PFPS = {
 const BANNERS_COMING_SOON = true;
 const SHOP_BANNERS = {};
 
+const SHOP_TITLES = {
+  'title_no_signal': {
+    id: 'title_no_signal',
+    name: 'No signal',
+    icon: 'globe-off',
+    color: '#ef4444',
+    bgColor: 'rgba(239, 68, 68, 0.15)',
+    borderColor: 'rgba(239, 68, 68, 0.45)',
+    rarity: 'Rare',
+    cost: 1.75
+  }
+};
+
+/** Equip or Unequip a Title */
+async function equipUserTitle(uid, titleId) {
+  const user = await getUser(uid);
+  if (!user) throw new Error('User not found');
+
+  await db.collection('users').doc(uid).update({
+    equippedTitle: titleId || null
+  });
+}
+
 /**
  * Deterministic pseudo-random number generator for daily shop seeds.
  */
