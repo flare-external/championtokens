@@ -50,48 +50,24 @@
       color: #ffffff;
       letter-spacing: -0.03em;
       text-transform: uppercase;
-      margin: 0 0 32px 0;
+      margin: 0 0 28px 0;
       line-height: 1.1;
     }
 
-    .timer-container {
-      display: flex;
+    .soon-display {
+      font-size: 3.2rem;
+      font-weight: 900;
+      font-family: 'Inter', monospace;
+      color: #ffffff;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      background: rgba(255, 255, 255, 0.04);
+      border-radius: 20px;
+      padding: 16px 42px;
+      display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 16px;
-    }
-
-    .timer-card {
-      background: rgba(255, 255, 255, 0.04);
-      border-radius: 18px;
-      padding: 18px 22px;
-      min-width: 96px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .timer-digits {
-      font-size: 3rem;
-      font-weight: 900;
-      font-family: monospace;
-      color: #ffffff;
-      line-height: 1;
-    }
-
-    .timer-subtext {
-      font-size: 0.65rem;
-      font-weight: 800;
-      color: rgba(255, 255, 255, 0.4);
-      letter-spacing: 0.1em;
-      margin-top: 8px;
-    }
-
-    .timer-divider {
-      font-size: 2rem;
-      font-weight: 900;
-      color: rgba(255, 255, 255, 0.3);
-      line-height: 1;
+      text-shadow: 0 0 24px rgba(255, 255, 255, 0.25);
     }
 
     .ambient-glow {
@@ -109,17 +85,12 @@
     @media (max-width: 500px) {
       .maintenance-title {
         font-size: 2rem;
-        margin-bottom: 24px;
+        margin-bottom: 20px;
       }
-      .timer-card {
-        min-width: 76px;
-        padding: 14px 16px;
-      }
-      .timer-digits {
-        font-size: 2.2rem;
-      }
-      .timer-container {
-        gap: 8px;
+      .soon-display {
+        font-size: 2.4rem;
+        padding: 14px 32px;
+        letter-spacing: 0.16em;
       }
     }
   </style>
@@ -143,48 +114,12 @@
   <main class="maintenance-wrapper">
     <h1 class="maintenance-title">Under Maintenance</h1>
 
-    <div class="timer-container">
-      <div class="timer-card">
-        <span class="timer-digits" id="timer-hours">10</span>
-        <span class="timer-subtext">HOURS</span>
-      </div>
-      <span class="timer-divider">:</span>
-      <div class="timer-card">
-        <span class="timer-digits" id="timer-minutes">00</span>
-        <span class="timer-subtext">MINUTES</span>
-      </div>
-      <span class="timer-divider">:</span>
-      <div class="timer-card">
-        <span class="timer-digits" id="timer-seconds">00</span>
-        <span class="timer-subtext">SECONDS</span>
-      </div>
-    </div>
+    <div class="soon-display">SOON</div>
   </main>
 
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script>
     if (window.lucide) lucide.createIcons();
-
-    const TARGET_TIME = 1787572838000; // 10 hours from publication
-
-    function tick() {
-      const now = Date.now();
-      const diff = Math.max(0, TARGET_TIME - now);
-      const hours = Math.floor(diff / (1000 * 60 * 60));
-      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-      const hEl = document.getElementById('timer-hours');
-      const mEl = document.getElementById('timer-minutes');
-      const sEl = document.getElementById('timer-seconds');
-
-      if (hEl) hEl.textContent = String(hours).padStart(2, '0');
-      if (mEl) mEl.textContent = String(minutes).padStart(2, '0');
-      if (sEl) sEl.textContent = String(seconds).padStart(2, '0');
-    }
-
-    tick();
-    setInterval(tick, 1000);
   </script>
 </body>
 </html>
