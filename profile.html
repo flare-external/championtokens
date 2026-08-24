@@ -7,7 +7,7 @@
   <link rel="icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
-  <link rel="stylesheet" href="css/style.css?v=4.0.1787604240225"/>
+  <link rel="stylesheet" href="css/style.css?v=4.0.1787604447136"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
@@ -1001,7 +1001,7 @@
       <div class="modal-header">
         <div class="modal-title" style="display:flex;align-items:center;gap:10px;">
           <i data-lucide="palette" style="color:var(--gold-bright);"></i>
-          <span id="cosmetics-modal-title">Customization Studio</span>
+          <span id="cosmetics-modal-title">Profile Customization</span>
         </div>
         <button class="modal-close" onclick="closeCosmeticsModal()"><i data-lucide="x"></i></button>
       </div>
@@ -1036,10 +1036,10 @@
         <!-- Rarity Filters -->
         <div style="display:flex;gap:6px;margin-bottom:14px;overflow-x:auto;padding-bottom:4px;" id="avatar-rarity-filters">
           <button class="badge active" onclick="filterAvatarCatalog('all')" id="avatar-filter-all" style="cursor:pointer;border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.12);color:#fff;font-size:0.72rem;padding:4px 10px;">ALL</button>
-          <button class="badge" onclick="filterAvatarCatalog('Exclusive')" id="avatar-filter-Exclusive" style="cursor:pointer;border:1px solid #f59e0b;background:rgba(245,158,11,0.15);color:#f59e0b;font-size:0.72rem;padding:4px 10px;">EXCLUSIVE (5.00)</button>
-          <button class="badge" onclick="filterAvatarCatalog('Epic')" id="avatar-filter-Epic" style="cursor:pointer;border:1px solid #a855f7;background:rgba(168,85,247,0.15);color:#a855f7;font-size:0.72rem;padding:4px 10px;">EPIC (2.25)</button>
-          <button class="badge" onclick="filterAvatarCatalog('Rare')" id="avatar-filter-Rare" style="cursor:pointer;border:1px solid #3b82f6;background:rgba(59,130,246,0.15);color:#3b82f6;font-size:0.72rem;padding:4px 10px;">RARE (1.75)</button>
-          <button class="badge" onclick="filterAvatarCatalog('Uncommon')" id="avatar-filter-Uncommon" style="cursor:pointer;border:1px solid #10b981;background:rgba(16,185,129,0.15);color:#10b981;font-size:0.72rem;padding:4px 10px;">UNCOMMON (1.00)</button>
+          <button class="badge" onclick="filterAvatarCatalog('Exclusive')" id="avatar-filter-Exclusive" style="cursor:pointer;border:1px solid #f59e0b;background:rgba(245,158,11,0.15);color:#f59e0b;font-size:0.72rem;padding:4px 10px;">EXCLUSIVE</button>
+          <button class="badge" onclick="filterAvatarCatalog('Epic')" id="avatar-filter-Epic" style="cursor:pointer;border:1px solid #a855f7;background:rgba(168,85,247,0.15);color:#a855f7;font-size:0.72rem;padding:4px 10px;">EPIC</button>
+          <button class="badge" onclick="filterAvatarCatalog('Rare')" id="avatar-filter-Rare" style="cursor:pointer;border:1px solid #3b82f6;background:rgba(59,130,246,0.15);color:#3b82f6;font-size:0.72rem;padding:4px 10px;">RARE</button>
+          <button class="badge" onclick="filterAvatarCatalog('Uncommon')" id="avatar-filter-Uncommon" style="cursor:pointer;border:1px solid #10b981;background:rgba(16,185,129,0.15);color:#10b981;font-size:0.72rem;padding:4px 10px;">UNCOMMON</button>
         </div>
 
         <div class="cosmetics-item-grid" id="avatars-grid-list" style="grid-template-columns:repeat(auto-fill, minmax(138px, 1fr));gap:14px;">
@@ -1049,27 +1049,15 @@
 
       <!-- Banners View -->
       <div id="cosmetics-banners-view" style="display:none;">
-        <div style="text-align:center;padding:32px 18px;background:rgba(14,18,34,0.9);border-radius:var(--radius-lg);border:1px dashed rgba(245,158,11,0.4);display:flex;flex-direction:column;align-items:center;gap:12px;">
-          <div style="width:48px;height:48px;border-radius:50%;background:rgba(245,158,11,0.15);border:1px solid var(--gold-bright);display:flex;align-items:center;justify-content:center;color:var(--gold-bright);font-size:1.4rem;">
-            <i data-lucide="palette"></i>
-          </div>
-          <div style="font-weight:900;font-size:1.15rem;color:#fff;">Profile Banners — Coming Soon</div>
-          <div style="font-size:0.82rem;color:var(--text-muted);max-width:340px;line-height:1.5;">
-            Custom match arena themes and animated banner artwork will be available in an upcoming update!
-          </div>
+        <div style="text-align:center;padding:40px 18px;background:rgba(14,18,34,0.9);border-radius:var(--radius-lg);border:1px dashed rgba(245,158,11,0.4);display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:160px;">
+          <div style="font-weight:900;font-size:1.3rem;color:var(--gold-bright);">Coming Soon.</div>
         </div>
       </div>
 
       <!-- Titles View -->
       <div id="cosmetics-titles-view" style="display:none;">
-        <div style="text-align:center;padding:32px 18px;background:rgba(14,18,34,0.9);border-radius:var(--radius-lg);border:1px dashed rgba(245,158,11,0.4);display:flex;flex-direction:column;align-items:center;gap:12px;">
-          <div style="width:48px;height:48px;border-radius:50%;background:rgba(245,158,11,0.15);border:1px solid var(--gold-bright);display:flex;align-items:center;justify-content:center;color:var(--gold-bright);font-size:1.4rem;">
-            <i data-lucide="award"></i>
-          </div>
-          <div style="font-weight:900;font-size:1.15rem;color:#fff;">Player Titles — Coming Soon</div>
-          <div style="font-size:0.82rem;color:var(--text-muted);max-width:340px;line-height:1.5;">
-            Unlockable player titles and tournament badges are arriving in an upcoming update!
-          </div>
+        <div style="text-align:center;padding:40px 18px;background:rgba(14,18,34,0.9);border-radius:var(--radius-lg);border:1px dashed rgba(245,158,11,0.4);display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:160px;">
+          <div style="font-weight:900;font-size:1.3rem;color:var(--gold-bright);">Coming Soon.</div>
         </div>
       </div>
     </div>
@@ -1120,9 +1108,9 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="js/firebase-config.js?v=3.2"></script>
-  <script src="js/auth.js?v=4.0.1787604240225"></script>
-  <script src="js/db.js?v=4.0.1787604240225"></script>
-  <script src="js/nav.js?v=4.0.1787604240225"></script>
+  <script src="js/auth.js?v=4.0.1787604447136"></script>
+  <script src="js/db.js?v=4.0.1787604447136"></script>
+  <script src="js/nav.js?v=4.0.1787604447136"></script>
 
   <script>
     let currentUser = null;
