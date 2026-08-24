@@ -2021,16 +2021,15 @@
       }
     }
 
-    function renderTeamsList(teams, activeTeamId) {
+    function renderTeamsList(teams) {
       const hubTeam = document.getElementById('hub-current-team');
       const teamCard = document.getElementById('team-section-card');
-      const activeTeam = (teams || []).find(t => t.id === activeTeamId) || teams?.[0] || null;
 
       if (hubTeam) {
-        if (activeTeam) {
-          hubTeam.innerHTML = `<span class="chip" style="font-size:0.78rem;font-weight:700;color:var(--gold-bright);border-color:rgba(245,158,11,0.4);">[${escapeHtml(activeTeam.tag)}] ${escapeHtml(activeTeam.name)}</span>`;
+        if (teams && teams.length > 0) {
+          hubTeam.innerHTML = `<span class="chip" style="font-size:0.78rem;font-weight:700;color:var(--gold-bright);border-color:rgba(245,158,11,0.4);">${teams.length === 1 ? `[${escapeHtml(teams[0].tag)}] ${escapeHtml(teams[0].name)}` : `${teams.length} Teams`}</span>`;
         } else {
-          hubTeam.innerHTML = `<span style="color:var(--text-muted);font-size:0.82rem;">No Squad</span>`;
+          hubTeam.innerHTML = `<span style="color:var(--text-muted);font-size:0.82rem;">No Teams</span>`;
         }
       }
       if (teamCard) {
@@ -2046,7 +2045,7 @@
             <div>
               <div style="font-weight:800;font-size:0.95rem;color:#fff;margin-bottom:4px;">No Teams Created Yet</div>
               <div style="font-size:0.82rem;color:var(--text-muted);">
-                Create or join squad teams to compete in <strong>2v2 Duos</strong> and <strong>3v3 Squads</strong> with custom token coverage & prize split rules.
+                Create or join teams to compete in <strong>2v2 Duos</strong> and <strong>3v3 Squads</strong> with custom token coverage & prize split rules.
               </div>
             </div>
             <div style="display:flex;gap:10px;flex-wrap:wrap;">
@@ -2057,7 +2056,6 @@
       } else {
         el.innerHTML = teams.map(team => {
           const isOwner = team.ownerUid === currentUser?.uid;
-          const isActive = team.id === activeTeamId;
 
           const membersHTML = (team.members || []).map(m => `
             <div class="team-member-chip">
@@ -2074,23 +2072,17 @@
           `).join('');
 
           return `
-            <div class="team-item-card ${isActive ? 'is-active-team' : ''}">
+            <div class="team-item-card">
               <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:14px;">
                 <div>
                   <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
                     <span class="badge" style="background:var(--purple);color:#fff;font-size:0.8rem;padding:4px 10px;font-weight:800;">[${escapeHtml(team.tag)}]</span>
                     <span style="font-size:1.2rem;font-weight:900;color:#fff;">${escapeHtml(team.name)}</span>
-                    ${isActive ? `<span class="badge" style="background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.4);color:var(--gold-bright);font-size:0.68rem;padding:3px 8px;font-weight:800;">✨ ACTIVE SQUAD</span>` : ''}
                   </div>
                 </div>
 
                 ${isViewingSelf ? `
                   <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
-                    ${!isActive ? `
-                      <button class="btn btn-gold btn-sm" onclick="handleSetActiveTeam('${team.id}')" style="font-size:0.78rem;padding:6px 12px;gap:5px;">
-                        <i data-lucide="check-circle"></i> Set Active
-                      </button>
-                    ` : ''}
                     <button class="btn btn-outline btn-sm" onclick="copyTeamInviteLink('${team.code}','${escapeHtml(team.name)}')" style="font-size:0.78rem;padding:6px 12px;gap:5px;" title="Copy 1-Click Join Link">
                       <i data-lucide="link"></i> Copy Link
                     </button>
@@ -2206,19 +2198,6 @@
         );
         showToast(`Invite sent to ${targetName}!`, 'success');
         closeInvitePlayerModal();
-      } catch (err) {
-        showToast(err.message, 'error');
-      }
-    }
-
-    async function handleSetActiveTeam(teamId) {
-      try {
-        const team = _userTeamsList.find(t => t.id === teamId);
-        if (!team) return;
-        await setActiveTeam(currentUser.uid, team);
-        if (currentUserData) currentUserData.teamId = teamId;
-        showToast(`Active squad switched to [${team.tag}] ${team.name}!`, 'success');
-        renderTeamsList(_userTeamsList, teamId);
       } catch (err) {
         showToast(err.message, 'error');
       }

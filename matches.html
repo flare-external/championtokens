@@ -494,8 +494,8 @@
         return;
       }
 
-      if (currentUser?.uid && typeof getUserTeam === 'function') {
-        currentUserTeamData = await getUserTeam(currentUser.uid);
+      if (currentUser?.uid) {
+        await loadUserTeamsForMatch();
       }
 
       document.getElementById('create-modal').classList.add('open');
@@ -538,7 +538,58 @@
     let isCoverEnabled = false;
     let selectedCoverUids = [];
     let selectedCoverSplit = 'keep'; // 'keep' (keep income) | 'split' (split income)
+    let userTeamsList = [];
+    let selectedMatchTeam = null;
     let currentUserTeamData = null;
+
+    async function loadUserTeamsForMatch() {
+      if (!currentUser?.uid) return;
+      try {
+        if (typeof getUserTeams === 'function') {
+          userTeamsList = await getUserTeams(currentUser.uid);
+        }
+        if (userTeamsList && userTeamsList.length > 0) {
+          if (!selectedMatchTeam || !userTeamsList.find(t => t.id === selectedMatchTeam.id)) {
+            selectedMatchTeam = userTeamsList[0];
+          }
+        } else {
+          selectedMatchTeam = null;
+        }
+        currentUserTeamData = selectedMatchTeam;
+      } catch (e) {
+        console.warn('loadUserTeamsForMatch error:', e);
+      }
+    }
+
+    function renderTeamDropdown() {
+      const activeView = document.getElementById('team-queue-active-view');
+      const noTeamView = document.getElementById('team-queue-no-team-view');
+      const teamSelect = document.getElementById('match-team-select');
+
+      if (userTeamsList && userTeamsList.length > 0) {
+        if (activeView) activeView.style.display = 'block';
+        if (noTeamView) noTeamView.style.display = 'none';
+
+        if (teamSelect) {
+          teamSelect.innerHTML = userTeamsList.map(t => `
+            <option value="${t.id}" ${selectedMatchTeam?.id === t.id ? 'selected' : ''}>
+              [${escapeHtml(t.tag || '')}] ${escapeHtml(t.name)} (${(t.members || []).length} members)
+            </option>
+          `).join('');
+        }
+      } else {
+        if (activeView) activeView.style.display = 'none';
+        if (noTeamView) noTeamView.style.display = 'block';
+      }
+    }
+
+    function onMatchTeamSelectChange(teamId) {
+      selectedMatchTeam = userTeamsList.find(t => t.id === teamId) || userTeamsList[0] || null;
+      currentUserTeamData = selectedMatchTeam;
+      selectedCoverUids = [];
+      renderCoverWhoOptions();
+      updateCreatePreview();
+    }
 
     async function onSizeChange() {
       const size = document.getElementById('size-select')?.value || '1v1';
@@ -547,8 +598,8 @@
       const teamOnlyNote = document.getElementById('queue-team-only-note');
       const coverBox = document.getElementById('cover-teammates-box');
 
-      if (currentUser?.uid && !currentUserTeamData && typeof getUserTeam === 'function') {
-        currentUserTeamData = await getUserTeam(currentUser.uid);
+      if (currentUser?.uid && (!userTeamsList || userTeamsList.length === 0)) {
+        await loadUserTeamsForMatch();
       }
 
       if (size === '2v2' || size === '3v3') {
@@ -600,20 +651,10 @@
         btnTeam.className = `btn btn-sm ${type === 'team' ? 'btn-primary' : 'btn-outline'}`;
       }
       const infoBox = document.getElementById('team-queue-info-box');
-      const activeView = document.getElementById('team-queue-active-view');
-      const noTeamView = document.getElementById('team-queue-no-team-view');
       if (infoBox) infoBox.style.display = type === 'team' ? 'block' : 'none';
 
       if (type === 'team') {
-        if (currentUserData?.teamId) {
-          if (activeView) activeView.style.display = 'block';
-          if (noTeamView) noTeamView.style.display = 'none';
-          const teamNameEl = document.getElementById('team-queue-name');
-          if (teamNameEl) teamNameEl.textContent = currentUserData.teamName ? `${currentUserData.teamName} [${currentUserData.teamTag || ''}]` : 'Your Team';
-        } else {
-          if (activeView) activeView.style.display = 'none';
-          if (noTeamView) noTeamView.style.display = 'block';
-        }
+        renderTeamDropdown();
       }
       updateCreatePreview();
       if (window.lucide) lucide.createIcons();
@@ -627,8 +668,8 @@
       const maxAllowed = size === '3v3' ? 2 : 1;
 
       if (isCoverEnabled && selectedCoverUids.length === 0) {
-        if (currentUser?.uid && !currentUserTeamData && typeof getUserTeam === 'function') {
-          currentUserTeamData = await getUserTeam(currentUser.uid);
+        if (!currentUserTeamData && selectedMatchTeam) {
+          currentUserTeamData = selectedMatchTeam;
         }
         const teammates = (currentUserTeamData?.members || []).filter(m => m.uid !== currentUser?.uid);
         if (teammates.length > 0) {
@@ -657,8 +698,8 @@
       const container = document.getElementById('cover-who-options');
       if (!container) return;
 
-      if (!currentUserTeamData && currentUser?.uid && typeof getUserTeam === 'function') {
-        currentUserTeamData = await getUserTeam(currentUser.uid);
+      if (!currentUserTeamData && selectedMatchTeam) {
+        currentUserTeamData = selectedMatchTeam;
       }
 
       const maxAllowed = size === '3v3' ? 2 : 1;
@@ -849,7 +890,7 @@
         return;
       }
 
-      if ((size === '2v2' || size === '3v3' || selectedQueueType === 'team') && !currentUserData?.teamId) {
+      if ((size === '2v2' || size === '3v3' || selectedQueueType === 'team') && !selectedMatchTeam) {
         alert('2v2 and 3v3 matches require a team. Please create or join a team in Profile > Teams first.');
         return;
       }
@@ -876,9 +917,9 @@
           lootPool,
           simpleEdit,
           queueType: selectedQueueType,
-          teamId: currentUserData?.teamId || null,
-          teamName: currentUserData?.teamName || null,
-          teamTag: currentUserData?.teamTag || null,
+          teamId: selectedMatchTeam?.id || currentUserData?.teamId || null,
+          teamName: selectedMatchTeam?.name || currentUserData?.teamName || null,
+          teamTag: selectedMatchTeam?.tag || currentUserData?.teamTag || null,
           tokenCoverage: isCoverEnabled ? (coveredCount === 1 ? '1' : 'all') : 'none',
           coveredMemberUids: isCoverEnabled ? selectedCoverUids : [],
           coveredCount: isCoverEnabled ? coveredCount : 0,
@@ -1015,12 +1056,14 @@
                 </button>
               </div>
               <!-- Team Queue Info Box -->
-              <div id="team-queue-info-box" style="display:none;margin-top:8px;padding:9px 12px;background:rgba(245,158,11,0.08);border-radius:10px;border:none;outline:none;">
+              <div id="team-queue-info-box" style="display:none;margin-top:8px;padding:10px 12px;background:rgba(245,158,11,0.08);border-radius:12px;border:none;outline:none;">
                 <div id="team-queue-active-view" style="display:none;">
-                  <div style="font-size:0.8rem;color:#fff;font-weight:800;display:flex;align-items:center;gap:6px;">
-                    <i data-lucide="users" style="width:14px;height:14px;color:var(--gold-bright);"></i>
-                    <span>Roster: <strong id="team-queue-name" style="color:var(--gold-bright);">Your Team</strong></span>
+                  <div style="font-size:0.75rem;color:var(--text-muted);font-weight:800;margin-bottom:6px;display:flex;align-items:center;gap:5px;text-transform:uppercase;letter-spacing:0.04em;">
+                    <i data-lucide="users" style="width:13px;height:13px;color:var(--gold-bright);"></i>
+                    <span>Playing As Team</span>
                   </div>
+                  <select id="match-team-select" onchange="onMatchTeamSelectChange(this.value)" class="form-select" style="padding:8px 12px;font-size:0.88rem;font-weight:800;border-radius:10px;border:none;outline:none;background:rgba(0,0,0,0.5);color:#fff;cursor:pointer;">
+                  </select>
                 </div>
                 <div id="team-queue-no-team-view" style="display:none;">
                   <div style="font-size:0.8rem;color:#fca5a5;font-weight:800;display:flex;align-items:center;gap:5px;">
