@@ -15,7 +15,7 @@ function injectNav(activePage = '') {
     { href: 'matches',     key: 'matches',      icon: 'swords',        label: 'Matches'     },
     { href: 'tournaments', key: 'tournaments',  icon: 'trophy',        label: 'Tournaments' },
     { href: 'leaderboard', key: 'leaderboard',  icon: 'award',         label: 'Leaderboard' },
-    { href: 'shop',        key: 'shop',         icon: 'shopping-bag',  label: 'Shop'        },
+    { href: 'shop',        key: 'shop',         icon: 'shopping-cart', label: 'Shop'        },
   ];
 
   const navLinksHTML = links.map(l => `
