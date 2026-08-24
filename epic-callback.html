@@ -175,27 +175,61 @@
       }
 
       try {
-        localStorage.setItem('ct_epic_username', epicUsername);
-        localStorage.setItem('ct_epic_account_id', epicAccountId);
-        localStorage.setItem('ct_epic_linked_pending', '1');
-      } catch (e) {}
-
-      try {
         if (!auth.currentUser) {
           user = await getAuthenticatedUser();
         }
 
-        if (auth.currentUser || user) {
-          const finalUid = auth.currentUser?.uid || user?.uid || targetUid;
-          await db.collection('users').doc(finalUid).set({
-            epicUsername:  epicUsername,
-            epicAccountId: epicAccountId,
-            epicVerified:  true,
-            epicLinkedAt:  firebase.firestore.FieldValue.serverTimestamp(),
-          }, { merge: true });
+        const finalUid = auth.currentUser?.uid || user?.uid || targetUid;
+        if (!finalUid) {
+          showError('User authentication not found. Please log in to Champion Tokens and try again.');
+          return;
         }
 
-        // Clear ALL epic localStorage keys so profile.html doesn't re-write endlessly
+        // 1. Check if another account already has this epicAccountId linked
+        if (epicAccountId) {
+          const idSnap = await db.collection('users')
+            .where('epicAccountId', '==', epicAccountId)
+            .limit(5)
+            .get();
+          const conflict = idSnap.docs.find(d => d.id !== finalUid);
+          if (conflict) {
+            const conflictName = conflict.data()?.displayName || conflict.data()?.epicUsername || 'another user';
+            showError(`This Epic Games account is already linked to @${conflictName}. An Epic Games account can only be linked to 1 Champion Tokens account at a time. Please unlink it from that account first.`);
+            return;
+          }
+        }
+
+        // 2. Check if another account already has this exact epicUsername linked (case-insensitive check)
+        const lowerName = epicUsername.toLowerCase();
+        const nameSnap = await db.collection('users')
+          .where('epicUsername_lower', '==', lowerName)
+          .limit(5)
+          .get();
+        let conflictUser = nameSnap.docs.find(d => d.id !== finalUid);
+        if (!conflictUser) {
+          const rawSnap = await db.collection('users')
+            .where('epicUsername', '==', epicUsername)
+            .limit(5)
+            .get();
+          conflictUser = rawSnap.docs.find(d => d.id !== finalUid);
+        }
+
+        if (conflictUser) {
+          const conflictName = conflictUser.data()?.displayName || conflictUser.data()?.epicUsername || 'another user';
+          showError(`The Epic Games username "${epicUsername}" is already linked to @${conflictName}. Please unlink it from that account first.`);
+          return;
+        }
+
+        // Safe to link!
+        await db.collection('users').doc(finalUid).set({
+          epicUsername:       epicUsername,
+          epicUsername_lower: lowerName,
+          epicAccountId:      epicAccountId,
+          epicVerified:       true,
+          epicLinkedAt:       firebase.firestore.FieldValue.serverTimestamp(),
+        }, { merge: true });
+
+        // Clear ALL epic localStorage keys so profile.html doesn't re-write
         try { localStorage.removeItem('ct_epic_username'); } catch (e) {}
         try { localStorage.removeItem('ct_epic_account_id'); } catch (e) {}
         try { localStorage.removeItem('ct_epic_linked_pending'); } catch (e) {}
@@ -204,8 +238,7 @@
 
       } catch (dbErr) {
         console.error('Save error in callback:', dbErr);
-        try { localStorage.removeItem('ct_epic_linking_uid'); } catch (e) {}
-        window.location.href = 'profile?tab=connections&linked=1';
+        showError(dbErr.message || 'Failed to link Epic Games account.');
       }
     }
 

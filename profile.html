@@ -1153,19 +1153,14 @@
         const pendingEpic = localStorage.getItem('ct_epic_username');
         if (pendingEpic && isViewingSelf) {
           try {
-            await db.collection('users').doc(user.uid).set({
-              epicUsername: pendingEpic,
-              epicAccountId: localStorage.getItem('ct_epic_account_id') || '',
-              epicVerified: true,
-              epicLinkedAt: firebase.firestore.FieldValue.serverTimestamp(),
-            }, { merge: true });
-            // Clear ALL epic localStorage keys to prevent infinite re-writes
+            await linkEpicAccount(user.uid, pendingEpic, localStorage.getItem('ct_epic_account_id') || '');
+          } catch (e) {
+            console.warn('Epic link notice:', e);
+          } finally {
             localStorage.removeItem('ct_epic_username');
             localStorage.removeItem('ct_epic_account_id');
             localStorage.removeItem('ct_epic_linked_pending');
             localStorage.removeItem('ct_epic_linking_uid');
-          } catch (e) {
-            console.warn('Epic sync notice:', e);
           }
         }
 
@@ -1825,13 +1820,11 @@
         if (window.lucide) lucide.createIcons();
       }
       try {
-        await db.collection('users').doc(currentUser.uid).set({
-          epicVerified: true,
-          epicLastSynced: firebase.firestore.FieldValue.serverTimestamp(),
-        }, { merge: true });
-        showToast('Epic Games account in sync!', 'success');
+        const res = await syncEpicAccountName(currentUser.uid);
+        currentUserData.displayName = res.displayName;
+        showToast(`Account name successfully synced to "${res.displayName}"!`, 'success');
       } catch (err) {
-        showToast('Epic account synced!', 'success');
+        showToast('Sync error: ' + (err.message || err), 'error');
       } finally {
         if (btn) {
           btn.disabled = false;
@@ -1940,7 +1933,10 @@
           </div>
           <div style="display:flex;flex-direction:column;gap:10px;">
             <button type="button" class="btn btn-outline" onclick="handleSyncEpic();closeLinkEpicModal();" style="width:100%;justify-content:center;">
-              <i data-lucide="refresh-cw"></i> Sync Account
+              <i data-lucide="refresh-cw"></i> Sync Account Name to Epic IGN
+            </button>
+            <button type="button" class="btn btn-outline" onclick="closeLinkEpicModal();startEpicOAuth(null, true);" style="width:100%;justify-content:center;color:var(--text-muted);">
+              <i data-lucide="rotate-cw"></i> Re-authenticate / Refresh Epic Tag
             </button>
             <div>
               <button type="button" class="btn btn-danger" onclick="handleUnlinkEpic()" style="width:100%;justify-content:center;">

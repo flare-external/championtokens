@@ -1562,49 +1562,7 @@ async function leaveTeam(teamId, uid) {
   }
 }
 
-// ── Epic Games / Fortnite Account Linking ────────────────────
-
-/** Link or update Epic Games username */
-async function linkEpicAccount(uid, epicUsername) {
-  const cleanUsername = epicUsername.trim();
-  if (!cleanUsername || cleanUsername.length < 2) {
-    throw new Error('Please enter a valid Epic Games / Fortnite username');
-  }
-
-  await db.collection('users').doc(uid).update({
-    epicUsername: cleanUsername,
-    epicLinkedAt: firebase.firestore.FieldValue.serverTimestamp(),
-  });
-
-  return cleanUsername;
-}
-
-/** Sync/re-verify Epic Games username */
-async function syncEpicAccount(uid, epicUsername) {
-  return linkEpicAccount(uid, epicUsername);
-}
-
-/**
- * Unlink Epic Games account (Requires 2.00 Tokens fee)
- */
-async function unlinkEpicAccount(uid) {
-  const user = await getUser(uid);
-  if (!user || !user.epicUsername) throw new Error('No Epic Games account is linked');
-
-  if (Number(user.tokens || 0) < 2.00) {
-    throw new Error('Unlinking requires 2.00 Tokens ($2.00). Please add tokens to your balance.');
-  }
-
-  // Deduct 2.00 tokens fee
-  await updateTokens(uid, -2.00, 'admin', 'Unlinked Epic Games Account (-2.00 Tokens Fee)');
-
-  await db.collection('users').doc(uid).update({
-    epicUsername: firebase.firestore.FieldValue.delete(),
-    epicLinkedAt: firebase.firestore.FieldValue.delete(),
-  });
-
-  return true;
-}
+// ── Epic Games Linking handled in linkEpicAccount / syncEpicAccountName below ──
 
 // ── Admin Actions ────────────────────────────────────────────
 
@@ -1789,32 +1747,95 @@ async function tipPlayer(senderUid, receiverUid, amount) {
 
 /**
  * Link connected Epic Games account to user profile.
+ * Strictly enforces 1-to-1 linking: no two accounts can share the same Epic account/username.
  */
 async function linkEpicAccount(uid, epicUsername, epicAccountId = '') {
   if (!uid) throw new Error('User ID is required');
-  const clean = (epicUsername || '').trim();
-  if (!clean) throw new Error('Epic Games username cannot be empty');
+  const cleanName = (epicUsername || '').trim();
+  const cleanId = (epicAccountId || '').trim();
+  if (!cleanName || cleanName.length < 2) {
+    throw new Error('Please enter a valid Epic Games / Fortnite username');
+  }
 
+  // 1. Check if another account already has this epicAccountId linked
+  if (cleanId) {
+    const idSnap = await db.collection('users')
+      .where('epicAccountId', '==', cleanId)
+      .limit(5)
+      .get();
+    const conflict = idSnap.docs.find(d => d.id !== uid);
+    if (conflict) {
+      const conflictName = conflict.data()?.displayName || conflict.data()?.epicUsername || 'another user';
+      throw new Error(`This Epic Games account is already linked to @${conflictName}. It must be unlinked from that account first.`);
+    }
+  }
+
+  // 2. Check if another account already has this exact epicUsername linked (case-insensitive check)
+  const lowerName = cleanName.toLowerCase();
+  const nameSnap = await db.collection('users')
+    .where('epicUsername_lower', '==', lowerName)
+    .limit(5)
+    .get();
+  let conflictUser = nameSnap.docs.find(d => d.id !== uid);
+  
+  if (!conflictUser) {
+    const rawSnap = await db.collection('users')
+      .where('epicUsername', '==', cleanName)
+      .limit(5)
+      .get();
+    conflictUser = rawSnap.docs.find(d => d.id !== uid);
+  }
+
+  if (conflictUser) {
+    const conflictName = conflictUser.data()?.displayName || conflictUser.data()?.epicUsername || 'another user';
+    throw new Error(`The Epic Games username "${cleanName}" is already linked to @${conflictName}. It must be unlinked from that account first.`);
+  }
+
+  // Safe to link!
   const userRef = db.collection('users').doc(uid);
   await userRef.set({
-    epicUsername:  clean,
-    epicAccountId: epicAccountId || '',
-    epicVerified:  true,
-    epicLinkedAt:  firebase.firestore.FieldValue.serverTimestamp(),
+    epicUsername:       cleanName,
+    epicUsername_lower: lowerName,
+    epicAccountId:      cleanId,
+    epicVerified:       true,
+    epicLinkedAt:       firebase.firestore.FieldValue.serverTimestamp(),
   }, { merge: true });
 
-  return { success: true, epicUsername: clean };
+  return { success: true, epicUsername: cleanName };
+}
+
+/**
+ * Sync platform display name with verified Epic Games username.
+ */
+async function syncEpicAccountName(uid) {
+  if (!uid) throw new Error('User ID is required');
+  const user = await getUser(uid);
+  if (!user || !user.epicUsername) {
+    throw new Error('No verified Epic Games account found to sync. Link your Epic account first.');
+  }
+
+  await db.collection('users').doc(uid).set({
+    displayName:        user.epicUsername,
+    epicVerified:       true,
+    epicLastSynced:     firebase.firestore.FieldValue.serverTimestamp(),
+  }, { merge: true });
+
+  return { success: true, displayName: user.epicUsername };
 }
 
 /**
  * Unlink connected Epic Games account from user profile.
- * Deducts 2.00 Tokens unlinking fee.
+ * Deducts 2.00 Tokens unlinking fee. Frees the Epic account for future linking.
  */
 async function unlinkEpicAccount(uid) {
   const user = await getUser(uid);
   if (!user) throw new Error('User not found');
+  if (!user.epicUsername && !user.epicAccountId) {
+    throw new Error('No Epic Games account is currently linked');
+  }
+
   if (Number(user.tokens || 0) < 2.00) {
-    throw new Error('Insufficient tokens to unlink (Requires 2.00 Tokens fee)');
+    throw new Error('Unlinking requires 2.00 Tokens ($2.00). Please add tokens to your balance.');
   }
 
   await updateTokens(
@@ -1826,11 +1847,13 @@ async function unlinkEpicAccount(uid) {
 
   const userRef = db.collection('users').doc(uid);
   await userRef.update({
-    epicUsername:  firebase.firestore.FieldValue.delete(),
-    epicAccountId: firebase.firestore.FieldValue.delete(),
-    epicVerified:  false,
-    epicUnlinkedAt: firebase.firestore.FieldValue.serverTimestamp(),
+    epicUsername:       firebase.firestore.FieldValue.delete(),
+    epicUsername_lower: firebase.firestore.FieldValue.delete(),
+    epicAccountId:      firebase.firestore.FieldValue.delete(),
+    epicVerified:       false,
+    epicUnlinkedAt:     firebase.firestore.FieldValue.serverTimestamp(),
   });
+
   return { success: true };
 }
 
