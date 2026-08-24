@@ -2,89 +2,18 @@
 //  CHAMPION TOKENS — Shared Navigation + UI Helpers
 // ============================================================
 
-// ── Maintenance Mode Guard & 10-Hour Timer ───────────────────
+// ── Maintenance Mode Guard ───────────────────────────────────
 const MAINTENANCE_MODE_ACTIVE = true;
-const MAINTENANCE_TARGET_TIME = 1787572838000; // 10 hours from update
 
 (function checkMaintenanceRedirect() {
   if (!MAINTENANCE_MODE_ACTIVE) return;
   const path = window.location.pathname.toLowerCase();
-  const isDashboard = path.endsWith('dashboard') || path.endsWith('dashboard.html');
+  const isMaintenancePage = path.endsWith('maintenance') || path.endsWith('maintenance.html');
   const isCallback = path.includes('callback') || path.includes('auth');
-  if (!isDashboard && !isCallback) {
-    window.location.replace('dashboard');
+  if (!isMaintenancePage && !isCallback) {
+    window.location.replace('maintenance');
   }
 })();
-
-function injectMaintenanceOverlay() {
-  if (!MAINTENANCE_MODE_ACTIVE) return;
-  document.body.classList.add('in-maintenance');
-
-  const loader = document.getElementById('page-loading');
-  if (loader) loader.classList.add('hidden');
-
-  let overlay = document.getElementById('ct-maintenance-overlay');
-  if (!overlay) {
-    overlay = document.createElement('div');
-    overlay.id = 'ct-maintenance-overlay';
-    overlay.className = 'maintenance-overlay';
-    document.body.appendChild(overlay);
-  }
-
-  overlay.innerHTML = `
-    <div class="maintenance-card" style="max-width:480px;padding:36px 28px;">
-      <div style="font-size:3rem;margin-bottom:12px;line-height:1;">⏰</div>
-      <h1 class="maintenance-title" style="font-size:1.85rem;margin-bottom:24px;letter-spacing:-0.02em;">Under Maintenance</h1>
-
-      <!-- Timer in the middle -->
-      <div class="maintenance-timer-wrap" style="margin-bottom:0;">
-        <div class="timer-box">
-          <span class="timer-num" id="maint-hours">10</span>
-          <span class="timer-label">HOURS</span>
-        </div>
-        <span class="timer-colon">:</span>
-        <div class="timer-box">
-          <span class="timer-num" id="maint-minutes">00</span>
-          <span class="timer-label">MINUTES</span>
-        </div>
-        <span class="timer-colon">:</span>
-        <div class="timer-box">
-          <span class="timer-num" id="maint-seconds">00</span>
-          <span class="timer-label">SECONDS</span>
-        </div>
-      </div>
-    </div>
-  `;
-
-  if (window.lucide) lucide.createIcons();
-
-  function updateTimer() {
-    const now = Date.now();
-    const diff = Math.max(0, MAINTENANCE_TARGET_TIME - now);
-    const hours = Math.floor(diff / (1000 * 60 * 60));
-    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-    const hEl = document.getElementById('maint-hours');
-    const mEl = document.getElementById('maint-minutes');
-    const sEl = document.getElementById('maint-seconds');
-
-    if (hEl) hEl.textContent = String(hours).padStart(2, '0');
-    if (mEl) mEl.textContent = String(minutes).padStart(2, '0');
-    if (sEl) sEl.textContent = String(seconds).padStart(2, '0');
-  }
-
-  updateTimer();
-  setInterval(updateTimer, 1000);
-}
-
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', () => {
-    if (MAINTENANCE_MODE_ACTIVE) injectMaintenanceOverlay();
-  });
-} else {
-  if (MAINTENANCE_MODE_ACTIVE) injectMaintenanceOverlay();
-}
 
 /**
  * Inject the top navigation bar into the page.
