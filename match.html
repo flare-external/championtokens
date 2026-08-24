@@ -7,7 +7,7 @@
   <link rel="icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
-  <link rel="stylesheet" href="css/style.css?v=4.0.1787599547729"/>
+  <link rel="stylesheet" href="css/style.css?v=4.0.1787599813024"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
@@ -1437,9 +1437,9 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="js/firebase-config.js"></script>
-  <script src="js/auth.js?v=4.0.1787599547729"></script>
-  <script src="js/db.js?v=4.0.1787599547729"></script>
-  <script src="js/nav.js?v=4.0.1787599547729"></script>
+  <script src="js/auth.js?v=4.0.1787599813024"></script>
+  <script src="js/db.js?v=4.0.1787599813024"></script>
+  <script src="js/nav.js?v=4.0.1787599813024"></script>
 
   <script>
     let currentUser = null;
@@ -1929,9 +1929,9 @@
                 <i data-lucide="rotate-ccw"></i>
                 <span>${hasVotedRematch ? '✓ ' : ''}Rematch ${rematchVotes.length}/${totalPlayers}</span>
               </button>
-              <button class="concept-btn-double ${hasVotedDouble ? 'voted' : ''}" onclick="handleVoteRematch('double')" title="Vote to 2x Double Down the stakes">
+              <button class="concept-btn-double ${hasVotedDouble ? 'voted' : ''}" onclick="handleVoteRematch('double')" title="Vote to double the stakes">
                 <i data-lucide="zap"></i>
-                <span>${hasVotedDouble ? '⚡ ' : ''}Double Down ${doubleVotes.length}/${totalPlayers}</span>
+                <span>${hasVotedDouble ? '⚡ ' : ''}Double ${doubleVotes.length}/${totalPlayers}</span>
               </button>`;
           }
 
@@ -2750,6 +2750,60 @@
       activeModalUid = null;
       currentModalUser = null;
       currentModalEpic = '';
+    }
+
+    // ── Competitive Rules Modal Controller ────────────────────
+    const modeRulesData = {
+      'Realistic': [
+        'Opening chests, ammo crates, collecting floor loot, or using slurp barrels during a round will lead to forfeiture of that round.',
+        'If a player leaves once loot has been distributed, the round must continue. Do not exit the match.',
+        'Respawning during an active round will result in forfeiting the round.',
+        "'Zone Wars' and 'Comp Mode' options must be enabled."
+      ],
+      'Box Fights': [
+        'When the "No Simple Edit" option is selected, if any team member uses Simple Edit, their team will forfeit the entire match.',
+        'You must not exploit bugs to keep extra loot from round to round.',
+        'If a player leaves once the barrier falls, the round must continue. Do not exit the match.',
+        'Respawning during an active round will result in forfeiting the round.'
+      ],
+      'Zone Wars': [
+        'Standard competitive Zone Wars settings and siphon mechanics must be active.',
+        'If a player leaves once the round begins, the round must continue. Do not exit the match.',
+        'Respawning during an active round will result in forfeiting the round.',
+        'Teaming or griefing outside of designated squad allocation is strictly prohibited.'
+      ]
+    };
+
+    function openRulesModal() {
+      const mode = currentMatch?.mode || 'Realistic';
+      const rulesTitleEl = document.getElementById('rules-modal-title');
+      if (rulesTitleEl) rulesTitleEl.textContent = `${mode} Competitive Rules`;
+
+      const rulesList = modeRulesData[mode] || modeRulesData['Realistic'];
+      const contentEl = document.getElementById('rules-modal-content');
+      if (contentEl) {
+        contentEl.innerHTML = `
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            ${rulesList.map((r, idx) => `
+              <div style="display:flex;align-items:flex-start;gap:12px;background:rgba(255,255,255,0.03);padding:12px 14px;border-radius:10px;font-size:0.88rem;color:#cbd5e1;line-height:1.5;">
+                <span style="width:24px;height:24px;border-radius:50%;background:rgba(245,158,11,0.18);color:var(--gold-bright);font-weight:900;font-size:0.8rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;">${idx + 1}</span>
+                <div>${escapeHtml(r)}</div>
+              </div>
+            `).join('')}
+          </div>
+          <div style="margin-top:14px;padding:12px 14px;background:rgba(96,165,250,0.08);border-radius:10px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;">
+            <div style="font-size:0.8rem;color:#93c5fd;font-weight:700;">Looking for general & AFK rules?</div>
+            <a href="rules" target="_blank" style="font-size:0.8rem;font-weight:800;color:var(--gold-bright);text-decoration:underline;white-space:nowrap;">View Full Rulebook ↗</a>
+          </div>`;
+      }
+      const m = document.getElementById('rules-modal');
+      if (m) m.classList.add('open');
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function closeRulesModal() {
+      const m = document.getElementById('rules-modal');
+      if (m) m.classList.remove('open');
     }
 
     // ── Chat System with Modern Esports Stream Layout ────────
