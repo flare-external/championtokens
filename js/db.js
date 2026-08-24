@@ -719,29 +719,7 @@ async function setPlayerReady(matchId, uid, isReady = true) {
     return p;
   });
 
-  // Auto-fill bots if missing players so user can test match progression
-  if (isReady && updatedPlayers.length < match.maxPlayers) {
-    const halfCount = Math.max(1, (match.maxPlayers || 2) / 2);
-    while (updatedPlayers.length < match.maxPlayers) {
-      const team1Count = updatedPlayers.filter(p => p.team === 1 || p.team === 'team1' || p.isHost || p.uid === match.createdBy).length;
-      const needTeam1 = team1Count < halfCount;
-      const idx = updatedPlayers.length + 1;
-      const teamNum = needTeam1 ? 1 : 2;
-      const slotInTeam = (needTeam1 ? team1Count : updatedPlayers.filter(p => p.team === 2 || p.team === 'team2').length) + 1;
-
-      updatedPlayers.push({
-        uid: `bot_player_${idx}`,
-        displayName: needTeam1 ? `Teammate ${slotInTeam}` : `Bot Rival ${slotInTeam}`,
-        team: teamNum,
-        isHost: false,
-        ready: true,
-        paidAmount: Number(match.wager || 1),
-        epicUsername: needTeam1 ? `SquadBot${slotInTeam}` : `RivalBot${slotInTeam}`
-      });
-    }
-  }
-
-  const allReady = (updatedPlayers.length === match.maxPlayers && updatedPlayers.every(p => p.ready)) || isReady;
+  const allReady = (updatedPlayers.length === match.maxPlayers && updatedPlayers.every(p => p.ready));
   const newStatus = allReady ? 'in_progress' : 'waiting';
 
   await matchRef.update({
