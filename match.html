@@ -7,7 +7,7 @@
   <link rel="icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
-  <link rel="stylesheet" href="css/style.css?v=4.0.1787599813024"/>
+  <link rel="stylesheet" href="css/style.css?v=4.0.1787600755247"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
@@ -1437,9 +1437,9 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="js/firebase-config.js"></script>
-  <script src="js/auth.js?v=4.0.1787599813024"></script>
-  <script src="js/db.js?v=4.0.1787599813024"></script>
-  <script src="js/nav.js?v=4.0.1787599813024"></script>
+  <script src="js/auth.js?v=4.0.1787600755247"></script>
+  <script src="js/db.js?v=4.0.1787600755247"></script>
+  <script src="js/nav.js?v=4.0.1787600755247"></script>
 
   <script>
     let currentUser = null;
@@ -1851,7 +1851,14 @@
           const isHiddenEnemyTeam = !isMatchLive && !isSameTeam;
           const invitedTeammatesForThisTeam = (match.invitedTeammates || []).filter(tm => isSlotTeam1 ? (tm.team !== 2) : (tm.team === 2));
           const invitedTeammate = invitedTeammatesForThisTeam[slotIndex - 2];
-          if (invitedTeammate && invitedTeammate.status === 'pending') {
+          const INVITE_EXPIRATION_MS = 5 * 60 * 1000;
+          const isInviteExpired = (tm) => {
+            if (!tm) return true;
+            const t = tm.invitedAt ? (tm.invitedAt.toDate ? tm.invitedAt.toDate().getTime() : (tm.invitedAt.seconds ? tm.invitedAt.seconds * 1000 : Number(tm.invitedAt))) : (match.createdAt ? (match.createdAt.toDate ? match.createdAt.toDate().getTime() : (match.createdAt.seconds ? match.createdAt.seconds * 1000 : 0)) : 0);
+            return t > 0 && (Date.now() - t > INVITE_EXPIRATION_MS);
+          };
+
+          if (invitedTeammate && invitedTeammate.status === 'pending' && !isInviteExpired(invitedTeammate)) {
             const isMeInvited = (invitedTeammate.uid === currentUser?.uid);
             const pfp = isHiddenEnemyTeam ? '' : invitedTeammate.photoURL;
             const displayName = isHiddenEnemyTeam ? 'Opponent Teammate' : (invitedTeammate.displayName || 'Player');
@@ -1913,8 +1920,13 @@
       if (primaryActionContainer) {
         if (match.status === 'completed') {
           const winDisplay = match.winner?.displayName || (match.winnerTeam === 'team1' ? 'Team 1' : 'Team 2');
-          const rematchVotes = match.rematchVotes || [];
-          const doubleVotes = match.doubleVotes || [];
+          const REMATCH_EXPIRATION_MS = 90 * 1000; // 1 min 30 seconds
+          const now = Date.now();
+          const voteTime = match.rematchVotesUpdatedAt ? (match.rematchVotesUpdatedAt.toDate ? match.rematchVotesUpdatedAt.toDate().getTime() : (match.rematchVotesUpdatedAt.seconds ? match.rematchVotesUpdatedAt.seconds * 1000 : 0)) : 0;
+          const isVoteExpired = voteTime > 0 && (now - voteTime > REMATCH_EXPIRATION_MS);
+
+          const rematchVotes = isVoteExpired ? [] : (match.rematchVotes || []);
+          const doubleVotes = isVoteExpired ? [] : (match.doubleVotes || []);
           const myUid = currentUser?.uid;
           const isParticipant = players.some(p => p.uid === myUid) || (match.playerUids || []).includes(myUid) || (match.createdBy === myUid);
           const totalPlayers = maxPlayers || players.length || 2;
@@ -1925,13 +1937,13 @@
           let rematchControlsHTML = '';
           if (isParticipant) {
             rematchControlsHTML = `
-              <button class="concept-btn-rematch ${hasVotedRematch ? 'voted' : ''}" onclick="handleVoteRematch('rematch')" title="Vote for a standard rematch with same stakes">
+              <button class="concept-btn-rematch ${hasVotedRematch ? 'voted' : ''}" onclick="handleVoteRematch('rematch')" title="${hasVotedRematch ? 'Click to cancel your Rematch vote' : 'Vote for Rematch'}">
                 <i data-lucide="rotate-ccw"></i>
-                <span>${hasVotedRematch ? '✓ ' : ''}Rematch ${rematchVotes.length}/${totalPlayers}</span>
+                <span>Rematch ${rematchVotes.length}/${totalPlayers}</span>
               </button>
-              <button class="concept-btn-double ${hasVotedDouble ? 'voted' : ''}" onclick="handleVoteRematch('double')" title="Vote to double the stakes">
+              <button class="concept-btn-double ${hasVotedDouble ? 'voted' : ''}" onclick="handleVoteRematch('double')" title="${hasVotedDouble ? 'Click to cancel your Double vote' : 'Vote to Double stakes'}">
                 <i data-lucide="zap"></i>
-                <span>${hasVotedDouble ? '⚡ ' : ''}Double ${doubleVotes.length}/${totalPlayers}</span>
+                <span>Double ${doubleVotes.length}/${totalPlayers}</span>
               </button>`;
           }
 
@@ -2019,7 +2031,7 @@
                 </button>
               </div>`;
           } else if (!isFull && !isExpired) {
-            const isInvitedTeammate = (match.invitedTeammates || []).find(tm => tm.uid === currentUser?.uid && tm.status === 'pending');
+            const isInvitedTeammate = (match.invitedTeammates || []).find(tm => tm.uid === currentUser?.uid && tm.status === 'pending' && !isInviteExpired(tm));
             if (isInvitedTeammate) {
               const isCovered = !!(isInvitedTeammate.isCovered || (isInvitedTeammate.team === 1 && (match.coveredMemberUids || []).includes(currentUser?.uid)) || (isInvitedTeammate.team === 2 && (match.team2CoveredMemberUids || []).includes(currentUser?.uid)));
               primaryActionContainer.innerHTML = `
@@ -2093,9 +2105,11 @@
       try {
         const res = await voteMatchRematch(matchId, currentUser.uid, voteType);
         if (res.started) {
-          showToast(`🚀 ${voteType === 'double' ? 'Double Down' : 'Rematch'} started! Entry: ${formatTokens(res.newWager)} Tokens`, 'success');
+          showToast(`🚀 ${voteType === 'double' ? 'Double' : 'Rematch'} started! Entry: ${formatTokens(res.newWager)} Tokens`, 'success');
+        } else if (res.cancelled) {
+          showToast(`Cancelled ${voteType === 'double' ? 'Double' : 'Rematch'} vote`, 'info');
         } else {
-          showToast(`Voted to ${voteType === 'double' ? 'Double Down' : 'Rematch'} (${res.votes}/${res.total} voted)`, 'info');
+          showToast(`Voted to ${voteType === 'double' ? 'Double' : 'Rematch'} (${res.votes}/${res.total} voted)`, 'info');
         }
       } catch (err) {
         showToast(err.message || 'Could not cast vote', 'error');

@@ -196,6 +196,7 @@ async function createMatch(hostUser, matchData) {
           displayName: m.displayName || 'Teammate',
           photoURL: m.photoURL || '',
           epicUsername: m.epicUsername || '',
+          invitedAt: Date.now(),
           status: 'pending'
         }));
       }
@@ -532,6 +533,7 @@ async function joinMatchWithTeam(codeOrId, joiningUser, options = {}) {
         team: 2,
         teamId: chosenTeamId,
         isCovered: coveredMemberUids.includes(m.uid),
+        invitedAt: Date.now(),
         status: 'pending'
       }));
     }
@@ -651,6 +653,13 @@ async function acceptMatchTeamInvite(matchId, acceptingUser, notifId = null) {
   }
 
   const invitedEntry = (match.invitedTeammates || []).find(tm => tm.uid === acceptingUser.uid);
+  if (invitedEntry) {
+    const inviteTime = invitedEntry.invitedAt ? (invitedEntry.invitedAt.toDate ? invitedEntry.invitedAt.toDate().getTime() : (invitedEntry.invitedAt.seconds ? invitedEntry.invitedAt.seconds * 1000 : Number(invitedEntry.invitedAt))) : (match.createdAt ? (match.createdAt.toDate ? match.createdAt.toDate().getTime() : (match.createdAt.seconds ? match.createdAt.seconds * 1000 : 0)) : 0);
+    if (inviteTime > 0 && (Date.now() - inviteTime > 5 * 60 * 1000)) {
+      throw new Error('This match invite has expired (5 minute limit).');
+    }
+  }
+
   const targetTeam = invitedEntry?.team || (match.team2Id && match.team2Id === acceptingUser.teamId ? 2 : 1);
   const targetTeamTag = targetTeam === 1 ? (match.teamTag || '') : (match.team2Tag || acceptingUser.teamTag || '');
   const isCovered = !!(invitedEntry?.isCovered || (targetTeam === 1 && (match.coveredMemberUids || []).includes(acceptingUser.uid)) || (targetTeam === 2 && (match.team2CoveredMemberUids || []).includes(acceptingUser.uid)));
@@ -1289,9 +1298,52 @@ async function voteMatchRematch(matchId, uid, voteType = 'rematch') {
     throw new Error(`Insufficient tokens to ${voteType === 'double' ? 'double down' : 'rematch'} (Need ${formatTokens(requiredTokens)} Tokens, You have ${formatTokens(userTokens)} Tokens)`);
   }
 
+  const REMATCH_EXPIRATION_MS = 90 * 1000; // 1 min 30 seconds
+  const now = Date.now();
+  const voteTime = match.rematchVotesUpdatedAt ? (match.rematchVotesUpdatedAt.toDate ? match.rematchVotesUpdatedAt.toDate().getTime() : (match.rematchVotesUpdatedAt.seconds ? match.rematchVotesUpdatedAt.seconds * 1000 : 0)) : 0;
+
   let rematchVotes = Array.isArray(match.rematchVotes) ? [...match.rematchVotes] : [];
   let doubleVotes  = Array.isArray(match.doubleVotes)  ? [...match.doubleVotes]  : [];
 
+  // Reset if existing votes have expired (> 90 seconds)
+  if (voteTime > 0 && (now - voteTime > REMATCH_EXPIRATION_MS)) {
+    rematchVotes = [];
+    doubleVotes = [];
+  }
+
+  const totalPlayers = match.maxPlayers || players.length || 2;
+  const playerName = player.displayName || 'Player';
+
+  // Toggle/Cancel: If user clicks the button they already voted for, CANCEL the vote
+  if (voteType === 'rematch' && rematchVotes.includes(uid)) {
+    rematchVotes = rematchVotes.filter(id => id !== uid);
+    await matchRef.update({
+      rematchVotes,
+      rematchVotesUpdatedAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    await matchRef.collection('messages').add({
+      isSystem: true,
+      text: `${playerName} cancelled their Rematch vote`,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+    });
+    return { started: false, cancelled: true, voteType: 'rematch', votes: rematchVotes.length, total: totalPlayers };
+  }
+
+  if (voteType === 'double' && doubleVotes.includes(uid)) {
+    doubleVotes = doubleVotes.filter(id => id !== uid);
+    await matchRef.update({
+      doubleVotes,
+      rematchVotesUpdatedAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    await matchRef.collection('messages').add({
+      isSystem: true,
+      text: `${playerName} cancelled their Double vote`,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+    });
+    return { started: false, cancelled: true, voteType: 'double', votes: doubleVotes.length, total: totalPlayers };
+  }
+
+  // Cast new vote or switch vote
   if (voteType === 'rematch') {
     if (!rematchVotes.includes(uid)) rematchVotes.push(uid);
     doubleVotes = doubleVotes.filter(id => id !== uid);
@@ -1299,11 +1351,6 @@ async function voteMatchRematch(matchId, uid, voteType = 'rematch') {
     if (!doubleVotes.includes(uid)) doubleVotes.push(uid);
     rematchVotes = rematchVotes.filter(id => id !== uid);
   }
-
-  const totalPlayers = match.maxPlayers || players.length || 2;
-  const playerName = player.displayName || 'Player';
-  const userDiscordId = userSnap.data()?.discordId || '';
-  const isOwnerAdmin = ['1121188319410278420'].includes(userDiscordId) || uid === '1121188319410278420' || userSnap.data()?.isAdmin === true;
 
   const currentVotes = voteType === 'rematch' ? rematchVotes : doubleVotes;
 
@@ -1352,6 +1399,7 @@ async function voteMatchRematch(matchId, uid, voteType = 'rematch') {
       disputedAt: null,
       rematchVotes: [],
       doubleVotes: [],
+      rematchVotesUpdatedAt: null,
       startedAt: firebase.firestore.FieldValue.serverTimestamp(),
       completedAt: null,
     });
@@ -1368,6 +1416,7 @@ async function voteMatchRematch(matchId, uid, voteType = 'rematch') {
     await matchRef.update({
       rematchVotes,
       doubleVotes,
+      rematchVotesUpdatedAt: firebase.firestore.FieldValue.serverTimestamp(),
     });
     return { started: false, voteType, votes: currentVotes.length, total: totalPlayers };
   }
