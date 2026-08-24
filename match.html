@@ -7,7 +7,7 @@
   <link rel="icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
-  <link rel="stylesheet" href="css/style.css?v=4.0.1787588883529"/>
+  <link rel="stylesheet" href="css/style.css?v=4.0.1787589089445"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
@@ -1228,7 +1228,6 @@
                 <i data-lucide="globe" style="width:12px;height:12px;opacity:0.7;"></i>
                 <span id="modal-user-discord-text">@user · ID: 000000000</span>
               </div>
-              <div id="modal-user-title-slot" style="font-size:0.82rem;font-weight:800;color:#22c55e;margin-top:2px;">title</div>
             </div>
           </div>
 
@@ -1251,7 +1250,8 @@
             <i data-lucide="copy" style="width:13px;height:13px;"></i>
           </div>
           <!-- Tracker / Twitch Chip -->
-          <a id="modal-user-tracker-chip" href="#" target="_blank" rel="noopener noreferrer" style="background:rgba(255,255,255,0.08);color:#22c55e;font-size:0.75rem;font-weight:800;padding:4px 12px;border-radius:20px;text-decoration:none;display:inline-flex;align-items:center;gap:4px;transition:background 0.15s;">
+          <a id="modal-user-tracker-chip" href="#" target="_blank" rel="noopener noreferrer" style="background:rgba(255,255,255,0.08);color:#22c55e;font-size:0.75rem;font-weight:800;padding:4px 12px;border-radius:20px;text-decoration:none;display:inline-flex;align-items:center;gap:6px;transition:background 0.15s;">
+            <img src="icon-192x192.webp" alt="TRN" style="width:14px;height:14px;object-fit:contain;border-radius:3px;" />
             <span>fortnitetracker</span>
             <i data-lucide="external-link" style="width:11px;height:11px;opacity:0.8;"></i>
           </a>
@@ -1425,9 +1425,9 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="js/firebase-config.js"></script>
-  <script src="js/auth.js?v=4.0.1787588883529"></script>
-  <script src="js/db.js?v=4.0.1787588883529"></script>
-  <script src="js/nav.js?v=4.0.1787588883529"></script>
+  <script src="js/auth.js?v=4.0.1787589089445"></script>
+  <script src="js/db.js?v=4.0.1787589089445"></script>
+  <script src="js/nav.js?v=4.0.1787589089445"></script>
 
   <script>
     let currentUser = null;
@@ -1803,8 +1803,6 @@
               : `<div class="concept-epic-row" style="opacity:0.5;border-style:dashed;" onclick="event.stopPropagation();showToast('Player has not linked their Epic account yet','info')"><img src="epic_games_logo.webp" alt="" style="width:12px;height:14px;object-fit:contain;"/> <span>No Epic Linked</span></div>`;
           }
 
-          let titleText = isHiddenEnemy ? 'Hidden' : 'CHAMPION';
-
           let readyStatusHTML = '';
           if (match.status === 'waiting') {
             readyStatusHTML = `
@@ -1831,7 +1829,6 @@
                   ${(!isHiddenEnemy && isPlayerHost) ? '<span class="badge" style="background:var(--gold-dim);color:var(--gold-bright);padding:1px 5px;font-size:0.62rem;font-weight:800;">HOST</span>' : ''}
                   ${(!isHiddenEnemy && player.isCovered) ? '<span class="badge" style="background:rgba(134,239,172,0.15);color:#86efac;padding:1px 5px;font-size:0.62rem;font-weight:700;">COVERED</span>' : ''}
                 </div>
-                <div class="concept-player-title">${escapeHtml(titleText)}</div>
                 ${epicChipHTML}
               </div>
               ${readyStatusHTML}
@@ -2528,11 +2525,7 @@
           discTextEl.textContent = `@${u.discordUsername || 'user'} · ID: ${u.discordId || uid.replace('discord:','')}`;
         }
 
-        // Title Slot
-        const titleSlot = document.getElementById('modal-user-title-slot');
-        if (titleSlot) {
-          titleSlot.textContent = u.title || (isPremium ? 'PREMIUM CHAMPION' : 'CHAMPION');
-        }
+
 
         // Avatar
         const img = document.getElementById('modal-user-avatar-img');
