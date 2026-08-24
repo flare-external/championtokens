@@ -35,7 +35,7 @@ function injectNav(activePage = '') {
 
         <div class="ct-nav__user">
           <button class="nav-token-btn" onclick="openTokenWalletModal('purchase')" title="Add Tokens / View Wallet">
-            <img src="new_token.png" alt="CT" class="nav-token-coin" width="20" height="20" />
+            <img src="new_token.png" alt="CT" class="nav-token-coin" width="42" height="42" />
             <span id="nav-balance">10.00</span>
             <span class="nav-token-plus">+</span>
           </button>

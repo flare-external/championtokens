@@ -519,36 +519,36 @@ input[type="range"].ct-slider::-moz-range-thumb {
 .nav-token-btn {
   display: inline-flex;
   align-items: center;
-  gap: 9px;
+  gap: 10px;
   background: rgba(245, 158, 11, 0.08);
   border: 1px solid rgba(245, 158, 11, 0.35);
   border-radius: 999px;
-  padding: 6px 16px 6px 10px;
+  padding: 4px 18px 4px 6px;
   color: var(--gold-bright);
-  font-size: 1rem;
-  font-weight: 800;
+  font-size: 1.12rem;
+  font-weight: 900;
   cursor: pointer;
   transition: all 0.2s ease;
-  box-shadow: 0 0 14px rgba(245, 158, 11, 0.1);
+  box-shadow: 0 0 16px rgba(245, 158, 11, 0.12);
 }
 .nav-token-btn:hover {
   background: rgba(245, 158, 11, 0.18);
   border-color: var(--gold-bright);
-  box-shadow: 0 0 22px rgba(245, 158, 11, 0.3);
+  box-shadow: 0 0 24px rgba(245, 158, 11, 0.35);
   transform: translateY(-1px);
 }
 .nav-token-coin {
-  width: 26px !important;
-  height: 26px !important;
+  width: 42px !important;
+  height: 42px !important;
   object-fit: contain;
-  filter: drop-shadow(0 0 6px rgba(245, 158, 11, 0.5));
+  filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.6));
 }
 .nav-token-plus {
   color: var(--gold-bright);
-  font-size: 1.2rem;
+  font-size: 1.35rem;
   font-weight: 900;
   line-height: 1;
-  margin-left: 3px;
+  margin-left: 2px;
   display: inline-block;
 }
 
