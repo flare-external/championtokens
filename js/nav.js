@@ -2,6 +2,113 @@
 //  CHAMPION TOKENS — Shared Navigation + UI Helpers
 // ============================================================
 
+// ── Maintenance Mode Guard & 10-Hour Timer ───────────────────
+const MAINTENANCE_MODE_ACTIVE = true;
+const MAINTENANCE_TARGET_TIME = 1787572838000; // 10 hours from update
+
+(function checkMaintenanceRedirect() {
+  if (!MAINTENANCE_MODE_ACTIVE) return;
+  const path = window.location.pathname.toLowerCase();
+  const isDashboard = path.endsWith('dashboard') || path.endsWith('dashboard.html');
+  const isCallback = path.includes('callback') || path.includes('auth');
+  if (!isDashboard && !isCallback) {
+    window.location.replace('dashboard');
+  }
+})();
+
+function injectMaintenanceOverlay() {
+  if (!MAINTENANCE_MODE_ACTIVE) return;
+  document.body.classList.add('in-maintenance');
+
+  const loader = document.getElementById('page-loading');
+  if (loader) loader.classList.add('hidden');
+
+  let overlay = document.getElementById('ct-maintenance-overlay');
+  if (!overlay) {
+    overlay = document.createElement('div');
+    overlay.id = 'ct-maintenance-overlay';
+    overlay.className = 'maintenance-overlay';
+    document.body.appendChild(overlay);
+  }
+
+  overlay.innerHTML = `
+    <div class="maintenance-card">
+      <div class="maintenance-badge">
+        <span class="pulse-dot"></span> System Maintenance
+      </div>
+
+      <div class="maintenance-logo-wrap">
+        <img src="champion-tokens_new.png" alt="Champion Tokens" class="maintenance-logo" />
+      </div>
+
+      <h1 class="maintenance-title">Under Maintenance</h1>
+
+      <p class="maintenance-desc">
+        We are currently performing scheduled platform updates, match arena performance optimizations, and security improvements. The arena will be back online shortly.
+      </p>
+
+      <!-- 10 Hour Countdown Timer -->
+      <div class="maintenance-timer-wrap">
+        <div class="timer-box">
+          <span class="timer-num" id="maint-hours">10</span>
+          <span class="timer-label">HOURS</span>
+        </div>
+        <span class="timer-colon">:</span>
+        <div class="timer-box">
+          <span class="timer-num" id="maint-minutes">00</span>
+          <span class="timer-label">MINUTES</span>
+        </div>
+        <span class="timer-colon">:</span>
+        <div class="timer-box">
+          <span class="timer-num" id="maint-seconds">00</span>
+          <span class="timer-label">SECONDS</span>
+        </div>
+      </div>
+
+      <div class="maintenance-footer-note">
+        <i data-lucide="shield-check" style="width:16px;height:16px;color:var(--gold-bright);flex-shrink:0;"></i>
+        <span>All player balances, teams, and user profiles are safe & securely saved.</span>
+      </div>
+
+      <div class="maintenance-actions">
+        <a href="https://discord.gg/championtokens" target="_blank" class="btn btn-discord" style="background:#5865F2;color:#fff;border-radius:12px;padding:12px 26px;font-weight:800;font-size:0.9rem;display:inline-flex;align-items:center;gap:10px;text-decoration:none;border:none;box-shadow:0 8px 24px rgba(88,101,242,0.35);">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.893.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+          <span>Join Discord for Updates</span>
+        </a>
+      </div>
+    </div>
+  `;
+
+  if (window.lucide) lucide.createIcons();
+
+  function updateTimer() {
+    const now = Date.now();
+    const diff = Math.max(0, MAINTENANCE_TARGET_TIME - now);
+    const hours = Math.floor(diff / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+    const hEl = document.getElementById('maint-hours');
+    const mEl = document.getElementById('maint-minutes');
+    const sEl = document.getElementById('maint-seconds');
+
+    if (hEl) hEl.textContent = String(hours).padStart(2, '0');
+    if (mEl) mEl.textContent = String(minutes).padStart(2, '0');
+    if (sEl) sEl.textContent = String(seconds).padStart(2, '0');
+  }
+
+  updateTimer();
+  setInterval(updateTimer, 1000);
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', () => {
+    if (MAINTENANCE_MODE_ACTIVE) injectMaintenanceOverlay();
+  });
+} else {
+  if (MAINTENANCE_MODE_ACTIVE) injectMaintenanceOverlay();
+}
+
 /**
  * Inject the top navigation bar into the page.
  * Call after DOMContentLoaded.
