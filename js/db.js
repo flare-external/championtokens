@@ -165,7 +165,7 @@ function generateMatchCode() {
  * @param {object} matchData { mode: 'Realistic'|'Zone Wars'|'Box Fights', size: '1v1'|'2v2'|'3v3', wager: number }
  */
 async function createMatch(hostUser, matchData) {
-  const isOwnerAdmin = (hostUser.uid === 'discord:1121188319410278420' || ADMIN_DISCORD_IDS.includes((hostUser.uid || '').replace('discord:', '')));
+  const isOwnerAdmin = (hostUser.uid === 'discord:1121188319410278420' || ADMIN_DISCORD_IDS.includes((hostUser.uid || '').replace('discord:', '')) || hostUser.isAdmin === true || (typeof isAdminUser === 'function' && isAdminUser(hostUser, hostUser)));
   if (!isOwnerAdmin) {
     throw new Error('🔄 Under update.');
   }
@@ -334,7 +334,7 @@ async function createMatch(hostUser, matchData) {
  * Join a match by its 6-character code.
  */
 async function joinMatch(code, joiningUser) {
-  const isOwnerAdmin = (joiningUser.uid === 'discord:1121188319410278420' || ADMIN_DISCORD_IDS.includes((joiningUser.uid || '').replace('discord:', '')));
+  const isOwnerAdmin = (joiningUser.uid === 'discord:1121188319410278420' || ADMIN_DISCORD_IDS.includes((joiningUser.uid || '').replace('discord:', '')) || joiningUser.isAdmin === true || (typeof isAdminUser === 'function' && isAdminUser(joiningUser, joiningUser)));
   if (!isOwnerAdmin) {
     throw new Error('🔄 Under update.');
   }
@@ -429,7 +429,7 @@ async function joinMatch(code, joiningUser) {
  * Join a match with your team (places joiningUser in Team 2 and auto-invites team roster).
  */
 async function joinMatchWithTeam(codeOrId, joiningUser) {
-  const isOwnerAdmin = (joiningUser.uid === 'discord:1121188319410278420' || ADMIN_DISCORD_IDS.includes((joiningUser.uid || '').replace('discord:', '')));
+  const isOwnerAdmin = (joiningUser.uid === 'discord:1121188319410278420' || ADMIN_DISCORD_IDS.includes((joiningUser.uid || '').replace('discord:', '')) || joiningUser.isAdmin === true || (typeof isAdminUser === 'function' && isAdminUser(joiningUser, joiningUser)));
   if (!isOwnerAdmin) {
     throw new Error('🔄 Under update.');
   }
@@ -1019,9 +1019,9 @@ async function submitMatchReport(matchId, reporterUid, reportedWinnerTeam) {
     throw new Error('Match is already completed');
   }
 
-  const isOwnerAdmin = (reporterUid === 'discord:1121188319410278420' || ADMIN_DISCORD_IDS.includes((reporterUid || '').replace('discord:', '')));
+  const isOwnerAdmin = (reporterUid === 'discord:1121188319410278420' || ADMIN_DISCORD_IDS.includes((reporterUid || '').replace('discord:', '')) || reporterPlayer.isAdmin === true || (typeof isAdminUser === 'function' && isAdminUser(reporterPlayer, reporterPlayer)));
 
-  // 5-Minute anti-win-farming check (bypassed for owner testing)
+  // 5-Minute anti-win-farming check (bypassed for admins during testing)
   const MIN_MATCH_DURATION_MS = isOwnerAdmin ? 0 : 5 * 60 * 1000;
   if (match.startedAt && !isOwnerAdmin) {
     const startedTime = match.startedAt.toDate ? match.startedAt.toDate().getTime() : (match.startedAt.seconds ? match.startedAt.seconds * 1000 : Date.now());

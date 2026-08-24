@@ -1735,7 +1735,7 @@
             const isTeam1 = mySlot?.team === 'team1' || mySlot?.isHost || mySlot?.uid === match.createdBy;
             const myReported = isTeam1 ? match.team1Reported : match.team2Reported;
 
-            const isOwnerAdmin = (currentUser?.uid === 'discord:1121188319410278420' || ADMIN_DISCORD_IDS.includes((currentUser?.uid || '').replace('discord:', '')));
+            const isOwnerAdmin = (currentUser?.uid === 'discord:1121188319410278420' || ADMIN_DISCORD_IDS.includes((currentUser?.uid || '').replace('discord:', '')) || currentUserData?.isAdmin === true || (typeof isAdminUser === 'function' && isAdminUser(currentUser, currentUserData)));
             const MIN_DURATION_MS = isOwnerAdmin ? 0 : 5 * 60 * 1000;
             const startedTime = match.startedAt ? (match.startedAt.toDate ? match.startedAt.toDate().getTime() : (match.startedAt.seconds ? match.startedAt.seconds * 1000 : Date.now())) : Date.now();
             const elapsed = Date.now() - startedTime;
