@@ -34,14 +34,6 @@ function injectNav(activePage = '') {
         <div class="ct-nav__links">${navLinksHTML}</div>
 
         <div class="ct-nav__user">
-          <!-- Active Match Live Indicator Widget -->
-          <a href="#" id="nav-active-match-btn" class="nav-active-match-pill" style="display:none;" title="Click to enter active match room">
-            <span class="nav-match-pulsing-dot"></span>
-            <span id="nav-active-match-title">1v1 Realistic</span>
-            <span class="nav-active-match-status-badge" id="nav-active-match-status">Waiting 1/2</span>
-            <i data-lucide="arrow-up-right" style="width:13px;height:13px;opacity:0.85;"></i>
-          </a>
-
           <button class="nav-token-btn" onclick="openTokenWalletModal('purchase')" title="Add Tokens / View Wallet">
             <img src="champion_token_coin.png" alt="CT" class="nav-token-coin" width="20" height="20" />
             <span id="nav-balance">10.00</span>
@@ -117,6 +109,21 @@ function injectNav(activePage = '') {
       </div>
     </nav>
     <div class="ct-nav-spacer"></div>
+
+    <!-- Floating Active Match Indicator Widget (Top-Right under Navbar) -->
+    <a href="#" id="nav-active-match-banner" class="active-match-floating-banner" style="display:none;" title="Active Match · Click to open room">
+      <img id="nav-active-match-img" src="realistic.jpeg" class="active-match-banner-thumb" alt="Map" />
+      <div class="active-match-banner-info">
+        <div class="active-match-banner-top">
+          <span class="active-match-banner-title" id="nav-active-match-title">Realistic · 1v1</span>
+          <span class="active-match-banner-players" id="nav-active-match-players">1/2</span>
+        </div>
+        <div class="active-match-banner-status" id="nav-active-match-status">Waiting for player(s)...</div>
+      </div>
+      <div class="active-match-banner-action">
+        <i data-lucide="arrow-up-right" style="width:16px;height:16px;"></i>
+      </div>
+    </a>
 
     <!-- Universal Token Wallet Modal (Purchase & Withdraw) -->
     <div class="modal-overlay" id="token-wallet-modal" onclick="if(event.target===this)closeTokenWalletModal()">
@@ -271,50 +278,86 @@ function injectNav(activePage = '') {
       });
     }
 
-    // Live Active Match tracker
+    // Map Thumbnails map
+    const mapThumbnails = {
+      'Realistic': 'realistic.jpeg',
+      'Zone Wars': 'zonewars.jpeg',
+      'Box Fights': 'boxfights.jpeg'
+    };
+
+    // Live Active Match tracker (Floating Banner)
     db.collection('matches')
       .where('playerUids', 'array-contains', user.uid)
       .onSnapshot((querySnap) => {
-        const activeBtn = document.getElementById('nav-active-match-btn');
+        const banner    = document.getElementById('nav-active-match-banner');
+        const imgEl     = document.getElementById('nav-active-match-img');
         const titleEl   = document.getElementById('nav-active-match-title');
+        const playersEl = document.getElementById('nav-active-match-players');
         const statusEl  = document.getElementById('nav-active-match-status');
-        if (!activeBtn) return;
+        if (!banner) return;
+
+        const currentParams = new URLSearchParams(window.location.search);
+        const currentMatchId = currentParams.get('id') || '';
+        const isMatchRoomPage = window.location.pathname.endsWith('match') || window.location.pathname.endsWith('match.html');
 
         let activeMatch = null;
         querySnap.forEach((doc) => {
           const m = { id: doc.id, ...doc.data() };
-          if ((m.status === 'waiting' || m.status === 'in_progress') && !m.isExpired && m.status !== 'cancelled' && m.status !== 'completed') {
+          const isFinished = m.status === 'completed' || m.status === 'cancelled' || m.isExpired === true || !!m.winner;
+          const isActive = (m.status === 'waiting' || m.status === 'in_progress') && !isFinished;
+          
+          if (isActive) {
             if (!activeMatch || (m.status === 'in_progress' && activeMatch.status !== 'in_progress')) {
               activeMatch = m;
             }
           }
         });
 
-        if (activeMatch) {
-          const size = activeMatch.size || '1v1';
+        // Hide floating banner if no active match OR if user is already inside that match room
+        if (activeMatch && !(isMatchRoomPage && (currentMatchId === activeMatch.id || currentParams.get('code') === activeMatch.code))) {
           const mode = activeMatch.mode || 'Realistic';
-          const isInProgress = activeMatch.status === 'in_progress';
+          const size = activeMatch.size || '1v1';
+          const maxPlayers = activeMatch.maxPlayers || (size === '1v1' ? 2 : size === '2v2' ? 4 : 6);
           const playersCount = activeMatch.players?.length || 1;
-          const maxPlayers   = activeMatch.maxPlayers || (size === '1v1' ? 2 : size === '2v2' ? 4 : 6);
+          const isInProgress = activeMatch.status === 'in_progress';
+          const allReady = activeMatch.players && activeMatch.players.length === maxPlayers && activeMatch.players.every(p => p.ready);
 
-          activeBtn.href = `match?id=${activeMatch.id}`;
-          activeBtn.title = `Active Match: ${size} ${mode} (${isInProgress ? 'In Progress' : 'Waiting in Lobby'}) · Click to open`;
-          
-          if (titleEl) titleEl.textContent = `${size} ${mode}`;
+          banner.href = `match?id=${activeMatch.id}`;
+          banner.title = `Active Match: ${mode} · ${size} (${isInProgress ? 'In Progress' : 'Waiting in Lobby'}) · Click to open`;
+
+          if (imgEl) {
+            imgEl.src = mapThumbnails[mode] || 'realistic.jpeg';
+            imgEl.alt = mode;
+          }
+          if (titleEl) {
+            titleEl.textContent = `${mode} · ${size}`;
+          }
+          if (playersEl) {
+            playersEl.textContent = `${playersCount}/${maxPlayers}`;
+          }
+
           if (statusEl) {
-            statusEl.textContent = isInProgress ? 'In Progress' : `Waiting ${playersCount}/${maxPlayers}`;
+            if (isInProgress) {
+              statusEl.textContent = 'Match in progress · Playing';
+            } else if (playersCount < maxPlayers) {
+              statusEl.textContent = 'Waiting for player(s)...';
+            } else if (!allReady) {
+              statusEl.textContent = 'Waiting to ready up...';
+            } else {
+              statusEl.textContent = 'Starting match...';
+            }
           }
 
           if (isInProgress) {
-            activeBtn.classList.add('in-progress');
+            banner.classList.add('in-progress');
           } else {
-            activeBtn.classList.remove('in-progress');
+            banner.classList.remove('in-progress');
           }
 
-          activeBtn.style.display = 'inline-flex';
+          banner.style.display = 'flex';
           if (window.lucide) lucide.createIcons();
         } else {
-          activeBtn.style.display = 'none';
+          banner.style.display = 'none';
         }
       }, (err) => {
         console.warn('Active match listener error:', err);
