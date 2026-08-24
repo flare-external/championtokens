@@ -7,7 +7,7 @@
   <link rel="icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
-  <link rel="stylesheet" href="css/style.css?v=4.0.1787603076717"/>
+  <link rel="stylesheet" href="css/style.css?v=4.0.1787603400033"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
@@ -1022,13 +1022,13 @@
 
       <!-- Live Mini Preview -->
       <div class="cosmetics-preview-box" style="display:flex;align-items:center;gap:18px;padding:16px 20px;">
-        <div style="width:84px;height:84px;border-radius:50%;padding:3px;border:2px solid var(--gold-bright);background:rgba(255,255,255,0.05);flex-shrink:0;">
-          <img id="preview-avatar-img" src="cosmetics/uncomon/uncomon.png" alt="Avatar" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;"/>
+        <div style="width:84px;height:84px;border-radius:18px;padding:3px;border:2px solid var(--gold-bright);background:rgba(255,255,255,0.05);flex-shrink:0;overflow:hidden;">
+          <img id="preview-avatar-img" src="cosmetics/uncomon/uncomon.png" alt="Avatar" style="width:100%;height:100%;object-fit:cover;border-radius:14px;display:block;"/>
         </div>
         <div>
           <div style="font-size:0.7rem;color:var(--text-muted);text-transform:uppercase;font-weight:800;letter-spacing:0.05em;">Currently Equipped</div>
           <div style="font-weight:900;font-size:1.2rem;color:#fff;margin-top:2px;" id="preview-name-display">Champion</div>
-          <div style="font-size:0.8rem;color:#fde68a;margin-top:2px;" id="preview-avatar-name">Derp Ranger (Uncommon)</div>
+          <div style="font-size:0.8rem;color:#fde68a;margin-top:2px;" id="preview-avatar-name">#1 (Uncommon)</div>
         </div>
       </div>
 
@@ -1043,7 +1043,7 @@
           <button class="badge" onclick="filterAvatarCatalog('Uncommon')" id="avatar-filter-Uncommon" style="cursor:pointer;border:1px solid #10b981;background:rgba(16,185,129,0.15);color:#10b981;font-size:0.72rem;padding:4px 10px;">UNCOMMON (1.00)</button>
         </div>
 
-        <div class="cosmetics-item-grid" id="avatars-grid-list" style="grid-template-columns:repeat(auto-fill, minmax(150px, 1fr));gap:14px;">
+        <div class="cosmetics-item-grid" id="avatars-grid-list" style="grid-template-columns:repeat(auto-fill, minmax(138px, 1fr));gap:14px;">
           <div class="spinner" style="margin:20px auto;"></div>
         </div>
       </div>
@@ -1121,9 +1121,9 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="js/firebase-config.js?v=3.2"></script>
-  <script src="js/auth.js?v=4.0.1787603076717"></script>
-  <script src="js/db.js?v=4.0.1787603076717"></script>
-  <script src="js/nav.js?v=4.0.1787603076717"></script>
+  <script src="js/auth.js?v=4.0.1787603400033"></script>
+  <script src="js/db.js?v=4.0.1787603400033"></script>
+  <script src="js/nav.js?v=4.0.1787603400033"></script>
 
   <script>
     let currentUser = null;
@@ -1673,36 +1673,37 @@
           const isOwned = item.isDefault || unlockedPfps.includes(item.id);
           const isEquipped = (equippedPfp === item.id) || (currentPhoto === item.file);
 
-          let borderStyle = isEquipped ? '2px solid var(--gold-bright)' : `1px solid ${item.color || 'rgba(255,255,255,0.12)'}`;
+          let borderStyle = isEquipped ? '2px solid var(--gold-bright)' : '1px solid rgba(255,255,255,0.09)';
           let bgStyle = isEquipped ? 'rgba(245,158,11,0.12)' : '#0b0d14';
+          const onClickAction = isOwned ? `equipPfpFromModal('${item.id}')` : `buyPfpFromModal('${item.id}')`;
 
           return `
-            <div class="cosmetics-option-card ${isEquipped ? 'equipped' : ''}" style="border:${borderStyle};background:${bgStyle};padding:18px 12px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;border-radius:18px;">
-              <div style="width:96px;height:96px;border-radius:50%;padding:3px;border:2px solid ${item.color || '#fff'};background:rgba(0,0,0,0.6);flex-shrink:0;">
-                <img src="${encodeURI(item.file)}" alt="${escapeHtml(item.name)}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" />
+            <div class="cosmetics-option-card ${isEquipped ? 'equipped' : ''}" 
+                 onclick="${onClickAction}"
+                 style="border:${borderStyle};background:${bgStyle};padding:9px 9px 12px 9px;display:flex;flex-direction:column;align-items:center;text-align:center;border-radius:18px;cursor:pointer;position:relative;transition:all 0.18s ease;box-shadow:0 6px 18px rgba(0,0,0,0.5);">
+              
+              <!-- Large Rounded Image -->
+              <div style="position:relative;width:100%;aspect-ratio:1/1;border-radius:14px;overflow:hidden;background:#141721;margin-bottom:8px;">
+                <img src="${encodeURI(item.file)}" alt="${escapeHtml(item.name)}" style="width:100%;height:100%;object-fit:cover;display:block;" />
+                <span style="position:absolute;top:6px;left:6px;background:rgba(0,0,0,0.75);backdrop-filter:blur(4px);color:#fff;font-size:0.72rem;font-weight:900;padding:2px 7px;border-radius:6px;border:1px solid rgba(255,255,255,0.15);">
+                  ${escapeHtml(item.name)}
+                </span>
+                <span style="position:absolute;top:6px;right:6px;background:rgba(0,0,0,0.75);color:${item.color || '#fff'};font-size:0.6rem;font-weight:800;padding:2px 6px;border-radius:6px;border:1px solid ${item.color || '#fff'};">
+                  ${item.rarity.toUpperCase()}
+                </span>
               </div>
 
-              <div style="font-weight:900;font-size:0.95rem;color:#fff;line-height:1.2;margin-top:2px;">
-                ${escapeHtml(item.name)}
-              </div>
-
-              <span class="badge" style="font-size:0.68rem;padding:2px 8px;color:${item.color || '#fff'};border:1px solid ${item.color || '#fff'};background:rgba(255,255,255,0.04);font-weight:800;">
-                ${item.rarity.toUpperCase()}
-              </span>
-
-              <div style="margin-top:auto;width:100%;padding-top:4px;">
+              <!-- Bottom: Token icon and price / Status -->
+              <div style="width:100%;display:flex;align-items:center;justify-content:center;min-height:26px;">
                 ${isEquipped ? `
-                  <button class="btn btn-outline btn-sm" disabled style="width:100%;font-size:0.78rem;padding:5px 8px;opacity:0.85;">
-                    Equipped ✓
-                  </button>
+                  <span style="font-size:0.85rem;font-weight:900;color:var(--gold-bright);letter-spacing:0.02em;">Equipped ✓</span>
                 ` : isOwned ? `
-                  <button class="btn btn-primary btn-sm" onclick="equipPfpFromModal('${item.id}')" style="width:100%;font-size:0.78rem;padding:5px 8px;">
-                    Equip
-                  </button>
+                  <span style="font-size:0.85rem;font-weight:800;color:#60a5fa;">Equip</span>
                 ` : `
-                  <button class="btn btn-gold btn-sm" onclick="buyPfpFromModal('${item.id}')" style="width:100%;font-size:0.75rem;padding:5px 6px;">
-                    Unlock (${formatTokens(item.cost)})
-                  </button>
+                  <div style="display:flex;align-items:center;gap:6px;font-size:0.95rem;font-weight:900;color:#fff;">
+                    <img src="new_token.png" style="width:18px;height:18px;object-fit:contain;vertical-align:middle;" alt="CT" />
+                    <span>${formatTokens(item.cost)}</span>
+                  </div>
                 `}
               </div>
             </div>

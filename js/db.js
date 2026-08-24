@@ -2010,47 +2010,47 @@ async function unlinkSocialAccount(uid, platform) {
 
 // ── Avatars & Cosmetics Shop Catalog ────────────────────────
 
-const DEFAULT_STARTER_PFP_ID = 'pfp_uncommon_5';
+const DEFAULT_STARTER_PFP_ID = 'pfp_uncommon_1';
 const DEFAULT_STARTER_PFP_URL = 'cosmetics/uncomon/uncomon.png';
 
 const SHOP_PFPS = {
   // Uncommon — 1.00 Token
-  'pfp_uncommon_1': { id: 'pfp_uncommon_1', name: 'Derp Soldier', rarity: 'Uncommon', cost: 1.00, file: 'cosmetics/uncomon/uncomobn.png', color: '#10b981' },
-  'pfp_uncommon_2': { id: 'pfp_uncommon_2', name: 'Recruit Bob', rarity: 'Uncommon', cost: 1.00, file: 'cosmetics/uncomon/uncomok.png', color: '#10b981' },
-  'pfp_uncommon_3': { id: 'pfp_uncommon_3', name: 'Rookie Scout', rarity: 'Uncommon', cost: 1.00, file: 'cosmetics/uncomon/uncomokda.png', color: '#10b981' },
-  'pfp_uncommon_4': { id: 'pfp_uncommon_4', name: 'Grumpy Cadet', rarity: 'Uncommon', cost: 1.00, file: 'cosmetics/uncomon/uncomokik.png', color: '#10b981' },
-  'pfp_uncommon_5': { id: 'pfp_uncommon_5', name: 'Derp Ranger', rarity: 'Uncommon', cost: 1.00, file: 'cosmetics/uncomon/uncomon.png', isDefault: true, color: '#10b981' },
-  'pfp_uncommon_6': { id: 'pfp_uncommon_6', name: 'Silly Bot', rarity: 'Uncommon', cost: 1.00, file: 'cosmetics/uncomon/uncomon1311111.png', color: '#10b981' },
-  'pfp_uncommon_7': { id: 'pfp_uncommon_7', name: 'Default Joe', rarity: 'Uncommon', cost: 1.00, file: 'cosmetics/uncomon/uncomonk.png', color: '#10b981' },
+  'pfp_uncommon_1': { id: 'pfp_uncommon_1', name: '#1',  rarity: 'Uncommon', cost: 1.00, file: 'cosmetics/uncomon/uncomon.png', isDefault: true, color: '#10b981' },
+  'pfp_uncommon_2': { id: 'pfp_uncommon_2', name: '#2',  rarity: 'Uncommon', cost: 1.00, file: 'cosmetics/uncomon/uncomobn.png', color: '#10b981' },
+  'pfp_uncommon_3': { id: 'pfp_uncommon_3', name: '#3',  rarity: 'Uncommon', cost: 1.00, file: 'cosmetics/uncomon/uncomok.png', color: '#10b981' },
+  'pfp_uncommon_4': { id: 'pfp_uncommon_4', name: '#4',  rarity: 'Uncommon', cost: 1.00, file: 'cosmetics/uncomon/uncomokda.png', color: '#10b981' },
+  'pfp_uncommon_5': { id: 'pfp_uncommon_5', name: '#5',  rarity: 'Uncommon', cost: 1.00, file: 'cosmetics/uncomon/uncomokik.png', color: '#10b981' },
+  'pfp_uncommon_6': { id: 'pfp_uncommon_6', name: '#6',  rarity: 'Uncommon', cost: 1.00, file: 'cosmetics/uncomon/uncomon1311111.png', color: '#10b981' },
+  'pfp_uncommon_7': { id: 'pfp_uncommon_7', name: '#7',  rarity: 'Uncommon', cost: 1.00, file: 'cosmetics/uncomon/uncomonk.png', color: '#10b981' },
 
   // Rare — 1.75 Tokens
-  'pfp_rare_1': { id: 'pfp_rare_1', name: 'Shadow Ops', rarity: 'Rare', cost: 1.75, file: 'cosmetics/rare/rare too.png', color: '#3b82f6' },
-  'pfp_rare_2': { id: 'pfp_rare_2', name: 'Cyber Rogue', rarity: 'Rare', cost: 1.75, file: 'cosmetics/rare/rare.png', color: '#3b82f6' },
-  'pfp_rare_3': { id: 'pfp_rare_3', name: 'Neon Striker', rarity: 'Rare', cost: 1.75, file: 'cosmetics/rare/rare23487.png', color: '#3b82f6' },
-  'pfp_rare_4': { id: 'pfp_rare_4', name: 'Viper Assassin', rarity: 'Rare', cost: 1.75, file: 'cosmetics/rare/rarepussy.png', color: '#3b82f6' },
-  'pfp_rare_5': { id: 'pfp_rare_5', name: 'Midnight Raider', rarity: 'Rare', cost: 1.75, file: 'cosmetics/rare/rarewee.png', color: '#3b82f6' },
-  'pfp_rare_6': { id: 'pfp_rare_6', name: 'Frost Hunter', rarity: 'Rare', cost: 1.75, file: 'cosmetics/rare/rareyhyh.png', color: '#3b82f6' },
-  'pfp_rare_7': { id: 'pfp_rare_7', name: 'Cobalt Phantom', rarity: 'Rare', cost: 1.75, file: 'cosmetics/rare/raré.png', color: '#3b82f6' },
+  'pfp_rare_1': { id: 'pfp_rare_1', name: '#8',  rarity: 'Rare', cost: 1.75, file: 'cosmetics/rare/rare too.png', color: '#3b82f6' },
+  'pfp_rare_2': { id: 'pfp_rare_2', name: ' #9',  rarity: 'Rare', cost: 1.75, file: 'cosmetics/rare/rare.png', color: '#3b82f6' },
+  'pfp_rare_3': { id: 'pfp_rare_3', name: '#10', rarity: 'Rare', cost: 1.75, file: 'cosmetics/rare/rare23487.png', color: '#3b82f6' },
+  'pfp_rare_4': { id: 'pfp_rare_4', name: '#11', rarity: 'Rare', cost: 1.75, file: 'cosmetics/rare/rarepussy.png', color: '#3b82f6' },
+  'pfp_rare_5': { id: 'pfp_rare_5', name: '#12', rarity: 'Rare', cost: 1.75, file: 'cosmetics/rare/rarewee.png', color: '#3b82f6' },
+  'pfp_rare_6': { id: 'pfp_rare_6', name: '#13', rarity: 'Rare', cost: 1.75, file: 'cosmetics/rare/rareyhyh.png', color: '#3b82f6' },
+  'pfp_rare_7': { id: 'pfp_rare_7', name: '#14', rarity: 'Rare', cost: 1.75, file: 'cosmetics/rare/raré.png', color: '#3b82f6' },
 
   // Epic — 2.25 Tokens
-  'pfp_epic_1': { id: 'pfp_epic_1', name: 'Void Walker', rarity: 'Epic', cost: 2.25, file: 'cosmetics/epic/1333334.png', color: '#a855f7' },
-  'pfp_epic_2': { id: 'pfp_epic_2', name: 'Astral Demon', rarity: 'Epic', cost: 2.25, file: 'cosmetics/epic/apikcica.png', color: '#a855f7' },
-  'pfp_epic_3': { id: 'pfp_epic_3', name: 'Nebula Dragon', rarity: 'Epic', cost: 2.25, file: 'cosmetics/epic/babyrare.png', color: '#a855f7' },
-  'pfp_epic_4': { id: 'pfp_epic_4', name: 'Phantom Reaper', rarity: 'Epic', cost: 2.25, file: 'cosmetics/epic/dddqjp9qdhp.png', color: '#a855f7' },
-  'pfp_epic_5': { id: 'pfp_epic_5', name: 'Spectral Knight', rarity: 'Epic', cost: 2.25, file: 'cosmetics/epic/edcpdaöfko.png', color: '#a855f7' },
-  'pfp_epic_6': { id: 'pfp_epic_6', name: 'Solar Apex', rarity: 'Epic', cost: 2.25, file: 'cosmetics/epic/epic one.png', color: '#a855f7' },
-  'pfp_epic_7': { id: 'pfp_epic_7', name: 'Hyper Titan', rarity: 'Epic', cost: 2.25, file: 'cosmetics/epic/epic.png', color: '#a855f7' },
-  'pfp_epic_8': { id: 'pfp_epic_8', name: 'Dark Overlord', rarity: 'Epic', cost: 2.25, file: 'cosmetics/epic/epic1231344.png', color: '#a855f7' },
-  'pfp_epic_9': { id: 'pfp_epic_9', name: 'Inferno Beast', rarity: 'Epic', cost: 2.25, file: 'cosmetics/epic/Epic1234.png', color: '#a855f7' },
-  'pfp_epic_10': { id: 'pfp_epic_10', name: 'Abyss Champion', rarity: 'Epic', cost: 2.25, file: 'cosmetics/epic/epickidadddwq.png', color: '#a855f7' },
-  'pfp_epic_11': { id: 'pfp_epic_11', name: 'Quantum Berserker', rarity: 'Epic', cost: 2.25, file: 'cosmetics/epic/epikia.png', color: '#a855f7' },
-  'pfp_epic_12': { id: 'pfp_epic_12', name: 'Crimson God', rarity: 'Epic', cost: 2.25, file: 'cosmetics/epic/epikica.png', color: '#a855f7' },
-  'pfp_epic_13': { id: 'pfp_epic_13', name: 'Chrono Warden', rarity: 'Epic', cost: 2.25, file: 'cosmetics/epic/epikus.png', color: '#a855f7' },
+  'pfp_epic_1':  { id: 'pfp_epic_1',  name: '#15', rarity: 'Epic', cost: 2.25, file: 'cosmetics/epic/1333334.png', color: '#a855f7' },
+  'pfp_epic_2':  { id: 'pfp_epic_2',  name: '#16', rarity: 'Epic', cost: 2.25, file: 'cosmetics/epic/apikcica.png', color: '#a855f7' },
+  'pfp_epic_3':  { id: 'pfp_epic_3',  name: '#17', rarity: 'Epic', cost: 2.25, file: 'cosmetics/epic/babyrare.png', color: '#a855f7' },
+  'pfp_epic_4':  { id: 'pfp_epic_4',  name: '#18', rarity: 'Epic', cost: 2.25, file: 'cosmetics/epic/dddqjp9qdhp.png', color: '#a855f7' },
+  'pfp_epic_5':  { id: 'pfp_epic_5',  name: '#19', rarity: 'Epic', cost: 2.25, file: 'cosmetics/epic/edcpdaöfko.png', color: '#a855f7' },
+  'pfp_epic_6':  { id: 'pfp_epic_6',  name: '#20', rarity: 'Epic', cost: 2.25, file: 'cosmetics/epic/epic one.png', color: '#a855f7' },
+  'pfp_epic_7':  { id: 'pfp_epic_7',  name: '#21', rarity: 'Epic', cost: 2.25, file: 'cosmetics/epic/epic.png', color: '#a855f7' },
+  'pfp_epic_8':  { id: 'pfp_epic_8',  name: '#22', rarity: 'Epic', cost: 2.25, file: 'cosmetics/epic/epic1231344.png', color: '#a855f7' },
+  'pfp_epic_9':  { id: 'pfp_epic_9',  name: '#23', rarity: 'Epic', cost: 2.25, file: 'cosmetics/epic/Epic1234.png', color: '#a855f7' },
+  'pfp_epic_10': { id: 'pfp_epic_10', name: '#24', rarity: 'Epic', cost: 2.25, file: 'cosmetics/epic/epickidadddwq.png', color: '#a855f7' },
+  'pfp_epic_11': { id: 'pfp_epic_11', name: '#25', rarity: 'Epic', cost: 2.25, file: 'cosmetics/epic/epikia.png', color: '#a855f7' },
+  'pfp_epic_12': { id: 'pfp_epic_12', name: '#26', rarity: 'Epic', cost: 2.25, file: 'cosmetics/epic/epikica.png', color: '#a855f7' },
+  'pfp_epic_13': { id: 'pfp_epic_13', name: '#27', rarity: 'Epic', cost: 2.25, file: 'cosmetics/epic/epikus.png', color: '#a855f7' },
 
   // Exclusive — 5.00 Tokens
-  'pfp_exclusive_1': { id: 'pfp_exclusive_1', name: 'Golden Mythic', rarity: 'Exclusive', cost: 5.00, file: 'cosmetics/exclusive/exclusic.png', color: '#f59e0b' },
-  'pfp_exclusive_2': { id: 'pfp_exclusive_2', name: 'Radiant Supreme', rarity: 'Exclusive', cost: 5.00, file: 'cosmetics/exclusive/exclusive.png', color: '#f59e0b' },
-  'pfp_exclusive_3': { id: 'pfp_exclusive_3', name: 'Vortex Crown', rarity: 'Exclusive', cost: 5.00, file: 'cosmetics/exclusive/vzs excluisive.png', color: '#f59e0b' },
+  'pfp_exclusive_1': { id: 'pfp_exclusive_1', name: '#28', rarity: 'Exclusive', cost: 5.00, file: 'cosmetics/exclusive/exclusic.png', color: '#f59e0b' },
+  'pfp_exclusive_2': { id: 'pfp_exclusive_2', name: '#29', rarity: 'Exclusive', cost: 5.00, file: 'cosmetics/exclusive/exclusive.png', color: '#f59e0b' },
+  'pfp_exclusive_3': { id: 'pfp_exclusive_3', name: '#30', rarity: 'Exclusive', cost: 5.00, file: 'cosmetics/exclusive/vzs excluisive.png', color: '#f59e0b' },
 };
 
 const BANNERS_COMING_SOON = true;
