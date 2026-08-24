@@ -34,6 +34,14 @@ function injectNav(activePage = '') {
         <div class="ct-nav__links">${navLinksHTML}</div>
 
         <div class="ct-nav__user">
+          <!-- Active Match Live Indicator Widget -->
+          <a href="#" id="nav-active-match-btn" class="nav-active-match-pill" style="display:none;" title="Click to enter active match room">
+            <span class="nav-match-pulsing-dot"></span>
+            <span id="nav-active-match-title">1v1 Realistic</span>
+            <span class="nav-active-match-status-badge" id="nav-active-match-status">Waiting 1/2</span>
+            <i data-lucide="arrow-up-right" style="width:13px;height:13px;opacity:0.85;"></i>
+          </a>
+
           <button class="nav-token-btn" onclick="openTokenWalletModal('purchase')" title="Add Tokens / View Wallet">
             <img src="champion_token_coin.png" alt="CT" class="nav-token-coin" width="20" height="20" />
             <span id="nav-balance">10.00</span>
@@ -262,6 +270,55 @@ function injectNav(activePage = '') {
         renderNavNotifications(user.uid, notifs);
       });
     }
+
+    // Live Active Match tracker
+    db.collection('matches')
+      .where('playerUids', 'array-contains', user.uid)
+      .onSnapshot((querySnap) => {
+        const activeBtn = document.getElementById('nav-active-match-btn');
+        const titleEl   = document.getElementById('nav-active-match-title');
+        const statusEl  = document.getElementById('nav-active-match-status');
+        if (!activeBtn) return;
+
+        let activeMatch = null;
+        querySnap.forEach((doc) => {
+          const m = { id: doc.id, ...doc.data() };
+          if ((m.status === 'waiting' || m.status === 'in_progress') && !m.isExpired && m.status !== 'cancelled' && m.status !== 'completed') {
+            if (!activeMatch || (m.status === 'in_progress' && activeMatch.status !== 'in_progress')) {
+              activeMatch = m;
+            }
+          }
+        });
+
+        if (activeMatch) {
+          const size = activeMatch.size || '1v1';
+          const mode = activeMatch.mode || 'Realistic';
+          const isInProgress = activeMatch.status === 'in_progress';
+          const playersCount = activeMatch.players?.length || 1;
+          const maxPlayers   = activeMatch.maxPlayers || (size === '1v1' ? 2 : size === '2v2' ? 4 : 6);
+
+          activeBtn.href = `match?id=${activeMatch.id}`;
+          activeBtn.title = `Active Match: ${size} ${mode} (${isInProgress ? 'In Progress' : 'Waiting in Lobby'}) · Click to open`;
+          
+          if (titleEl) titleEl.textContent = `${size} ${mode}`;
+          if (statusEl) {
+            statusEl.textContent = isInProgress ? 'In Progress' : `Waiting ${playersCount}/${maxPlayers}`;
+          }
+
+          if (isInProgress) {
+            activeBtn.classList.add('in-progress');
+          } else {
+            activeBtn.classList.remove('in-progress');
+          }
+
+          activeBtn.style.display = 'inline-flex';
+          if (window.lucide) lucide.createIcons();
+        } else {
+          activeBtn.style.display = 'none';
+        }
+      }, (err) => {
+        console.warn('Active match listener error:', err);
+      });
   });
 }
 
