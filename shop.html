@@ -24,7 +24,7 @@
   <link rel="icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
-  <link rel="stylesheet" href="css/style.css?v=4.0.1787603400033"/>
+  <link rel="stylesheet" href="css/style.css?v=4.0.1787603560488"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
@@ -133,6 +133,30 @@
           </button>
         </div>
       </div>
+
+      <!-- 2. Daily Avatar Shop -->
+      <div style="margin-bottom:36px;">
+        <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:18px;flex-wrap:wrap;gap:12px;">
+          <div>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span class="badge" style="background:rgba(245,158,11,0.18);color:var(--gold-bright);font-size:0.7rem;font-weight:800;letter-spacing:0.06em;padding:2px 8px;">DAILY ROTATION</span>
+              <h2 style="font-size:1.45rem;font-weight:900;margin:0;color:#fff;">Daily Avatar Shop</h2>
+            </div>
+            <p style="font-size:0.85rem;color:var(--text-muted);margin:4px 0 0;">
+              Featured avatar cosmetics refreshed daily at 00:00 UTC. Equip unlocked avatars in your Profile.
+            </p>
+          </div>
+          <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);padding:6px 14px;border-radius:20px;font-size:0.8rem;color:#cbd5e1;display:flex;align-items:center;gap:6px;">
+            <i data-lucide="clock" style="width:14px;height:14px;color:var(--gold-bright);"></i>
+            <span>Resets in: <strong id="daily-shop-timer" style="color:var(--gold-bright);font-family:monospace;font-weight:800;">--:--:--</strong></span>
+          </div>
+        </div>
+
+        <!-- 5 Daily Avatars Grid -->
+        <div id="daily-pfps-grid" style="display:grid;grid-template-columns:repeat(auto-fill, minmax(180px, 1fr));gap:16px;">
+          <!-- Rendered dynamically -->
+        </div>
+      </div>
     </div>
   </main>
 
@@ -142,9 +166,9 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="js/firebase-config.js?v=3.8"></script>
-  <script src="js/auth.js?v=4.0.1787603400033"></script>
-  <script src="js/db.js?v=4.0.1787603400033"></script>
-  <script src="js/nav.js?v=4.0.1787603400033"></script>
+  <script src="js/auth.js?v=4.0.1787603560488"></script>
+  <script src="js/db.js?v=4.0.1787603560488"></script>
+  <script src="js/nav.js?v=4.0.1787603560488"></script>
 
   <script>
     let currentUser = null;
@@ -171,6 +195,8 @@
           document.getElementById('shop-update-screen').style.display = 'none';
           document.getElementById('shop-owner-content').style.display = 'block';
           checkPremiumStatus();
+          renderDailyPfps();
+          startShopTimer();
         }
         if (window.lucide) lucide.createIcons();
       }).catch(err => {
@@ -188,6 +214,120 @@
         premBtn.classList.replace('btn-primary', 'btn-outline');
       }
       if (window.lucide) lucide.createIcons();
+    }
+
+    function renderDailyPfps() {
+      const grid = document.getElementById('daily-pfps-grid');
+      if (!grid) return;
+
+      const dailyItems = getDailyShopPfps();
+      const unlocked = currentUserData?.unlockedPfps || [];
+      const equippedPfp = currentUserData?.equippedPfp || '';
+      const currentPhotoURL = currentUserData?.photoURL || '';
+
+      grid.innerHTML = dailyItems.map(item => {
+        const isOwned = item.isDefault || unlocked.includes(item.id);
+        const isEquipped = (equippedPfp === item.id) || (currentPhotoURL === item.file);
+
+        let borderStyle = isEquipped ? '2px solid var(--gold-bright)' : '1.5px solid rgba(255,255,255,0.09)';
+        let bgStyle = isEquipped ? 'rgba(245,158,11,0.12)' : '#0b0d14';
+        const onClickAction = isOwned ? `handleEquipPfp('${item.id}')` : `handleBuyPfp('${item.id}')`;
+
+        return `
+          <div class="cosmetics-option-card ${isEquipped ? 'equipped' : ''}" 
+               onclick="${onClickAction}"
+               style="border:${borderStyle};background:${bgStyle};padding:10px 10px 14px 10px;display:flex;flex-direction:column;align-items:center;text-align:center;border-radius:18px;cursor:pointer;position:relative;transition:all 0.18s ease;box-shadow:0 8px 24px rgba(0,0,0,0.6);">
+            
+            <!-- Large Rounded Image -->
+            <div style="position:relative;width:100%;aspect-ratio:1/1;border-radius:14px;overflow:hidden;background:#141721;margin-bottom:10px;">
+              <img src="${encodeURI(item.file)}" alt="${escapeHtml(item.name)}" style="width:100%;height:100%;object-fit:cover;display:block;" />
+              <span style="position:absolute;top:6px;left:6px;background:rgba(0,0,0,0.75);backdrop-filter:blur(4px);color:#fff;font-size:0.75rem;font-weight:900;padding:2px 8px;border-radius:6px;border:1px solid rgba(255,255,255,0.15);">
+                ${escapeHtml(item.name)}
+              </span>
+              <span style="position:absolute;top:6px;right:6px;background:rgba(0,0,0,0.75);color:${item.color || '#fff'};font-size:0.65rem;font-weight:800;padding:2px 7px;border-radius:6px;border:1px solid ${item.color || '#fff'};">
+                ${item.rarity.toUpperCase()}
+              </span>
+            </div>
+
+            <!-- Bottom: Token icon and price / Status -->
+            <div style="width:100%;display:flex;align-items:center;justify-content:center;min-height:28px;">
+              ${isEquipped ? `
+                <span style="font-size:0.9rem;font-weight:900;color:var(--gold-bright);letter-spacing:0.02em;">Equipped ✓</span>
+              ` : isOwned ? `
+                <span style="font-size:0.9rem;font-weight:800;color:#60a5fa;">Equip</span>
+              ` : `
+                <div style="display:flex;align-items:center;gap:6px;font-size:1.05rem;font-weight:900;color:#fff;">
+                  <img src="new_token.png" style="width:20px;height:20px;object-fit:contain;vertical-align:middle;" alt="CT" />
+                  <span>${formatTokens(item.cost)}</span>
+                </div>
+              `}
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function startShopTimer() {
+      function updateTimer() {
+        const now = new Date();
+        const nextMidnight = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1, 0, 0, 0));
+        const diffMs = nextMidnight - now;
+        if (diffMs <= 0) {
+          renderDailyPfps();
+          return;
+        }
+        const hours = Math.floor(diffMs / (1000 * 60 * 60));
+        const mins = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+        const secs = Math.floor((diffMs % (1000 * 60)) / 1000);
+        const timerEl = document.getElementById('daily-shop-timer');
+        if (timerEl) {
+          timerEl.textContent = `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+      }
+      updateTimer();
+      setInterval(updateTimer, 1000);
+    }
+
+    async function handleBuyPfp(pfpId) {
+      if (!currentUser) return;
+      const item = SHOP_PFPS[pfpId];
+      if (!item) return;
+
+      const ok = await showConfirm({
+        title: `Unlock ${item.name}`,
+        message: `Unlock the <strong>${item.rarity}</strong> avatar <strong>"${item.name}"</strong> for <strong>${formatTokens(item.cost)} Tokens</strong>?`,
+        confirmText: `Unlock (${formatTokens(item.cost)} Tokens)`,
+        cancelText: 'Cancel',
+        type: 'warning',
+        icon: 'shopping-cart'
+      });
+      if (!ok) return;
+
+      try {
+        await buyShopPfp(currentUser.uid, pfpId);
+        showToast(`🎉 Unlocked and equipped "${item.name}"!`, 'success');
+        currentUserData = await getUser(currentUser.uid);
+        renderDailyPfps();
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
+    }
+
+    async function handleEquipPfp(pfpId) {
+      if (!currentUser) return;
+      const item = SHOP_PFPS[pfpId];
+      if (!item) return;
+
+      try {
+        await equipShopPfp(currentUser.uid, pfpId);
+        showToast(`✨ Equipped "${item.name}" avatar!`, 'success');
+        currentUserData = await getUser(currentUser.uid);
+        renderDailyPfps();
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
     }
 
     async function handleBuyPremium() {
