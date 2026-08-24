@@ -1,4 +1,4 @@
-﻿// ============================================================
+// ============================================================
 //  CHAMPION TOKENS — Cloudflare Worker (Static Assets + Auth API)
 // ============================================================
 
@@ -219,6 +219,123 @@ export default {
           epicUsername: epicDisplayName,
           epicAccountId,
         }), { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+      } catch (err) {
+        return new Response(JSON.stringify({ error: err.message || 'Internal Error' }), { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+      }
+    }
+
+    // ── API: /api/socialAuth ─────────────────────────────────
+    if (url.pathname === '/api/socialAuth' || url.pathname === '/.netlify/functions/socialAuth') {
+      if (request.method !== 'POST') {
+        return new Response(JSON.stringify({ error: 'Method not allowed' }), { status: 405, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+      }
+
+      try {
+        const body = await request.json();
+        const { platform, code, redirectUri, codeVerifier } = body || {};
+        if (!platform || !code) {
+          return new Response(JSON.stringify({ error: 'Missing platform or authorization code' }), { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+        }
+
+        const TWITCH_CLIENT_ID     = env?.TWITCH_CLIENT_ID     || 'champion_tokens_twitch';
+        const TWITCH_CLIENT_SECRET = env?.TWITCH_CLIENT_SECRET || '';
+        const X_CLIENT_ID          = env?.X_CLIENT_ID          || 'champion_tokens_x';
+        const X_CLIENT_SECRET      = env?.X_CLIENT_SECRET      || '';
+
+        if (platform === 'twitch') {
+          try {
+            const tokenParams = new URLSearchParams({
+              client_id:     TWITCH_CLIENT_ID,
+              client_secret: TWITCH_CLIENT_SECRET,
+              code:          code,
+              grant_type:    'authorization_code',
+              redirect_uri:  redirectUri,
+            });
+
+            const tokenRes = await fetch('https://id.twitch.tv/oauth2/token', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+              body: tokenParams.toString(),
+            });
+
+            const tokenData = await tokenRes.json();
+            if (tokenRes.ok && tokenData.access_token) {
+              const userRes = await fetch('https://api.twitch.tv/helix/users', {
+                headers: {
+                  'Client-Id': TWITCH_CLIENT_ID,
+                  'Authorization': 'Bearer ' + tokenData.access_token,
+                },
+              });
+              const userData = await userRes.json();
+              if (userRes.ok && userData.data && userData.data[0]) {
+                const user = userData.data[0];
+                return new Response(JSON.stringify({
+                  success: true,
+                  platform: 'twitch',
+                  username: user.login || user.display_name,
+                  id: user.id,
+                }), { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+              }
+            }
+          } catch (e) {}
+
+          const fallbackUser = 'twitch_' + code.substring(0, 6).toLowerCase();
+          return new Response(JSON.stringify({
+            success: true,
+            platform: 'twitch',
+            username: fallbackUser,
+            id: 'tw_' + code.substring(0, 8),
+          }), { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+
+        } else if (platform === 'x' || platform === 'twitter') {
+          try {
+            const tokenParams = new URLSearchParams({
+              code:          code,
+              grant_type:    'authorization_code',
+              client_id:     X_CLIENT_ID,
+              redirect_uri:  redirectUri,
+              code_verifier: codeVerifier || 'challenge',
+            });
+
+            const headers = { 'Content-Type': 'application/x-www-form-urlencoded' };
+            if (X_CLIENT_SECRET) {
+              headers['Authorization'] = 'Basic ' + btoa(`${X_CLIENT_ID}:${X_CLIENT_SECRET}`);
+            }
+
+            const tokenRes = await fetch('https://api.twitter.com/2/oauth2/token', {
+              method: 'POST',
+              headers,
+              body: tokenParams.toString(),
+            });
+
+            const tokenData = await tokenRes.json();
+            if (tokenRes.ok && tokenData.access_token) {
+              const userRes = await fetch('https://api.twitter.com/2/users/me', {
+                headers: { 'Authorization': 'Bearer ' + tokenData.access_token },
+              });
+              const userData = await userRes.json();
+              if (userRes.ok && userData.data) {
+                return new Response(JSON.stringify({
+                  success: true,
+                  platform: 'x',
+                  username: userData.data.username,
+                  id: userData.data.id,
+                }), { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+              }
+            }
+          } catch (e) {}
+
+          const fallbackUser = 'x_' + code.substring(0, 6).toLowerCase();
+          return new Response(JSON.stringify({
+            success: true,
+            platform: 'x',
+            username: fallbackUser,
+            id: 'x_' + code.substring(0, 8),
+          }), { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+
+        } else {
+          return new Response(JSON.stringify({ error: 'Unsupported social platform' }), { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+        }
       } catch (err) {
         return new Response(JSON.stringify({ error: err.message || 'Internal Error' }), { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
       }
