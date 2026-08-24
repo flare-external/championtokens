@@ -3,7 +3,7 @@
 // ============================================================
 
 // ── Maintenance Mode Guard ───────────────────────────────────
-const MAINTENANCE_MODE_ACTIVE = true;
+const MAINTENANCE_MODE_ACTIVE = false;
 
 (function checkMaintenanceRedirect() {
   if (!MAINTENANCE_MODE_ACTIVE) return;
