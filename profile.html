@@ -7,7 +7,7 @@
   <link rel="icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
-  <link rel="stylesheet" href="css/style.css?v=4.0.1787580717348"/>
+  <link rel="stylesheet" href="css/style.css?v=4.0.1787581500350"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
@@ -771,7 +771,7 @@
           <div id="premium-action-wrap"></div>
         </div>
         <div id="profile-customize-action">
-          <button class="btn btn-outline btn-sm" onclick="openCosmeticsModal('titles')" style="border-color:rgba(255,255,255,0.18);padding:7px 16px;font-size:0.82rem;gap:7px;">
+          <button class="btn btn-outline btn-sm" onclick="showToast('Customization Studio coming soon!', 'info')" style="border-color:rgba(255,255,255,0.1);opacity:0.6;cursor:not-allowed;padding:7px 16px;font-size:0.82rem;gap:7px;">
             <i data-lucide="palette" style="width:14px;height:14px;color:var(--gold-bright);"></i>
             <span>Customize</span>
           </button>
@@ -1092,9 +1092,9 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="js/firebase-config.js?v=3.2"></script>
-  <script src="js/auth.js?v=4.0.1787580717348"></script>
-  <script src="js/db.js?v=4.0.1787580717348"></script>
-  <script src="js/nav.js?v=4.0.1787580717348"></script>
+  <script src="js/auth.js?v=4.0.1787581500350"></script>
+  <script src="js/db.js?v=4.0.1787581500350"></script>
+  <script src="js/nav.js?v=4.0.1787581500350"></script>
 
   <script>
     let currentUser = null;
@@ -1286,17 +1286,11 @@
         nameEl.className = isPremium ? 'username-premium' : '';
       }
 
-      // Title Tag
+      // Title Tag (Temporarily disabled - coming soon)
       const titleSlot = document.getElementById('profile-title-slot');
       if (titleSlot) {
-        if (data.equippedTitle && SHOP_TITLES[data.equippedTitle]) {
-          const t = SHOP_TITLES[data.equippedTitle];
-          titleSlot.innerHTML = `<span class="player-title-tag ${t.className}">${t.name}</span>`;
-          titleSlot.style.display = 'inline-flex';
-        } else {
-          titleSlot.innerHTML = '';
-          titleSlot.style.display = 'none';
-        }
+        titleSlot.innerHTML = '';
+        titleSlot.style.display = 'none';
       }
 
       // Customize Button (Account owner only)
@@ -1445,12 +1439,7 @@
 
       const hubTitle = document.getElementById('hub-current-title');
       if (hubTitle) {
-        if (data.equippedTitle && SHOP_TITLES[data.equippedTitle]) {
-          const t = SHOP_TITLES[data.equippedTitle];
-          hubTitle.innerHTML = `<span class="player-title-tag ${t.className}">${t.name}</span>`;
-        } else {
-          hubTitle.innerHTML = `<span class="title-empty-placeholder">+ Set Title</span>`;
-        }
+        hubTitle.innerHTML = `<span class="chip" style="font-size:0.78rem;font-weight:700;color:var(--text-muted);">Coming Soon 🏷️</span>`;
       }
 
       const hubBanner = document.getElementById('hub-current-banner');
@@ -1554,18 +1543,8 @@
     let currentCosmeticsTab = 'titles';
 
     function openCosmeticsModal(initialTab = 'titles') {
-      if (!isViewingSelf || !currentUserData) return;
-      currentCosmeticsTab = initialTab;
-
-      const modal = document.getElementById('cosmetics-customizer-modal');
-      if (modal) {
-        modal.classList.add('open');
-        modal.classList.add('active');
-      }
-
-      switchCosmeticsTab(initialTab);
-      renderCosmeticsModal();
-      if (window.lucide) lucide.createIcons();
+      showToast('Customization Studio coming soon!', 'info');
+      return;
     }
 
     function closeCosmeticsModal() {

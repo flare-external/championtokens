@@ -24,7 +24,7 @@
   <link rel="icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
-  <link rel="stylesheet" href="css/style.css?v=4.0.1787580717348"/>
+  <link rel="stylesheet" href="css/style.css?v=4.0.1787581500350"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
@@ -94,12 +94,8 @@
   <main class="page-wrap">
     <div class="shop-header-flex">
       <div class="page-header" style="margin-bottom:0;">
-        <h1><i data-lucide="shopping-bag" style="color:var(--gold-bright);"></i> Token Shop & Cosmetics</h1>
-        <p>Unlock exclusive Fortnite rank titles, cosmetics, and Champion Premium.</p>
-      </div>
-      <div class="daily-timer-box">
-        <i data-lucide="clock"></i>
-        <span>Daily Reset in: <strong id="daily-reset-clock" style="font-family:monospace;color:#fff;">--:--:--</strong></span>
+        <h1><i data-lucide="shopping-bag" style="color:var(--gold-bright);"></i> Token Shop</h1>
+        <p>Unlock Champion Premium, exclusive perks, and upcoming upgrades.</p>
       </div>
     </div>
 
@@ -128,36 +124,6 @@
         </button>
       </div>
     </div>
-
-    <!-- 2. Daily Rotating Titles Section -->
-    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:16px;">
-      <div class="section-title" style="margin-bottom:0;">
-        <i data-lucide="award"></i> Daily Titles & Cosmetics
-      </div>
-      <span class="badge" style="background:rgba(245,158,11,0.12);color:var(--gold-bright);border:1px solid rgba(245,158,11,0.3);font-size:0.75rem;padding:3px 10px;font-weight:700;">
-        🔄 Rotates Daily
-      </span>
-    </div>
-    <div class="shop-grid-items" id="titles-grid">
-      <div class="empty-state" style="grid-column:1/-1;"><div class="spinner" style="margin:0 auto;"></div></div>
-    </div>
-
-    <!-- 3. Profile Banners (Coming Soon) -->
-    <div class="section-title" style="margin-bottom:16px;">
-      <i data-lucide="image"></i> Profile Banners & Themes
-    </div>
-    <div class="card" style="background:#080808;border:1px dashed rgba(245,158,11,0.35);border-radius:var(--radius-xl);padding:36px 28px;text-align:center;margin-bottom:36px;display:flex;flex-direction:column;align-items:center;gap:12px;">
-      <div style="width:52px;height:52px;border-radius:50%;background:rgba(245,158,11,0.12);border:1px solid rgba(245,158,11,0.4);display:flex;align-items:center;justify-content:center;color:var(--gold-bright);box-shadow:0 0 20px rgba(245,158,11,0.25);">
-        <i data-lucide="palette" style="width:24px;height:24px;"></i>
-      </div>
-      <div style="font-size:1.25rem;font-weight:900;color:#fff;">Profile Banners — Coming Soon</div>
-      <p style="font-size:0.875rem;color:var(--text-muted);max-width:440px;line-height:1.5;">
-        Custom match arena themes and animated banner artwork will be available in an upcoming update!
-      </p>
-      <span class="badge" style="background:rgba(255,255,255,0.06);color:var(--gold-light);border:1px solid rgba(255,255,255,0.1);font-size:0.72rem;padding:3px 12px;font-weight:700;">
-        🎨 IN DEVELOPMENT
-      </span>
-    </div>
   </main>
 
   <!-- Core Scripts -->
@@ -166,9 +132,9 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="js/firebase-config.js?v=3.8"></script>
-  <script src="js/auth.js?v=4.0.1787580717348"></script>
-  <script src="js/db.js?v=4.0.1787580717348"></script>
-  <script src="js/nav.js?v=4.0.1787580717348"></script>
+  <script src="js/auth.js?v=4.0.1787581500350"></script>
+  <script src="js/db.js?v=4.0.1787581500350"></script>
+  <script src="js/nav.js?v=4.0.1787581500350"></script>
 
   <script>
     let currentUser = null;
@@ -185,8 +151,7 @@
         currentUserData = await getUser(user.uid);
         injectNav('shop');
         document.getElementById('page-loading').classList.add('hidden');
-        startDailyResetClock();
-        renderDailyShop();
+        checkPremiumStatus();
       }).catch(err => {
         console.error('Shop auth error:', err);
         const loadingEl = document.getElementById('page-loading');
@@ -194,81 +159,14 @@
       });
     });
 
-    function startDailyResetClock() {
-      function update() {
-        const now = new Date();
-        const nextMidnight = new Date();
-        nextMidnight.setUTCHours(24, 0, 0, 0);
-        const diffMs = nextMidnight.getTime() - now.getTime();
-
-        const hours = Math.floor(diffMs / 3600000);
-        const mins  = Math.floor((diffMs % 3600000) / 60000);
-        const secs  = Math.floor((diffMs % 60000) / 1000);
-
-        const clockEl = document.getElementById('daily-reset-clock');
-        if (clockEl) {
-          clockEl.textContent = `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-        }
-      }
-      update();
-      setInterval(update, 1000);
-    }
-
-    function renderDailyShop() {
-      const titlesGrid = document.getElementById('titles-grid');
-      if (!titlesGrid) return;
-
-      const dailyItems = typeof getDailyShopTitles === 'function' ? getDailyShopTitles(5) : Object.values(SHOP_TITLES).slice(0, 5);
-      const unlockedTitles = currentUserData?.unlockedTitles || [];
-
-      titlesGrid.innerHTML = dailyItems.map(item => {
-        const isOwned = unlockedTitles.includes(item.id);
-        const rarityBadge = `<span class="badge" style="background:rgba(255,255,255,0.06);color:var(--gold-bright);border:1px solid rgba(255,255,255,0.1);font-size:0.68rem;font-weight:800;text-transform:uppercase;letter-spacing:0.04em;">${item.rarity || 'Rank'}</span>`;
-        
-        return `
-          <div class="item-card">
-            <div class="item-preview-box">
-              <span class="player-title-tag ${item.className}">${escapeHtml(item.name)}</span>
-            </div>
-            <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
-              <div style="font-weight:800;font-size:1rem;color:#fff;">${escapeHtml(item.name)}</div>
-              ${rarityBadge}
-            </div>
-            <div style="font-size:1.25rem;font-weight:900;color:var(--gold-bright);margin-top:auto;display:flex;align-items:center;gap:6px;">
-              ${formatTokens(item.cost)} <img src="new_token.png" style="width:36px;height:36px;object-fit:contain;vertical-align:middle;filter:drop-shadow(0 0 8px rgba(245,158,11,0.6));" alt="CT"/>
-            </div>
-            <button
-              class="btn ${isOwned ? 'btn-outline' : 'btn-primary'} btn-full btn-sm"
-              id="btn-title-${item.id}"
-              ${isOwned ? 'disabled' : ''}
-              onclick="handleBuyTitle('${item.id}')"
-            >
-              ${isOwned ? '<i data-lucide="check"></i> Owned' : `<i data-lucide="tag"></i> Unlock Title`}
-            </button>
-          </div>`;
-      }).join('');
-
-      // Check Premium Status
+    function checkPremiumStatus() {
       const premBtn = document.getElementById('btn-buy-premium');
       if (premBtn && currentUserData?.isPremium) {
         premBtn.innerHTML = '<i data-lucide="check-circle"></i> Active (30 Days)';
         premBtn.disabled = true;
         premBtn.classList.replace('btn-primary', 'btn-outline');
       }
-
       if (window.lucide) lucide.createIcons();
-    }
-
-    async function handleBuyTitle(titleId) {
-      if (!currentUser) return;
-      try {
-        const item = await buyShopTitle(currentUser.uid, titleId);
-        showToast(`🏷️ "${item.name}" Title unlocked & equipped! Check your profile.`, 'success');
-        currentUserData = await getUser(currentUser.uid);
-        renderDailyShop();
-      } catch (err) {
-        showToast(err.message, 'error');
-      }
     }
 
     async function handleBuyPremium() {

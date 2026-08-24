@@ -7,7 +7,7 @@
   <link rel="icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
-  <link rel="stylesheet" href="css/style.css?v=4.0.1787580717348"/>
+  <link rel="stylesheet" href="css/style.css?v=4.0.1787581500350"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
@@ -1361,9 +1361,9 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="js/firebase-config.js"></script>
-  <script src="js/auth.js?v=4.0.1787580717348"></script>
-  <script src="js/db.js?v=4.0.1787580717348"></script>
-  <script src="js/nav.js?v=4.0.1787580717348"></script>
+  <script src="js/auth.js?v=4.0.1787581500350"></script>
+  <script src="js/db.js?v=4.0.1787581500350"></script>
+  <script src="js/nav.js?v=4.0.1787581500350"></script>
 
   <script>
     let currentUser = null;
@@ -1739,10 +1739,7 @@
               : `<div class="concept-epic-row" style="opacity:0.5;border-style:dashed;" onclick="event.stopPropagation();showToast('Player has not linked their Epic account yet','info')"><img src="epic_games_logo.webp" alt="" style="width:12px;height:14px;object-fit:contain;"/> <span>No Epic Linked</span></div>`;
           }
 
-          let titleText = isHiddenEnemy ? 'Hidden' : 'GLADIATOR';
-          if (!isHiddenEnemy && liveData.equippedTitle && SHOP_TITLES[liveData.equippedTitle]) {
-            titleText = SHOP_TITLES[liveData.equippedTitle].name;
-          }
+          let titleText = isHiddenEnemy ? 'Hidden' : 'CHAMPION';
 
           let readyStatusHTML = '';
           if (match.status === 'waiting') {
@@ -1964,22 +1961,13 @@
         }
       }
 
-      // Chat input locks while waiting for all players to ready up
+      // Chat input is always active and working for everyone in the match
       const chatInput = document.getElementById('chat-input');
       const chatSendBtn = document.querySelector('.chat-send-btn');
-      const urlParams = new URLSearchParams(window.location.search);
-      const isStaffMode = urlParams.get('staff') === 'true' || urlParams.get('call') !== null;
-
       if (chatInput) {
-        if (isMatchLive || isStaffMode) {
-          chatInput.disabled = false;
-          chatInput.placeholder = "Type message..";
-          if (chatSendBtn) chatSendBtn.disabled = false;
-        } else {
-          chatInput.disabled = true;
-          chatInput.placeholder = "Chat locked — Waiting for all players to ready up";
-          if (chatSendBtn) chatSendBtn.disabled = true;
-        }
+        chatInput.disabled = false;
+        chatInput.placeholder = "Type message..";
+        if (chatSendBtn) chatSendBtn.disabled = false;
       }
 
       if (window.lucide) lucide.createIcons();
@@ -2438,15 +2426,10 @@
           nameEl.className = isPremium ? 'username-premium' : '';
         }
 
-        // Title Tag
+        // Title Tag (Coming soon)
         const titleSlot = document.getElementById('modal-user-title-slot');
         if (titleSlot) {
-          if (u.equippedTitle && SHOP_TITLES[u.equippedTitle]) {
-            const t = SHOP_TITLES[u.equippedTitle];
-            titleSlot.innerHTML = `<span class="player-title-tag ${t.className}">${t.name}</span>`;
-          } else {
-            titleSlot.innerHTML = '';
-          }
+          titleSlot.innerHTML = '';
         }
 
         const discEl = document.getElementById('modal-user-discord');
@@ -2716,20 +2699,13 @@
       const input = document.getElementById('chat-input');
       if (!input) return;
       const text = input.value.trim();
-      if (!text || !matchId) return;
-
-      const isMatchLive = (currentMatchData?.status === 'in_progress' || currentMatchData?.status === 'completed' || currentMatchData?.status === 'disputed');
-      const urlParams = new URLSearchParams(window.location.search);
-      const isStaffCall = urlParams.get('staff') === 'true' || urlParams.get('call') !== null;
-
-      if (!isMatchLive && !isStaffCall) {
-        showToast('Chat unlocks once all players ready up and match starts', 'error');
-        return;
-      }
+      if (!text || !matchId || !currentUser) return;
 
       input.value = '';
-      const matchPlayers = currentMatchData?.players || [];
+      const matchPlayers = currentMatch?.players || [];
       const isParticipant = matchPlayers.some(p => p.uid === currentUser?.uid);
+      const urlParams = new URLSearchParams(window.location.search);
+      const isStaffCall = urlParams.get('staff') === 'true' || urlParams.get('call') !== null;
       const isStaffMsg = Boolean((isStaffCall || !isParticipant) && isAdminUser(currentUser, currentUserData));
       const isPremium = !!currentUserData?.isPremium;
 
