@@ -253,8 +253,9 @@ function injectNav(activePage = '') {
       // Avatar
       const img  = document.getElementById('nav-avatar-img');
       const icon = document.getElementById('nav-avatar-icon');
-      if (img && icon && data.photoURL) {
-        img.src = data.photoURL;
+      const pfp = data.photoURL || 'cosmetics/uncomon/uncomon.png';
+      if (img && icon) {
+        img.src = encodeURI(pfp);
         img.style.display = 'block';
         icon.style.display = 'none';
       }

@@ -2008,27 +2008,49 @@ async function unlinkSocialAccount(uid, platform) {
   return { success: true };
 }
 
-// ── Shop Titles, Banners, & Daily Mystery Chests ─────────────
+// ── Avatars & Cosmetics Shop Catalog ────────────────────────
 
-const SHOP_TITLES = {
-  // Fortnite Rank Series
-  'bronze':        { id: 'bronze',        name: '🥉 Bronze',           cost: 1.00,  rarity: 'Common',    weight: 80, className: 'title-bronze' },
-  'silver':        { id: 'silver',        name: '🥈 Silver',           cost: 1.50,  rarity: 'Common',    weight: 70, className: 'title-silver' },
-  'gold':          { id: 'gold',          name: '🥇 Gold',             cost: 2.50,  rarity: 'Uncommon',  weight: 50, className: 'title-gold' },
-  'platinum':      { id: 'platinum',      name: '💎 Platinum',         cost: 3.50,  rarity: 'Rare',      weight: 35, className: 'title-platinum' },
-  'diamond':       { id: 'diamond',       name: '🔷 Diamond',          cost: 5.00,  rarity: 'Epic',      weight: 20, className: 'title-diamond' },
-  'elite':         { id: 'elite',         name: '👑 Elite',            cost: 7.50,  rarity: 'Legendary', weight: 10, className: 'title-elite' },
-  'champion':      { id: 'champion',      name: '🏆 Champion',         cost: 10.00, rarity: 'Mythic',    weight: 5,  className: 'title-champion' },
-  'unreal':        { id: 'unreal',        name: '🌌 Unreal',           cost: 15.00, rarity: 'Exotic',    weight: 2,  className: 'title-unreal' },
+const DEFAULT_STARTER_PFP_ID = 'pfp_uncommon_5';
+const DEFAULT_STARTER_PFP_URL = 'cosmetics/uncomon/uncomon.png';
 
-  // Special / Legacy Series
-  'goated':        { id: 'goated',        name: '⚡ GOATED',           cost: 2.50,  rarity: 'Uncommon',  weight: 40, className: 'title-goated' },
-  'the_boss':      { id: 'the_boss',      name: '⭐ The Boss',         cost: 5.00,  rarity: 'Epic',      weight: 15, className: 'title-the-boss' },
-  'prodigy':       { id: 'prodigy',       name: '🏆 The Prodigy',      cost: 2.00,  rarity: 'Uncommon',  weight: 50, className: 'title-prodigy' },
-  'box_god':       { id: 'box_god',       name: '🎯 Box Fight God',    cost: 2.50,  rarity: 'Uncommon',  weight: 45, className: 'title-box-god' },
-  'high_roller':   { id: 'high_roller',   name: '💎 High Roller',      cost: 4.00,  rarity: 'Rare',      weight: 25, className: 'title-high-roller' },
-  'average':       { id: 'average',       name: '⚡ Average',          cost: 1.00,  rarity: 'Common',    weight: 60, className: 'title-average' },
-  'beta_pioneer':  { id: 'beta_pioneer',  name: '🌟 Beta Pioneer',     cost: 0.00,  rarity: 'Exclusive', weight: 0,  className: 'title-beta-pioneer' }
+const SHOP_PFPS = {
+  // Uncommon — 1.00 Token
+  'pfp_uncommon_1': { id: 'pfp_uncommon_1', name: 'Derp Soldier', rarity: 'Uncommon', cost: 1.00, file: 'cosmetics/uncomon/uncomobn.png', color: '#10b981', glow: 'rgba(16,185,129,0.3)' },
+  'pfp_uncommon_2': { id: 'pfp_uncommon_2', name: 'Recruit Bob', rarity: 'Uncommon', cost: 1.00, file: 'cosmetics/uncomon/uncomok.png', color: '#10b981', glow: 'rgba(16,185,129,0.3)' },
+  'pfp_uncommon_3': { id: 'pfp_uncommon_3', name: 'Rookie Scout', rarity: 'Uncommon', cost: 1.00, file: 'cosmetics/uncomon/uncomokda.png', color: '#10b981', glow: 'rgba(16,185,129,0.3)' },
+  'pfp_uncommon_4': { id: 'pfp_uncommon_4', name: 'Grumpy Cadet', rarity: 'Uncommon', cost: 1.00, file: 'cosmetics/uncomon/uncomokik.png', color: '#10b981', glow: 'rgba(16,185,129,0.3)' },
+  'pfp_uncommon_5': { id: 'pfp_uncommon_5', name: 'Derp Ranger', rarity: 'Uncommon', cost: 1.00, file: 'cosmetics/uncomon/uncomon.png', isDefault: true, color: '#10b981', glow: 'rgba(16,185,129,0.3)' },
+  'pfp_uncommon_6': { id: 'pfp_uncommon_6', name: 'Silly Bot', rarity: 'Uncommon', cost: 1.00, file: 'cosmetics/uncomon/uncomon1311111.png', color: '#10b981', glow: 'rgba(16,185,129,0.3)' },
+  'pfp_uncommon_7': { id: 'pfp_uncommon_7', name: 'Default Joe', rarity: 'Uncommon', cost: 1.00, file: 'cosmetics/uncomon/uncomonk.png', color: '#10b981', glow: 'rgba(16,185,129,0.3)' },
+
+  // Rare — 1.75 Tokens
+  'pfp_rare_1': { id: 'pfp_rare_1', name: 'Shadow Ops', rarity: 'Rare', cost: 1.75, file: 'cosmetics/rare/rare too.png', color: '#3b82f6', glow: 'rgba(59,130,246,0.35)' },
+  'pfp_rare_2': { id: 'pfp_rare_2', name: 'Cyber Rogue', rarity: 'Rare', cost: 1.75, file: 'cosmetics/rare/rare.png', color: '#3b82f6', glow: 'rgba(59,130,246,0.35)' },
+  'pfp_rare_3': { id: 'pfp_rare_3', name: 'Neon Striker', rarity: 'Rare', cost: 1.75, file: 'cosmetics/rare/rare23487.png', color: '#3b82f6', glow: 'rgba(59,130,246,0.35)' },
+  'pfp_rare_4': { id: 'pfp_rare_4', name: 'Viper Assassin', rarity: 'Rare', cost: 1.75, file: 'cosmetics/rare/rarepussy.png', color: '#3b82f6', glow: 'rgba(59,130,246,0.35)' },
+  'pfp_rare_5': { id: 'pfp_rare_5', name: 'Midnight Raider', rarity: 'Rare', cost: 1.75, file: 'cosmetics/rare/rarewee.png', color: '#3b82f6', glow: 'rgba(59,130,246,0.35)' },
+  'pfp_rare_6': { id: 'pfp_rare_6', name: 'Frost Hunter', rarity: 'Rare', cost: 1.75, file: 'cosmetics/rare/rareyhyh.png', color: '#3b82f6', glow: 'rgba(59,130,246,0.35)' },
+  'pfp_rare_7': { id: 'pfp_rare_7', name: 'Cobalt Phantom', rarity: 'Rare', cost: 1.75, file: 'cosmetics/rare/raré.png', color: '#3b82f6', glow: 'rgba(59,130,246,0.35)' },
+
+  // Epic — 2.25 Tokens
+  'pfp_epic_1': { id: 'pfp_epic_1', name: 'Void Walker', rarity: 'Epic', cost: 2.25, file: 'cosmetics/epic/1333334.png', color: '#a855f7', glow: 'rgba(168,85,247,0.4)' },
+  'pfp_epic_2': { id: 'pfp_epic_2', name: 'Astral Demon', rarity: 'Epic', cost: 2.25, file: 'cosmetics/epic/apikcica.png', color: '#a855f7', glow: 'rgba(168,85,247,0.4)' },
+  'pfp_epic_3': { id: 'pfp_epic_3', name: 'Nebula Dragon', rarity: 'Epic', cost: 2.25, file: 'cosmetics/epic/babyrare.png', color: '#a855f7', glow: 'rgba(168,85,247,0.4)' },
+  'pfp_epic_4': { id: 'pfp_epic_4', name: 'Phantom Reaper', rarity: 'Epic', cost: 2.25, file: 'cosmetics/epic/dddqjp9qdhp.png', color: '#a855f7', glow: 'rgba(168,85,247,0.4)' },
+  'pfp_epic_5': { id: 'pfp_epic_5', name: 'Spectral Knight', rarity: 'Epic', cost: 2.25, file: 'cosmetics/epic/edcpdaöfko.png', color: '#a855f7', glow: 'rgba(168,85,247,0.4)' },
+  'pfp_epic_6': { id: 'pfp_epic_6', name: 'Solar Apex', rarity: 'Epic', cost: 2.25, file: 'cosmetics/epic/epic one.png', color: '#a855f7', glow: 'rgba(168,85,247,0.4)' },
+  'pfp_epic_7': { id: 'pfp_epic_7', name: 'Hyper Titan', rarity: 'Epic', cost: 2.25, file: 'cosmetics/epic/epic.png', color: '#a855f7', glow: 'rgba(168,85,247,0.4)' },
+  'pfp_epic_8': { id: 'pfp_epic_8', name: 'Dark Overlord', rarity: 'Epic', cost: 2.25, file: 'cosmetics/epic/epic1231344.png', color: '#a855f7', glow: 'rgba(168,85,247,0.4)' },
+  'pfp_epic_9': { id: 'pfp_epic_9', name: 'Inferno Beast', rarity: 'Epic', cost: 2.25, file: 'cosmetics/epic/Epic1234.png', color: '#a855f7', glow: 'rgba(168,85,247,0.4)' },
+  'pfp_epic_10': { id: 'pfp_epic_10', name: 'Abyss Champion', rarity: 'Epic', cost: 2.25, file: 'cosmetics/epic/epickidadddwq.png', color: '#a855f7', glow: 'rgba(168,85,247,0.4)' },
+  'pfp_epic_11': { id: 'pfp_epic_11', name: 'Quantum Berserker', rarity: 'Epic', cost: 2.25, file: 'cosmetics/epic/epikia.png', color: '#a855f7', glow: 'rgba(168,85,247,0.4)' },
+  'pfp_epic_12': { id: 'pfp_epic_12', name: 'Crimson God', rarity: 'Epic', cost: 2.25, file: 'cosmetics/epic/epikica.png', color: '#a855f7', glow: 'rgba(168,85,247,0.4)' },
+  'pfp_epic_13': { id: 'pfp_epic_13', name: 'Chrono Warden', rarity: 'Epic', cost: 2.25, file: 'cosmetics/epic/epikus.png', color: '#a855f7', glow: 'rgba(168,85,247,0.4)' },
+
+  // Exclusive — 5.00 Tokens
+  'pfp_exclusive_1': { id: 'pfp_exclusive_1', name: 'Golden Mythic', rarity: 'Exclusive', cost: 5.00, file: 'cosmetics/exclusive/exclusic.png', color: '#f59e0b', glow: 'rgba(245,158,11,0.5)' },
+  'pfp_exclusive_2': { id: 'pfp_exclusive_2', name: 'Radiant Supreme', rarity: 'Exclusive', cost: 5.00, file: 'cosmetics/exclusive/exclusive.png', color: '#f59e0b', glow: 'rgba(245,158,11,0.5)' },
+  'pfp_exclusive_3': { id: 'pfp_exclusive_3', name: 'Vortex Crown', rarity: 'Exclusive', cost: 5.00, file: 'cosmetics/exclusive/vzs excluisive.png', color: '#f59e0b', glow: 'rgba(245,158,11,0.5)' },
 };
 
 const BANNERS_COMING_SOON = true;
@@ -2040,6 +2062,91 @@ const SHOP_BANNERS = {};
 function seededRandom(seed) {
   const x = Math.sin(seed++) * 10000;
   return x - Math.floor(x);
+}
+
+/**
+ * Returns 5 featured daily shop PFPs:
+ * Guaranteed 2 Exclusive, 1 Epic, 1 Rare, 1 Uncommon.
+ */
+function getDailyShopPfps() {
+  const now = new Date();
+  const dateKey = `${now.getUTCFullYear()}-${now.getUTCMonth() + 1}-${now.getUTCDate()}`;
+  
+  let seed = 0;
+  for (let i = 0; i < dateKey.length; i++) {
+    seed = (seed * 31 + dateKey.charCodeAt(i)) >>> 0;
+  }
+
+  const allPfps = Object.values(SHOP_PFPS);
+  const exclusives = allPfps.filter(p => p.rarity === 'Exclusive');
+  const epics = allPfps.filter(p => p.rarity === 'Epic');
+  const rares = allPfps.filter(p => p.rarity === 'Rare');
+  const uncommons = allPfps.filter(p => p.rarity === 'Uncommon' && !p.isDefault);
+
+  function pickRandomN(arr, n, subSeed) {
+    const copy = [...arr];
+    const picked = [];
+    for (let i = 0; i < n && copy.length > 0; i++) {
+      const idx = Math.floor(seededRandom(subSeed + i * 13) * copy.length);
+      picked.push(copy[idx]);
+      copy.splice(idx, 1);
+    }
+    return picked;
+  }
+
+  const pickedExclusive = pickRandomN(exclusives, 2, seed + 1);
+  const pickedEpic = pickRandomN(epics, 1, seed + 2);
+  const pickedRare = pickRandomN(rares, 1, seed + 3);
+  const pickedUncommon = pickRandomN(uncommons, 1, seed + 4);
+
+  return [...pickedExclusive, ...pickedEpic, ...pickedRare, ...pickedUncommon];
+}
+
+/** Purchase a PFP from Shop */
+async function buyShopPfp(uid, pfpId) {
+  const item = SHOP_PFPS[pfpId];
+  if (!item) throw new Error('Avatar not found in catalog');
+
+  const user = await getUser(uid);
+  if (!user) throw new Error('User not found');
+  if (Number(user.tokens || 0) < item.cost) {
+    throw new Error(`Insufficient tokens (Requires ${formatTokens(item.cost)} Tokens, you have ${formatTokens(user.tokens || 0)} Tokens)`);
+  }
+
+  const unlocked = user.unlockedPfps || [];
+  if (unlocked.includes(pfpId) || item.isDefault) {
+    throw new Error('You already own this avatar');
+  }
+
+  await updateTokens(uid, -item.cost, 'shop', `🎨 Purchased Avatar: "${item.name}" (${item.rarity})`);
+  await db.collection('users').doc(uid).update({
+    unlockedPfps: firebase.firestore.FieldValue.arrayUnion(pfpId),
+    photoURL: item.file,
+    equippedPfp: pfpId
+  });
+
+  return item;
+}
+
+/** Equip a PFP from Customization Studio */
+async function equipShopPfp(uid, pfpId) {
+  const item = SHOP_PFPS[pfpId];
+  if (!item) throw new Error('Avatar not found');
+
+  const user = await getUser(uid);
+  if (!user) throw new Error('User not found');
+
+  const unlocked = user.unlockedPfps || [];
+  if (!item.isDefault && !unlocked.includes(pfpId)) {
+    throw new Error('You must unlock this avatar before equipping it');
+  }
+
+  await db.collection('users').doc(uid).update({
+    photoURL: item.file,
+    equippedPfp: pfpId
+  });
+
+  return item;
 }
 
 /**
