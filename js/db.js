@@ -165,11 +165,6 @@ function generateMatchCode() {
  * @param {object} matchData { mode: 'Realistic'|'Zone Wars'|'Box Fights', size: '1v1'|'2v2'|'3v3', wager: number }
  */
 async function createMatch(hostUser, matchData) {
-  const isOwnerAdmin = (hostUser.uid === 'discord:1121188319410278420' || ADMIN_DISCORD_IDS.includes((hostUser.uid || '').replace('discord:', '')) || hostUser.isAdmin === true || (typeof isAdminUser === 'function' && isAdminUser(hostUser, hostUser)));
-  if (!isOwnerAdmin) {
-    throw new Error('🔄 Under update.');
-  }
-
   const wager = Math.round(parseFloat(matchData.wager) * 100) / 100;
   if (isNaN(wager) || wager < 0.50) {
     throw new Error('Minimum entry is 0.50 tokens ($0.50)');
@@ -334,11 +329,6 @@ async function createMatch(hostUser, matchData) {
  * Join a match by its 6-character code.
  */
 async function joinMatch(code, joiningUser) {
-  const isOwnerAdmin = (joiningUser.uid === 'discord:1121188319410278420' || ADMIN_DISCORD_IDS.includes((joiningUser.uid || '').replace('discord:', '')) || joiningUser.isAdmin === true || (typeof isAdminUser === 'function' && isAdminUser(joiningUser, joiningUser)));
-  if (!isOwnerAdmin) {
-    throw new Error('🔄 Under update.');
-  }
-
   const snap = await db.collection('matches')
     .where('code', '==', code.toUpperCase())
     .where('status', '==', 'waiting')
@@ -428,14 +418,10 @@ async function joinMatch(code, joiningUser) {
 /**
  * Join a match with your team (places joiningUser in Team 2 and auto-invites team roster).
  */
-async function joinMatchWithTeam(codeOrId, joiningUser) {
-  const isOwnerAdmin = (joiningUser.uid === 'discord:1121188319410278420' || ADMIN_DISCORD_IDS.includes((joiningUser.uid || '').replace('discord:', '')) || joiningUser.isAdmin === true || (typeof isAdminUser === 'function' && isAdminUser(joiningUser, joiningUser)));
-  if (!isOwnerAdmin) {
-    throw new Error('🔄 Under update.');
-  }
-
-  if (!joiningUser?.teamId) {
-    throw new Error('You must be in a team to join with your team. Go to Profile > Teams to create or join one.');
+async function joinMatchWithTeam(codeOrId, joiningUser, options = {}) {
+  const chosenTeamId = options.teamId || joiningUser.teamId;
+  if (!chosenTeamId) {
+    throw new Error('You must select or be in a team to join with your team. Go to Profile > Teams to create or join one.');
   }
 
   let matchDoc = null;
@@ -469,15 +455,15 @@ async function joinMatchWithTeam(codeOrId, joiningUser) {
   }
 
   const halfCount = (match.maxPlayers || 2) / 2;
-  const existingTeam2Count = (match.players || []).filter(p => p.team === 2 || (p.teamId && p.teamId === joiningUser.teamId && p.uid !== match.createdBy)).length;
+  const existingTeam2Count = (match.players || []).filter(p => p.team === 2 || (p.teamId && p.teamId === chosenTeamId && p.uid !== match.createdBy)).length;
 
   if (existingTeam2Count >= halfCount) {
     throw new Error('Opponent squad (Team 2) is already full');
   }
 
-  if (Number(joiningUser.tokens || 0) < wager) {
-    throw new Error(`Insufficient tokens (Requires ${formatTokens(wager)} tokens to join)`);
-  }
+  const tokenCoverage = options.tokenCoverage || 'none'; // 'none' | '1' | 'all' | 'custom'
+  let coveredMemberUids = options.coveredMemberUids || [];
+  const splitRule = options.splitRule || 'keep'; // 'keep' | 'split'
 
   // Fetch joining user's team details & members
   let invitedTeammates = [];
@@ -485,25 +471,41 @@ async function joinMatchWithTeam(codeOrId, joiningUser) {
   let teamTag = joiningUser.teamTag || '';
 
   try {
-    const teamSnap = await db.collection('teams').doc(joiningUser.teamId).get();
+    const teamSnap = await db.collection('teams').doc(chosenTeamId).get();
     if (teamSnap.exists) {
       const tData = teamSnap.data();
       teamName = tData.name || teamName;
       teamTag = tData.tag || teamTag;
       const needed = Math.max(0, halfCount - 1);
       const otherMembers = (tData.members || []).filter(m => m.uid !== joiningUser.uid);
+
+      if (tokenCoverage === 'all') {
+        coveredMemberUids = otherMembers.slice(0, needed).map(m => m.uid);
+      } else if (tokenCoverage === '1' && otherMembers.length > 0 && !coveredMemberUids.length) {
+        coveredMemberUids = [otherMembers[0].uid];
+      }
+
       invitedTeammates = otherMembers.slice(0, needed).map(m => ({
         uid: m.uid,
         displayName: m.displayName || 'Teammate',
         photoURL: m.photoURL || '',
         epicUsername: m.epicUsername || '',
         team: 2,
-        teamId: joiningUser.teamId,
+        teamId: chosenTeamId,
+        isCovered: coveredMemberUids.includes(m.uid),
         status: 'pending'
       }));
     }
   } catch (e) {
     console.warn('joinMatchWithTeam team fetch notice:', e);
+  }
+
+  // Calculate upfront deposit
+  const coveredCount = coveredMemberUids.length;
+  const joinerTotalDeposit = wager * (1 + coveredCount);
+
+  if (Number(joiningUser.tokens || 0) < joinerTotalDeposit) {
+    throw new Error(`Insufficient tokens (Requires ${formatTokens(joinerTotalDeposit)} tokens to join${coveredCount > 0 ? ` & cover ${coveredCount} teammate(s)` : ''})`);
   }
 
   const newPlayer = {
@@ -515,10 +517,10 @@ async function joinMatchWithTeam(codeOrId, joiningUser) {
     isHost:       false,
     ready:        false,
     team:         2,
-    teamId:       joiningUser.teamId,
+    teamId:       chosenTeamId,
     teamTag:      teamTag,
     isTeamCaptain:true,
-    paidAmount:   wager,
+    paidAmount:   joinerTotalDeposit,
     isCovered:    false,
   };
 
@@ -526,23 +528,26 @@ async function joinMatchWithTeam(codeOrId, joiningUser) {
   const combinedInvited = [...existingInvited, ...invitedTeammates];
 
   const updateFields = {
-    players:          firebase.firestore.FieldValue.arrayUnion(newPlayer),
-    playerUids:       firebase.firestore.FieldValue.arrayUnion(joiningUser.uid),
-    prizePool:        firebase.firestore.FieldValue.increment(wager),
-    invitedTeammates: combinedInvited,
-    team2Id:          joiningUser.teamId,
-    team2Name:        teamName,
-    team2Tag:         teamTag,
+    players:                  firebase.firestore.FieldValue.arrayUnion(newPlayer),
+    playerUids:               firebase.firestore.FieldValue.arrayUnion(joiningUser.uid),
+    prizePool:                firebase.firestore.FieldValue.increment(joinerTotalDeposit),
+    invitedTeammates:         combinedInvited,
+    team2Id:                  chosenTeamId,
+    team2Name:                teamName,
+    team2Tag:                 teamTag,
+    team2TokenCoverage:       tokenCoverage,
+    team2CoveredMemberUids:   coveredMemberUids,
+    team2SplitRule:           splitRule,
   };
 
   await matchDoc.ref.update(updateFields);
 
-  if (wager > 0) {
+  if (joinerTotalDeposit > 0) {
     await updateTokens(
       joiningUser.uid,
-      -wager,
+      -joinerTotalDeposit,
       'match_wager',
-      `🎮 Joined match with team — "${match.title}" (${match.code})`
+      `🎮 Joined match with team — "${match.title}" (${match.code})${coveredCount > 0 ? ` (Covered ${coveredCount} teammate(s))` : ''}`
     );
   }
 
@@ -553,7 +558,7 @@ async function joinMatchWithTeam(codeOrId, joiningUser) {
         await db.collection('users').doc(tm.uid).collection('notifications').add({
           type: 'match_team_invite',
           title: '⚔️ Team Match Invite',
-          body: `${joiningUser.displayName || 'Your Captain'} invited you to join team match "${match.title}" (${formatTokens(wager)} Tokens)`,
+          body: `${joiningUser.displayName || 'Your Captain'} invited you to join team match "${match.title}" (${formatTokens(wager)} Tokens)${tm.isCovered ? ' · Entry Covered Free!' : ''}`,
           matchId: matchDoc.id,
           matchCode: match.code,
           matchTitle: match.title,
@@ -562,6 +567,7 @@ async function joinMatchWithTeam(codeOrId, joiningUser) {
           hostUid: joiningUser.uid,
           teamName: teamName,
           team: 2,
+          isCovered: !!tm.isCovered,
           read: false,
           accepted: false,
           declined: false,
@@ -605,14 +611,15 @@ async function acceptMatchTeamInvite(matchId, acceptingUser, notifId = null) {
     return { matchId, code: match.code };
   }
 
-  const wager = Number(match.wager || 0);
-  if (Number(acceptingUser.tokens || 0) < wager) {
-    throw new Error(`Insufficient tokens (Requires ${formatTokens(wager)} Tokens to enter)`);
-  }
-
   const invitedEntry = (match.invitedTeammates || []).find(tm => tm.uid === acceptingUser.uid);
   const targetTeam = invitedEntry?.team || (match.team2Id && match.team2Id === acceptingUser.teamId ? 2 : 1);
   const targetTeamTag = targetTeam === 1 ? (match.teamTag || '') : (match.team2Tag || acceptingUser.teamTag || '');
+  const isCovered = !!(invitedEntry?.isCovered || (targetTeam === 1 && (match.coveredMemberUids || []).includes(acceptingUser.uid)) || (targetTeam === 2 && (match.team2CoveredMemberUids || []).includes(acceptingUser.uid)));
+
+  const wager = Number(match.wager || 0);
+  if (!isCovered && Number(acceptingUser.tokens || 0) < wager) {
+    throw new Error(`Insufficient tokens (Requires ${formatTokens(wager)} Tokens to enter)`);
+  }
 
   const newPlayer = {
     uid: acceptingUser.uid,
@@ -625,7 +632,8 @@ async function acceptMatchTeamInvite(matchId, acceptingUser, notifId = null) {
     team: targetTeam,
     teamId: acceptingUser.teamId || null,
     teamTag: targetTeamTag,
-    paidAmount: wager,
+    paidAmount: isCovered ? 0 : wager,
+    isCovered: isCovered,
     isTeammate: true,
   };
 
@@ -637,14 +645,18 @@ async function acceptMatchTeamInvite(matchId, acceptingUser, notifId = null) {
     return tm;
   });
 
-  await matchRef.update({
+  const updatePayload = {
     players: firebase.firestore.FieldValue.arrayUnion(newPlayer),
     playerUids: firebase.firestore.FieldValue.arrayUnion(acceptingUser.uid),
-    prizePool: firebase.firestore.FieldValue.increment(wager),
     invitedTeammates: updatedInvited,
-  });
+  };
+  if (!isCovered && wager > 0) {
+    updatePayload.prizePool = firebase.firestore.FieldValue.increment(wager);
+  }
 
-  if (wager > 0) {
+  await matchRef.update(updatePayload);
+
+  if (!isCovered && wager > 0) {
     await updateTokens(
       acceptingUser.uid,
       -wager,
@@ -852,15 +864,16 @@ async function expireMatch(matchId) {
 /** Helper to calculate earnings distribution based on team split rule */
 function calculateTeamPayouts(winningPlayers, totalPrize, match) {
   if (!winningPlayers || !winningPlayers.length) return [];
-  const splitRule = match.splitRule || 'equal';
-  const captain = winningPlayers.find(p => p.isHost || p.uid === match.createdBy) || winningPlayers[0];
+  const winningTeamNum = winningPlayers[0]?.team || 1;
+  const splitRule = (winningTeamNum === 2 ? match.team2SplitRule : match.splitRule) || 'equal';
+  const captain = winningPlayers.find(p => p.isHost || p.isTeamCaptain || (winningTeamNum === 1 && p.uid === match.createdBy)) || winningPlayers[0];
   const teammates = winningPlayers.filter(p => p.uid !== captain?.uid);
 
   const rawEach = Math.round((totalPrize / winningPlayers.length) * 100) / 100;
 
   if (splitRule === 'keep') {
-    // Captain / Host keeps the earnings of any covered teammates
-    const coveredTeammates = teammates.filter(p => p.isCovered || (match.tokenCoverage === 'all') || (match.tokenCoverage === '1' && p === teammates[0]));
+    // Captain keeps the earnings of any covered teammates
+    const coveredTeammates = teammates.filter(p => p.isCovered || (winningTeamNum === 1 && (match.tokenCoverage === 'all' || (match.tokenCoverage === '1' && p === teammates[0]) || (match.coveredMemberUids || []).includes(p.uid))) || (winningTeamNum === 2 && (match.team2TokenCoverage === 'all' || (match.team2CoveredMemberUids || []).includes(p.uid))));
     const uncoveredTeammates = teammates.filter(p => !coveredTeammates.includes(p));
 
     const captainTotalPrize = Math.round(rawEach * (1 + coveredTeammates.length) * 100) / 100;

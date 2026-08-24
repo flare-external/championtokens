@@ -7,7 +7,7 @@
   <link rel="icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
-  <link rel="stylesheet" href="css/style.css?v=4.0.1787579903613"/>
+  <link rel="stylesheet" href="css/style.css?v=4.0.1787580717348"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
@@ -1084,6 +1084,118 @@
     </div>
   </main>
 
+  <!-- Join with Team Modal -->
+  <div class="modal-overlay" id="match-join-team-modal" onclick="if(event.target===this)closeMatchJoinTeamModal()">
+    <div class="modal" style="max-width: 580px; width: 95%; padding: 26px 28px; max-height: 90vh; overflow-y: auto; border: none; outline: none; border-radius: 20px; background: #0e0e10; border: 1px solid rgba(255,255,255,0.08);">
+      <div class="modal-header" style="margin-bottom: 16px; padding-bottom: 0; border: none;">
+        <div class="modal-title" style="font-size: 1.25rem; font-weight: 900; display:flex; align-items:center; gap:8px;">
+          <i data-lucide="users" style="color:var(--gold-bright);"></i> Join Team Match
+        </div>
+        <button class="modal-close" onclick="closeMatchJoinTeamModal()"><i data-lucide="x"></i></button>
+      </div>
+
+      <!-- Match Info Card -->
+      <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); border-radius:14px; padding:12px 16px; margin-bottom:16px; display:flex; justify-content:space-between; align-items:center;">
+        <div>
+          <div id="match-join-team-title" style="font-size:0.95rem; font-weight:800; color:#fff;">2v2 Realistic</div>
+          <div style="font-size:0.75rem; color:var(--text-muted); margin-top:2px;">
+            Match Code: <strong id="match-join-team-code" style="color:var(--gold-bright);">------</strong>
+          </div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-size:0.75rem; color:var(--text-muted);">Entry Per Player</div>
+          <div id="match-join-team-wager" style="font-size:1rem; font-weight:900; color:var(--gold-bright);">1.00 Tokens</div>
+        </div>
+      </div>
+
+      <!-- Queue Choice: Team Queue vs Solo Queue -->
+      <div class="form-group" style="margin-bottom: 14px;">
+        <label class="form-label" style="font-size: 0.82rem; font-weight: 800; margin-bottom: 6px;">How do you want to join?</label>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+          <button type="button" class="btn btn-sm btn-primary" id="btn-match-join-team" onclick="setMatchJoinQueueType('team')" style="justify-content:center; font-size:0.85rem; padding:9px 12px; gap:6px; border-radius:12px; border:none; outline:none;">
+            <i data-lucide="users" style="width:14px;height:14px;"></i> Bring Squad
+          </button>
+          <button type="button" class="btn btn-sm btn-outline" id="btn-match-join-solo" onclick="setMatchJoinQueueType('solo')" style="justify-content:center; font-size:0.85rem; padding:9px 12px; gap:6px; border-radius:12px; border:none; outline:none;">
+            <i data-lucide="user" style="width:14px;height:14px;"></i> Join Solo
+          </button>
+        </div>
+      </div>
+
+      <!-- Team Queue Configuration (Active when Queue Type = Team) -->
+      <div id="match-join-team-config">
+        <!-- Team Selector -->
+        <div class="form-group" style="margin-bottom: 14px;">
+          <label class="form-label" style="font-size: 0.82rem; font-weight: 800; margin-bottom: 6px;">Select Squad / Team</label>
+          <select id="match-join-team-select" onchange="onMatchJoinTeamSelectChange(this.value)" class="form-select" style="padding:10px 14px; font-size:0.9rem; font-weight:700; border-radius:12px; border:none; outline:none; background:rgba(0,0,0,0.6); color:#fff; cursor:pointer;">
+          </select>
+        </div>
+
+        <!-- Covering Section -->
+        <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); padding:14px 16px; border-radius:14px; margin-bottom:14px;">
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:8px;">
+            <div>
+              <div style="font-size:0.86rem; font-weight:800; color:#fff; display:flex; align-items:center; gap:6px;">
+                <i data-lucide="shield-check" style="width:15px;height:15px;color:var(--gold-bright);"></i>
+                <span>Cover Teammates</span>
+              </div>
+              <div style="font-size:0.73rem; color:var(--text-muted); margin-top:1px;">Pay entry deposit for your squad members upfront</div>
+            </div>
+            <button type="button" id="btn-toggle-match-join-cover" class="btn btn-sm btn-outline" onclick="toggleMatchJoinCoverTeammates()" style="padding:5px 11px; font-size:0.78rem; font-weight:800; border-radius:10px; border:none; outline:none; gap:4px;">
+              <i data-lucide="plus-circle" style="width:13px;height:13px;"></i> <span>Enable</span>
+            </button>
+          </div>
+
+          <!-- Expanded Coverage Options -->
+          <div id="match-join-cover-expanded" style="display:none; margin-top:12px; padding-top:12px; border-top:1px solid rgba(255,255,255,0.06);">
+            <!-- Who to cover -->
+            <div style="margin-bottom:12px;">
+              <label style="font-size:0.73rem; font-weight:800; color:#94a3b8; text-transform:uppercase; letter-spacing:0.04em; display:block; margin-bottom:6px;">Who to Cover</label>
+              <div id="match-join-cover-who" style="display:flex; gap:6px; flex-wrap:wrap;">
+                <!-- dynamic member buttons -->
+              </div>
+            </div>
+
+            <!-- Income Policy (Keep or Split) -->
+            <div>
+              <label style="font-size:0.73rem; font-weight:800; color:#94a3b8; text-transform:uppercase; letter-spacing:0.04em; display:block; margin-bottom:6px;">Winnings Distribution Policy</label>
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+                <button type="button" class="btn btn-sm btn-primary" id="btn-match-join-keep" onclick="setMatchJoinCoverSplitRule('keep')" style="padding:8px; font-size:0.78rem; font-weight:800; justify-content:center; border-radius:10px; border:none; outline:none; gap:5px;">
+                  <i data-lucide="wallet" style="width:13px;height:13px;"></i> Keep Winnings
+                </button>
+                <button type="button" class="btn btn-sm btn-outline" id="btn-match-join-split" onclick="setMatchJoinCoverSplitRule('split')" style="padding:8px; font-size:0.78rem; font-weight:800; justify-content:center; border-radius:10px; border:none; outline:none; gap:5px;">
+                  <i data-lucide="share-2" style="width:13px;height:13px;"></i> Split Equally
+                </button>
+              </div>
+              <div style="font-size:0.72rem; color:var(--text-faint); margin-top:5px;" id="match-join-split-hint">
+                Captain keeps the prize shares of covered teammates upon victory.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Deposit & Summary Box -->
+      <div style="background:rgba(245,158,11,0.07); border:1px solid rgba(245,158,11,0.18); border-radius:14px; padding:12px 16px; margin-bottom:16px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.85rem; margin-bottom:4px;">
+          <span style="color:var(--text-muted);">Required Deposit:</span>
+          <strong id="match-join-deposit-summary" style="color:var(--gold-bright); font-size:1.02rem;">1.00 Tokens</strong>
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.78rem; color:var(--text-muted);">
+          <span>Your Balance:</span>
+          <span id="match-join-team-balance">0.00 Tokens</span>
+        </div>
+      </div>
+
+      <!-- Buttons -->
+      <div style="display:flex; gap:10px;">
+        <button type="button" class="btn btn-outline" onclick="closeMatchJoinTeamModal()" style="flex:1; padding:11px; justify-content:center; font-size:0.9rem; border-radius:12px; border:none; outline:none;">Cancel</button>
+        <button type="button" class="btn btn-gold" id="btn-submit-match-join-team" onclick="submitMatchJoinTeam()" style="flex:1.5; padding:11px; justify-content:center; font-weight:900; font-size:0.95rem; border-radius:12px; border:none; outline:none;">
+          <i data-lucide="log-in" style="width:16px;height:16px;"></i> Join Match
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- Wide Player Profile Modal (Clean Esports Style) -->
   <div class="modal-overlay" id="profile-modal" onclick="if(event.target===this)closeUserProfileModal()">
     <div class="modal" style="max-width:580px;width:100%;padding:28px 32px;">
@@ -1249,9 +1361,9 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="js/firebase-config.js"></script>
-  <script src="js/auth.js?v=4.0.1787579903613"></script>
-  <script src="js/db.js?v=4.0.1787579903613"></script>
-  <script src="js/nav.js?v=4.0.1787579903613"></script>
+  <script src="js/auth.js?v=4.0.1787580717348"></script>
+  <script src="js/db.js?v=4.0.1787580717348"></script>
+  <script src="js/nav.js?v=4.0.1787580717348"></script>
 
   <script>
     let currentUser = null;
@@ -1834,16 +1946,11 @@
                 </button>
               </div>`;
           } else if (!isFull && !isExpired) {
-            if (match.size !== '1v1' && currentUserData?.teamId) {
+            if (match.size !== '1v1') {
               primaryActionContainer.innerHTML = `
-                <div style="display:flex;gap:8px;">
-                  <button class="concept-btn-ready" onclick="handleJoinArena('solo')">
-                    <i data-lucide="user"></i> Join Solo (${formatTokens(match.wager)} Tokens)
-                  </button>
-                  <button class="btn btn-gold btn-sm" onclick="handleJoinArena('team')" style="border-radius:20px;border:none;">
-                    <i data-lucide="users"></i> Join with Team
-                  </button>
-                </div>`;
+                <button class="concept-btn-ready" onclick="openMatchJoinTeamModal()">
+                  <i data-lucide="users"></i> Join Match (${formatTokens(match.wager)} Tokens)
+                </button>`;
             } else {
               primaryActionContainer.innerHTML = `
                 <button class="concept-btn-ready" onclick="handleJoinArena('solo')">
@@ -1975,6 +2082,291 @@
         setTimeout(() => window.location.href = 'matches', 1000);
       } catch (err) {
         showToast(err.message, 'error');
+      }
+    }
+
+    // ── Match Join Team Modal State ──────────────────────────
+    let matchJoinQueueType = 'team'; // 'team' | 'solo'
+    let matchUserTeamsList = [];
+    let matchSelectedJoinTeam = null;
+    let isMatchJoinCoverEnabled = false;
+    let matchSelectedJoinCoverUids = [];
+    let matchSelectedJoinCoverSplit = 'keep'; // 'keep' | 'split'
+
+    async function loadMatchUserTeams() {
+      if (!currentUser?.uid) return;
+      try {
+        if (typeof getUserTeams === 'function') {
+          matchUserTeamsList = await getUserTeams(currentUser.uid);
+        }
+        if (matchUserTeamsList && matchUserTeamsList.length > 0) {
+          if (!matchSelectedJoinTeam || !matchUserTeamsList.find(t => t.id === matchSelectedJoinTeam.id)) {
+            matchSelectedJoinTeam = matchUserTeamsList[0];
+          }
+        } else {
+          matchSelectedJoinTeam = null;
+        }
+      } catch (e) {
+        console.warn('loadMatchUserTeams error:', e);
+      }
+    }
+
+    async function openMatchJoinTeamModal() {
+      if (!currentMatch) return;
+      currentUserData = await getUser(currentUser.uid);
+      if (!currentUserData?.epicUsername) {
+        const ok = await showConfirm({
+          title: 'Epic Games Account Required',
+          message: 'You must link your Epic Games / Fortnite username before entering matches! Go to Profile to link now?',
+          confirmText: 'Go to Profile',
+          cancelText: 'Cancel',
+          type: 'warning',
+          icon: 'shield-alert'
+        });
+        if (ok) window.location.href = 'profile';
+        return;
+      }
+
+      await loadMatchUserTeams();
+
+      matchJoinQueueType = 'team';
+      isMatchJoinCoverEnabled = false;
+      matchSelectedJoinCoverUids = [];
+      matchSelectedJoinCoverSplit = 'keep';
+
+      const wager = Number(currentMatch.wager || 0);
+      const titleEl = document.getElementById('match-join-team-title');
+      const codeEl = document.getElementById('match-join-team-code');
+      const wagerEl = document.getElementById('match-join-team-wager');
+      const balanceEl = document.getElementById('match-join-team-balance');
+
+      if (titleEl) titleEl.textContent = currentMatch.title || `${currentMatch.size || '2v2'} Match`;
+      if (codeEl) codeEl.textContent = currentMatch.code || '';
+      if (wagerEl) wagerEl.textContent = `${formatTokens(wager)} Tokens`;
+      if (balanceEl) balanceEl.textContent = `${formatTokens(currentUserData?.tokens || 0)} Tokens`;
+
+      // Populate teams dropdown
+      const teamSelect = document.getElementById('match-join-team-select');
+      if (teamSelect) {
+        if (matchUserTeamsList && matchUserTeamsList.length > 0) {
+          matchSelectedJoinTeam = matchUserTeamsList[0];
+          teamSelect.innerHTML = matchUserTeamsList.map(t => `
+            <option value="${t.id}" ${t.id === matchSelectedJoinTeam?.id ? 'selected' : ''}>
+              [${escapeHtml(t.tag || '')}] ${escapeHtml(t.name)} (${(t.members || []).length} members)
+            </option>
+          `).join('');
+        } else {
+          matchSelectedJoinTeam = null;
+          teamSelect.innerHTML = `<option value="">(No Teams Found - Create in Profile)</option>`;
+          matchJoinQueueType = 'solo';
+        }
+      }
+
+      setMatchJoinQueueType(matchJoinQueueType);
+      renderMatchJoinCoverWhoOptions();
+      updateMatchJoinDepositSummary();
+
+      const modal = document.getElementById('match-join-team-modal');
+      if (modal) modal.classList.add('open');
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function closeMatchJoinTeamModal() {
+      const modal = document.getElementById('match-join-team-modal');
+      if (modal) modal.classList.remove('open');
+    }
+
+    function setMatchJoinQueueType(type) {
+      if (type === 'team' && (!matchUserTeamsList || matchUserTeamsList.length === 0)) {
+        showToast('You must create or join a team in Profile to queue with a squad', 'warning');
+        type = 'solo';
+      }
+      matchJoinQueueType = type;
+      const btnTeam = document.getElementById('btn-match-join-team');
+      const btnSolo = document.getElementById('btn-match-join-solo');
+      const configSec = document.getElementById('match-join-team-config');
+
+      if (btnTeam) btnTeam.className = `btn btn-sm ${type === 'team' ? 'btn-primary' : 'btn-outline'}`;
+      if (btnSolo) btnSolo.className = `btn btn-sm ${type === 'solo' ? 'btn-primary' : 'btn-outline'}`;
+      if (configSec) configSec.style.display = type === 'team' ? 'block' : 'none';
+
+      updateMatchJoinDepositSummary();
+    }
+
+    function onMatchJoinTeamSelectChange(teamId) {
+      matchSelectedJoinTeam = matchUserTeamsList.find(t => t.id === teamId) || matchUserTeamsList[0] || null;
+      matchSelectedJoinCoverUids = [];
+      renderMatchJoinCoverWhoOptions();
+      updateMatchJoinDepositSummary();
+    }
+
+    function toggleMatchJoinCoverTeammates() {
+      isMatchJoinCoverEnabled = !isMatchJoinCoverEnabled;
+      const btn = document.getElementById('btn-toggle-match-join-cover');
+      const expanded = document.getElementById('match-join-cover-expanded');
+
+      if (btn) {
+        btn.className = `btn btn-sm ${isMatchJoinCoverEnabled ? 'btn-primary' : 'btn-outline'}`;
+        btn.innerHTML = `<i data-lucide="${isMatchJoinCoverEnabled ? 'check-circle' : 'plus-circle'}" style="width:13px;height:13px;"></i> <span>${isMatchJoinCoverEnabled ? 'Enabled' : 'Enable'}</span>`;
+      }
+      if (expanded) expanded.style.display = isMatchJoinCoverEnabled ? 'block' : 'none';
+
+      if (isMatchJoinCoverEnabled) {
+        if (!matchSelectedJoinCoverUids.length) {
+          const members = (matchSelectedJoinTeam?.members || []).filter(m => m.uid !== currentUser?.uid);
+          const needed = currentMatch.size === '3v3' ? 2 : 1;
+          matchSelectedJoinCoverUids = members.slice(0, needed).map(m => m.uid);
+        }
+      } else {
+        matchSelectedJoinCoverUids = [];
+      }
+
+      renderMatchJoinCoverWhoOptions();
+      updateMatchJoinDepositSummary();
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function renderMatchJoinCoverWhoOptions() {
+      const container = document.getElementById('match-join-cover-who');
+      if (!container) return;
+
+      const members = (matchSelectedJoinTeam?.members || []).filter(m => m.uid !== currentUser?.uid);
+      const needed = currentMatch?.size === '3v3' ? 2 : 1;
+
+      if (!members.length) {
+        container.innerHTML = `<span style="font-size:0.75rem;color:var(--text-muted);">No teammates in selected team.</span>`;
+        return;
+      }
+
+      const allCovered = members.length > 0 && members.slice(0, needed).every(m => matchSelectedJoinCoverUids.includes(m.uid));
+
+      let html = `
+        <button type="button" class="btn btn-sm ${allCovered ? 'btn-primary' : 'btn-outline'}" onclick="toggleMatchJoinCoverAll()" style="padding:4px 9px;font-size:0.75rem;border-radius:8px;border:none;outline:none;">
+          <i data-lucide="users" style="width:12px;height:12px;"></i> All Squad (${Math.min(needed, members.length)})
+        </button>
+      `;
+
+      members.slice(0, needed).forEach((m, idx) => {
+        const isCovered = matchSelectedJoinCoverUids.includes(m.uid);
+        html += `
+          <button type="button" class="btn btn-sm ${isCovered ? 'btn-primary' : 'btn-outline'}" onclick="toggleMatchJoinCoverUid('${m.uid}')" style="padding:4px 9px;font-size:0.75rem;border-radius:8px;border:none;outline:none;">
+            ${escapeHtml(m.displayName || `Teammate ${idx + 1}`)}
+          </button>
+        `;
+      });
+
+      container.innerHTML = html;
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function toggleMatchJoinCoverAll() {
+      const members = (matchSelectedJoinTeam?.members || []).filter(m => m.uid !== currentUser?.uid);
+      const needed = currentMatch?.size === '3v3' ? 2 : 1;
+      const allCovered = members.length > 0 && members.slice(0, needed).every(m => matchSelectedJoinCoverUids.includes(m.uid));
+
+      if (allCovered) {
+        matchSelectedJoinCoverUids = [];
+      } else {
+        matchSelectedJoinCoverUids = members.slice(0, needed).map(m => m.uid);
+      }
+      renderMatchJoinCoverWhoOptions();
+      updateMatchJoinDepositSummary();
+    }
+
+    function toggleMatchJoinCoverUid(uid) {
+      if (matchSelectedJoinCoverUids.includes(uid)) {
+        matchSelectedJoinCoverUids = matchSelectedJoinCoverUids.filter(u => u !== uid);
+      } else {
+        const needed = currentMatch?.size === '3v3' ? 2 : 1;
+        if (matchSelectedJoinCoverUids.length >= needed) {
+          matchSelectedJoinCoverUids = [uid];
+        } else {
+          matchSelectedJoinCoverUids.push(uid);
+        }
+      }
+      renderMatchJoinCoverWhoOptions();
+      updateMatchJoinDepositSummary();
+    }
+
+    function setMatchJoinCoverSplitRule(rule) {
+      matchSelectedJoinCoverSplit = rule;
+      const btnKeep = document.getElementById('btn-match-join-keep');
+      const btnSplit = document.getElementById('btn-match-join-split');
+      const hint = document.getElementById('match-join-split-hint');
+
+      if (btnKeep) btnKeep.className = `btn btn-sm ${rule === 'keep' ? 'btn-primary' : 'btn-outline'}`;
+      if (btnSplit) btnSplit.className = `btn btn-sm ${rule === 'split' ? 'btn-primary' : 'btn-outline'}`;
+
+      if (hint) {
+        hint.textContent = rule === 'keep'
+          ? 'Captain keeps the prize shares of covered teammates upon victory.'
+          : 'Prize winnings are split equally among all squad members upon victory.';
+      }
+    }
+
+    function updateMatchJoinDepositSummary() {
+      const wager = Number(currentMatch?.wager || 0);
+      let deposit = wager;
+      let coveredCount = 0;
+
+      if (matchJoinQueueType === 'team' && isMatchJoinCoverEnabled) {
+        coveredCount = matchSelectedJoinCoverUids.length;
+        deposit = wager * (1 + coveredCount);
+      }
+
+      const summaryEl = document.getElementById('match-join-deposit-summary');
+      if (summaryEl) {
+        summaryEl.innerHTML = `${formatTokens(deposit)} Tokens ${coveredCount > 0 ? `<span style="font-size:0.75rem;color:var(--text-muted);font-weight:600;">(Covering ${coveredCount})</span>` : ''}`;
+      }
+
+      const btnSubmit = document.getElementById('btn-submit-match-join-team');
+      if (btnSubmit) {
+        btnSubmit.innerHTML = `<i data-lucide="log-in" style="width:16px;height:16px;"></i> Join Match (${formatTokens(deposit)} Tokens)`;
+      }
+      if (window.lucide) lucide.createIcons();
+    }
+
+    async function submitMatchJoinTeam() {
+      if (!currentMatch) return;
+      currentUserData = await getUser(currentUser.uid);
+
+      if (matchJoinQueueType === 'solo') {
+        closeMatchJoinTeamModal();
+        await handleJoinArena('solo');
+        return;
+      }
+
+      if (!matchSelectedJoinTeam) {
+        showToast('Please select a team or join solo', 'error');
+        return;
+      }
+
+      const wager = Number(currentMatch.wager || 0);
+      const coveredCount = isMatchJoinCoverEnabled ? matchSelectedJoinCoverUids.length : 0;
+      const totalDeposit = wager * (1 + coveredCount);
+
+      if (Number(currentUserData.tokens || 0) < totalDeposit) {
+        showToast(`Insufficient tokens (Requires ${formatTokens(totalDeposit)} Tokens)`, 'error');
+        return;
+      }
+
+      try {
+        const btn = document.getElementById('btn-submit-match-join-team');
+        if (btn) { btn.disabled = true; btn.textContent = 'Joining...'; }
+
+        await joinMatchWithTeam(currentMatch.code, currentUserData, {
+          teamId: matchSelectedJoinTeam.id,
+          tokenCoverage: isMatchJoinCoverEnabled ? (coveredCount === 1 ? '1' : 'all') : 'none',
+          coveredMemberUids: isMatchJoinCoverEnabled ? matchSelectedJoinCoverUids : [],
+          splitRule: isMatchJoinCoverEnabled ? matchSelectedJoinCoverSplit : 'equal',
+        });
+
+        showToast('Joined with squad! Invitations sent.', 'success');
+        closeMatchJoinTeamModal();
+      } catch (err) {
+        showToast(err.message, 'error');
+        const btn = document.getElementById('btn-submit-match-join-team');
+        if (btn) { btn.disabled = false; updateMatchJoinDepositSummary(); }
       }
     }
 
