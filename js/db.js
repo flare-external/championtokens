@@ -1910,7 +1910,7 @@ async function unlinkEpicAccount(uid) {
 }
 
 /**
- * Link social media account (Twitch or X / Twitter).
+ * Link social media account (Twitch or X).
  */
 async function linkSocialAccount(uid, platform, handle) {
   if (!uid) throw new Error('User ID is required');
@@ -1919,7 +1919,7 @@ async function linkSocialAccount(uid, platform, handle) {
   cleanHandle = cleanHandle.replace(/^@+/, '').trim();
 
   if (!cleanHandle || cleanHandle.length < 1) {
-    throw new Error(`Please enter a valid ${platform === 'twitch' ? 'Twitch' : 'X (Twitter)'} username`);
+    throw new Error(`Please enter a valid ${platform === 'twitch' ? 'Twitch' : 'X'} username`);
   }
 
   const userRef = db.collection('users').doc(uid);
@@ -1939,7 +1939,7 @@ async function linkSocialAccount(uid, platform, handle) {
 }
 
 /**
- * Unlink social media account (Twitch or X / Twitter).
+ * Unlink social media account (Twitch or X).
  */
 async function unlinkSocialAccount(uid, platform) {
   if (!uid) throw new Error('User ID is required');
