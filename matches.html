@@ -530,12 +530,16 @@
     }
 
     let selectedQueueType = 'solo';
+    let isCoverEnabled = false;
+    let selectedCoverMode = 'all'; // 'all' (cover all) | '1' (cover 1)
+    let selectedCoverSplit = 'keep'; // 'keep' (keep income) | 'split' (split income)
 
     function onSizeChange() {
       const size = document.getElementById('size-select')?.value || '1v1';
       const btnSolo = document.getElementById('btn-queue-solo');
       const btnTeam = document.getElementById('btn-queue-team');
       const teamOnlyNote = document.getElementById('queue-team-only-note');
+      const coverBox = document.getElementById('cover-teammates-box');
 
       if (size === '2v2' || size === '3v3') {
         if (btnSolo) {
@@ -546,7 +550,9 @@
           btnSolo.style.cursor = 'not-allowed';
         }
         if (teamOnlyNote) teamOnlyNote.style.display = 'inline';
+        if (coverBox) coverBox.style.display = 'block';
         setQueueType('team');
+        renderCoverWhoOptions();
       } else {
         if (btnSolo) {
           btnSolo.disabled = false;
@@ -554,6 +560,12 @@
           btnSolo.style.cursor = 'pointer';
         }
         if (teamOnlyNote) teamOnlyNote.style.display = 'none';
+        if (coverBox) coverBox.style.display = 'none';
+        isCoverEnabled = false;
+        const btn = document.getElementById('btn-toggle-cover');
+        const expanded = document.getElementById('cover-expanded-options');
+        if (btn) btn.className = 'btn btn-sm btn-outline';
+        if (expanded) expanded.style.display = 'none';
         setQueueType('solo');
       }
       updateCreatePreview();
@@ -587,6 +599,73 @@
         } else {
           if (activeView) activeView.style.display = 'none';
           if (noTeamView) noTeamView.style.display = 'block';
+        }
+      }
+      updateCreatePreview();
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function toggleCoverTeammates(forceState) {
+      if (forceState !== undefined) isCoverEnabled = forceState;
+      else isCoverEnabled = !isCoverEnabled;
+
+      const btn = document.getElementById('btn-toggle-cover');
+      const expanded = document.getElementById('cover-expanded-options');
+      if (btn) {
+        btn.className = `btn btn-sm ${isCoverEnabled ? 'btn-primary' : 'btn-outline'}`;
+        btn.innerHTML = `<i data-lucide="${isCoverEnabled ? 'check-circle-2' : 'plus-circle'}" style="width:13px;height:13px;"></i> <span>${isCoverEnabled ? 'Enabled' : 'Enable'}</span>`;
+      }
+      if (expanded) {
+        expanded.style.display = isCoverEnabled ? 'block' : 'none';
+      }
+      renderCoverWhoOptions();
+      updateCreatePreview();
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function renderCoverWhoOptions() {
+      const size = document.getElementById('size-select')?.value || '1v1';
+      const container = document.getElementById('cover-who-options');
+      if (!container) return;
+
+      if (size === '2v2') {
+        container.innerHTML = `
+          <button type="button" class="btn btn-sm btn-primary" onclick="setCoverMode('1')" style="padding:6px 12px;font-size:0.8rem;border-radius:10px;border:none;outline:none;">
+            Cover Teammate (1)
+          </button>
+        `;
+      } else if (size === '3v3') {
+        container.innerHTML = `
+          <button type="button" class="btn btn-sm ${selectedCoverMode === 'all' ? 'btn-primary' : 'btn-outline'}" onclick="setCoverMode('all')" style="padding:6px 12px;font-size:0.8rem;border-radius:10px;border:none;outline:none;">
+            Cover Both (2 Teammates)
+          </button>
+          <button type="button" class="btn btn-sm ${selectedCoverMode === '1' ? 'btn-primary' : 'btn-outline'}" onclick="setCoverMode('1')" style="padding:6px 12px;font-size:0.8rem;border-radius:10px;border:none;outline:none;">
+            Cover 1 Teammate
+          </button>
+        `;
+      }
+    }
+
+    function setCoverMode(mode) {
+      selectedCoverMode = mode;
+      renderCoverWhoOptions();
+      updateCreatePreview();
+    }
+
+    function setCoverSplitRule(rule) {
+      selectedCoverSplit = rule;
+      const btnKeep = document.getElementById('btn-cover-keep');
+      const btnSplit = document.getElementById('btn-cover-split');
+      const desc = document.getElementById('cover-split-explanation');
+
+      if (btnKeep) btnKeep.className = `btn btn-sm ${rule === 'keep' ? 'btn-primary' : 'btn-outline'}`;
+      if (btnSplit) btnSplit.className = `btn btn-sm ${rule === 'split' ? 'btn-primary' : 'btn-outline'}`;
+
+      if (desc) {
+        if (rule === 'keep') {
+          desc.innerHTML = '⚡ <strong>Keep Income:</strong> Teammates you covered don\'t receive payout — you receive their prize earnings back.';
+        } else {
+          desc.innerHTML = '🤝 <strong>Split Income:</strong> Prize is split normally and equally among all teammates, even though you covered their entry.';
         }
       }
       updateCreatePreview();
@@ -637,16 +716,33 @@
       const totalPool  = wager * players;
       const winPrize   = totalPool * 0.90;
 
+      let coveredCount = 0;
+      if (isCoverEnabled && (size === '2v2' || size === '3v3')) {
+        coveredCount = (size === '2v2' || selectedCoverMode === '1') ? 1 : 2;
+      }
+      const hostTotalDeposit = wager * (1 + coveredCount);
+
       const queueLabel = selectedQueueType === 'team' ? ' (Team Queue)' : '';
       const titleEl = document.getElementById('preview-title');
       const playersEl = document.getElementById('preview-players');
       const poolEl = document.getElementById('preview-pool');
       const prizeEl = document.getElementById('preview-prize');
+      const depositEl = document.getElementById('preview-deposit-row');
+      const depositVal = document.getElementById('preview-deposit-val');
 
       if (titleEl) titleEl.textContent = `${size} ${mode}${queueLabel}`;
       if (playersEl) playersEl.textContent = `${players} Players (${size})`;
       if (poolEl) poolEl.textContent = `${formatTokens(totalPool)} Tokens ($${formatTokens(totalPool)})`;
       if (prizeEl) prizeEl.textContent = `${formatTokens(winPrize)} Tokens ($${formatTokens(winPrize)})`;
+
+      if (depositEl && depositVal) {
+        if (coveredCount > 0) {
+          depositEl.style.display = 'flex';
+          depositVal.innerHTML = `<strong style="color:var(--gold-bright);">${formatTokens(hostTotalDeposit)} Tokens</strong> <span style="font-size:0.75rem;color:var(--text-muted);">(Covering ${coveredCount})</span>`;
+        } else {
+          depositEl.style.display = 'none';
+        }
+      }
     }
 
     async function handleCreateMatch(e) {
@@ -673,8 +769,14 @@
         return;
       }
 
-      if (Number(currentUserData.tokens || 0) < wager) {
-        alert(`Not enough tokens (Requires ${formatTokens(wager)} tokens for entry deposit)`);
+      let coveredCount = 0;
+      if (isCoverEnabled && (size === '2v2' || size === '3v3')) {
+        coveredCount = (size === '2v2' || selectedCoverMode === '1') ? 1 : 2;
+      }
+      const hostTotalDeposit = wager * (1 + coveredCount);
+
+      if (Number(currentUserData.tokens || 0) < hostTotalDeposit) {
+        alert(`Not enough tokens (Requires ${formatTokens(hostTotalDeposit)} tokens for entry deposit${coveredCount > 0 ? ` & covering ${coveredCount} teammate(s)` : ''})`);
         return;
       }
 
@@ -692,6 +794,9 @@
           teamId: currentUserData?.teamId || null,
           teamName: currentUserData?.teamName || null,
           teamTag: currentUserData?.teamTag || null,
+          tokenCoverage: isCoverEnabled ? (coveredCount === 1 ? '1' : 'all') : 'none',
+          coveredCount: isCoverEnabled ? coveredCount : 0,
+          splitRule: isCoverEnabled ? selectedCoverSplit : 'equal',
         });
         showToast(`Match "${title}" created! Opening room…`, 'success');
         closeCreateModal();
@@ -923,6 +1028,49 @@
               </div>
             </div>
 
+            <!-- Cover Teammates Section (Squad Matches) -->
+            <div id="cover-teammates-box" style="display:none;background:rgba(255,255,255,0.03);padding:12px 14px;border-radius:14px;border:none;outline:none;">
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
+                <div>
+                  <div style="font-size:0.86rem;font-weight:800;color:#fff;display:flex;align-items:center;gap:6px;">
+                    <i data-lucide="shield-check" style="width:15px;height:15px;color:var(--gold-bright);"></i>
+                    <span>Cover Teammates</span>
+                  </div>
+                  <div style="font-size:0.73rem;color:var(--text-muted);margin-top:1px;">Pay entry fee for your squad members</div>
+                </div>
+                <button type="button" id="btn-toggle-cover" class="btn btn-sm btn-outline" onclick="toggleCoverTeammates()" style="padding:5px 11px;font-size:0.78rem;font-weight:800;border-radius:10px;border:none;outline:none;gap:4px;">
+                  <i data-lucide="plus-circle" style="width:13px;height:13px;"></i> <span>Enable</span>
+                </button>
+              </div>
+
+              <!-- Expanded Coverage Options -->
+              <div id="cover-expanded-options" style="display:none;margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.06);">
+                <!-- Step 1: Who to cover -->
+                <div style="margin-bottom:10px;">
+                  <label style="font-size:0.73rem;font-weight:800;color:#94a3b8;text-transform:uppercase;letter-spacing:0.04em;display:block;margin-bottom:5px;">Who to Cover</label>
+                  <div id="cover-who-options" style="display:flex;gap:6px;flex-wrap:wrap;">
+                    <!-- dynamically generated pills based on 2v2 vs 3v3 -->
+                  </div>
+                </div>
+
+                <!-- Step 2: Income Policy (Keep or Split) -->
+                <div>
+                  <label style="font-size:0.73rem;font-weight:800;color:#94a3b8;text-transform:uppercase;letter-spacing:0.04em;display:block;margin-bottom:5px;">Income Policy</label>
+                  <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+                    <button type="button" class="btn btn-sm btn-primary" id="btn-cover-keep" onclick="setCoverSplitRule('keep')" style="padding:7px 8px;font-size:0.75rem;font-weight:800;justify-content:center;border-radius:10px;border:none;outline:none;gap:4px;">
+                      <i data-lucide="wallet" style="width:12px;height:12px;"></i> Keep Income
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline" id="btn-cover-split" onclick="setCoverSplitRule('split')" style="padding:7px 8px;font-size:0.75rem;font-weight:800;justify-content:center;border-radius:10px;border:none;outline:none;gap:4px;">
+                      <i data-lucide="share-2" style="width:12px;height:12px;"></i> Split Income
+                    </button>
+                  </div>
+                  <div id="cover-split-explanation" style="font-size:0.72rem;color:var(--gold-bright);margin-top:5px;line-height:1.35;">
+                    ⚡ <strong>Keep Income:</strong> Teammates you covered don't receive payout — you receive their prize earnings back.
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <!-- Match Preview Summary Box -->
             <div class="card" style="padding:14px 16px;background:rgba(245,158,11,0.07);border:none;outline:none;border-radius:14px;">
               <div style="font-size:0.78rem;font-weight:900;color:var(--gold-bright);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;">Match Summary</div>
@@ -933,6 +1081,10 @@
               <div style="display:flex;justify-content:space-between;font-size:0.85rem;margin-bottom:4px;">
                 <span style="color:var(--text-muted);">Capacity:</span>
                 <span id="preview-players">2 Players</span>
+              </div>
+              <div id="preview-deposit-row" style="display:none;justify-content:space-between;font-size:0.85rem;margin-bottom:4px;">
+                <span style="color:var(--text-muted);">Your Upfront:</span>
+                <span id="preview-deposit-val">1.00 Tokens</span>
               </div>
               <div style="display:flex;justify-content:space-between;font-size:0.85rem;margin-bottom:4px;">
                 <span style="color:var(--text-muted);">Prize Pool:</span>

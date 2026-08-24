@@ -853,12 +853,23 @@ async function expireMatch(matchId) {
 function calculateTeamPayouts(winningPlayers, totalPrize, match) {
   if (!winningPlayers || !winningPlayers.length) return [];
   const splitRule = match.splitRule || 'equal';
-  const captain = winningPlayers.find(p => p.isHost || p.uid === match.createdBy);
+  const captain = winningPlayers.find(p => p.isHost || p.uid === match.createdBy) || winningPlayers[0];
   const teammates = winningPlayers.filter(p => p.uid !== captain?.uid);
 
-  if (!captain || winningPlayers.length <= 1 || splitRule === 'equal') {
-    const each = Math.round((totalPrize / winningPlayers.length) * 100) / 100;
-    return winningPlayers.map(p => ({ uid: p.uid, amount: each }));
+  const rawEach = Math.round((totalPrize / winningPlayers.length) * 100) / 100;
+
+  if (splitRule === 'keep') {
+    // Captain / Host keeps the earnings of any covered teammates
+    const coveredTeammates = teammates.filter(p => p.isCovered || (match.tokenCoverage === 'all') || (match.tokenCoverage === '1' && p === teammates[0]));
+    const uncoveredTeammates = teammates.filter(p => !coveredTeammates.includes(p));
+
+    const captainTotalPrize = Math.round(rawEach * (1 + coveredTeammates.length) * 100) / 100;
+
+    return [
+      { uid: captain.uid, amount: captainTotalPrize },
+      ...coveredTeammates.map(p => ({ uid: p.uid, amount: 0 })),
+      ...uncoveredTeammates.map(p => ({ uid: p.uid, amount: rawEach }))
+    ];
   }
 
   if (splitRule === 'captain_70') {
@@ -871,19 +882,8 @@ function calculateTeamPayouts(winningPlayers, totalPrize, match) {
     ];
   }
 
-  if (splitRule === 'captain_first') {
-    const coveredDeposit = Number(match.hostCoveredDeposit || match.wager || 0);
-    const reimbursement = Math.min(totalPrize, coveredDeposit);
-    const remainder = Math.max(0, totalPrize - reimbursement);
-    const each = Math.round((remainder / winningPlayers.length) * 100) / 100;
-    return [
-      { uid: captain.uid, amount: reimbursement + each },
-      ...teammates.map(p => ({ uid: p.uid, amount: each }))
-    ];
-  }
-
-  const each = Math.round((totalPrize / winningPlayers.length) * 100) / 100;
-  return winningPlayers.map(p => ({ uid: p.uid, amount: each }));
+  // 'split' / 'equal' / default
+  return winningPlayers.map(p => ({ uid: p.uid, amount: rawEach }));
 }
 
 /**
