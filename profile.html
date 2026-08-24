@@ -2415,7 +2415,7 @@
         const isHost   = m.createdBy === targetUid;
         const size     = m.size || '1v1';
         const mode     = m.mode || 'Realistic';
-        const winPrize = Math.round(Number(m.prizePool || m.wager) * 0.90 * 100) / 100;
+        const winPrize = Math.round(Number(m.wager || 1.00) * 1.80 * 100) / 100;
 
         return `
           <div class="mh-card">

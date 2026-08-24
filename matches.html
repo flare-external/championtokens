@@ -251,7 +251,8 @@
         const canJoin   = !isMine && !alreadyIn && !isFull;
         const size      = m.size || '1v1';
         const mode      = m.mode || 'Realistic';
-        const prize     = Number(m.prizePool || (Number(m.wager) * m.maxPlayers)) * 0.90;
+        const wager     = Number(m.wager || 1.00);
+        const prize     = Math.round(wager * 1.80 * 100) / 100;
 
         const hostPlayer = (m.players || []).find(p => p.isHost || p.uid === m.createdBy);
         const hostPfp = hostPlayer?.photoURL || (m.createdBy === currentUser?.uid ? currentUserData?.photoURL : null);
