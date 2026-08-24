@@ -494,7 +494,12 @@
         return;
       }
 
+      if (currentUser?.uid && typeof getUserTeam === 'function') {
+        currentUserTeamData = await getUserTeam(currentUser.uid);
+      }
+
       document.getElementById('create-modal').classList.add('open');
+      onSizeChange();
       updateCreatePreview();
     }
 
@@ -531,15 +536,20 @@
 
     let selectedQueueType = 'solo';
     let isCoverEnabled = false;
-    let selectedCoverMode = 'all'; // 'all' (cover all) | '1' (cover 1)
+    let selectedCoverUids = [];
     let selectedCoverSplit = 'keep'; // 'keep' (keep income) | 'split' (split income)
+    let currentUserTeamData = null;
 
-    function onSizeChange() {
+    async function onSizeChange() {
       const size = document.getElementById('size-select')?.value || '1v1';
       const btnSolo = document.getElementById('btn-queue-solo');
       const btnTeam = document.getElementById('btn-queue-team');
       const teamOnlyNote = document.getElementById('queue-team-only-note');
       const coverBox = document.getElementById('cover-teammates-box');
+
+      if (currentUser?.uid && !currentUserTeamData && typeof getUserTeam === 'function') {
+        currentUserTeamData = await getUserTeam(currentUser.uid);
+      }
 
       if (size === '2v2' || size === '3v3') {
         if (btnSolo) {
@@ -562,9 +572,13 @@
         if (teamOnlyNote) teamOnlyNote.style.display = 'none';
         if (coverBox) coverBox.style.display = 'none';
         isCoverEnabled = false;
+        selectedCoverUids = [];
         const btn = document.getElementById('btn-toggle-cover');
         const expanded = document.getElementById('cover-expanded-options');
-        if (btn) btn.className = 'btn btn-sm btn-outline';
+        if (btn) {
+          btn.className = 'btn btn-sm btn-outline';
+          btn.innerHTML = `<i data-lucide="plus-circle" style="width:13px;height:13px;"></i> <span>Enable</span>`;
+        }
         if (expanded) expanded.style.display = 'none';
         setQueueType('solo');
       }
@@ -605,9 +619,24 @@
       if (window.lucide) lucide.createIcons();
     }
 
-    function toggleCoverTeammates(forceState) {
+    async function toggleCoverTeammates(forceState) {
       if (forceState !== undefined) isCoverEnabled = forceState;
       else isCoverEnabled = !isCoverEnabled;
+
+      const size = document.getElementById('size-select')?.value || '1v1';
+      const maxAllowed = size === '3v3' ? 2 : 1;
+
+      if (isCoverEnabled && selectedCoverUids.length === 0) {
+        if (currentUser?.uid && !currentUserTeamData && typeof getUserTeam === 'function') {
+          currentUserTeamData = await getUserTeam(currentUser.uid);
+        }
+        const teammates = (currentUserTeamData?.members || []).filter(m => m.uid !== currentUser?.uid);
+        if (teammates.length > 0) {
+          selectedCoverUids = teammates.slice(0, maxAllowed).map(t => t.uid);
+        } else {
+          selectedCoverUids = size === '3v3' ? ['tm_1', 'tm_2'] : ['tm_1'];
+        }
+      }
 
       const btn = document.getElementById('btn-toggle-cover');
       const expanded = document.getElementById('cover-expanded-options');
@@ -623,31 +652,95 @@
       if (window.lucide) lucide.createIcons();
     }
 
-    function renderCoverWhoOptions() {
+    async function renderCoverWhoOptions() {
       const size = document.getElementById('size-select')?.value || '1v1';
       const container = document.getElementById('cover-who-options');
       if (!container) return;
 
-      if (size === '2v2') {
-        container.innerHTML = `
-          <button type="button" class="btn btn-sm btn-primary" onclick="setCoverMode('1')" style="padding:6px 12px;font-size:0.8rem;border-radius:10px;border:none;outline:none;">
-            Cover Teammate (1)
-          </button>
-        `;
-      } else if (size === '3v3') {
-        container.innerHTML = `
-          <button type="button" class="btn btn-sm ${selectedCoverMode === 'all' ? 'btn-primary' : 'btn-outline'}" onclick="setCoverMode('all')" style="padding:6px 12px;font-size:0.8rem;border-radius:10px;border:none;outline:none;">
-            Cover Both (2 Teammates)
-          </button>
-          <button type="button" class="btn btn-sm ${selectedCoverMode === '1' ? 'btn-primary' : 'btn-outline'}" onclick="setCoverMode('1')" style="padding:6px 12px;font-size:0.8rem;border-radius:10px;border:none;outline:none;">
-            Cover 1 Teammate
-          </button>
-        `;
+      if (!currentUserTeamData && currentUser?.uid && typeof getUserTeam === 'function') {
+        currentUserTeamData = await getUserTeam(currentUser.uid);
       }
+
+      const maxAllowed = size === '3v3' ? 2 : 1;
+      const teammates = (currentUserTeamData?.members || []).filter(m => m.uid !== currentUser?.uid);
+
+      if (teammates.length > 0) {
+        let html = '';
+        if (size === '3v3' && teammates.length >= 2) {
+          const allCovered = (selectedCoverUids.length >= 2 && teammates.slice(0, 2).every(t => selectedCoverUids.includes(t.uid)));
+          html += `
+            <button type="button" class="btn btn-sm ${allCovered ? 'btn-primary' : 'btn-outline'}" onclick="toggleCoverAllTeammates()" style="padding:6px 12px;font-size:0.8rem;border-radius:10px;border:none;outline:none;gap:4px;">
+              <i data-lucide="${allCovered ? 'check-circle-2' : 'users'}" style="width:13px;height:13px;"></i> Cover Both
+            </button>
+          `;
+        }
+
+        teammates.forEach(tm => {
+          const isCovered = selectedCoverUids.includes(tm.uid);
+          const name = tm.displayName || tm.epicUsername || 'Teammate';
+          html += `
+            <button type="button" class="btn btn-sm ${isCovered ? 'btn-primary' : 'btn-outline'}" onclick="toggleCoverSingleTeammate('${tm.uid}')" style="padding:6px 12px;font-size:0.8rem;border-radius:10px;border:none;outline:none;gap:4px;">
+              <i data-lucide="${isCovered ? 'check-circle-2' : 'user'}" style="width:13px;height:13px;"></i> ${escapeHtml(name)}
+            </button>
+          `;
+        });
+
+        container.innerHTML = html;
+      } else {
+        if (size === '2v2') {
+          container.innerHTML = `
+            <button type="button" class="btn btn-sm ${selectedCoverUids.length === 1 ? 'btn-primary' : 'btn-outline'}" onclick="setCoverGeneric(1)" style="padding:6px 12px;font-size:0.8rem;border-radius:10px;border:none;outline:none;">
+              Cover Teammate (1)
+            </button>
+          `;
+        } else if (size === '3v3') {
+          container.innerHTML = `
+            <button type="button" class="btn btn-sm ${selectedCoverUids.length === 2 ? 'btn-primary' : 'btn-outline'}" onclick="setCoverGeneric(2)" style="padding:6px 12px;font-size:0.8rem;border-radius:10px;border:none;outline:none;">
+              Cover Both (2 Teammates)
+            </button>
+            <button type="button" class="btn btn-sm ${selectedCoverUids.length === 1 ? 'btn-primary' : 'btn-outline'}" onclick="setCoverGeneric(1)" style="padding:6px 12px;font-size:0.8rem;border-radius:10px;border:none;outline:none;">
+              Cover 1 Teammate
+            </button>
+          `;
+        }
+      }
+      if (window.lucide) lucide.createIcons();
     }
 
-    function setCoverMode(mode) {
-      selectedCoverMode = mode;
+    function toggleCoverSingleTeammate(uid) {
+      const size = document.getElementById('size-select')?.value || '1v1';
+      const maxAllowed = size === '3v3' ? 2 : 1;
+
+      if (selectedCoverUids.includes(uid)) {
+        selectedCoverUids = selectedCoverUids.filter(id => id !== uid);
+      } else {
+        if (selectedCoverUids.length >= maxAllowed) {
+          selectedCoverUids = [selectedCoverUids[selectedCoverUids.length - 1], uid].slice(-maxAllowed);
+        } else {
+          selectedCoverUids.push(uid);
+        }
+      }
+      renderCoverWhoOptions();
+      updateCreatePreview();
+    }
+
+    function toggleCoverAllTeammates() {
+      const teammates = (currentUserTeamData?.members || []).filter(m => m.uid !== currentUser?.uid);
+      const allUids = teammates.slice(0, 2).map(t => t.uid);
+      if (selectedCoverUids.length === allUids.length && allUids.every(id => selectedCoverUids.includes(id))) {
+        selectedCoverUids = [];
+      } else {
+        selectedCoverUids = allUids;
+      }
+      renderCoverWhoOptions();
+      updateCreatePreview();
+    }
+
+    function setCoverGeneric(count) {
+      selectedCoverUids = [];
+      for (let i = 0; i < count; i++) {
+        selectedCoverUids.push(`tm_${i + 1}`);
+      }
       renderCoverWhoOptions();
       updateCreatePreview();
     }
@@ -656,18 +749,10 @@
       selectedCoverSplit = rule;
       const btnKeep = document.getElementById('btn-cover-keep');
       const btnSplit = document.getElementById('btn-cover-split');
-      const desc = document.getElementById('cover-split-explanation');
 
       if (btnKeep) btnKeep.className = `btn btn-sm ${rule === 'keep' ? 'btn-primary' : 'btn-outline'}`;
       if (btnSplit) btnSplit.className = `btn btn-sm ${rule === 'split' ? 'btn-primary' : 'btn-outline'}`;
 
-      if (desc) {
-        if (rule === 'keep') {
-          desc.innerHTML = '⚡ <strong>Keep Income:</strong> Teammates you covered don\'t receive payout — you receive their prize earnings back.';
-        } else {
-          desc.innerHTML = '🤝 <strong>Split Income:</strong> Prize is split normally and equally among all teammates, even though you covered their entry.';
-        }
-      }
       updateCreatePreview();
       if (window.lucide) lucide.createIcons();
     }
@@ -718,7 +803,7 @@
 
       let coveredCount = 0;
       if (isCoverEnabled && (size === '2v2' || size === '3v3')) {
-        coveredCount = (size === '2v2' || selectedCoverMode === '1') ? 1 : 2;
+        coveredCount = Math.min(size === '3v3' ? 2 : 1, selectedCoverUids.length);
       }
       const hostTotalDeposit = wager * (1 + coveredCount);
 
@@ -771,7 +856,7 @@
 
       let coveredCount = 0;
       if (isCoverEnabled && (size === '2v2' || size === '3v3')) {
-        coveredCount = (size === '2v2' || selectedCoverMode === '1') ? 1 : 2;
+        coveredCount = Math.min(size === '3v3' ? 2 : 1, selectedCoverUids.length);
       }
       const hostTotalDeposit = wager * (1 + coveredCount);
 
@@ -795,6 +880,7 @@
           teamName: currentUserData?.teamName || null,
           teamTag: currentUserData?.teamTag || null,
           tokenCoverage: isCoverEnabled ? (coveredCount === 1 ? '1' : 'all') : 'none',
+          coveredMemberUids: isCoverEnabled ? selectedCoverUids : [],
           coveredCount: isCoverEnabled ? coveredCount : 0,
           splitRule: isCoverEnabled ? selectedCoverSplit : 'equal',
         });
@@ -1063,9 +1149,6 @@
                     <button type="button" class="btn btn-sm btn-outline" id="btn-cover-split" onclick="setCoverSplitRule('split')" style="padding:7px 8px;font-size:0.75rem;font-weight:800;justify-content:center;border-radius:10px;border:none;outline:none;gap:4px;">
                       <i data-lucide="share-2" style="width:12px;height:12px;"></i> Split Income
                     </button>
-                  </div>
-                  <div id="cover-split-explanation" style="font-size:0.72rem;color:var(--gold-bright);margin-top:5px;line-height:1.35;">
-                    ⚡ <strong>Keep Income:</strong> Teammates you covered don't receive payout — you receive their prize earnings back.
                   </div>
                 </div>
               </div>
