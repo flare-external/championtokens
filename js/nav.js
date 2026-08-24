@@ -130,7 +130,7 @@ function injectNav(activePage = '') {
       <div class="modal" style="max-width:520px;">
         <div class="modal-header">
           <div class="modal-title" style="display:flex;align-items:center;gap:10px;">
-            <img src="new_token.png" alt="CT" style="width:26px;height:26px;object-fit:contain;filter:drop-shadow(0 0 6px rgba(245,158,11,0.6));" />
+            <img src="new_token.png" alt="CT" style="width:32px;height:32px;object-fit:contain;filter:drop-shadow(0 0 6px rgba(245,158,11,0.6));" />
             <span>Token Wallet</span>
           </div>
           <button class="modal-close" onclick="closeTokenWalletModal()"><i data-lucide="x"></i></button>
@@ -153,7 +153,7 @@ function injectNav(activePage = '') {
           </div>
           <div class="wallet-packs-grid">
             <div class="wallet-pack-card">
-              <img src="new_token.png" alt="5" style="width:36px;height:36px;object-fit:contain;" />
+              <img src="new_token.png" alt="5" style="width:52px;height:52px;object-fit:contain;margin-bottom:4px;" />
               <div style="font-weight:900;font-size:1.4rem;color:var(--gold-bright);">5.00</div>
               <div style="font-size:0.75rem;color:var(--text-muted);">Starter Pack</div>
               <button class="btn btn-outline btn-full btn-sm" onclick="handleWalletBuy('Starter', '5.00', '5.00')">
@@ -163,7 +163,7 @@ function injectNav(activePage = '') {
 
             <div class="wallet-pack-card popular">
               <span class="equipped-badge-indicator" style="top:6px;right:6px;">Popular</span>
-              <img src="new_token.png" alt="10" style="width:36px;height:36px;object-fit:contain;" />
+              <img src="new_token.png" alt="10" style="width:52px;height:52px;object-fit:contain;margin-bottom:4px;" />
               <div style="font-weight:900;font-size:1.4rem;color:var(--gold-bright);">10.00</div>
               <div style="font-size:0.75rem;color:var(--text-muted);">Standard Pack</div>
               <button class="btn btn-primary btn-full btn-sm" onclick="handleWalletBuy('Standard', '10.00', '10.00')">
@@ -172,7 +172,7 @@ function injectNav(activePage = '') {
             </div>
 
             <div class="wallet-pack-card">
-              <img src="new_token.png" alt="25" style="width:36px;height:36px;object-fit:contain;" />
+              <img src="new_token.png" alt="25" style="width:52px;height:52px;object-fit:contain;margin-bottom:4px;" />
               <div style="font-weight:900;font-size:1.4rem;color:var(--gold-bright);">25.00</div>
               <div style="font-size:0.75rem;color:var(--text-muted);">Pro Pack</div>
               <button class="btn btn-outline btn-full btn-sm" onclick="handleWalletBuy('Pro', '25.00', '25.00')">
@@ -181,7 +181,7 @@ function injectNav(activePage = '') {
             </div>
 
             <div class="wallet-pack-card">
-              <img src="new_token.png" alt="50" style="width:36px;height:36px;object-fit:contain;" />
+              <img src="new_token.png" alt="50" style="width:52px;height:52px;object-fit:contain;margin-bottom:4px;" />
               <div style="font-weight:900;font-size:1.4rem;color:var(--gold-bright);">50.00</div>
               <div style="font-size:0.75rem;color:var(--text-muted);">Champion Pack</div>
               <button class="btn btn-outline btn-full btn-sm" onclick="handleWalletBuy('Champion', '50.00', '50.00')">
