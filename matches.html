@@ -24,7 +24,7 @@
   <link rel="icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
-  <link rel="stylesheet" href="css/style.css?v=4.0.1787581500350"/>
+  <link rel="stylesheet" href="css/style.css?v=4.0.1787584504323"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
@@ -134,9 +134,9 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="js/firebase-config.js"></script>
-  <script src="js/auth.js?v=4.0.1787581500350"></script>
-  <script src="js/db.js?v=4.0.1787581500350"></script>
-  <script src="js/nav.js?v=4.0.1787581500350"></script>
+  <script src="js/auth.js?v=4.0.1787584504323"></script>
+  <script src="js/db.js?v=4.0.1787584504323"></script>
+  <script src="js/nav.js?v=4.0.1787584504323"></script>
 
   <script>
     let currentUser = null;
@@ -643,7 +643,8 @@
         const btn = document.getElementById('btn-submit-join-team');
         if (btn) { btn.disabled = true; btn.textContent = 'Joining...'; }
 
-        await joinMatchWithTeam(code, currentUserData, {
+        const matchTargetKey = currentJoinTarget?.id || code;
+        await joinMatchWithTeam(matchTargetKey, currentUserData, {
           teamId: selectedJoinTeam.id,
           tokenCoverage: isJoinCoverEnabled ? (coveredCount === 1 ? '1' : 'all') : 'none',
           coveredMemberUids: isJoinCoverEnabled ? selectedJoinCoverUids : [],
@@ -652,7 +653,8 @@
 
         showToast('Joined with squad! Opening room…', 'success');
         closeJoinTeamModal();
-        setTimeout(() => window.location.href = `match?code=${code}`, 500);
+        const targetUrl = currentJoinTarget?.id ? `match?id=${currentJoinTarget.id}` : `match?code=${code}`;
+        setTimeout(() => window.location.href = targetUrl, 500);
       } catch (err) {
         showToast(err.message, 'error');
         const btn = document.getElementById('btn-submit-join-team');

@@ -446,8 +446,8 @@ function renderNavNotifications(uid, notifs) {
             </div>` : ''}
           ${isMatchTeamInvite ? `
             <div style="display:flex;gap:6px;margin-top:8px;">
-              <button class="btn btn-primary btn-sm" style="font-size:0.75rem;padding:4px 12px;gap:4px;" onclick="handleAcceptMatchTeamInvite('${n.id}','${n.matchId}','${n.matchCode || ''}',${n.wager || 0},event)">
-                <i data-lucide="play" style="width:12px;height:12px;"></i> Accept & Join
+              <button class="btn btn-primary btn-sm" style="font-size:0.75rem;padding:4px 12px;gap:4px;" onclick="handleAcceptMatchTeamInvite('${n.id}','${n.matchId}','${n.matchCode || ''}',${n.wager || 0},${!!n.isCovered},event)">
+                <i data-lucide="play" style="width:12px;height:12px;"></i> Accept & Join ${n.isCovered ? '(Free)' : ''}
               </button>
               <button class="btn btn-outline btn-sm" style="font-size:0.75rem;padding:4px 10px;gap:4px;" onclick="handleDeclineMatchTeamInvite('${n.id}','${n.matchId}',event)">
                 <i data-lucide="x" style="width:12px;height:12px;"></i> Decline
@@ -469,7 +469,7 @@ async function handleMarkAllRead() {
   }
 }
 
-async function handleAcceptMatchTeamInvite(notifId, matchId, matchCode, wager, e) {
+async function handleAcceptMatchTeamInvite(notifId, matchId, matchCode, wager, isCovered, e) {
   if (e) e.stopPropagation();
   const user = auth.currentUser;
   if (!user || !_notifCurrentUid) return;
@@ -481,7 +481,7 @@ async function handleAcceptMatchTeamInvite(notifId, matchId, matchCode, wager, e
       setTimeout(() => window.location.href = 'profile?tab=connections', 1000);
       return;
     }
-    if (Number(uData.tokens || 0) < Number(wager)) {
+    if (!isCovered && Number(uData.tokens || 0) < Number(wager)) {
       showToast(`Insufficient tokens (Requires ${formatTokens(wager)} Tokens entry fee)`, 'error');
       return;
     }

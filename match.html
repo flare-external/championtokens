@@ -7,7 +7,7 @@
   <link rel="icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
-  <link rel="stylesheet" href="css/style.css?v=4.0.1787581500350"/>
+  <link rel="stylesheet" href="css/style.css?v=4.0.1787584504323"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
@@ -17,13 +17,19 @@
       background: transparent;
       color: #f1f5f9;
       overflow-x: hidden;
+    html, body {
+      height: 100vh;
+      max-height: 100vh;
+      overflow: hidden;
     }
     .match-page-layout {
       position: relative;
       z-index: 1;
       display: grid;
-      grid-template-columns: 1fr 380px;
-      min-height: calc(100vh - var(--nav-h));
+      grid-template-columns: 1fr 340px;
+      height: calc(100vh - var(--nav-h));
+      max-height: calc(100vh - var(--nav-h));
+      overflow: hidden;
       width: 100%;
       background: transparent;
       box-sizing: border-box;
@@ -33,30 +39,42 @@
       grid-template-columns: 1fr 48px;
     }
     @media (max-width: 1080px) {
+      html, body {
+        height: auto;
+        max-height: none;
+        overflow: auto;
+      }
       .match-page-layout {
         grid-template-columns: 1fr;
+        height: auto;
+        max-height: none;
+        overflow: visible;
       }
       .match-page-layout.chat-collapsed {
         grid-template-columns: 1fr;
       }
     }
 
-    /* Left Stage Area — Comfortably Centered & Lowered */
+    /* Left Stage Area — Comfortably Centered & Scaled to Viewport */
     .match-stage-left {
-      padding: 72px 32px 64px;
+      padding: 18px 28px 16px;
       display: flex;
       flex-direction: column;
-      gap: 26px;
+      justify-content: space-between;
+      gap: 12px;
       min-width: 0;
       box-sizing: border-box;
-      max-width: 1350px;
+      max-width: 1300px;
       margin: 0 auto;
       width: 100%;
+      height: 100%;
+      overflow-y: auto;
     }
     @media (max-width: 768px) {
       .match-stage-left {
-        padding: 36px 14px 40px;
-        gap: 18px;
+        padding: 20px 12px 24px;
+        gap: 14px;
+        height: auto;
       }
     }
 
@@ -1361,9 +1379,9 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="js/firebase-config.js"></script>
-  <script src="js/auth.js?v=4.0.1787581500350"></script>
-  <script src="js/db.js?v=4.0.1787581500350"></script>
-  <script src="js/nav.js?v=4.0.1787581500350"></script>
+  <script src="js/auth.js?v=4.0.1787584504323"></script>
+  <script src="js/db.js?v=4.0.1787584504323"></script>
+  <script src="js/nav.js?v=4.0.1787584504323"></script>
 
   <script>
     let currentUser = null;
@@ -1779,21 +1797,23 @@
           const invitedTeammatesForThisTeam = (match.invitedTeammates || []).filter(tm => isSlotTeam1 ? (tm.team !== 2) : (tm.team === 2));
           const invitedTeammate = invitedTeammatesForThisTeam[slotIndex - 2];
           if (invitedTeammate && invitedTeammate.status === 'pending') {
+            const isMeInvited = (invitedTeammate.uid === currentUser?.uid);
             const pfp = isHiddenEnemyTeam ? '' : invitedTeammate.photoURL;
             const displayName = isHiddenEnemyTeam ? 'Opponent Teammate' : (invitedTeammate.displayName || 'Player');
             const initChar = displayName.charAt(0).toUpperCase();
             return `
-              <div class="concept-player-row" style="border:1px dashed rgba(245,158,11,0.4);background:rgba(245,158,11,0.04);">
-                <div class="concept-player-pfp" style="background:rgba(245,158,11,0.12);color:var(--gold-bright);">
+              <div class="concept-player-row" style="border:1px solid rgba(245,158,11,0.5);background:rgba(245,158,11,0.08);${isMeInvited ? 'cursor:pointer;' : ''}" ${isMeInvited ? 'onclick="handleAcceptInviteDirectly()"' : ''}>
+                <div class="concept-player-pfp" style="background:rgba(245,158,11,0.18);color:var(--gold-bright);">
                   ${pfp ? `<img src="${escapeHtml(pfp)}" alt=""/>` : initChar}
                 </div>
                 <div class="concept-player-info">
                   <div class="concept-player-name-line">
-                    <span>${escapeHtml(displayName)}</span>
-                    <span class="badge" style="background:rgba(245,158,11,0.18);color:var(--gold-bright);font-size:0.62rem;font-weight:700;">INVITED</span>
+                    <span style="font-weight:900;color:#fff;">${escapeHtml(displayName)}</span>
+                    <span class="badge" style="background:rgba(245,158,11,0.25);color:var(--gold-bright);font-size:0.65rem;font-weight:800;">INVITED</span>
+                    ${invitedTeammate.isCovered ? '<span class="badge" style="background:rgba(134,239,172,0.2);color:#86efac;font-size:0.65rem;font-weight:800;">COVERED</span>' : ''}
                   </div>
-                  <div style="font-size:0.72rem;color:var(--gold-light);margin-top:2px;">
-                    ⏳ Pending acceptance in notifications…
+                  <div style="font-size:0.75rem;color:var(--gold-light);margin-top:2px;">
+                    ${isMeInvited ? '👉 Click to Accept & Take Slot' : '⏳ Pending squad acceptance…'}
                   </div>
                 </div>
               </div>`;
@@ -1943,7 +1963,14 @@
                 </button>
               </div>`;
           } else if (!isFull && !isExpired) {
-            if (match.size !== '1v1') {
+            const isInvitedTeammate = (match.invitedTeammates || []).find(tm => tm.uid === currentUser?.uid && tm.status === 'pending');
+            if (isInvitedTeammate) {
+              const isCovered = !!(isInvitedTeammate.isCovered || (isInvitedTeammate.team === 1 && (match.coveredMemberUids || []).includes(currentUser?.uid)) || (isInvitedTeammate.team === 2 && (match.team2CoveredMemberUids || []).includes(currentUser?.uid)));
+              primaryActionContainer.innerHTML = `
+                <button class="concept-btn-ready" onclick="handleAcceptInviteDirectly()">
+                  <i data-lucide="check-circle-2"></i> Join Squad ${isCovered ? '(Covered Free)' : `(${formatTokens(match.wager)} Tokens)`}
+                </button>`;
+            } else if (match.size !== '1v1') {
               primaryActionContainer.innerHTML = `
                 <button class="concept-btn-ready" onclick="openMatchJoinTeamModal()">
                   <i data-lucide="users"></i> Join Match (${formatTokens(match.wager)} Tokens)
@@ -2314,6 +2341,23 @@
       if (window.lucide) lucide.createIcons();
     }
 
+    async function handleAcceptInviteDirectly() {
+      if (!currentMatch || !currentUser) return;
+      currentUserData = await getUser(currentUser.uid);
+      if (!currentUserData?.epicUsername) {
+        showToast('Please link your Epic Games username in Profile before entering matches', 'error');
+        setTimeout(() => window.location.href = 'profile?tab=connections', 1000);
+        return;
+      }
+      try {
+        showToast('Accepting invitation and entering slot…', 'info');
+        await acceptMatchTeamInvite(currentMatch.id || matchId, currentUserData);
+        showToast('Joined squad! Click Ready Up to begin.', 'success');
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
+    }
+
     async function submitMatchJoinTeam() {
       if (!currentMatch) return;
       currentUserData = await getUser(currentUser.uid);
@@ -2342,7 +2386,7 @@
         const btn = document.getElementById('btn-submit-match-join-team');
         if (btn) { btn.disabled = true; btn.textContent = 'Joining...'; }
 
-        await joinMatchWithTeam(currentMatch.code, currentUserData, {
+        await joinMatchWithTeam(currentMatch.id || currentMatch.code || matchId, currentUserData, {
           teamId: matchSelectedJoinTeam.id,
           tokenCoverage: isMatchJoinCoverEnabled ? (coveredCount === 1 ? '1' : 'all') : 'none',
           coveredMemberUids: isMatchJoinCoverEnabled ? matchSelectedJoinCoverUids : [],
@@ -2381,10 +2425,10 @@
 
       try {
         if (mode === 'team') {
-          await joinMatchWithTeam(currentMatch.code, currentUserData);
+          await joinMatchWithTeam(currentMatch.id || currentMatch.code || matchId, currentUserData);
           showToast('Joined match with team! Invitations sent to your squad.', 'success');
         } else {
-          await joinMatch(currentMatch.code, currentUserData);
+          await joinMatch(currentMatch.id || currentMatch.code || matchId, currentUserData);
           showToast('Joined match! Click Ready Up to begin.', 'success');
         }
       } catch (err) {
