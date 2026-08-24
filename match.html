@@ -1838,24 +1838,13 @@
         }
       }
 
-      // Chat input locks until all players are ready or match is in progress
+      // Chat input state
       const chatInput = document.getElementById('chat-input');
       const chatSendBtn = document.querySelector('.chat-send-btn');
-      const urlParams = new URLSearchParams(window.location.search);
-      const isStaffMode = urlParams.get('staff') === 'true' || urlParams.get('call') !== null;
-      const isMatchLive = (match.status === 'in_progress' || match.status === 'completed' || match.status === 'disputed');
-      const allPlayersReady = isMatchLive || (players.length >= maxPlayers && players.every(p => p.ready));
-
       if (chatInput) {
-        if (allPlayersReady || isStaffMode) {
-          chatInput.disabled = false;
-          chatInput.placeholder = "Type message..";
-          if (chatSendBtn) chatSendBtn.disabled = false;
-        } else {
-          chatInput.disabled = true;
-          chatInput.placeholder = "Chat locked — Waiting for all players to ready up";
-          if (chatSendBtn) chatSendBtn.disabled = true;
-        }
+        chatInput.disabled = false;
+        chatInput.placeholder = "Type message..";
+        if (chatSendBtn) chatSendBtn.disabled = false;
       }
 
       if (window.lucide) lucide.createIcons();
@@ -2308,18 +2297,10 @@
       const text = input.value.trim();
       if (!text || !matchId) return;
 
+      input.value = '';
       const urlParams = new URLSearchParams(window.location.search);
       const isStaffCall = urlParams.get('staff') === 'true' || urlParams.get('call') !== null;
-      const isMatchLive = (currentMatchData?.status === 'in_progress' || currentMatchData?.status === 'completed' || currentMatchData?.status === 'disputed');
       const matchPlayers = currentMatchData?.players || [];
-      const allPlayersReady = isMatchLive || (matchPlayers.length >= (currentMatchData?.maxPlayers || 2) && matchPlayers.every(p => p.ready));
-
-      if (!allPlayersReady && !isStaffCall) {
-        showToast('Chat unlocks when all players are ready', 'error');
-        return;
-      }
-
-      input.value = '';
       const isParticipant = matchPlayers.some(p => p.uid === currentUser?.uid);
       const isStaffMsg = Boolean((isStaffCall || !isParticipant) && isAdminUser(currentUser, currentUserData));
       const isPremium = !!currentUserData?.isPremium;
