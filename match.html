@@ -1541,10 +1541,13 @@
       const myTeamKey = isUserInTeam1 ? 'team1' : 'team2';
       const oppTeamKey = isUserInTeam1 ? 'team2' : 'team1';
 
-      // Team 1 Header Status
+      const isMatchLive = (match.status === 'in_progress' || match.status === 'completed' || match.status === 'disputed');
+
+      // Team 1 Header Status & Tag
       const t1StatusPill = document.getElementById('team1-status-pill');
       const t1Name = document.getElementById('team1-card-name');
-      if (t1Name) t1Name.innerHTML = `Team 1 ${match.teamTag ? `<span class="badge" style="background:var(--purple);color:#fff;font-size:0.7rem;padding:2px 7px;">[${escapeHtml(match.teamTag)}]</span>` : ''}`;
+      const showT1Tag = (isMatchLive || isUserInTeam1) && match.teamTag;
+      if (t1Name) t1Name.innerHTML = `Team 1 ${showT1Tag ? `<span class="badge" style="background:var(--purple);color:#fff;font-size:0.7rem;padding:2px 7px;">[${escapeHtml(match.teamTag)}]</span>` : ''}`;
       if (t1StatusPill) {
         if (match.status === 'completed') {
           t1StatusPill.style.display = 'inline-flex';
@@ -1565,10 +1568,11 @@
         }
       }
 
-      // Team 2 Header Status
+      // Team 2 Header Status & Tag
       const t2StatusPill = document.getElementById('team2-status-pill');
       const t2Name = document.getElementById('team2-card-name');
-      if (t2Name) t2Name.innerHTML = `Team 2 ${match.enemyTeamTag ? `<span class="badge" style="background:var(--purple);color:#fff;font-size:0.7rem;padding:2px 7px;">[${escapeHtml(match.enemyTeamTag)}]</span>` : ''}`;
+      const showT2Tag = (isMatchLive || isUserInTeam2) && match.enemyTeamTag;
+      if (t2Name) t2Name.innerHTML = `Team 2 ${showT2Tag ? `<span class="badge" style="background:var(--purple);color:#fff;font-size:0.7rem;padding:2px 7px;">[${escapeHtml(match.enemyTeamTag)}]</span>` : ''}`;
       if (t2StatusPill) {
         if (match.status === 'completed') {
           t2StatusPill.style.display = 'inline-flex';
@@ -1597,14 +1601,21 @@
           const isReady = !!player.ready;
           const isSlotTeam1 = (teamName === 'Team 1');
           const isSameTeam = (isSlotTeam1 && isUserInTeam1) || (!isSlotTeam1 && isUserInTeam2);
+          const isHiddenEnemy = !isMatchLive && !isSameTeam && !isMe;
 
           const liveData = (isMe ? currentUserData : playersUserCache[player.uid]) || {};
-          const isPremium = !!(liveData.isPremium ?? player.isPremium);
-          const realDisplayName = liveData.displayName || player.displayName || 'Player';
-          const realEpicUsername = liveData.epicUsername || player.epicUsername || '';
+          const isPremium = !isHiddenEnemy && !!(liveData.isPremium ?? player.isPremium);
+          const realDisplayName = isHiddenEnemy ? 'Opponent' : (liveData.displayName || player.displayName || 'Player');
+          const realEpicUsername = isHiddenEnemy ? '' : (liveData.epicUsername || player.epicUsername || '');
 
           let epicChipHTML = '';
-          if (realEpicUsername) {
+          if (isHiddenEnemy) {
+            epicChipHTML = `
+              <div class="concept-epic-row" style="opacity:0.6;border-style:dashed;">
+                <i data-lucide="lock" style="width:11px;height:11px;color:var(--gold-bright);"></i>
+                <span>Hidden until match starts</span>
+              </div>`;
+          } else if (realEpicUsername) {
             epicChipHTML = `
               <div class="concept-epic-row" onclick="event.stopPropagation();copyEpicTag('${realEpicUsername}')" title="Click to copy Epic IGN">
                 <img src="epic_games_logo.webp" alt="" style="width:12px;height:14px;object-fit:contain;"/>
@@ -1617,8 +1628,8 @@
               : `<div class="concept-epic-row" style="opacity:0.5;border-style:dashed;" onclick="event.stopPropagation();showToast('Player has not linked their Epic account yet','info')"><img src="epic_games_logo.webp" alt="" style="width:12px;height:14px;object-fit:contain;"/> <span>No Epic Linked</span></div>`;
           }
 
-          let titleText = 'GLADIATOR';
-          if (liveData.equippedTitle && SHOP_TITLES[liveData.equippedTitle]) {
+          let titleText = isHiddenEnemy ? 'OPPONENT' : 'GLADIATOR';
+          if (!isHiddenEnemy && liveData.equippedTitle && SHOP_TITLES[liveData.equippedTitle]) {
             titleText = SHOP_TITLES[liveData.equippedTitle].name;
           }
 
@@ -1630,17 +1641,23 @@
               </div>`;
           }
 
+          const clickAttr = isHiddenEnemy
+            ? `onclick="showToast('Opponent details are hidden until match starts','info')"`
+            : `onclick="openUserProfileModal('${player.uid}')" title="Click to view profile & stats"`;
+
+          const pfpContent = isHiddenEnemy
+            ? `<div class="concept-player-pfp" style="background:rgba(255,255,255,0.06);color:var(--text-muted);display:flex;align-items:center;justify-content:center;"><i data-lucide="user" style="width:20px;height:20px;opacity:0.5;"></i></div>`
+            : `<div class="concept-player-pfp">${(liveData.photoURL || player.photoURL) ? `<img src="${liveData.photoURL || player.photoURL}" onerror="this.style.display='none'"/>` : realDisplayName.charAt(0)}</div>`;
+
           return `
-            <div class="concept-player-row" onclick="openUserProfileModal('${player.uid}')" title="Click to view profile & stats">
-              <div class="concept-player-pfp">
-                ${(liveData.photoURL || player.photoURL) ? `<img src="${liveData.photoURL || player.photoURL}" onerror="this.style.display='none'"/>` : realDisplayName.charAt(0)}
-              </div>
+            <div class="concept-player-row" ${clickAttr}>
+              ${pfpContent}
               <div class="concept-player-info">
                 <div class="concept-player-name-line">
                   <span class="${isPremium ? 'username-premium' : ''}">${escapeHtml(realDisplayName)}</span>
                   ${isMe ? '<span style="color:var(--gold-bright);font-size:0.72rem;font-weight:900;">(You)</span>' : ''}
-                  ${isPlayerHost ? '<span class="badge" style="background:var(--gold-dim);color:var(--gold-bright);padding:1px 5px;font-size:0.62rem;font-weight:800;">HOST</span>' : ''}
-                  ${player.isCovered ? '<span class="badge" style="background:rgba(134,239,172,0.15);color:#86efac;padding:1px 5px;font-size:0.62rem;font-weight:700;">COVERED</span>' : ''}
+                  ${(!isHiddenEnemy && isPlayerHost) ? '<span class="badge" style="background:var(--gold-dim);color:var(--gold-bright);padding:1px 5px;font-size:0.62rem;font-weight:800;">HOST</span>' : ''}
+                  ${(!isHiddenEnemy && player.isCovered) ? '<span class="badge" style="background:rgba(134,239,172,0.15);color:#86efac;padding:1px 5px;font-size:0.62rem;font-weight:700;">COVERED</span>' : ''}
                 </div>
                 <div class="concept-player-title">${escapeHtml(titleText)}</div>
                 ${epicChipHTML}
@@ -1649,11 +1666,14 @@
             </div>`;
         } else {
           const isSlotTeam1 = (teamName === 'Team 1');
+          const isSameTeam = (isSlotTeam1 && isUserInTeam1) || (!isSlotTeam1 && isUserInTeam2);
+          const isHiddenEnemyTeam = !isMatchLive && !isSameTeam;
           const invitedTeammatesForThisTeam = (match.invitedTeammates || []).filter(tm => isSlotTeam1 ? (tm.team !== 2) : (tm.team === 2));
           const invitedTeammate = invitedTeammatesForThisTeam[slotIndex - 2];
           if (invitedTeammate && invitedTeammate.status === 'pending') {
-            const pfp = invitedTeammate.photoURL;
-            const initChar = (invitedTeammate.displayName || 'T').charAt(0).toUpperCase();
+            const pfp = isHiddenEnemyTeam ? '' : invitedTeammate.photoURL;
+            const displayName = isHiddenEnemyTeam ? 'Opponent Teammate' : (invitedTeammate.displayName || 'Player');
+            const initChar = displayName.charAt(0).toUpperCase();
             return `
               <div class="concept-player-row" style="border:1px dashed rgba(245,158,11,0.4);background:rgba(245,158,11,0.04);">
                 <div class="concept-player-pfp" style="background:rgba(245,158,11,0.12);color:var(--gold-bright);">
@@ -1661,7 +1681,7 @@
                 </div>
                 <div class="concept-player-info">
                   <div class="concept-player-name-line">
-                    <span>${escapeHtml(invitedTeammate.displayName)}</span>
+                    <span>${escapeHtml(displayName)}</span>
                     <span class="badge" style="background:rgba(245,158,11,0.18);color:var(--gold-bright);font-size:0.62rem;font-weight:700;">INVITED</span>
                   </div>
                   <div style="font-size:0.72rem;color:var(--gold-light);margin-top:2px;">
@@ -1838,13 +1858,22 @@
         }
       }
 
-      // Chat input state
+      // Chat input locks while waiting for all players to ready up
       const chatInput = document.getElementById('chat-input');
       const chatSendBtn = document.querySelector('.chat-send-btn');
+      const urlParams = new URLSearchParams(window.location.search);
+      const isStaffMode = urlParams.get('staff') === 'true' || urlParams.get('call') !== null;
+
       if (chatInput) {
-        chatInput.disabled = false;
-        chatInput.placeholder = "Type message..";
-        if (chatSendBtn) chatSendBtn.disabled = false;
+        if (isMatchLive || isStaffMode) {
+          chatInput.disabled = false;
+          chatInput.placeholder = "Type message..";
+          if (chatSendBtn) chatSendBtn.disabled = false;
+        } else {
+          chatInput.disabled = true;
+          chatInput.placeholder = "Chat locked — Waiting for all players to ready up";
+          if (chatSendBtn) chatSendBtn.disabled = true;
+        }
       }
 
       if (window.lucide) lucide.createIcons();
@@ -2294,26 +2323,39 @@
     async function sendChatMessage(e) {
       e.preventDefault();
       const input = document.getElementById('chat-input');
+      if (!input) return;
       const text = input.value.trim();
       if (!text || !matchId) return;
 
-      input.value = '';
+      const isMatchLive = (currentMatchData?.status === 'in_progress' || currentMatchData?.status === 'completed' || currentMatchData?.status === 'disputed');
       const urlParams = new URLSearchParams(window.location.search);
       const isStaffCall = urlParams.get('staff') === 'true' || urlParams.get('call') !== null;
+
+      if (!isMatchLive && !isStaffCall) {
+        showToast('Chat unlocks once all players ready up and match starts', 'error');
+        return;
+      }
+
+      input.value = '';
       const matchPlayers = currentMatchData?.players || [];
       const isParticipant = matchPlayers.some(p => p.uid === currentUser?.uid);
       const isStaffMsg = Boolean((isStaffCall || !isParticipant) && isAdminUser(currentUser, currentUserData));
       const isPremium = !!currentUserData?.isPremium;
 
-      await db.collection('matches').doc(matchId).collection('messages').add({
-        text,
-        senderUid:  currentUser.uid,
-        senderName: currentUserData?.displayName || 'Player',
-        photoURL:   currentUserData?.photoURL || currentUser?.photoURL || '',
-        isStaff:    isStaffMsg,
-        isPremium:  isPremium,
-        timestamp:  firebase.firestore.FieldValue.serverTimestamp(),
-      });
+      try {
+        await db.collection('matches').doc(matchId).collection('messages').add({
+          text,
+          senderUid:  currentUser.uid,
+          senderName: currentUserData?.displayName || currentUser?.displayName || 'Player',
+          photoURL:   currentUserData?.photoURL || currentUser?.photoURL || '',
+          isStaff:    isStaffMsg,
+          isPremium:  isPremium,
+          timestamp:  firebase.firestore.FieldValue.serverTimestamp(),
+        });
+      } catch (err) {
+        console.error('Failed to send chat message:', err);
+        showToast('Failed to send message: ' + (err.message || err), 'error');
+      }
     }
 
     function escapeHtml(str) {
