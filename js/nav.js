@@ -799,7 +799,7 @@ function showConfirm(options = {}) {
 }
 
 /**
- * Show dedicated pitch-black OLED Suspension/Banned Screen
+ * Show dedicated pitch-black & electric blue Suspension/Banned Screen
  */
 function showBannedScreen(userData) {
   const reason = userData?.banReason || 'Violation of community guidelines or platform terms';
@@ -820,41 +820,81 @@ function showBannedScreen(userData) {
     document.body.appendChild(existing);
   }
 
+  window.toggleBanReasonView = function() {
+    const card = document.getElementById('ban-reason-card');
+    const chevron = document.getElementById('ban-reason-chevron');
+    const btnText = document.getElementById('ban-reason-btn-text');
+    if (!card) return;
+    const isHidden = card.style.display === 'none';
+    card.style.display = isHidden ? 'block' : 'none';
+    if (chevron) chevron.style.transform = isHidden ? 'rotate(180deg)' : 'rotate(0deg)';
+    if (btnText) btnText.textContent = isHidden ? 'Hide Reason' : 'View Reason';
+  };
+
   existing.innerHTML = `
     <style>
       @keyframes bannedCardPop {
-        0% { opacity: 0; transform: scale(0.94) translateY(10px); }
+        0% { opacity: 0; transform: scale(0.94) translateY(12px); }
         100% { opacity: 1; transform: scale(1) translateY(0); }
       }
-      @keyframes redPulseRing {
-        0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4), 0 0 30px rgba(239, 68, 68, 0.2); }
-        50% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0), 0 0 45px rgba(239, 68, 68, 0.35); }
+      @keyframes bluePulseRing {
+        0%, 100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.45), 0 0 30px rgba(59, 130, 246, 0.25); }
+        50% { box-shadow: 0 0 0 12px rgba(59, 130, 246, 0), 0 0 45px rgba(59, 130, 246, 0.4); }
       }
       .banned-pitch-card {
         animation: bannedCardPop 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
       }
+      .ban-view-reason-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        background: rgba(59, 130, 246, 0.08);
+        border: 1px solid rgba(59, 130, 246, 0.35);
+        color: #60a5fa;
+        padding: 8px 18px;
+        border-radius: 10px;
+        font-weight: 800;
+        font-size: 0.84rem;
+        cursor: pointer;
+        transition: all 0.18s ease;
+        margin-bottom: 20px;
+      }
+      .ban-view-reason-btn:hover {
+        background: rgba(59, 130, 246, 0.16);
+        border-color: rgba(59, 130, 246, 0.6);
+        color: #93c5fd;
+      }
     </style>
     <div style="position:fixed;inset:0;background:#000000;z-index:99999999;display:flex;align-items:center;justify-content:center;padding:24px;overflow-y:auto;">
-      <div class="banned-pitch-card" style="max-width:490px;width:100%;background:#050507;border:1px solid rgba(239,68,68,0.3);box-shadow:0 25px 80px rgba(0,0,0,0.98), 0 0 50px rgba(239,68,68,0.12);border-radius:24px;padding:38px 30px;text-align:center;position:relative;">
+      <div class="banned-pitch-card" style="max-width:480px;width:100%;background:#06080e;border:1px solid rgba(59,130,246,0.25);box-shadow:0 30px 90px rgba(0,0,0,0.98), 0 0 50px rgba(59,130,246,0.12);border-radius:24px;padding:38px 30px;text-align:center;position:relative;">
         
-        <!-- Red Icon Shield with Glowing Ring -->
-        <div style="width:72px;height:72px;border-radius:50%;background:#0a0002;border:1.5px solid rgba(239,68,68,0.6);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;color:#ef4444;animation:redPulseRing 2.4s infinite ease-in-out;">
-          <i data-lucide="ban" style="width:36px;height:36px;"></i>
+        <!-- Electric Blue Circular Shield with Pulsing Ring -->
+        <div style="width:72px;height:72px;border-radius:50%;background:#020617;border:1.5px solid rgba(59,130,246,0.6);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;color:#60a5fa;animation:bluePulseRing 2.4s infinite ease-in-out;">
+          <i data-lucide="shield" style="width:34px;height:34px;"></i>
         </div>
 
         <h1 style="color:#ffffff;font-weight:900;font-size:1.75rem;margin:0 0 8px;letter-spacing:-0.02em;">
-          Account <span style="color:#ef4444;">Suspended</span>
+          Account <span style="color:#60a5fa;">Suspended</span>
         </h1>
-        <p style="color:#94a3b8;font-size:0.9rem;line-height:1.5;margin:0 0 24px;">
-          Your access to Champion Tokens services has been restricted due to a moderation action.
+        <p style="color:#94a3b8;font-size:0.9rem;line-height:1.5;margin:0 0 20px;">
+          Your access to Champion Tokens services has been restricted by staff moderation.
         </p>
+
+        <!-- View Reason Collapsible Button -->
+        <div>
+          <button class="ban-view-reason-btn" onclick="toggleBanReasonView()">
+            <i data-lucide="info" style="width:14px;height:14px;"></i>
+            <span id="ban-reason-btn-text">View Reason</span>
+            <i data-lucide="chevron-down" id="ban-reason-chevron" style="width:14px;height:14px;transition:transform 0.2s ease;"></i>
+          </button>
+        </div>
         
-        <!-- Pitch Black Reason Box -->
-        <div style="background:#000000;border:1px solid rgba(255,255,255,0.08);border-left:3px solid #ef4444;border-radius:14px;padding:18px 20px;text-align:left;margin-bottom:26px;">
-          <div style="font-size:0.72rem;color:#ef4444;text-transform:uppercase;font-weight:900;letter-spacing:0.06em;display:flex;align-items:center;gap:6px;">
-            <i data-lucide="alert-circle" style="width:12px;height:12px;"></i> Reason for Suspension
+        <!-- Pitch Black Reason Box (Collapsible) -->
+        <div id="ban-reason-card" style="display:none;background:#000000;border:1px solid rgba(59,130,246,0.25);border-left:3px solid #3b82f6;border-radius:14px;padding:16px 18px;text-align:left;margin-bottom:24px;animation:bannedCardPop 0.2s ease forwards;">
+          <div style="font-size:0.72rem;color:#60a5fa;text-transform:uppercase;font-weight:900;letter-spacing:0.06em;display:flex;align-items:center;gap:6px;">
+            <i data-lucide="alert-circle" style="width:12px;height:12px;"></i> Reason Details
           </div>
-          <div style="font-size:1rem;font-weight:800;color:#ffffff;margin:8px 0 10px;line-height:1.4;">
+          <div style="font-size:0.96rem;font-weight:800;color:#ffffff;margin:8px 0 10px;line-height:1.4;">
             ${escapeHtml(reason)}
           </div>
           <div style="border-top:1px solid rgba(255,255,255,0.06);padding-top:10px;display:flex;flex-direction:column;gap:4px;font-size:0.75rem;color:#64748b;">
@@ -865,10 +905,10 @@ function showBannedScreen(userData) {
 
         <!-- Action Buttons -->
         <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
-          <a href="https://discord.gg/championtokens" target="_blank" class="btn btn-outline" style="flex:1;min-width:160px;background:#0d111a;border-color:rgba(88,101,242,0.4);color:#818cf8;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 18px;font-weight:800;font-size:0.88rem;border-radius:12px;text-decoration:none;transition:all 0.18s ease;">
+          <a href="https://discord.gg/championtokens" target="_blank" class="btn btn-outline" style="flex:1;min-width:160px;background:#0d1526;border-color:rgba(59,130,246,0.45);color:#60a5fa;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 18px;font-weight:800;font-size:0.88rem;border-radius:12px;text-decoration:none;transition:all 0.18s ease;">
             <i data-lucide="message-square" style="width:16px;height:16px;"></i> Appeal on Discord
           </a>
-          <button class="btn btn-danger" onclick="handleSignOut()" style="flex:1;min-width:140px;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 18px;font-weight:800;font-size:0.88rem;border-radius:12px;cursor:pointer;">
+          <button class="btn btn-outline" onclick="handleSignOut()" style="flex:1;min-width:130px;background:rgba(255,255,255,0.03);border-color:rgba(255,255,255,0.12);color:#cbd5e1;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 18px;font-weight:800;font-size:0.88rem;border-radius:12px;cursor:pointer;">
             <i data-lucide="log-out" style="width:16px;height:16px;"></i> Sign Out
           </button>
         </div>
