@@ -1537,10 +1537,48 @@ function generateTeamCode() {
   return 'TM-' + Math.random().toString(36).substr(2, 5).toUpperCase();
 }
 
+/**
+ * Profanity & Inappropriate Words Filter
+ */
+const PROFANITY_BLOCKLIST = [
+  'nigger', 'nigga', 'faggot', 'fag', 'cunt', 'whore', 'slut', 'bitch',
+  'kike', 'chink', 'spic', 'retard', 'tranny', 'pedophile', 'pedo',
+  'hitler', 'nazi', 'kkk', 'rape', 'rapist', 'terrorist', 'isis',
+  'pussy', 'dick', 'cock', 'penis', 'vagina', 'asshole', 'bastard',
+  'motherfucker', 'fuck', 'shit', 'kill yourself', 'kys', 'porn', 'sex'
+];
+
+function isProfane(text) {
+  if (!text) return false;
+  let clean = text.toLowerCase()
+    .replace(/@/g, 'a')
+    .replace(/0/g, 'o')
+    .replace(/1|!|\|/g, 'i')
+    .replace(/3/g, 'e')
+    .replace(/5|\$/g, 's')
+    .replace(/7/g, 't')
+    .replace(/8/g, 'b')
+    .replace(/[^a-z0-9]/g, '');
+
+  for (const word of PROFANITY_BLOCKLIST) {
+    const cleanWord = word.replace(/[^a-z0-9]/g, '');
+    if (clean.includes(cleanWord)) {
+      return true;
+    }
+  }
+  return false;
+}
+
 /** Create a new team */
-async function createTeam(user, { name, tag }) {
+async function createTeam(user, { name, tag, icon, iconColor, bgColor, borderColor }) {
   if (!name || !name.trim()) throw new Error('Team name is required');
+  const trimmedName = name.trim();
   const cleanTag = (tag || name.substring(0, 4)).toUpperCase().trim().replace(/[^A-Z0-9]/g, '');
+  
+  if (isProfane(trimmedName) || isProfane(cleanTag)) {
+    throw new Error('Team name or tag contains inappropriate words. Please choose another.');
+  }
+
   const code = generateTeamCode();
 
   const leader = {
@@ -1550,10 +1588,19 @@ async function createTeam(user, { name, tag }) {
     isLeader:    true,
   };
 
+  const teamIcon = icon || 'shield';
+  const teamIconColor = iconColor || '#f59e0b';
+  const teamBgColor = bgColor || 'rgba(245, 158, 11, 0.18)';
+  const teamBorderColor = borderColor || 'rgba(245, 158, 11, 0.45)';
+
   const teamRef = await db.collection('teams').add({
-    name:              name.trim(),
+    name:              trimmedName,
     tag:               cleanTag,
     code,
+    icon:              teamIcon,
+    iconColor:         teamIconColor,
+    bgColor:           teamBgColor,
+    borderColor:       teamBorderColor,
     ownerUid:          user.uid,
     ownerName:         user.displayName || 'Leader',
     members:           [leader],
@@ -1567,11 +1614,20 @@ async function createTeam(user, { name, tag }) {
   // Link active team to user document
   await db.collection('users').doc(user.uid).update({
     teamId:   teamRef.id,
-    teamName: name.trim(),
+    teamName: trimmedName,
     teamTag:  cleanTag,
   });
 
-  return { id: teamRef.id, code, name: name.trim(), tag: cleanTag };
+  return { 
+    id: teamRef.id, 
+    code, 
+    name: trimmedName, 
+    tag: cleanTag,
+    icon: teamIcon,
+    iconColor: teamIconColor,
+    bgColor: teamBgColor,
+    borderColor: teamBorderColor
+  };
 }
 
 /** Fetch all teams a user belongs to or owns */

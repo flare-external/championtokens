@@ -7,7 +7,7 @@
   <link rel="icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
-  <link rel="stylesheet" href="css/style.css?v=4.0.1788033786805"/>
+  <link rel="stylesheet" href="css/style.css?v=4.0.1788034753765"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
@@ -220,29 +220,33 @@
       flex-shrink: 0;
     }
 
-    /* Teams Section & Cards */
+    /* Teams Section & Cards (Match UI Style) */
     .team-section-card {
-      background: #080808;
+      background: rgba(11, 13, 20, 0.95);
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: var(--radius-xl);
       padding: 24px;
       margin-bottom: 24px;
+      box-shadow: 0 12px 36px rgba(0,0,0,0.7);
+      backdrop-filter: blur(12px);
     }
     .team-item-card {
-      background: #000000;
+      background: #0b0d14;
       border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 16px;
+      border-radius: 18px;
       padding: 20px 22px;
       margin-bottom: 16px;
       transition: all 0.2s ease;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.5);
     }
     .team-item-card:hover {
       border-color: rgba(255, 255, 255, 0.16);
+      transform: translateY(-2px);
     }
     .team-item-card.is-active-team {
       border-color: rgba(245, 158, 11, 0.4);
-      background: #030303;
-      box-shadow: 0 0 20px rgba(245, 158, 11, 0.04);
+      background: #0f121d;
+      box-shadow: 0 0 24px rgba(245, 158, 11, 0.08);
     }
     .team-roster-grid {
       display: grid;
@@ -255,14 +259,69 @@
       align-items: center;
       justify-content: space-between;
       gap: 8px;
-      background: #080808;
+      background: #121520;
       border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 10px;
+      border-radius: 12px;
       padding: 9px 13px;
       transition: border-color 0.16s ease;
     }
     .team-member-chip:hover {
       border-color: rgba(255, 255, 255, 0.16);
+    }
+    .team-badge-icon-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: #94a3b8;
+      transition: all 0.15s ease;
+    }
+    .team-badge-icon-btn:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
+      transform: scale(1.08);
+    }
+    .team-badge-icon-btn.selected {
+      background: rgba(245, 158, 11, 0.2);
+      border-color: var(--gold-bright);
+      color: var(--gold-bright);
+      box-shadow: 0 0 10px rgba(245, 158, 11, 0.3);
+    }
+    .team-color-swatch {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: all 0.15s ease;
+    }
+    .team-color-swatch:hover {
+      transform: scale(1.15);
+    }
+    .team-color-swatch.selected {
+      border-color: #fff;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+      transform: scale(1.15);
+    }
+    .team-bg-swatch {
+      width: 34px;
+      height: 26px;
+      border-radius: 8px;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: all 0.15s ease;
+    }
+    .team-bg-swatch:hover {
+      transform: scale(1.1);
+    }
+    .team-bg-swatch.selected {
+      border-color: #fff;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
     }
 
     .matches-history { display: flex; flex-direction: column; gap: 10px; overflow-x: hidden; }
@@ -929,20 +988,61 @@
 
   <!-- Create Team Modal -->
   <div class="modal-overlay" id="create-team-modal" onclick="if(event.target===this)closeCreateTeamModal()">
-    <div class="modal">
+    <div class="modal" style="max-width:480px;">
       <div class="modal-header">
-        <div class="modal-title"><i data-lucide="users"></i> Create Team</div>
+        <div class="modal-title"><i data-lucide="shield" style="color:var(--gold-bright);"></i> Create Team</div>
         <button class="modal-close" onclick="closeCreateTeamModal()"><i data-lucide="x"></i></button>
       </div>
       <form class="modal-form" onsubmit="submitCreateTeam(event)">
+        
+        <!-- Live Team Badge Preview -->
+        <div style="display:flex;align-items:center;gap:16px;background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:14px 18px;margin-bottom:16px;">
+          <div id="team-badge-preview" style="width:58px;height:58px;border-radius:14px;border:1.5px solid rgba(245,158,11,0.45);background:rgba(245,158,11,0.18);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.2s ease;">
+            <i id="team-badge-icon" data-lucide="shield" style="width:28px;height:28px;color:#f59e0b;"></i>
+          </div>
+          <div>
+            <div id="team-preview-name" style="font-weight:900;font-size:1.1rem;color:#fff;line-height:1.2;">Apex Champions</div>
+            <div id="team-preview-tag" style="font-size:0.75rem;font-weight:800;color:var(--gold-bright);margin-top:2px;">[APEX]</div>
+          </div>
+        </div>
+
         <div class="form-group">
           <label class="form-label">Team Name</label>
-          <input class="form-input" id="team-name-input" placeholder="e.g. Apex Champions" maxlength="24" required />
+          <input class="form-input" id="team-name-input" placeholder="e.g. Apex Champions" maxlength="24" required oninput="updateTeamBadgePreview()" />
         </div>
+
         <div class="form-group">
           <label class="form-label">Team Clan Tag (3-4 Letters)</label>
-          <input class="form-input" id="team-tag-input" placeholder="e.g. APEX" maxlength="5" required />
+          <input class="form-input" id="team-tag-input" placeholder="e.g. APEX" maxlength="5" required oninput="updateTeamBadgePreview()" />
         </div>
+
+        <!-- Choose Emblem Icon -->
+        <div class="form-group" style="margin-bottom:14px;">
+          <label class="form-label" style="display:flex;justify-content:space-between;align-items:center;">
+            <span>Team Emblem</span>
+            <span id="selected-icon-name" style="color:var(--gold-bright);font-size:0.75rem;font-weight:700;">Shield</span>
+          </label>
+          <div id="team-icon-picker" style="display:grid;grid-template-columns:repeat(8, 1fr);gap:6px;margin-top:4px;">
+            <!-- Rendered dynamically -->
+          </div>
+        </div>
+
+        <!-- Choose Emblem Color -->
+        <div class="form-group" style="margin-bottom:14px;">
+          <label class="form-label">Emblem Color</label>
+          <div id="team-color-picker" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:4px;">
+            <!-- Color swatches -->
+          </div>
+        </div>
+
+        <!-- Choose Badge Background -->
+        <div class="form-group" style="margin-bottom:20px;">
+          <label class="form-label">Badge Background Color</label>
+          <div id="team-bg-picker" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:4px;">
+            <!-- Bg swatches -->
+          </div>
+        </div>
+
         <div class="modal-actions">
           <button type="button" class="btn btn-outline" onclick="closeCreateTeamModal()">Cancel</button>
           <button type="submit" class="btn btn-primary" id="submit-team-btn">Create Team</button>
@@ -1115,9 +1215,9 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="js/firebase-config.js?v=3.2"></script>
-  <script src="js/auth.js?v=4.0.1788033786805"></script>
-  <script src="js/db.js?v=4.0.1788033786805"></script>
-  <script src="js/nav.js?v=4.0.1788033786805"></script>
+  <script src="js/auth.js?v=4.0.1788034753765"></script>
+  <script src="js/db.js?v=4.0.1788034753765"></script>
+  <script src="js/nav.js?v=4.0.1788034753765"></script>
 
   <script>
     let currentUser = null;
@@ -2287,16 +2387,13 @@
 
       if (!teams || !teams.length) {
         el.innerHTML = isViewingSelf ? `
-          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;padding:8px 0;">
-            <div>
-              <div style="font-weight:800;font-size:0.95rem;color:#fff;margin-bottom:4px;">No Teams Created Yet</div>
-              <div style="font-size:0.82rem;color:var(--text-muted);">
-                Create or join teams to compete in <strong>2v2 Duos</strong> and <strong>3v3 Squads</strong> with custom token coverage & prize split rules.
-              </div>
+          <div style="padding:16px 6px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+            <div style="width:48px;height:48px;border-radius:14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;margin-bottom:12px;color:var(--gold-bright);">
+              <i data-lucide="shield" style="width:24px;height:24px;"></i>
             </div>
-            <div style="display:flex;gap:10px;flex-wrap:wrap;">
-              <button class="btn btn-primary btn-sm" onclick="openCreateTeamModal()"><i data-lucide="plus"></i> Create Team</button>
-              <button class="btn btn-outline btn-sm" onclick="openJoinTeamModal()"><i data-lucide="log-in"></i> Join Team</button>
+            <div style="font-weight:900;font-size:1.05rem;color:#fff;margin-bottom:4px;">No Teams Created Yet</div>
+            <div style="font-size:0.85rem;color:var(--text-muted);max-width:440px;line-height:1.5;">
+              Create or join teams to compete in <strong>2v2 Duos</strong> and <strong>3v3 Squads</strong> with custom token coverage & prize split rules.
             </div>
           </div>` : `<span style="color:var(--text-muted);font-size:0.875rem;">Not currently on any team.</span>`;
       } else {
@@ -2306,47 +2403,56 @@
           const membersHTML = (team.members || []).map(m => `
             <div class="team-member-chip">
               <div style="display:flex;align-items:center;gap:8px;min-width:0;">
-                <div style="width:24px;height:24px;border-radius:50%;background:rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0;">
+                <div style="width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0;">
                   ${m.photoURL ? `<img src="${escapeHtml(m.photoURL)}" style="width:100%;height:100%;object-fit:cover;" alt=""/>` : `<i data-lucide="user" style="width:12px;height:12px;color:var(--text-faint);"></i>`}
                 </div>
                 <span style="font-weight:700;font-size:0.85rem;color:#fff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${escapeHtml(m.displayName || 'Player')}</span>
               </div>
               <div style="display:flex;align-items:center;gap:5px;flex-shrink:0;">
-                ${m.isLeader || m.uid === team.ownerUid ? '<span class="badge" style="background:var(--gold-dim);color:var(--gold-bright);font-size:0.65rem;padding:1px 6px;">LEADER</span>' : ''}
+                ${m.isLeader || m.uid === team.ownerUid ? '<span class="badge" style="background:rgba(245,158,11,0.18);color:var(--gold-bright);border:1px solid rgba(245,158,11,0.4);font-size:0.65rem;padding:1px 6px;">LEADER</span>' : ''}
               </div>
             </div>
           `).join('');
 
           return `
-            <div class="team-item-card">
-              <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:14px;">
-                <div>
-                  <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-                    <span class="badge" style="background:var(--purple);color:#fff;font-size:0.8rem;padding:4px 10px;font-weight:800;">[${escapeHtml(team.tag)}]</span>
-                    <span style="font-size:1.2rem;font-weight:900;color:#fff;">${escapeHtml(team.name)}</span>
+            <div class="team-item-card ${isOwner ? 'is-active-team' : ''}">
+              <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-bottom:16px;">
+                <div style="display:flex;align-items:center;gap:14px;">
+                  <!-- Square Emblem Badge -->
+                  <div style="width:52px;height:52px;border-radius:14px;border:1.5px solid ${team.borderColor || 'rgba(245,158,11,0.45)'};background:${team.bgColor || 'rgba(245,158,11,0.18)'};display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 6px 18px rgba(0,0,0,0.5);">
+                    <i data-lucide="${team.icon || 'shield'}" style="width:26px;height:26px;color:${team.iconColor || '#f59e0b'};"></i>
+                  </div>
+                  <div>
+                    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                      <span class="badge" style="background:rgba(255,255,255,0.06);color:${team.iconColor || '#fff'};border:1px solid ${team.borderColor || 'rgba(255,255,255,0.15)'};font-size:0.75rem;padding:3px 8px;font-weight:800;">[${escapeHtml(team.tag)}]</span>
+                      <span style="font-size:1.25rem;font-weight:900;color:#fff;">${escapeHtml(team.name)}</span>
+                    </div>
+                    <div style="font-size:0.75rem;color:var(--text-muted);margin-top:2px;">
+                      ${team.members?.length || 1}/6 Players · Created by ${escapeHtml(team.ownerName || 'Leader')}
+                    </div>
                   </div>
                 </div>
 
                 ${isViewingSelf ? `
                   <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
-                    <button class="btn btn-outline btn-sm" onclick="copyTeamInviteLink('${team.code}','${escapeHtml(team.name)}')" style="font-size:0.78rem;padding:6px 12px;gap:5px;" title="Copy 1-Click Join Link">
-                      <i data-lucide="link"></i> Copy Link
+                    <button class="btn btn-outline btn-sm" onclick="copyTeamInviteLink('${team.code}','${escapeHtml(team.name)}')" style="font-size:0.78rem;padding:6px 14px;gap:5px;border-radius:20px;" title="Copy 1-Click Join Link">
+                      <i data-lucide="link" style="width:13px;height:13px;"></i> Copy Link
                     </button>
-                    <span class="match-code-badge" title="Click to copy team code" onclick="copyTeamCode('${team.code}')" style="cursor:pointer;padding:5px 10px;font-size:0.8rem;">
+                    <span class="match-code-badge" title="Click to copy team code" onclick="copyTeamCode('${team.code}')" style="cursor:pointer;padding:5px 12px;font-size:0.8rem;border-radius:20px;">
                       <i data-lucide="hash"></i>${team.code}
                     </span>
-                    <button class="btn btn-primary btn-sm" onclick="openInvitePlayerModal('${team.id}','${escapeHtml(team.name)}','${escapeHtml(team.tag)}')" style="font-size:0.78rem;padding:6px 12px;gap:5px;">
-                      <i data-lucide="user-plus"></i> Invite
+                    <button class="btn btn-primary btn-sm" onclick="openInvitePlayerModal('${team.id}','${escapeHtml(team.name)}','${escapeHtml(team.tag)}')" style="font-size:0.78rem;padding:6px 14px;gap:5px;border-radius:20px;">
+                      <i data-lucide="user-plus" style="width:13px;height:13px;"></i> Invite
                     </button>
-                    <button class="btn btn-danger btn-sm" onclick="handleLeaveTeam('${team.id}')" style="font-size:0.78rem;padding:6px 10px;gap:4px;">
-                      <i data-lucide="log-out"></i> ${isOwner ? 'Disband' : 'Leave'}
+                    <button class="btn btn-danger btn-sm" onclick="handleLeaveTeam('${team.id}')" style="font-size:0.78rem;padding:6px 12px;gap:4px;border-radius:20px;">
+                      <i data-lucide="log-out" style="width:13px;height:13px;"></i> ${isOwner ? 'Disband' : 'Leave'}
                     </button>
                   </div>
                 ` : ''}
               </div>
 
               <div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:8px;font-weight:700;">
-                Roster (${team.members?.length || 1}/6 Players):
+                Roster:
               </div>
               <div class="team-roster-grid">${membersHTML}</div>
             </div>
@@ -2460,9 +2566,137 @@
       }
     }
 
+    // ── Team Emblem & Color Picker ──────────────────────────────
+    const TEAM_ICON_OPTIONS = [
+      { id: 'shield', name: 'Shield' },
+      { id: 'swords', name: 'Swords' },
+      { id: 'zap', name: 'Lightning' },
+      { id: 'flame', name: 'Flame' },
+      { id: 'crown', name: 'Crown' },
+      { id: 'crosshair', name: 'Crosshair' },
+      { id: 'skull', name: 'Skull' },
+      { id: 'trophy', name: 'Trophy' },
+      { id: 'ghost', name: 'Ghost' },
+      { id: 'target', name: 'Target' },
+      { id: 'star', name: 'Star' },
+      { id: 'gem', name: 'Diamond' },
+      { id: 'axe', name: 'Battleaxe' },
+      { id: 'sparkles', name: 'Magic' },
+      { id: 'gamepad-2', name: 'Arcade' },
+      { id: 'rocket', name: 'Rocket' }
+    ];
+
+    const TEAM_COLOR_OPTIONS = [
+      { hex: '#f59e0b', name: 'Gold' },
+      { hex: '#ef4444', name: 'Crimson' },
+      { hex: '#3b82f6', name: 'Royal Blue' },
+      { hex: '#a855f7', name: 'Violet' },
+      { hex: '#10b981', name: 'Emerald' },
+      { hex: '#06b6d4', name: 'Cyan' },
+      { hex: '#ec4899', name: 'Pink' },
+      { hex: '#f8fafc', name: 'White' }
+    ];
+
+    const TEAM_BG_OPTIONS = [
+      { name: 'Gold Dark', bg: 'rgba(245, 158, 11, 0.18)', border: 'rgba(245, 158, 11, 0.45)', color: '#f59e0b' },
+      { name: 'Red Dark', bg: 'rgba(239, 68, 68, 0.18)', border: 'rgba(239, 68, 68, 0.45)', color: '#ef4444' },
+      { name: 'Blue Dark', bg: 'rgba(59, 130, 246, 0.18)', border: 'rgba(59, 130, 246, 0.45)', color: '#3b82f6' },
+      { name: 'Purple Dark', bg: 'rgba(168, 85, 247, 0.18)', border: 'rgba(168, 85, 247, 0.45)', color: '#a855f7' },
+      { name: 'Emerald Dark', bg: 'rgba(16, 185, 129, 0.18)', border: 'rgba(16, 185, 129, 0.45)', color: '#10b981' },
+      { name: 'Slate Dark', bg: 'rgba(255, 255, 255, 0.08)', border: 'rgba(255, 255, 255, 0.2)', color: '#94a3b8' }
+    ];
+
+    let _selectedTeamIcon = 'shield';
+    let _selectedTeamColor = '#f59e0b';
+    let _selectedTeamBg = 'rgba(245, 158, 11, 0.18)';
+    let _selectedTeamBorder = 'rgba(245, 158, 11, 0.45)';
+
+    function initTeamBadgePicker() {
+      const iconContainer = document.getElementById('team-icon-picker');
+      const colorContainer = document.getElementById('team-color-picker');
+      const bgContainer = document.getElementById('team-bg-picker');
+
+      if (iconContainer) {
+        iconContainer.innerHTML = TEAM_ICON_OPTIONS.map(opt => `
+          <button type="button" class="team-badge-icon-btn ${opt.id === _selectedTeamIcon ? 'selected' : ''}" 
+                  onclick="selectTeamIcon('${opt.id}')" title="${opt.name}">
+            <i data-lucide="${opt.id}" style="width:18px;height:18px;"></i>
+          </button>
+        `).join('');
+      }
+
+      if (colorContainer) {
+        colorContainer.innerHTML = TEAM_COLOR_OPTIONS.map(opt => `
+          <button type="button" class="team-color-swatch ${opt.hex === _selectedTeamColor ? 'selected' : ''}" 
+                  style="background:${opt.hex};" onclick="selectTeamColor('${opt.hex}')" title="${opt.name}"></button>
+        `).join('');
+      }
+
+      if (bgContainer) {
+        bgContainer.innerHTML = TEAM_BG_OPTIONS.map((opt, idx) => `
+          <button type="button" class="team-bg-swatch ${opt.bg === _selectedTeamBg ? 'selected' : ''}" 
+                  style="background:${opt.bg};border:1.5px solid ${opt.border};" onclick="selectTeamBg(${idx})" title="${opt.name}"></button>
+        `).join('');
+      }
+
+      updateTeamBadgePreview();
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function selectTeamIcon(iconId) {
+      _selectedTeamIcon = iconId;
+      const opt = TEAM_ICON_OPTIONS.find(o => o.id === iconId);
+      const nameEl = document.getElementById('selected-icon-name');
+      if (nameEl) nameEl.textContent = opt ? opt.name : iconId;
+      initTeamBadgePicker();
+    }
+
+    function selectTeamColor(hex) {
+      _selectedTeamColor = hex;
+      initTeamBadgePicker();
+    }
+
+    function selectTeamBg(idx) {
+      const opt = TEAM_BG_OPTIONS[idx];
+      if (opt) {
+        _selectedTeamBg = opt.bg;
+        _selectedTeamBorder = opt.border;
+      }
+      initTeamBadgePicker();
+    }
+
+    function updateTeamBadgePreview() {
+      const nameInput = document.getElementById('team-name-input');
+      const tagInput = document.getElementById('team-tag-input');
+      const previewBox = document.getElementById('team-badge-preview');
+      const previewIcon = document.getElementById('team-badge-icon');
+      const previewName = document.getElementById('team-preview-name');
+      const previewTag = document.getElementById('team-preview-tag');
+
+      const nameVal = nameInput?.value.trim() || 'Apex Champions';
+      const tagVal = tagInput?.value.trim().toUpperCase() || 'APEX';
+
+      if (previewName) previewName.textContent = nameVal;
+      if (previewTag) previewTag.textContent = `[${tagVal}]`;
+
+      if (previewBox) {
+        previewBox.style.background = _selectedTeamBg;
+        previewBox.style.borderColor = _selectedTeamBorder;
+      }
+      if (previewIcon) {
+        previewIcon.setAttribute('data-lucide', _selectedTeamIcon);
+        previewIcon.style.color = _selectedTeamColor;
+      }
+      if (window.lucide) lucide.createIcons();
+    }
+
     function openCreateTeamModal() { 
       const m = document.getElementById('create-team-modal');
-      if (m) { m.classList.add('open'); m.classList.add('active'); }
+      if (m) { 
+        m.classList.add('open'); 
+        m.classList.add('active'); 
+        initTeamBadgePicker();
+      }
     }
     function closeCreateTeamModal() { 
       const m = document.getElementById('create-team-modal');
@@ -2484,7 +2718,14 @@
       const btn = document.getElementById('submit-team-btn');
       btn.disabled = true;
       try {
-        await createTeam(currentUserData || currentUser, { name, tag });
+        await createTeam(currentUserData || currentUser, { 
+          name, 
+          tag,
+          icon: _selectedTeamIcon,
+          iconColor: _selectedTeamColor,
+          bgColor: _selectedTeamBg,
+          borderColor: _selectedTeamBorder
+        });
         showToast(`Team "${name}" created!`, 'success');
         closeCreateTeamModal();
         await loadUserTeam(currentUser.uid);
