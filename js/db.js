@@ -2088,8 +2088,8 @@ function seededRandom(seed) {
 }
 
 /**
- * Returns 6 featured daily shop PFPs:
- * Guaranteed 2 Exclusive, 2 Epic, 1 Rare, 1 Uncommon (6 total).
+ * Returns 12 featured daily shop PFPs (2 full rows):
+ * Guaranteed 5 Exclusive, 3 Epic, 2 Rare, 2 Uncommon (12 total).
  */
 function getDailyShopPfps() {
   const now = new Date();
@@ -2117,10 +2117,10 @@ function getDailyShopPfps() {
     return picked;
   }
 
-  const pickedExclusive = pickRandomN(exclusives, 2, seed + 1);
-  const pickedEpic = pickRandomN(epics, 2, seed + 2);
-  const pickedRare = pickRandomN(rares, 1, seed + 3);
-  const pickedUncommon = pickRandomN(uncommons, 1, seed + 4);
+  const pickedExclusive = pickRandomN(exclusives, 5, seed + 1);
+  const pickedEpic = pickRandomN(epics, 3, seed + 2);
+  const pickedRare = pickRandomN(rares, 2, seed + 3);
+  const pickedUncommon = pickRandomN(uncommons, 2, seed + 4);
 
   return [...pickedExclusive, ...pickedEpic, ...pickedRare, ...pickedUncommon];
 }
