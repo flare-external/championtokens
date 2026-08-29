@@ -7,7 +7,7 @@
   <link rel="icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
-  <link rel="stylesheet" href="css/style.css?v=4.0.1788029183357"/>
+  <link rel="stylesheet" href="css/style.css?v=4.0.1788029345223"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
@@ -1115,9 +1115,9 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="js/firebase-config.js?v=3.2"></script>
-  <script src="js/auth.js?v=4.0.1788029183357"></script>
-  <script src="js/db.js?v=4.0.1788029183357"></script>
-  <script src="js/nav.js?v=4.0.1788029183357"></script>
+  <script src="js/auth.js?v=4.0.1788029345223"></script>
+  <script src="js/db.js?v=4.0.1788029345223"></script>
+  <script src="js/nav.js?v=4.0.1788029345223"></script>
 
   <script>
     let currentUser = null;
@@ -1721,9 +1721,11 @@
 
       const titlesGrid = document.getElementById('titles-grid-list');
       if (titlesGrid && typeof SHOP_TITLES !== 'undefined') {
+        const unlockedTitles = currentUserData?.unlockedTitles || [];
         const equippedTitle = currentUserData?.equippedTitle || '';
         const titles = Object.values(SHOP_TITLES);
         titlesGrid.innerHTML = titles.map(t => {
+          const isOwned = unlockedTitles.includes(t.id);
           const isEquipped = equippedTitle === t.id;
           return `
             <div class="card" style="background:#0b0d14;border:1px solid ${isEquipped ? 'rgba(239,68,68,0.7)' : 'rgba(255,255,255,0.09)'};border-radius:16px;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;transition:all 0.18s ease;">
@@ -1736,15 +1738,21 @@
                   ${t.rarity.toUpperCase()}
                 </span>
               </div>
-              <div>
+              <div style="display:flex;align-items:center;gap:8px;">
                 ${isEquipped ? `
-                  <button class="btn btn-outline btn-sm" onclick="handleToggleTitle('${t.id}')" style="font-size:0.8rem;gap:6px;color:#ef4444;border-color:rgba(239,68,68,0.4);">
-                    <i data-lucide="x"></i> Unequip
+                  <span style="font-size:0.78rem;font-weight:800;letter-spacing:0.08em;color:var(--gold-bright);text-transform:uppercase;">Equipped</span>
+                  <button class="btn btn-outline btn-xs pfp-equip-btn" onclick="handleToggleTitle('${t.id}')" style="font-size:0.75rem;padding:4px 10px;color:#ef4444;border-color:rgba(239,68,68,0.4);border-radius:12px;">
+                    Unequip
+                  </button>
+                ` : isOwned ? `
+                  <span style="font-size:0.75rem;font-weight:700;color:#94a3b8;">Owned</span>
+                  <button class="btn btn-primary btn-sm pfp-equip-btn" onclick="handleToggleTitle('${t.id}')" style="padding:5px 16px;font-size:0.82rem;font-weight:800;border-radius:14px;">
+                    Equip
                   </button>
                 ` : `
-                  <button class="btn btn-primary btn-sm" onclick="handleToggleTitle('${t.id}')" style="font-size:0.8rem;gap:6px;background:#ef4444;border-color:#dc2626;">
-                    <i data-lucide="sparkles"></i> Equip Title
-                  </button>
+                  <div style="display:flex;align-items:center;gap:4px;font-size:0.75rem;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.03em;">
+                    <i data-lucide="lock" style="width:12px;height:12px;"></i> Shop
+                  </div>
                 `}
               </div>
             </div>

@@ -24,7 +24,7 @@
   <link rel="icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
-  <link rel="stylesheet" href="css/style.css?v=4.0.1788029183357"/>
+  <link rel="stylesheet" href="css/style.css?v=4.0.1788029345223"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
@@ -163,8 +163,25 @@
           </div>
         </div>
 
-        <!-- 5 Daily Avatars Grid -->
+        <!-- 6 Daily Avatars Grid -->
         <div id="daily-pfps-grid" style="display:grid;grid-template-columns:repeat(auto-fill, minmax(180px, 1fr));gap:16px;">
+          <!-- Rendered dynamically -->
+        </div>
+      </div>
+
+      <!-- 3. Titles Section -->
+      <div style="margin-bottom:36px;">
+        <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:18px;flex-wrap:wrap;gap:12px;">
+          <div>
+            <h2 style="font-size:1.45rem;font-weight:900;margin:0;color:#fff;">Titles</h2>
+            <p style="font-size:0.85rem;color:var(--text-muted);margin:4px 0 0;">
+              Unlock and display custom player titles next to your username.
+            </p>
+          </div>
+        </div>
+
+        <!-- Titles Grid -->
+        <div id="shop-titles-grid" style="display:grid;grid-template-columns:repeat(auto-fill, minmax(280px, 1fr));gap:16px;">
           <!-- Rendered dynamically -->
         </div>
       </div>
@@ -177,9 +194,9 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="js/firebase-config.js?v=3.8"></script>
-  <script src="js/auth.js?v=4.0.1788029183357"></script>
-  <script src="js/db.js?v=4.0.1788029183357"></script>
-  <script src="js/nav.js?v=4.0.1788029183357"></script>
+  <script src="js/auth.js?v=4.0.1788029345223"></script>
+  <script src="js/db.js?v=4.0.1788029345223"></script>
+  <script src="js/nav.js?v=4.0.1788029345223"></script>
 
   <script>
     let currentUser = null;
@@ -207,6 +224,7 @@
           document.getElementById('shop-owner-content').style.display = 'block';
           checkPremiumStatus();
           renderDailyPfps();
+          renderShopTitles();
           startShopTimer();
         }
         if (window.lucide) lucide.createIcons();
@@ -356,6 +374,113 @@
         showToast(`✨ Equipped "${item.name}" avatar!`, 'success');
         currentUserData = await getUser(currentUser.uid);
         renderDailyPfps();
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
+    }
+
+    function renderShopTitles() {
+      const grid = document.getElementById('shop-titles-grid');
+      if (!grid || typeof SHOP_TITLES === 'undefined') return;
+
+      const unlockedTitles = currentUserData?.unlockedTitles || [];
+      const equippedTitle = currentUserData?.equippedTitle || '';
+      const titles = Object.values(SHOP_TITLES);
+
+      grid.innerHTML = titles.map(item => {
+        const isOwned = unlockedTitles.includes(item.id);
+        const isEquipped = equippedTitle === item.id;
+
+        let borderStyle = isEquipped ? '2px solid rgba(239,68,68,0.7)' : '1.5px solid rgba(255,255,255,0.09)';
+        let bgStyle = isEquipped ? 'rgba(239,68,68,0.08)' : '#0b0d14';
+
+        return `
+          <div class="card cosmetics-option-card ${isEquipped ? 'equipped' : ''}" 
+               style="border:${borderStyle};background:${bgStyle};padding:18px 20px;border-radius:18px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;box-shadow:0 8px 24px rgba(0,0,0,0.6);">
+            
+            <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+              <span class="user-title-badge" style="display:inline-flex;align-items:center;gap:6px;background:${item.bgColor || 'rgba(239,68,68,0.15)'};color:${item.color || '#ef4444'};border:1px solid ${item.borderColor || 'rgba(239,68,68,0.45)'};padding:5px 14px;border-radius:12px;font-size:0.95rem;font-weight:900;letter-spacing:0.02em;">
+                <i data-lucide="${item.icon || 'globe-off'}" style="width:16px;height:16px;"></i>
+                <span>${escapeHtml(item.name)}</span>
+              </span>
+              <span class="badge" style="font-size:0.65rem;color:${item.color || '#ef4444'};border:1px solid ${item.color || '#ef4444'};background:rgba(255,255,255,0.04);font-weight:800;">
+                ${item.rarity.toUpperCase()}
+              </span>
+            </div>
+
+            <div style="display:flex;align-items:center;gap:8px;">
+              ${isEquipped ? `
+                <span style="font-size:0.78rem;font-weight:800;letter-spacing:0.08em;color:var(--gold-bright);text-transform:uppercase;">Equipped</span>
+                <button class="btn btn-outline btn-xs pfp-equip-btn" onclick="handleToggleShopTitle('${item.id}')" style="font-size:0.75rem;padding:4px 10px;color:#ef4444;border-color:rgba(239,68,68,0.4);border-radius:12px;">
+                  Unequip
+                </button>
+              ` : isOwned ? `
+                <span style="font-size:0.75rem;font-weight:700;color:#94a3b8;">Owned</span>
+                <button class="btn btn-primary btn-sm pfp-equip-btn" onclick="handleToggleShopTitle('${item.id}')" style="padding:5px 16px;font-size:0.82rem;font-weight:800;border-radius:14px;">
+                  Equip
+                </button>
+              ` : `
+                <button class="btn btn-gold btn-sm pfp-equip-btn" onclick="handleBuyTitle('${item.id}')" style="padding:5px 16px;font-size:0.82rem;font-weight:800;border-radius:14px;display:flex;align-items:center;gap:6px;">
+                  <img src="new_token.png" style="width:18px;height:18px;object-fit:contain;" alt="CT" />
+                  <span>${formatTokens(item.cost)}</span>
+                </button>
+              `}
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      if (window.lucide) lucide.createIcons();
+    }
+
+    async function handleBuyTitle(titleId) {
+      if (!currentUser) return;
+      const item = SHOP_TITLES[titleId];
+      if (!item) return;
+
+      const ok = await showConfirm({
+        title: `Unlock Title "${item.name}"`,
+        message: `
+          <div style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:14px;margin:8px 0 10px;">
+            <span class="user-title-badge" style="display:inline-flex;align-items:center;gap:8px;background:${item.bgColor || 'rgba(239,68,68,0.15)'};color:${item.color || '#ef4444'};border:1.5px solid ${item.borderColor || 'rgba(239,68,68,0.45)'};padding:8px 20px;border-radius:14px;font-size:1.15rem;font-weight:900;letter-spacing:0.02em;">
+              <i data-lucide="${item.icon || 'globe-off'}" style="width:20px;height:20px;"></i>
+              <span>${escapeHtml(item.name)}</span>
+            </span>
+            <div style="font-size:0.95rem;color:#cbd5e1;line-height:1.5;">
+              Unlock the <strong>${item.rarity}</strong> title <strong>"${item.name}"</strong> for <strong style="color:var(--gold-bright);">${formatTokens(item.cost)} Tokens</strong>?
+            </div>
+          </div>
+        `,
+        confirmText: `Unlock for ${formatTokens(item.cost)} Tokens`,
+        cancelText: 'Cancel',
+        type: 'warning',
+        icon: 'award'
+      });
+      if (!ok) return;
+
+      try {
+        await buyShopTitle(currentUser.uid, titleId);
+        showToast(`🎉 Unlocked "${item.name}"! Click Equip to display it.`, 'success');
+        currentUserData = await getUser(currentUser.uid);
+        renderShopTitles();
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
+    }
+
+    async function handleToggleShopTitle(titleId) {
+      if (!currentUser) return;
+      try {
+        const isEquipped = currentUserData?.equippedTitle === titleId;
+        const newTitleId = isEquipped ? null : titleId;
+        await equipUserTitle(currentUser.uid, newTitleId);
+        currentUserData = await getUser(currentUser.uid);
+        renderShopTitles();
+        if (newTitleId) {
+          showToast(`✨ Equipped "${SHOP_TITLES[titleId]?.name || 'Title'}" title!`, 'success');
+        } else {
+          showToast('🏷️ Unequipped title', 'info');
+        }
       } catch (err) {
         showToast(err.message, 'error');
       }

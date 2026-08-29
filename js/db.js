@@ -2256,8 +2256,7 @@ async function buyShopTitle(uid, titleId) {
 
   await updateTokens(uid, -item.cost, 'shop', `🏷️ Purchased Title: "${item.name}"`);
   await db.collection('users').doc(uid).update({
-    unlockedTitles: firebase.firestore.FieldValue.arrayUnion(titleId),
-    equippedTitle:  titleId
+    unlockedTitles: firebase.firestore.FieldValue.arrayUnion(titleId)
   });
 
   return item;
