@@ -7,7 +7,7 @@
   <link rel="icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
-  <link rel="stylesheet" href="css/style.css?v=4.0.1788034753765"/>
+  <link rel="stylesheet" href="css/style.css?v=4.0.1788035118503"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
@@ -1437,9 +1437,9 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="js/firebase-config.js"></script>
-  <script src="js/auth.js?v=4.0.1788034753765"></script>
-  <script src="js/db.js?v=4.0.1788034753765"></script>
-  <script src="js/nav.js?v=4.0.1788034753765"></script>
+  <script src="js/auth.js?v=4.0.1788035118503"></script>
+  <script src="js/db.js?v=4.0.1788035118503"></script>
+  <script src="js/nav.js?v=4.0.1788035118503"></script>
 
   <script>
     let currentUser = null;
@@ -1735,7 +1735,25 @@
       const t1StatusPill = document.getElementById('team1-status-pill');
       const t1Name = document.getElementById('team1-card-name');
       const showT1Tag = (isMatchLive || isUserInTeam1) && match.teamTag;
-      if (t1Name) t1Name.innerHTML = `Team 1 ${showT1Tag ? `<span class="badge" style="background:var(--purple);color:#fff;font-size:0.7rem;padding:2px 7px;">[${escapeHtml(match.teamTag)}]</span>` : ''}`;
+      const t1Icon = match.teamIcon || 'shield';
+      const t1IconColor = match.teamIconColor || '#f59e0b';
+      const t1Bg = match.teamBgColor || 'rgba(245,158,11,0.18)';
+      const t1Border = match.teamBorderColor || 'rgba(245,158,11,0.45)';
+      const t1Title = match.teamName ? escapeHtml(match.teamName) : 'Team 1';
+
+      if (t1Name) {
+        t1Name.innerHTML = `
+          <div style="display:flex;align-items:center;gap:8px;min-width:0;">
+            ${showT1Tag ? `
+              <div style="width:26px;height:26px;border-radius:8px;background:${t1Bg};border:1px solid ${t1Border};display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                <i data-lucide="${t1Icon}" style="width:14px;height:14px;color:${t1IconColor};"></i>
+              </div>
+            ` : ''}
+            <span style="font-weight:900;color:#fff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${t1Title}</span>
+            ${showT1Tag ? `<span class="badge" style="background:${t1Bg};color:${t1IconColor};border:1px solid ${t1Border};font-size:0.68rem;padding:1px 6px;">[${escapeHtml(match.teamTag)}]</span>` : ''}
+          </div>
+        `;
+      }
       if (t1StatusPill) {
         if (match.status === 'completed') {
           t1StatusPill.style.display = 'inline-flex';
@@ -1759,8 +1777,27 @@
       // Team 2 Header Status & Tag
       const t2StatusPill = document.getElementById('team2-status-pill');
       const t2Name = document.getElementById('team2-card-name');
-      const showT2Tag = (isMatchLive || isUserInTeam2) && match.enemyTeamTag;
-      if (t2Name) t2Name.innerHTML = `Team 2 ${showT2Tag ? `<span class="badge" style="background:var(--purple);color:#fff;font-size:0.7rem;padding:2px 7px;">[${escapeHtml(match.enemyTeamTag)}]</span>` : ''}`;
+      const showT2Tag = (isMatchLive || isUserInTeam2) && (match.enemyTeamTag || match.team2Tag);
+      const t2Tag = match.enemyTeamTag || match.team2Tag || '';
+      const t2Icon = match.enemyTeamIcon || match.team2Icon || 'swords';
+      const t2IconColor = match.enemyTeamIconColor || match.team2IconColor || '#3b82f6';
+      const t2Bg = match.enemyTeamBgColor || match.team2BgColor || 'rgba(59,130,246,0.18)';
+      const t2Border = match.enemyTeamBorderColor || match.team2BorderColor || 'rgba(59,130,246,0.45)';
+      const t2Title = (match.enemyTeamName || match.team2Name) ? escapeHtml(match.enemyTeamName || match.team2Name) : 'Team 2';
+
+      if (t2Name) {
+        t2Name.innerHTML = `
+          <div style="display:flex;align-items:center;gap:8px;min-width:0;">
+            ${showT2Tag ? `
+              <div style="width:26px;height:26px;border-radius:8px;background:${t2Bg};border:1px solid ${t2Border};display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                <i data-lucide="${t2Icon}" style="width:14px;height:14px;color:${t2IconColor};"></i>
+              </div>
+            ` : ''}
+            <span style="font-weight:900;color:#fff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${t2Title}</span>
+            ${showT2Tag ? `<span class="badge" style="background:${t2Bg};color:${t2IconColor};border:1px solid ${t2Border};font-size:0.68rem;padding:1px 6px;">[${escapeHtml(t2Tag)}]</span>` : ''}
+          </div>
+        `;
+      }
       if (t2StatusPill) {
         if (match.status === 'completed') {
           t2StatusPill.style.display = 'inline-flex';

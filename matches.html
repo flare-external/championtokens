@@ -24,7 +24,7 @@
   <link rel="icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
-  <link rel="stylesheet" href="css/style.css?v=4.0.1788034753765"/>
+  <link rel="stylesheet" href="css/style.css?v=4.0.1788035118503"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
@@ -134,9 +134,9 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="js/firebase-config.js"></script>
-  <script src="js/auth.js?v=4.0.1788034753765"></script>
-  <script src="js/db.js?v=4.0.1788034753765"></script>
-  <script src="js/nav.js?v=4.0.1788034753765"></script>
+  <script src="js/auth.js?v=4.0.1788035118503"></script>
+  <script src="js/db.js?v=4.0.1788035118503"></script>
+  <script src="js/nav.js?v=4.0.1788035118503"></script>
 
   <script>
     let currentUser = null;
@@ -290,8 +290,14 @@
                   ${hostPfp ? `<img src="${hostPfp}" alt=""/>` : hostInitial}
                 </div>
                 <div style="min-width:0;flex:1;">
-                  <div class="match-card__title" style="font-size:0.92rem;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
-                    ${escapeHtml(m.title || `${size} ${mode}`)}
+                  <div class="match-card__title" style="font-size:0.92rem;font-weight:800;display:flex;align-items:center;gap:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+                    ${m.teamTag ? `
+                      <span class="badge" style="background:${m.teamBgColor || 'rgba(245,158,11,0.18)'};color:${m.teamIconColor || 'var(--gold-bright)'};border:1px solid ${m.teamBorderColor || 'rgba(245,158,11,0.45)'};font-size:0.7rem;padding:2px 6px;display:inline-flex;align-items:center;gap:4px;flex-shrink:0;">
+                        <i data-lucide="${m.teamIcon || 'shield'}" style="width:11px;height:11px;"></i>
+                        <span>[${escapeHtml(m.teamTag)}]</span>
+                      </span>
+                    ` : ''}
+                    <span style="overflow:hidden;text-overflow:ellipsis;">${escapeHtml(m.teamName ? `${m.teamName} (${m.size} ${m.mode})` : (m.title || `${size} ${mode}`))}</span>
                   </div>
                   <div class="match-card__host" style="font-size:0.7rem;color:var(--text-muted);">
                     Hosted by <strong style="color:#fff;">${escapeHtml(m.hostName || 'Host')}</strong>
@@ -1149,6 +1155,10 @@
           teamId: selectedMatchTeam?.id || currentUserData?.teamId || null,
           teamName: selectedMatchTeam?.name || currentUserData?.teamName || null,
           teamTag: selectedMatchTeam?.tag || currentUserData?.teamTag || null,
+          teamIcon: selectedMatchTeam?.icon || currentUserData?.teamIcon || 'shield',
+          teamIconColor: selectedMatchTeam?.iconColor || currentUserData?.teamIconColor || '#f59e0b',
+          teamBgColor: selectedMatchTeam?.bgColor || currentUserData?.teamBgColor || 'rgba(245, 158, 11, 0.18)',
+          teamBorderColor: selectedMatchTeam?.borderColor || currentUserData?.teamBorderColor || 'rgba(245, 158, 11, 0.45)',
           tokenCoverage: isCoverEnabled ? (coveredCount === 1 ? '1' : 'all') : 'none',
           coveredMemberUids: isCoverEnabled ? selectedCoverUids : [],
           coveredCount: isCoverEnabled ? coveredCount : 0,

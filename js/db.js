@@ -179,26 +179,39 @@ async function createMatch(hostUser, matchData) {
   // Squad / Team queue settings
   const queueType = matchData.queueType || 'solo'; // 'solo' | 'team'
   const teamId = matchData.teamId || null;
-  const teamName = matchData.teamName || null;
-  const teamTag = matchData.teamTag || null;
+  let teamName = matchData.teamName || null;
+  let teamTag = matchData.teamTag || null;
+  let teamIcon = matchData.teamIcon || null;
+  let teamIconColor = matchData.teamIconColor || null;
+  let teamBgColor = matchData.teamBgColor || null;
+  let teamBorderColor = matchData.teamBorderColor || null;
   let invitedTeammates = matchData.invitedTeammates || [];
 
   // If team queue, automatically invite team roster if not pre-provided
-  if (queueType === 'team' && teamId && (!invitedTeammates || !invitedTeammates.length)) {
+  if (queueType === 'team' && teamId) {
     try {
       const teamSnap = await db.collection('teams').doc(teamId).get();
       if (teamSnap.exists) {
         const tData = teamSnap.data();
-        const needed = Math.max(1, (maxPlayers / 2) - 1);
-        const otherMembers = (tData.members || []).filter(m => m.uid !== hostUser.uid);
-        invitedTeammates = otherMembers.slice(0, needed).map(m => ({
-          uid: m.uid,
-          displayName: m.displayName || 'Teammate',
-          photoURL: m.photoURL || '',
-          epicUsername: m.epicUsername || '',
-          invitedAt: Date.now(),
-          status: 'pending'
-        }));
+        teamName = teamName || tData.name;
+        teamTag = teamTag || tData.tag;
+        teamIcon = teamIcon || tData.icon || 'shield';
+        teamIconColor = teamIconColor || tData.iconColor || '#f59e0b';
+        teamBgColor = teamBgColor || tData.bgColor || 'rgba(245, 158, 11, 0.18)';
+        teamBorderColor = teamBorderColor || tData.borderColor || 'rgba(245, 158, 11, 0.45)';
+
+        if (!invitedTeammates || !invitedTeammates.length) {
+          const needed = Math.max(1, (maxPlayers / 2) - 1);
+          const otherMembers = (tData.members || []).filter(m => m.uid !== hostUser.uid);
+          invitedTeammates = otherMembers.slice(0, needed).map(m => ({
+            uid: m.uid,
+            displayName: m.displayName || 'Teammate',
+            photoURL: m.photoURL || '',
+            epicUsername: m.epicUsername || '',
+            invitedAt: Date.now(),
+            status: 'pending'
+          }));
+        }
       }
     } catch (e) {
       console.warn('Could not auto-fetch team members for match invite:', e);
@@ -266,6 +279,10 @@ async function createMatch(hostUser, matchData) {
     teamId,
     teamName,
     teamTag,
+    teamIcon:        teamIcon || null,
+    teamIconColor:   teamIconColor || null,
+    teamBgColor:     teamBgColor || null,
+    teamBorderColor: teamBorderColor || null,
     region,
     platform,
     rounds,
@@ -509,6 +526,10 @@ async function joinMatchWithTeam(codeOrId, joiningUser, options = {}) {
   let invitedTeammates = [];
   let teamName = joiningUser.teamName || 'Team 2';
   let teamTag = joiningUser.teamTag || '';
+  let teamIcon = 'swords';
+  let teamIconColor = '#3b82f6';
+  let teamBgColor = 'rgba(59, 130, 246, 0.18)';
+  let teamBorderColor = 'rgba(59, 130, 246, 0.45)';
 
   try {
     const teamSnap = await db.collection('teams').doc(chosenTeamId).get();
@@ -516,6 +537,10 @@ async function joinMatchWithTeam(codeOrId, joiningUser, options = {}) {
       const tData = teamSnap.data();
       teamName = tData.name || teamName;
       teamTag = tData.tag || teamTag;
+      teamIcon = tData.icon || teamIcon;
+      teamIconColor = tData.iconColor || teamIconColor;
+      teamBgColor = tData.bgColor || teamBgColor;
+      teamBorderColor = tData.borderColor || teamBorderColor;
       const needed = Math.max(0, halfCount - 1);
       const otherMembers = (tData.members || []).filter(m => m.uid !== joiningUser.uid);
 
@@ -576,6 +601,10 @@ async function joinMatchWithTeam(codeOrId, joiningUser, options = {}) {
     team2Id:                  chosenTeamId,
     team2Name:                teamName,
     team2Tag:                 teamTag,
+    team2Icon:                teamIcon,
+    team2IconColor:           teamIconColor,
+    team2BgColor:             teamBgColor,
+    team2BorderColor:         teamBorderColor,
     team2TokenCoverage:       tokenCoverage,
     team2CoveredMemberUids:   coveredMemberUids,
     team2SplitRule:           splitRule,
