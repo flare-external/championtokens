@@ -7,7 +7,7 @@
   <link rel="icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
-  <link rel="stylesheet" href="css/style.css?v=4.0.1788035736862"/>
+  <link rel="stylesheet" href="css/style.css?v=4.0.1788036134529"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
@@ -1437,9 +1437,9 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="js/firebase-config.js"></script>
-  <script src="js/auth.js?v=4.0.1788035736862"></script>
-  <script src="js/db.js?v=4.0.1788035736862"></script>
-  <script src="js/nav.js?v=4.0.1788035736862"></script>
+  <script src="js/auth.js?v=4.0.1788036134529"></script>
+  <script src="js/db.js?v=4.0.1788036134529"></script>
+  <script src="js/nav.js?v=4.0.1788036134529"></script>
 
   <script>
     let currentUser = null;
@@ -1652,7 +1652,7 @@
       if (platformEl) platformEl.textContent = match.platform || 'All';
 
       const roundsEl = document.getElementById('meta-rounds');
-      if (roundsEl) roundsEl.textContent = match.rounds || (mode === 'Box Fights' ? 'First to 5' : (mode === 'Zone Wars' ? 'Best of 5' : 'First to 5'));
+      if (roundsEl) roundsEl.textContent = match.rounds || 'First to 5+2';
 
       const simpleEditEl = document.getElementById('meta-simple-edit');
       if (simpleEditEl) simpleEditEl.textContent = match.simpleEdit || 'Disabled';

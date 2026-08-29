@@ -5,58 +5,193 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Champion Tokens</title>
   <link rel="icon" type="image/png" href="champion-tokens_new.png"/>
-  <link rel="stylesheet" href="css/style.css?v=4.0.1788035736862"/>
+  <link rel="stylesheet" href="css/style.css?v=4.0.1788036134529"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
-    .admin-badge { display:inline-flex;align-items:center;gap:6px;background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.4);color:var(--red);border-radius:var(--radius-sm);padding:4px 10px;font-weight:800;font-size:0.8rem; }
-    .ticket-card { background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:18px;display:flex;flex-direction:column;gap:12px;transition:border-color 0.2s; }
-    .ticket-card.open { border-color:rgba(239,68,68,0.4);background:rgba(239,68,68,0.03); }
-    .ticket-card.resolved { border-color:rgba(16,185,129,0.3);opacity:0.75; }
-    [id^="admin-tab-"].hidden { display:none !important; }
-    .admin-quick-box {
-      background: #050505;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 14px;
-      padding: 16px 20px;
-      margin-bottom: 20px;
+    /* ── Dark Glass Admin Aesthetics (Matching matches.html) ── */
+    .admin-hero-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 24px;
+      padding: 20px 24px;
+      background: rgba(14, 18, 32, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 18px;
+      backdrop-filter: blur(16px);
     }
+
+    .admin-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+
+    .admin-stat-card {
+      background: rgba(14, 18, 32, 0.65);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 16px;
+      padding: 16px 18px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+    .admin-stat-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(255, 255, 255, 0.12);
+    }
+    .admin-stat-icon-wrap {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .admin-nav-tabs {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      margin-bottom: 22px;
+    }
+    .admin-nav-tab {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 18px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      color: #94a3b8;
+      font-size: 0.85rem;
+      font-weight: 800;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.18s ease;
+    }
+    .admin-nav-tab:hover {
+      background: rgba(255, 255, 255, 0.07);
+      color: #fff;
+    }
+    .admin-nav-tab.active {
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.2) 0%, rgba(245, 158, 11, 0.08) 100%);
+      border-color: rgba(245, 158, 11, 0.5);
+      color: var(--gold-bright);
+      box-shadow: 0 4px 16px rgba(245, 158, 11, 0.12);
+    }
+
     .admin-filter-pill {
       display: inline-flex;
       align-items: center;
       gap: 6px;
       padding: 6px 14px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
       color: #94a3b8;
       font-size: 0.8rem;
       font-weight: 700;
       cursor: pointer;
-      transition: all 0.18s ease;
+      transition: all 0.16s ease;
     }
     .admin-filter-pill:hover {
-      background: rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.08);
       color: #fff;
     }
     .admin-filter-pill.active {
-      background: rgba(245, 158, 11, 0.15);
-      border-color: rgba(245, 158, 11, 0.5);
+      background: rgba(245, 158, 11, 0.16);
+      border-color: rgba(245, 158, 11, 0.45);
       color: var(--gold-bright);
+      font-weight: 800;
     }
+
+    /* Player Cards Matching Match Card Styling */
+    .admin-player-card {
+      background: rgba(14, 18, 32, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 16px;
+      padding: 16px 20px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+      transition: all 0.2s ease;
+    }
+    .admin-player-card:hover {
+      background: rgba(18, 24, 42, 0.85);
+      border-color: rgba(255, 255, 255, 0.12);
+      transform: translateY(-1px);
+    }
+    .admin-player-card.banned {
+      border-color: rgba(239, 68, 68, 0.4);
+      background: rgba(239, 68, 68, 0.05);
+    }
+
+    .admin-player-avatar {
+      width: 46px;
+      height: 46px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      font-weight: 900;
+      color: #fff;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .admin-player-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
     .admin-action-btn-sm {
       display: inline-flex;
       align-items: center;
       gap: 5px;
-      padding: 5px 10px;
-      font-size: 0.75rem;
-      font-weight: 700;
-      border-radius: 6px;
+      padding: 6px 12px;
+      font-size: 0.76rem;
+      font-weight: 800;
+      border-radius: 8px;
       cursor: pointer;
       transition: all 0.16s ease;
       text-decoration: none;
+      border: 1px solid transparent;
     }
     .admin-action-btn-sm i { width: 13px; height: 13px; }
+
+    .ticket-card {
+      background: rgba(14, 18, 32, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 16px;
+      padding: 18px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .ticket-card.open {
+      border-color: rgba(239, 68, 68, 0.45);
+      background: rgba(239, 68, 68, 0.04);
+    }
+    .ticket-card.resolved {
+      border-color: rgba(16, 185, 129, 0.3);
+      opacity: 0.75;
+    }
+
+    [id^="admin-tab-"].hidden { display: none !important; }
   </style>
 </head>
 <body>
@@ -71,9 +206,9 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="js/firebase-config.js"></script>
-  <script src="js/auth.js?v=4.0.1788035736862"></script>
-  <script src="js/db.js?v=4.0.1788035736862"></script>
-  <script src="js/nav.js?v=4.0.1788035736862"></script>
+  <script src="js/auth.js?v=4.0.1788036134529"></script>
+  <script src="js/db.js?v=4.0.1788036134529"></script>
+  <script src="js/nav.js?v=4.0.1788036134529"></script>
   <script>
     let currentUser = null;
     let currentUserData = null;
@@ -218,9 +353,9 @@
 
         let roleBadge = '';
         if (isTargetOwner) {
-          roleBadge = '<span class="admin-badge-role" style="background:rgba(245,158,11,0.22);color:var(--gold-bright);border:1px solid var(--gold-bright);box-shadow:0 0 10px var(--gold-glow);"><i data-lucide="crown" style="width:11px;height:11px;"></i> PLATFORM OWNER</span>';
+          roleBadge = '<span class="badge" style="background:rgba(245,158,11,0.22);color:var(--gold-bright);border:1px solid var(--gold-bright);font-size:0.68rem;padding:2px 7px;"><i data-lucide="crown" style="width:11px;height:11px;"></i> Owner</span>';
         } else if (isTargetAdmin) {
-          roleBadge = '<span class="admin-badge-role admin-badge-admin"><i data-lucide="shield-check" style="width:11px;height:11px;"></i> Admin Staff</span>';
+          roleBadge = '<span class="badge" style="background:rgba(59,130,246,0.18);color:#60a5fa;border:1px solid rgba(59,130,246,0.4);font-size:0.68rem;padding:2px 7px;"><i data-lucide="shield-check" style="width:11px;height:11px;"></i> Staff</span>';
         }
 
         // Action buttons logic based on hierarchy:
@@ -237,24 +372,21 @@
         `;
 
         if (isTargetOwner) {
-          // Owner is immune: cannot be banned, demoted, or deleted by anyone
-          actionBtns += `<span class="chip" style="font-size:0.7rem;color:var(--gold-bright);background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.3);padding:3px 8px;border-radius:4px;"><i data-lucide="lock" style="width:10px;height:10px;"></i> Highest Admin</span>`;
+          actionBtns += `<span class="chip" style="font-size:0.7rem;color:var(--gold-bright);background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.3);padding:3px 8px;border-radius:6px;"><i data-lucide="lock" style="width:10px;height:10px;"></i> Protected</span>`;
         } else if (isTargetAdmin) {
-          // Target is an admin: admins cannot ban or delete other admins. Only Owner can demote.
           if (isCallerOwner) {
             actionBtns += `
               <button class="admin-action-btn-sm btn-outline" style="color:var(--red);border-color:rgba(239,68,68,0.3);" onclick="handleToggleAdminRole('${u.id}', false)">
-                <i data-lucide="shield-off"></i> Demote Admin
+                <i data-lucide="shield-off"></i> Demote
               </button>
               <button class="admin-action-btn-sm btn-danger" onclick="handleAdminDeleteAccount('${u.id}', '${escapeHtml(u.displayName || 'Player')}')">
                 <i data-lucide="trash-2"></i> Delete
               </button>
             `;
           } else {
-            actionBtns += `<span class="chip" style="font-size:0.7rem;color:#94a3b8;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);padding:3px 8px;border-radius:4px;"><i data-lucide="shield" style="width:10px;height:10px;"></i> Protected Admin</span>`;
+            actionBtns += `<span class="chip" style="font-size:0.7rem;color:#94a3b8;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);padding:3px 8px;border-radius:6px;"><i data-lucide="shield" style="width:10px;height:10px;"></i> Staff</span>`;
           }
         } else {
-          // Regular player
           if (banned) {
             actionBtns += `<button class="admin-action-btn-sm btn-primary" onclick="handleUnbanUser('${u.id}')"><i data-lucide="shield-check"></i> Unban</button>`;
           } else {
@@ -263,7 +395,7 @@
           if (isCallerOwner) {
             actionBtns += `
               <button class="admin-action-btn-sm btn-outline" onclick="handleToggleAdminRole('${u.id}', true)">
-                <i data-lucide="shield"></i> Make Admin
+                <i data-lucide="shield"></i> Make Staff
               </button>
             `;
           }
@@ -277,40 +409,40 @@
         return `
           <div class="admin-player-card ${banned ? 'banned' : ''}" id="user-card-${u.id}">
             <!-- Left: Avatar & User Info -->
-            <div style="display:flex;align-items:center;gap:14px;min-width:280px;flex:1;">
+            <div style="display:flex;align-items:center;gap:14px;min-width:260px;flex:1;">
               <div class="admin-player-avatar">
                 ${pfp ? `<img src="${escapeHtml(pfp)}" alt=""/>` : initial}
               </div>
               <div style="min-width:0;flex:1;">
                 <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-                  <span style="font-weight:900;font-size:1.05rem;color:#fff;">${escapeHtml(u.displayName || 'Unknown')}</span>
+                  <span style="font-weight:900;font-size:1.02rem;color:#fff;">${escapeHtml(u.displayName || 'Unknown')}</span>
                   ${roleBadge}
-                  ${banned ? '<span class="admin-badge-role" style="background:rgba(239,68,68,0.2);color:var(--red);border:1px solid rgba(239,68,68,0.5);"><i data-lucide="shield-x" style="width:11px;height:11px;"></i> Banned</span>' : ''}
-                  ${u.isPremium ? '<span class="admin-badge-role" style="background:rgba(245,158,11,0.2);color:var(--gold-bright);border:1px solid rgba(245,158,11,0.5);"><i data-lucide="crown" style="width:11px;height:11px;"></i> Premium</span>' : ''}
+                  ${banned ? '<span class="badge" style="background:rgba(239,68,68,0.2);color:var(--red);border:1px solid rgba(239,68,68,0.5);font-size:0.68rem;padding:2px 7px;"><i data-lucide="shield-x" style="width:11px;height:11px;"></i> Banned</span>' : ''}
+                  ${u.isPremium ? '<span class="badge" style="background:rgba(245,158,11,0.2);color:var(--gold-bright);border:1px solid rgba(245,158,11,0.5);font-size:0.68rem;padding:2px 7px;"><i data-lucide="crown" style="width:11px;height:11px;"></i> VIP</span>' : ''}
                 </div>
-                <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:4px;">
-                  <span class="admin-badge-role admin-badge-discord">
+                <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:5px;">
+                  <span class="badge" style="background:rgba(88,101,242,0.15);color:#818cf8;border:1px solid rgba(88,101,242,0.3);font-size:0.72rem;padding:2px 8px;">
                     <i data-lucide="message-square" style="width:11px;height:11px;"></i> @${escapeHtml(u.discordUsername || 'discord')}
                   </span>
-                  <span class="admin-badge-role admin-badge-epic">
+                  <span class="badge" style="background:rgba(0,120,242,0.15);color:#38bdf8;border:1px solid rgba(0,120,242,0.3);font-size:0.72rem;padding:2px 8px;">
                     <i data-lucide="gamepad-2" style="width:11px;height:11px;"></i> ${u.epicUsername ? escapeHtml(u.epicUsername) : '<span style="opacity:0.6;">Unlinked</span>'}
                   </span>
-                  <span class="admin-badge-role admin-badge-tokens">
-                    <i data-lucide="coins" style="width:11px;height:11px;"></i> ${formatTokens(tokens)} T
+                  <span class="badge" style="background:rgba(245,158,11,0.15);color:var(--gold-bright);border:1px solid rgba(245,158,11,0.4);font-size:0.72rem;padding:2px 8px;cursor:pointer;" onclick="openDirectBalanceModal('${u.id}', '${escapeHtml(u.displayName || 'Player')}', ${tokens})" title="Click to adjust balance">
+                    <i data-lucide="coins" style="width:11px;height:11px;"></i> ${formatTokens(tokens)} Tokens
                   </span>
                 </div>
                 <div style="display:flex;align-items:center;gap:10px;margin-top:6px;font-size:0.72rem;color:var(--text-muted);">
-                  <span style="font-family:monospace;background:rgba(255,255,255,0.05);padding:1px 6px;border-radius:4px;cursor:pointer;" onclick="copyToClipboard('${u.id}', 'UID copied')" title="Click to copy UID">
+                  <span style="font-family:monospace;background:rgba(255,255,255,0.04);padding:2px 6px;border-radius:4px;cursor:pointer;" onclick="copyToClipboard('${u.id}', 'UID copied')" title="Click to copy UID">
                     ${u.id} <i data-lucide="copy" style="width:10px;height:10px;display:inline;"></i>
                   </span>
-                  <span>Matches: <strong>${played}</strong> (${won}W / ${wr} WR)</span>
+                  <span><strong>${played}</strong> matches · <strong>${won}</strong> wins (${wr})</span>
                 </div>
-                ${banned && u.banReason ? `<div style="font-size:0.75rem;color:var(--red);margin-top:3px;font-weight:700;">Reason: ${escapeHtml(u.banReason)}</div>` : ''}
+                ${banned && u.banReason ? `<div style="font-size:0.75rem;color:var(--red);margin-top:4px;font-weight:700;">Ban reason: ${escapeHtml(u.banReason)}</div>` : ''}
               </div>
             </div>
 
             <!-- Right: Action Buttons Group -->
-            <div class="admin-quick-actions">
+            <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
               ${actionBtns}
             </div>
           </div>`;
@@ -505,26 +637,43 @@
       db.collection('matches').where('status', 'in', ['waiting','in_progress','disputed']).limit(30).onSnapshot((snap) => {
         const list = snap.docs.map(d => ({ id: d.id, ...d.data() }));
         document.getElementById('active-matches-count').textContent = list.length;
+        document.getElementById('matches-tab-count').textContent = list.length;
         renderActiveMatches(list);
       });
     }
 
     function renderActiveMatches(matches) {
       const c = document.getElementById('active-matches-list');
-      if (!matches.length) { c.innerHTML = '<div class="empty-state"><p>No live matches currently running.</p></div>'; return; }
+      if (!matches.length) { c.innerHTML = '<div class="empty-state" style="padding:28px 0;"><p>No active matches running right now.</p></div>'; return; }
       c.innerHTML = matches.map(m => {
         const sc = m.status === 'disputed' ? 'var(--red)' : (m.status === 'in_progress' ? 'var(--green)' : 'var(--text-muted)');
+        const statusLabel = m.status === 'disputed' ? 'DISPUTED' : (m.status === 'in_progress' ? 'IN PROGRESS' : 'WAITING');
         return `
-          <div class="mh-card" style="margin-bottom:10px;padding:14px 18px;">
-            <div style="flex:1;">
-              <div style="font-weight:800;font-size:0.95rem;">${escapeHtml(m.title)} <span style="font-family:monospace;font-size:0.8rem;color:var(--gold-bright);">(${m.code})</span></div>
-              <div style="font-size:0.75rem;color:var(--text-muted);margin-top:3px;">
-                Host: <strong>${escapeHtml(m.hostName || '—')}</strong> · ${formatTokens(m.wager)} T Wager · ${m.players?.length || 1}/${m.maxPlayers} players · <span style="color:${sc};font-weight:800;">${m.status.toUpperCase()}</span>
+          <div class="admin-player-card" style="margin-bottom:12px;">
+            <div style="flex:1;min-width:240px;">
+              <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                <span style="font-weight:900;font-size:1.02rem;color:#fff;">${escapeHtml(m.title)}</span>
+                <span class="badge" style="font-family:monospace;font-size:0.75rem;background:rgba(245,158,11,0.15);color:var(--gold-bright);border:1px solid rgba(245,158,11,0.4);">
+                  ${m.code}
+                </span>
+                <span class="badge" style="font-size:0.68rem;padding:2px 7px;color:${sc};border-color:${sc};">
+                  ${statusLabel}
+                </span>
+              </div>
+              <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-size:0.78rem;color:var(--text-muted);margin-top:6px;">
+                <span>Host: <strong style="color:#fff;">${escapeHtml(m.hostName || '—')}</strong></span>
+                <span>Wager: <strong style="color:var(--gold-bright);">${formatTokens(m.wager)} Tokens</strong></span>
+                <span>Prize: <strong style="color:var(--gold-bright);">${formatTokens(m.prizePool || m.wager * 2)} Tokens</strong></span>
+                <span>Players: <strong>${m.players?.length || 1}/${m.maxPlayers || 2}</strong></span>
               </div>
             </div>
-            <div style="display:flex;gap:8px;">
-              <a href="match?id=${m.id}&staff=true" target="_blank" class="btn btn-outline btn-sm"><i data-lucide="external-link"></i> Inspect</a>
-              <button class="btn btn-danger btn-sm" onclick="handleAdminCancelMatch('${m.id}')"><i data-lucide="slash"></i> Force Cancel & Refund</button>
+            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+              <a href="match?id=${m.id}&staff=true" target="_blank" class="admin-action-btn-sm btn-outline">
+                <i data-lucide="external-link"></i> Inspect Room
+              </a>
+              <button class="admin-action-btn-sm btn-danger" onclick="handleAdminCancelMatch('${m.id}')">
+                <i data-lucide="slash"></i> Force Cancel & Refund
+              </button>
             </div>
           </div>`;
       }).join('');
@@ -551,26 +700,48 @@
 
     // ── Active Teams Monitor ────────────────────────────────
     function subscribeActiveTeams() {
-      db.collection('teams').limit(40).onSnapshot((snap) => {
+      db.collection('teams').limit(50).onSnapshot((snap) => {
         const list = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-        document.getElementById('teams-count').textContent = list.length;
+        document.getElementById('teams-stat-count').textContent = list.length;
+        document.getElementById('teams-tab-count').textContent = list.length;
         renderTeamsList(list);
       });
     }
 
     function renderTeamsList(teams) {
       const c = document.getElementById('teams-admin-list');
-      if (!teams.length) { c.innerHTML = '<div class="empty-state"><p>No active teams.</p></div>'; return; }
-      c.innerHTML = teams.map(t => `
-        <div class="mh-card" style="margin-bottom:10px;padding:14px 18px;">
-          <div style="flex:1;">
-            <div style="font-weight:800;font-size:0.95rem;">[${escapeHtml(t.tag)}] ${escapeHtml(t.name)}</div>
-            <div style="font-size:0.75rem;color:var(--text-muted);margin-top:3px;">
-              Owner: <strong>${escapeHtml(t.ownerName || '—')}</strong> · ${(t.memberUids || []).length} members · Code: <span style="font-family:monospace;color:var(--gold-bright);">${t.code || '—'}</span>
+      if (!teams.length) { c.innerHTML = '<div class="empty-state" style="padding:28px 0;"><p>No active teams.</p></div>'; return; }
+      c.innerHTML = teams.map(t => {
+        const tIcon = t.icon || 'shield';
+        const tColor = t.iconColor || '#f59e0b';
+        const tBg = t.bgColor || 'rgba(245,158,11,0.18)';
+        const tBorder = t.borderColor || 'rgba(245,158,11,0.45)';
+        return `
+          <div class="admin-player-card" style="margin-bottom:12px;">
+            <div style="display:flex;align-items:center;gap:12px;min-width:240px;flex:1;">
+              <div style="width:44px;height:44px;border-radius:12px;background:${tBg};border:1.5px solid ${tBorder};display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                <i data-lucide="${tIcon}" style="width:22px;height:22px;color:${tColor};"></i>
+              </div>
+              <div style="flex:1;min-width:0;">
+                <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                  <span style="font-weight:900;font-size:1.02rem;color:#fff;">${escapeHtml(t.name)}</span>
+                  <span class="badge" style="background:${tBg};color:${tColor};border:1px solid ${tBorder};font-size:0.72rem;padding:2px 7px;font-weight:800;">
+                    Team ${escapeHtml(t.tag || '')}
+                  </span>
+                  <span class="badge" style="font-family:monospace;font-size:0.75rem;background:rgba(255,255,255,0.05);color:var(--text-muted);">
+                    #${t.code || '—'}
+                  </span>
+                </div>
+                <div style="font-size:0.78rem;color:var(--text-muted);margin-top:4px;">
+                  Owner: <strong style="color:#fff;">${escapeHtml(t.ownerName || '—')}</strong> · ${(t.memberUids || []).length} players
+                </div>
+              </div>
             </div>
-          </div>
-          <button class="btn btn-danger btn-sm" onclick="handleDissolveTeam('${t.id}','${escapeHtml(t.name)}')"><i data-lucide="trash-2"></i> Dissolve Team</button>
-        </div>`).join('');
+            <button class="admin-action-btn-sm btn-danger" onclick="handleDissolveTeam('${t.id}','${escapeHtml(t.name)}')">
+              <i data-lucide="trash-2"></i> Dissolve Team
+            </button>
+          </div>`;
+      }).join('');
       lucide.createIcons();
     }
 
@@ -596,16 +767,18 @@
     function subscribeStaffCalls() {
       db.collection('staff_calls').orderBy('timestamp', 'desc').limit(40).onSnapshot((snap) => {
         const calls = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-        document.getElementById('open-calls-count').textContent = calls.filter(c => c.status !== 'resolved').length;
+        const openCount = calls.filter(c => c.status !== 'resolved').length;
+        document.getElementById('open-calls-count').textContent = openCount;
+        document.getElementById('tickets-tab-count').textContent = openCount;
         renderStaffCalls(calls);
       }, () => {
-        document.getElementById('staff-calls-list').innerHTML = '<div class="empty-state">No staff calls.</div>';
+        document.getElementById('staff-calls-list').innerHTML = '<div class="empty-state">No tickets.</div>';
       });
     }
 
     function renderStaffCalls(calls) {
       const c = document.getElementById('staff-calls-list');
-      if (!calls.length) { c.innerHTML = '<div class="empty-state"><p>All quiet! No open tickets.</p></div>'; return; }
+      if (!calls.length) { c.innerHTML = '<div class="empty-state" style="padding:28px 0;"><p>All quiet! No open support tickets.</p></div>'; return; }
       c.innerHTML = calls.map(call => {
         const isOpen = call.status !== 'resolved';
         return `
@@ -615,20 +788,26 @@
                 <span class="badge ${isOpen ? 'badge-waiting' : 'badge-completed'}" style="${isOpen ? 'background:rgba(239,68,68,0.2);color:var(--red);border-color:rgba(239,68,68,0.4);' : ''}">
                   ${isOpen ? '🚨 OPEN TICKET' : '✅ RESOLVED'}
                 </span>
-                <span style="font-weight:900;">${escapeHtml(call.reason)}</span>
+                <span style="font-weight:900;font-size:0.95rem;color:#fff;">${escapeHtml(call.reason)}</span>
               </div>
               <span style="font-size:0.75rem;color:var(--text-faint);">${formatTime(call.timestamp)}</span>
             </div>
-            <div style="font-size:0.85rem;color:var(--text-muted);">
-              ${call.details ? `<div><strong>Details:</strong> "${escapeHtml(call.details)}"</div>` : ''}
-              <div style="margin-top:4px;"><strong>Called by:</strong> ${escapeHtml(call.calledByName || '—')} · <strong>Match Code:</strong> ${escapeHtml(call.matchCode || '—')}</div>
-              ${call.resolvedBy ? `<div style="color:var(--green);margin-top:2px;"><strong>Resolved by:</strong> ${escapeHtml(call.resolvedBy)} (${escapeHtml(call.resolutionNotes || '')})</div>` : ''}
+            <div style="font-size:0.82rem;color:var(--text-muted);line-height:1.5;">
+              ${call.details ? `<div style="color:#e2e8f0;background:rgba(0,0,0,0.3);padding:8px 12px;border-radius:8px;margin-bottom:6px;">"${escapeHtml(call.details)}"</div>` : ''}
+              <div><strong>Called by:</strong> ${escapeHtml(call.calledByName || '—')} · <strong>Match Code:</strong> ${escapeHtml(call.matchCode || '—')}</div>
+              ${call.resolvedBy ? `<div style="color:var(--green);margin-top:4px;"><strong>Resolved by:</strong> ${escapeHtml(call.resolvedBy)} (${escapeHtml(call.resolutionNotes || '')})</div>` : ''}
             </div>
-            <div style="display:flex;gap:8px;flex-wrap:wrap;">
-              <a href="match?id=${call.matchId}&staff=true" target="_blank" class="btn btn-outline btn-sm"><i data-lucide="external-link"></i> Inspect Match</a>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px;">
+              <a href="match?id=${call.matchId}&staff=true" target="_blank" class="admin-action-btn-sm btn-outline">
+                <i data-lucide="external-link"></i> Inspect Match
+              </a>
               ${isOpen ? `
-                <button class="btn btn-primary btn-sm" onclick="handleResolveTicket('${call.id}')"><i data-lucide="check"></i> Mark Resolved</button>
-                <button class="btn btn-danger btn-sm" onclick="handleAdminCancelMatch('${call.matchId}')"><i data-lucide="slash"></i> Force Cancel Match</button>
+                <button class="admin-action-btn-sm btn-primary" onclick="handleResolveTicket('${call.id}')">
+                  <i data-lucide="check"></i> Mark Resolved
+                </button>
+                <button class="admin-action-btn-sm btn-danger" onclick="handleAdminCancelMatch('${call.matchId}')">
+                  <i data-lucide="slash"></i> Force Cancel Match
+                </button>
               ` : ''}
             </div>
           </div>`;
@@ -637,7 +816,7 @@
     }
 
     async function handleResolveTicket(callId) {
-      const notes = prompt('Resolution notes:', 'Issue reviewed and settled by admin');
+      const notes = prompt('Resolution notes:', 'Settled by admin');
       if (notes === null) return;
       try {
         await resolveStaffCall(callId, currentUserData?.displayName || 'Admin', notes);
@@ -659,7 +838,7 @@
         const snap = await db.collection('users').get();
         const uids = snap.docs.map(d => d.id);
         await Promise.all(uids.map(uid => pushNotification(uid, 'system', title, body, { fromAdmin: currentUserData?.displayName || 'Admin' })));
-        showToast(`Broadcast notification pushed to ${uids.length} users!`, 'success');
+        showToast(`Broadcast sent to ${uids.length} players!`, 'success');
         document.getElementById('broadcast-title').value = '';
         document.getElementById('broadcast-body').value = '';
       } catch (err) {
@@ -698,174 +877,202 @@
     }
   </script>
 
-  <main class="page-wrap">
-    <!-- Header -->
-    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-bottom:24px;">
+  <main class="page-wrap" style="max-width: 1100px;">
+    <!-- Sleek Glass Header -->
+    <div class="admin-hero-header">
       <div>
         <div style="display:flex;align-items:center;gap:10px;">
-          <h1 style="font-size:1.9rem;"><i data-lucide="shield" style="color:var(--gold-bright);"></i> Admin Control Center</h1>
-          <span class="admin-badge" id="admin-role-badge"><i data-lucide="shield-check"></i> System Administrator</span>
+          <h1 style="font-size:1.6rem;font-weight:900;margin:0;"><i data-lucide="shield" style="color:var(--gold-bright);width:24px;height:24px;"></i> Admin Control Center</h1>
+          <span class="badge" id="admin-role-badge" style="background:rgba(239,68,68,0.15);color:var(--red);border:1px solid rgba(239,68,68,0.4);font-size:0.75rem;padding:3px 9px;">
+            <i data-lucide="shield-check"></i> System Admin
+          </span>
         </div>
-        <p style="color:var(--text-muted);font-size:0.875rem;margin-top:4px;">Full platform control: manage accounts, balances, linked Epic IGNs, matches, and disputes.</p>
+      </div>
+      <div style="display:flex;gap:8px;">
+        <button class="btn btn-outline btn-sm" onclick="loadInitialUsers()" title="Refresh Data">
+          <i data-lucide="refresh-cw"></i> Refresh
+        </button>
       </div>
     </div>
 
-    <!-- Quick Stats Row -->
-    <div class="grid-3" style="margin-bottom:24px;">
-      <div class="card stat-card">
-        <div class="stat-icon stat-icon--gold"><i data-lucide="users"></i></div>
-        <div class="stat-label">Loaded Users Directory</div>
-        <div class="stat-value stat-value--gold" id="total-users-stat">0</div>
+    <!-- Quick Stats Grid -->
+    <div class="admin-stats-grid">
+      <div class="admin-stat-card">
+        <div class="admin-stat-icon-wrap" style="background:rgba(245,158,11,0.15);color:var(--gold-bright);border:1px solid rgba(245,158,11,0.3);">
+          <i data-lucide="users" style="width:22px;height:22px;"></i>
+        </div>
+        <div>
+          <div style="font-size:0.75rem;font-weight:800;color:var(--text-muted);text-transform:uppercase;">Players</div>
+          <div style="font-size:1.35rem;font-weight:900;color:#fff;" id="total-users-stat">0</div>
+        </div>
       </div>
-      <div class="card stat-card">
-        <div class="stat-icon stat-icon--accent"><i data-lucide="swords"></i></div>
-        <div class="stat-label">Live Active Matches</div>
-        <div class="stat-value" id="active-matches-count">0</div>
+
+      <div class="admin-stat-card">
+        <div class="admin-stat-icon-wrap" style="background:rgba(59,130,246,0.15);color:#60a5fa;border:1px solid rgba(59,130,246,0.3);">
+          <i data-lucide="swords" style="width:22px;height:22px;"></i>
+        </div>
+        <div>
+          <div style="font-size:0.75rem;font-weight:800;color:var(--text-muted);text-transform:uppercase;">Live Matches</div>
+          <div style="font-size:1.35rem;font-weight:900;color:#fff;" id="active-matches-count">0</div>
+        </div>
       </div>
-      <div class="card stat-card">
-        <div class="stat-icon stat-icon--green"><i data-lucide="shield-alert"></i></div>
-        <div class="stat-label">Open Staff Tickets</div>
-        <div class="stat-value" style="color:var(--red);" id="open-calls-count">0</div>
+
+      <div class="admin-stat-card">
+        <div class="admin-stat-icon-wrap" style="background:rgba(239,68,68,0.15);color:var(--red);border:1px solid rgba(239,68,68,0.3);">
+          <i data-lucide="shield-alert" style="width:22px;height:22px;"></i>
+        </div>
+        <div>
+          <div style="font-size:0.75rem;font-weight:800;color:var(--text-muted);text-transform:uppercase;">Open Disputes</div>
+          <div style="font-size:1.35rem;font-weight:900;color:var(--red);" id="open-calls-count">0</div>
+        </div>
+      </div>
+
+      <div class="admin-stat-card">
+        <div class="admin-stat-icon-wrap" style="background:rgba(168,85,247,0.15);color:#c084fc;border:1px solid rgba(168,85,247,0.3);">
+          <i data-lucide="shield" style="width:22px;height:22px;"></i>
+        </div>
+        <div>
+          <div style="font-size:0.75rem;font-weight:800;color:var(--text-muted);text-transform:uppercase;">Active Teams</div>
+          <div style="font-size:1.35rem;font-weight:900;color:#fff;" id="teams-stat-count">0</div>
+        </div>
       </div>
     </div>
 
-    <!-- Tab Navigation -->
-    <div class="admin-tab-row">
-      <button class="admin-tab-btn active" id="admin-tabBtn-players" onclick="switchAdminTab('players')"><i data-lucide="users" style="width:15px;height:15px;"></i> Player Management</button>
-      <button class="admin-tab-btn" id="admin-tabBtn-matches" onclick="switchAdminTab('matches')"><i data-lucide="swords" style="width:15px;height:15px;"></i> Live Matches</button>
-      <button class="admin-tab-btn" id="admin-tabBtn-teams" onclick="switchAdminTab('teams')"><i data-lucide="shield" style="width:15px;height:15px;"></i> Active Teams (<span id="teams-count">0</span>)</button>
-      <button class="admin-tab-btn" id="admin-tabBtn-tickets" onclick="switchAdminTab('tickets')"><i data-lucide="alert-circle" style="width:15px;height:15px;"></i> Support Tickets</button>
-      <button class="admin-tab-btn" id="admin-tabBtn-broadcast" onclick="switchAdminTab('broadcast')"><i data-lucide="megaphone" style="width:15px;height:15px;"></i> Broadcast</button>
-      <button class="admin-tab-btn" id="admin-tabBtn-danger" onclick="switchAdminTab('danger')"><i data-lucide="alert-triangle" style="width:15px;height:15px;"></i> Database Reset</button>
+    <!-- Navigation Tabs -->
+    <div class="admin-nav-tabs">
+      <button class="admin-nav-tab active" id="admin-tabBtn-players" onclick="switchAdminTab('players')">
+        <i data-lucide="users" style="width:15px;height:15px;"></i> Players
+      </button>
+      <button class="admin-nav-tab" id="admin-tabBtn-matches" onclick="switchAdminTab('matches')">
+        <i data-lucide="swords" style="width:15px;height:15px;"></i> Live Matches (<span id="matches-tab-count">0</span>)
+      </button>
+      <button class="admin-nav-tab" id="admin-tabBtn-teams" onclick="switchAdminTab('teams')">
+        <i data-lucide="shield" style="width:15px;height:15px;"></i> Teams (<span id="teams-tab-count">0</span>)
+      </button>
+      <button class="admin-nav-tab" id="admin-tabBtn-tickets" onclick="switchAdminTab('tickets')">
+        <i data-lucide="alert-circle" style="width:15px;height:15px;"></i> Disputes (<span id="tickets-tab-count">0</span>)
+      </button>
+      <button class="admin-nav-tab" id="admin-tabBtn-broadcast" onclick="switchAdminTab('broadcast')">
+        <i data-lucide="megaphone" style="width:15px;height:15px;"></i> Broadcast
+      </button>
+      <button class="admin-nav-tab" id="admin-tabBtn-danger" onclick="switchAdminTab('danger')">
+        <i data-lucide="alert-triangle" style="width:15px;height:15px;"></i> Reset Database
+      </button>
     </div>
 
     <!-- ── Tab 1: Players & User Management ─────────────────── -->
     <div id="admin-tab-players">
-      <!-- Quick UID / URL Inspector Box -->
-      <div class="admin-quick-box">
-        <div style="font-weight:800;font-size:0.95rem;color:#fff;margin-bottom:6px;display:flex;align-items:center;gap:8px;">
-          <i data-lucide="search-check" style="color:var(--gold-bright);width:16px;height:16px;"></i> Quick Account Inspector (By UID or Profile URL)
-        </div>
-        <div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:12px;">
-          Paste any Account ID (e.g. <code>discord:1260647879706542110</code>) or profile link to immediately inspect, set balance, or delete.
-        </div>
-        <form onsubmit="handleQuickUidLookup(event)" style="display:flex;gap:10px;flex-wrap:wrap;">
-          <input class="form-input" id="quick-uid-input" placeholder="Paste Account ID or Profile Link…" style="flex:1;min-width:280px;font-family:monospace;font-size:0.85rem;" />
-          <button type="submit" class="btn btn-primary btn-sm"><i data-lucide="search"></i> Inspect & Control</button>
-        </form>
-      </div>
-
-      <!-- Main Directory Search & Filters -->
-      <div class="card" style="margin-bottom:24px;">
-        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:16px;">
-          <div class="section-title" style="margin-bottom:0;"><i data-lucide="users"></i> Player Directory</div>
-          <button class="btn btn-outline btn-sm" onclick="loadInitialUsers()"><i data-lucide="refresh-cw"></i> Refresh List</button>
-        </div>
-
-        <form class="admin-search-bar" onsubmit="handlePlayerSearch(event)">
-          <input class="form-input" id="player-search-input" placeholder="Search by name, @discord, Epic IGN, or UID…" autocomplete="off" oninput="handlePlayerSearch(null)" />
+      <!-- Search & Filters Card -->
+      <div class="card" style="margin-bottom:18px;padding:18px 20px;">
+        <form class="admin-search-bar" onsubmit="handlePlayerSearch(event)" style="margin-bottom:14px;">
+          <input class="form-input" id="player-search-input" placeholder="Search by username, Discord, Epic IGN, or paste full UID…" autocomplete="off" oninput="handlePlayerSearch(null)" style="font-size:0.92rem;" />
           <button type="submit" class="btn btn-primary btn-sm" id="player-search-btn"><i data-lucide="search"></i> Search</button>
         </form>
 
         <!-- Filter Chips -->
-        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;">
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
           <button class="admin-filter-pill active" data-filter="all" onclick="setPlayerFilter('all')">All Players</button>
-          <button class="admin-filter-pill" data-filter="staff" onclick="setPlayerFilter('staff')">👑 Admins & Staff</button>
+          <button class="admin-filter-pill" data-filter="staff" onclick="setPlayerFilter('staff')">👑 Staff</button>
           <button class="admin-filter-pill" data-filter="banned" onclick="setPlayerFilter('banned')">⛔ Banned</button>
           <button class="admin-filter-pill" data-filter="epic" onclick="setPlayerFilter('epic')">🎮 Epic Linked</button>
           <button class="admin-filter-pill" data-filter="tokens" onclick="setPlayerFilter('tokens')">💰 High Balance (&gt;10T)</button>
         </div>
+      </div>
 
-        <!-- Players List Results Container -->
-        <div id="player-search-results">
-          <div class="empty-state" style="padding:24px 0;"><div class="spinner" style="margin:0 auto;"></div></div>
-        </div>
+      <!-- Players List Results Container -->
+      <div id="player-search-results">
+        <div class="empty-state" style="padding:24px 0;"><div class="spinner" style="margin:0 auto;"></div></div>
       </div>
     </div>
 
     <!-- ── Tab 2: Live Matches ──────────────────────────────── -->
     <div id="admin-tab-matches" class="hidden">
-      <div class="card">
-        <div class="section-title" style="margin-bottom:14px;"><i data-lucide="swords"></i> Live Matches Monitor</div>
-        <div id="active-matches-list"><div class="spinner" style="margin:10px auto;"></div></div>
-      </div>
+      <div id="active-matches-list"><div class="spinner" style="margin:20px auto;"></div></div>
     </div>
 
     <!-- ── Tab 3: Active Teams ──────────────────────────────── -->
     <div id="admin-tab-teams" class="hidden">
-      <div class="card">
-        <div class="section-title" style="margin-bottom:14px;"><i data-lucide="shield"></i> Active Teams & Squads</div>
-        <div id="teams-admin-list"><div class="spinner" style="margin:10px auto;"></div></div>
-      </div>
+      <div id="teams-admin-list"><div class="spinner" style="margin:20px auto;"></div></div>
     </div>
 
     <!-- ── Tab 4: Tickets & Staff Calls ─────────────────────── -->
     <div id="admin-tab-tickets" class="hidden">
-      <div class="section-title" style="margin-bottom:14px;"><i data-lucide="shield-alert"></i> Staff Calls & Dispute Queue</div>
-      <div id="staff-calls-list" style="display:flex;flex-direction:column;gap:14px;"><div class="empty-state"><div class="spinner" style="margin:0 auto;"></div></div></div>
+      <div id="staff-calls-list" style="display:flex;flex-direction:column;gap:12px;"><div class="empty-state"><div class="spinner" style="margin:0 auto;"></div></div></div>
     </div>
 
     <!-- ── Tab 5: Broadcast ─────────────────────────────────── -->
     <div id="admin-tab-broadcast" class="hidden">
-      <div class="card">
-        <div class="section-title" style="margin-bottom:14px;"><i data-lucide="megaphone"></i> Global Broadcast Announcement</div>
-        <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:18px;">Sends a direct high-priority system notification to every registered user's notification bell.</p>
-        <form onsubmit="handleBroadcast(event)" style="display:flex;flex-direction:column;gap:12px;">
-          <div class="form-group"><label class="form-label">Announcement Title</label><input class="form-input" id="broadcast-title" placeholder="e.g. Tournament Weekend is Live!" required/></div>
-          <div class="form-group"><label class="form-label">Message Content</label><textarea class="form-input" id="broadcast-body" rows="3" placeholder="Write the announcement details…" required style="resize:vertical;"></textarea></div>
-          <button type="submit" class="btn btn-primary" id="broadcast-btn" style="align-self:flex-start;"><i data-lucide="send"></i> Broadcast to All Users</button>
+      <div class="card" style="padding:22px 24px;">
+        <div style="font-size:1.15rem;font-weight:900;color:#fff;margin-bottom:6px;display:flex;align-items:center;gap:8px;">
+          <i data-lucide="megaphone" style="color:var(--gold-bright);"></i> Global System Broadcast
+        </div>
+        <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:18px;">Pushes a direct system notification to every registered user's notification bell.</p>
+        <form onsubmit="handleBroadcast(event)" style="display:flex;flex-direction:column;gap:14px;">
+          <div class="form-group" style="margin:0;"><label class="form-label">Announcement Title</label><input class="form-input" id="broadcast-title" placeholder="e.g. Tournament Weekend is Live!" required/></div>
+          <div class="form-group" style="margin:0;"><label class="form-label">Message Content</label><textarea class="form-input" id="broadcast-body" rows="3" placeholder="Write the announcement details…" required style="resize:vertical;"></textarea></div>
+          <button type="submit" class="btn btn-primary" id="broadcast-btn" style="align-self:flex-start;padding:10px 20px;"><i data-lucide="send"></i> Broadcast to All Users</button>
         </form>
       </div>
     </div>
 
     <!-- ── Tab 6: Danger Zone ───────────────────────────────── -->
     <div id="admin-tab-danger" class="hidden">
-      <div class="card" style="border-color:rgba(239,68,68,0.4);background:linear-gradient(135deg,rgba(239,68,68,0.08) 0%,rgba(14,18,32,0.95) 100%);">
-        <div class="section-title" style="margin-bottom:8px;color:#fca5a5;"><i data-lucide="trash-2" style="color:var(--red);"></i> Master Platform Database Reset</div>
-        <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:14px;">
+      <div class="card" style="border-color:rgba(239,68,68,0.4);background:linear-gradient(135deg,rgba(239,68,68,0.06) 0%,rgba(14,18,32,0.95) 100%);padding:22px 24px;">
+        <div style="font-size:1.15rem;font-weight:900;color:#fca5a5;margin-bottom:6px;display:flex;align-items:center;gap:8px;">
+          <i data-lucide="trash-2" style="color:var(--red);"></i> Master Platform Database Reset
+        </div>
+        <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:16px;">
           Permanently wipes all matches, transactions, teams, and support tickets across the platform. Resets all user balances to 10.00 Tokens.
         </p>
-        <button type="button" class="btn btn-danger btn-sm" id="reset-db-btn" onclick="handleMasterDatabaseReset()" style="width:100%;justify-content:center;padding:10px;"><i data-lucide="refresh-cw"></i> Execute Full Platform Reset</button>
+        <button type="button" class="btn btn-danger btn-sm" id="reset-db-btn" onclick="handleMasterDatabaseReset()" style="padding:10px 20px;"><i data-lucide="refresh-cw"></i> Execute Full Platform Reset</button>
       </div>
     </div>
   </main>
 
   <!-- Balance Management Modal -->
   <div class="modal-overlay" id="balance-modal" onclick="if(event.target===this)closeDirectBalanceModal()">
-    <div class="modal" style="max-width:440px;">
-      <div class="modal-header">
-        <div class="modal-title" id="balance-modal-title"><i data-lucide="coins"></i> Manage User Tokens</div>
+    <div class="modal" style="max-width:440px;padding:24px 26px;">
+      <div class="modal-header" style="margin-bottom:14px;border:none;padding:0;">
+        <div class="modal-title" id="balance-modal-title" style="font-size:1.15rem;font-weight:900;"><i data-lucide="coins"></i> Manage User Tokens</div>
         <button class="modal-close" onclick="closeDirectBalanceModal()"><i data-lucide="x"></i></button>
       </div>
       <div style="font-size:0.85rem;color:var(--text-muted);margin-bottom:16px;">
         Current Balance: <strong id="balance-modal-current" style="color:var(--gold-bright);">10.00 Tokens</strong>
       </div>
 
-      <!-- Option 1: Set Exact Balance -->
-      <div style="margin-bottom:18px;padding:14px;background:#050505;border:1px solid rgba(255,255,255,0.08);border-radius:10px;">
-        <label class="form-label" style="font-size:0.8rem;color:#fff;">🎯 Option 1: Set Exact Token Balance</label>
-        <div style="display:flex;gap:8px;margin-top:6px;">
-          <input type="number" step="0.25" min="0" class="form-input" id="balance-exact-input" placeholder="e.g. 50.00" style="flex:1;font-weight:800;" />
-          <button type="button" class="btn btn-gold btn-sm" onclick="submitSetExactBalance()"><i data-lucide="check"></i> Set Balance</button>
+      <!-- Quick Add / Adjust -->
+      <div style="margin-bottom:16px;padding:14px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:12px;">
+        <label class="form-label" style="font-size:0.8rem;color:#fff;margin-bottom:8px;">Quick Adjust Tokens (+ / -)</label>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;">
+          <span class="wager-pill" onclick="setQuickAdjustVal(5.00)" style="padding:4px 8px;font-size:0.75rem;">+5</span>
+          <span class="wager-pill" onclick="setQuickAdjustVal(10.00)" style="padding:4px 8px;font-size:0.75rem;">+10</span>
+          <span class="wager-pill" onclick="setQuickAdjustVal(25.00)" style="padding:4px 8px;font-size:0.75rem;">+25</span>
+          <span class="wager-pill" onclick="setQuickAdjustVal(50.00)" style="padding:4px 8px;font-size:0.75rem;">+50</span>
+          <span class="wager-pill" onclick="setQuickAdjustVal(-10.00)" style="padding:4px 8px;font-size:0.75rem;color:#fca5a5;">-10</span>
+          <span class="wager-pill" onclick="setQuickAdjustVal(-50.00)" style="padding:4px 8px;font-size:0.75rem;color:#fca5a5;">-50</span>
         </div>
-      </div>
-
-      <!-- Option 2: Add / Deduct Adjustment -->
-      <div style="margin-bottom:18px;padding:14px;background:#050505;border:1px solid rgba(255,255,255,0.08);border-radius:10px;">
-        <label class="form-label" style="font-size:0.8rem;color:#fff;">➕ / ➖ Option 2: Add or Deduct Tokens</label>
-        <div style="display:flex;gap:8px;margin-top:6px;">
-          <input type="number" step="0.25" class="form-input" id="balance-adjust-input" placeholder="e.g. +10 or -5" style="flex:1;font-weight:800;" />
+        <div style="display:flex;gap:8px;">
+          <input type="number" step="0.25" class="form-input" id="balance-adjust-input" placeholder="+10 or -5" style="flex:1;font-weight:800;" />
           <button type="button" class="btn btn-primary btn-sm" onclick="submitAddAdjustment()"><i data-lucide="zap"></i> Apply</button>
         </div>
       </div>
 
-      <div class="form-group" style="margin-bottom:18px;">
-        <label class="form-label">Audit Reason / Notes</label>
+      <!-- Set Exact Balance -->
+      <div style="margin-bottom:16px;padding:14px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:12px;">
+        <label class="form-label" style="font-size:0.8rem;color:#fff;margin-bottom:6px;">Set Exact Token Balance</label>
+        <div style="display:flex;gap:8px;">
+          <input type="number" step="0.25" min="0" class="form-input" id="balance-exact-input" placeholder="e.g. 50.00" style="flex:1;font-weight:800;" />
+          <button type="button" class="btn btn-gold btn-sm" onclick="submitSetExactBalance()"><i data-lucide="check"></i> Set</button>
+        </div>
+      </div>
+
+      <div class="form-group" style="margin-bottom:16px;">
+        <label class="form-label">Audit Reason</label>
         <input class="form-input" id="balance-reason-input" value="Admin adjustment" />
       </div>
 
-      <div class="modal-actions">
-        <button type="button" class="btn btn-outline" onclick="closeDirectBalanceModal()">Close</button>
+      <div class="modal-actions" style="border:none;padding:0;">
+        <button type="button" class="btn btn-outline btn-sm" onclick="closeDirectBalanceModal()">Close</button>
       </div>
     </div>
   </div>

@@ -24,7 +24,7 @@
   <link rel="icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
-  <link rel="stylesheet" href="css/style.css?v=4.0.1788035736862"/>
+  <link rel="stylesheet" href="css/style.css?v=4.0.1788036134529"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
@@ -134,9 +134,9 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="js/firebase-config.js"></script>
-  <script src="js/auth.js?v=4.0.1788035736862"></script>
-  <script src="js/db.js?v=4.0.1788035736862"></script>
-  <script src="js/nav.js?v=4.0.1788035736862"></script>
+  <script src="js/auth.js?v=4.0.1788036134529"></script>
+  <script src="js/db.js?v=4.0.1788036134529"></script>
+  <script src="js/nav.js?v=4.0.1788036134529"></script>
 
   <script>
     let currentUser = null;
@@ -307,6 +307,7 @@
               <div class="badge-group" style="display:flex;gap:4px;flex-shrink:0;">
                 <span class="badge ${sizeColor(size)}" style="font-size:0.68rem;padding:2px 7px;">${size}</span>
                 <span class="badge ${modeColor(mode)}" style="font-size:0.68rem;padding:2px 7px;">${mode}</span>
+                <span class="badge" style="font-size:0.68rem;padding:2px 7px;background:rgba(255,255,255,0.06);color:#e2e8f0;border:1px solid rgba(255,255,255,0.12);">${escapeHtml(m.rounds || 'First to 5+2')}</span>
               </div>
             </div>
 
@@ -1084,6 +1085,7 @@
       const hostTotalDeposit = wager * (1 + coveredCount);
 
       const queueLabel = selectedQueueType === 'team' ? ' (Team Queue)' : '';
+      const format = document.getElementById('format-select')?.value || 'First to 5+2';
       const titleEl = document.getElementById('preview-title');
       const playersEl = document.getElementById('preview-players');
       const poolEl = document.getElementById('preview-pool');
@@ -1091,7 +1093,7 @@
       const depositEl = document.getElementById('preview-deposit-row');
       const depositVal = document.getElementById('preview-deposit-val');
 
-      if (titleEl) titleEl.textContent = `${size} ${mode}${queueLabel}`;
+      if (titleEl) titleEl.textContent = `${size} ${mode} • ${format}${queueLabel}`;
       if (playersEl) playersEl.textContent = `${players} Players (${size})`;
       if (poolEl) poolEl.textContent = `${formatTokens(totalPool)} Tokens ($${formatTokens(totalPool)})`;
       if (prizeEl) prizeEl.textContent = `${formatTokens(winPrize)} Tokens ($${formatTokens(winPrize)})`;
@@ -1110,6 +1112,7 @@
       e.preventDefault();
       const size  = document.getElementById('size-select').value;
       const mode  = document.getElementById('mode-select').value;
+      const format = document.getElementById('format-select')?.value || 'First to 5+2';
       const wager = parseFloat(document.getElementById('wager-input').value);
       const lootPool = document.getElementById('loot-pool-select')?.value || (lootPoolsByMode[mode]?.[0] || 'Iron pump (Default AR)');
       const simpleEdit = document.getElementById('simple-edit-select')?.value || 'Disabled';
@@ -1148,6 +1151,7 @@
         const { id, code, title } = await createMatch(currentUserData, {
           size,
           mode,
+          rounds: format,
           wager,
           lootPool,
           simpleEdit,
@@ -1338,6 +1342,16 @@
                 <option value="Striker pump (Default AR)">Striker pump (Default AR)</option>
                 <option value="Striker pump (Tactical pistol)">Striker pump (Tactical pistol)</option>
                 <option value="Pump (Default AR)">Pump (Default AR)</option>
+              </select>
+            </div>
+
+            <!-- Match Format -->
+            <div class="form-group" style="margin-bottom: 0;">
+              <label class="form-label" style="margin-bottom: 6px; font-size: 0.85rem; font-weight: 800;">Match Format</label>
+              <select class="form-select" id="format-select" onchange="updateCreatePreview()" style="padding: 10px 14px; font-size: 0.92rem; border-radius: 12px; border: none; outline: none;">
+                <option value="First to 1">First to 1</option>
+                <option value="First to 3">First to 3</option>
+                <option value="First to 5+2" selected>First to 5+2</option>
               </select>
             </div>
 
