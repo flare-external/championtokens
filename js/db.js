@@ -1214,6 +1214,63 @@ async function submitMatchReport(matchId, reporterUid, reportedWinnerTeam) {
 }
 
 /**
+ * Retract / Undo a submitted match report
+ * Allows a player to cancel or change their reported score if they made a mistake (e.g. accidentally clicked Lose).
+ * @param {string} matchId
+ * @param {string} reporterUid
+ */
+async function retractMatchReport(matchId, reporterUid) {
+  const matchRef = db.collection('matches').doc(matchId);
+  const matchSnap = await matchRef.get();
+  if (!matchSnap.exists) throw new Error('Match not found');
+
+  const match = matchSnap.data();
+  if (match.status === 'completed') {
+    throw new Error('Cannot retract: Match is already completed and verified');
+  }
+
+  const players = match.players || [];
+  const reporterPlayer = players.find(p => p.uid === reporterUid);
+  if (!reporterPlayer) throw new Error('You are not a participant in this match');
+
+  const isTeam1 = reporterPlayer.team === 'team1' || reporterPlayer.isHost || reporterPlayer.uid === match.createdBy;
+  const reporterTeamName = isTeam1 ? 'Team 1 (Host)' : 'Team 2 (Enemy)';
+
+  const updatePayload = {};
+  if (isTeam1) {
+    if (!match.team1Reported) throw new Error('No reported score to retract');
+    updatePayload.team1Reported = firebase.firestore.FieldValue.delete();
+    updatePayload.team1ReportedBy = firebase.firestore.FieldValue.delete();
+    updatePayload.team1ReportedByName = firebase.firestore.FieldValue.delete();
+    updatePayload.team1ReportedAt = firebase.firestore.FieldValue.delete();
+  } else {
+    if (!match.team2Reported) throw new Error('No reported score to retract');
+    updatePayload.team2Reported = firebase.firestore.FieldValue.delete();
+    updatePayload.team2ReportedBy = firebase.firestore.FieldValue.delete();
+    updatePayload.team2ReportedByName = firebase.firestore.FieldValue.delete();
+    updatePayload.team2ReportedAt = firebase.firestore.FieldValue.delete();
+  }
+
+  // If match was in disputed state, return it to in_progress
+  if (match.status === 'disputed' || match.isDisputed) {
+    updatePayload.status = 'in_progress';
+    updatePayload.isDisputed = false;
+    updatePayload.disputedAt = firebase.firestore.FieldValue.delete();
+  }
+
+  await matchRef.update(updatePayload);
+
+  const msgRef = matchRef.collection('messages');
+  await msgRef.add({
+    isSystem: true,
+    text: `↩️ ${reporterTeamName} retracted their reported score. Both teams can now vote again.`,
+    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+  });
+
+  return { success: true };
+}
+
+/**
  * Staff manual resolution for disputed matches
  */
 async function adminResolveDispute(matchId, winningTeam, adminUid) {
