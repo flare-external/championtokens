@@ -7,7 +7,7 @@
   <link rel="icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
-  <link rel="stylesheet" href="css/style.css?v=4.0.1788035118503"/>
+  <link rel="stylesheet" href="css/style.css?v=4.0.1788035327614"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
@@ -1215,9 +1215,9 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="js/firebase-config.js?v=3.2"></script>
-  <script src="js/auth.js?v=4.0.1788035118503"></script>
-  <script src="js/db.js?v=4.0.1788035118503"></script>
-  <script src="js/nav.js?v=4.0.1788035118503"></script>
+  <script src="js/auth.js?v=4.0.1788035327614"></script>
+  <script src="js/db.js?v=4.0.1788035327614"></script>
+  <script src="js/nav.js?v=4.0.1788035327614"></script>
 
   <script>
     let currentUser = null;
@@ -2035,9 +2035,8 @@
         if (window.lucide) lucide.createIcons();
       }
       try {
-        const res = await syncEpicAccountName(currentUser.uid);
-        currentUserData.displayName = res.displayName;
-        showToast(`Account name successfully synced to "${res.displayName}"!`, 'success');
+        await syncEpicAccountName(currentUser.uid);
+        showToast(`Epic Games account "${currentUserData.epicUsername}" refreshed & synced!`, 'success');
       } catch (err) {
         showToast('Sync error: ' + (err.message || err), 'error');
       } finally {
@@ -2373,9 +2372,20 @@
 
       if (hubTeam) {
         if (teams && teams.length > 0) {
-          hubTeam.innerHTML = `<span class="chip" style="font-size:0.78rem;font-weight:700;color:var(--gold-bright);border-color:rgba(245,158,11,0.4);">${teams.length === 1 ? `[${escapeHtml(teams[0].tag)}] ${escapeHtml(teams[0].name)}` : `${teams.length} Teams`}</span>`;
+          const t = teams[0];
+          const tIcon = t.icon || 'shield';
+          const tColor = t.iconColor || '#f59e0b';
+          const tBg = t.bgColor || 'rgba(245,158,11,0.18)';
+          const tBorder = t.borderColor || 'rgba(245,158,11,0.45)';
+          hubTeam.innerHTML = `
+            <div style="display:inline-flex;align-items:center;gap:6px;background:${tBg};border:1px solid ${tBorder};padding:4px 10px;border-radius:10px;">
+              <i data-lucide="${tIcon}" style="width:13px;height:13px;color:${tColor};"></i>
+              <span style="font-size:0.78rem;font-weight:900;color:#fff;">Team ${escapeHtml(t.name)}</span>
+              <span style="font-size:0.72rem;font-weight:800;color:${tColor};">${escapeHtml(t.tag)}</span>
+            </div>
+          `;
         } else {
-          hubTeam.innerHTML = `<span style="color:var(--text-muted);font-size:0.82rem;">No Teams</span>`;
+          hubTeam.innerHTML = `<span style="color:var(--text-muted);font-size:0.82rem;">No Team</span>`;
         }
       }
       if (teamCard) {
@@ -2424,7 +2434,10 @@
                   </div>
                   <div>
                     <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-                      <span class="badge" style="background:rgba(255,255,255,0.06);color:${team.iconColor || '#fff'};border:1px solid ${team.borderColor || 'rgba(255,255,255,0.15)'};font-size:0.75rem;padding:3px 8px;font-weight:800;">[${escapeHtml(team.tag)}]</span>
+                      <span style="background:${team.bgColor || 'rgba(245,158,11,0.18)'};color:${team.iconColor || '#fff'};border:1px solid ${team.borderColor || 'rgba(245,158,11,0.45)'};font-size:0.75rem;padding:3px 8px;border-radius:8px;font-weight:800;display:inline-flex;align-items:center;gap:4px;">
+                        <i data-lucide="${team.icon || 'shield'}" style="width:12px;height:12px;"></i>
+                        <span>Team ${escapeHtml(team.tag)}</span>
+                      </span>
                       <span style="font-size:1.25rem;font-weight:900;color:#fff;">${escapeHtml(team.name)}</span>
                     </div>
                     <div style="font-size:0.75rem;color:var(--text-muted);margin-top:2px;">

@@ -2048,7 +2048,7 @@ async function linkEpicAccount(uid, epicUsername, epicAccountId = '') {
 }
 
 /**
- * Sync platform display name with verified Epic Games username.
+ * Sync / verify connected Epic Games account.
  */
 async function syncEpicAccountName(uid) {
   if (!uid) throw new Error('User ID is required');
@@ -2058,12 +2058,11 @@ async function syncEpicAccountName(uid) {
   }
 
   await db.collection('users').doc(uid).set({
-    displayName:        user.epicUsername,
     epicVerified:       true,
     epicLastSynced:     firebase.firestore.FieldValue.serverTimestamp(),
   }, { merge: true });
 
-  return { success: true, displayName: user.epicUsername };
+  return { success: true, epicUsername: user.epicUsername };
 }
 
 /**

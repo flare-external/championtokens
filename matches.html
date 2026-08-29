@@ -24,7 +24,7 @@
   <link rel="icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
-  <link rel="stylesheet" href="css/style.css?v=4.0.1788035118503"/>
+  <link rel="stylesheet" href="css/style.css?v=4.0.1788035327614"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
@@ -134,9 +134,9 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="js/firebase-config.js"></script>
-  <script src="js/auth.js?v=4.0.1788035118503"></script>
-  <script src="js/db.js?v=4.0.1788035118503"></script>
-  <script src="js/nav.js?v=4.0.1788035118503"></script>
+  <script src="js/auth.js?v=4.0.1788035327614"></script>
+  <script src="js/db.js?v=4.0.1788035327614"></script>
+  <script src="js/nav.js?v=4.0.1788035327614"></script>
 
   <script>
     let currentUser = null;
@@ -292,9 +292,9 @@
                 <div style="min-width:0;flex:1;">
                   <div class="match-card__title" style="font-size:0.92rem;font-weight:800;display:flex;align-items:center;gap:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
                     ${m.teamTag ? `
-                      <span class="badge" style="background:${m.teamBgColor || 'rgba(245,158,11,0.18)'};color:${m.teamIconColor || 'var(--gold-bright)'};border:1px solid ${m.teamBorderColor || 'rgba(245,158,11,0.45)'};font-size:0.7rem;padding:2px 6px;display:inline-flex;align-items:center;gap:4px;flex-shrink:0;">
+                      <span style="background:${m.teamBgColor || 'rgba(245,158,11,0.18)'};color:${m.teamIconColor || 'var(--gold-bright)'};border:1px solid ${m.teamBorderColor || 'rgba(245,158,11,0.45)'};font-size:0.7rem;padding:2px 7px;border-radius:6px;display:inline-flex;align-items:center;gap:4px;flex-shrink:0;font-weight:800;">
                         <i data-lucide="${m.teamIcon || 'shield'}" style="width:11px;height:11px;"></i>
-                        <span>[${escapeHtml(m.teamTag)}]</span>
+                        <span>Team ${escapeHtml(m.teamTag)}</span>
                       </span>
                     ` : ''}
                     <span style="overflow:hidden;text-overflow:ellipsis;">${escapeHtml(m.teamName ? `${m.teamName} (${m.size} ${m.mode})` : (m.title || `${size} ${mode}`))}</span>
