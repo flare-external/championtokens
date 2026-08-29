@@ -3,128 +3,267 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Champion Tokens</title>
+  <title>Champion Leaderboard — Champion Tokens</title>
   <meta name="title" content="Champion Tokens Leaderboard"/>
   <meta name="description" content="View top ranked Fortnite players, biggest token earners, win streaks, and champion podium standings on Champion Tokens!"/>
   <meta name="theme-color" content="#F59E0B"/>
 
-  <meta property="og:type" content="website"/>
-  <meta property="og:url" content="https://championtokens.fun/leaderboard"/>
-  <meta property="og:site_name" content="Champion Tokens"/>
-  <meta property="og:title" content="Champion Tokens Leaderboard"/>
-  <meta property="og:description" content="View top ranked Fortnite players, biggest token earners, win streaks, and champion podium standings on Champion Tokens!"/>
-  <meta property="og:image" content="https://championtokens.fun/champion-tokens_new.png"/>
-
-  <meta name="twitter:card" content="summary"/>
-  <meta name="twitter:url" content="https://championtokens.fun/leaderboard"/>
-  <meta name="twitter:title" content="Champion Tokens Leaderboard"/>
-  <meta name="twitter:description" content="View top ranked Fortnite players, biggest token earners, win streaks, and champion podium standings on Champion Tokens!"/>
-  <meta name="twitter:image" content="https://championtokens.fun/champion-tokens_new.png"/>
-
   <link rel="icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
-  <link rel="stylesheet" href="css/style.css?v=4.0.1788037685565"/>
+  <link rel="stylesheet" href="css/style.css?v=4.0.1788047701470"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
-    .lb-header {
+    /* ── Dark Glass Leaderboard Aesthetics ── */
+    .lb-hero-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
-      gap: 12px;
-      margin-bottom: 20px;
-    }
-    .podium {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
       gap: 16px;
-      margin-bottom: 30px;
+      margin-bottom: 24px;
+      padding: 22px 26px;
+      background: rgba(14, 18, 32, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 18px;
+      backdrop-filter: blur(16px);
+    }
+
+    .lb-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+
+    .lb-stat-card {
+      background: rgba(14, 18, 32, 0.65);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 16px;
+      padding: 16px 18px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+    .lb-stat-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(255, 255, 255, 0.12);
+    }
+    .lb-stat-icon-wrap {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    /* Podium Section */
+    .podium-section {
+      display: grid;
+      grid-template-columns: 1fr 1.08fr 1fr;
+      gap: 16px;
+      margin-bottom: 28px;
       align-items: end;
     }
+
     .podium-card {
-      background: #080808;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: var(--radius-xl);
-      padding: 22px 18px;
+      background: rgba(14, 18, 32, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 20px;
+      padding: 24px 20px;
       text-align: center;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 8px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+      gap: 10px;
+      box-shadow: 0 12px 36px rgba(0,0,0,0.6);
       transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
       text-decoration: none;
       color: inherit;
+      position: relative;
+      overflow: hidden;
     }
     .podium-card:hover {
       transform: translateY(-4px);
-      box-shadow: 0 14px 40px rgba(0,0,0,0.9);
+      box-shadow: 0 18px 48px rgba(0,0,0,0.85);
     }
+
     .podium-card--1 {
-      border-color: rgba(245, 158, 11, 0.45);
-      background: linear-gradient(180deg, rgba(245,158,11,0.12) 0%, #080808 100%);
-      padding-top: 30px;
-      padding-bottom: 26px;
-      box-shadow: 0 0 35px rgba(245,158,11,0.18), 0 10px 30px rgba(0,0,0,0.8);
+      border-color: rgba(245, 158, 11, 0.5);
+      background: linear-gradient(180deg, rgba(245, 158, 11, 0.14) 0%, rgba(14, 18, 32, 0.9) 100%);
+      padding-top: 32px;
+      padding-bottom: 28px;
+      box-shadow: 0 0 40px rgba(245, 158, 11, 0.18), 0 14px 38px rgba(0,0,0,0.8);
     }
     .podium-card--1:hover {
       border-color: var(--gold-bright);
-      box-shadow: 0 0 45px rgba(245,158,11,0.3);
+      box-shadow: 0 0 55px rgba(245, 158, 11, 0.28);
     }
+
     .podium-card--2 {
-      border-color: rgba(226, 232, 240, 0.25);
-      background: linear-gradient(180deg, rgba(226, 232, 240, 0.06) 0%, #080808 100%);
+      border-color: rgba(203, 213, 225, 0.3);
+      background: linear-gradient(180deg, rgba(203, 213, 225, 0.08) 0%, rgba(14, 18, 32, 0.85) 100%);
     }
+
     .podium-card--3 {
-      border-color: rgba(217, 119, 6, 0.3);
-      background: linear-gradient(180deg, rgba(217, 119, 6, 0.06) 0%, #080808 100%);
+      border-color: rgba(217, 119, 6, 0.35);
+      background: linear-gradient(180deg, rgba(217, 119, 6, 0.08) 0%, rgba(14, 18, 32, 0.85) 100%);
     }
-    .podium-rank {
-      font-size: 1.6rem;
-      line-height: 1;
-      margin-bottom: 2px;
-    }
-    .podium-avatar {
-      width: 68px; height: 68px;
+
+    .podium-avatar-wrap {
+      width: 72px;
+      height: 72px;
       border-radius: 50%;
-      overflow: hidden;
-      background: #111;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.4rem;
+      background: #111422;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
       font-weight: 900;
-      color: var(--text-muted);
+      color: #fff;
+      overflow: hidden;
       position: relative;
     }
-    .podium-avatar img { width: 100%; height: 100%; object-fit: cover; }
-    .podium-avatar--1 { border: 3px solid var(--gold-bright); box-shadow: 0 0 20px var(--gold-glow); }
-    .podium-avatar--2 { border: 3px solid #cbd5e1; box-shadow: 0 0 12px rgba(203, 213, 225, 0.25); }
-    .podium-avatar--3 { border: 3px solid #d97706; box-shadow: 0 0 12px rgba(217, 119, 6, 0.25); }
-    .podium-name   { font-weight: 800; font-size: 1rem; color: #fff; }
-    .podium-tokens { font-size: 1.3rem; font-weight: 900; color: var(--gold-bright); display: inline-flex; align-items: center; gap: 6px; }
-    .podium-label  { font-size: 0.72rem; color: var(--text-muted); }
+    .podium-avatar-wrap img { width: 100%; height: 100%; object-fit: cover; }
+    .podium-avatar-wrap--1 { width: 84px; height: 84px; border: 3px solid var(--gold-bright); box-shadow: 0 0 24px rgba(245,158,11,0.5); }
+    .podium-avatar-wrap--2 { border: 3px solid #cbd5e1; box-shadow: 0 0 16px rgba(203, 213, 225, 0.3); }
+    .podium-avatar-wrap--3 { border: 3px solid #d97706; box-shadow: 0 0 16px rgba(217, 119, 6, 0.3); }
 
-    .lb-table-wrap { overflow-x: auto; }
-    .lb-table { min-width: 540px; }
-
-    .refresh-btn {
-      display: flex; align-items: center; gap: 6px;
-      font-size: 0.8125rem;
-      font-weight: 700;
-      color: var(--text-muted);
-      padding: 8px 14px;
-      border-radius: var(--radius-sm);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      background: rgba(8, 8, 8, 0.95);
-      cursor: pointer;
-      transition: all 0.2s ease;
+    /* Rank Pills */
+    .rank-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 10px;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      font-weight: 900;
+      letter-spacing: 0.02em;
     }
-    .refresh-btn:hover { color: var(--gold-bright); border-color: var(--gold-bright); background: rgba(245, 158, 11, 0.12); }
-    .refresh-btn i { width: 14px; height: 14px; }
+    .rank-pill.rank-1 {
+      background: rgba(245, 158, 11, 0.22);
+      color: var(--gold-bright);
+      border: 1px solid rgba(245, 158, 11, 0.5);
+      box-shadow: 0 0 12px rgba(245, 158, 11, 0.25);
+    }
+    .rank-pill.rank-2 {
+      background: rgba(203, 213, 225, 0.16);
+      color: #e2e8f0;
+      border: 1px solid rgba(203, 213, 225, 0.4);
+    }
+    .rank-pill.rank-3 {
+      background: rgba(217, 119, 6, 0.18);
+      color: #f59e0b;
+      border: 1px solid rgba(217, 119, 6, 0.4);
+    }
+    .rank-pill.rank-other {
+      background: rgba(255, 255, 255, 0.04);
+      color: #94a3b8;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      font-family: monospace;
+      font-size: 0.8rem;
+    }
 
-    @media (max-width:680px) {
-      .podium { grid-template-columns: 1fr; }
+    /* Filter & Search Bar */
+    .lb-controls-card {
+      background: rgba(14, 18, 32, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 16px;
+      padding: 16px 20px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .lb-sort-tab {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 15px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: #94a3b8;
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.16s ease;
+    }
+    .lb-sort-tab:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+    }
+    .lb-sort-tab.active {
+      background: rgba(245, 158, 11, 0.18);
+      border-color: rgba(245, 158, 11, 0.5);
+      color: var(--gold-bright);
+      font-weight: 800;
+    }
+
+    /* Table Container */
+    .lb-table-card {
+      background: rgba(14, 18, 32, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 18px;
+      padding: 20px 22px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    }
+
+    .lb-custom-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0 8px;
+      min-width: 600px;
+    }
+    .lb-custom-table th {
+      color: #64748b;
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 8px 16px;
+      border: none;
+      text-align: left;
+    }
+    .lb-custom-table tbody tr {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      transition: all 0.18s ease;
+      cursor: pointer;
+    }
+    .lb-custom-table tbody tr:hover {
+      background: rgba(255, 255, 255, 0.06);
+      transform: translateY(-1px);
+    }
+    .lb-custom-table tbody tr.current-user {
+      background: rgba(245, 158, 11, 0.08);
+      border-color: rgba(245, 158, 11, 0.35);
+    }
+    .lb-custom-table td {
+      padding: 14px 16px;
+      border-top: 1px solid rgba(255, 255, 255, 0.04);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    }
+    .lb-custom-table td:first-child {
+      border-left: 1px solid rgba(255, 255, 255, 0.04);
+      border-top-left-radius: 12px;
+      border-bottom-left-radius: 12px;
+    }
+    .lb-custom-table td:last-child {
+      border-right: 1px solid rgba(255, 255, 255, 0.04);
+      border-top-right-radius: 12px;
+      border-bottom-right-radius: 12px;
+    }
+
+    @media (max-width: 768px) {
+      .podium-section { grid-template-columns: 1fr; }
       .podium-card--1 { order: -1; }
     }
   </style>
@@ -141,15 +280,16 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="js/firebase-config.js?v=3.8"></script>
-  <script src="js/auth.js?v=4.0.1788037685565"></script>
-  <script src="js/db.js?v=4.0.1788037685565"></script>
-  <script src="js/nav.js?v=4.0.1788037685565"></script>
+  <script src="js/auth.js?v=4.0.1788047701470"></script>
+  <script src="js/db.js?v=4.0.1788047701470"></script>
+  <script src="js/nav.js?v=4.0.1788047701470"></script>
 
   <script>
     let currentUser = null;
     let allLeaderboardUsers = [];
     let filteredUsers = [];
     let lbSearchQuery = '';
+    let currentSortMode = 'wins'; // 'wins' | 'earnings' | 'winrate'
     let lbCurrentPage = 1;
     const LB_PER_PAGE = 10;
 
@@ -163,75 +303,144 @@
     async function loadLeaderboard() {
       try {
         allLeaderboardUsers = await getLeaderboard();
-        filteredUsers = allLeaderboardUsers;
-        renderPodium(filteredUsers.slice(0, 3));
-        renderTablePage(1);
+        updateOverviewStats(allLeaderboardUsers);
+        applySortAndFilter();
       } catch (err) {
-        console.error(err);
+        console.error('Leaderboard error:', err);
         showToast('Failed to load leaderboard', 'error');
       }
     }
 
+    function updateOverviewStats(users) {
+      const totalCompetitors = users.length;
+      let totalWins = 0;
+      let totalEarned = 0;
+      let highestWr = 0;
+
+      users.forEach(u => {
+        const w = Number(u.matchesWon || 0);
+        const p = Number(u.matchesPlayed || 0);
+        const e = Number(u.totalEarned || 0);
+        totalWins += w;
+        totalEarned += e;
+        if (p >= 3) {
+          const wr = Math.round((w / p) * 100);
+          if (wr > highestWr) highestWr = wr;
+        }
+      });
+
+      document.getElementById('stat-total-players').textContent = totalCompetitors;
+      document.getElementById('stat-total-wins').textContent = totalWins;
+      document.getElementById('stat-total-earned').textContent = formatTokens(totalEarned);
+      document.getElementById('stat-top-winrate').textContent = (highestWr > 0 ? highestWr + '%' : '100%');
+    }
+
+    function setSortMode(mode) {
+      currentSortMode = mode;
+      document.querySelectorAll('.lb-sort-tab').forEach(t => {
+        t.classList.toggle('active', t.dataset.sort === mode);
+      });
+      applySortAndFilter();
+    }
+
     function handleSearchLeaderboard(val) {
       lbSearchQuery = (val || '').toLowerCase().trim();
-      if (!lbSearchQuery) {
-        filteredUsers = allLeaderboardUsers;
-      } else {
-        filteredUsers = allLeaderboardUsers.filter(u => {
+      applySortAndFilter();
+    }
+
+    function applySortAndFilter() {
+      let list = [...allLeaderboardUsers];
+
+      // Apply Search
+      if (lbSearchQuery) {
+        list = list.filter(u => {
           const name = (u.displayName || '').toLowerCase();
           const epic = (u.epicUsername || '').toLowerCase();
-          const discord = (u.discordUsername || '').toLowerCase();
-          return name.includes(lbSearchQuery) || epic.includes(lbSearchQuery) || discord.includes(lbSearchQuery);
+          const disc = (u.discordUsername || '').toLowerCase();
+          return name.includes(lbSearchQuery) || epic.includes(lbSearchQuery) || disc.includes(lbSearchQuery);
         });
       }
+
+      // Apply Sort
+      if (currentSortMode === 'earnings') {
+        list.sort((a, b) => (Number(b.totalEarned) || 0) - (Number(a.totalEarned) || 0) || (Number(b.matchesWon) || 0) - (Number(a.matchesWon) || 0));
+      } else if (currentSortMode === 'winrate') {
+        list.sort((a, b) => {
+          const wrA = (Number(a.matchesPlayed) || 0) > 0 ? ((Number(a.matchesWon) || 0) / Number(a.matchesPlayed)) : 0;
+          const wrB = (Number(b.matchesPlayed) || 0) > 0 ? ((Number(b.matchesWon) || 0) / Number(b.matchesPlayed)) : 0;
+          return wrB - wrA || (Number(b.matchesWon) || 0) - (Number(a.matchesWon) || 0);
+        });
+      } else {
+        // Default: Wins
+        list.sort((a, b) => (Number(b.matchesWon) || 0) - (Number(a.matchesWon) || 0) || (Number(b.totalEarned) || 0) - (Number(a.totalEarned) || 0));
+      }
+
+      filteredUsers = list;
+      renderPodium(filteredUsers.slice(0, 3));
       lbCurrentPage = 1;
       renderTablePage(1);
     }
 
-    function getPodiumRankBadge(rank) {
-      if (rank === 1) return '<span class="podium-rank" style="color:var(--gold-bright);"><i data-lucide="trophy" style="width:20px;height:20px;"></i> #1</span>';
-      if (rank === 2) return '<span class="podium-rank" style="color:#cbd5e1;"><i data-lucide="medal" style="width:20px;height:20px;"></i> #2</span>';
-      if (rank === 3) return '<span class="podium-rank" style="color:#d97706;"><i data-lucide="medal" style="width:20px;height:20px;"></i> #3</span>';
-      return `<span class="podium-rank">#${rank}</span>`;
+    function getRankPill(rank) {
+      if (rank === 1) return '<span class="rank-pill rank-1"><i data-lucide="trophy" style="width:13px;height:13px;"></i> #1</span>';
+      if (rank === 2) return '<span class="rank-pill rank-2"><i data-lucide="medal" style="width:13px;height:13px;"></i> #2</span>';
+      if (rank === 3) return '<span class="rank-pill rank-3"><i data-lucide="medal" style="width:13px;height:13px;"></i> #3</span>';
+      return '<span class="rank-pill rank-other">#' + rank + '</span>';
     }
 
-    function avatarEl(u, size, cls) {
-      const letter = (u.displayName || '?').charAt(0).toUpperCase();
+    function avatarEl(u, cls) {
+      const letter = (u.displayName || 'P').charAt(0).toUpperCase();
       return u.photoURL
-        ? `<div class="${cls}"><img src="${u.photoURL}" onerror="this.style.display='none'"/></div>`
-        : `<div class="${cls}">${letter}</div>`;
+        ? '<div class="' + cls + '"><img src="' + escapeHtml(u.photoURL) + '" onerror="this.style.display=\'none\'"/></div>'
+        : '<div class="' + cls + '">' + letter + '</div>';
     }
 
     function renderPodium(top3) {
-      const podiumEl = document.getElementById('podium');
+      const podiumEl = document.getElementById('podium-wrap');
       if (!podiumEl) return;
 
       if (!top3 || !top3.length) {
-        podiumEl.innerHTML = `<div class="empty-state" style="grid-column:1/-1;"><p>No ranked champions yet</p></div>`;
+        podiumEl.innerHTML = '<div class="empty-state" style="grid-column:1/-1;"><p>No ranked champions yet</p></div>';
         return;
       }
 
+      // Arrange order for podium: 2nd place on left, 1st in center, 3rd on right
       const order = [top3[1], top3[0], top3[2]].filter(Boolean);
-      const posClass = { 0: '2', 1: '1', 2: '3' };
+      const posMap = { 0: 2, 1: 1, 2: 3 };
 
       podiumEl.innerHTML = order.map((u, i) => {
-        const rank = u === top3[0] ? 1 : u === top3[1] ? 2 : 3;
-        const pos  = posClass[i];
+        const rank = u === top3[0] ? 1 : (u === top3[1] ? 2 : 3);
+        const pos = rank;
         const isCurrent = u.id === currentUser?.uid;
-        return `
-          <a href="profile?uid=${u.id}" class="podium-card podium-card--${pos}${isCurrent ? ' current-user' : ''}" title="View ${escapeHtml(u.displayName)}'s Profile">
-            ${getPodiumRankBadge(rank)}
-            ${avatarEl(u, 68, `podium-avatar podium-avatar--${pos}`)}
-            <div class="podium-name">${escapeHtml(u.displayName || 'Unknown')}${isCurrent ? ' <span style="color:var(--gold-bright);font-size:0.75rem;">(You)</span>' : ''}</div>
-            ${u.epicUsername ? `<div style="font-size:0.72rem;color:#38bdf8;font-weight:700;display:inline-flex;align-items:center;gap:3px;padding:2px 7px;background:rgba(56,189,248,0.1);border-radius:4px;border:1px solid rgba(56,189,248,0.25);"><i data-lucide="gamepad-2" style="width:11px;height:11px;"></i> ${escapeHtml(u.epicUsername)}</div>` : ''}
-            <div class="podium-tokens" style="font-size:1.3rem;color:var(--gold-bright);">
-              <i data-lucide="trophy" style="width:17px;height:17px;color:var(--gold-bright);"></i> ${u.matchesWon || 0} Wins
-            </div>
-            <div class="podium-label" style="display:flex;gap:6px;align-items:center;margin-top:2px;">
-              <span>Earned ${formatTokens(u.totalEarned || 0)} <img src="new_token.png" class="inline-coin" alt="CT" width="14" height="14"/></span>
-            </div>
-          </a>`;
+        const wins = Number(u.matchesWon || 0);
+        const played = Number(u.matchesPlayed || 0);
+        const wr = played > 0 ? (Math.round((wins / played) * 100) + '%') : '0%';
+        const earned = Number(u.totalEarned || 0);
+
+        return '<a href="profile?uid=' + encodeURIComponent(u.id) + '" class="podium-card podium-card--' + pos + (isCurrent ? ' current-user' : '') + '" title="View ' + escapeHtml(u.displayName || 'Player') + '\'s Profile">' +
+          getRankPill(rank) +
+          avatarEl(u, 'podium-avatar-wrap podium-avatar-wrap--' + pos) +
+          '<div style="min-width:0;width:100%;">' +
+            '<div style="font-weight:900;font-size:1.05rem;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' +
+              escapeHtml(u.displayName || 'Unknown') +
+              (isCurrent ? ' <span style="color:var(--gold-bright);font-size:0.75rem;font-weight:800;">(You)</span>' : '') +
+            '</div>' +
+            (u.epicUsername ? '<div style="margin-top:4px;"><span class="badge" style="background:rgba(0,120,242,0.15);color:#38bdf8;border:1px solid rgba(0,120,242,0.3);font-size:0.72rem;padding:2px 7px;"><i data-lucide="gamepad-2" style="width:11px;height:11px;"></i> ' + escapeHtml(u.epicUsername) + '</span></div>' : '') +
+          '</div>' +
+          '<div style="display:flex;flex-direction:column;gap:3px;align-items:center;margin-top:2px;">' +
+            '<div style="font-size:1.3rem;font-weight:900;color:var(--gold-bright);display:inline-flex;align-items:center;gap:6px;">' +
+              '<i data-lucide="trophy" style="width:17px;height:17px;color:var(--gold-bright);"></i> ' + wins + ' Wins' +
+            '</div>' +
+            '<div style="font-size:0.75rem;color:var(--text-muted);">' +
+              played + ' matches · ' + wr + ' win rate' +
+            '</div>' +
+            '<div style="font-size:0.8rem;font-weight:800;color:#fff;margin-top:4px;display:inline-flex;align-items:center;gap:5px;">' +
+              '<img src="new_token.png" alt="CT" style="width:15px;height:15px;object-fit:contain;"/> ' + formatTokens(earned) + ' Tokens' +
+            '</div>' +
+          '</div>' +
+        '</a>';
       }).join('');
+
       if (window.lucide) lucide.createIcons();
     }
 
@@ -246,7 +455,7 @@
       const pageUsers = filteredUsers.slice(startIdx, startIdx + LB_PER_PAGE);
 
       if (!pageUsers.length) {
-        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:28px;color:var(--text-muted);">No competitors found${lbSearchQuery ? ` matching "${escapeHtml(lbSearchQuery)}"` : ''}</td></tr>`;
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:32px;color:var(--text-muted);">No competitors found' + (lbSearchQuery ? ' matching "' + escapeHtml(lbSearchQuery) + '"' : '') + '</td></tr>';
         renderPaginationControls(totalPages);
         return;
       }
@@ -254,42 +463,47 @@
       tbody.innerHTML = pageUsers.map((u, idx) => {
         const rank = startIdx + idx + 1;
         const isCurrent = u.id === currentUser?.uid;
-        const letter = (u.displayName || '?').charAt(0).toUpperCase();
+        const letter = (u.displayName || 'P').charAt(0).toUpperCase();
         const played = Number(u.matchesPlayed || 0);
         const won = Number(u.matchesWon || 0);
-        const wr = played > 0 ? Math.round((won / played) * 100) + '%' : '0%';
+        const wr = played > 0 ? (Math.round((won / played) * 100) + '%') : '0%';
         const earned = Number(u.totalEarned || 0);
 
-        return `
-          <tr class="lb-row${isCurrent ? ' current-user' : ''}" onclick="window.location.href='profile?uid=${u.id}'" style="cursor:pointer;" title="View Profile">
-            <td>
-              <div class="lb-rank lb-rank--${rank <= 3 ? rank : ''}">${rank <= 3 ? RANK_ICONS[rank] : rank}</div>
-            </td>
-            <td>
-              <div class="lb-user">
-                <div class="lb-avatar">
-                  ${u.photoURL ? `<img src="${u.photoURL}" onerror="this.style.display='none'"/>` : ''}
-                  ${letter}
-                </div>
-                <div>
-                  <div class="lb-name">${escapeHtml(u.displayName || 'Unknown')}${isCurrent ? ' <span style="font-size:0.75rem;color:var(--gold-bright);font-weight:700;">(You)</span>' : ''}</div>
-                  <div style="font-size:0.72rem;color:var(--text-faint);">
-                    ${u.epicUsername ? `<span style="color:#38bdf8;font-weight:600;"><i data-lucide="gamepad-2" style="width:10px;height:10px;display:inline;"></i> ${escapeHtml(u.epicUsername)}</span>` : 'Competitor'}
-                  </div>
-                </div>
-              </div>
-            </td>
-            <td style="color:var(--gold-bright);font-weight:800;font-size:0.95rem;">
-              <span style="display:inline-flex;align-items:center;gap:4px;"><i data-lucide="trophy" style="width:14px;height:14px;color:var(--gold-bright);"></i> ${won}</span>
-            </td>
-            <td style="color:var(--text-muted);font-weight:600;">${played}</td>
-            <td style="color:#fff;font-weight:700;">${wr}</td>
-            <td style="color:var(--gold-bright);font-weight:800;">
-              <span style="display:inline-flex;align-items:center;gap:5px;">
-                ${formatTokens(earned)} <img src="new_token.png" class="inline-coin" alt="CT" width="14" height="14"/>
-              </span>
-            </td>
-          </tr>`;
+        return '<tr class="' + (isCurrent ? 'current-user' : '') + '" onclick="window.location.href=\'profile?uid=' + encodeURIComponent(u.id) + '\'" title="View Profile">' +
+          '<td>' + getRankPill(rank) + '</td>' +
+          '<td>' +
+            '<div style="display:flex;align-items:center;gap:12px;">' +
+              '<div style="width:38px;height:38px;border-radius:10px;background:rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;overflow:hidden;flex-shrink:0;">' +
+                (u.photoURL ? '<img src="' + escapeHtml(u.photoURL) + '" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display=\'none\'"/>' : letter) +
+              '</div>' +
+              '<div>' +
+                '<div style="font-weight:800;font-size:0.95rem;color:#fff;">' +
+                  escapeHtml(u.displayName || 'Unknown') +
+                  (isCurrent ? ' <span style="font-size:0.75rem;color:var(--gold-bright);font-weight:800;">(You)</span>' : '') +
+                  (u.isPremium ? ' <span class="badge" style="background:rgba(245,158,11,0.2);color:var(--gold-bright);border:1px solid rgba(245,158,11,0.5);font-size:0.65rem;padding:1px 6px;margin-left:4px;"><i data-lucide="sparkles" style="width:10px;height:10px;"></i> VIP</span>' : '') +
+                '</div>' +
+                '<div style="font-size:0.74rem;color:var(--text-muted);display:flex;align-items:center;gap:8px;margin-top:2px;">' +
+                  (u.epicUsername ? '<span style="color:#38bdf8;font-weight:700;"><i data-lucide="gamepad-2" style="width:11px;height:11px;display:inline;"></i> ' + escapeHtml(u.epicUsername) + '</span>' : '<span>Unlinked IGN</span>') +
+                  (u.discordUsername ? '<span>@' + escapeHtml(u.discordUsername) + '</span>' : '') +
+                '</div>' +
+              '</div>' +
+            '</div>' +
+          '</td>' +
+          '<td style="color:var(--gold-bright);font-weight:900;font-size:1.02rem;">' +
+            '<span style="display:inline-flex;align-items:center;gap:5px;"><i data-lucide="trophy" style="width:14px;height:14px;"></i> ' + won + '</span>' +
+          '</td>' +
+          '<td style="color:#cbd5e1;font-weight:700;font-size:0.9rem;">' + played + '</td>' +
+          '<td>' +
+            '<span class="badge" style="background:rgba(255,255,255,0.05);color:#fff;font-weight:800;font-size:0.78rem;padding:3px 9px;">' +
+              wr +
+            '</span>' +
+          '</td>' +
+          '<td style="color:var(--gold-bright);font-weight:900;font-size:0.95rem;">' +
+            '<span style="display:inline-flex;align-items:center;gap:6px;">' +
+              '<img src="new_token.png" alt="CT" style="width:16px;height:16px;object-fit:contain;"/> ' + formatTokens(earned) +
+            '</span>' +
+          '</td>' +
+        '</tr>';
       }).join('');
 
       renderPaginationControls(totalPages);
@@ -300,67 +514,129 @@
       const container = document.getElementById('lb-pagination');
       if (!container) return;
 
-      container.innerHTML = `
-        <button class="ct-page-btn" onclick="renderTablePage(${lbCurrentPage - 1})" ${lbCurrentPage <= 1 ? 'disabled' : ''}>
-          <i data-lucide="chevron-left"></i> Previous
-        </button>
-        <span class="ct-page-info">Page ${lbCurrentPage} of ${totalPages}</span>
-        <button class="ct-page-btn" onclick="renderTablePage(${lbCurrentPage + 1})" ${lbCurrentPage >= totalPages ? 'disabled' : ''}>
-          Next <i data-lucide="chevron-right"></i>
-        </button>
-      `;
+      container.innerHTML = 
+        '<button class="ct-page-btn" onclick="renderTablePage(' + (lbCurrentPage - 1) + ')" ' + (lbCurrentPage <= 1 ? 'disabled' : '') + '>' +
+          '<i data-lucide="chevron-left"></i> Previous' +
+        '</button>' +
+        '<span class="ct-page-info">Page ' + lbCurrentPage + ' of ' + totalPages + '</span>' +
+        '<button class="ct-page-btn" onclick="renderTablePage(' + (lbCurrentPage + 1) + ')" ' + (lbCurrentPage >= totalPages ? 'disabled' : '') + '>' +
+          'Next <i data-lucide="chevron-right"></i>' +
+        '</button>';
       if (window.lucide) lucide.createIcons();
     }
 
     async function handleRefresh() {
       const btn = document.getElementById('refresh-btn');
-      btn.disabled = true;
+      if (btn) btn.disabled = true;
       await loadLeaderboard();
-      setTimeout(() => { btn.disabled = false; }, 2000);
-      showToast('Leaderboard refreshed', 'info');
+      setTimeout(() => { if (btn) btn.disabled = false; }, 1500);
+      showToast('Leaderboard refreshed!', 'info');
     }
   </script>
 
-  <main class="page-wrap">
-    <div class="lb-header">
-      <div class="page-header" style="margin-bottom:0;">
-        <h1><i data-lucide="trophy" style="color:var(--gold-bright);"></i> Leaderboard</h1>
-        <p>Top Ranked Fortnite Token Champions Ranked by Arena Wins.</p>
+  <main class="page-wrap" style="max-width: 1050px;">
+    <!-- Sleek Glass Hero Header -->
+    <div class="lb-hero-header">
+      <div>
+        <h1 style="font-size:1.65rem;font-weight:900;margin:0;display:flex;align-items:center;gap:10px;">
+          <i data-lucide="trophy" style="color:var(--gold-bright);width:26px;height:26px;"></i> Champion Leaderboard
+        </h1>
+        <p style="font-size:0.85rem;color:var(--text-muted);margin:5px 0 0;">
+          Top ranked Fortnite players ranked by Arena victories and tournament token earnings.
+        </p>
       </div>
-      <button class="refresh-btn" id="refresh-btn" onclick="handleRefresh()">
-        <i data-lucide="refresh-cw"></i> Refresh
-      </button>
+      <div>
+        <button class="btn btn-outline btn-sm" id="refresh-btn" onclick="handleRefresh()">
+          <i data-lucide="refresh-cw"></i> Refresh
+        </button>
+      </div>
     </div>
 
-    <!-- Search Bar -->
-    <div style="display:flex;align-items:center;gap:12px;margin-bottom:24px;">
-      <div style="position:relative;flex:1;">
+    <!-- Quick Stats Grid -->
+    <div class="lb-stats-grid">
+      <div class="lb-stat-card">
+        <div class="lb-stat-icon-wrap" style="background:rgba(245,158,11,0.15);color:var(--gold-bright);border:1px solid rgba(245,158,11,0.3);">
+          <i data-lucide="users" style="width:22px;height:22px;"></i>
+        </div>
+        <div>
+          <div style="font-size:0.75rem;font-weight:800;color:var(--text-muted);text-transform:uppercase;">Competitors</div>
+          <div style="font-size:1.35rem;font-weight:900;color:#fff;" id="stat-total-players">0</div>
+        </div>
+      </div>
+
+      <div class="lb-stat-card">
+        <div class="lb-stat-icon-wrap" style="background:rgba(59,130,246,0.15);color:#60a5fa;border:1px solid rgba(59,130,246,0.3);">
+          <i data-lucide="trophy" style="width:22px;height:22px;"></i>
+        </div>
+        <div>
+          <div style="font-size:0.75rem;font-weight:800;color:var(--text-muted);text-transform:uppercase;">Victories Won</div>
+          <div style="font-size:1.35rem;font-weight:900;color:#fff;" id="stat-total-wins">0</div>
+        </div>
+      </div>
+
+      <div class="lb-stat-card">
+        <div class="lb-stat-icon-wrap" style="background:rgba(16,185,129,0.15);color:#34d399;border:1px solid rgba(16,185,129,0.3);">
+          <i data-lucide="coins" style="width:22px;height:22px;"></i>
+        </div>
+        <div>
+          <div style="font-size:0.75rem;font-weight:800;color:var(--text-muted);text-transform:uppercase;">Tokens Earned</div>
+          <div style="font-size:1.35rem;font-weight:900;color:var(--gold-bright);" id="stat-total-earned">0.00</div>
+        </div>
+      </div>
+
+      <div class="lb-stat-card">
+        <div class="lb-stat-icon-wrap" style="background:rgba(168,85,247,0.15);color:#c084fc;border:1px solid rgba(168,85,247,0.3);">
+          <i data-lucide="target" style="width:22px;height:22px;"></i>
+        </div>
+        <div>
+          <div style="font-size:0.75rem;font-weight:800;color:var(--text-muted);text-transform:uppercase;">Top Win Rate</div>
+          <div style="font-size:1.35rem;font-weight:900;color:#fff;" id="stat-top-winrate">0%</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Top 3 Podium Showcase -->
+    <div class="podium-section" id="podium-wrap">
+      <div class="empty-state" style="grid-column:1/-1;"><div class="spinner" style="margin:0 auto;"></div></div>
+    </div>
+
+    <!-- Controls & Search -->
+    <div class="lb-controls-card">
+      <div style="position:relative;flex:1;min-width:240px;">
         <i data-lucide="search" style="position:absolute;left:14px;top:50%;transform:translateY(-50%);width:16px;height:16px;color:var(--text-faint);"></i>
         <input
           id="player-search-input"
           class="form-input"
-          style="padding-left:42px;background:rgba(8,8,8,0.95);border-color:rgba(255,255,255,0.08);font-size:0.88rem;"
-          placeholder="Search players by name, Discord handle, or Epic Games username…"
+          style="padding-left:42px;background:rgba(0,0,0,0.35);font-size:0.88rem;"
+          placeholder="Search by player name, Discord handle, or Epic IGN…"
           oninput="handleSearchLeaderboard(this.value)"
         />
       </div>
+
+      <!-- Sort Tabs -->
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <button class="lb-sort-tab active" data-sort="wins" onclick="setSortMode('wins')">
+          <i data-lucide="trophy" style="width:14px;height:14px;"></i> Most Wins
+        </button>
+        <button class="lb-sort-tab" data-sort="earnings" onclick="setSortMode('earnings')">
+          <i data-lucide="coins" style="width:14px;height:14px;"></i> Top Earnings
+        </button>
+        <button class="lb-sort-tab" data-sort="winrate" onclick="setSortMode('winrate')">
+          <i data-lucide="percent" style="width:14px;height:14px;"></i> Win Rate
+        </button>
+      </div>
     </div>
 
-    <!-- Podium -->
-    <div class="podium" id="podium">
-      <div class="empty-state" style="grid-column:1/-1;"><div class="spinner" style="margin:0 auto;"></div></div>
-    </div>
-
-    <!-- Full Table with Pagination -->
-    <div class="card" style="background:#080808;border-color:rgba(255,255,255,0.08);">
-      <div class="section-title" style="margin-bottom:16px;">
-        <i data-lucide="list"></i> Full Rankings
+    <!-- Full Table -->
+    <div class="lb-table-card">
+      <div style="display:flex;align-items:center;gap:8px;font-weight:900;font-size:1.05rem;color:#fff;margin-bottom:14px;">
+        <i data-lucide="list" style="color:var(--gold-bright);width:18px;height:18px;"></i> Overall Standings
       </div>
       <div class="lb-table-wrap">
-        <table class="lb-table">
+        <table class="lb-custom-table">
           <thead>
             <tr>
-              <th>#</th>
+              <th style="width:80px;">Rank</th>
               <th>Player</th>
               <th>Wins</th>
               <th>Matches</th>
@@ -369,13 +645,13 @@
             </tr>
           </thead>
           <tbody id="lb-tbody">
-            <tr><td colspan="6" style="text-align:center;padding:24px;"><div class="spinner" style="margin:0 auto;"></div></td></tr>
+            <tr><td colspan="6" style="text-align:center;padding:28px;"><div class="spinner" style="margin:0 auto;"></div></td></tr>
           </tbody>
         </table>
       </div>
 
       <!-- Pagination bar -->
-      <div class="ct-pagination" id="lb-pagination"></div>
+      <div class="ct-pagination" id="lb-pagination" style="margin-top:16px;"></div>
     </div>
   </main>
 </body>
