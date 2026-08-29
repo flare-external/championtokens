@@ -799,7 +799,7 @@ function showConfirm(options = {}) {
 }
 
 /**
- * Show dedicated pitch-black & electric blue Suspension/Banned Screen
+ * Show clean, borderless dark Suspension/Banned Screen
  */
 function showBannedScreen(userData) {
   const reason = userData?.banReason || 'Violation of community guidelines or platform terms';
@@ -832,84 +832,48 @@ function showBannedScreen(userData) {
   };
 
   existing.innerHTML = `
-    <style>
-      @keyframes bannedCardPop {
-        0% { opacity: 0; transform: scale(0.94) translateY(12px); }
-        100% { opacity: 1; transform: scale(1) translateY(0); }
-      }
-      @keyframes bluePulseRing {
-        0%, 100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.45), 0 0 30px rgba(59, 130, 246, 0.25); }
-        50% { box-shadow: 0 0 0 12px rgba(59, 130, 246, 0), 0 0 45px rgba(59, 130, 246, 0.4); }
-      }
-      .banned-pitch-card {
-        animation: bannedCardPop 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-      }
-      .ban-view-reason-btn {
-        display: inline-flex;
-        align-items: center;
-        gap: 7px;
-        background: rgba(59, 130, 246, 0.08);
-        border: 1px solid rgba(59, 130, 246, 0.35);
-        color: #60a5fa;
-        padding: 8px 18px;
-        border-radius: 10px;
-        font-weight: 800;
-        font-size: 0.84rem;
-        cursor: pointer;
-        transition: all 0.18s ease;
-        margin-bottom: 20px;
-      }
-      .ban-view-reason-btn:hover {
-        background: rgba(59, 130, 246, 0.16);
-        border-color: rgba(59, 130, 246, 0.6);
-        color: #93c5fd;
-      }
-    </style>
-    <div style="position:fixed;inset:0;background:#000000;z-index:99999999;display:flex;align-items:center;justify-content:center;padding:24px;overflow-y:auto;">
-      <div class="banned-pitch-card" style="max-width:480px;width:100%;background:#06080e;border:1px solid rgba(59,130,246,0.25);box-shadow:0 30px 90px rgba(0,0,0,0.98), 0 0 50px rgba(59,130,246,0.12);border-radius:24px;padding:38px 30px;text-align:center;position:relative;">
+    <div style="position:fixed;inset:0;background:rgba(0,0,0,0.92);backdrop-filter:blur(16px);z-index:99999999;display:flex;align-items:center;justify-content:center;padding:24px;overflow-y:auto;">
+      <div style="max-width:460px;width:100%;background:#0b0b0d;box-shadow:0 12px 48px rgba(0,0,0,0.85), 0 0 24px rgba(0,0,0,0.6);border-radius:20px;padding:36px 28px;text-align:center;border:none;">
         
-        <!-- Electric Blue Circular Shield with Pulsing Ring -->
-        <div style="width:72px;height:72px;border-radius:50%;background:#020617;border:1.5px solid rgba(59,130,246,0.6);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;color:#60a5fa;animation:bluePulseRing 2.4s infinite ease-in-out;">
-          <i data-lucide="shield" style="width:34px;height:34px;"></i>
+        <div style="width:58px;height:58px;border-radius:50%;background:rgba(239,68,68,0.12);display:flex;align-items:center;justify-content:center;margin:0 auto 18px;color:#ef4444;border:none;">
+          <i data-lucide="shield-alert" style="width:28px;height:28px;"></i>
         </div>
 
-        <h1 style="color:#ffffff;font-weight:900;font-size:1.75rem;margin:0 0 8px;letter-spacing:-0.02em;">
-          Account <span style="color:#60a5fa;">Suspended</span>
-        </h1>
-        <p style="color:#94a3b8;font-size:0.9rem;line-height:1.5;margin:0 0 20px;">
-          Your access to Champion Tokens services has been restricted by staff moderation.
-        </p>
+        <h2 style="color:#ffffff;font-weight:900;font-size:1.45rem;margin:0 0 10px;line-height:1.35;border:none;">
+          Your account has been banned for breaking our rules.
+        </h2>
 
-        <!-- View Reason Collapsible Button -->
-        <div>
-          <button class="ban-view-reason-btn" onclick="toggleBanReasonView()">
-            <i data-lucide="info" style="width:14px;height:14px;"></i>
+        <!-- Blue View Reason Text Button -->
+        <div style="margin:12px 0 22px;">
+          <span onclick="toggleBanReasonView()" style="color:#3b82f6;font-weight:700;font-size:0.9rem;cursor:pointer;display:inline-flex;align-items:center;gap:5px;user-select:none;transition:color 0.15s ease;">
             <span id="ban-reason-btn-text">View Reason</span>
-            <i data-lucide="chevron-down" id="ban-reason-chevron" style="width:14px;height:14px;transition:transform 0.2s ease;"></i>
-          </button>
+            <i data-lucide="chevron-down" id="ban-reason-chevron" style="width:15px;height:15px;transition:transform 0.2s ease;"></i>
+          </span>
         </div>
         
-        <!-- Pitch Black Reason Box (Collapsible) -->
-        <div id="ban-reason-card" style="display:none;background:#000000;border:1px solid rgba(59,130,246,0.25);border-left:3px solid #3b82f6;border-radius:14px;padding:16px 18px;text-align:left;margin-bottom:24px;animation:bannedCardPop 0.2s ease forwards;">
-          <div style="font-size:0.72rem;color:#60a5fa;text-transform:uppercase;font-weight:900;letter-spacing:0.06em;display:flex;align-items:center;gap:6px;">
-            <i data-lucide="alert-circle" style="width:12px;height:12px;"></i> Reason Details
-          </div>
-          <div style="font-size:0.96rem;font-weight:800;color:#ffffff;margin:8px 0 10px;line-height:1.4;">
+        <!-- Collapsible Reason Details -->
+        <div id="ban-reason-card" style="display:none;background:#131317;border-radius:12px;padding:16px 18px;text-align:left;margin-bottom:24px;border:none;">
+          <div style="font-size:0.75rem;color:#3b82f6;text-transform:uppercase;font-weight:800;letter-spacing:0.04em;">Reason</div>
+          <div style="font-size:0.95rem;font-weight:700;color:#ffffff;margin:6px 0 10px;line-height:1.4;">
             ${escapeHtml(reason)}
           </div>
-          <div style="border-top:1px solid rgba(255,255,255,0.06);padding-top:10px;display:flex;flex-direction:column;gap:4px;font-size:0.75rem;color:#64748b;">
-            <div>Account: <strong style="color:#cbd5e1;">${escapeHtml(username)}</strong> ${uid ? `· <span style="font-family:monospace;font-size:0.7rem;">${uid}</span>` : ''}</div>
-            ${bannedDate ? `<div>Date Issued: <strong style="color:#94a3b8;">${bannedDate}</strong></div>` : ''}
+          <div style="border-top:1px solid rgba(255,255,255,0.06);padding-top:10px;display:flex;flex-direction:column;gap:4px;font-size:0.75rem;color:#71717a;">
+            <div>Account: <strong style="color:#d4d4d8;">${escapeHtml(username)}</strong> ${uid ? `· <span style="font-family:monospace;font-size:0.7rem;">${uid}</span>` : ''}</div>
+            ${bannedDate ? `<div>Date: <strong style="color:#a1a1aa;">${bannedDate}</strong></div>` : ''}
           </div>
         </div>
 
-        <!-- Action Buttons -->
+        <!-- Action Buttons (No outlines, Discord icon on the right) -->
         <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
-          <a href="https://discord.gg/championtokens" target="_blank" class="btn btn-outline" style="flex:1;min-width:160px;background:#0d1526;border-color:rgba(59,130,246,0.45);color:#60a5fa;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 18px;font-weight:800;font-size:0.88rem;border-radius:12px;text-decoration:none;transition:all 0.18s ease;">
-            <i data-lucide="message-square" style="width:16px;height:16px;"></i> Appeal on Discord
+          <a href="https://discord.gg/championtokens" target="_blank" style="flex:1;min-width:140px;background:#5865F2;color:#ffffff;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 20px;font-weight:800;font-size:0.9rem;border-radius:12px;text-decoration:none;border:none;box-shadow:0 4px 14px rgba(88,101,242,0.35);transition:opacity 0.16s ease;">
+            <span>Appeal</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0;">
+              <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.893.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
+            </svg>
           </a>
-          <button class="btn btn-outline" onclick="handleSignOut()" style="flex:1;min-width:130px;background:rgba(255,255,255,0.03);border-color:rgba(255,255,255,0.12);color:#cbd5e1;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 18px;font-weight:800;font-size:0.88rem;border-radius:12px;cursor:pointer;">
-            <i data-lucide="log-out" style="width:16px;height:16px;"></i> Sign Out
+          <button onclick="handleSignOut()" style="flex:1;min-width:120px;background:#18181b;color:#a1a1aa;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 18px;font-weight:800;font-size:0.9rem;border-radius:12px;cursor:pointer;border:none;transition:background 0.16s ease;">
+            <span>Sign Out</span>
+            <i data-lucide="log-out" style="width:16px;height:16px;"></i>
           </button>
         </div>
       </div>
