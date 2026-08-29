@@ -259,6 +259,14 @@ function injectNav(activePage = '') {
       if (!snap.exists) return;
       const data = snap.data();
 
+      // Real-time Ban Check
+      if (data.banned) {
+        showBannedScreen(data);
+      } else {
+        const bannedEl = document.getElementById('ct-banned-screen');
+        if (bannedEl) bannedEl.remove();
+      }
+
       // Balance (2 decimals)
       const balEl = document.getElementById('nav-balance');
       if (balEl) balEl.textContent = formatTokens(data.tokens);
@@ -788,6 +796,57 @@ function showConfirm(options = {}) {
       if (e.target === overlay) cleanup(false);
     };
   });
+}
+
+/**
+ * Show dedicated dark glass Suspension/Banned Screen
+ */
+function showBannedScreen(userData) {
+  const reason = userData?.banReason || 'Violation of platform terms and community rules';
+  let bannedDate = '';
+  if (userData?.bannedAt) {
+    try {
+      const d = typeof userData.bannedAt.toDate === 'function' ? userData.bannedAt.toDate() : new Date(userData.bannedAt);
+      if (!isNaN(d.getTime())) bannedDate = d.toLocaleString();
+    } catch(e) {}
+  }
+
+  let existing = document.getElementById('ct-banned-screen');
+  if (!existing) {
+    existing = document.createElement('div');
+    existing.id = 'ct-banned-screen';
+    document.body.appendChild(existing);
+  }
+
+  existing.innerHTML = `
+    <div style="position:fixed;inset:0;background:rgba(6,8,16,0.96);backdrop-filter:blur(24px);z-index:9999999;display:flex;align-items:center;justify-content:center;padding:20px;">
+      <div style="max-width:480px;width:100%;background:rgba(18,22,38,0.95);border:1px solid rgba(239,68,68,0.35);box-shadow:0 0 50px rgba(239,68,68,0.25);border-radius:22px;padding:34px 28px;text-align:center;">
+        <div style="width:68px;height:68px;border-radius:50%;background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.45);display:flex;align-items:center;justify-content:center;margin:0 auto 18px;color:var(--red);">
+          <i data-lucide="shield-alert" style="width:36px;height:36px;"></i>
+        </div>
+        <h2 style="color:var(--red);font-weight:900;font-size:1.55rem;margin:0 0 8px;">Account Suspended</h2>
+        <p style="color:var(--text-muted);font-size:0.88rem;line-height:1.5;margin:0 0 20px;">
+          Your Champion Tokens account has been suspended by staff moderation.
+        </p>
+        
+        <div style="background:rgba(0,0,0,0.45);border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:14px 18px;text-align:left;margin-bottom:24px;">
+          <div style="font-size:0.75rem;color:var(--text-faint);text-transform:uppercase;font-weight:800;letter-spacing:0.04em;">Reason for Suspension</div>
+          <div style="font-size:0.95rem;font-weight:800;color:#fff;margin-top:5px;">${escapeHtml(reason)}</div>
+          ${bannedDate ? `<div style="font-size:0.75rem;color:var(--text-muted);margin-top:8px;">Issued on: ${bannedDate}</div>` : ''}
+        </div>
+
+        <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+          <a href="https://discord.gg/championtokens" target="_blank" class="btn btn-outline btn-sm" style="display:inline-flex;align-items:center;gap:6px;padding:9px 16px;">
+            <i data-lucide="message-square"></i> Appeal on Discord
+          </a>
+          <button class="btn btn-danger btn-sm" onclick="handleSignOut()" style="display:inline-flex;align-items:center;gap:6px;padding:9px 16px;">
+            <i data-lucide="log-out"></i> Sign Out
+          </button>
+        </div>
+      </div>
+    </div>
+  `;
+  if (window.lucide) lucide.createIcons();
 }
 
 
