@@ -24,7 +24,7 @@
   <link rel="icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
-  <link rel="stylesheet" href="css/style.css?v=4.0.1788029345223"/>
+  <link rel="stylesheet" href="css/style.css?v=4.0.1788029541265"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
@@ -181,7 +181,7 @@
         </div>
 
         <!-- Titles Grid -->
-        <div id="shop-titles-grid" style="display:grid;grid-template-columns:repeat(auto-fill, minmax(280px, 1fr));gap:16px;">
+        <div id="shop-titles-grid" style="display:grid;grid-template-columns:repeat(auto-fill, minmax(180px, 1fr));gap:16px;">
           <!-- Rendered dynamically -->
         </div>
       </div>
@@ -194,9 +194,9 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="js/firebase-config.js?v=3.8"></script>
-  <script src="js/auth.js?v=4.0.1788029345223"></script>
-  <script src="js/db.js?v=4.0.1788029345223"></script>
-  <script src="js/nav.js?v=4.0.1788029345223"></script>
+  <script src="js/auth.js?v=4.0.1788029541265"></script>
+  <script src="js/db.js?v=4.0.1788029541265"></script>
+  <script src="js/nav.js?v=4.0.1788029541265"></script>
 
   <script>
     let currentUser = null;
@@ -391,39 +391,49 @@
         const isOwned = unlockedTitles.includes(item.id);
         const isEquipped = equippedTitle === item.id;
 
-        let borderStyle = isEquipped ? '2px solid rgba(239,68,68,0.7)' : '1.5px solid rgba(255,255,255,0.09)';
-        let bgStyle = isEquipped ? 'rgba(239,68,68,0.08)' : '#0b0d14';
+        let borderStyle = isEquipped ? '2px solid var(--gold-bright)' : '1.5px solid rgba(255,255,255,0.09)';
+        let bgStyle = isEquipped ? 'rgba(245,158,11,0.12)' : '#0b0d14';
+        const onClickAction = isOwned ? `handleToggleShopTitle('${item.id}')` : `handleBuyTitle('${item.id}')`;
 
         return `
-          <div class="card cosmetics-option-card ${isEquipped ? 'equipped' : ''}" 
-               style="border:${borderStyle};background:${bgStyle};padding:18px 20px;border-radius:18px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;box-shadow:0 8px 24px rgba(0,0,0,0.6);">
+          <div class="cosmetics-option-card ${isEquipped ? 'equipped' : ''}" 
+               onclick="${onClickAction}"
+               style="border:${borderStyle};background:${bgStyle};padding:7px 7px 12px 7px;display:flex;flex-direction:column;align-items:center;text-align:center;border-radius:18px;cursor:pointer;position:relative;transition:all 0.18s ease;box-shadow:0 8px 24px rgba(0,0,0,0.6);">
             
-            <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
-              <span class="user-title-badge" style="display:inline-flex;align-items:center;gap:6px;background:${item.bgColor || 'rgba(239,68,68,0.15)'};color:${item.color || '#ef4444'};border:1px solid ${item.borderColor || 'rgba(239,68,68,0.45)'};padding:5px 14px;border-radius:12px;font-size:0.95rem;font-weight:900;letter-spacing:0.02em;">
-                <i data-lucide="${item.icon || 'globe-off'}" style="width:16px;height:16px;"></i>
-                <span>${escapeHtml(item.name)}</span>
+            <!-- Large Rounded Square Top Box (Same size & aspect ratio as avatar) -->
+            <div style="position:relative;width:100%;aspect-ratio:1/1;border-radius:13px;overflow:hidden;background:radial-gradient(circle at center, rgba(239, 68, 68, 0.25) 0%, #10131e 100%);border:1px solid rgba(239,68,68,0.35);margin-bottom:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;">
+              <span style="position:absolute;top:6px;left:6px;background:rgba(0,0,0,0.75);backdrop-filter:blur(4px);color:#fff;font-size:0.75rem;font-weight:900;padding:2px 8px;border-radius:6px;border:1px solid rgba(255,255,255,0.15);">
+                ${escapeHtml(item.name)}
               </span>
-              <span class="badge" style="font-size:0.65rem;color:${item.color || '#ef4444'};border:1px solid ${item.color || '#ef4444'};background:rgba(255,255,255,0.04);font-weight:800;">
+              <span style="position:absolute;top:6px;right:6px;background:rgba(0,0,0,0.75);color:${item.color || '#ef4444'};font-size:0.65rem;font-weight:800;padding:2px 7px;border-radius:6px;border:1px solid ${item.color || '#ef4444'};">
                 ${item.rarity.toUpperCase()}
               </span>
+
+              <!-- Big Center Title Icon & Badge -->
+              <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;margin-top:8px;">
+                <i data-lucide="${item.icon || 'globe-off'}" style="width:42px;height:42px;color:${item.color || '#ef4444'};filter:drop-shadow(0 0 14px ${item.color || '#ef4444'});"></i>
+                <span class="user-title-badge" style="display:inline-flex;align-items:center;gap:4px;background:${item.bgColor || 'rgba(239,68,68,0.15)'};color:${item.color || '#ef4444'};border:1px solid ${item.borderColor || 'rgba(239,68,68,0.45)'};padding:3px 10px;border-radius:10px;font-size:0.78rem;font-weight:900;letter-spacing:0.02em;">
+                  <span>${escapeHtml(item.name)}</span>
+                </span>
+              </div>
             </div>
 
-            <div style="display:flex;align-items:center;gap:8px;">
+            <!-- Bottom: Token icon and price / Status (Identical to PFP cards) -->
+            <div style="width:100%;display:flex;align-items:center;justify-content:center;min-height:28px;">
               ${isEquipped ? `
                 <span style="font-size:0.78rem;font-weight:800;letter-spacing:0.08em;color:var(--gold-bright);text-transform:uppercase;">Equipped</span>
-                <button class="btn btn-outline btn-xs pfp-equip-btn" onclick="handleToggleShopTitle('${item.id}')" style="font-size:0.75rem;padding:4px 10px;color:#ef4444;border-color:rgba(239,68,68,0.4);border-radius:12px;">
-                  Unequip
-                </button>
               ` : isOwned ? `
-                <span style="font-size:0.75rem;font-weight:700;color:#94a3b8;">Owned</span>
-                <button class="btn btn-primary btn-sm pfp-equip-btn" onclick="handleToggleShopTitle('${item.id}')" style="padding:5px 16px;font-size:0.82rem;font-weight:800;border-radius:14px;">
-                  Equip
-                </button>
+                <div style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;">
+                  <span style="font-size:0.75rem;font-weight:700;color:#94a3b8;">Owned</span>
+                  <button class="btn btn-primary btn-sm pfp-equip-btn" onclick="handleToggleShopTitle('${item.id}');event.stopPropagation();" style="padding:5px 16px;font-size:0.82rem;font-weight:800;border-radius:14px;">
+                    Equip
+                  </button>
+                </div>
               ` : `
-                <button class="btn btn-gold btn-sm pfp-equip-btn" onclick="handleBuyTitle('${item.id}')" style="padding:5px 16px;font-size:0.82rem;font-weight:800;border-radius:14px;display:flex;align-items:center;gap:6px;">
+                <div style="display:flex;align-items:center;gap:5px;font-size:0.98rem;font-weight:900;color:#fff;">
                   <img src="new_token.png" style="width:18px;height:18px;object-fit:contain;" alt="CT" />
                   <span>${formatTokens(item.cost)}</span>
-                </button>
+                </div>
               `}
             </div>
           </div>
