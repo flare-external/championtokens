@@ -799,10 +799,12 @@ function showConfirm(options = {}) {
 }
 
 /**
- * Show dedicated dark glass Suspension/Banned Screen
+ * Show dedicated pitch-black OLED Suspension/Banned Screen
  */
 function showBannedScreen(userData) {
-  const reason = userData?.banReason || 'Violation of platform terms and community rules';
+  const reason = userData?.banReason || 'Violation of community guidelines or platform terms';
+  const username = userData?.displayName || userData?.discordUsername || 'Player';
+  const uid = userData?.uid || (auth.currentUser ? auth.currentUser.uid : '');
   let bannedDate = '';
   if (userData?.bannedAt) {
     try {
@@ -819,28 +821,55 @@ function showBannedScreen(userData) {
   }
 
   existing.innerHTML = `
-    <div style="position:fixed;inset:0;background:rgba(6,8,16,0.96);backdrop-filter:blur(24px);z-index:9999999;display:flex;align-items:center;justify-content:center;padding:20px;">
-      <div style="max-width:480px;width:100%;background:rgba(18,22,38,0.95);border:1px solid rgba(239,68,68,0.35);box-shadow:0 0 50px rgba(239,68,68,0.25);border-radius:22px;padding:34px 28px;text-align:center;">
-        <div style="width:68px;height:68px;border-radius:50%;background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.45);display:flex;align-items:center;justify-content:center;margin:0 auto 18px;color:var(--red);">
-          <i data-lucide="shield-alert" style="width:36px;height:36px;"></i>
-        </div>
-        <h2 style="color:var(--red);font-weight:900;font-size:1.55rem;margin:0 0 8px;">Account Suspended</h2>
-        <p style="color:var(--text-muted);font-size:0.88rem;line-height:1.5;margin:0 0 20px;">
-          Your Champion Tokens account has been suspended by staff moderation.
-        </p>
+    <style>
+      @keyframes bannedCardPop {
+        0% { opacity: 0; transform: scale(0.94) translateY(10px); }
+        100% { opacity: 1; transform: scale(1) translateY(0); }
+      }
+      @keyframes redPulseRing {
+        0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4), 0 0 30px rgba(239, 68, 68, 0.2); }
+        50% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0), 0 0 45px rgba(239, 68, 68, 0.35); }
+      }
+      .banned-pitch-card {
+        animation: bannedCardPop 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      }
+    </style>
+    <div style="position:fixed;inset:0;background:#000000;z-index:99999999;display:flex;align-items:center;justify-content:center;padding:24px;overflow-y:auto;">
+      <div class="banned-pitch-card" style="max-width:490px;width:100%;background:#050507;border:1px solid rgba(239,68,68,0.3);box-shadow:0 25px 80px rgba(0,0,0,0.98), 0 0 50px rgba(239,68,68,0.12);border-radius:24px;padding:38px 30px;text-align:center;position:relative;">
         
-        <div style="background:rgba(0,0,0,0.45);border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:14px 18px;text-align:left;margin-bottom:24px;">
-          <div style="font-size:0.75rem;color:var(--text-faint);text-transform:uppercase;font-weight:800;letter-spacing:0.04em;">Reason for Suspension</div>
-          <div style="font-size:0.95rem;font-weight:800;color:#fff;margin-top:5px;">${escapeHtml(reason)}</div>
-          ${bannedDate ? `<div style="font-size:0.75rem;color:var(--text-muted);margin-top:8px;">Issued on: ${bannedDate}</div>` : ''}
+        <!-- Red Icon Shield with Glowing Ring -->
+        <div style="width:72px;height:72px;border-radius:50%;background:#0a0002;border:1.5px solid rgba(239,68,68,0.6);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;color:#ef4444;animation:redPulseRing 2.4s infinite ease-in-out;">
+          <i data-lucide="ban" style="width:36px;height:36px;"></i>
         </div>
 
-        <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
-          <a href="https://discord.gg/championtokens" target="_blank" class="btn btn-outline btn-sm" style="display:inline-flex;align-items:center;gap:6px;padding:9px 16px;">
-            <i data-lucide="message-square"></i> Appeal on Discord
+        <h1 style="color:#ffffff;font-weight:900;font-size:1.75rem;margin:0 0 8px;letter-spacing:-0.02em;">
+          Account <span style="color:#ef4444;">Suspended</span>
+        </h1>
+        <p style="color:#94a3b8;font-size:0.9rem;line-height:1.5;margin:0 0 24px;">
+          Your access to Champion Tokens services has been restricted due to a moderation action.
+        </p>
+        
+        <!-- Pitch Black Reason Box -->
+        <div style="background:#000000;border:1px solid rgba(255,255,255,0.08);border-left:3px solid #ef4444;border-radius:14px;padding:18px 20px;text-align:left;margin-bottom:26px;">
+          <div style="font-size:0.72rem;color:#ef4444;text-transform:uppercase;font-weight:900;letter-spacing:0.06em;display:flex;align-items:center;gap:6px;">
+            <i data-lucide="alert-circle" style="width:12px;height:12px;"></i> Reason for Suspension
+          </div>
+          <div style="font-size:1rem;font-weight:800;color:#ffffff;margin:8px 0 10px;line-height:1.4;">
+            ${escapeHtml(reason)}
+          </div>
+          <div style="border-top:1px solid rgba(255,255,255,0.06);padding-top:10px;display:flex;flex-direction:column;gap:4px;font-size:0.75rem;color:#64748b;">
+            <div>Account: <strong style="color:#cbd5e1;">${escapeHtml(username)}</strong> ${uid ? `· <span style="font-family:monospace;font-size:0.7rem;">${uid}</span>` : ''}</div>
+            ${bannedDate ? `<div>Date Issued: <strong style="color:#94a3b8;">${bannedDate}</strong></div>` : ''}
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+          <a href="https://discord.gg/championtokens" target="_blank" class="btn btn-outline" style="flex:1;min-width:160px;background:#0d111a;border-color:rgba(88,101,242,0.4);color:#818cf8;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 18px;font-weight:800;font-size:0.88rem;border-radius:12px;text-decoration:none;transition:all 0.18s ease;">
+            <i data-lucide="message-square" style="width:16px;height:16px;"></i> Appeal on Discord
           </a>
-          <button class="btn btn-danger btn-sm" onclick="handleSignOut()" style="display:inline-flex;align-items:center;gap:6px;padding:9px 16px;">
-            <i data-lucide="log-out"></i> Sign Out
+          <button class="btn btn-danger" onclick="handleSignOut()" style="flex:1;min-width:140px;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 18px;font-weight:800;font-size:0.88rem;border-radius:12px;cursor:pointer;">
+            <i data-lucide="log-out" style="width:16px;height:16px;"></i> Sign Out
           </button>
         </div>
       </div>
