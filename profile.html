@@ -7,7 +7,7 @@
   <link rel="icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
-  <link rel="stylesheet" href="css/style.css?v=4.0.1788036456185"/>
+  <link rel="stylesheet" href="css/style.css?v=4.0.1788036787926"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
@@ -1195,7 +1195,7 @@
         <label class="form-label">Username Color</label>
         <select class="form-select" id="pref-color-select" onchange="previewStyleModal()">
           <option value="">Default (Clean White)</option>
-          <option value="gold">Subscriber Gold ✨ (Requires Premium)</option>
+          <option value="gold">Subscriber Gold (Requires Premium)</option>
         </select>
         <div style="font-size:0.75rem;color:var(--text-muted);margin-top:6px;">
           Subscriber Gold color is exclusive to active Champion Premium pass holders.
@@ -1215,9 +1215,9 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="js/firebase-config.js?v=3.2"></script>
-  <script src="js/auth.js?v=4.0.1788036456185"></script>
-  <script src="js/db.js?v=4.0.1788036456185"></script>
-  <script src="js/nav.js?v=4.0.1788036456185"></script>
+  <script src="js/auth.js?v=4.0.1788036787926"></script>
+  <script src="js/db.js?v=4.0.1788036787926"></script>
+  <script src="js/nav.js?v=4.0.1788036787926"></script>
 
   <script>
     let currentUser = null;
@@ -1288,13 +1288,13 @@
         }
 
         if (urlParams.get('synced') === '1') {
-          showToast('✅ Epic Games account username refreshed & synced!', 'success');
+          showToast('Epic Games account username refreshed & synced!', 'success');
           try {
             const cleanUrl = window.location.pathname + (urlParams.get('uid') ? `?uid=${urlParams.get('uid')}&tab=connections` : '?tab=connections');
             window.history.replaceState({}, document.title, cleanUrl);
           } catch (e) {}
         } else if (urlParams.get('linked') === '1') {
-          showToast('✅ Epic Games account successfully linked!', 'success');
+          showToast('Epic Games account successfully linked!', 'success');
           try {
             const cleanUrl = window.location.pathname + (urlParams.get('uid') ? `?uid=${urlParams.get('uid')}&tab=connections` : '?tab=connections');
             window.history.replaceState({}, document.title, cleanUrl);
@@ -1458,12 +1458,10 @@
           bHtml += `<span class="badge-staff" style="background:rgba(245,158,11,0.2);color:var(--gold-bright);border:1px solid rgba(245,158,11,0.5);"><i data-lucide="shield-check" style="width:12px;height:12px;"></i> ADMIN</span>`;
         } else if (staffTier === 'moderator') {
           bHtml += `<span class="badge-staff" style="background:rgba(59,130,246,0.2);color:#60a5fa;border:1px solid rgba(59,130,246,0.5);"><i data-lucide="shield" style="width:12px;height:12px;"></i> MODERATOR</span>`;
-        } else if (staffTier === 'simple_moderator') {
-          bHtml += `<span class="badge-staff" style="background:rgba(168,85,247,0.2);color:#c084fc;border:1px solid rgba(168,85,247,0.5);"><i data-lucide="shield" style="width:12px;height:12px;"></i> SIMPLE MOD</span>`;
         } else if (isStaff) {
           bHtml += `<span class="badge-staff"><i data-lucide="shield-check" style="width:12px;height:12px;"></i> STAFF</span>`;
         }
-        if (isPremium) bHtml += `<span class="badge-premium"><i data-lucide="crown" style="width:12px;height:12px;"></i> PREMIUM</span>`;
+        if (isPremium) bHtml += `<span class="badge-premium"><i data-lucide="sparkles" style="width:12px;height:12px;"></i> PREMIUM</span>`;
         badgesRow.innerHTML = bHtml;
       }
 
@@ -1545,7 +1543,7 @@
         if (heroAdminPill) heroAdminPill.style.display = 'none';
         if (adminTokBadge) adminTokBadge.style.display = 'none';
         if (adminAdjustWrap) adminAdjustWrap.style.display = 'none';
-        if (tokStatEl) tokStatEl.innerHTML = '<span style="color:var(--text-faint);font-size:0.95rem;font-weight:700;">Private 🔒</span>';
+        if (tokStatEl) tokStatEl.innerHTML = '<span style="color:var(--text-faint);font-size:0.95rem;font-weight:700;">Private</span>';
       }
 
       // Matches Stats: Wins, Losses, Win Rate %
@@ -1586,19 +1584,19 @@
 
       const hubTitle = document.getElementById('hub-current-title');
       if (hubTitle) {
-        hubTitle.innerHTML = `<span class="chip" style="font-size:0.78rem;font-weight:700;color:var(--text-muted);">Coming Soon 🏷️</span>`;
+        hubTitle.innerHTML = `<span class="chip" style="font-size:0.78rem;font-weight:700;color:var(--text-muted);">Coming Soon</span>`;
       }
 
       const hubBanner = document.getElementById('hub-current-banner');
       if (hubBanner) {
-        hubBanner.innerHTML = `<span class="chip" style="font-size:0.78rem;font-weight:700;color:var(--gold-bright);">Coming Soon 🎨</span>`;
+        hubBanner.innerHTML = `<span class="chip" style="font-size:0.78rem;font-weight:700;color:var(--gold-bright);">Coming Soon</span>`;
       }
 
       const hubStyle = document.getElementById('hub-current-style');
       if (hubStyle) {
         const styleObj = data.profileStyle || {};
         if (styleObj.color === 'gold' || data.isPremium) {
-          hubStyle.innerHTML = `<span class="chip chip-gold" style="font-size:0.78rem;font-weight:800;">Subscriber Gold ✨</span>`;
+          hubStyle.innerHTML = `<span class="chip chip-gold" style="font-size:0.78rem;font-weight:800;">Subscriber Gold</span>`;
         } else {
           hubStyle.innerHTML = `<span class="chip" style="font-size:0.78rem;font-weight:700;">Default (White)</span>`;
         }
@@ -1674,7 +1672,7 @@
         if (pill && textEl) {
           pill.classList.add('copied');
           const original = textEl.textContent;
-          textEl.textContent = 'Copied! ✓';
+          textEl.textContent = 'Copied!';
           setTimeout(() => {
             pill.classList.remove('copied');
             textEl.textContent = original;
@@ -1902,9 +1900,9 @@
         renderCosmeticsModal();
         renderProfile(currentUserData);
         if (newTitleId) {
-          showToast(`✨ Equipped "${SHOP_TITLES[titleId]?.name || 'Title'}" title!`, 'success');
+          showToast(`Equipped "${SHOP_TITLES[titleId]?.name || 'Title'}" title!`, 'success');
         } else {
-          showToast('🏷️ Unequipped title', 'info');
+          showToast('Unequipped title', 'info');
         }
       } catch (err) {
         showToast(err.message, 'error');
@@ -1921,7 +1919,7 @@
         currentUserData = await getUser(currentUser.uid);
         renderCosmeticsModal();
         renderProfile(currentUserData);
-        showToast(`✨ Equipped "${item.name}" avatar!`, 'success');
+        showToast(`Equipped "${item.name}" avatar!`, 'success');
       } catch (err) {
         showToast(err.message, 'error');
       }
@@ -1947,7 +1945,7 @@
         currentUserData = await getUser(currentUser.uid);
         renderCosmeticsModal();
         renderProfile(currentUserData);
-        showToast(`🎉 Unlocked and equipped "${item.name}"!`, 'success');
+        showToast(`Unlocked and equipped "${item.name}"!`, 'success');
       } catch (err) {
         showToast(err.message, 'error');
       }
@@ -2329,7 +2327,7 @@
     async function handleUnlinkEpic() {
       const ok = await showConfirm({
         title: 'Unlink Epic Games Account?',
-        message: 'Are you sure you want to unlink your Epic Games account?<br/><span style="display:inline-block;margin-top:10px;padding:5px 12px;background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.35);border-radius:8px;color:#fca5a5;font-weight:800;font-size:0.82rem;">⚡ Unlinking fee: 2.00 Tokens ($2.00)</span>',
+        message: 'Are you sure you want to unlink your Epic Games account?<br/><span style="display:inline-block;margin-top:10px;padding:5px 12px;background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.35);border-radius:8px;color:#fca5a5;font-weight:800;font-size:0.82rem;">Unlinking fee: 2.00 Tokens ($2.00)</span>',
         confirmText: 'Unlink (-2.00 Tokens)',
         cancelText: 'Keep Connected',
         type: 'danger',

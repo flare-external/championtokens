@@ -66,7 +66,7 @@ async function ensureUserRecord(user) {
       userId: user.uid,
       amount: 1.00,
       type: 'bonus',
-      description: '🎉 1.00 Free Starter Token',
+      description: '1.00 Free Starter Token',
       timestamp: firebase.firestore.FieldValue.serverTimestamp()
     });
     return { id: user.uid, ...newUser };
@@ -311,7 +311,7 @@ async function createMatch(hostUser, matchData) {
     hostUser.uid,
     -hostDeposit,
     'match_wager',
-    `🎮 Created match — "${title}" (${code})`
+    `Created match — "${title}" (${code})`
   );
 
   // Send in-app notification to all invited teammates
@@ -321,7 +321,7 @@ async function createMatch(hostUser, matchData) {
       try {
         await db.collection('users').doc(tm.uid).collection('notifications').add({
           type: 'match_team_invite',
-          title: '⚔️ Team Match Invite',
+          title: 'Team Match Invite',
           body: `${hostUser.displayName || 'Captain'} invited you to join team match "${title}" (${formatTokens(wager)} Tokens)${tm.isCovered ? ' · Entry Covered Free!' : ''}`,
           matchId: matchRef.id,
           matchCode: code,
@@ -465,7 +465,7 @@ async function joinMatch(codeOrId, joiningUser) {
       joiningUser.uid,
       -playerDeduction,
       'match_wager',
-      `🎮 Joined match — "${match.title}" (${match.code})`
+      `Joined match — "${match.title}" (${match.code})`
     );
   }
 
@@ -617,7 +617,7 @@ async function joinMatchWithTeam(codeOrId, joiningUser, options = {}) {
       joiningUser.uid,
       -joinerTotalDeposit,
       'match_wager',
-      `🎮 Joined match with team — "${match.title}" (${match.code})${coveredCount > 0 ? ` (Covered ${coveredCount} teammate(s))` : ''}`
+      `Joined match with team — "${match.title}" (${match.code})${coveredCount > 0 ? ` (Covered ${coveredCount} teammate(s))` : ''}`
     );
   }
 
@@ -627,7 +627,7 @@ async function joinMatchWithTeam(codeOrId, joiningUser, options = {}) {
       try {
         await db.collection('users').doc(tm.uid).collection('notifications').add({
           type: 'match_team_invite',
-          title: '⚔️ Team Match Invite',
+          title: 'Team Match Invite',
           body: `${joiningUser.displayName || 'Your Captain'} invited you to join team match "${match.title}" (${formatTokens(wager)} Tokens)${tm.isCovered ? ' · Entry Covered Free!' : ''}`,
           matchId: matchDoc.id,
           matchCode: match.code,
@@ -738,7 +738,7 @@ async function acceptMatchTeamInvite(matchId, acceptingUser, notifId = null) {
       acceptingUser.uid,
       -wager,
       'match_wager',
-      `🎮 Joined team match — "${match.title}" (${match.code})`
+      `Joined team match — "${match.title}" (${match.code})`
     );
   }
 
@@ -832,7 +832,7 @@ async function setPlayerReady(matchId, uid, isReady = true) {
     }).catch(console.warn);
     await msgRef.add({
       isSystem:  true,
-      text:      `👑 Team ${hostName} is host, so ${oppName} has to add them in Fortnite!`,
+      text:      `Team ${hostName} is host, so ${oppName} has to add them in Fortnite!`,
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
     }).catch(console.warn);
   }
@@ -1073,7 +1073,7 @@ async function declareWinner(matchId, winnerUid, hostUid) {
     completedAt: firebase.firestore.FieldValue.serverTimestamp(),
   });
 
-  await updateTokens(winnerUid, prize, 'match_win', `🏆 Won match — "${match.title}"`);
+  await updateTokens(winnerUid, prize, 'match_win', `Won match — "${match.title}"`);
 
   // Update stats for all players
   const statsUpdates = players.map(player => {
@@ -1173,7 +1173,7 @@ async function submitMatchReport(matchId, reporterUid, reportedWinnerTeam) {
       // Distribute prize tokens according to team split rules
       for (const p of payouts) {
         if (p.amount > 0) {
-          await updateTokens(p.uid, p.amount, 'match_win', `🏆 Won match — "${match.title}"`);
+          await updateTokens(p.uid, p.amount, 'match_win', `Won match — "${match.title}"`);
         }
       }
 
@@ -1193,7 +1193,7 @@ async function submitMatchReport(matchId, reporterUid, reportedWinnerTeam) {
       // System chat notice
       await msgRef.add({
         isSystem: true,
-        text: `🏆 MATCH CONFIRMED: Both sides verified that ${winningTeam === 'team1' ? 'Team 1' : 'Team 2'} won! Total prize of ${formatTokens(rawPrize)} Tokens has been paid out.`,
+        text: `MATCH CONFIRMED: Both sides verified that ${winningTeam === "team1" ? "Team 1" : "Team 2"} won! Total prize of ${formatTokens(rawPrize)} Tokens has been paid out.`,
         timestamp: firebase.firestore.FieldValue.serverTimestamp(),
       });
 
@@ -1212,7 +1212,7 @@ async function submitMatchReport(matchId, reporterUid, reportedWinnerTeam) {
         matchId,
         matchCode: match.code || '',
         callerUid: 'system_auto_dispute',
-        calledByName: '🤖 System Auto-Dispute',
+        calledByName: 'System Auto-Dispute',
         reason: 'Match Result Dispute (Conflicting Winner Claims)',
         details: `Dispute triggered in match "${match.title}" (${match.code}). Team 1 claimed ${currentTeam1Report === 'team1' ? 'Team 1 Won' : 'Team 2 Won'} vs Team 2 claimed ${currentTeam2Report === 'team1' ? 'Team 1 Won' : 'Team 2 Won'}. Moderator auto-called to inspect match.`,
         status: 'open',
@@ -1222,7 +1222,7 @@ async function submitMatchReport(matchId, reporterUid, reportedWinnerTeam) {
       // System chat notice
       await msgRef.add({
         isSystem: true,
-        text: `⚠️ DISPUTE DETECTED: Both sides reported conflicting match results! A Staff Moderator has been automatically called to review evidence and confirm the official winner.`,
+        text: `DISPUTE DETECTED: Both sides reported conflicting match results! A Staff Moderator has been automatically called to review evidence and confirm the official winner.`,
         timestamp: firebase.firestore.FieldValue.serverTimestamp(),
       });
 
@@ -1234,7 +1234,7 @@ async function submitMatchReport(matchId, reporterUid, reportedWinnerTeam) {
 
     await msgRef.add({
       isSystem: true,
-      text: `📢 ${reporterTeamName} submitted score: ${reportedWinnerTeam === 'team1' ? 'Team 1 Won' : 'Team 2 Won'}. Waiting for opponent to confirm…`,
+      text: `${reporterTeamName} submitted score: ${reportedWinnerTeam === "team1" ? "Team 1 Won" : "Team 2 Won"}. Waiting for opponent to confirm…`,
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
     });
 
@@ -1329,7 +1329,7 @@ async function adminResolveDispute(matchId, winningTeam, adminUid) {
 
   for (const p of payouts) {
     if (p.amount > 0) {
-      await updateTokens(p.uid, p.amount, 'match_win', `🏆 Won match (Staff Decision) — "${match.title}"`);
+      await updateTokens(p.uid, p.amount, 'match_win', `Won match (Staff Decision) — "${match.title}"`);
     }
   }
   for (const p of winningPlayers) {
@@ -1346,7 +1346,7 @@ async function adminResolveDispute(matchId, winningTeam, adminUid) {
 
   await matchRef.collection('messages').add({
     isSystem: true,
-    text: `🛡️ STAFF RULING: Staff Moderator resolved the dispute in favor of ${winningTeam === 'team1' ? 'Team 1' : 'Team 2'}! ${formatTokens(rawPrize)} Tokens awarded.`,
+    text: `STAFF RULING: Staff Moderator resolved the dispute in favor of ${winningTeam === "team1" ? "Team 1" : "Team 2"}! ${formatTokens(rawPrize)} Tokens awarded.`,
     timestamp: firebase.firestore.FieldValue.serverTimestamp(),
   });
 
@@ -1463,7 +1463,7 @@ async function voteMatchRematch(matchId, uid, voteType = 'rematch') {
 
     // Deduct entry fee from each player
     for (const p of players) {
-      await updateTokens(p.uid, -newWager, 'match_wager', `🎮 ${voteType === 'double' ? 'Double Down Entry' : 'Rematch Entry'} — ${match.title || 'Arena Match'}`);
+      await updateTokens(p.uid, -newWager, 'match_wager', `${voteType === "double" ? "Double Down Entry" : "Rematch Entry"} — ${match.title || "Arena Match"}`);
     }
 
     // Reset match state
@@ -1493,7 +1493,7 @@ async function voteMatchRematch(matchId, uid, voteType = 'rematch') {
     // Announce rematch start in chat
     await matchRef.collection('messages').add({
       isSystem: true,
-      text: `🔄 REMATCH STARTED: All players confirmed! Entry: ${formatTokens(newWager)} Tokens · Total Prize: ${formatTokens(newPrizePool * 0.90)} Tokens. Good luck!`,
+      text: `REMATCH STARTED: All players confirmed! Entry: ${formatTokens(newWager)} Tokens · Total Prize: ${formatTokens(newPrizePool * 0.90)} Tokens. Good luck!`,
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
     });
 
@@ -1858,7 +1858,7 @@ async function adminAdjustTokens(identifier, amount, reason) {
     throw new Error(`User not found for identifier "${identifier}". Please enter a valid Discord ID, UID, or Username.`);
   }
 
-  await updateTokens(targetUid, num, 'admin', `⚡ Admin adjustment: ${reason}`);
+  await updateTokens(targetUid, num, 'admin', `Admin adjustment: ${reason}`);
   return { targetUid, userName: userSnap.data()?.displayName || targetUid };
 }
 
@@ -1873,7 +1873,7 @@ async function adminForceCancelMatch(matchId, adminName) {
 
   if (match.players && match.players.length > 0) {
     const refundPromises = match.players.map(p =>
-      updateTokens(p.uid, wager, 'refund', `🛡️ Admin (${adminName}) cancelled match — "${match.title}" refund`)
+      updateTokens(p.uid, wager, 'refund', `Admin (${adminName}) cancelled match — "${match.title}" refund`)
     );
     await Promise.all(refundPromises);
   }
@@ -1901,7 +1901,7 @@ async function buyPremiumPass(uid) {
   }
 
   // Deduct 5.00 tokens
-  await updateTokens(uid, -5.00, 'shop', '👑 Purchased Champion Premium (30 Days)');
+  await updateTokens(uid, -5.00, 'shop', 'Purchased Champion Premium (30 Days)');
 
   const expiresDate = new Date();
   expiresDate.setDate(expiresDate.getDate() + 30);
@@ -1974,7 +1974,7 @@ async function tipPlayer(senderUid, receiverUid, amount) {
     senderUid,
     -num,
     'tip_sent',
-    `🎁 Tipped ${formatTokens(num)} Tokens to @${receiver.discordUsername || receiver.displayName}`
+    `Tipped ${formatTokens(num)} Tokens to @${receiver.discordUsername || receiver.displayName}`
   );
 
   // Credit to receiver
@@ -1982,7 +1982,7 @@ async function tipPlayer(senderUid, receiverUid, amount) {
     receiverUid,
     num,
     'tip_received',
-    `🎁 Received ${formatTokens(num)} Tokens tip from @${sender.discordUsername || sender.displayName}`
+    `Received ${formatTokens(num)} Tokens tip from @${sender.discordUsername || sender.displayName}`
   );
 
   return { sender, receiver, amount: num };
@@ -2084,7 +2084,7 @@ async function unlinkEpicAccount(uid) {
     uid,
     -2.00,
     'epic_unlink_fee',
-    '🔌 Unlinked Epic Games account (-2.00 Tokens fee)'
+    'Unlinked Epic Games account (-2.00 Tokens fee)'
   );
 
   const userRef = db.collection('users').doc(uid);
@@ -2282,7 +2282,7 @@ async function buyShopPfp(uid, pfpId) {
     throw new Error('You already own this avatar');
   }
 
-  await updateTokens(uid, -item.cost, 'shop', `🎨 Purchased Avatar: "${item.name}" (${item.rarity})`);
+  await updateTokens(uid, -item.cost, 'shop', `Purchased Avatar: "${item.name}" (${item.rarity})`);
   await db.collection('users').doc(uid).update({
     unlockedPfps: firebase.firestore.FieldValue.arrayUnion(pfpId)
   });
@@ -2395,7 +2395,7 @@ async function buyShopTitle(uid, titleId) {
     throw new Error('You already own this title');
   }
 
-  await updateTokens(uid, -item.cost, 'shop', `🏷️ Purchased Title: "${item.name}"`);
+  await updateTokens(uid, -item.cost, 'shop', `Purchased Title: "${item.name}"`);
   await db.collection('users').doc(uid).update({
     unlockedTitles: firebase.firestore.FieldValue.arrayUnion(titleId)
   });
@@ -2419,7 +2419,7 @@ async function buyShopBanner(uid, bannerId) {
     throw new Error('You already own this banner');
   }
 
-  await updateTokens(uid, -item.cost, 'shop', `🎨 Purchased Profile Banner: "${item.name}"`);
+  await updateTokens(uid, -item.cost, 'shop', `Purchased Profile Banner: "${item.name}"`);
   await db.collection('users').doc(uid).update({
     unlockedBanners: firebase.firestore.FieldValue.arrayUnion(bannerId),
     equippedBanner:  bannerId
@@ -2475,7 +2475,7 @@ async function claimDailyFreeChest(uid) {
   const possibleTokens = [0.10, 0.15, 0.25, 0.35, 0.50];
   const rewardTokens = possibleTokens[Math.floor(Math.random() * possibleTokens.length)];
 
-  await updateTokens(uid, rewardTokens, 'daily_chest', `🎁 Daily Free Mystery Chest reward: +${formatTokens(rewardTokens)} Tokens`);
+  await updateTokens(uid, rewardTokens, 'daily_chest', `Daily Free Mystery Chest reward: +${formatTokens(rewardTokens)} Tokens`);
   await db.collection('users').doc(uid).update({
     lastFreeChestDate: todayKey
   });
@@ -2491,7 +2491,7 @@ async function buyChampionMysteryChest(uid) {
     throw new Error('Insufficient tokens (Mystery Chest costs 1.50 Tokens)');
   }
 
-  await updateTokens(uid, -1.50, 'chest', '🗝️ Opened Champion Mystery Chest');
+  await updateTokens(uid, -1.50, 'chest', 'Opened Champion Mystery Chest');
 
   // Random weighted reward (chance of 2.00, 3.00, 5.00, 10.00 Tokens)
   const roll = Math.random();
@@ -2500,7 +2500,7 @@ async function buyChampionMysteryChest(uid) {
   else if (roll > 0.70) winAmount = 5.00;
   else if (roll > 0.40) winAmount = 3.00;
 
-  await updateTokens(uid, winAmount, 'chest_win', `🏆 Mystery Chest Payout: +${formatTokens(winAmount)} Tokens!`);
+  await updateTokens(uid, winAmount, 'chest_win', `Mystery Chest Payout: +${formatTokens(winAmount)} Tokens!`);
 
   return { rewardTokens: winAmount };
 }
@@ -2592,7 +2592,7 @@ async function fullDatabaseReset() {
             userId: doc.id,
             amount: 1.00,
             type: 'bonus',
-            description: '🎁 1.00 Starter Token',
+            description: '1.00 Starter Token',
             timestamp: firebase.firestore.FieldValue.serverTimestamp()
           });
         }
@@ -2825,11 +2825,11 @@ async function adminUnlinkEpic(targetUid) {
 
 /**
  * Set or change staff tier for a user.
- * Tiers: 'administrator' | 'moderator' | 'simple_moderator' | 'none'
+ * Tiers: 'administrator' | 'moderator' | 'none'
  */
 async function adminSetStaffRole(targetUid, role, callerUid = null) {
   if (!targetUid) throw new Error('Target UID required');
-  const validRoles = ['administrator', 'moderator', 'simple_moderator', 'none'];
+  const validRoles = ['administrator', 'moderator', 'none'];
   const cleanRole = (role || 'none').toLowerCase().trim();
   if (!validRoles.includes(cleanRole)) {
     throw new Error('Invalid staff role: ' + role);

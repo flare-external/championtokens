@@ -24,7 +24,7 @@
   <link rel="icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
-  <link rel="stylesheet" href="css/style.css?v=4.0.1788036456185"/>
+  <link rel="stylesheet" href="css/style.css?v=4.0.1788036787926"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
@@ -186,9 +186,9 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="js/firebase-config.js?v=3.8"></script>
-  <script src="js/auth.js?v=4.0.1788036456185"></script>
-  <script src="js/db.js?v=4.0.1788036456185"></script>
-  <script src="js/nav.js?v=4.0.1788036456185"></script>
+  <script src="js/auth.js?v=4.0.1788036787926"></script>
+  <script src="js/db.js?v=4.0.1788036787926"></script>
+  <script src="js/nav.js?v=4.0.1788036787926"></script>
 
   <script>
     let currentUser = null;
@@ -339,7 +339,7 @@
 
       try {
         await buyShopPfp(currentUser.uid, pfpId);
-        showToast(`🎉 Unlocked "${item.name}"! Click Equip to wear it.`, 'success');
+        showToast(`Unlocked "${item.name}"! Click Equip to wear it.`, 'success');
         currentUserData = await getUser(currentUser.uid);
         renderDailyPfps();
       } catch (err) {
@@ -354,7 +354,7 @@
 
       try {
         await equipShopPfp(currentUser.uid, pfpId);
-        showToast(`✨ Equipped "${item.name}" avatar!`, 'success');
+        showToast(`Equipped "${item.name}" avatar!`, 'success');
         currentUserData = await getUser(currentUser.uid);
         renderDailyPfps();
       } catch (err) {
@@ -453,7 +453,7 @@
 
       try {
         await buyShopTitle(currentUser.uid, titleId);
-        showToast(`🎉 Unlocked "${item.name}"! Click Equip to display it.`, 'success');
+        showToast(`Unlocked "${item.name}"! Click Equip to display it.`, 'success');
         currentUserData = await getUser(currentUser.uid);
         renderShopTitles();
       } catch (err) {
@@ -470,9 +470,9 @@
         currentUserData = await getUser(currentUser.uid);
         renderShopTitles();
         if (newTitleId) {
-          showToast(`✨ Equipped "${SHOP_TITLES[titleId]?.name || 'Title'}" title!`, 'success');
+          showToast(`Equipped "${SHOP_TITLES[titleId]?.name || 'Title'}" title!`, 'success');
         } else {
-          showToast('🏷️ Unequipped title', 'info');
+          showToast('Unequipped title', 'info');
         }
       } catch (err) {
         showToast(err.message, 'error');
@@ -483,7 +483,7 @@
       if (!currentUser) return;
       const ok = await showConfirm({
         title: 'Unlock Champion Premium',
-        message: 'Unlock Champion Premium for <strong>5.00 Tokens ($5.00)</strong> for 30 days?<br/><span style="color:var(--gold-bright);font-size:0.82rem;display:inline-block;margin-top:8px;">✨ Includes Radiant Gold username, VIP profile crown & perks!</span>',
+        message: 'Unlock Champion Premium for <strong>5.00 Tokens ($5.00)</strong> for 30 days?<br/><span style="color:var(--gold-bright);font-size:0.82rem;display:inline-block;margin-top:8px;">Includes Radiant Gold username, VIP profile crown & perks!</span>',
         confirmText: 'Unlock Premium (5.00 Tokens)',
         cancelText: 'Cancel',
         type: 'warning',
@@ -493,7 +493,7 @@
 
       try {
         await buyPremiumPass(currentUser.uid);
-        showToast('👑 Congratulations! Champion Premium activated!', 'success');
+        showToast('Congratulations! Champion Premium activated!', 'success');
         setTimeout(() => window.location.href = 'profile', 1200);
       } catch (err) {
         showToast(err.message, 'error');

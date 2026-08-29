@@ -218,7 +218,7 @@ async function exchangeDiscordCode(code) {
                   userId: cred.user.uid,
                   amount: 10.00,
                   type: 'bonus',
-                  description: '🎉 Welcome bonus (10.00 Starter Tokens)',
+                  description: 'Welcome bonus (10.00 Starter Tokens)',
                   timestamp: firebase.firestore.FieldValue.serverTimestamp(),
                 });
               } else {
@@ -301,7 +301,7 @@ const OWNER_UID = 'discord:1121188319410278420';
 const ADMIN_DISCORD_IDS = ['1121188319410278420'];
 
 /**
- * Get staff tier for a user: 'administrator' | 'moderator' | 'simple_moderator' | 'none'
+ * Get staff tier for a user: 'administrator' | 'moderator' | 'none'
  */
 function getStaffTier(user, userData = null) {
   if (!user && !userData) return 'none';
@@ -316,7 +316,6 @@ function getStaffTier(user, userData = null) {
   const rawRole = (userData?.staffRole || userData?.adminRole || userData?.role || '').toLowerCase().trim();
   if (rawRole === 'admin' || rawRole === 'administrator') return 'administrator';
   if (rawRole === 'moderator' || rawRole === 'mod') return 'moderator';
-  if (rawRole === 'simple_moderator' || rawRole === 'simple_mod' || rawRole === 'simplemod') return 'simple_moderator';
 
   // Backwards compatibility for owner / admin list / isAdmin
   if (discordId === OWNER_DISCORD_ID || uid === OWNER_UID || ADMIN_DISCORD_IDS.includes(discordId) || (userData?.isAdmin === true && !userData?.isGuest)) {
@@ -327,11 +326,11 @@ function getStaffTier(user, userData = null) {
 }
 
 /**
- * Check if the given user is any staff tier (Administrator, Moderator, or Simple Moderator)
+ * Check if the given user is any staff tier (Administrator or Moderator)
  */
 function isStaffUser(user, userData = null) {
   const tier = getStaffTier(user, userData);
-  return tier === 'administrator' || tier === 'moderator' || tier === 'simple_moderator';
+  return tier === 'administrator' || tier === 'moderator';
 }
 
 /**
@@ -347,13 +346,6 @@ function isFullAdmin(user, userData = null) {
 function isModerator(user, userData = null) {
   const tier = getStaffTier(user, userData);
   return tier === 'administrator' || tier === 'moderator';
-}
-
-/**
- * Check if the given user is a Simple Moderator
- */
-function isSimpleModerator(user, userData = null) {
-  return getStaffTier(user, userData) === 'simple_moderator';
 }
 
 /**

@@ -7,7 +7,7 @@
   <link rel="icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
-  <link rel="stylesheet" href="css/style.css?v=4.0.1788036456185"/>
+  <link rel="stylesheet" href="css/style.css?v=4.0.1788036787926"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
@@ -992,7 +992,7 @@
       <div id="dispute-alert-banner" style="display:none;" class="concept-alert-banner dispute">
         <i data-lucide="shield-alert" style="width:20px;height:20px;color:var(--red);"></i>
         <div style="flex:1;">
-          <div style="font-weight:900;">⚠️ Score Dispute Detected — Staff Summoned</div>
+          <div style="font-weight:900;">Score Dispute Detected — Staff Summoned</div>
           <div style="font-size:0.78rem;">Conflicting winner reports submitted. A moderator has been alerted.</div>
           <div id="dispute-admin-actions" style="margin-top:6px;display:none;"></div>
         </div>
@@ -1437,9 +1437,9 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="js/firebase-config.js"></script>
-  <script src="js/auth.js?v=4.0.1788036456185"></script>
-  <script src="js/db.js?v=4.0.1788036456185"></script>
-  <script src="js/nav.js?v=4.0.1788036456185"></script>
+  <script src="js/auth.js?v=4.0.1788036787926"></script>
+  <script src="js/db.js?v=4.0.1788036787926"></script>
+  <script src="js/nav.js?v=4.0.1788036787926"></script>
 
   <script>
     let currentUser = null;
@@ -1528,7 +1528,7 @@
         if (!snap.empty) {
           const call = snap.docs[0].data();
           tag.style.display = 'inline-flex';
-          tag.textContent = `🛡️ Staff Called (${call.reason || 'Alert'})`;
+          tag.innerHTML = `<i data-lucide="shield-alert" style="width:13px;height:13px;"></i> Staff Called (${escapeHtml(call.reason || 'Alert')})`;
           if (window.lucide) lucide.createIcons();
         } else {
           tag.style.display = 'none';
@@ -1914,7 +1914,7 @@
                     ${invitedTeammate.isCovered ? '<span class="badge" style="background:rgba(134,239,172,0.2);color:#86efac;font-size:0.65rem;font-weight:800;">COVERED</span>' : ''}
                   </div>
                   <div style="font-size:0.75rem;color:var(--gold-light);margin-top:2px;">
-                    ${isMeInvited ? '👉 Click to Accept & Take Slot' : '⏳ Pending squad acceptance…'}
+                    ${isMeInvited ? 'Click to Accept & Take Slot' : 'Pending squad acceptance…'}
                   </div>
                 </div>
               </div>`;
@@ -2052,7 +2052,7 @@
                 <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
                   <div class="concept-btn-locked" style="background:rgba(34,197,94,0.12);color:#4ade80;">
                     <i data-lucide="check-circle"></i>
-                    <span>${myReported === (isTeam1 ? 'team1' : 'team2') ? 'Voted Victory' : 'Voted Lose'} (${isDisputed ? '⚠️ Dispute' : 'Waiting for Opponent'})</span>
+                    <span>${myReported === (isTeam1 ? 'team1' : 'team2') ? 'Voted Victory' : 'Voted Lose'} (${isDisputed ? 'Dispute' : 'Waiting for Opponent'})</span>
                   </div>
                   <button class="btn btn-outline btn-sm" onclick="handleRetractReport()" style="border-radius:20px;padding:8px 16px;font-size:0.82rem;font-weight:800;color:#ef4444;border-color:rgba(239,68,68,0.4);display:inline-flex;align-items:center;gap:6px;transition:all 0.18s ease;" title="Retract your reported score if you made a mistake">
                     <i data-lucide="rotate-ccw" style="width:14px;height:14px;"></i>
@@ -2137,7 +2137,7 @@
         if (res.status === 'completed') {
           showToast(`Match verified! ${formatTokens(res.prize)} Tokens awarded!`, 'success');
         } else if (res.status === 'disputed') {
-          showToast('⚠️ Dispute detected! A Staff Moderator has been auto-called.', 'error');
+          showToast('Dispute detected! A Staff Moderator has been auto-called.', 'error');
         } else {
           showToast('Score submitted! Waiting for opponent confirmation.', 'info');
         }
@@ -2160,7 +2160,7 @@
 
       try {
         await retractMatchReport(matchId, currentUser.uid);
-        showToast('↩️ Report retracted! You can now vote again.', 'success');
+        showToast('Report retracted! You can now vote again.', 'success');
       } catch (err) {
         showToast(err.message, 'error');
       }
@@ -2171,7 +2171,7 @@
       try {
         const res = await voteMatchRematch(matchId, currentUser.uid, voteType);
         if (res.started) {
-          showToast(`🚀 ${voteType === 'double' ? 'Double' : 'Rematch'} started! Entry: ${formatTokens(res.newWager)} Tokens`, 'success');
+          showToast(`${voteType === 'double' ? 'Double' : 'Rematch'} started! Entry: ${formatTokens(res.newWager)} Tokens`, 'success');
         } else if (res.cancelled) {
           showToast(`Cancelled ${voteType === 'double' ? 'Double' : 'Rematch'} vote`, 'info');
         } else {

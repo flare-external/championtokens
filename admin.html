@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Admin panel — Champion Tokens</title>
   <link rel="icon" type="image/png" href="champion-tokens_new.png"/>
-  <link rel="stylesheet" href="css/style.css?v=4.0.1788036456185"/>
+  <link rel="stylesheet" href="css/style.css?v=4.0.1788036787926"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
@@ -101,6 +101,10 @@
       font-weight: 700;
       cursor: pointer;
       transition: all 0.16s ease;
+    }
+    .admin-filter-pill i {
+      width: 14px;
+      height: 14px;
     }
     .admin-filter-pill:hover {
       background: rgba(255, 255, 255, 0.08);
@@ -228,9 +232,9 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="js/firebase-config.js"></script>
-  <script src="js/auth.js?v=4.0.1788036456185"></script>
-  <script src="js/db.js?v=4.0.1788036456185"></script>
-  <script src="js/nav.js?v=4.0.1788036456185"></script>
+  <script src="js/auth.js?v=4.0.1788036787926"></script>
+  <script src="js/db.js?v=4.0.1788036787926"></script>
+  <script src="js/nav.js?v=4.0.1788036787926"></script>
   <script>
     let currentUser = null;
     let currentUserData = null;
@@ -253,7 +257,7 @@
       injectNav('admin');
       document.getElementById('page-loading').classList.add('hidden');
 
-      // Set simple role badge
+      // Set role badge
       const roleBadge = document.getElementById('admin-role-badge');
       if (roleBadge) {
         if (myStaffTier === 'administrator') {
@@ -266,15 +270,10 @@
           roleBadge.style.background = 'rgba(59,130,246,0.18)';
           roleBadge.style.color = '#60a5fa';
           roleBadge.style.borderColor = 'rgba(59,130,246,0.5)';
-        } else if (myStaffTier === 'simple_moderator') {
-          roleBadge.innerHTML = '<i data-lucide="shield"></i> Simple Moderator';
-          roleBadge.style.background = 'rgba(168,85,247,0.18)';
-          roleBadge.style.color = '#c084fc';
-          roleBadge.style.borderColor = 'rgba(168,85,247,0.5)';
         }
       }
 
-      // Hide Administrator-only tabs for moderators and simple moderators
+      // Hide Administrator-only tabs for moderators
       if (myStaffTier !== 'administrator') {
         const bBtn = document.getElementById('admin-tabBtn-broadcast');
         const dBtn = document.getElementById('admin-tabBtn-danger');
@@ -368,8 +367,6 @@
         filtered = filtered.filter(u => getStaffTier(null, u) === 'administrator');
       } else if (currentPlayerFilter === 'moderators') {
         filtered = filtered.filter(u => getStaffTier(null, u) === 'moderator');
-      } else if (currentPlayerFilter === 'simple_mods') {
-        filtered = filtered.filter(u => getStaffTier(null, u) === 'simple_moderator');
       } else if (currentPlayerFilter === 'epic') {
         filtered = filtered.filter(u => !!u.epicUsername);
       } else if (currentPlayerFilter === 'tokens') {
@@ -397,8 +394,6 @@
           roleBadge = '<span class="badge" style="background:rgba(245,158,11,0.18);color:var(--gold-bright);border:1px solid rgba(245,158,11,0.45);font-size:0.68rem;padding:2px 7px;"><i data-lucide="shield-check" style="width:11px;height:11px;"></i> Administrator</span>';
         } else if (uTier === 'moderator') {
           roleBadge = '<span class="badge" style="background:rgba(59,130,246,0.18);color:#60a5fa;border:1px solid rgba(59,130,246,0.45);font-size:0.68rem;padding:2px 7px;"><i data-lucide="shield" style="width:11px;height:11px;"></i> Moderator</span>';
-        } else if (uTier === 'simple_moderator') {
-          roleBadge = '<span class="badge" style="background:rgba(168,85,247,0.18);color:#c084fc;border:1px solid rgba(168,85,247,0.45);font-size:0.68rem;padding:2px 7px;"><i data-lucide="shield" style="width:11px;height:11px;"></i> Simple Mod</span>';
         }
 
         // Action buttons based on logged-in user's permissions:
@@ -413,7 +408,7 @@
           if (banned) {
             actionBtns += '<button class="admin-action-btn-sm btn-primary" onclick="handleUnbanUser(\'' + u.id + '\')"><i data-lucide="shield-check"></i> Unban</button>';
           } else {
-            actionBtns += '<button class="admin-action-btn-sm btn-outline" style="color:var(--red);border-color:rgba(239,68,68,0.3);" onclick="handleBanUser(\'' + u.id + '\',\'' + escapeHtml(u.displayName || 'Unknown') + '\')"><i data-lucide="shield-x"></i> Ban</button>';
+            actionBtns += '<button class="admin-action-btn-sm btn-outline" style="color:var(--red);border-color:rgba(239,68,68,0.3);" onclick="handleBanUser(\'' + u.id + '\',\'' + escapeHtml(u.displayName || 'Unknown') + '\')"><i data-lucide="ban"></i> Ban</button>';
           }
 
           actionBtns += '<button class="admin-action-btn-sm btn-danger" onclick="handleAdminDeleteAccount(\'' + u.id + '\', \'' + escapeHtml(u.displayName || 'Player') + '\')"><i data-lucide="trash-2"></i> Delete</button>';
@@ -426,8 +421,8 @@
               '<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">' +
                 '<span style="font-weight:900;font-size:1.02rem;color:#fff;">' + escapeHtml(u.displayName || 'Unknown') + '</span>' +
                 roleBadge +
-                (banned ? '<span class="badge" style="background:rgba(239,68,68,0.2);color:var(--red);border:1px solid rgba(239,68,68,0.5);font-size:0.68rem;padding:2px 7px;"><i data-lucide="shield-x" style="width:11px;height:11px;"></i> Banned</span>' : '') +
-                (u.isPremium ? '<span class="badge" style="background:rgba(245,158,11,0.2);color:var(--gold-bright);border:1px solid rgba(245,158,11,0.5);font-size:0.68rem;padding:2px 7px;"><i data-lucide="crown" style="width:11px;height:11px;"></i> VIP</span>' : '') +
+                (banned ? '<span class="badge" style="background:rgba(239,68,68,0.2);color:var(--red);border:1px solid rgba(239,68,68,0.5);font-size:0.68rem;padding:2px 7px;"><i data-lucide="ban" style="width:11px;height:11px;"></i> Banned</span>' : '') +
+                (u.isPremium ? '<span class="badge" style="background:rgba(245,158,11,0.2);color:var(--gold-bright);border:1px solid rgba(245,158,11,0.5);font-size:0.68rem;padding:2px 7px;"><i data-lucide="sparkles" style="width:11px;height:11px;"></i> VIP</span>' : '') +
               '</div>' +
               '<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:5px;">' +
                 '<span class="badge" style="background:rgba(88,101,242,0.15);color:#818cf8;border:1px solid rgba(88,101,242,0.3);font-size:0.72rem;padding:2px 8px;">' +
@@ -482,7 +477,6 @@
         const roleLabels = {
           'administrator': 'Administrator',
           'moderator': 'Moderator',
-          'simple_moderator': 'Simple Moderator',
           'none': 'Regular Player'
         };
         showToast(_activeRoleName + ' is now ' + (roleLabels[selectedRole] || selectedRole) + '!', 'success');
@@ -814,7 +808,7 @@
           '<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">' +
             '<div style="display:flex;align-items:center;gap:8px;">' +
               '<span class="badge ' + (isOpen ? 'badge-waiting' : 'badge-completed') + '" style="' + (isOpen ? 'background:rgba(239,68,68,0.2);color:var(--red);border-color:rgba(239,68,68,0.4);' : '') + '">' +
-                (isOpen ? '🚨 OPEN TICKET' : '✅ RESOLVED') +
+                (isOpen ? '<i data-lucide="alert-circle" style="width:11px;height:11px;"></i> OPEN TICKET' : '<i data-lucide="check-circle-2" style="width:11px;height:11px;"></i> RESOLVED') +
               '</span>' +
               '<span style="font-weight:900;font-size:0.95rem;color:#fff;">' + escapeHtml(call.reason) + '</span>' +
             '</div>' +
@@ -999,15 +993,26 @@
           <button type="submit" class="btn btn-primary btn-sm" id="player-search-btn"><i data-lucide="search"></i> Search</button>
         </form>
 
-        <!-- Filter Chips -->
+        <!-- Filter Chips with Lucide Icons -->
         <div style="display:flex;gap:8px;flex-wrap:wrap;">
-          <button class="admin-filter-pill active" data-filter="all" onclick="setPlayerFilter('all')">All Players</button>
-          <button class="admin-filter-pill" data-filter="admins" onclick="setPlayerFilter('admins')">👑 Admins</button>
-          <button class="admin-filter-pill" data-filter="moderators" onclick="setPlayerFilter('moderators')">🛡️ Moderators</button>
-          <button class="admin-filter-pill" data-filter="simple_mods" onclick="setPlayerFilter('simple_mods')">🔰 Simple Mods</button>
-          <button class="admin-filter-pill" data-filter="banned" onclick="setPlayerFilter('banned')">⛔ Banned</button>
-          <button class="admin-filter-pill" data-filter="epic" onclick="setPlayerFilter('epic')">🎮 Epic Linked</button>
-          <button class="admin-filter-pill" data-filter="tokens" onclick="setPlayerFilter('tokens')">💰 High Balance (&gt;10T)</button>
+          <button class="admin-filter-pill active" data-filter="all" onclick="setPlayerFilter('all')">
+            <i data-lucide="users"></i> All Players
+          </button>
+          <button class="admin-filter-pill" data-filter="admins" onclick="setPlayerFilter('admins')">
+            <i data-lucide="shield-check"></i> Administrators
+          </button>
+          <button class="admin-filter-pill" data-filter="moderators" onclick="setPlayerFilter('moderators')">
+            <i data-lucide="shield"></i> Moderators
+          </button>
+          <button class="admin-filter-pill" data-filter="banned" onclick="setPlayerFilter('banned')">
+            <i data-lucide="ban"></i> Banned
+          </button>
+          <button class="admin-filter-pill" data-filter="epic" onclick="setPlayerFilter('epic')">
+            <i data-lucide="gamepad-2"></i> Epic Linked
+          </button>
+          <button class="admin-filter-pill" data-filter="tokens" onclick="setPlayerFilter('tokens')">
+            <i data-lucide="coins"></i> High Balance (&gt;10T)
+          </button>
         </div>
       </div>
 
@@ -1080,7 +1085,7 @@
             <i data-lucide="shield-check" style="width:20px;height:20px;"></i>
           </div>
           <div style="flex:1;">
-            <div style="font-weight:800;color:var(--gold-bright);font-size:0.95rem;">👑 Administrator</div>
+            <div style="font-weight:800;color:var(--gold-bright);font-size:0.95rem;">Administrator</div>
             <div style="font-size:0.75rem;color:var(--text-muted);margin-top:2px;">Full access: balances, bans, delete, epic igns, roles, broadcasts & reset.</div>
           </div>
         </div>
@@ -1091,29 +1096,18 @@
             <i data-lucide="shield" style="width:20px;height:20px;"></i>
           </div>
           <div style="flex:1;">
-            <div style="font-weight:800;color:#60a5fa;font-size:0.95rem;">🛡️ Moderator</div>
+            <div style="font-weight:800;color:#60a5fa;font-size:0.95rem;">Moderator</div>
             <div style="font-size:0.75rem;color:var(--text-muted);margin-top:2px;">Match & dispute manager: cancel/refund matches, dissolve teams & resolve tickets.</div>
           </div>
         </div>
 
-        <!-- Option 3: Simple Moderator -->
-        <div class="role-option-card" data-role="simple_moderator" onclick="submitSetStaffRole('simple_moderator')">
-          <div style="width:38px;height:38px;border-radius:10px;background:rgba(168,85,247,0.2);color:#c084fc;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-            <i data-lucide="shield" style="width:20px;height:20px;"></i>
-          </div>
-          <div style="flex:1;">
-            <div style="font-weight:800;color:#c084fc;font-size:0.95rem;">🔰 Simple Moderator</div>
-            <div style="font-size:0.75rem;color:var(--text-muted);margin-top:2px;">Inspector & reviewer: view profiles, inspect rooms & resolve tickets.</div>
-          </div>
-        </div>
-
-        <!-- Option 4: Regular Player (Revoke) -->
+        <!-- Option 3: Regular Player (Revoke) -->
         <div class="role-option-card" data-role="none" onclick="submitSetStaffRole('none')">
           <div style="width:38px;height:38px;border-radius:10px;background:rgba(255,255,255,0.05);color:#94a3b8;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-            <i data-lucide="user" style="width:20px;height:20px;"></i>
+            <i data-lucide="user-x" style="width:20px;height:20px;"></i>
           </div>
           <div style="flex:1;">
-            <div style="font-weight:800;color:#94a3b8;font-size:0.95rem;">👤 Regular Player</div>
+            <div style="font-weight:800;color:#94a3b8;font-size:0.95rem;">Regular Player</div>
             <div style="font-size:0.75rem;color:var(--text-muted);margin-top:2px;">No staff permissions.</div>
           </div>
         </div>

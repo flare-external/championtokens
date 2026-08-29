@@ -221,8 +221,8 @@ function injectNav(activePage = '') {
             <p style="font-size:0.85rem;color:var(--text-muted);line-height:1.5;max-width:360px;">
               Our automated withdrawal gateway for instant <strong>Crypto (USDT / SOL / LTC)</strong> & <strong>PayPal</strong> payouts is currently undergoing security audits.
             </p>
-            <span class="chip chip-gold" style="font-size:0.75rem;padding:4px 14px;font-weight:800;">
-              ⚡ Launching In Next Update
+            <span class="chip chip-gold" style="font-size:0.75rem;padding:4px 14px;font-weight:800;display:inline-flex;align-items:center;gap:6px;">
+              <i data-lucide="sparkles" style="width:13px;height:13px;"></i> Launching In Next Update
             </span>
           </div>
         </div>
@@ -427,17 +427,17 @@ function renderNavNotifications(uid, notifs) {
   }
 
   const iconMap = {
-    match_win: '🏆',
-    match_join: '🎮',
-    match_team_invite: '⚔️',
-    team_invite: '🤝',
-    income: '💰',
-    system: '📢',
-    admin: '⚡',
+    match_win: '<i data-lucide="trophy" style="width:18px;height:18px;color:var(--gold-bright);"></i>',
+    match_join: '<i data-lucide="swords" style="width:18px;height:18px;color:#60a5fa;"></i>',
+    match_team_invite: '<i data-lucide="shield" style="width:18px;height:18px;color:#a855f7;"></i>',
+    team_invite: '<i data-lucide="users" style="width:18px;height:18px;color:#a855f7;"></i>',
+    income: '<i data-lucide="coins" style="width:18px;height:18px;color:var(--gold-bright);"></i>',
+    system: '<i data-lucide="megaphone" style="width:18px;height:18px;color:var(--gold-bright);"></i>',
+    admin: '<i data-lucide="shield-check" style="width:18px;height:18px;color:var(--gold-bright);"></i>',
   };
 
   list.innerHTML = notifs.map(n => {
-    const icon = iconMap[n.type] || '🔔';
+    const icon = iconMap[n.type] || '<i data-lucide="bell" style="width:18px;height:18px;color:var(--text-muted);"></i>';
     const timeStr = n.createdAt ? formatTime(n.createdAt) : '';
     const isTeamInvite = n.type === 'team_invite' && !n.read && !n.accepted && !n.declined;
     const isMatchTeamInvite = n.type === 'match_team_invite' && !n.read && !n.accepted && !n.declined;
@@ -597,7 +597,7 @@ async function handleWalletBuy(packName, tokenAmount, usdPrice) {
   }
   const amount = parseFloat(tokenAmount);
   try {
-    await updateTokens(user.uid, amount, 'purchase', `💳 Purchased ${packName} Pack (${formatTokens(amount)} Tokens)`);
+    await updateTokens(user.uid, amount, 'purchase', `Purchased ${packName} Pack (${formatTokens(amount)} Tokens)`);
     showToast(`Successfully added ${formatTokens(amount)} Tokens to your balance!`, 'success');
     closeTokenWalletModal();
   } catch (err) {
@@ -699,11 +699,11 @@ function formatTokens(n) {
 
 function txTypeLabel(type) {
   const labels = {
-    bonus:       '🎉 Welcome Bonus',
-    match_wager: '🎮 Match Wager',
-    match_win:   '🏆 Match Win',
-    purchase:    '💳 Token Purchase',
-    admin:       '⚡ Admin Grant',
+    bonus:       'Welcome Bonus',
+    match_wager: 'Match Wager',
+    match_win:   'Match Win',
+    purchase:    'Token Purchase',
+    admin:       'Admin Grant',
   };
   return labels[type] || type;
 }

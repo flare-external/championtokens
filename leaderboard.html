@@ -24,7 +24,7 @@
   <link rel="icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
-  <link rel="stylesheet" href="css/style.css?v=4.0.1788036456185"/>
+  <link rel="stylesheet" href="css/style.css?v=4.0.1788036787926"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
@@ -141,9 +141,9 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="js/firebase-config.js?v=3.8"></script>
-  <script src="js/auth.js?v=4.0.1788036456185"></script>
-  <script src="js/db.js?v=4.0.1788036456185"></script>
-  <script src="js/nav.js?v=4.0.1788036456185"></script>
+  <script src="js/auth.js?v=4.0.1788036787926"></script>
+  <script src="js/db.js?v=4.0.1788036787926"></script>
+  <script src="js/nav.js?v=4.0.1788036787926"></script>
 
   <script>
     let currentUser = null;
@@ -188,7 +188,12 @@
       renderTablePage(1);
     }
 
-    const RANK_ICONS = { 1: '🥇', 2: '🥈', 3: '🥉' };
+    function getPodiumRankBadge(rank) {
+      if (rank === 1) return '<span class="podium-rank" style="color:var(--gold-bright);"><i data-lucide="trophy" style="width:20px;height:20px;"></i> #1</span>';
+      if (rank === 2) return '<span class="podium-rank" style="color:#cbd5e1;"><i data-lucide="medal" style="width:20px;height:20px;"></i> #2</span>';
+      if (rank === 3) return '<span class="podium-rank" style="color:#d97706;"><i data-lucide="medal" style="width:20px;height:20px;"></i> #3</span>';
+      return `<span class="podium-rank">#${rank}</span>`;
+    }
 
     function avatarEl(u, size, cls) {
       const letter = (u.displayName || '?').charAt(0).toUpperCase();
@@ -215,7 +220,7 @@
         const isCurrent = u.id === currentUser?.uid;
         return `
           <a href="profile?uid=${u.id}" class="podium-card podium-card--${pos}${isCurrent ? ' current-user' : ''}" title="View ${escapeHtml(u.displayName)}'s Profile">
-            <div class="podium-rank">${RANK_ICONS[rank] || rank}</div>
+            ${getPodiumRankBadge(rank)}
             ${avatarEl(u, 68, `podium-avatar podium-avatar--${pos}`)}
             <div class="podium-name">${escapeHtml(u.displayName || 'Unknown')}${isCurrent ? ' <span style="color:var(--gold-bright);font-size:0.75rem;">(You)</span>' : ''}</div>
             ${u.epicUsername ? `<div style="font-size:0.72rem;color:#38bdf8;font-weight:700;display:inline-flex;align-items:center;gap:3px;padding:2px 7px;background:rgba(56,189,248,0.1);border-radius:4px;border:1px solid rgba(56,189,248,0.25);"><i data-lucide="gamepad-2" style="width:11px;height:11px;"></i> ${escapeHtml(u.epicUsername)}</div>` : ''}
