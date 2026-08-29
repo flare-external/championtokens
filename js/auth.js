@@ -293,7 +293,7 @@ function requireAuth(redirectTo = 'index.html') {
   });
 }
 
-/** Platform Owner / Highest Admin Discord ID & UID */
+/** Platform Owner Discord ID & UID */
 const OWNER_DISCORD_ID = '1121188319410278420';
 const OWNER_UID = 'discord:1121188319410278420';
 
@@ -301,7 +301,63 @@ const OWNER_UID = 'discord:1121188319410278420';
 const ADMIN_DISCORD_IDS = ['1121188319410278420'];
 
 /**
- * Check if the given user is the Platform Owner / Highest Admin
+ * Get staff tier for a user: 'administrator' | 'moderator' | 'simple_moderator' | 'none'
+ */
+function getStaffTier(user, userData = null) {
+  if (!user && !userData) return 'none';
+  const uid = user?.uid || userData?.uid || userData?.id || '';
+  const discordId = userData?.discordId || (uid.startsWith('discord:') ? uid.replace('discord:', '') : '');
+
+  if (user?.isAnonymous || userData?.isGuest === true || uid.startsWith('guest_') || discordId.startsWith('guest_')) {
+    return 'none';
+  }
+
+  // Explicit staffRole in document
+  const rawRole = (userData?.staffRole || userData?.adminRole || userData?.role || '').toLowerCase().trim();
+  if (rawRole === 'admin' || rawRole === 'administrator') return 'administrator';
+  if (rawRole === 'moderator' || rawRole === 'mod') return 'moderator';
+  if (rawRole === 'simple_moderator' || rawRole === 'simple_mod' || rawRole === 'simplemod') return 'simple_moderator';
+
+  // Backwards compatibility for owner / admin list / isAdmin
+  if (discordId === OWNER_DISCORD_ID || uid === OWNER_UID || ADMIN_DISCORD_IDS.includes(discordId) || (userData?.isAdmin === true && !userData?.isGuest)) {
+    return 'administrator';
+  }
+
+  return 'none';
+}
+
+/**
+ * Check if the given user is any staff tier (Administrator, Moderator, or Simple Moderator)
+ */
+function isStaffUser(user, userData = null) {
+  const tier = getStaffTier(user, userData);
+  return tier === 'administrator' || tier === 'moderator' || tier === 'simple_moderator';
+}
+
+/**
+ * Check if the given user is an Administrator (Full Admin access)
+ */
+function isFullAdmin(user, userData = null) {
+  return getStaffTier(user, userData) === 'administrator';
+}
+
+/**
+ * Check if the given user is a Moderator or higher
+ */
+function isModerator(user, userData = null) {
+  const tier = getStaffTier(user, userData);
+  return tier === 'administrator' || tier === 'moderator';
+}
+
+/**
+ * Check if the given user is a Simple Moderator
+ */
+function isSimpleModerator(user, userData = null) {
+  return getStaffTier(user, userData) === 'simple_moderator';
+}
+
+/**
+ * Check if the user is owner / highest admin
  */
 function isOwnerUser(user, userData = null) {
   if (!user && !userData) return false;
@@ -311,17 +367,10 @@ function isOwnerUser(user, userData = null) {
 }
 
 /**
- * Check if the given user is an administrator
+ * Legacy admin check (checks if user has any staff access)
  */
 function isAdminUser(user, userData = null) {
-  if (!user && !userData) return false;
-  if (isOwnerUser(user, userData)) return true;
-  const uid = user?.uid || userData?.uid || userData?.id || '';
-  const discordId = userData?.discordId || (uid.startsWith('discord:') ? uid.replace('discord:', '') : '');
-  if (user?.isAnonymous || userData?.isGuest === true || uid.startsWith('guest_') || discordId.startsWith('guest_')) {
-    return false;
-  }
-  return ADMIN_DISCORD_IDS.includes(discordId) || (userData?.isAdmin === true && !userData?.isGuest);
+  return isStaffUser(user, userData);
 }
 
 /**

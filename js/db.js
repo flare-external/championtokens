@@ -2824,24 +2824,31 @@ async function adminUnlinkEpic(targetUid) {
 }
 
 /**
- * Toggle Admin/Staff status for a user.
- * Hierarchy rules: Only the Platform Owner can grant or revoke admin privileges.
+ * Set or change staff tier for a user.
+ * Tiers: 'administrator' | 'moderator' | 'simple_moderator' | 'none'
  */
-async function adminToggleAdmin(targetUid, makeAdmin, callerUid = null) {
+async function adminSetStaffRole(targetUid, role, callerUid = null) {
   if (!targetUid) throw new Error('Target UID required');
-  if (targetUid === OWNER_UID || targetUid.includes(OWNER_DISCORD_ID)) {
-    throw new Error('The Platform Owner permissions cannot be modified.');
+  const validRoles = ['administrator', 'moderator', 'simple_moderator', 'none'];
+  const cleanRole = (role || 'none').toLowerCase().trim();
+  if (!validRoles.includes(cleanRole)) {
+    throw new Error('Invalid staff role: ' + role);
   }
 
-  const isCallerOwner = callerUid ? (callerUid === OWNER_UID || callerUid.includes(OWNER_DISCORD_ID)) : false;
-  if (callerUid && !isCallerOwner) {
-    throw new Error('Only the Platform Owner can promote or demote administrators.');
-  }
-
+  const isStaff = cleanRole !== 'none';
   await db.collection('users').doc(targetUid).update({
-    isAdmin: !!makeAdmin,
+    staffRole: cleanRole === 'none' ? firebase.firestore.FieldValue.delete() : cleanRole,
+    isAdmin: isStaff,
+    roleUpdatedAt: firebase.firestore.FieldValue.serverTimestamp(),
   });
   return true;
+}
+
+/**
+ * Toggle Admin/Staff status for a user.
+ */
+async function adminToggleAdmin(targetUid, makeAdmin, callerUid = null) {
+  return adminSetStaffRole(targetUid, makeAdmin ? 'administrator' : 'none', callerUid);
 }
 
 /**

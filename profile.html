@@ -7,7 +7,7 @@
   <link rel="icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
-  <link rel="stylesheet" href="css/style.css?v=4.0.1788036134529"/>
+  <link rel="stylesheet" href="css/style.css?v=4.0.1788036456185"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
@@ -1215,9 +1215,9 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="js/firebase-config.js?v=3.2"></script>
-  <script src="js/auth.js?v=4.0.1788036134529"></script>
-  <script src="js/db.js?v=4.0.1788036134529"></script>
-  <script src="js/nav.js?v=4.0.1788036134529"></script>
+  <script src="js/auth.js?v=4.0.1788036456185"></script>
+  <script src="js/db.js?v=4.0.1788036456185"></script>
+  <script src="js/nav.js?v=4.0.1788036456185"></script>
 
   <script>
     let currentUser = null;
@@ -1453,8 +1453,13 @@
       const badgesRow = document.getElementById('profile-badges-row');
       if (badgesRow) {
         let bHtml = '';
-        if (isOwnerUser(null, data) || targetUid === OWNER_UID || (targetUid && targetUid.includes(OWNER_DISCORD_ID))) {
-          bHtml += `<span class="badge-staff" style="background:rgba(245,158,11,0.22);color:var(--gold-bright);border:1px solid var(--gold-bright);box-shadow:0 0 12px var(--gold-glow);"><i data-lucide="crown" style="width:12px;height:12px;"></i> OWNER</span>`;
+        const staffTier = typeof getStaffTier === 'function' ? getStaffTier(null, data) : (data.isAdmin ? 'administrator' : 'none');
+        if (staffTier === 'administrator') {
+          bHtml += `<span class="badge-staff" style="background:rgba(245,158,11,0.2);color:var(--gold-bright);border:1px solid rgba(245,158,11,0.5);"><i data-lucide="shield-check" style="width:12px;height:12px;"></i> ADMIN</span>`;
+        } else if (staffTier === 'moderator') {
+          bHtml += `<span class="badge-staff" style="background:rgba(59,130,246,0.2);color:#60a5fa;border:1px solid rgba(59,130,246,0.5);"><i data-lucide="shield" style="width:12px;height:12px;"></i> MODERATOR</span>`;
+        } else if (staffTier === 'simple_moderator') {
+          bHtml += `<span class="badge-staff" style="background:rgba(168,85,247,0.2);color:#c084fc;border:1px solid rgba(168,85,247,0.5);"><i data-lucide="shield" style="width:12px;height:12px;"></i> SIMPLE MOD</span>`;
         } else if (isStaff) {
           bHtml += `<span class="badge-staff"><i data-lucide="shield-check" style="width:12px;height:12px;"></i> STAFF</span>`;
         }
