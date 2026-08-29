@@ -2143,9 +2143,7 @@ async function buyShopPfp(uid, pfpId) {
 
   await updateTokens(uid, -item.cost, 'shop', `🎨 Purchased Avatar: "${item.name}" (${item.rarity})`);
   await db.collection('users').doc(uid).update({
-    unlockedPfps: firebase.firestore.FieldValue.arrayUnion(pfpId),
-    photoURL: item.file,
-    equippedPfp: pfpId
+    unlockedPfps: firebase.firestore.FieldValue.arrayUnion(pfpId)
   });
 
   return item;
