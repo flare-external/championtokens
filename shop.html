@@ -24,7 +24,7 @@
   <link rel="icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
-  <link rel="stylesheet" href="css/style.css?v=4.0.1788029541265"/>
+  <link rel="stylesheet" href="css/style.css?v=4.0.1788029819691"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
@@ -107,19 +107,11 @@
   </div>
 
   <main class="page-wrap">
-    <!-- Under update screen for non-owners -->
-    <div id="shop-update-screen" style="display:none;flex-direction:column;align-items:center;justify-content:center;min-height:55vh;text-align:center;">
-      <div style="font-size:2rem;font-weight:900;color:var(--gold-bright);letter-spacing:0.02em;">
-        🔄 Under update.
-      </div>
-    </div>
-
-    <!-- Full Shop for Platform Owner -->
-    <div id="shop-owner-content" style="display:none;">
+    <div id="shop-content">
       <div class="shop-header-flex">
         <div class="page-header" style="margin-bottom:0;">
           <h1><i data-lucide="shopping-cart" style="color:var(--gold-bright);"></i> Token Shop</h1>
-          <p>Unlock Champion Premium, exclusive perks, and upcoming upgrades.</p>
+          <p>Unlock Champion Premium, exclusive perks, and avatar cosmetics.</p>
         </div>
       </div>
 
@@ -194,9 +186,9 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="js/firebase-config.js?v=3.8"></script>
-  <script src="js/auth.js?v=4.0.1788029541265"></script>
-  <script src="js/db.js?v=4.0.1788029541265"></script>
-  <script src="js/nav.js?v=4.0.1788029541265"></script>
+  <script src="js/auth.js?v=4.0.1788029819691"></script>
+  <script src="js/db.js?v=4.0.1788029819691"></script>
+  <script src="js/nav.js?v=4.0.1788029819691"></script>
 
   <script>
     let currentUser = null;
@@ -214,19 +206,10 @@
         injectNav('shop');
         document.getElementById('page-loading').classList.add('hidden');
 
-        const isOwner = (typeof isOwnerUser === 'function' && isOwnerUser(user, currentUserData)) || user?.uid === 'discord:1121188319410278420' || currentUserData?.discordId === '1121188319410278420';
-
-        if (!isOwner) {
-          document.getElementById('shop-update-screen').style.display = 'flex';
-          document.getElementById('shop-owner-content').style.display = 'none';
-        } else {
-          document.getElementById('shop-update-screen').style.display = 'none';
-          document.getElementById('shop-owner-content').style.display = 'block';
-          checkPremiumStatus();
-          renderDailyPfps();
-          renderShopTitles();
-          startShopTimer();
-        }
+        checkPremiumStatus();
+        renderDailyPfps();
+        renderShopTitles();
+        startShopTimer();
         if (window.lucide) lucide.createIcons();
       }).catch(err => {
         console.error('Shop auth error:', err);
