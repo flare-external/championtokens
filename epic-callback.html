@@ -55,8 +55,11 @@
   <div class="white-spinner" id="spinner"></div>
 
   <div class="error-fallback" id="error-box">
-    <p id="error-msg">Could not complete Epic sign-in.</p>
-    <a href="profile">Return to Profile</a>
+    <p id="error-msg" style="color:#ef4444;font-weight:800;font-size:1.05rem;line-height:1.4;margin-bottom:8px;"></p>
+    <div id="error-actions" style="margin-top:16px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+      <a id="error-external-btn" href="https://www.epicgames.com/account/personal" target="_blank" style="background:#0078f2;color:#fff;border:none;display:none;">Sign In to Epic Games</a>
+      <a href="profile?tab=connections">Return to Profile</a>
+    </div>
   </div>
 
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
@@ -71,6 +74,21 @@
       if (errBox) {
         errBox.style.display = 'block';
         document.getElementById('error-msg').textContent = msg;
+      }
+    }
+
+    function showErrorWithLink(msg, url, btnText = 'Sign in on Epic Games') {
+      document.getElementById('spinner').style.display = 'none';
+      const errBox = document.getElementById('error-box');
+      if (errBox) {
+        errBox.style.display = 'block';
+        document.getElementById('error-msg').textContent = msg;
+        const extBtn = document.getElementById('error-external-btn');
+        if (extBtn) {
+          extBtn.href = url || 'https://www.epicgames.com/account/personal';
+          extBtn.textContent = btnText;
+          extBtn.style.display = 'inline-block';
+        }
       }
     }
 
@@ -101,17 +119,23 @@
       const stateParam = urlParams.get('state');
 
       let stateUid = '';
+      let stateMode = 'link';
       if (stateParam) {
         try {
           const parsed = JSON.parse(atob(decodeURIComponent(stateParam)));
           if (parsed && parsed.uid) stateUid = parsed.uid;
+          if (parsed && parsed.mode) stateMode = parsed.mode;
         } catch (e) {}
       }
 
       let localUid = '';
+      let localMode = 'link';
       try {
         localUid = localStorage.getItem('ct_epic_linking_uid') || '';
+        localMode = localStorage.getItem('ct_epic_auth_mode') || 'link';
       } catch (e) {}
+
+      const authMode = stateMode || localMode || 'link';
 
       if (error) {
         showError(errorDesc || 'Epic authentication was cancelled.');
@@ -185,7 +209,36 @@
           return;
         }
 
-        // 1. Check if another account already has this epicAccountId linked
+        const userDocSnap = await db.collection('users').doc(finalUid).get();
+        const existingUser = userDocSnap.data() || {};
+        const lowerName = epicUsername.toLowerCase();
+
+        // 1. If syncing or already linked to an Epic Account ID, ensure the account IDs MATCH!
+        if (authMode === 'sync' || (existingUser.epicAccountId && existingUser.epicAccountId !== '')) {
+          if (existingUser.epicAccountId && existingUser.epicAccountId !== epicAccountId) {
+            showErrorWithLink(
+              'Wrong epic games account, please sign in again.',
+              'https://www.epicgames.com/account/personal',
+              'Sign In on Epic Games / Fortnite'
+            );
+            return;
+          }
+
+          // Same verified Epic Account! Refresh username and sync time without touching site displayName
+          await db.collection('users').doc(finalUid).set({
+            epicUsername:       epicUsername,
+            epicUsername_lower: lowerName,
+            epicVerified:       true,
+            epicLastSynced:     firebase.firestore.FieldValue.serverTimestamp(),
+          }, { merge: true });
+
+          try { localStorage.removeItem('ct_epic_auth_mode'); } catch (e) {}
+          try { localStorage.removeItem('ct_epic_linking_uid'); } catch (e) {}
+          window.location.href = 'profile?tab=connections&synced=1';
+          return;
+        }
+
+        // 2. Initial Linking: Check if another user has this epicAccountId linked
         if (epicAccountId) {
           const idSnap = await db.collection('users')
             .where('epicAccountId', '==', epicAccountId)
@@ -199,8 +252,7 @@
           }
         }
 
-        // 2. Check if another account already has this exact epicUsername linked (case-insensitive check)
-        const lowerName = epicUsername.toLowerCase();
+        // 3. Check if another account already has this exact epicUsername linked (case-insensitive check)
         const nameSnap = await db.collection('users')
           .where('epicUsername_lower', '==', lowerName)
           .limit(5)
@@ -229,11 +281,12 @@
           epicLinkedAt:       firebase.firestore.FieldValue.serverTimestamp(),
         }, { merge: true });
 
-        // Clear ALL epic localStorage keys so profile.html doesn't re-write
+        // Clear ALL epic localStorage keys
         try { localStorage.removeItem('ct_epic_username'); } catch (e) {}
         try { localStorage.removeItem('ct_epic_account_id'); } catch (e) {}
         try { localStorage.removeItem('ct_epic_linked_pending'); } catch (e) {}
         try { localStorage.removeItem('ct_epic_linking_uid'); } catch (e) {}
+        try { localStorage.removeItem('ct_epic_auth_mode'); } catch (e) {}
         window.location.href = 'profile?tab=connections&linked=1';
 
       } catch (dbErr) {

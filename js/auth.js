@@ -41,11 +41,11 @@ function getEpicRedirectUri() {
 
 /**
  * Initiate official published Epic Games OAuth 2.0 flow.
- * Pass forceRelink=true to bypass the "already linked" guard.
+ * Pass forceRelink=true or mode='sync' to bypass the "already linked" guard.
  */
-function startEpicOAuth(uidOverride, forceRelink = false) {
-  // Guard: if already linked, don't allow re-OAuth unless force-relinking after unlink
-  if (!forceRelink && typeof currentUserData !== 'undefined' && currentUserData?.epicUsername) {
+function startEpicOAuth(uidOverride, forceRelink = false, mode = 'link') {
+  // Guard: if already linked, don't allow re-OAuth unless force-relinking or syncing username
+  if (mode !== 'sync' && !forceRelink && typeof currentUserData !== 'undefined' && currentUserData?.epicUsername) {
     if (typeof showToast === 'function') {
       showToast('Epic account already linked. Unlink first to change accounts.', 'info');
     }
@@ -56,8 +56,11 @@ function startEpicOAuth(uidOverride, forceRelink = false) {
   const uid = uidOverride || (auth.currentUser ? auth.currentUser.uid : (typeof currentUser !== 'undefined' && currentUser ? currentUser.uid : ''));
   let state = '';
   if (uid) {
-    state = encodeURIComponent(btoa(JSON.stringify({ uid: uid })));
-    try { localStorage.setItem('ct_epic_linking_uid', uid); } catch (e) {}
+    state = encodeURIComponent(btoa(JSON.stringify({ uid: uid, mode: mode })));
+    try { 
+      localStorage.setItem('ct_epic_linking_uid', uid); 
+      localStorage.setItem('ct_epic_auth_mode', mode);
+    } catch (e) {}
   }
   const epicAuthUrl = `https://www.epicgames.com/id/authorize?client_id=${clientId}&response_type=code&scope=basic_profile&redirect_uri=${redirectUri}${state ? `&state=${state}` : ''}`;
   window.location.href = epicAuthUrl;

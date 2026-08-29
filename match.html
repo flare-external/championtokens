@@ -7,7 +7,7 @@
   <link rel="icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
-  <link rel="stylesheet" href="css/style.css?v=4.0.1788035327614"/>
+  <link rel="stylesheet" href="css/style.css?v=4.0.1788035736862"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
@@ -1437,9 +1437,9 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="js/firebase-config.js"></script>
-  <script src="js/auth.js?v=4.0.1788035327614"></script>
-  <script src="js/db.js?v=4.0.1788035327614"></script>
-  <script src="js/nav.js?v=4.0.1788035327614"></script>
+  <script src="js/auth.js?v=4.0.1788035736862"></script>
+  <script src="js/db.js?v=4.0.1788035736862"></script>
+  <script src="js/nav.js?v=4.0.1788035736862"></script>
 
   <script>
     let currentUser = null;
@@ -1748,9 +1748,10 @@
               <div style="width:26px;height:26px;border-radius:8px;background:${t1Bg};border:1px solid ${t1Border};display:flex;align-items:center;justify-content:center;flex-shrink:0;">
                 <i data-lucide="${t1Icon}" style="width:14px;height:14px;color:${t1IconColor};"></i>
               </div>
-            ` : ''}
-            <span style="font-weight:900;color:#fff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${t1Title}</span>
-            ${showT1Tag ? `<span style="background:${t1Bg};color:${t1IconColor};border:1px solid ${t1Border};font-size:0.68rem;padding:2px 7px;border-radius:6px;font-weight:800;">Team ${escapeHtml(match.teamTag)}</span>` : ''}
+              <span style="font-weight:900;color:#fff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Team ${escapeHtml(match.teamTag)}</span>
+            ` : `
+              <span style="font-weight:900;color:#fff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${t1Title}</span>
+            `}
           </div>
         `;
       }
@@ -1792,9 +1793,10 @@
               <div style="width:26px;height:26px;border-radius:8px;background:${t2Bg};border:1px solid ${t2Border};display:flex;align-items:center;justify-content:center;flex-shrink:0;">
                 <i data-lucide="${t2Icon}" style="width:14px;height:14px;color:${t2IconColor};"></i>
               </div>
-            ` : ''}
-            <span style="font-weight:900;color:#fff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${t2Title}</span>
-            ${showT2Tag ? `<span style="background:${t2Bg};color:${t2IconColor};border:1px solid ${t2Border};font-size:0.68rem;padding:2px 7px;border-radius:6px;font-weight:800;">Team ${escapeHtml(t2Tag)}</span>` : ''}
+              <span style="font-weight:900;color:#fff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Team ${escapeHtml(t2Tag)}</span>
+            ` : `
+              <span style="font-weight:900;color:#fff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${t2Title}</span>
+            `}
           </div>
         `;
       }

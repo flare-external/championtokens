@@ -7,7 +7,7 @@
   <link rel="icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
-  <link rel="stylesheet" href="css/style.css?v=4.0.1788035327614"/>
+  <link rel="stylesheet" href="css/style.css?v=4.0.1788035736862"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
@@ -1215,9 +1215,9 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="js/firebase-config.js?v=3.2"></script>
-  <script src="js/auth.js?v=4.0.1788035327614"></script>
-  <script src="js/db.js?v=4.0.1788035327614"></script>
-  <script src="js/nav.js?v=4.0.1788035327614"></script>
+  <script src="js/auth.js?v=4.0.1788035736862"></script>
+  <script src="js/db.js?v=4.0.1788035736862"></script>
+  <script src="js/nav.js?v=4.0.1788035736862"></script>
 
   <script>
     let currentUser = null;
@@ -1287,7 +1287,14 @@
           }
         }
 
-        if (urlParams.get('linked') === '1') {
+        if (urlParams.get('synced') === '1') {
+          showToast('✅ Epic Games account username refreshed & synced!', 'success');
+          try {
+            const cleanUrl = window.location.pathname + (urlParams.get('uid') ? `?uid=${urlParams.get('uid')}&tab=connections` : '?tab=connections');
+            window.history.replaceState({}, document.title, cleanUrl);
+          } catch (e) {}
+        } else if (urlParams.get('linked') === '1') {
+          showToast('✅ Epic Games account successfully linked!', 'success');
           try {
             const cleanUrl = window.location.pathname + (urlParams.get('uid') ? `?uid=${urlParams.get('uid')}&tab=connections` : '?tab=connections');
             window.history.replaceState({}, document.title, cleanUrl);
@@ -2026,7 +2033,7 @@
     }
 
     // ── Epic Games Top Showcase Section (Dedicated Top Card) ──────
-    async function handleSyncEpic() {
+    function handleSyncEpic() {
       if (!currentUserData?.epicUsername) return;
       const btn = document.getElementById('sync-epic-btn');
       if (btn) {
@@ -2034,18 +2041,10 @@
         btn.innerHTML = `<i data-lucide="rotate-cw" style="animation:spin 0.8s linear infinite;"></i>`;
         if (window.lucide) lucide.createIcons();
       }
-      try {
-        await syncEpicAccountName(currentUser.uid);
-        showToast(`Epic Games account "${currentUserData.epicUsername}" refreshed & synced!`, 'success');
-      } catch (err) {
-        showToast('Sync error: ' + (err.message || err), 'error');
-      } finally {
-        if (btn) {
-          btn.disabled = false;
-          btn.innerHTML = `<i data-lucide="rotate-cw"></i>`;
-          if (window.lucide) lucide.createIcons();
-        }
-      }
+      showToast('Redirecting to Epic Games to verify account & sync IGN…', 'info');
+      setTimeout(() => {
+        startEpicOAuth(currentUser.uid, false, 'sync');
+      }, 400);
     }
 
     function renderEpicTopSection(data) {
