@@ -7,7 +7,7 @@
   <link rel="icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
-  <link rel="stylesheet" href="css/style.css?v=4.0.1788027423728"/>
+  <link rel="stylesheet" href="css/style.css?v=4.0.1788027587012"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
@@ -361,6 +361,13 @@
       border-color: rgba(245, 158, 11, 0.45);
       transform: translateY(-4px) scale(1.02);
       box-shadow: 0 10px 26px rgba(0,0,0,0.7);
+    }
+    .pfp-equip-btn {
+      transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.18s ease, box-shadow 0.18s ease;
+    }
+    .pfp-equip-btn:hover {
+      transform: translateY(-2px) scale(1.06);
+      box-shadow: 0 4px 14px rgba(245, 158, 11, 0.35);
     }
     .cosmetics-option-card.equipped {
       border-color: var(--gold-bright);
@@ -1108,9 +1115,9 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="js/firebase-config.js?v=3.2"></script>
-  <script src="js/auth.js?v=4.0.1788027423728"></script>
-  <script src="js/db.js?v=4.0.1788027423728"></script>
-  <script src="js/nav.js?v=4.0.1788027423728"></script>
+  <script src="js/auth.js?v=4.0.1788027587012"></script>
+  <script src="js/db.js?v=4.0.1788027587012"></script>
+  <script src="js/nav.js?v=4.0.1788027587012"></script>
 
   <script>
     let currentUser = null;
@@ -1695,7 +1702,12 @@
                 ${isEquipped ? `
                   <span style="font-size:0.75rem;font-weight:800;letter-spacing:0.08em;color:var(--gold-bright);text-transform:uppercase;">Equipped</span>
                 ` : isOwned ? `
-                  <span style="font-size:0.78rem;font-weight:800;letter-spacing:0.04em;color:#e2e8f0;text-transform:uppercase;background:rgba(255,255,255,0.06);padding:3px 12px;border-radius:20px;border:1px solid rgba(255,255,255,0.12);">Equip</span>
+                  <div style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;">
+                    <span style="font-size:0.72rem;font-weight:700;color:#94a3b8;">Owned</span>
+                    <button class="btn btn-primary btn-xs pfp-equip-btn" onclick="equipPfpFromModal('${item.id}');event.stopPropagation();" style="padding:3px 12px;font-size:0.75rem;font-weight:800;border-radius:12px;">
+                      Equip
+                    </button>
+                  </div>
                 ` : `
                   <div style="display:flex;align-items:center;gap:4px;font-size:0.72rem;font-weight:700;color:#64748b;letter-spacing:0.03em;text-transform:uppercase;">
                     <i data-lucide="lock" style="width:11px;height:11px;"></i> Shop
