@@ -11,7 +11,7 @@
   <link rel="icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
-  <link rel="stylesheet" href="css/style.css?v=4.0.1788050379083"/>
+  <link rel="stylesheet" href="css/style.css?v=4.0.1788050566295"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
@@ -24,58 +24,53 @@
       animation: spinRefresh 0.75s cubic-bezier(0.4, 0, 0.2, 1) infinite !important;
     }
 
-    .lb-hero-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 16px;
-      margin-bottom: 24px;
-      padding: 22px 26px;
+    /* 1. Morphed Header & Stats Card */
+    .lb-morphed-header-card {
       background: #000000;
       border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 18px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.85);
+      border-radius: 20px;
+      padding: 24px 28px;
+      margin-bottom: 24px;
+      box-shadow: 0 14px 40px rgba(0,0,0,0.85);
     }
 
     .lb-stats-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 14px;
-      margin-bottom: 24px;
+      gap: 12px;
+      margin: 0;
     }
 
     .lb-stat-card {
-      background: #000000;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 16px;
-      padding: 16px 18px;
+      background: #060608;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 14px;
+      padding: 14px 16px;
       display: flex;
       align-items: center;
-      gap: 14px;
-      transition: transform 0.2s ease, border-color 0.2s ease;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.7);
+      gap: 12px;
+      transition: border-color 0.18s ease, transform 0.18s ease;
     }
     .lb-stat-card:hover {
-      transform: translateY(-2px);
-      border-color: rgba(255, 255, 255, 0.16);
+      border-color: rgba(255, 255, 255, 0.14);
+      transform: translateY(-1px);
     }
     .lb-stat-icon-wrap {
-      width: 44px;
-      height: 44px;
-      border-radius: 12px;
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
     }
 
-    /* Podium Section */
+    /* 2. Podium Showcase */
     .podium-section {
       display: grid;
       grid-template-columns: 1fr 1.08fr 1fr;
       gap: 16px;
-      margin-bottom: 28px;
+      margin-bottom: 24px;
       align-items: end;
     }
 
@@ -97,34 +92,28 @@
       overflow: hidden;
     }
     .podium-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 18px 48px rgba(0,0,0,0.95);
+      transform: translateY(-3px);
+      border-color: rgba(255, 255, 255, 0.14);
     }
 
     .podium-card--1 {
       border-color: rgba(255, 255, 255, 0.12);
-      background: linear-gradient(180deg, rgba(245, 158, 11, 0.12) 0%, #000000 100%);
-      padding-top: 32px;
-      padding-bottom: 28px;
-      box-shadow: 0 14px 40px rgba(0,0,0,0.9);
+      background: linear-gradient(180deg, rgba(245, 158, 11, 0.08) 0%, #000000 100%);
+      padding-top: 30px;
+      padding-bottom: 26px;
     }
-    .podium-card--1:hover {
-      border-color: rgba(255, 255, 255, 0.2); box-shadow: 0 18px 48px rgba(0,0,0,0.95);
-    }
-
     .podium-card--2 {
-      border-color: rgba(203, 213, 225, 0.22);
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, #000000 100%);
+      border-color: rgba(203, 213, 225, 0.16);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.04) 0%, #000000 100%);
     }
-
     .podium-card--3 {
-      border-color: rgba(217, 119, 6, 0.28);
-      background: linear-gradient(180deg, rgba(217, 119, 6, 0.06) 0%, #000000 100%);
+      border-color: rgba(217, 119, 6, 0.18);
+      background: linear-gradient(180deg, rgba(217, 119, 6, 0.04) 0%, #000000 100%);
     }
 
     .podium-avatar-wrap {
-      width: 72px;
-      height: 72px;
+      width: 68px;
+      height: 68px;
       border-radius: 50%;
       background: #080808;
       display: flex;
@@ -137,7 +126,7 @@
       position: relative;
     }
     .podium-avatar-wrap img { width: 100%; height: 100%; object-fit: cover; }
-    .podium-avatar-wrap--1 { width: 84px; height: 84px; border: none; box-shadow: none; }
+    .podium-avatar-wrap--1 { width: 80px; height: 80px; border: none; box-shadow: none; }
     .podium-avatar-wrap--2 { border: none; box-shadow: none; }
     .podium-avatar-wrap--3 { border: none; box-shadow: none; }
 
@@ -155,17 +144,17 @@
     .rank-pill.rank-1 {
       background: rgba(245, 158, 11, 0.22);
       color: var(--gold-bright);
-      border: 1px solid rgba(245, 158, 11, 0.3); box-shadow: none;
+      border: 1px solid rgba(245, 158, 11, 0.3);
     }
     .rank-pill.rank-2 {
       background: rgba(203, 213, 225, 0.16);
       color: #e2e8f0;
-      border: 1px solid rgba(203, 213, 225, 0.4);
+      border: 1px solid rgba(203, 213, 225, 0.3);
     }
     .rank-pill.rank-3 {
       background: rgba(217, 119, 6, 0.18);
       color: #f59e0b;
-      border: 1px solid rgba(217, 119, 6, 0.4);
+      border: 1px solid rgba(217, 119, 6, 0.3);
     }
     .rank-pill.rank-other {
       background: rgba(255, 255, 255, 0.04);
@@ -175,53 +164,91 @@
       font-size: 0.8rem;
     }
 
-    /* Filter & Search Bar */
-    .lb-controls-card {
+    /* 3. Table Container & Height-Elevated Search Bar */
+    .lb-table-card {
       background: #000000;
       border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 16px;
-      padding: 16px 20px;
-      margin-bottom: 20px;
+      border-radius: 20px;
+      padding: 24px 26px;
+      box-shadow: 0 14px 40px rgba(0,0,0,0.85);
+      margin-bottom: 32px;
+    }
+
+    .lb-controls-bar {
       display: flex;
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
       gap: 14px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.7);
+      margin-bottom: 22px;
+    }
+
+    .lb-search-input-wrap {
+      position: relative;
+      flex: 1;
+      min-width: 240px;
+    }
+
+    .lb-search-icon {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 16px;
+      height: 16px;
+      color: #64748b;
+      pointer-events: none;
+    }
+
+    .lb-search-input {
+      width: 100%;
+      height: 44px;
+      padding: 0 16px 0 44px;
+      background: #060608;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      font-size: 0.88rem;
+      color: #ffffff;
+      transition: border-color 0.18s ease;
+    }
+    .lb-search-input:focus {
+      border-color: rgba(255, 255, 255, 0.22);
+      outline: none;
+    }
+
+    .lb-sort-tabs-wrap {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
     }
 
     .lb-sort-tab {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      padding: 7px 15px;
-      border-radius: 10px;
-      background: #070709;
+      gap: 7px;
+      height: 44px;
+      padding: 0 18px;
+      border-radius: 12px;
+      background: #060608;
       border: 1px solid rgba(255, 255, 255, 0.08);
       color: #94a3b8;
-      font-size: 0.82rem;
+      font-size: 0.84rem;
       font-weight: 700;
       cursor: pointer;
       transition: all 0.16s ease;
     }
     .lb-sort-tab:hover {
-      background: #121216;
+      background: #101014;
       color: #fff;
     }
     .lb-sort-tab.active {
-      background: rgba(245, 158, 11, 0.18);
-      border-color: rgba(245, 158, 11, 0.5);
-      color: var(--gold-bright);
+      background: #18181b;
+      border-color: rgba(255, 255, 255, 0.2);
+      color: #ffffff;
       font-weight: 800;
     }
-
-    /* Table Container */
-    .lb-table-card {
-      background: #000000;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 18px;
-      padding: 20px 22px;
-      box-shadow: 0 12px 36px rgba(0,0,0,0.85);
+    .lb-sort-tab.active i {
+      color: var(--gold-bright);
     }
 
     .lb-custom-table {
@@ -288,9 +315,9 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="js/firebase-config.js?v=3.8"></script>
-  <script src="js/auth.js?v=4.0.1788050379083"></script>
-  <script src="js/db.js?v=4.0.1788050379083"></script>
-  <script src="js/nav.js?v=4.0.1788050379083"></script>
+  <script src="js/auth.js?v=4.0.1788050566295"></script>
+  <script src="js/db.js?v=4.0.1788050566295"></script>
+  <script src="js/nav.js?v=4.0.1788050566295"></script>
 
   <script>
     let currentUser = null;
@@ -554,102 +581,102 @@
   </script>
 
   <main class="page-wrap" style="max-width: 1050px;">
-    <!-- Sleek Glass Hero Header -->
-    <div class="lb-hero-header">
-      <div style="display:flex;align-items:center;gap:12px;">
-        <h1 style="font-size:1.65rem;font-weight:900;margin:0;display:flex;align-items:center;gap:10px;">
-          <i data-lucide="trophy" style="color:var(--gold-bright);width:26px;height:26px;"></i> Leaderboard
-        </h1>
+    <!-- 1. Morphed Master Header & Stats Card -->
+    <div class="lb-morphed-header-card">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <h1 style="font-size:1.65rem;font-weight:900;margin:0;display:flex;align-items:center;gap:10px;color:#fff;">
+            <i data-lucide="trophy" style="color:var(--gold-bright);width:26px;height:26px;"></i> Leaderboard
+          </h1>
+        </div>
+        <div>
+          <button class="btn btn-outline btn-sm" id="refresh-btn" onclick="handleRefresh()" style="display:inline-flex;align-items:center;gap:7px;background:#060608;border:1px solid rgba(255,255,255,0.1);padding:7px 16px;border-radius:10px;font-size:0.82rem;">
+            <i data-lucide="refresh-cw" id="refresh-icon" style="width:14px;height:14px;"></i> <span>Refresh</span>
+          </button>
+        </div>
       </div>
-      <div>
-        <button class="btn btn-outline btn-sm" id="refresh-btn" onclick="handleRefresh()" style="display:inline-flex;align-items:center;gap:7px;">
-          <i data-lucide="refresh-cw" id="refresh-icon" style="width:14px;height:14px;"></i> <span>Refresh</span>
-        </button>
-      </div>
-    </div>
 
-    <!-- Unified Morphed Leaderboard Master Hub -->
-    <div class="lb-morphed-hub">
-      <!-- 1. Quick Stats Row -->
+      <!-- Morphed Divider -->
+      <div style="border-top:1px solid rgba(255,255,255,0.07);margin:20px 0 16px;"></div>
+
+      <!-- Morphed Quick Stats Grid -->
       <div class="lb-stats-grid">
         <div class="lb-stat-card">
-          <div class="lb-stat-icon-wrap" style="background:rgba(245,158,11,0.15);color:var(--gold-bright);">
+          <div class="lb-stat-icon-wrap" style="background:rgba(245,158,11,0.14);color:var(--gold-bright);">
             <i data-lucide="users" style="width:20px;height:20px;"></i>
           </div>
           <div>
             <div style="font-size:0.72rem;font-weight:800;color:var(--text-muted);text-transform:uppercase;">Competitors</div>
-            <div style="font-size:1.25rem;font-weight:900;color:#fff;" id="stat-total-players">0</div>
+            <div style="font-size:1.28rem;font-weight:900;color:#fff;" id="stat-total-players">0</div>
           </div>
         </div>
 
         <div class="lb-stat-card">
-          <div class="lb-stat-icon-wrap" style="background:rgba(59,130,246,0.15);color:#60a5fa;">
+          <div class="lb-stat-icon-wrap" style="background:rgba(59,130,246,0.14);color:#60a5fa;">
             <i data-lucide="trophy" style="width:20px;height:20px;"></i>
           </div>
           <div>
             <div style="font-size:0.72rem;font-weight:800;color:var(--text-muted);text-transform:uppercase;">Victories Won</div>
-            <div style="font-size:1.25rem;font-weight:900;color:#fff;" id="stat-total-wins">0</div>
+            <div style="font-size:1.28rem;font-weight:900;color:#fff;" id="stat-total-wins">0</div>
           </div>
         </div>
 
         <div class="lb-stat-card">
-          <div class="lb-stat-icon-wrap" style="background:rgba(16,185,129,0.15);color:#34d399;">
+          <div class="lb-stat-icon-wrap" style="background:rgba(16,185,129,0.14);color:#34d399;">
             <i data-lucide="coins" style="width:20px;height:20px;"></i>
           </div>
           <div>
             <div style="font-size:0.72rem;font-weight:800;color:var(--text-muted);text-transform:uppercase;">Tokens Earned</div>
-            <div style="font-size:1.25rem;font-weight:900;color:var(--gold-bright);" id="stat-total-earned">0.00</div>
+            <div style="font-size:1.28rem;font-weight:900;color:var(--gold-bright);" id="stat-total-earned">0.00</div>
           </div>
         </div>
 
         <div class="lb-stat-card">
-          <div class="lb-stat-icon-wrap" style="background:rgba(168,85,247,0.15);color:#c084fc;">
+          <div class="lb-stat-icon-wrap" style="background:rgba(168,85,247,0.14);color:#c084fc;">
             <i data-lucide="target" style="width:20px;height:20px;"></i>
           </div>
           <div>
             <div style="font-size:0.72rem;font-weight:800;color:var(--text-muted);text-transform:uppercase;">Top Win Rate</div>
-            <div style="font-size:1.25rem;font-weight:900;color:#fff;" id="stat-top-winrate">0%</div>
+            <div style="font-size:1.28rem;font-weight:900;color:#fff;" id="stat-top-winrate">0%</div>
           </div>
         </div>
       </div>
+    </div>
 
-      <div class="lb-hub-divider"></div>
+    <!-- 2. Top 3 Podium Showcase -->
+    <div class="podium-section" id="podium-wrap">
+      <div class="empty-state" style="grid-column:1/-1;"><div class="spinner" style="margin:0 auto;"></div></div>
+    </div>
 
-      <!-- 2. Top 3 Podium Showcase -->
-      <div class="podium-section" id="podium-wrap">
-        <div class="empty-state" style="grid-column:1/-1;"><div class="spinner" style="margin:0 auto;"></div></div>
-      </div>
-
-      <div class="lb-hub-divider"></div>
-
-      <!-- 3. Controls & Search -->
-      <div class="lb-controls-row">
-        <div style="position:relative;flex:1;min-width:220px;">
-          <i data-lucide="search" style="position:absolute;left:14px;top:50%;transform:translateY(-50%);width:15px;height:15px;color:#64748b;"></i>
+    <!-- 3. Standings Table Card -->
+    <div class="lb-table-card">
+      <!-- Search & Sort Controls Bar with ample height and clean layout -->
+      <div class="lb-controls-bar">
+        <div class="lb-search-input-wrap">
+          <i data-lucide="search" class="lb-search-icon"></i>
           <input
             id="player-search-input"
-            class="form-input"
-            style="padding-left:38px;background:#060608;border:1px solid rgba(255,255,255,0.07);border-radius:10px;font-size:0.85rem;color:#fff;"
+            class="form-input lb-search-input"
             placeholder="Search players..."
             oninput="handleSearchLeaderboard(this.value)"
           />
         </div>
 
         <!-- Sort Tabs -->
-        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <div class="lb-sort-tabs-wrap">
           <button class="lb-sort-tab active" data-sort="wins" onclick="setSortMode('wins')">
-            <i data-lucide="trophy" style="width:14px;height:14px;"></i> Most Wins
+            <i data-lucide="trophy" style="width:14px;height:14px;"></i> <span>Most Wins</span>
           </button>
           <button class="lb-sort-tab" data-sort="earnings" onclick="setSortMode('earnings')">
-            <i data-lucide="coins" style="width:14px;height:14px;"></i> Top Earnings
+            <i data-lucide="coins" style="width:14px;height:14px;"></i> <span>Top Earnings</span>
           </button>
           <button class="lb-sort-tab" data-sort="winrate" onclick="setSortMode('winrate')">
-            <i data-lucide="percent" style="width:14px;height:14px;"></i> Win Rate
+            <i data-lucide="percent" style="width:14px;height:14px;"></i> <span>Win Rate</span>
           </button>
         </div>
       </div>
 
-      <!-- 4. Full Table Section -->
+      <!-- Table Wrap -->
       <div class="lb-table-wrap">
         <table class="lb-custom-table">
           <thead>
@@ -669,7 +696,7 @@
       </div>
 
       <!-- Pagination bar -->
-      <div class="ct-pagination" id="lb-pagination" style="margin-top:16px;"></div>
+      <div class="ct-pagination" id="lb-pagination" style="margin-top:18px;"></div>
     </div>
   </main>
 </body>
