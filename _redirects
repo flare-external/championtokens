@@ -1,15 +1,1 @@
-# Sensitive Source & Config Protection
-/.git/* / 404!
-/worker.js / 404!
-/package.json / 404!
-/package-lock.json / 404!
-/wrangler.jsonc / 404!
-/firestore.rules / 404!
-/firebase.json / 404!
-/.firebaserc / 404!
-/scratch/* / 404!
-/netlify/* / 404!
-/.env* / 404!
-
-# Public Redirects
 /discord https://discord.gg/35xqcMTEbH 301

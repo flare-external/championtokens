@@ -78,7 +78,7 @@ export default {
     const BLOCKED_PREFIXES = [
       '/.git', '/.github', '/.env', '/worker.js', '/package.json', '/package-lock.json',
       '/wrangler.json', '/wrangler.jsonc', '/firestore.rules', '/firestore.indexes.json',
-      '/firebase.json', '/.firebaserc', '/scratch', '/node_modules', '/netlify', '/api/'
+      '/firebase.json', '/.firebaserc', '/scratch', '/node_modules', '/netlify'
     ];
     const BLOCKED_EXACT = [
       '/.gitignore', '/.ignore', '/.assetsignore', '/.wranglerignore', '/readme.md', '/license'

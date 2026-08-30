@@ -1,9 +1,9 @@
 .git
 .git/**
-node_modules
-node_modules/**
 .github
 .github/**
+node_modules
+node_modules/**
 .wrangler
 .wrangler/**
 scratch
@@ -18,3 +18,9 @@ worker.js
 wrangler.jsonc
 package.json
 package-lock.json
+firestore.rules
+firestore.indexes.json
+firebase.json
+.firebaserc
+.env*
+*.log

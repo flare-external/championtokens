@@ -8,20 +8,6 @@
   },
   "assets": {
     "directory": ".",
-    "binding": "ASSETS",
-    "exclude": [
-      ".git/**",
-      "node_modules/**",
-      ".github/**",
-      ".wrangler/**",
-      "scratch/**",
-      "api/**",
-      "functions/**",
-      "netlify/**",
-      "worker.js",
-      "wrangler.jsonc",
-      "package.json",
-      "package-lock.json"
-    ]
+    "binding": "ASSETS"
   }
 }
