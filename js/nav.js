@@ -930,11 +930,25 @@ async function handleRedeemCode() {
       giftInfo.name = titleItem.name || 'No signal';
       giftInfo.icon = titleItem.icon || 'globe-off';
       giftInfo.subtext = 'New title unlocked! You can equip it in your Profile customization.';
-    } else if (rewardType === 'premium') {
+        } else if (rewardType === 'premium') {
+      const daysToAdd = Number(codeData.rewardValue) || 30;
+      let baseTime = Date.now();
+      if (userData?.isPremium && userData?.premiumExpiresAt) {
+        try {
+          const curExp = typeof userData.premiumExpiresAt.toDate === 'function' ? userData.premiumExpiresAt.toDate() : new Date(userData.premiumExpiresAt);
+          if (curExp.getTime() > baseTime) {
+            baseTime = curExp.getTime();
+          }
+        } catch (e) {}
+      }
+      const newExpDate = new Date(baseTime + (daysToAdd * 24 * 60 * 60 * 1000));
+      const totalDaysLeft = Math.ceil((newExpDate.getTime() - Date.now()) / (1000 * 60 * 60 * 24));
+
       await db.collection('users').doc(user.uid).update({
-        isPremium: true
+        isPremium: true,
+        premiumExpiresAt: firebase.firestore.Timestamp.fromDate(newExpDate)
       });
-      giftInfo.subtext = 'Champion Premium membership is now active on your account!';
+      giftInfo.subtext = `+${daysToAdd} Days of Champion Premium activated! You now have ${totalDaysLeft} Days active on your account.`;
     } else {
       throw new Error('Code already redeemed or does not exist.');
     }

@@ -1887,28 +1887,63 @@ async function adminForceCancelMatch(matchId, adminName) {
 
 // ── Premium Pass & Player Tipping ────────────────────────────
 
-/** Purchase Champion Premium (Cost: 5.00 Tokens) */
-async function buyPremiumPass(uid) {
+/** Check if user's Champion Premium is currently active */
+function isUserPremiumActive(userData) {
+  if (!userData || !userData.isPremium) return false;
+  if (!userData.premiumExpiresAt) return true;
+  try {
+    const expDate = typeof userData.premiumExpiresAt.toDate === 'function' 
+      ? userData.premiumExpiresAt.toDate() 
+      : new Date(userData.premiumExpiresAt);
+    return expDate.getTime() > Date.now();
+  } catch (e) {
+    return true;
+  }
+}
+
+/** Get remaining days of active Champion Premium */
+function getPremiumDaysRemaining(userData) {
+  if (!userData || !userData.isPremium) return 0;
+  if (!userData.premiumExpiresAt) return 30;
+  try {
+    const expDate = typeof userData.premiumExpiresAt.toDate === 'function' 
+      ? userData.premiumExpiresAt.toDate() 
+      : new Date(userData.premiumExpiresAt);
+    const diffMs = expDate.getTime() - Date.now();
+    if (diffMs <= 0) return 0;
+    return Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+  } catch (e) {
+    return 30;
+  }
+}
+
+/** Purchase or Extend Champion Premium (Cost: 5.00 Tokens for 30 Days) */
+async function buyPremiumPass(uid, days = 30) {
   const user = await getUser(uid);
   if (!user) throw new Error('User not found');
-
-  if (user.isPremium && user.premiumExpiresAt && user.premiumExpiresAt.toDate() > new Date()) {
-    throw new Error('You already have an active Champion Premium subscription!');
-  }
 
   if (Number(user.tokens || 0) < 5.00) {
     throw new Error('Insufficient tokens. Premium costs 5.00 Tokens ($5.00).');
   }
 
   // Deduct 5.00 tokens
-  await updateTokens(uid, -5.00, 'shop', 'Purchased Champion Premium (30 Days)');
+  await updateTokens(uid, -5.00, 'shop', `Purchased Champion Premium (${days} Days)`);
 
-  const expiresDate = new Date();
-  expiresDate.setDate(expiresDate.getDate() + 30);
+  let baseTime = Date.now();
+  if (user.isPremium && user.premiumExpiresAt) {
+    try {
+      const curExp = typeof user.premiumExpiresAt.toDate === 'function' ? user.premiumExpiresAt.toDate() : new Date(user.premiumExpiresAt);
+      if (curExp.getTime() > baseTime) {
+        baseTime = curExp.getTime();
+      }
+    } catch (e) {}
+  }
+
+  const newExpDate = new Date(baseTime + (days * 24 * 60 * 60 * 1000));
 
   await db.collection('users').doc(uid).update({
-    isPremium:        true,
-    premiumExpiresAt: firebase.firestore.Timestamp.fromDate(expiresDate),
+    isPremium: true,
+    premiumExpiresAt: firebase.firestore.Timestamp.fromDate(newExpDate)
   });
 
   return true;

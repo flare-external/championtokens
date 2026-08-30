@@ -7,7 +7,7 @@
   <link rel="icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
-  <link rel="stylesheet" href="css/style.css?v=4.0.1788056654373"/>
+  <link rel="stylesheet" href="css/style.css?v=4.0.1788056956926"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
@@ -1261,9 +1261,9 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="js/firebase-config.js?v=3.2"></script>
-  <script src="js/auth.js?v=4.0.1788056654373"></script>
-  <script src="js/db.js?v=4.0.1788056654373"></script>
-  <script src="js/nav.js?v=4.0.1788056654373"></script>
+  <script src="js/auth.js?v=4.0.1788056956926"></script>
+  <script src="js/db.js?v=4.0.1788056956926"></script>
+  <script src="js/nav.js?v=4.0.1788056956926"></script>
 
   <script>
     let currentUser = null;
@@ -1520,9 +1520,12 @@
       // Premium Action Button
       const premWrap = document.getElementById('premium-action-wrap');
       if (premWrap) {
-        if (isViewingSelf) {
           if (isPremium) {
-            premWrap.innerHTML = '';
+            const daysLeft = (typeof getPremiumDaysRemaining === 'function') ? getPremiumDaysRemaining(data) : 30;
+            premWrap.innerHTML = `
+              <a href="shop" class="badge" style="background:rgba(245,158,11,0.15);color:var(--gold-bright);border:1px solid rgba(245,158,11,0.35);font-size:0.75rem;padding:4px 10px;text-decoration:none;display:inline-flex;align-items:center;gap:5px;" title="Click to view or extend in Shop">
+                <i data-lucide="crown" style="width:12px;height:12px;"></i> ${daysLeft} ${daysLeft === 1 ? 'Day' : 'Days'} Premium
+              </a>`;
           } else {
             premWrap.innerHTML = `
               <a href="shop" class="btn btn-gold btn-sm" style="font-size:0.75rem;padding:4px 12px;">
