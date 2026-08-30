@@ -7,7 +7,7 @@
   <link rel="icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
-  <link rel="stylesheet" href="css/style.css?v=4.0.1788051446801"/>
+  <link rel="stylesheet" href="css/style.css?v=4.0.1788051555636"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
 
@@ -163,35 +163,7 @@
   <!-- Page content -->
   <main class="page-wrap" id="main-content" style="max-width: 900px;">
     
-    <!-- 1. Single Card to Join or Create Matches -->
-    <div class="db-match-action-card">
-      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:18px;">
-        <div style="display:flex;align-items:center;gap:14px;">
-          <div style="width:48px;height:48px;border-radius:12px;background:rgba(245,158,11,0.12);display:flex;align-items:center;justify-content:center;color:var(--gold-bright);flex-shrink:0;">
-            <i data-lucide="swords" style="width:24px;height:24px;"></i>
-          </div>
-          <div>
-            <h1 style="font-size:1.35rem;font-weight:900;margin:0;color:#ffffff;letter-spacing:-0.02em;">
-              Arena Matches
-            </h1>
-            <div style="font-size:0.8rem;color:var(--text-muted);margin-top:2px;">
-              Join an open 1v1 lobby or create your own custom wager match.
-            </div>
-          </div>
-        </div>
-
-        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-          <a href="matches" class="btn btn-primary btn-sm" style="padding:9px 22px;font-size:0.85rem;gap:7px;border-radius:10px;">
-            <i data-lucide="swords" style="width:15px;height:15px;"></i> <span>Find Match</span>
-          </a>
-          <a href="matches" class="btn btn-outline btn-sm" style="padding:9px 20px;font-size:0.85rem;gap:7px;background:#060608;border:1px solid rgba(255,255,255,0.12);border-radius:10px;">
-            <i data-lucide="plus" style="width:15px;height:15px;"></i> <span>Create Match</span>
-          </a>
-        </div>
-      </div>
-    </div>
-
-    <!-- 2. Switching News Carousel (Text-Only Placeholders, No Images) -->
+    <!-- 1. Switching News Carousel (Text-Only Placeholders, No Images) -->
     <div class="news-carousel-container" id="news-carousel" onmouseenter="pauseNewsAutoSwitch()" onmouseleave="resumeNewsAutoSwitch()">
       <div class="news-slides-track">
         <!-- Slide 1 -->
@@ -255,6 +227,34 @@
       </div>
     </div>
 
+    <!-- 2. Single Card to Join or Create Matches -->
+    <div class="db-match-action-card">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:18px;">
+        <div style="display:flex;align-items:center;gap:14px;">
+          <div style="width:48px;height:48px;border-radius:12px;background:rgba(245,158,11,0.12);display:flex;align-items:center;justify-content:center;color:var(--gold-bright);flex-shrink:0;">
+            <i data-lucide="swords" style="width:24px;height:24px;"></i>
+          </div>
+          <div>
+            <h1 style="font-size:1.35rem;font-weight:900;margin:0;color:#ffffff;letter-spacing:-0.02em;">
+              Arena Matches
+            </h1>
+            <div style="font-size:0.8rem;color:var(--text-muted);margin-top:2px;">
+              Join an open 1v1 lobby or create your own custom wager match.
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+          <a href="matches" class="btn btn-primary btn-sm" style="padding:9px 22px;font-size:0.85rem;gap:7px;border-radius:10px;">
+            <i data-lucide="swords" style="width:15px;height:15px;"></i> <span>Find Match</span>
+          </a>
+          <a href="matches" class="btn btn-outline btn-sm" style="padding:9px 20px;font-size:0.85rem;gap:7px;background:#060608;border:1px solid rgba(255,255,255,0.12);border-radius:10px;">
+            <i data-lucide="plus" style="width:15px;height:15px;"></i> <span>Create Match</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
   </main>
 
   <!-- Platform Footer -->
@@ -297,9 +297,9 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="js/firebase-config.js?v=3.6"></script>
-  <script src="js/auth.js?v=4.0.1788051446801"></script>
-  <script src="js/db.js?v=4.0.1788051446801"></script>
-  <script src="js/nav.js?v=4.0.1788051446801"></script>
+  <script src="js/auth.js?v=4.0.1788051555636"></script>
+  <script src="js/db.js?v=4.0.1788051555636"></script>
+  <script src="js/nav.js?v=4.0.1788051555636"></script>
 
   <script>
     let currentUser = null;
