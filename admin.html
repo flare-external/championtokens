@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Champion Tokens</title>
   <link rel="icon" type="image/png" href="champion-tokens_new.png"/>
-  <link rel="stylesheet" href="css/style.css?v=4.0.1788051673559"/>
+  <link rel="stylesheet" href="css/style.css?v=4.0.1788055428728"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
@@ -232,9 +232,9 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="js/firebase-config.js"></script>
-  <script src="js/auth.js?v=4.0.1788051673559"></script>
-  <script src="js/db.js?v=4.0.1788051673559"></script>
-  <script src="js/nav.js?v=4.0.1788051673559"></script>
+  <script src="js/auth.js?v=4.0.1788055428728"></script>
+  <script src="js/db.js?v=4.0.1788055428728"></script>
+  <script src="js/nav.js?v=4.0.1788055428728"></script>
   <script>
     let currentUser = null;
     let currentUserData = null;
@@ -283,13 +283,15 @@
 
       switchAdminTab('players');
       loadInitialUsers();
+        initRedeemCodesListener();
+        generateRandomCodeInput();
       subscribeStaffCalls();
       subscribeActiveMatches();
       subscribeActiveTeams();
     }).catch(() => window.location.href = '/');
 
     function switchAdminTab(tab) {
-      ['players','matches','teams','tickets','broadcast','danger'].forEach(t => {
+      ['players','matches','teams','tickets','codes','broadcast','danger'].forEach(t => {
         const el = document.getElementById('admin-tab-' + t);
         const btn = document.getElementById('admin-tabBtn-' + t);
         if (el) el.classList.toggle('hidden', t !== tab);
@@ -976,6 +978,9 @@
       <button class="admin-nav-tab" id="admin-tabBtn-tickets" onclick="switchAdminTab('tickets')">
         <i data-lucide="alert-circle" style="width:15px;height:15px;"></i> Disputes (<span id="tickets-tab-count">0</span>)
       </button>
+      <button class="admin-nav-tab" id="admin-tabBtn-codes" onclick="switchAdminTab('codes')">
+        <i data-lucide="ticket" style="width:15px;height:15px;"></i> Redeem Codes (<span id="codes-tab-count">0</span>)
+      </button>
       <button class="admin-nav-tab" id="admin-tabBtn-broadcast" onclick="switchAdminTab('broadcast')">
         <i data-lucide="megaphone" style="width:15px;height:15px;"></i> Broadcast
       </button>
@@ -1035,6 +1040,111 @@
     <!-- ── Tab 4: Tickets & Staff Calls ─────────────────────── -->
     <div id="admin-tab-tickets" class="hidden">
       <div id="staff-calls-list" style="display:flex;flex-direction:column;gap:12px;"><div class="empty-state"><div class="spinner" style="margin:0 auto;"></div></div></div>
+    </div>
+
+    <!-- ── Tab: Redeem Codes Generator & Live Manager ──────────────── -->
+    <div id="admin-tab-codes" class="hidden">
+      <!-- 1. Code Generator Card -->
+      <div class="card" style="padding:22px 24px;margin-bottom:20px;">
+        <div style="font-size:1.15rem;font-weight:900;color:#fff;margin-bottom:4px;display:flex;align-items:center;gap:8px;">
+          <i data-lucide="sparkles" style="color:var(--gold-bright);"></i> Redeem Code Generator
+        </div>
+        <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:18px;">
+          Generate custom or randomized gift codes. Players can redeem them in their Token Wallet to claim free tokens or exclusive cosmetics.
+        </p>
+
+        <form onsubmit="handleAdminCreateCode(event)" style="display:flex;flex-direction:column;gap:16px;">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));gap:14px;">
+            <!-- Code String -->
+            <div class="form-group" style="margin:0;">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
+                <label class="form-label" style="margin:0;">Code String</label>
+                <button type="button" onclick="generateRandomCodeInput()" style="background:none;border:none;color:var(--gold-bright);font-size:0.72rem;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;gap:3px;">
+                  <i data-lucide="refresh-cw" style="width:11px;height:11px;"></i> Random Code
+                </button>
+              </div>
+              <input class="form-input" id="admin-code-input" placeholder="e.g. CT-XXXX-XXXX" required style="text-transform:uppercase;font-weight:900;letter-spacing:0.06em;" />
+            </div>
+
+            <!-- Reward Type -->
+            <div class="form-group" style="margin:0;">
+              <label class="form-label">Reward Type</label>
+              <select class="form-input" id="admin-code-reward-type" onchange="handleRewardTypeChange()" style="font-weight:700;">
+                <option value="tokens">Tokens (Balance Credit)</option>
+                <option value="pfp">Avatar Cosmetic (PFP)</option>
+                <option value="title">Profile Title</option>
+                <option value="premium">Champion Premium Status</option>
+              </select>
+            </div>
+
+            <!-- Reward Value Field (Tokens / Cosmetic Select) -->
+            <div class="form-group" style="margin:0;" id="admin-reward-value-wrap">
+              <label class="form-label" id="admin-reward-value-label">Token Amount (CT)</label>
+              <input type="number" step="0.25" min="0.25" class="form-input" id="admin-code-token-amt" placeholder="e.g. 5.00" value="5.00" required style="font-weight:800;" />
+              
+              <!-- PFP Select (Hidden by default) -->
+              <select class="form-input" id="admin-code-pfp-select" style="display:none;font-weight:700;">
+                <option value="pfp_exclusive_1">#23 Exclusive Avatar (Gold)</option>
+                <option value="pfp_exclusive_2">#24 Exclusive Avatar</option>
+                <option value="pfp_exclusive_3">#25 Exclusive Avatar</option>
+                <option value="pfp_exclusive_4">#26 Exclusive Avatar</option>
+                <option value="pfp_exclusive_5">#27 Exclusive Avatar</option>
+                <option value="pfp_epic_1">#15 Epic Avatar (Purple)</option>
+                <option value="pfp_epic_2">#16 Epic Avatar</option>
+                <option value="pfp_epic_3">#17 Epic Avatar</option>
+                <option value="pfp_rare_1">#8 Rare Avatar (Blue)</option>
+                <option value="pfp_rare_2">#9 Rare Avatar</option>
+              </select>
+
+              <!-- Title Select (Hidden by default) -->
+              <select class="form-input" id="admin-code-title-select" style="display:none;font-weight:700;">
+                <option value="title_no_signal">"No signal" (Rare Title)</option>
+              </select>
+            </div>
+
+            <!-- Max Uses -->
+            <div class="form-group" style="margin:0;">
+              <label class="form-label">Max Redemptions</label>
+              <input type="number" min="1" max="10000" class="form-input" id="admin-code-max-uses" value="1" placeholder="1 for single-use" required style="font-weight:800;" />
+            </div>
+          </div>
+
+          <!-- Notes / Campaign Label -->
+          <div class="form-group" style="margin:0;">
+            <label class="form-label">Campaign / Admin Note (Optional)</label>
+            <input class="form-input" id="admin-code-notes" placeholder="e.g. Discord Giveaway, Special Tournament Reward, Adrian Test" />
+          </div>
+
+          <button type="submit" class="btn btn-gold btn-sm" id="create-code-btn" style="align-self:flex-start;padding:10px 22px;border-radius:10px;gap:7px;font-size:0.86rem;">
+            <i data-lucide="plus-circle"></i> <span>Create Redeem Code</span>
+          </button>
+        </form>
+      </div>
+
+      <!-- 2. Live Generated Codes List -->
+      <div class="card" style="padding:22px 24px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;margin-bottom:16px;">
+          <div style="font-size:1.1rem;font-weight:900;color:#fff;display:flex;align-items:center;gap:8px;">
+            <i data-lucide="list" style="color:var(--gold-bright);"></i> All Generated Codes
+          </div>
+
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            <button class="admin-filter-pill active" id="code-filter-all" onclick="setCodeFilter('all')">
+              All Codes
+            </button>
+            <button class="admin-filter-pill" id="code-filter-active" onclick="setCodeFilter('active')">
+              Active Only
+            </button>
+            <button class="admin-filter-pill" id="code-filter-used" onclick="setCodeFilter('used')">
+              Used / Claimed
+            </button>
+          </div>
+        </div>
+
+        <div id="admin-codes-list-container">
+          <div class="empty-state"><div class="spinner" style="margin:0 auto;"></div></div>
+        </div>
+      </div>
     </div>
 
     <!-- ── Tab 5: Broadcast ─────────────────────────────────── -->

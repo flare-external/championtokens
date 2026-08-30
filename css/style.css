@@ -2088,78 +2088,93 @@ input[type="range"].ct-slider::-moz-range-thumb {
 /* ── Admin Floating Button (Removed) ──────────── */
 .admin-floating-btn { display: none !important; }
 
-/* ── Universal Token Wallet Modal (Purchase & Withdraw) ────── */
-.wallet-tabs {
-  display: flex;
-  gap: 8px;
-  background: rgba(0, 0, 0, 0.4);
-  padding: 5px;
-  border-radius: var(--radius-lg);
+
+/* ── Universal Token Wallet Modal (Purchase, Withdraw, Redeem) ── */
+#token-wallet-modal .modal {
+  background: #000000;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  margin-bottom: 20px;
+  border-radius: 24px;
+  max-width: 560px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.95);
+  padding: 26px 28px;
+}
+.wallet-tabs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  background: #060608;
+  padding: 5px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  margin-bottom: 22px;
 }
 .wallet-tab-btn {
-  flex: 1;
-  padding: 10px 16px;
-  border-radius: var(--radius-md);
-  font-size: 0.875rem;
+  padding: 9px 12px;
+  border-radius: 10px;
+  font-size: 0.82rem;
   font-weight: 800;
   color: #94a3b8;
-  border: none;
+  border: 1px solid transparent;
   background: transparent;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  transition: all 0.2s ease;
+  gap: 7px;
+  transition: all 0.18s ease;
+  white-space: nowrap;
+}
+.wallet-tab-btn:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.04);
 }
 .wallet-tab-btn.active {
-  background: rgba(245, 158, 11, 0.22);
+  background: #0e0e12;
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.14);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
+}
+.wallet-tab-btn.active i {
   color: var(--gold-bright);
-  border: 1px solid rgba(245, 158, 11, 0.45);
-  box-shadow: 0 0 16px rgba(245, 158, 11, 0.25);
 }
 .wallet-packs-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 14px;
-  margin-bottom: 12px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 16px;
+}
+@media (max-width: 480px) {
+  .wallet-packs-grid {
+    grid-template-columns: 1fr;
+  }
 }
 .wallet-pack-card {
-  background: rgba(18, 24, 46, 0.8);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: var(--radius-lg);
-  padding: 18px 14px;
+  background: #060608;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
+  padding: 16px 14px;
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
-  transition: all 0.2s ease;
+  gap: 8px;
+  transition: all 0.18s ease;
   position: relative;
 }
 .wallet-pack-card:hover {
-  border-color: var(--gold-bright);
+  border-color: rgba(255, 255, 255, 0.16);
   transform: translateY(-2px);
-  background: rgba(26, 34, 62, 0.95);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), 0 0 16px rgba(245, 158, 11, 0.2);
+  background: #0b0b0e;
 }
 .wallet-pack-card.popular {
-  border-color: rgba(245, 158, 11, 0.6);
-  background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(18, 24, 46, 0.95) 100%);
+  border-color: rgba(245, 158, 11, 0.4);
+  background: rgba(245, 158, 11, 0.04);
 }
-.withdraw-coming-soon-box {
-  background: rgba(14, 18, 34, 0.9);
-  border: 1px dashed rgba(245, 158, 11, 0.4);
-  border-radius: var(--radius-xl);
-  padding: 36px 24px;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
+.wallet-pack-card.popular:hover {
+  border-color: var(--gold-bright);
+  background: rgba(245, 158, 11, 0.08);
 }
+
 
 /* ── Epic Games Top Showcase Card ─────────────────────────── */
 .epic-top-showcase-card {

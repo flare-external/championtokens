@@ -145,71 +145,164 @@ function injectNav(activePage = '') {
       </div>
     </a>
 
-    <!-- Universal Token Wallet Modal (Purchase & Withdraw) -->
+        <!-- Universal Token Wallet Modal (Purchase, Withdraw, Redeem) -->
     <div class="modal-overlay" id="token-wallet-modal" onclick="if(event.target===this)closeTokenWalletModal()">
-      <div class="modal" style="max-width:520px;">
-        <div class="modal-header">
+      <div class="modal" style="max-width:540px;">
+        <div class="modal-header" style="padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,0.07);margin-bottom:18px;">
           <div class="modal-title" style="display:flex;align-items:center;gap:10px;">
-            <img src="new_token.png" alt="CT" style="width:32px;height:32px;object-fit:contain;filter:drop-shadow(0 0 6px rgba(245,158,11,0.6));" />
-            <span>Token Wallet</span>
+            <img src="new_token.png" alt="CT" style="width:28px;height:28px;object-fit:contain;" />
+            <span style="font-weight:900;font-size:1.15rem;color:#fff;">Token Wallet</span>
           </div>
           <button class="modal-close" onclick="closeTokenWalletModal()"><i data-lucide="x"></i></button>
         </div>
 
-        <!-- Tabs -->
+        <!-- 3 Segmented Tabs -->
         <div class="wallet-tabs">
           <button class="wallet-tab-btn active" id="tab-btn-wallet-purchase" onclick="switchWalletTab('purchase')">
-            <i data-lucide="shopping-cart"></i> Purchase Tokens
+            <i data-lucide="plus-circle"></i> <span>Deposit</span>
           </button>
           <button class="wallet-tab-btn" id="tab-btn-wallet-withdraw" onclick="switchWalletTab('withdraw')">
-            <i data-lucide="arrow-up-right"></i> Withdraw
+            <i data-lucide="arrow-up-right"></i> <span>Withdraw</span>
+          </button>
+          <button class="wallet-tab-btn" id="tab-btn-wallet-redeem" onclick="switchWalletTab('redeem')">
+            <i data-lucide="gift"></i> <span>Redeem Code</span>
           </button>
         </div>
 
-        <!-- Purchase Tab -->
+        <!-- Tab 1: Purchase / Deposit Tokens -->
         <div id="wallet-tab-purchase-view">
-          <div style="font-size:0.85rem;color:var(--text-muted);margin-bottom:14px;">
-            Select a token pack to add balance to your account:
+          <div style="font-size:0.82rem;color:var(--text-muted);margin-bottom:14px;">
+            Select a token pack or deposit a custom amount:
           </div>
           <div class="wallet-packs-grid">
             <div class="wallet-pack-card">
-              <img src="new_token.png" alt="5" style="width:52px;height:52px;object-fit:contain;margin-bottom:4px;" />
-              <div style="font-weight:900;font-size:1.4rem;color:var(--gold-bright);">5.00</div>
-              <div style="font-size:0.75rem;color:var(--text-muted);">Starter Pack</div>
-              <button class="btn btn-outline btn-full btn-sm" onclick="handleWalletBuy('Starter', '5.00', '5.00')">
+              <img src="new_token.png" alt="5" style="width:40px;height:40px;object-fit:contain;margin-bottom:2px;" />
+              <div style="font-weight:900;font-size:1.3rem;color:var(--gold-bright);">5.00</div>
+              <div style="font-size:0.72rem;color:var(--text-muted);font-weight:700;">Starter Pack</div>
+              <button class="btn btn-outline btn-full btn-sm" onclick="handleWalletBuy('Starter', '5.00', '5.00')" style="margin-top:4px;border-radius:10px;font-size:0.8rem;">
                 Get for $5.00
               </button>
             </div>
 
             <div class="wallet-pack-card popular">
-              <span class="equipped-badge-indicator" style="top:6px;right:6px;">Popular</span>
-              <img src="new_token.png" alt="10" style="width:52px;height:52px;object-fit:contain;margin-bottom:4px;" />
-              <div style="font-weight:900;font-size:1.4rem;color:var(--gold-bright);">10.00</div>
-              <div style="font-size:0.75rem;color:var(--text-muted);">Standard Pack</div>
-              <button class="btn btn-primary btn-full btn-sm" onclick="handleWalletBuy('Standard', '10.00', '10.00')">
+              <span class="badge" style="position:absolute;top:6px;right:6px;background:rgba(245,158,11,0.2);color:var(--gold-bright);border:1px solid rgba(245,158,11,0.4);font-size:0.65rem;padding:2px 7px;">Popular</span>
+              <img src="new_token.png" alt="10" style="width:40px;height:40px;object-fit:contain;margin-bottom:2px;" />
+              <div style="font-weight:900;font-size:1.3rem;color:var(--gold-bright);">10.00</div>
+              <div style="font-size:0.72rem;color:var(--text-muted);font-weight:700;">Standard Pack</div>
+              <button class="btn btn-primary btn-full btn-sm" onclick="handleWalletBuy('Standard', '10.00', '10.00')" style="margin-top:4px;border-radius:10px;font-size:0.8rem;">
                 Get for $10.00
               </button>
             </div>
 
             <div class="wallet-pack-card">
-              <img src="new_token.png" alt="25" style="width:52px;height:52px;object-fit:contain;margin-bottom:4px;" />
-              <div style="font-weight:900;font-size:1.4rem;color:var(--gold-bright);">25.00</div>
-              <div style="font-size:0.75rem;color:var(--text-muted);">Pro Pack</div>
-              <button class="btn btn-outline btn-full btn-sm" onclick="handleWalletBuy('Pro', '25.00', '25.00')">
+              <img src="new_token.png" alt="25" style="width:40px;height:40px;object-fit:contain;margin-bottom:2px;" />
+              <div style="font-weight:900;font-size:1.3rem;color:var(--gold-bright);">25.00</div>
+              <div style="font-size:0.72rem;color:var(--text-muted);font-weight:700;">Pro Pack</div>
+              <button class="btn btn-outline btn-full btn-sm" onclick="handleWalletBuy('Pro', '25.00', '25.00')" style="margin-top:4px;border-radius:10px;font-size:0.8rem;">
                 Get for $25.00
               </button>
             </div>
 
             <div class="wallet-pack-card">
-              <img src="new_token.png" alt="50" style="width:52px;height:52px;object-fit:contain;margin-bottom:4px;" />
-              <div style="font-weight:900;font-size:1.4rem;color:var(--gold-bright);">50.00</div>
-              <div style="font-size:0.75rem;color:var(--text-muted);">Champion Pack</div>
-              <button class="btn btn-outline btn-full btn-sm" onclick="handleWalletBuy('Champion', '50.00', '50.00')">
+              <img src="new_token.png" alt="50" style="width:40px;height:40px;object-fit:contain;margin-bottom:2px;" />
+              <div style="font-weight:900;font-size:1.3rem;color:var(--gold-bright);">50.00</div>
+              <div style="font-size:0.72rem;color:var(--text-muted);font-weight:700;">Champion Pack</div>
+              <button class="btn btn-outline btn-full btn-sm" onclick="handleWalletBuy('Champion', '50.00', '50.00')" style="margin-top:4px;border-radius:10px;font-size:0.8rem;">
                 Get for $50.00
               </button>
             </div>
           </div>
+
+          <!-- Custom Amount Form -->
+          <div style="background:#060608;border:1px solid rgba(255,255,255,0.06);border-radius:14px;padding:14px 16px;margin-top:12px;">
+            <div style="font-size:0.75rem;font-weight:800;color:var(--text-muted);text-transform:uppercase;margin-bottom:8px;">Custom Amount</div>
+            <div style="display:flex;gap:8px;">
+              <input type="number" id="custom-token-deposit-input" class="form-input" placeholder="Amount (min 1.00)" min="1" step="1" style="flex:1;background:#000;border-radius:10px;" />
+              <button class="btn btn-primary btn-sm" onclick="handleCustomWalletBuy()" style="padding:0 18px;border-radius:10px;font-size:0.82rem;font-weight:800;">
+                Deposit
+              </button>
+            </div>
+          </div>
         </div>
+
+        <!-- Tab 2: Withdraw Tokens -->
+        <div id="wallet-tab-withdraw-view" style="display:none;">
+          <div style="background:#060608;border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:18px 20px;margin-bottom:14px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+              <span style="font-size:0.75rem;font-weight:800;color:var(--text-muted);text-transform:uppercase;">Available Balance</span>
+              <span style="font-size:1.1rem;font-weight:900;color:var(--gold-bright);display:flex;align-items:center;gap:5px;">
+                <span id="withdraw-available-tokens">0.00</span> Tokens
+              </span>
+            </div>
+
+            <div class="form-group" style="margin-bottom:12px;">
+              <label class="form-label" style="font-size:0.75rem;">Payout Method</label>
+              <select id="wallet-withdraw-method" class="form-input" style="background:#000;border-radius:10px;">
+                <option value="paypal">PayPal (Email)</option>
+                <option value="crypto_ltc">Litecoin (LTC)</option>
+                <option value="crypto_sol">Solana (SOL)</option>
+                <option value="crypto_usdt">USDT (TRC20 / ERC20)</option>
+                <option value="bank_card">Debit Card / Bank Transfer</option>
+              </select>
+            </div>
+
+            <div class="form-group" style="margin-bottom:12px;">
+              <label class="form-label" style="font-size:0.75rem;" id="wallet-withdraw-address-label">PayPal Email or Address</label>
+              <input type="text" id="wallet-withdraw-address" class="form-input" placeholder="e.g. yourname@gmail.com or LTC address" style="background:#000;border-radius:10px;" />
+            </div>
+
+            <div class="form-group" style="margin-bottom:14px;">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
+                <label class="form-label" style="font-size:0.75rem;margin:0;">Withdraw Amount (CT)</label>
+                <button type="button" onclick="setWalletWithdrawMax()" style="background:none;border:none;color:var(--gold-bright);font-size:0.72rem;font-weight:800;cursor:pointer;">MAX</button>
+              </div>
+              <input type="number" id="wallet-withdraw-amount" class="form-input" placeholder="Min 5.00" min="5" step="0.5" style="background:#000;border-radius:10px;" />
+            </div>
+
+            <button class="btn btn-primary btn-full" id="wallet-withdraw-submit-btn" onclick="handleWalletWithdraw()" style="border-radius:12px;padding:10px;font-size:0.86rem;">
+              Request Payout
+            </button>
+          </div>
+          <div style="font-size:0.72rem;color:var(--text-faint);text-align:center;line-height:1.4;">
+            Withdrawals are processed within 1–24 hours after verification. Minimum withdrawal: 5.00 Tokens.
+          </div>
+        </div>
+
+        <!-- Tab 3: Redeem Code -->
+        <div id="wallet-tab-redeem-view" style="display:none;">
+          <div style="background:#060608;border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:22px 20px;text-align:center;margin-bottom:12px;">
+            <div style="width:48px;height:48px;border-radius:12px;background:rgba(245,158,11,0.12);display:flex;align-items:center;justify-content:center;color:var(--gold-bright);margin:0 auto 12px;">
+              <i data-lucide="gift" style="width:24px;height:24px;"></i>
+            </div>
+            <div style="font-weight:900;font-size:1.15rem;color:#fff;margin-bottom:4px;">
+              Redeem Gift Code
+            </div>
+            <div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:16px;">
+              Enter your voucher or promo code below to claim free tokens or exclusive cosmetics:
+            </div>
+
+            <div style="margin-bottom:14px;">
+              <input
+                type="text"
+                id="wallet-redeem-code-input"
+                class="form-input"
+                placeholder="ENTER CODE (e.g. CT-XXXX-XXXX)"
+                style="text-align:center;font-weight:900;letter-spacing:0.08em;font-size:1.05rem;text-transform:uppercase;background:#000;border-radius:12px;padding:12px;"
+                oninput="this.value = this.value.toUpperCase().trim()"
+              />
+            </div>
+
+            <button class="btn btn-gold btn-full" id="wallet-redeem-submit-btn" onclick="handleRedeemCode()" style="border-radius:12px;padding:11px;font-size:0.88rem;gap:6px;">
+              <i data-lucide="sparkles" style="width:15px;height:15px;"></i> <span>Redeem Reward</span>
+            </button>
+          </div>
+
+          <div style="font-size:0.72rem;color:var(--text-faint);text-align:center;">
+            Codes are case-insensitive and can only be redeemed once per account.
+          </div>
+        </div>
+      </div>
+    </div>
 
         <!-- Withdraw Tab -->
         <div id="wallet-tab-withdraw-view" style="display:none;">
@@ -560,6 +653,7 @@ async function handleDeclineTeamInvite(notifId, e) {
   }
 }
 
+
 function openTokenWalletModal(tab = 'purchase') {
   const modal = document.getElementById('token-wallet-modal');
   if (modal) {
@@ -567,6 +661,15 @@ function openTokenWalletModal(tab = 'purchase') {
     modal.classList.add('active');
   }
   switchWalletTab(tab);
+  
+  // Populate available balance in withdraw tab
+  if (auth.currentUser) {
+    getUser(auth.currentUser.uid).then(u => {
+      const availEl = document.getElementById('withdraw-available-tokens');
+      if (availEl) availEl.textContent = formatTokens(u?.tokens ?? 0.00);
+    }).catch(console.warn);
+  }
+
   if (window.lucide) lucide.createIcons();
 }
 
@@ -581,37 +684,246 @@ function closeTokenWalletModal() {
 function switchWalletTab(tab) {
   const btnPurchase = document.getElementById('tab-btn-wallet-purchase');
   const btnWithdraw = document.getElementById('tab-btn-wallet-withdraw');
+  const btnRedeem = document.getElementById('tab-btn-wallet-redeem');
+
   const viewPurchase = document.getElementById('wallet-tab-purchase-view');
   const viewWithdraw = document.getElementById('wallet-tab-withdraw-view');
+  const viewRedeem = document.getElementById('wallet-tab-redeem-view');
+
+  if (btnPurchase) btnPurchase.classList.remove('active');
+  if (btnWithdraw) btnWithdraw.classList.remove('active');
+  if (btnRedeem) btnRedeem.classList.remove('active');
+
+  if (viewPurchase) viewPurchase.style.display = 'none';
+  if (viewWithdraw) viewWithdraw.style.display = 'none';
+  if (viewRedeem) viewRedeem.style.display = 'none';
 
   if (tab === 'purchase') {
     if (btnPurchase) btnPurchase.classList.add('active');
-    if (btnWithdraw) btnWithdraw.classList.remove('active');
     if (viewPurchase) viewPurchase.style.display = 'block';
-    if (viewWithdraw) viewWithdraw.style.display = 'none';
-  } else {
-    if (btnPurchase) btnPurchase.classList.remove('active');
+  } else if (tab === 'withdraw') {
     if (btnWithdraw) btnWithdraw.classList.add('active');
-    if (viewPurchase) viewPurchase.style.display = 'none';
     if (viewWithdraw) viewWithdraw.style.display = 'block';
+  } else if (tab === 'redeem') {
+    if (btnRedeem) btnRedeem.classList.add('active');
+    if (viewRedeem) viewRedeem.style.display = 'block';
   }
+
+  if (window.lucide) lucide.createIcons();
 }
 
 async function handleWalletBuy(packName, tokenAmount, usdPrice) {
   const user = auth.currentUser;
   if (!user) {
-    showToast('Please log in to purchase tokens', 'error');
+    showToast('Please log in to deposit tokens', 'error');
     return;
   }
   const amount = parseFloat(tokenAmount);
   try {
-    await updateTokens(user.uid, amount, 'purchase', `Purchased ${packName} Pack (${formatTokens(amount)} Tokens)`);
+    await updateTokens(user.uid, amount, 'purchase', `Deposited ${packName} Pack (${formatTokens(amount)} Tokens)`);
     showToast(`Successfully added ${formatTokens(amount)} Tokens to your balance!`, 'success');
     closeTokenWalletModal();
   } catch (err) {
     showToast(err.message, 'error');
   }
 }
+
+async function handleCustomWalletBuy() {
+  const user = auth.currentUser;
+  if (!user) {
+    showToast('Please log in to deposit tokens', 'error');
+    return;
+  }
+  const input = document.getElementById('custom-token-deposit-input');
+  const val = parseFloat(input?.value || '0');
+  if (!val || val < 1) {
+    showToast('Please enter a valid deposit amount (min 1.00)', 'error');
+    return;
+  }
+  try {
+    await updateTokens(user.uid, val, 'purchase', `Custom Deposit (${formatTokens(val)} Tokens)`);
+    showToast(`Successfully added ${formatTokens(val)} Tokens to your balance!`, 'success');
+    if (input) input.value = '';
+    closeTokenWalletModal();
+  } catch (err) {
+    showToast(err.message, 'error');
+  }
+}
+
+async function setWalletWithdrawMax() {
+  if (!auth.currentUser) return;
+  try {
+    const u = await getUser(auth.currentUser.uid);
+    const bal = Math.floor((Number(u?.tokens || 0)) * 100) / 100;
+    const input = document.getElementById('wallet-withdraw-amount');
+    if (input) input.value = bal;
+  } catch (e) {
+    console.warn(e);
+  }
+}
+
+async function handleWalletWithdraw() {
+  const user = auth.currentUser;
+  if (!user) {
+    showToast('Please log in to withdraw', 'error');
+    return;
+  }
+
+  const methodEl = document.getElementById('wallet-withdraw-method');
+  const addrEl = document.getElementById('wallet-withdraw-address');
+  const amtEl = document.getElementById('wallet-withdraw-amount');
+  const btn = document.getElementById('wallet-withdraw-submit-btn');
+
+  const method = methodEl?.value || 'paypal';
+  const address = addrEl?.value?.trim();
+  const amount = parseFloat(amtEl?.value || '0');
+
+  if (!address) {
+    showToast('Please enter your payout address or email', 'error');
+    return;
+  }
+  if (!amount || amount < 5.00) {
+    showToast('Minimum withdrawal is 5.00 Tokens', 'error');
+    return;
+  }
+
+  if (btn) btn.disabled = true;
+
+  try {
+    const userData = await getUser(user.uid);
+    const curBal = Number(userData?.tokens || 0);
+    if (curBal < amount) {
+      throw new Error(`Insufficient balance (Available: ${formatTokens(curBal)} Tokens)`);
+    }
+
+    // Deduct tokens
+    await updateTokens(user.uid, -amount, 'withdrawal', `Withdrawal Request to ${method.toUpperCase()} (${address})`);
+
+    // Create withdrawal request doc
+    await db.collection('withdrawals').add({
+      userId: user.uid,
+      username: userData?.displayName || user.displayName || 'Player',
+      discordUsername: userData?.discordUsername || '',
+      amount: amount,
+      method: method,
+      destination: address,
+      status: 'pending',
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+
+    showToast(`Withdrawal request for ${formatTokens(amount)} Tokens submitted successfully!`, 'success');
+    if (addrEl) addrEl.value = '';
+    if (amtEl) amtEl.value = '';
+    closeTokenWalletModal();
+  } catch (err) {
+    showToast(err.message || 'Failed to submit withdrawal request', 'error');
+  } finally {
+    if (btn) btn.disabled = false;
+  }
+}
+
+/* ── Universal Redeem Code Handler ─────────────────────────────── */
+async function handleRedeemCode() {
+  const user = auth.currentUser;
+  if (!user) {
+    showToast('Please log in to redeem codes', 'error');
+    return;
+  }
+
+  const input = document.getElementById('wallet-redeem-code-input');
+  const btn = document.getElementById('wallet-redeem-submit-btn');
+  const rawCode = input?.value?.trim()?.toUpperCase();
+
+  if (!rawCode) {
+    showToast('Please enter a redeem code', 'error');
+    return;
+  }
+
+  if (btn) btn.disabled = true;
+
+  try {
+    // Look up code in Firestore
+    const snap = await db.collection('redeem_codes').where('code', '==', rawCode).limit(1).get();
+    if (snap.empty) {
+      throw new Error('Invalid code. Please check for typos and try again.');
+    }
+
+    const codeDoc = snap.docs[0];
+    const codeData = codeDoc.data();
+
+    if (codeData.isActive === false) {
+      throw new Error('This code has been deactivated or expired.');
+    }
+
+    const maxUses = Number(codeData.maxUses || 1);
+    const usedCount = Number(codeData.usedCount || 0);
+    if (usedCount >= maxUses) {
+      throw new Error('This code has already reached its maximum redemptions.');
+    }
+
+    const usedBy = codeData.usedBy || [];
+    if (usedBy.some(u => u.uid === user.uid)) {
+      throw new Error('You have already redeemed this code.');
+    }
+
+    const userData = await getUser(user.uid);
+
+    // Apply Reward
+    let rewardMsg = '';
+    const rewardType = codeData.rewardType || 'tokens';
+
+    if (rewardType === 'tokens') {
+      const amt = Number(codeData.rewardValue || 0);
+      if (amt <= 0) throw new Error('Code has no reward value.');
+      await updateTokens(user.uid, amt, 'redeem_code', `Redeemed Code: ${rawCode}`);
+      rewardMsg = `+${formatTokens(amt)} Tokens credited to your balance!`;
+    } else if (rewardType === 'pfp') {
+      const pfpId = codeData.rewardValue;
+      await db.collection('users').doc(user.uid).update({
+        unlockedPfps: firebase.firestore.FieldValue.arrayUnion(pfpId)
+      });
+      rewardMsg = `Unlocked Avatar: ${codeData.rewardLabel || pfpId}!`;
+    } else if (rewardType === 'title') {
+      const titleId = codeData.rewardValue;
+      await db.collection('users').doc(user.uid).update({
+        unlockedTitles: firebase.firestore.FieldValue.arrayUnion(titleId)
+      });
+      rewardMsg = `Unlocked Title: "${codeData.rewardLabel || titleId}"!`;
+    } else if (rewardType === 'premium') {
+      await db.collection('users').doc(user.uid).update({
+        isPremium: true
+      });
+      rewardMsg = 'Unlocked Champion Premium Membership!';
+    } else {
+      throw new Error('Unknown reward type.');
+    }
+
+    // Mark code as used
+    const newUsedCount = usedCount + 1;
+    const isNowExpired = (newUsedCount >= maxUses);
+
+    await db.collection('redeem_codes').doc(codeDoc.id).update({
+      usedCount: firebase.firestore.FieldValue.increment(1),
+      isActive: !isNowExpired,
+      usedBy: firebase.firestore.FieldValue.arrayUnion({
+        uid: user.uid,
+        username: userData?.displayName || user.displayName || 'Player',
+        discordUsername: userData?.discordUsername || '',
+        redeemedAt: new Date().toISOString()
+      })
+    });
+
+    showToast(`🎉 Code Redeemed! ${rewardMsg}`, 'success');
+    if (input) input.value = '';
+    closeTokenWalletModal();
+  } catch (err) {
+    console.error('Redeem error:', err);
+    showToast(err.message || 'Failed to redeem code', 'error');
+  } finally {
+    if (btn) btn.disabled = false;
+  }
+}
+
 
 function handleSignOut() {
   signOut().then(() => { window.location.href = '/'; });
