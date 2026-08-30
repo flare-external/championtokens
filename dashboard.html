@@ -7,12 +7,98 @@
   <link rel="icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
-  <link rel="stylesheet" href="css/style.css?v=4.0.1788050930001"/>
+  <link rel="stylesheet" href="css/style.css?v=4.0.1788051154041"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
 
   <style>
-    /* ── Morphed Master Hero & Stats Hub ─────────────────────────── */
+    /* ── Hero News Banner Card ──────────────────────────────────── */
+    .db-news-hero {
+      position: relative;
+      background: #000000;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 22px;
+      overflow: hidden;
+      margin-bottom: 24px;
+      box-shadow: 0 16px 45px rgba(0, 0, 0, 0.9);
+      min-height: 290px;
+      display: flex;
+      align-items: center;
+    }
+
+    .db-news-bg-img {
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      width: 58%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center right;
+      opacity: 0.75;
+      mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.4) 20%, rgba(0,0,0,0.95) 65%, #000000 100%);
+      -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.3) 15%, rgba(0,0,0,0.95) 60%, #000000 100%);
+      pointer-events: none;
+    }
+    @media (max-width: 768px) {
+      .db-news-bg-img {
+        width: 100%;
+        opacity: 0.25;
+        mask-image: none;
+        -webkit-mask-image: none;
+      }
+    }
+
+    .db-news-content {
+      position: relative;
+      z-index: 2;
+      padding: 34px 38px;
+      max-width: 600px;
+    }
+    @media (max-width: 640px) {
+      .db-news-content {
+        padding: 24px 20px;
+      }
+    }
+
+    .db-news-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      color: #ffffff;
+      padding: 4px 11px;
+      border-radius: 8px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .db-news-title {
+      font-size: 1.85rem;
+      font-weight: 900;
+      color: #ffffff;
+      letter-spacing: -0.02em;
+      line-height: 1.18;
+      margin-bottom: 10px;
+    }
+    @media (max-width: 640px) {
+      .db-news-title {
+        font-size: 1.45rem;
+      }
+    }
+
+    .db-news-desc {
+      font-size: 0.88rem;
+      color: #94a3b8;
+      line-height: 1.55;
+      margin-bottom: 20px;
+    }
+
+    /* ── Morphed Player Stats Hub ────────────────────────────────── */
     .db-morphed-hub {
       background: #000000;
       border: 1px solid rgba(255, 255, 255, 0.08);
@@ -59,6 +145,31 @@
       flex-shrink: 0;
     }
 
+    /* ── Highlights / Feature Cards Grid ────────────────────────── */
+    .db-highlights-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+
+    .db-highlight-item {
+      background: #000000;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 18px;
+      padding: 20px 22px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+      transition: all 0.18s ease;
+    }
+    .db-highlight-item:hover {
+      border-color: rgba(255, 255, 255, 0.16);
+      transform: translateY(-2px);
+    }
+
     /* ── Live Matches Section Card ──────────────────────────────── */
     .db-section-card {
       background: #000000;
@@ -100,49 +211,6 @@
       background: #0b0b0e;
       transform: translateY(-2px);
     }
-
-    /* ── Activity Table Styling ─────────────────────────────────── */
-    .db-activity-table {
-      width: 100%;
-      border-collapse: separate;
-      border-spacing: 0 8px;
-      min-width: 500px;
-    }
-    .db-activity-table th {
-      color: #64748b;
-      font-size: 0.72rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      padding: 8px 14px;
-      border: none;
-      text-align: left;
-    }
-    .db-activity-table tbody tr {
-      background: #060608;
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      transition: all 0.16s ease;
-    }
-    .db-activity-table tbody tr:hover {
-      background: #0e0e12;
-      border-color: rgba(255, 255, 255, 0.12);
-    }
-    .db-activity-table td {
-      padding: 12px 14px;
-      font-size: 0.84rem;
-      border-top: 1px solid rgba(255, 255, 255, 0.05);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    }
-    .db-activity-table td:first-child {
-      border-left: 1px solid rgba(255, 255, 255, 0.05);
-      border-top-left-radius: 10px;
-      border-bottom-left-radius: 10px;
-    }
-    .db-activity-table td:last-child {
-      border-right: 1px solid rgba(255, 255, 255, 0.05);
-      border-top-right-radius: 10px;
-      border-bottom-right-radius: 10px;
-    }
   </style>
 </head>
 <body>
@@ -157,9 +225,34 @@
   <!-- Page content -->
   <main class="page-wrap" id="main-content" style="max-width: 1050px;">
     
-    <!-- 1. Morphed Welcome Header & Player Stats Card -->
+    <!-- 1. Hero News & Announcement Banner -->
+    <div class="db-news-hero">
+      <img src="news_ui_update.jpg" class="db-news-bg-img" alt="Platform UI Update" />
+      <div class="db-news-content">
+        <div class="db-news-tag">
+          <i data-lucide="sparkles" style="width:12px;height:12px;"></i>
+          <span>UI Update 2.0</span>
+        </div>
+        <div class="db-news-title">
+          Platform UI Redesigned
+        </div>
+        <div class="db-news-desc">
+          We've rolled out a sleek pitch-black interface across the entire site. Enjoy unified leaderboard podiums, streamlined navigation, and real-time wallet tracking.
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+          <a href="matches" class="btn btn-primary btn-sm" style="padding:8px 20px;font-size:0.85rem;gap:7px;border-radius:10px;">
+            <i data-lucide="swords" style="width:15px;height:15px;"></i> Jump into Matches
+          </a>
+          <a href="leaderboard" class="btn btn-outline btn-sm" style="padding:8px 18px;font-size:0.85rem;gap:7px;border-radius:10px;background:rgba(0,0,0,0.6);border-color:rgba(255,255,255,0.15);">
+            <i data-lucide="trophy" style="width:15px;height:15px;"></i> Standings
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. Morphed Player Hub & Quick Stats -->
     <div class="db-morphed-hub">
-      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:18px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;">
         <div style="display:flex;align-items:center;gap:14px;">
           <div style="width:48px;height:48px;border-radius:50%;background:#0a0a0c;display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0;">
             <img id="db-user-avatar-img" src="" alt="" style="width:100%;height:100%;object-fit:cover;display:none;"/>
@@ -167,9 +260,9 @@
           </div>
           <div>
             <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-              <h1 style="font-size:1.45rem;font-weight:900;margin:0;color:#ffffff;letter-spacing:-0.02em;">
+              <h2 style="font-size:1.4rem;font-weight:900;margin:0;color:#ffffff;letter-spacing:-0.02em;">
                 <span id="welcome-name">Champion</span>
-              </h1>
+              </h2>
               <span style="font-size:0.8rem;color:var(--text-muted);" id="welcome-handle">@user</span>
             </div>
             <div style="font-size:0.75rem;color:var(--text-faint);margin-top:2px;" id="welcome-epic">
@@ -179,15 +272,15 @@
         </div>
 
         <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-          <a href="matches" class="btn btn-primary btn-sm" style="padding:7px 16px;font-size:0.82rem;gap:6px;border-radius:10px;">
-            <i data-lucide="swords" style="width:14px;height:14px;"></i> <span>Find Match</span>
+          <a href="matches" class="btn btn-outline btn-sm" style="padding:7px 16px;font-size:0.82rem;gap:6px;background:#060608;border:1px solid rgba(255,255,255,0.1);border-radius:10px;">
+            <i data-lucide="swords" style="width:14px;height:14px;"></i> <span>Matches</span>
           </a>
-          <button class="btn btn-outline btn-sm" onclick="handleCreateMatchRedirect()" style="padding:7px 16px;font-size:0.82rem;gap:6px;background:#060608;border:1px solid rgba(255,255,255,0.1);border-radius:10px;">
-            <i data-lucide="plus" style="width:14px;height:14px;"></i> <span>Create</span>
-          </button>
           <button class="btn btn-outline btn-sm" onclick="openTokenWalletModal('purchase')" style="padding:7px 16px;font-size:0.82rem;gap:6px;background:#060608;border:1px solid rgba(255,255,255,0.1);border-radius:10px;">
             <i data-lucide="coins" style="width:14px;height:14px;"></i> <span>Wallet</span>
           </button>
+          <a href="profile" class="btn btn-outline btn-sm" style="padding:7px 16px;font-size:0.82rem;gap:6px;background:#060608;border:1px solid rgba(255,255,255,0.1);border-radius:10px;">
+            <i data-lucide="user" style="width:14px;height:14px;"></i> <span>Profile</span>
+          </a>
         </div>
       </div>
 
@@ -238,12 +331,69 @@
       </div>
     </div>
 
-    <!-- 2. Live Open Matches Lobbies -->
+    <!-- 3. Feature Highlights Grid -->
+    <div class="db-highlights-grid">
+      <div class="db-highlight-item">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="width:36px;height:36px;border-radius:10px;background:rgba(245,158,11,0.14);display:flex;align-items:center;justify-content:center;color:var(--gold-bright);">
+            <i data-lucide="crown" style="width:18px;height:18px;"></i>
+          </div>
+          <div>
+            <div style="font-weight:800;font-size:0.95rem;color:#fff;">Leaderboard Podium</div>
+            <div style="font-size:0.75rem;color:var(--text-muted);">Real-time Top 3 Rankings</div>
+          </div>
+        </div>
+        <div style="font-size:0.8rem;color:#94a3b8;line-height:1.45;">
+          Rankings now feature live podium showcases, instant sort filters, and win rate tracking.
+        </div>
+        <a href="leaderboard" style="font-size:0.78rem;font-weight:800;color:var(--gold-bright);text-decoration:none;display:flex;align-items:center;gap:4px;">
+          View Standings <i data-lucide="arrow-right" style="width:13px;height:13px;"></i>
+        </a>
+      </div>
+
+      <div class="db-highlight-item">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="width:36px;height:36px;border-radius:10px;background:rgba(59,130,246,0.14);display:flex;align-items:center;justify-content:center;color:#60a5fa;">
+            <i data-lucide="swords" style="width:18px;height:18px;"></i>
+          </div>
+          <div>
+            <div style="font-weight:800;font-size:0.95rem;color:#fff;">Custom Match Lobbies</div>
+            <div style="font-size:0.75rem;color:var(--text-muted);">1v1 & 2v2 Arenas</div>
+          </div>
+        </div>
+        <div style="font-size:0.8rem;color:#94a3b8;line-height:1.45;">
+          Create custom wager matches for Box Fights, Realistics, Build Fights, and Team Duos.
+        </div>
+        <a href="matches" style="font-size:0.78rem;font-weight:800;color:#60a5fa;text-decoration:none;display:flex;align-items:center;gap:4px;">
+          Explore Lobbies <i data-lucide="arrow-right" style="width:13px;height:13px;"></i>
+        </a>
+      </div>
+
+      <div class="db-highlight-item">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="width:36px;height:36px;border-radius:10px;background:rgba(16,185,129,0.14);display:flex;align-items:center;justify-content:center;color:#34d399;">
+            <i data-lucide="shield-check" style="width:18px;height:18px;"></i>
+          </div>
+          <div>
+            <div style="font-weight:800;font-size:0.95rem;color:#fff;">Instant Token Payouts</div>
+            <div style="font-size:0.75rem;color:var(--text-muted);">Automated Match System</div>
+          </div>
+        </div>
+        <div style="font-size:0.8rem;color:#94a3b8;line-height:1.45;">
+          Winnings are automatically calculated and credited upon verified score confirmation.
+        </div>
+        <a href="shop" style="font-size:0.78rem;font-weight:800;color:#34d399;text-decoration:none;display:flex;align-items:center;gap:4px;">
+          Visit Shop <i data-lucide="arrow-right" style="width:13px;height:13px;"></i>
+        </a>
+      </div>
+    </div>
+
+    <!-- 4. Live Open Matches Lobbies -->
     <div class="db-section-card">
       <div class="db-section-header">
         <div style="display:flex;align-items:center;gap:10px;">
           <i data-lucide="swords" style="color:var(--gold-bright);width:20px;height:20px;"></i>
-          <span style="font-size:1.05rem;font-weight:900;color:#fff;">Open Matches</span>
+          <span style="font-size:1.05rem;font-weight:900;color:#fff;">Open Match Lobbies</span>
         </div>
         <a href="matches" style="font-size:0.82rem;font-weight:700;color:var(--gold-bright);text-decoration:none;display:flex;align-items:center;gap:4px;">
           View All <i data-lucide="arrow-right" style="width:14px;height:14px;"></i>
@@ -252,36 +402,6 @@
 
       <div class="db-matches-grid" id="db-open-matches-list">
         <div class="empty-state" style="grid-column:1/-1;"><div class="spinner" style="margin:0 auto;"></div></div>
-      </div>
-    </div>
-
-    <!-- 3. Recent Match Activity -->
-    <div class="db-section-card">
-      <div class="db-section-header">
-        <div style="display:flex;align-items:center;gap:10px;">
-          <i data-lucide="history" style="color:#60a5fa;width:20px;height:20px;"></i>
-          <span style="font-size:1.05rem;font-weight:900;color:#fff;">Recent Match History</span>
-        </div>
-        <a href="profile?tab=history" style="font-size:0.82rem;font-weight:700;color:#94a3b8;text-decoration:none;display:flex;align-items:center;gap:4px;">
-          Full History <i data-lucide="arrow-right" style="width:14px;height:14px;"></i>
-        </a>
-      </div>
-
-      <div style="overflow-x:auto;">
-        <table class="db-activity-table">
-          <thead>
-            <tr>
-              <th>Match</th>
-              <th>Opponent / Host</th>
-              <th>Result</th>
-              <th>Wager</th>
-              <th>Time</th>
-            </tr>
-          </thead>
-          <tbody id="db-recent-matches-body">
-            <tr><td colspan="5" style="text-align:center;padding:24px;"><div class="spinner" style="margin:0 auto;"></div></td></tr>
-          </tbody>
-        </table>
       </div>
     </div>
 
@@ -327,16 +447,12 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="js/firebase-config.js?v=3.6"></script>
-  <script src="js/auth.js?v=4.0.1788050930001"></script>
-  <script src="js/db.js?v=4.0.1788050930001"></script>
-  <script src="js/nav.js?v=4.0.1788050930001"></script>
+  <script src="js/auth.js?v=4.0.1788051154041"></script>
+  <script src="js/db.js?v=4.0.1788051154041"></script>
+  <script src="js/nav.js?v=4.0.1788051154041"></script>
 
   <script>
     let currentUser = null;
-
-    function handleCreateMatchRedirect() {
-      window.location.href = 'matches';
-    }
 
     function renderDashboard(userData) {
       let name = (userData && userData.displayName) || '';
@@ -453,65 +569,6 @@
         });
     }
 
-    /* ── Load Recent Activity ──────────────────────────────────────── */
-    async function loadRecentMatches(userId) {
-      const tbody = document.getElementById('db-recent-matches-body');
-      if (!tbody) return;
-
-      try {
-        const snap = await db.collection('matches')
-          .where('status', '==', 'completed')
-          .limit(5)
-          .get();
-
-        if (snap.empty) {
-          tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:18px;">No completed matches yet.</td></tr>';
-          return;
-        }
-
-        tbody.innerHTML = snap.docs.map(doc => {
-          const m = doc.data();
-          const isWinner = m.winnerId === userId;
-          const isLoser = m.loserId === userId;
-          const isParticipant = isWinner || isLoser;
-
-          let resultBadge = '<span class="badge" style="background:rgba(255,255,255,0.06);color:#94a3b8;font-size:0.7rem;">Completed</span>';
-          if (isParticipant) {
-            resultBadge = isWinner
-              ? '<span class="badge" style="background:rgba(16,185,129,0.15);color:#34d399;border:1px solid rgba(16,185,129,0.3);font-size:0.7rem;">Victory</span>'
-              : '<span class="badge" style="background:rgba(239,68,68,0.15);color:#f87171;border:1px solid rgba(239,68,68,0.3);font-size:0.7rem;">Defeat</span>';
-          }
-
-          const timeStr = m.createdAt?.toDate ? timeAgo(m.createdAt.toDate()) : 'Recently';
-
-          return `
-            <tr onclick="window.location.href='match?id=${doc.id}'" style="cursor:pointer;">
-              <td style="font-weight:800;color:#fff;">${escapeHtml(m.title || m.mode || 'Match')}</td>
-              <td style="color:var(--text-muted);">${escapeHtml(m.hostName || 'Player')}</td>
-              <td>${resultBadge}</td>
-              <td style="font-weight:800;color:var(--gold-bright);">${formatTokens(m.wager || 0)} CT</td>
-              <td style="color:var(--text-faint);font-size:0.75rem;">${timeStr}</td>
-            </tr>
-          `;
-        }).join('');
-
-        if (window.lucide) lucide.createIcons();
-      } catch (err) {
-        console.warn('Error loading recent matches:', err);
-        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:18px;">History loaded in profile.</td></tr>';
-      }
-    }
-
-    function timeAgo(date) {
-      const seconds = Math.floor((new Date() - date) / 1000);
-      if (seconds < 60) return 'Just now';
-      const minutes = Math.floor(seconds / 60);
-      if (minutes < 60) return minutes + 'm ago';
-      const hours = Math.floor(minutes / 60);
-      if (hours < 24) return hours + 'h ago';
-      return Math.floor(hours / 24) + 'd ago';
-    }
-
     document.addEventListener('DOMContentLoaded', () => {
       requireAuth().then(async (user) => {
         currentUser = user;
@@ -523,7 +580,6 @@
           const userData = await getUser(user.uid);
           renderDashboard(userData || { displayName: user.displayName || 'Player', tokens: 1.00, totalEarned: 0.00, matchesPlayed: 0, matchesWon: 0 });
           loadOpenMatches();
-          loadRecentMatches(user.uid);
         } catch (err) {
           console.error('Error fetching user:', err);
           renderDashboard({ displayName: user.displayName || 'Player', tokens: 1.00, totalEarned: 0.00, matchesPlayed: 0, matchesWon: 0 });
