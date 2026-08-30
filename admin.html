@@ -5,11 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Champion Tokens</title>
   <link rel="icon" type="image/png" href="champion-tokens_new.png"/>
-  <link rel="stylesheet" href="css/style.css?v=4.0.1788055428728"/>
+  <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
+  <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
+  <link rel="stylesheet" href="css/style.css?v=4.0.1788055758182"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+
   <style>
-    /* ── Dark Glass Admin Aesthetics (Matching matches.html) ── */
+    /* ── Admin Dashboard Styling ──────────────────────────────────── */
     .admin-hero-header {
       display: flex;
       align-items: center;
@@ -17,38 +20,32 @@
       flex-wrap: wrap;
       gap: 16px;
       margin-bottom: 24px;
-      padding: 20px 24px;
-      background: rgba(14, 18, 32, 0.7);
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      border-radius: 18px;
-      backdrop-filter: blur(16px);
+      padding: 22px 26px;
+      background: #000000;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 20px;
+      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.85);
     }
 
     .admin-stats-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-      gap: 14px;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
       margin-bottom: 24px;
     }
-
     .admin-stat-card {
-      background: rgba(14, 18, 32, 0.65);
+      background: #060608;
       border: 1px solid rgba(255, 255, 255, 0.06);
-      border-radius: 16px;
+      border-radius: 14px;
       padding: 16px 18px;
       display: flex;
       align-items: center;
       gap: 14px;
-      transition: transform 0.2s ease, border-color 0.2s ease;
-    }
-    .admin-stat-card:hover {
-      transform: translateY(-2px);
-      border-color: rgba(255, 255, 255, 0.12);
     }
     .admin-stat-icon-wrap {
-      width: 44px;
-      height: 44px;
-      border-radius: 12px;
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -68,7 +65,7 @@
       gap: 8px;
       padding: 9px 18px;
       border-radius: 12px;
-      background: rgba(255, 255, 255, 0.03);
+      background: #060608;
       border: 1px solid rgba(255, 255, 255, 0.07);
       color: #94a3b8;
       font-size: 0.85rem;
@@ -78,14 +75,13 @@
       transition: all 0.18s ease;
     }
     .admin-nav-tab:hover {
-      background: rgba(255, 255, 255, 0.07);
+      background: #0e0e12;
       color: #fff;
     }
     .admin-nav-tab.active {
-      background: linear-gradient(135deg, rgba(245, 158, 11, 0.2) 0%, rgba(245, 158, 11, 0.08) 100%);
-      border-color: rgba(245, 158, 11, 0.5);
+      background: #0e0e12;
+      border-color: rgba(255, 255, 255, 0.18);
       color: var(--gold-bright);
-      box-shadow: 0 4px 16px rgba(245, 158, 11, 0.12);
     }
 
     .admin-filter-pill {
@@ -94,7 +90,7 @@
       gap: 6px;
       padding: 6px 14px;
       border-radius: 10px;
-      background: rgba(255, 255, 255, 0.03);
+      background: #060608;
       border: 1px solid rgba(255, 255, 255, 0.08);
       color: #94a3b8;
       font-size: 0.8rem;
@@ -102,24 +98,17 @@
       cursor: pointer;
       transition: all 0.16s ease;
     }
-    .admin-filter-pill i {
-      width: 14px;
-      height: 14px;
-    }
-    .admin-filter-pill:hover {
-      background: rgba(255, 255, 255, 0.08);
-      color: #fff;
-    }
+    .admin-filter-pill i { width: 14px; height: 14px; }
+    .admin-filter-pill:hover { background: #0e0e12; color: #fff; }
     .admin-filter-pill.active {
-      background: rgba(245, 158, 11, 0.16);
+      background: rgba(245, 158, 11, 0.14);
       border-color: rgba(245, 158, 11, 0.45);
       color: var(--gold-bright);
       font-weight: 800;
     }
 
-    /* Player Cards */
     .admin-player-card {
-      background: rgba(14, 18, 32, 0.7);
+      background: #060608;
       border: 1px solid rgba(255, 255, 255, 0.06);
       border-radius: 16px;
       padding: 16px 20px;
@@ -132,7 +121,7 @@
       transition: all 0.2s ease;
     }
     .admin-player-card:hover {
-      background: rgba(18, 24, 42, 0.85);
+      background: #0b0b0e;
       border-color: rgba(255, 255, 255, 0.12);
       transform: translateY(-1px);
     }
@@ -142,10 +131,10 @@
     }
 
     .admin-player-avatar {
-      width: 46px;
-      height: 46px;
+      width: 44px;
+      height: 44px;
       border-radius: 12px;
-      background: rgba(255, 255, 255, 0.06);
+      background: #000;
       border: 1px solid rgba(255, 255, 255, 0.1);
       display: flex;
       align-items: center;
@@ -156,11 +145,7 @@
       overflow: hidden;
       flex-shrink: 0;
     }
-    .admin-player-avatar img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
+    .admin-player-avatar img { width: 100%; height: 100%; object-fit: cover; }
 
     .admin-action-btn-sm {
       display: inline-flex;
@@ -178,7 +163,7 @@
     .admin-action-btn-sm i { width: 13px; height: 13px; }
 
     .ticket-card {
-      background: rgba(14, 18, 32, 0.7);
+      background: #060608;
       border: 1px solid rgba(255, 255, 255, 0.06);
       border-radius: 16px;
       padding: 18px 20px;
@@ -195,21 +180,20 @@
       opacity: 0.75;
     }
 
-    /* Role selection cards */
     .role-option-card {
       display: flex;
       align-items: center;
       gap: 14px;
       padding: 14px 16px;
       border-radius: 12px;
-      background: rgba(255, 255, 255, 0.03);
+      background: #060608;
       border: 1px solid rgba(255, 255, 255, 0.08);
       cursor: pointer;
       transition: all 0.18s ease;
       margin-bottom: 10px;
     }
     .role-option-card:hover {
-      background: rgba(255, 255, 255, 0.08);
+      background: #0e0e12;
       border-color: rgba(255, 255, 255, 0.2);
     }
     .role-option-card.active {
@@ -222,700 +206,26 @@
 </head>
 <body>
   <div class="page-bg"></div>
+
+  <!-- Loading screen -->
   <div class="page-loading" id="page-loading">
     <div class="spinner"></div>
     <span>Authenticating Staff…</span>
   </div>
 
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
-  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
-  <script src="js/firebase-config.js"></script>
-  <script src="js/auth.js?v=4.0.1788055428728"></script>
-  <script src="js/db.js?v=4.0.1788055428728"></script>
-  <script src="js/nav.js?v=4.0.1788055428728"></script>
-  <script>
-    let currentUser = null;
-    let currentUserData = null;
-    let myStaffTier = 'none';
-    let loadedUsersList = [];
-    let currentPlayerFilter = 'all';
-    let currentSearchTerm = '';
-
-    requireAuth().then(async (user) => {
-      currentUser = user;
-      currentUserData = await getUser(user.uid);
-      myStaffTier = getStaffTier(user, currentUserData);
-
-      if (myStaffTier === 'none') {
-        document.getElementById('page-loading').innerHTML = '<div style="text-align:center;padding:24px;"><i data-lucide="shield-x" style="width:48px;height:48px;color:var(--red);margin-bottom:12px;"></i><h2 style="color:var(--red);font-weight:900;">Access Denied</h2><p style="color:var(--text-muted);margin:8px 0 16px;">This panel is restricted to staff members only.</p><a href="dashboard" class="btn btn-primary btn-sm">Return to Dashboard</a></div>';
-        lucide.createIcons();
-        return;
-      }
-
-      injectNav('admin');
-      document.getElementById('page-loading').classList.add('hidden');
-
-      // Set role badge
-      const roleBadge = document.getElementById('admin-role-badge');
-      if (roleBadge) {
-        if (myStaffTier === 'administrator') {
-          roleBadge.innerHTML = '<i data-lucide="shield-check"></i> Administrator';
-          roleBadge.style.background = 'rgba(245,158,11,0.18)';
-          roleBadge.style.color = 'var(--gold-bright)';
-          roleBadge.style.borderColor = 'rgba(245,158,11,0.5)';
-        } else if (myStaffTier === 'moderator') {
-          roleBadge.innerHTML = '<i data-lucide="shield"></i> Moderator';
-          roleBadge.style.background = 'rgba(59,130,246,0.18)';
-          roleBadge.style.color = '#60a5fa';
-          roleBadge.style.borderColor = 'rgba(59,130,246,0.5)';
-        }
-      }
-
-      // Hide Administrator-only tabs for moderators
-      if (myStaffTier !== 'administrator') {
-        const bBtn = document.getElementById('admin-tabBtn-broadcast');
-        const dBtn = document.getElementById('admin-tabBtn-danger');
-        if (bBtn) bBtn.style.display = 'none';
-        if (dBtn) dBtn.style.display = 'none';
-      }
-
-      switchAdminTab('players');
-      loadInitialUsers();
-        initRedeemCodesListener();
-        generateRandomCodeInput();
-      subscribeStaffCalls();
-      subscribeActiveMatches();
-      subscribeActiveTeams();
-    }).catch(() => window.location.href = '/');
-
-    function switchAdminTab(tab) {
-      ['players','matches','teams','tickets','codes','broadcast','danger'].forEach(t => {
-        const el = document.getElementById('admin-tab-' + t);
-        const btn = document.getElementById('admin-tabBtn-' + t);
-        if (el) el.classList.toggle('hidden', t !== tab);
-        if (btn) btn.classList.toggle('active', t === tab);
-      });
-    }
-
-    async function loadInitialUsers() {
-      const container = document.getElementById('player-search-results');
-      if (container) container.innerHTML = '<div class="empty-state"><div class="spinner" style="margin:0 auto;"></div><p style="margin-top:10px;">Loading users directory…</p></div>';
-      try {
-        loadedUsersList = await adminFetchRecentUsers(80);
-        document.getElementById('total-users-stat').textContent = loadedUsersList.length;
-        renderFilteredPlayers();
-      } catch (err) {
-        if (container) container.innerHTML = '<div class="empty-state"><p>Error loading users: ' + escapeHtml(err.message) + '</p></div>';
-      }
-    }
-
-    function setPlayerFilter(filter) {
-      currentPlayerFilter = filter;
-      document.querySelectorAll('.admin-filter-pill').forEach(p => {
-        p.classList.toggle('active', p.dataset.filter === filter);
-      });
-      renderFilteredPlayers();
-    }
-
-    async function handlePlayerSearch(e) {
-      if (e) e.preventDefault();
-      const q = document.getElementById('player-search-input').value.trim();
-      currentSearchTerm = q.toLowerCase();
-      if (currentSearchTerm.length >= 2) {
-        const btn = document.getElementById('player-search-btn');
-        if (btn) btn.disabled = true;
-        try {
-          const searchResults = await searchUsers(q);
-          const seen = new Set(loadedUsersList.map(u => u.id));
-          searchResults.forEach(u => {
-            if (!seen.has(u.id)) {
-              loadedUsersList.unshift(u);
-              seen.add(u.id);
-            }
-          });
-        } catch (e) {
-          console.warn('Search deep query note:', e);
-        } finally {
-          if (btn) btn.disabled = false;
-        }
-      }
-      renderFilteredPlayers();
-    }
-
-    function renderFilteredPlayers() {
-      const container = document.getElementById('player-search-results');
-      if (!container) return;
-
-      let filtered = [...loadedUsersList];
-
-      // Apply Search Filter
-      if (currentSearchTerm) {
-        filtered = filtered.filter(u => {
-          const name = (u.displayName || '').toLowerCase();
-          const disc = (u.discordUsername || '').toLowerCase();
-          const epic = (u.epicUsername || '').toLowerCase();
-          const uid  = (u.id || '').toLowerCase();
-          const did  = (u.discordId || '').toLowerCase();
-          return name.includes(currentSearchTerm) || disc.includes(currentSearchTerm) || epic.includes(currentSearchTerm) || uid.includes(currentSearchTerm) || did.includes(currentSearchTerm);
-        });
-      }
-
-      // Apply Category Filter
-      if (currentPlayerFilter === 'banned') {
-        filtered = filtered.filter(u => !!u.banned);
-      } else if (currentPlayerFilter === 'admins') {
-        filtered = filtered.filter(u => getStaffTier(null, u) === 'administrator');
-      } else if (currentPlayerFilter === 'moderators') {
-        filtered = filtered.filter(u => getStaffTier(null, u) === 'moderator');
-      } else if (currentPlayerFilter === 'epic') {
-        filtered = filtered.filter(u => !!u.epicUsername);
-      } else if (currentPlayerFilter === 'tokens') {
-        filtered = filtered.filter(u => Number(u.tokens || 0) >= 10);
-      }
-
-      if (!filtered.length) {
-        container.innerHTML = '<div class="empty-state" style="padding:28px 0;"><i data-lucide="user-x" style="width:36px;height:36px;margin:0 auto 10px;opacity:0.4;"></i><p>No players found matching current filters.</p></div>';
-        lucide.createIcons();
-        return;
-      }
-
-      container.innerHTML = filtered.map(u => {
-        const banned = !!u.banned;
-        const uTier = getStaffTier(null, u);
-        const tokens = Number(u.tokens ?? 1.00);
-        const played = Number(u.matchesPlayed || 0);
-        const won = Number(u.matchesWon || 0);
-        const wr = played > 0 ? (Math.round((won / played) * 100) + '%') : '0%';
-        const pfp = u.photoURL;
-        const initial = (u.displayName || 'P').charAt(0).toUpperCase();
-
-        let roleBadge = '';
-        if (uTier === 'administrator') {
-          roleBadge = '<span class="badge" style="background:rgba(245,158,11,0.18);color:var(--gold-bright);border:1px solid rgba(245,158,11,0.45);font-size:0.68rem;padding:2px 7px;"><i data-lucide="shield-check" style="width:11px;height:11px;"></i> Administrator</span>';
-        } else if (uTier === 'moderator') {
-          roleBadge = '<span class="badge" style="background:rgba(59,130,246,0.18);color:#60a5fa;border:1px solid rgba(59,130,246,0.45);font-size:0.68rem;padding:2px 7px;"><i data-lucide="shield" style="width:11px;height:11px;"></i> Moderator</span>';
-        }
-
-        // Action buttons based on logged-in user's permissions:
-        let actionBtns = '<a href="profile?uid=' + encodeURIComponent(u.id) + '" target="_blank" class="admin-action-btn-sm btn-outline"><i data-lucide="external-link"></i> Profile</a>';
-
-        // Only Administrators can adjust tokens, edit Epic, manage roles, ban, or delete
-        if (myStaffTier === 'administrator') {
-          actionBtns += '<button class="admin-action-btn-sm btn-gold" onclick="openDirectBalanceModal(\'' + u.id + '\', \'' + escapeHtml(u.displayName || 'Player') + '\', ' + tokens + ')"><i data-lucide="coins"></i> Balance</button>';
-          actionBtns += '<button class="admin-action-btn-sm btn-outline" onclick="handleAdminEditEpic(\'' + u.id + '\', \'' + escapeHtml(u.epicUsername || '') + '\')"><i data-lucide="gamepad-2"></i> Epic</button>';
-          actionBtns += '<button class="admin-action-btn-sm btn-outline" onclick="openRoleModal(\'' + u.id + '\', \'' + escapeHtml(u.displayName || 'Player') + '\', \'' + uTier + '\')"><i data-lucide="shield"></i> Role</button>';
-
-          if (banned) {
-            actionBtns += '<button class="admin-action-btn-sm btn-primary" onclick="handleUnbanUser(\'' + u.id + '\')"><i data-lucide="shield-check"></i> Unban</button>';
-          } else {
-            actionBtns += '<button class="admin-action-btn-sm btn-outline" style="color:var(--red);border-color:rgba(239,68,68,0.3);" onclick="handleBanUser(\'' + u.id + '\',\'' + escapeHtml(u.displayName || 'Unknown') + '\')"><i data-lucide="ban"></i> Ban</button>';
-          }
-
-          actionBtns += '<button class="admin-action-btn-sm btn-danger" onclick="handleAdminDeleteAccount(\'' + u.id + '\', \'' + escapeHtml(u.displayName || 'Player') + '\')"><i data-lucide="trash-2"></i> Delete</button>';
-        }
-
-        return '<div class="admin-player-card ' + (banned ? 'banned' : '') + '" id="user-card-' + u.id + '">' +
-          '<div style="display:flex;align-items:center;gap:14px;min-width:260px;flex:1;">' +
-            '<div class="admin-player-avatar">' + (pfp ? '<img src="' + escapeHtml(pfp) + '" alt=""/>' : initial) + '</div>' +
-            '<div style="min-width:0;flex:1;">' +
-              '<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">' +
-                '<span style="font-weight:900;font-size:1.02rem;color:#fff;">' + escapeHtml(u.displayName || 'Unknown') + '</span>' +
-                roleBadge +
-                (banned ? '<span class="badge" style="background:rgba(239,68,68,0.2);color:var(--red);border:1px solid rgba(239,68,68,0.5);font-size:0.68rem;padding:2px 7px;"><i data-lucide="ban" style="width:11px;height:11px;"></i> Banned</span>' : '') +
-                (u.isPremium ? '<span class="badge" style="background:rgba(245,158,11,0.2);color:var(--gold-bright);border:1px solid rgba(245,158,11,0.5);font-size:0.68rem;padding:2px 7px;"><i data-lucide="sparkles" style="width:11px;height:11px;"></i> VIP</span>' : '') +
-              '</div>' +
-              '<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:5px;">' +
-                '<span class="badge" style="background:rgba(88,101,242,0.15);color:#818cf8;border:1px solid rgba(88,101,242,0.3);font-size:0.72rem;padding:2px 8px;">' +
-                  '<i data-lucide="message-square" style="width:11px;height:11px;"></i> @' + escapeHtml(u.discordUsername || 'discord') +
-                '</span>' +
-                '<span class="badge" style="background:rgba(0,120,242,0.15);color:#38bdf8;border:1px solid rgba(0,120,242,0.3);font-size:0.72rem;padding:2px 8px;">' +
-                  '<i data-lucide="gamepad-2" style="width:11px;height:11px;"></i> ' + (u.epicUsername ? escapeHtml(u.epicUsername) : '<span style="opacity:0.6;">Unlinked</span>') +
-                '</span>' +
-                '<span class="badge" style="background:rgba(245,158,11,0.15);color:var(--gold-bright);border:1px solid rgba(245,158,11,0.4);font-size:0.72rem;padding:2px 8px;' + (myStaffTier === 'administrator' ? 'cursor:pointer;' : '') + '" ' + (myStaffTier === 'administrator' ? 'onclick="openDirectBalanceModal(\'' + u.id + '\', \'' + escapeHtml(u.displayName || 'Player') + '\', ' + tokens + ')"' : '') + '>' +
-                  '<i data-lucide="coins" style="width:11px;height:11px;"></i> ' + formatTokens(tokens) + ' Tokens' +
-                '</span>' +
-              '</div>' +
-              '<div style="display:flex;align-items:center;gap:10px;margin-top:6px;font-size:0.72rem;color:var(--text-muted);">' +
-                '<span style="font-family:monospace;background:rgba(255,255,255,0.04);padding:2px 6px;border-radius:4px;cursor:pointer;" onclick="copyToClipboard(\'' + u.id + '\', \'UID copied\')" title="Click to copy UID">' +
-                  u.id + ' <i data-lucide="copy" style="width:10px;height:10px;display:inline;"></i>' +
-                '</span>' +
-                '<span><strong>' + played + '</strong> matches · <strong>' + won + '</strong> wins (' + wr + ')</span>' +
-              '</div>' +
-              (banned && u.banReason ? '<div style="font-size:0.75rem;color:var(--red);margin-top:4px;font-weight:700;">Ban reason: ' + escapeHtml(u.banReason) + '</div>' : '') +
-            '</div>' +
-          '</div>' +
-          '<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">' + actionBtns + '</div>' +
-        '</div>';
-      }).join('');
-
-      lucide.createIcons();
-    }
-
-    // ── Staff Role Management Modal ─────────────────────────
-    let _activeRoleUid = null;
-    let _activeRoleName = null;
-
-    function openRoleModal(uid, name, currentTier) {
-      _activeRoleUid = uid;
-      _activeRoleName = name;
-      document.getElementById('role-modal-name').textContent = name;
-      document.getElementById('role-modal-uid').textContent = uid;
-      document.querySelectorAll('.role-option-card').forEach(c => {
-        c.classList.toggle('active', c.dataset.role === currentTier);
-      });
-      document.getElementById('role-modal').classList.add('open');
-    }
-
-    function closeRoleModal() {
-      document.getElementById('role-modal').classList.remove('open');
-    }
-
-    async function submitSetStaffRole(selectedRole) {
-      if (!_activeRoleUid) return;
-      try {
-        await adminSetStaffRole(_activeRoleUid, selectedRole, currentUser?.uid);
-        const roleLabels = {
-          'administrator': 'Administrator',
-          'moderator': 'Moderator',
-          'none': 'Regular Player'
-        };
-        showToast(_activeRoleName + ' is now ' + (roleLabels[selectedRole] || selectedRole) + '!', 'success');
-        const u = loadedUsersList.find(x => x.id === _activeRoleUid);
-        if (u) {
-          u.staffRole = selectedRole === 'none' ? null : selectedRole;
-          u.isAdmin = selectedRole !== 'none';
-        }
-        renderFilteredPlayers();
-        closeRoleModal();
-      } catch (err) {
-        showToast('Error: ' + err.message, 'error');
-      }
-    }
-
-    // ── Direct Account Deletion (Admin only) ──────────────────
-    async function handleAdminDeleteAccount(uid, name) {
-      if (myStaffTier !== 'administrator') {
-        showToast('Only Administrators can delete accounts', 'error');
-        return;
-      }
-      const ok = await showConfirm({
-        title: 'Delete Account "' + name + '"?',
-        message: 'PERMANENT ACTION: This will completely delete the user document for ' + name + ' (' + uid + ') from the database, dissolve any owned teams, and remove memberships. Are you sure?',
-        confirmText: 'Yes, Delete Account',
-        cancelText: 'Cancel',
-        type: 'danger',
-        icon: 'trash-2'
-      });
-      if (!ok) return;
-
-      try {
-        await adminDeleteUser(uid, currentUserData?.displayName || 'Admin', currentUser?.uid);
-        showToast('Account "' + name + '" deleted permanently!', 'success');
-        loadedUsersList = loadedUsersList.filter(u => u.id !== uid);
-        renderFilteredPlayers();
-      } catch (err) {
-        showToast('Delete failed: ' + err.message, 'error');
-      }
-    }
-
-    // ── Direct Token Setting / Adjusting Modal (Admin only) ────
-    let _activeEditUid = null;
-    let _activeEditName = null;
-
-    function openDirectBalanceModal(uid, name, currentTokens) {
-      if (myStaffTier !== 'administrator') {
-        showToast('Only Administrators can adjust balances', 'error');
-        return;
-      }
-      _activeEditUid = uid;
-      _activeEditName = name;
-      document.getElementById('balance-modal-title').textContent = 'Manage Tokens: ' + name;
-      document.getElementById('balance-modal-current').textContent = formatTokens(currentTokens) + ' Tokens';
-      document.getElementById('balance-exact-input').value = Number(currentTokens).toFixed(2);
-      document.getElementById('balance-adjust-input').value = '10.00';
-      document.getElementById('balance-reason-input').value = 'Admin adjustment';
-      document.getElementById('balance-modal').classList.add('open');
-    }
-
-    function closeDirectBalanceModal() {
-      document.getElementById('balance-modal').classList.remove('open');
-    }
-
-    function setQuickAdjustVal(val) {
-      const el = document.getElementById('balance-adjust-input');
-      if (el) el.value = val.toFixed(2);
-    }
-
-    async function submitSetExactBalance() {
-      if (myStaffTier !== 'administrator') return;
-      const amount = parseFloat(document.getElementById('balance-exact-input').value);
-      const reason = document.getElementById('balance-reason-input').value.trim() || 'Admin set balance';
-      if (isNaN(amount) || amount < 0) {
-        showToast('Please enter a valid non-negative token amount', 'error');
-        return;
-      }
-      try {
-        await adminSetTokens(_activeEditUid, amount, currentUserData?.displayName || 'Admin', reason);
-        showToast('Balance for ' + _activeEditName + ' set to ' + amount.toFixed(2) + ' Tokens!', 'success');
-        const u = loadedUsersList.find(x => x.id === _activeEditUid);
-        if (u) u.tokens = amount;
-        renderFilteredPlayers();
-        closeDirectBalanceModal();
-      } catch (err) {
-        showToast('Error: ' + err.message, 'error');
-      }
-    }
-
-    async function submitAddAdjustment() {
-      if (myStaffTier !== 'administrator') return;
-      const amount = parseFloat(document.getElementById('balance-adjust-input').value);
-      const reason = document.getElementById('balance-reason-input').value.trim() || 'Admin adjustment';
-      if (isNaN(amount) || amount === 0) {
-        showToast('Please enter an adjustment amount', 'error');
-        return;
-      }
-      try {
-        const res = await adminAdjustTokens(_activeEditUid, amount, reason);
-        showToast((amount > 0 ? '+' : '') + amount.toFixed(2) + ' tokens applied! New balance: ' + formatTokens(res.newTokens), 'success');
-        const u = loadedUsersList.find(x => x.id === _activeEditUid);
-        if (u) u.tokens = res.newTokens;
-        renderFilteredPlayers();
-        closeDirectBalanceModal();
-      } catch (err) {
-        showToast('Error: ' + err.message, 'error');
-      }
-    }
-
-    // ── Epic Account Controls (Admin only) ───────────────────
-    async function handleAdminEditEpic(uid, currentEpic) {
-      if (myStaffTier !== 'administrator') {
-        showToast('Only Administrators can edit Epic accounts', 'error');
-        return;
-      }
-      const choice = prompt('Manage Epic Games account for UID ' + uid + '\nType new Epic username, or type CLEAR to unlink:', currentEpic || '');
-      if (choice === null) return;
-      try {
-        if (choice.trim().toUpperCase() === 'CLEAR' || choice.trim() === '') {
-          await adminUnlinkEpic(uid);
-          showToast('Epic account unlinked!', 'success');
-          const u = loadedUsersList.find(x => x.id === uid);
-          if (u) { u.epicUsername = null; u.epicVerified = false; }
-        } else {
-          await adminSetEpic(uid, choice.trim());
-          showToast('Epic account set to "' + choice.trim() + '"!', 'success');
-          const u = loadedUsersList.find(x => x.id === uid);
-          if (u) { u.epicUsername = choice.trim(); u.epicVerified = true; }
-        }
-        renderFilteredPlayers();
-      } catch (err) {
-        showToast('Error: ' + err.message, 'error');
-      }
-    }
-
-    // ── Ban / Unban Controls (Admin only) ─────────────────────
-    async function handleBanUser(uid, name) {
-      if (myStaffTier !== 'administrator') {
-        showToast('Moderators cannot ban users', 'error');
-        return;
-      }
-      const reason = prompt('Ban reason for ' + name + ':', 'Violation of community rules');
-      if (reason === null) return;
-      try {
-        await adminBanUser(uid, currentUserData?.displayName || 'Admin', reason, currentUser?.uid);
-        showToast(name + ' has been banned.', 'success');
-        const u = loadedUsersList.find(x => x.id === uid);
-        if (u) { u.banned = true; u.banReason = reason; }
-        renderFilteredPlayers();
-      } catch (err) {
-        showToast(err.message, 'error');
-      }
-    }
-
-    async function handleUnbanUser(uid) {
-      if (myStaffTier !== 'administrator') {
-        showToast('Moderators cannot unban users', 'error');
-        return;
-      }
-      try {
-        await adminUnbanUser(uid);
-        showToast('User unbanned successfully.', 'success');
-        const u = loadedUsersList.find(x => x.id === uid);
-        if (u) { u.banned = false; u.banReason = null; }
-        renderFilteredPlayers();
-      } catch (err) {
-        showToast(err.message, 'error');
-      }
-    }
-
-    // ── Live Matches Monitor (All Staff Inspect, Admin & Mod Cancel) ─
-    function subscribeActiveMatches() {
-      db.collection('matches').where('status', 'in', ['waiting','in_progress','disputed']).limit(30).onSnapshot((snap) => {
-        const list = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-        document.getElementById('active-matches-count').textContent = list.length;
-        document.getElementById('matches-tab-count').textContent = list.length;
-        renderActiveMatches(list);
-      });
-    }
-
-    function renderActiveMatches(matches) {
-      const c = document.getElementById('active-matches-list');
-      if (!matches.length) { c.innerHTML = '<div class="empty-state" style="padding:28px 0;"><p>No active matches running right now.</p></div>'; return; }
-      c.innerHTML = matches.map(m => {
-        const sc = m.status === 'disputed' ? 'var(--red)' : (m.status === 'in_progress' ? 'var(--green)' : 'var(--text-muted)');
-        const statusLabel = m.status === 'disputed' ? 'DISPUTED' : (m.status === 'in_progress' ? 'IN PROGRESS' : 'WAITING');
-        const canCancel = myStaffTier === 'administrator' || myStaffTier === 'moderator';
-
-        return '<div class="admin-player-card" style="margin-bottom:12px;">' +
-          '<div style="flex:1;min-width:240px;">' +
-            '<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">' +
-              '<span style="font-weight:900;font-size:1.02rem;color:#fff;">' + escapeHtml(m.title) + '</span>' +
-              '<span class="badge" style="font-family:monospace;font-size:0.75rem;background:rgba(245,158,11,0.15);color:var(--gold-bright);border:1px solid rgba(245,158,11,0.4);">' +
-                m.code +
-              '</span>' +
-              '<span class="badge" style="font-size:0.68rem;padding:2px 7px;color:' + sc + ';border-color:' + sc + ';">' +
-                statusLabel +
-              '</span>' +
-            '</div>' +
-            '<div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-size:0.78rem;color:var(--text-muted);margin-top:6px;">' +
-              '<span>Host: <strong style="color:#fff;">' + escapeHtml(m.hostName || '—') + '</strong></span>' +
-              '<span>Wager: <strong style="color:var(--gold-bright);">' + formatTokens(m.wager) + ' Tokens</strong></span>' +
-              '<span>Prize: <strong style="color:var(--gold-bright);">' + formatTokens(m.prizePool || m.wager * 2) + ' Tokens</strong></span>' +
-              '<span>Players: <strong>' + (m.players?.length || 1) + '/' + (m.maxPlayers || 2) + '</strong></span>' +
-            '</div>' +
-          '</div>' +
-          '<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">' +
-            '<a href="match?id=' + m.id + '&staff=true" target="_blank" class="admin-action-btn-sm btn-outline">' +
-              '<i data-lucide="external-link"></i> Inspect Room' +
-            '</a>' +
-            (canCancel ? '<button class="admin-action-btn-sm btn-danger" onclick="handleAdminCancelMatch(\'' + m.id + '\')"><i data-lucide="slash"></i> Force Cancel & Refund</button>' : '') +
-          '</div>' +
-        '</div>';
-      }).join('');
-      lucide.createIcons();
-    }
-
-    async function handleAdminCancelMatch(matchId) {
-      if (myStaffTier !== 'administrator' && myStaffTier !== 'moderator') {
-        showToast('Only Administrators and Moderators can force cancel matches', 'error');
-        return;
-      }
-      const ok = await showConfirm({
-        title: 'Force Cancel Match?',
-        message: 'Force cancel this match and 100% refund all deposited tokens back to participants?',
-        confirmText: 'Force Cancel & Refund',
-        cancelText: 'Cancel',
-        type: 'danger',
-        icon: 'x-circle'
-      });
-      if (!ok) return;
-      try {
-        await adminForceCancelMatch(matchId, currentUserData?.displayName || 'Staff');
-        showToast('Match cancelled and tokens refunded!', 'success');
-      } catch (err) {
-        showToast(err.message, 'error');
-      }
-    }
-
-    // ── Active Teams Monitor ────────────────────────────────
-    function subscribeActiveTeams() {
-      db.collection('teams').limit(50).onSnapshot((snap) => {
-        const list = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-        document.getElementById('teams-stat-count').textContent = list.length;
-        document.getElementById('teams-tab-count').textContent = list.length;
-        renderTeamsList(list);
-      });
-    }
-
-    function renderTeamsList(teams) {
-      const c = document.getElementById('teams-admin-list');
-      if (!teams.length) { c.innerHTML = '<div class="empty-state" style="padding:28px 0;"><p>No active teams.</p></div>'; return; }
-      const canDissolve = myStaffTier === 'administrator' || myStaffTier === 'moderator';
-
-      c.innerHTML = teams.map(t => {
-        const tIcon = t.icon || 'shield';
-        const tColor = t.iconColor || '#f59e0b';
-        const tBg = t.bgColor || 'rgba(245,158,11,0.18)';
-        const tBorder = t.borderColor || 'rgba(245,158,11,0.45)';
-        return '<div class="admin-player-card" style="margin-bottom:12px;">' +
-          '<div style="display:flex;align-items:center;gap:12px;min-width:240px;flex:1;">' +
-            '<div style="width:44px;height:44px;border-radius:12px;background:' + tBg + ';border:1.5px solid ' + tBorder + ';display:flex;align-items:center;justify-content:center;flex-shrink:0;">' +
-              '<i data-lucide="' + tIcon + '" style="width:22px;height:22px;color:' + tColor + ';"></i>' +
-            '</div>' +
-            '<div style="flex:1;min-width:0;">' +
-              '<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">' +
-                '<span style="font-weight:900;font-size:1.02rem;color:#fff;">' + escapeHtml(t.name) + '</span>' +
-                '<span class="badge" style="background:' + tBg + ';color:' + tColor + ';border:1px solid ' + tBorder + ';font-size:0.72rem;padding:2px 7px;font-weight:800;">' +
-                  'Team ' + escapeHtml(t.tag || '') +
-                '</span>' +
-                '<span class="badge" style="font-family:monospace;font-size:0.75rem;background:rgba(255,255,255,0.05);color:var(--text-muted);">' +
-                  '#' + (t.code || '—') +
-                '</span>' +
-              '</div>' +
-              '<div style="font-size:0.78rem;color:var(--text-muted);margin-top:4px;">' +
-                'Owner: <strong style="color:#fff;">' + escapeHtml(t.ownerName || '—') + '</strong> · ' + ((t.memberUids || []).length) + ' players' +
-              '</div>' +
-            '</div>' +
-          '</div>' +
-          (canDissolve ? '<button class="admin-action-btn-sm btn-danger" onclick="handleDissolveTeam(\'' + t.id + '\',\'' + escapeHtml(t.name) + '\')"><i data-lucide="trash-2"></i> Dissolve Team</button>' : '') +
-        '</div>';
-      }).join('');
-      lucide.createIcons();
-    }
-
-    async function handleDissolveTeam(teamId, name) {
-      if (myStaffTier !== 'administrator' && myStaffTier !== 'moderator') {
-        showToast('Only Administrators and Moderators can dissolve teams', 'error');
-        return;
-      }
-      const ok = await showConfirm({
-        title: 'Dissolve team "' + name + '"?',
-        message: 'This will remove all team members and delete the squad.',
-        confirmText: 'Dissolve',
-        type: 'danger'
-      });
-      if (!ok) return;
-      try {
-        const teamSnap = await db.collection('teams').doc(teamId).get();
-        const ownerUid = teamSnap.data()?.ownerUid;
-        if (ownerUid) await leaveTeam(teamId, ownerUid);
-        showToast('Team "' + name + '" dissolved.', 'success');
-      } catch (err) {
-        showToast(err.message, 'error');
-      }
-    }
-
-    // ── Staff Calls / Disputes ──────────────────────────────
-    function subscribeStaffCalls() {
-      db.collection('staff_calls').orderBy('timestamp', 'desc').limit(40).onSnapshot((snap) => {
-        const calls = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-        const openCount = calls.filter(c => c.status !== 'resolved').length;
-        document.getElementById('open-calls-count').textContent = openCount;
-        document.getElementById('tickets-tab-count').textContent = openCount;
-        renderStaffCalls(calls);
-      }, () => {
-        document.getElementById('staff-calls-list').innerHTML = '<div class="empty-state">No tickets.</div>';
-      });
-    }
-
-    function renderStaffCalls(calls) {
-      const c = document.getElementById('staff-calls-list');
-      if (!calls.length) { c.innerHTML = '<div class="empty-state" style="padding:28px 0;"><p>All quiet! No open support tickets.</p></div>'; return; }
-      const canCancel = myStaffTier === 'administrator' || myStaffTier === 'moderator';
-
-      c.innerHTML = calls.map(call => {
-        const isOpen = call.status !== 'resolved';
-        return '<div class="ticket-card ' + (isOpen ? 'open' : 'resolved') + '">' +
-          '<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">' +
-            '<div style="display:flex;align-items:center;gap:8px;">' +
-              '<span class="badge ' + (isOpen ? 'badge-waiting' : 'badge-completed') + '" style="' + (isOpen ? 'background:rgba(239,68,68,0.2);color:var(--red);border-color:rgba(239,68,68,0.4);' : '') + '">' +
-                (isOpen ? '<i data-lucide="alert-circle" style="width:11px;height:11px;"></i> OPEN TICKET' : '<i data-lucide="check-circle-2" style="width:11px;height:11px;"></i> RESOLVED') +
-              '</span>' +
-              '<span style="font-weight:900;font-size:0.95rem;color:#fff;">' + escapeHtml(call.reason) + '</span>' +
-            '</div>' +
-            '<span style="font-size:0.75rem;color:var(--text-faint);">' + formatTime(call.timestamp) + '</span>' +
-          '</div>' +
-          '<div style="font-size:0.82rem;color:var(--text-muted);line-height:1.5;">' +
-            (call.details ? '<div style="color:#e2e8f0;background:rgba(0,0,0,0.3);padding:8px 12px;border-radius:8px;margin-bottom:6px;">"' + escapeHtml(call.details) + '"</div>' : '') +
-            '<div><strong>Called by:</strong> ' + escapeHtml(call.calledByName || '—') + ' · <strong>Match Code:</strong> ' + escapeHtml(call.matchCode || '—') + '</div>' +
-            (call.resolvedBy ? '<div style="color:var(--green);margin-top:4px;"><strong>Resolved by:</strong> ' + escapeHtml(call.resolvedBy) + ' (' + escapeHtml(call.resolutionNotes || '') + ')</div>' : '') +
-          '</div>' +
-          '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px;">' +
-            '<a href="match?id=' + call.matchId + '&staff=true" target="_blank" class="admin-action-btn-sm btn-outline">' +
-              '<i data-lucide="external-link"></i> Inspect Match' +
-            '</a>' +
-            (isOpen ? '<button class="admin-action-btn-sm btn-primary" onclick="handleResolveTicket(\'' + call.id + '\')"><i data-lucide="check"></i> Mark Resolved</button>' : '') +
-            (isOpen && canCancel ? '<button class="admin-action-btn-sm btn-danger" onclick="handleAdminCancelMatch(\'' + call.matchId + '\')"><i data-lucide="slash"></i> Force Cancel Match</button>' : '') +
-          '</div>' +
-        '</div>';
-      }).join('');
-      lucide.createIcons();
-    }
-
-    async function handleResolveTicket(callId) {
-      const notes = prompt('Resolution notes:', 'Settled by staff');
-      if (notes === null) return;
-      try {
-        await resolveStaffCall(callId, currentUserData?.displayName || 'Staff', notes);
-        showToast('Ticket marked resolved!', 'success');
-      } catch (err) {
-        showToast(err.message, 'error');
-      }
-    }
-
-    // ── Global Broadcast (Admin only) ────────────────────────
-    async function handleBroadcast(e) {
-      e.preventDefault();
-      if (myStaffTier !== 'administrator') {
-        showToast('Only Administrators can send global broadcasts', 'error');
-        return;
-      }
-      const title = document.getElementById('broadcast-title').value.trim();
-      const body = document.getElementById('broadcast-body').value.trim();
-      if (!title || !body) return;
-      const btn = document.getElementById('broadcast-btn');
-      btn.disabled = true;
-      try {
-        const snap = await db.collection('users').get();
-        const uids = snap.docs.map(d => d.id);
-        await Promise.all(uids.map(uid => pushNotification(uid, 'system', title, body, { fromAdmin: currentUserData?.displayName || 'Admin' })));
-        showToast('Broadcast sent to ' + uids.length + ' players!', 'success');
-        document.getElementById('broadcast-title').value = '';
-        document.getElementById('broadcast-body').value = '';
-      } catch (err) {
-        showToast(err.message, 'error');
-      } finally {
-        btn.disabled = false;
-      }
-    }
-
-    // ── Master Reset (Admin only) ────────────────────────────
-    async function handleMasterDatabaseReset() {
-      if (myStaffTier !== 'administrator') {
-        showToast('Only Administrators can execute database reset', 'error');
-        return;
-      }
-      if (!confirm('EXTREME WARNING: This will delete all matches, transactions, teams, staff tickets, and reset all users to 10.00 Tokens. Proceed?')) return;
-      if (prompt('Type RESET to confirm:') !== 'RESET') {
-        showToast('Reset cancelled', 'info');
-        return;
-      }
-      const btn = document.getElementById('reset-db-btn');
-      if (btn) btn.disabled = true;
-      showToast('Wiping platform records…', 'info');
-      try {
-        const res = await fullDatabaseReset();
-        showToast('Database reset complete! Cleaned ' + (res.deletedCount || 0) + ' records.', 'success');
-        setTimeout(() => location.reload(), 1500);
-      } catch (err) {
-        showToast('Error: ' + err.message, 'error');
-        if (btn) btn.disabled = false;
-      }
-    }
-
-    function copyToClipboard(text, msg = 'Copied!') {
-      navigator.clipboard.writeText(text).then(() => showToast(msg, 'success')).catch(() => showToast(text, 'info'));
-    }
-
-    function escapeHtml(str) {
-      return str ? String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') : '';
-    }
-  </script>
-
   <main class="page-wrap" style="max-width: 1100px;">
-    <!-- Sleek Glass Header -->
+    <!-- Sleek Header -->
     <div class="admin-hero-header">
       <div>
         <div style="display:flex;align-items:center;gap:10px;">
-          <h1 style="font-size:1.6rem;font-weight:900;margin:0;"><i data-lucide="shield" style="color:var(--gold-bright);width:24px;height:24px;"></i> Admin panel</h1>
+          <h1 style="font-size:1.6rem;font-weight:900;margin:0;color:#fff;"><i data-lucide="shield" style="color:var(--gold-bright);width:24px;height:24px;"></i> Admin Panel</h1>
           <span class="badge" id="admin-role-badge" style="background:rgba(239,68,68,0.15);color:var(--red);border:1px solid rgba(239,68,68,0.4);font-size:0.75rem;padding:3px 9px;">
             <i data-lucide="shield-check"></i> Staff
           </span>
         </div>
       </div>
       <div style="display:flex;gap:8px;">
-        <button class="btn btn-outline btn-sm" onclick="loadInitialUsers()" title="Refresh Data">
+        <button class="btn btn-outline btn-sm" onclick="loadInitialUsers()" title="Refresh Data" style="background:#060608;border-radius:10px;">
           <i data-lucide="refresh-cw"></i> Refresh
         </button>
       </div>
@@ -924,7 +234,7 @@
     <!-- Quick Stats Grid -->
     <div class="admin-stats-grid">
       <div class="admin-stat-card">
-        <div class="admin-stat-icon-wrap" style="background:rgba(245,158,11,0.15);color:var(--gold-bright);border:1px solid rgba(245,158,11,0.3);">
+        <div class="admin-stat-icon-wrap" style="background:rgba(245,158,11,0.15);color:var(--gold-bright);">
           <i data-lucide="users" style="width:22px;height:22px;"></i>
         </div>
         <div>
@@ -934,7 +244,7 @@
       </div>
 
       <div class="admin-stat-card">
-        <div class="admin-stat-icon-wrap" style="background:rgba(59,130,246,0.15);color:#60a5fa;border:1px solid rgba(59,130,246,0.3);">
+        <div class="admin-stat-icon-wrap" style="background:rgba(59,130,246,0.15);color:#60a5fa;">
           <i data-lucide="swords" style="width:22px;height:22px;"></i>
         </div>
         <div>
@@ -944,21 +254,21 @@
       </div>
 
       <div class="admin-stat-card">
-        <div class="admin-stat-icon-wrap" style="background:rgba(239,68,68,0.15);color:var(--red);border:1px solid rgba(239,68,68,0.3);">
+        <div class="admin-stat-icon-wrap" style="background:rgba(239,68,68,0.15);color:var(--red);">
           <i data-lucide="shield-alert" style="width:22px;height:22px;"></i>
         </div>
         <div>
-          <div style="font-size:0.75rem;font-weight:800;color:var(--text-muted);text-transform:uppercase;">Open Disputes</div>
-          <div style="font-size:1.35rem;font-weight:900;color:var(--red);" id="open-calls-count">0</div>
+          <div style="font-size:0.75rem;font-weight:800;color:var(--text-muted);text-transform:uppercase;">Disputes / Calls</div>
+          <div style="font-size:1.35rem;font-weight:900;color:#fff;" id="staff-calls-stat">0</div>
         </div>
       </div>
 
       <div class="admin-stat-card">
-        <div class="admin-stat-icon-wrap" style="background:rgba(168,85,247,0.15);color:#c084fc;border:1px solid rgba(168,85,247,0.3);">
+        <div class="admin-stat-icon-wrap" style="background:rgba(168,85,247,0.15);color:#c084fc;">
           <i data-lucide="shield" style="width:22px;height:22px;"></i>
         </div>
         <div>
-          <div style="font-size:0.75rem;font-weight:800;color:var(--text-muted);text-transform:uppercase;">Active Teams</div>
+          <div style="font-size:0.75rem;font-weight:800;color:var(--text-muted);text-transform:uppercase;">Teams</div>
           <div style="font-size:1.35rem;font-weight:900;color:#fff;" id="teams-stat-count">0</div>
         </div>
       </div>
@@ -991,14 +301,12 @@
 
     <!-- ── Tab 1: Players & User Management ─────────────────── -->
     <div id="admin-tab-players">
-      <!-- Search & Filters Card -->
-      <div class="card" style="margin-bottom:18px;padding:18px 20px;">
-        <form class="admin-search-bar" onsubmit="handlePlayerSearch(event)" style="margin-bottom:14px;">
-          <input class="form-input" id="player-search-input" placeholder="Search by username, Discord, Epic IGN, or paste full UID…" autocomplete="off" oninput="handlePlayerSearch(null)" style="font-size:0.92rem;" />
-          <button type="submit" class="btn btn-primary btn-sm" id="player-search-btn"><i data-lucide="search"></i> Search</button>
+      <div class="card" style="margin-bottom:18px;padding:18px 20px;background:#000;border:1px solid rgba(255,255,255,0.08);border-radius:18px;">
+        <form class="admin-search-bar" onsubmit="handlePlayerSearch(event)" style="margin-bottom:14px;display:flex;gap:8px;">
+          <input class="form-input" id="player-search-input" placeholder="Search by username, Discord, Epic IGN, or paste full UID…" autocomplete="off" oninput="handlePlayerSearch(null)" style="font-size:0.92rem;background:#060608;" />
+          <button type="submit" class="btn btn-primary btn-sm" id="player-search-btn" style="border-radius:10px;"><i data-lucide="search"></i> Search</button>
         </form>
 
-        <!-- Filter Chips with Lucide Icons -->
         <div style="display:flex;gap:8px;flex-wrap:wrap;">
           <button class="admin-filter-pill active" data-filter="all" onclick="setPlayerFilter('all')">
             <i data-lucide="users"></i> All Players
@@ -1021,7 +329,6 @@
         </div>
       </div>
 
-      <!-- Players List Results Container -->
       <div id="player-search-results">
         <div class="empty-state" style="padding:24px 0;"><div class="spinner" style="margin:0 auto;"></div></div>
       </div>
@@ -1044,8 +351,7 @@
 
     <!-- ── Tab: Redeem Codes Generator & Live Manager ──────────────── -->
     <div id="admin-tab-codes" class="hidden">
-      <!-- 1. Code Generator Card -->
-      <div class="card" style="padding:22px 24px;margin-bottom:20px;">
+      <div class="card" style="padding:22px 24px;margin-bottom:20px;background:#000;border:1px solid rgba(255,255,255,0.08);border-radius:18px;">
         <div style="font-size:1.15rem;font-weight:900;color:#fff;margin-bottom:4px;display:flex;align-items:center;gap:8px;">
           <i data-lucide="sparkles" style="color:var(--gold-bright);"></i> Redeem Code Generator
         </div>
@@ -1055,7 +361,6 @@
 
         <form onsubmit="handleAdminCreateCode(event)" style="display:flex;flex-direction:column;gap:16px;">
           <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));gap:14px;">
-            <!-- Code String -->
             <div class="form-group" style="margin:0;">
               <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
                 <label class="form-label" style="margin:0;">Code String</label>
@@ -1063,13 +368,12 @@
                   <i data-lucide="refresh-cw" style="width:11px;height:11px;"></i> Random Code
                 </button>
               </div>
-              <input class="form-input" id="admin-code-input" placeholder="e.g. CT-XXXX-XXXX" required style="text-transform:uppercase;font-weight:900;letter-spacing:0.06em;" />
+              <input class="form-input" id="admin-code-input" placeholder="e.g. CT-XXXX-XXXX" required style="text-transform:uppercase;font-weight:900;letter-spacing:0.06em;background:#060608;" />
             </div>
 
-            <!-- Reward Type -->
             <div class="form-group" style="margin:0;">
               <label class="form-label">Reward Type</label>
-              <select class="form-input" id="admin-code-reward-type" onchange="handleRewardTypeChange()" style="font-weight:700;">
+              <select class="form-input" id="admin-code-reward-type" onchange="handleRewardTypeChange()" style="font-weight:700;background:#060608;">
                 <option value="tokens">Tokens (Balance Credit)</option>
                 <option value="pfp">Avatar Cosmetic (PFP)</option>
                 <option value="title">Profile Title</option>
@@ -1077,13 +381,11 @@
               </select>
             </div>
 
-            <!-- Reward Value Field (Tokens / Cosmetic Select) -->
             <div class="form-group" style="margin:0;" id="admin-reward-value-wrap">
               <label class="form-label" id="admin-reward-value-label">Token Amount (CT)</label>
-              <input type="number" step="0.25" min="0.25" class="form-input" id="admin-code-token-amt" placeholder="e.g. 5.00" value="5.00" required style="font-weight:800;" />
+              <input type="number" step="0.25" min="0.25" class="form-input" id="admin-code-token-amt" placeholder="e.g. 5.00" value="5.00" required style="font-weight:800;background:#060608;" />
               
-              <!-- PFP Select (Hidden by default) -->
-              <select class="form-input" id="admin-code-pfp-select" style="display:none;font-weight:700;">
+              <select class="form-input" id="admin-code-pfp-select" style="display:none;font-weight:700;background:#060608;">
                 <option value="pfp_exclusive_1">#23 Exclusive Avatar (Gold)</option>
                 <option value="pfp_exclusive_2">#24 Exclusive Avatar</option>
                 <option value="pfp_exclusive_3">#25 Exclusive Avatar</option>
@@ -1096,23 +398,20 @@
                 <option value="pfp_rare_2">#9 Rare Avatar</option>
               </select>
 
-              <!-- Title Select (Hidden by default) -->
-              <select class="form-input" id="admin-code-title-select" style="display:none;font-weight:700;">
+              <select class="form-input" id="admin-code-title-select" style="display:none;font-weight:700;background:#060608;">
                 <option value="title_no_signal">"No signal" (Rare Title)</option>
               </select>
             </div>
 
-            <!-- Max Uses -->
             <div class="form-group" style="margin:0;">
               <label class="form-label">Max Redemptions</label>
-              <input type="number" min="1" max="10000" class="form-input" id="admin-code-max-uses" value="1" placeholder="1 for single-use" required style="font-weight:800;" />
+              <input type="number" min="1" max="10000" class="form-input" id="admin-code-max-uses" value="1" placeholder="1 for single-use" required style="font-weight:800;background:#060608;" />
             </div>
           </div>
 
-          <!-- Notes / Campaign Label -->
           <div class="form-group" style="margin:0;">
             <label class="form-label">Campaign / Admin Note (Optional)</label>
-            <input class="form-input" id="admin-code-notes" placeholder="e.g. Discord Giveaway, Special Tournament Reward, Adrian Test" />
+            <input class="form-input" id="admin-code-notes" placeholder="e.g. Discord Giveaway, Special Tournament Reward, Adrian Test" style="background:#060608;" />
           </div>
 
           <button type="submit" class="btn btn-gold btn-sm" id="create-code-btn" style="align-self:flex-start;padding:10px 22px;border-radius:10px;gap:7px;font-size:0.86rem;">
@@ -1121,8 +420,7 @@
         </form>
       </div>
 
-      <!-- 2. Live Generated Codes List -->
-      <div class="card" style="padding:22px 24px;">
+      <div class="card" style="padding:22px 24px;background:#000;border:1px solid rgba(255,255,255,0.08);border-radius:18px;">
         <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;margin-bottom:16px;">
           <div style="font-size:1.1rem;font-weight:900;color:#fff;display:flex;align-items:center;gap:8px;">
             <i data-lucide="list" style="color:var(--gold-bright);"></i> All Generated Codes
@@ -1149,47 +447,45 @@
 
     <!-- ── Tab 5: Broadcast ─────────────────────────────────── -->
     <div id="admin-tab-broadcast" class="hidden">
-      <div class="card" style="padding:22px 24px;">
+      <div class="card" style="padding:22px 24px;background:#000;border:1px solid rgba(255,255,255,0.08);border-radius:18px;">
         <div style="font-size:1.15rem;font-weight:900;color:#fff;margin-bottom:6px;display:flex;align-items:center;gap:8px;">
           <i data-lucide="megaphone" style="color:var(--gold-bright);"></i> Global System Broadcast
         </div>
         <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:18px;">Pushes a direct system notification to every registered user's notification bell.</p>
         <form onsubmit="handleBroadcast(event)" style="display:flex;flex-direction:column;gap:14px;">
-          <div class="form-group" style="margin:0;"><label class="form-label">Announcement Title</label><input class="form-input" id="broadcast-title" placeholder="e.g. Tournament Weekend is Live!" required/></div>
-          <div class="form-group" style="margin:0;"><label class="form-label">Message Content</label><textarea class="form-input" id="broadcast-body" rows="3" placeholder="Write the announcement details…" required style="resize:vertical;"></textarea></div>
-          <button type="submit" class="btn btn-primary" id="broadcast-btn" style="align-self:flex-start;padding:10px 20px;"><i data-lucide="send"></i> Broadcast to All Users</button>
+          <div class="form-group" style="margin:0;"><label class="form-label">Announcement Title</label><input class="form-input" id="broadcast-title" placeholder="e.g. Tournament Weekend is Live!" required style="background:#060608;" /></div>
+          <div class="form-group" style="margin:0;"><label class="form-label">Message Content</label><textarea class="form-input" id="broadcast-body" rows="3" placeholder="Write the announcement details…" required style="resize:vertical;background:#060608;"></textarea></div>
+          <button type="submit" class="btn btn-primary" id="broadcast-btn" style="align-self:flex-start;padding:10px 20px;border-radius:10px;"><i data-lucide="send"></i> Broadcast to All Users</button>
         </form>
       </div>
     </div>
 
     <!-- ── Tab 6: Danger Zone ───────────────────────────────── -->
     <div id="admin-tab-danger" class="hidden">
-      <div class="card" style="border-color:rgba(239,68,68,0.4);background:linear-gradient(135deg,rgba(239,68,68,0.06) 0%,rgba(14,18,32,0.95) 100%);padding:22px 24px;">
+      <div class="card" style="border-color:rgba(239,68,68,0.4);background:linear-gradient(135deg,rgba(239,68,68,0.06) 0%,#060608 100%);padding:22px 24px;border-radius:18px;">
         <div style="font-size:1.15rem;font-weight:900;color:#fca5a5;margin-bottom:6px;display:flex;align-items:center;gap:8px;">
           <i data-lucide="trash-2" style="color:var(--red);"></i> Master Platform Database Reset
         </div>
         <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:16px;">
           Permanently wipes all matches, transactions, teams, and support tickets across the platform. Resets all user balances to 10.00 Tokens.
         </p>
-        <button type="button" class="btn btn-danger btn-sm" id="reset-db-btn" onclick="handleMasterDatabaseReset()" style="padding:10px 20px;"><i data-lucide="refresh-cw"></i> Execute Full Platform Reset</button>
+        <button type="button" class="btn btn-danger btn-sm" id="reset-db-btn" onclick="handleMasterDatabaseReset()" style="padding:10px 20px;border-radius:10px;"><i data-lucide="refresh-cw"></i> Execute Full Platform Reset</button>
       </div>
     </div>
   </main>
 
   <!-- Staff Role Tier Modal -->
   <div class="modal-overlay" id="role-modal" onclick="if(event.target===this)closeRoleModal()">
-    <div class="modal" style="max-width:480px;padding:24px 26px;">
+    <div class="modal" style="max-width:480px;padding:24px 26px;background:#000;border:1px solid rgba(255,255,255,0.1);border-radius:20px;">
       <div class="modal-header" style="margin-bottom:14px;border:none;padding:0;">
-        <div class="modal-title" style="font-size:1.15rem;font-weight:900;"><i data-lucide="shield"></i> Manage Staff Role</div>
+        <div class="modal-title" style="font-size:1.15rem;font-weight:900;color:#fff;"><i data-lucide="shield"></i> Manage Staff Role</div>
         <button class="modal-close" onclick="closeRoleModal()"><i data-lucide="x"></i></button>
       </div>
       <div style="font-size:0.85rem;color:var(--text-muted);margin-bottom:16px;">
         Target User: <strong id="role-modal-name" style="color:#fff;">Player</strong> (<span id="role-modal-uid" style="font-family:monospace;font-size:0.75rem;"></span>)
       </div>
 
-      <!-- Tier Options -->
       <div style="margin-bottom:18px;">
-        <!-- Option 1: Administrator -->
         <div class="role-option-card" data-role="administrator" onclick="submitSetStaffRole('administrator')">
           <div style="width:38px;height:38px;border-radius:10px;background:rgba(245,158,11,0.2);color:var(--gold-bright);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
             <i data-lucide="shield-check" style="width:20px;height:20px;"></i>
@@ -1200,7 +496,6 @@
           </div>
         </div>
 
-        <!-- Option 2: Moderator -->
         <div class="role-option-card" data-role="moderator" onclick="submitSetStaffRole('moderator')">
           <div style="width:38px;height:38px;border-radius:10px;background:rgba(59,130,246,0.2);color:#60a5fa;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
             <i data-lucide="shield" style="width:20px;height:20px;"></i>
@@ -1211,7 +506,6 @@
           </div>
         </div>
 
-        <!-- Option 3: Regular Player (Revoke) -->
         <div class="role-option-card" data-role="none" onclick="submitSetStaffRole('none')">
           <div style="width:38px;height:38px;border-radius:10px;background:rgba(255,255,255,0.05);color:#94a3b8;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
             <i data-lucide="user-x" style="width:20px;height:20px;"></i>
@@ -1224,24 +518,23 @@
       </div>
 
       <div class="modal-actions" style="border:none;padding:0;">
-        <button type="button" class="btn btn-outline btn-sm" onclick="closeRoleModal()">Close</button>
+        <button type="button" class="btn btn-outline btn-sm" onclick="closeRoleModal()" style="background:#060608;border-radius:8px;">Close</button>
       </div>
     </div>
   </div>
 
   <!-- Balance Management Modal -->
   <div class="modal-overlay" id="balance-modal" onclick="if(event.target===this)closeDirectBalanceModal()">
-    <div class="modal" style="max-width:440px;padding:24px 26px;">
+    <div class="modal" style="max-width:440px;padding:24px 26px;background:#000;border:1px solid rgba(255,255,255,0.1);border-radius:20px;">
       <div class="modal-header" style="margin-bottom:14px;border:none;padding:0;">
-        <div class="modal-title" id="balance-modal-title" style="font-size:1.15rem;font-weight:900;"><i data-lucide="coins"></i> Manage User Tokens</div>
+        <div class="modal-title" id="balance-modal-title" style="font-size:1.15rem;font-weight:900;color:#fff;"><i data-lucide="coins"></i> Manage User Tokens</div>
         <button class="modal-close" onclick="closeDirectBalanceModal()"><i data-lucide="x"></i></button>
       </div>
       <div style="font-size:0.85rem;color:var(--text-muted);margin-bottom:16px;">
         Current Balance: <strong id="balance-modal-current" style="color:var(--gold-bright);">10.00 Tokens</strong>
       </div>
 
-      <!-- Quick Add / Adjust -->
-      <div style="margin-bottom:16px;padding:14px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:12px;">
+      <div style="margin-bottom:16px;padding:14px;background:#060608;border:1px solid rgba(255,255,255,0.07);border-radius:12px;">
         <label class="form-label" style="font-size:0.8rem;color:#fff;margin-bottom:8px;">Quick Adjust Tokens (+ / -)</label>
         <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;">
           <span class="wager-pill" onclick="setQuickAdjustVal(5.00)" style="padding:4px 8px;font-size:0.75rem;">+5</span>
@@ -1252,29 +545,768 @@
           <span class="wager-pill" onclick="setQuickAdjustVal(-50.00)" style="padding:4px 8px;font-size:0.75rem;color:#fca5a5;">-50</span>
         </div>
         <div style="display:flex;gap:8px;">
-          <input type="number" step="0.25" class="form-input" id="balance-adjust-input" placeholder="+10 or -5" style="flex:1;font-weight:800;" />
-          <button type="button" class="btn btn-primary btn-sm" onclick="submitAddAdjustment()"><i data-lucide="zap"></i> Apply</button>
+          <input type="number" step="0.25" class="form-input" id="balance-adjust-input" placeholder="+10 or -5" style="flex:1;font-weight:800;background:#000;" />
+          <button type="button" class="btn btn-primary btn-sm" onclick="submitAddAdjustment()" style="border-radius:8px;"><i data-lucide="zap"></i> Apply</button>
         </div>
       </div>
 
-      <!-- Set Exact Balance -->
-      <div style="margin-bottom:16px;padding:14px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:12px;">
+      <div style="margin-bottom:16px;padding:14px;background:#060608;border:1px solid rgba(255,255,255,0.07);border-radius:12px;">
         <label class="form-label" style="font-size:0.8rem;color:#fff;margin-bottom:6px;">Set Exact Token Balance</label>
         <div style="display:flex;gap:8px;">
-          <input type="number" step="0.25" min="0" class="form-input" id="balance-exact-input" placeholder="e.g. 50.00" style="flex:1;font-weight:800;" />
-          <button type="button" class="btn btn-gold btn-sm" onclick="submitSetExactBalance()"><i data-lucide="check"></i> Set</button>
+          <input type="number" step="0.25" min="0" class="form-input" id="balance-exact-input" placeholder="e.g. 50.00" style="flex:1;font-weight:800;background:#000;" />
+          <button type="button" class="btn btn-gold btn-sm" onclick="submitSetExactBalance()" style="border-radius:8px;"><i data-lucide="check"></i> Set</button>
         </div>
       </div>
 
       <div class="form-group" style="margin-bottom:16px;">
         <label class="form-label">Audit Reason</label>
-        <input class="form-input" id="balance-reason-input" value="Admin adjustment" />
+        <input class="form-input" id="balance-reason-input" value="Admin adjustment" style="background:#060608;" />
       </div>
 
       <div class="modal-actions" style="border:none;padding:0;">
-        <button type="button" class="btn btn-outline btn-sm" onclick="closeDirectBalanceModal()">Close</button>
+        <button type="button" class="btn btn-outline btn-sm" onclick="closeDirectBalanceModal()" style="background:#060608;border-radius:8px;">Close</button>
       </div>
     </div>
   </div>
+
+  <!-- Firebase SDKs & Core Scripts (Placed at end of Body) -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script src="js/firebase-config.js?v=3.6"></script>
+  <script src="js/auth.js?v=4.0.1788055758182"></script>
+  <script src="js/db.js?v=4.0.1788055758182"></script>
+  <script src="js/nav.js?v=4.0.1788055758182"></script>
+
+  <script>
+    let currentUser = null;
+    let currentUserData = null;
+    let myStaffTier = 'none';
+    let loadedUsersList = [];
+    let currentPlayerFilter = 'all';
+    let currentSearchTerm = '';
+    let allRedeemCodes = [];
+    let currentCodeFilter = 'all';
+    let editingUserForBalance = null;
+    let editingUserForRole = null;
+
+    function switchAdminTab(tab) {
+      ['players','matches','teams','tickets','codes','broadcast','danger'].forEach(t => {
+        const el = document.getElementById('admin-tab-' + t);
+        const btn = document.getElementById('admin-tabBtn-' + t);
+        if (el) el.classList.toggle('hidden', t !== tab);
+        if (btn) btn.classList.toggle('active', t === tab);
+      });
+      if (window.lucide) lucide.createIcons();
+    }
+
+    async function loadInitialUsers() {
+      const container = document.getElementById('player-search-results');
+      if (container) container.innerHTML = '<div class="empty-state"><div class="spinner" style="margin:0 auto;"></div><p style="margin-top:10px;">Loading users directory…</p></div>';
+      try {
+        loadedUsersList = await adminFetchRecentUsers(80);
+        const statEl = document.getElementById('total-users-stat');
+        if (statEl) statEl.textContent = loadedUsersList.length;
+        renderFilteredPlayers();
+      } catch (err) {
+        if (container) container.innerHTML = '<div class="empty-state"><p>Error loading users: ' + escapeHtml(err.message) + '</p></div>';
+      }
+    }
+
+    function setPlayerFilter(filter) {
+      currentPlayerFilter = filter;
+      document.querySelectorAll('.admin-filter-pill').forEach(p => {
+        p.classList.toggle('active', p.dataset.filter === filter);
+      });
+      renderFilteredPlayers();
+    }
+
+    async function handlePlayerSearch(e) {
+      if (e) e.preventDefault();
+      const q = document.getElementById('player-search-input')?.value?.trim() || '';
+      currentSearchTerm = q.toLowerCase();
+      if (currentSearchTerm.length >= 2) {
+        const btn = document.getElementById('player-search-btn');
+        if (btn) btn.disabled = true;
+        try {
+          const searchResults = await searchUsers(q);
+          const map = new Map();
+          [...searchResults, ...loadedUsersList].forEach(u => map.set(u.uid, u));
+          loadedUsersList = Array.from(map.values());
+          renderFilteredPlayers();
+        } catch (err) {
+          console.warn('Search error:', err);
+        } finally {
+          if (btn) btn.disabled = false;
+        }
+      } else {
+        renderFilteredPlayers();
+      }
+    }
+
+    function renderFilteredPlayers() {
+      const container = document.getElementById('player-search-results');
+      if (!container) return;
+
+      let list = loadedUsersList.filter(u => {
+        if (!currentSearchTerm) return true;
+        const name = (u.displayName || '').toLowerCase();
+        const discord = (u.discordUsername || '').toLowerCase();
+        const epic = (u.epicUsername || '').toLowerCase();
+        const uid = (u.uid || '').toLowerCase();
+        return name.includes(currentSearchTerm) || discord.includes(currentSearchTerm) || epic.includes(currentSearchTerm) || uid.includes(currentSearchTerm);
+      });
+
+      if (currentPlayerFilter === 'admins') {
+        list = list.filter(u => getStaffTier(null, u) === 'administrator');
+      } else if (currentPlayerFilter === 'moderators') {
+        list = list.filter(u => getStaffTier(null, u) === 'moderator');
+      } else if (currentPlayerFilter === 'banned') {
+        list = list.filter(u => u.isBanned === true);
+      } else if (currentPlayerFilter === 'epic') {
+        list = list.filter(u => u.epicUsername);
+      } else if (currentPlayerFilter === 'tokens') {
+        list = list.filter(u => Number(u.tokens || 0) >= 10.00);
+      }
+
+      if (list.length === 0) {
+        container.innerHTML = '<div class="empty-state"><p>No matching players found.</p></div>';
+        return;
+      }
+
+      container.innerHTML = list.map(u => {
+        const uid = u.uid || '';
+        const name = u.displayName || 'Player';
+        const discord = u.discordUsername ? '@' + u.discordUsername : '';
+        const epic = u.epicUsername ? 'Epic: ' + u.epicUsername : 'No Epic';
+        const tokens = formatTokens(u.tokens ?? 0);
+        const isBanned = u.isBanned === true;
+        const tier = getStaffTier(null, u);
+
+        let roleTag = '';
+        if (tier === 'administrator') {
+          roleTag = '<span class="badge" style="background:rgba(245,158,11,0.18);color:var(--gold-bright);border:1px solid rgba(245,158,11,0.4);font-size:0.7rem;padding:2px 7px;"><i data-lucide="shield-check" style="width:11px;height:11px;"></i> Admin</span>';
+        } else if (tier === 'moderator') {
+          roleTag = '<span class="badge" style="background:rgba(59,130,246,0.18);color:#60a5fa;border:1px solid rgba(59,130,246,0.4);font-size:0.7rem;padding:2px 7px;"><i data-lucide="shield" style="width:11px;height:11px;"></i> Mod</span>';
+        }
+
+        return `
+          <div class="admin-player-card ${isBanned ? 'banned' : ''}">
+            <div style="display:flex;align-items:center;gap:12px;">
+              <div class="admin-player-avatar">
+                ${u.photoURL ? '<img src="' + escapeHtml(u.photoURL) + '"/>' : '<i data-lucide="user" style="width:20px;height:20px;color:#94a3b8;"></i>'}
+              </div>
+              <div>
+                <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                  <span style="font-weight:900;color:#fff;font-size:0.95rem;">${escapeHtml(name)}</span>
+                  ${roleTag}
+                  ${isBanned ? '<span class="badge" style="background:rgba(239,68,68,0.2);color:var(--red);border:1px solid rgba(239,68,68,0.4);font-size:0.68rem;padding:2px 6px;">BANNED</span>' : ''}
+                </div>
+                <div style="font-size:0.75rem;color:var(--text-muted);margin-top:2px;">
+                  ${escapeHtml(discord)} · ${escapeHtml(epic)}
+                </div>
+              </div>
+            </div>
+
+            <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+              <div style="text-align:right;">
+                <div style="font-size:0.72rem;font-weight:800;color:var(--text-muted);text-transform:uppercase;">Tokens</div>
+                <div style="font-weight:900;color:var(--gold-bright);font-size:1.05rem;">${tokens}</div>
+              </div>
+
+              <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                <button class="admin-action-btn-sm" onclick="openDirectBalanceModal('${uid}', '${escapeHtml(name)}', ${Number(u.tokens || 0)})" style="background:rgba(245,158,11,0.15);color:var(--gold-bright);border-color:rgba(245,158,11,0.3);">
+                  <i data-lucide="coins"></i> Balance
+                </button>
+                <button class="admin-action-btn-sm" onclick="openRoleModal('${uid}', '${escapeHtml(name)}', '${tier}')" style="background:rgba(59,130,246,0.15);color:#60a5fa;border-color:rgba(59,130,246,0.3);">
+                  <i data-lucide="shield"></i> Role
+                </button>
+                <button class="admin-action-btn-sm" onclick="handleToggleBan('${uid}', ${isBanned})" style="background:${isBanned ? 'rgba(16,185,129,0.15)' : 'rgba(239,68,68,0.15)'};color:${isBanned ? '#34d399' : 'var(--red)'};border-color:${isBanned ? 'rgba(16,185,129,0.3)' : 'rgba(239,68,68,0.3)'};">
+                  ${isBanned ? 'Unban' : 'Ban'}
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      if (window.lucide) lucide.createIcons();
+    }
+
+    /* ── Balance Modal ────────────────────────────────────────────── */
+    function openDirectBalanceModal(uid, name, tokens) {
+      editingUserForBalance = uid;
+      document.getElementById('balance-modal-title').innerHTML = '<i data-lucide="coins"></i> Manage ' + escapeHtml(name) + "'s Balance";
+      document.getElementById('balance-modal-current').textContent = formatTokens(tokens) + ' Tokens';
+      document.getElementById('balance-adjust-input').value = '';
+      document.getElementById('balance-exact-input').value = '';
+      document.getElementById('balance-modal').classList.add('open');
+      if (window.lucide) lucide.createIcons();
+    }
+    function closeDirectBalanceModal() {
+      document.getElementById('balance-modal').classList.remove('open');
+      editingUserForBalance = null;
+    }
+    function setQuickAdjustVal(val) {
+      document.getElementById('balance-adjust-input').value = val;
+    }
+    async function submitAddAdjustment() {
+      if (!editingUserForBalance) return;
+      const amt = parseFloat(document.getElementById('balance-adjust-input').value);
+      const reason = document.getElementById('balance-reason-input').value.trim() || 'Admin adjustment';
+      if (isNaN(amt) || amt === 0) return showToast('Please enter a valid non-zero amount', 'error');
+      try {
+        await updateTokens(editingUserForBalance, amt, 'admin', reason);
+        showToast('Balance adjusted successfully!', 'success');
+        closeDirectBalanceModal();
+        loadInitialUsers();
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
+    }
+    async function submitSetExactBalance() {
+      if (!editingUserForBalance) return;
+      const amt = parseFloat(document.getElementById('balance-exact-input').value);
+      const reason = document.getElementById('balance-reason-input').value.trim() || 'Admin set exact balance';
+      if (isNaN(amt) || amt < 0) return showToast('Please enter a valid amount (>= 0)', 'error');
+      try {
+        const u = await getUser(editingUserForBalance);
+        const cur = Number(u?.tokens || 0);
+        const diff = Math.round((amt - cur) * 100) / 100;
+        await updateTokens(editingUserForBalance, diff, 'admin', reason);
+        showToast('Balance updated to ' + formatTokens(amt) + ' Tokens!', 'success');
+        closeDirectBalanceModal();
+        loadInitialUsers();
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
+    }
+
+    /* ── Staff Role Modal ─────────────────────────────────────────── */
+    function openRoleModal(uid, name, curRole) {
+      editingUserForRole = uid;
+      document.getElementById('role-modal-name').textContent = name;
+      document.getElementById('role-modal-uid').textContent = uid;
+      document.querySelectorAll('.role-option-card').forEach(c => {
+        c.classList.toggle('active', c.dataset.role === curRole);
+      });
+      document.getElementById('role-modal').classList.add('open');
+      if (window.lucide) lucide.createIcons();
+    }
+    function closeRoleModal() {
+      document.getElementById('role-modal').classList.remove('open');
+      editingUserForRole = null;
+    }
+    async function submitSetStaffRole(role) {
+      if (!editingUserForRole) return;
+      try {
+        await db.collection('users').doc(editingUserForRole).update({
+          staffRole: role === 'none' ? null : role,
+          isAdmin: role === 'administrator'
+        });
+        showToast('Role updated to ' + role, 'success');
+        closeRoleModal();
+        loadInitialUsers();
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
+    }
+
+    async function handleToggleBan(uid, isBanned) {
+      const action = isBanned ? 'unban' : 'ban';
+      if (!confirm(`Are you sure you want to ${action} this user?`)) return;
+      try {
+        await db.collection('users').doc(uid).update({
+          isBanned: !isBanned
+        });
+        showToast(`User ${action}ned successfully!`, 'success');
+        loadInitialUsers();
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
+    }
+
+    /* ── Redeem Codes Logic ───────────────────────────────────────── */
+    function handleRewardTypeChange() {
+      const type = document.getElementById('admin-code-reward-type')?.value;
+      const label = document.getElementById('admin-reward-value-label');
+      const tokenInput = document.getElementById('admin-code-token-amt');
+      const pfpSelect = document.getElementById('admin-code-pfp-select');
+      const titleSelect = document.getElementById('admin-code-title-select');
+
+      if (tokenInput) tokenInput.style.display = 'none';
+      if (pfpSelect) pfpSelect.style.display = 'none';
+      if (titleSelect) titleSelect.style.display = 'none';
+
+      if (type === 'tokens') {
+        if (label) label.textContent = 'Token Amount (CT)';
+        if (tokenInput) { tokenInput.style.display = 'block'; tokenInput.required = true; }
+      } else if (type === 'pfp') {
+        if (label) label.textContent = 'Select Avatar Cosmetic';
+        if (pfpSelect) pfpSelect.style.display = 'block';
+      } else if (type === 'title') {
+        if (label) label.textContent = 'Select Profile Title';
+        if (titleSelect) titleSelect.style.display = 'block';
+      } else if (type === 'premium') {
+        if (label) label.textContent = 'Reward: Premium Membership';
+      }
+    }
+
+    function generateRandomCodeInput() {
+      const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+      let part1 = '';
+      let part2 = '';
+      for (let i = 0; i < 4; i++) part1 += chars.charAt(Math.floor(Math.random() * chars.length));
+      for (let i = 0; i < 4; i++) part2 += chars.charAt(Math.floor(Math.random() * chars.length));
+      const code = 'CT-' + part1 + '-' + part2;
+      const input = document.getElementById('admin-code-input');
+      if (input) input.value = code;
+    }
+
+    async function handleAdminCreateCode(e) {
+      e.preventDefault();
+      const codeInput = document.getElementById('admin-code-input');
+      const rewardType = document.getElementById('admin-code-reward-type')?.value || 'tokens';
+      const maxUses = parseInt(document.getElementById('admin-code-max-uses')?.value || '1', 10);
+      const notes = document.getElementById('admin-code-notes')?.value?.trim() || '';
+      const btn = document.getElementById('create-code-btn');
+
+      const rawCode = codeInput?.value?.trim()?.toUpperCase();
+      if (!rawCode) {
+        showToast('Please enter or generate a code string', 'error');
+        return;
+      }
+
+      let rewardValue = null;
+      let rewardLabel = '';
+
+      if (rewardType === 'tokens') {
+        const amt = parseFloat(document.getElementById('admin-code-token-amt')?.value || '0');
+        if (!amt || amt <= 0) {
+          showToast('Please enter a valid token amount', 'error');
+          return;
+        }
+        rewardValue = amt;
+        rewardLabel = formatTokens(amt) + ' Tokens';
+      } else if (rewardType === 'pfp') {
+        const pfp = document.getElementById('admin-code-pfp-select');
+        rewardValue = pfp?.value || 'pfp_exclusive_1';
+        rewardLabel = pfp?.options[pfp.selectedIndex]?.text || 'Avatar Cosmetic';
+      } else if (rewardType === 'title') {
+        const title = document.getElementById('admin-code-title-select');
+        rewardValue = title?.value || 'title_no_signal';
+        rewardLabel = title?.options[title.selectedIndex]?.text || 'Profile Title';
+      } else if (rewardType === 'premium') {
+        rewardValue = true;
+        rewardLabel = 'Champion Premium Status';
+      }
+
+      if (btn) btn.disabled = true;
+
+      try {
+        const existing = await db.collection('redeem_codes').where('code', '==', rawCode).get();
+        if (!existing.empty) {
+          throw new Error('A code with this name already exists. Please choose another code.');
+        }
+
+        await db.collection('redeem_codes').add({
+          code: rawCode,
+          rewardType: rewardType,
+          rewardValue: rewardValue,
+          rewardLabel: rewardLabel,
+          maxUses: maxUses,
+          usedCount: 0,
+          usedBy: [],
+          isActive: true,
+          notes: notes,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+          createdBy: currentUser?.uid || 'admin'
+        });
+
+        showToast(`Redeem code "${rawCode}" created successfully!`, 'success');
+        if (codeInput) codeInput.value = '';
+        generateRandomCodeInput();
+      } catch (err) {
+        showToast(err.message || 'Failed to create code', 'error');
+      } finally {
+        if (btn) btn.disabled = false;
+      }
+    }
+
+    function initRedeemCodesListener() {
+      db.collection('redeem_codes')
+        .orderBy('createdAt', 'desc')
+        .onSnapshot(snap => {
+          allRedeemCodes = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+          const countEl = document.getElementById('codes-tab-count');
+          if (countEl) countEl.textContent = allRedeemCodes.length;
+          renderAdminCodes();
+        }, err => {
+          console.warn('Codes listener error:', err);
+        });
+    }
+
+    function setCodeFilter(filter) {
+      currentCodeFilter = filter;
+      ['all', 'active', 'used'].forEach(f => {
+        const el = document.getElementById('code-filter-' + f);
+        if (el) el.classList.toggle('active', f === filter);
+      });
+      renderAdminCodes();
+    }
+
+    function renderAdminCodes() {
+      const container = document.getElementById('admin-codes-list-container');
+      if (!container) return;
+
+      let filtered = allRedeemCodes;
+      if (currentCodeFilter === 'active') {
+        filtered = filtered.filter(c => c.isActive && (c.usedCount < (c.maxUses || 1)));
+      } else if (currentCodeFilter === 'used') {
+        filtered = filtered.filter(c => !c.isActive || (c.usedCount >= (c.maxUses || 1)));
+      }
+
+      if (filtered.length === 0) {
+        container.innerHTML = '<div class="empty-state" style="padding:24px 0;"><p>No codes found in this filter.</p></div>';
+        return;
+      }
+
+      container.innerHTML = filtered.map(c => {
+        const maxUses = Number(c.maxUses || 1);
+        const usedCount = Number(c.usedCount || 0);
+        const isFullyUsed = usedCount >= maxUses;
+        const isActive = c.isActive && !isFullyUsed;
+
+        let statusBadge = isActive
+          ? '<span class="badge" style="background:rgba(16,185,129,0.15);color:#34d399;border:1px solid rgba(16,185,129,0.3);font-size:0.7rem;">ACTIVE</span>'
+          : (isFullyUsed
+            ? '<span class="badge" style="background:rgba(255,255,255,0.06);color:#94a3b8;font-size:0.7rem;">FULLY USED</span>'
+            : '<span class="badge" style="background:rgba(239,68,68,0.15);color:#f87171;font-size:0.7rem;">INACTIVE</span>');
+
+        const usedByList = c.usedBy || [];
+        const usedByHtml = usedByList.length > 0
+          ? usedByList.map(u => `
+              <div style="font-size:0.75rem;background:#000;border:1px solid rgba(255,255,255,0.06);border-radius:8px;padding:6px 10px;margin-top:4px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;">
+                <span style="font-weight:800;color:#fff;">${escapeHtml(u.username || 'User')} ${u.discordUsername ? '<span style="color:var(--text-muted);">(@' + escapeHtml(u.discordUsername) + ')</span>' : ''}</span>
+                <span style="color:var(--text-faint);font-size:0.7rem;">${u.redeemedAt ? new Date(u.redeemedAt).toLocaleString() : 'Claimed'}</span>
+              </div>
+            `).join('')
+          : '<div style="font-size:0.75rem;color:var(--text-faint);font-style:italic;">Not redeemed yet</div>';
+
+        return `
+          <div style="background:#060608;border:1px solid rgba(255,255,255,0.06);border-radius:14px;padding:16px 18px;margin-bottom:12px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+              <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+                <div style="font-family:monospace;font-size:1.1rem;font-weight:900;color:var(--gold-bright);letter-spacing:0.06em;background:#000;padding:6px 12px;border-radius:8px;border:1px solid rgba(245,158,11,0.25);display:inline-flex;align-items:center;gap:8px;">
+                  <span>${escapeHtml(c.code)}</span>
+                  <button type="button" onclick="copyCodeText('${escapeHtml(c.code)}')" style="background:none;border:none;color:#94a3b8;cursor:pointer;padding:0;" title="Copy Code">
+                    <i data-lucide="copy" style="width:14px;height:14px;"></i>
+                  </button>
+                </div>
+
+                <div>
+                  <div style="font-weight:800;font-size:0.92rem;color:#fff;display:flex;align-items:center;gap:6px;">
+                    <span>${escapeHtml(c.rewardLabel || 'Reward')}</span>
+                  </div>
+                  ${c.notes ? '<div style="font-size:0.75rem;color:var(--text-muted);margin-top:2px;">' + escapeHtml(c.notes) + '</div>' : ''}
+                </div>
+              </div>
+
+              <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+                <div style="text-align:right;">
+                  <div style="font-size:0.78rem;font-weight:800;color:#fff;">${usedCount} / ${maxUses} Redeemed</div>
+                  <div style="margin-top:2px;">${statusBadge}</div>
+                </div>
+
+                <div style="display:flex;gap:6px;">
+                  <button class="btn btn-outline btn-sm" onclick="toggleCodeStatus('${c.id}', ${c.isActive})" style="padding:6px 10px;font-size:0.75rem;border-radius:8px;background:#000;">
+                    ${c.isActive ? 'Deactivate' : 'Activate'}
+                  </button>
+                  <button class="btn btn-danger btn-sm" onclick="deleteRedeemCode('${c.id}', '${escapeHtml(c.code)}')" style="padding:6px 10px;font-size:0.75rem;border-radius:8px;">
+                    <i data-lucide="trash-2" style="width:13px;height:13px;"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div style="margin-top:12px;border-top:1px solid rgba(255,255,255,0.05);padding-top:10px;">
+              <div style="font-size:0.72rem;font-weight:800;color:var(--text-muted);text-transform:uppercase;margin-bottom:4px;">
+                Claim History (${usedByList.length})
+              </div>
+              ${usedByHtml}
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function copyCodeText(text) {
+      navigator.clipboard.writeText(text).then(() => {
+        showToast('Code copied to clipboard: ' + text, 'info');
+      }).catch(() => {
+        showToast('Failed to copy', 'error');
+      });
+    }
+
+    async function toggleCodeStatus(codeId, currentStatus) {
+      try {
+        await db.collection('redeem_codes').doc(codeId).update({
+          isActive: !currentStatus
+        });
+        showToast(!currentStatus ? 'Code activated!' : 'Code deactivated!', 'info');
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
+    }
+
+    async function deleteRedeemCode(codeId, codeName) {
+      if (!confirm(`Are you sure you want to permanently delete code "${codeName}"?`)) return;
+      try {
+        await db.collection('redeem_codes').doc(codeId).delete();
+        showToast('Code deleted successfully', 'success');
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
+    }
+
+    /* ── Live Matches & Teams Listeners ───────────────────────────── */
+    function subscribeActiveMatches() {
+      db.collection('matches')
+        .where('status', 'in', ['open', 'in_progress', 'disputed'])
+        .onSnapshot(snap => {
+          const countEl = document.getElementById('active-matches-count');
+          const tabCountEl = document.getElementById('matches-tab-count');
+          if (countEl) countEl.textContent = snap.docs.length;
+          if (tabCountEl) tabCountEl.textContent = snap.docs.length;
+
+          const listEl = document.getElementById('active-matches-list');
+          if (!listEl) return;
+
+          if (snap.empty) {
+            listEl.innerHTML = '<div class="empty-state"><p>No active matches right now.</p></div>';
+            return;
+          }
+
+          listEl.innerHTML = snap.docs.map(doc => {
+            const m = doc.data();
+            const id = doc.id;
+            return `
+              <div style="background:#060608;border:1px solid rgba(255,255,255,0.06);border-radius:14px;padding:16px 18px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+                <div>
+                  <div style="font-weight:900;color:#fff;font-size:0.95rem;">${escapeHtml(m.title || m.mode || 'Match')} · ${formatTokens(m.wager || 0)} CT</div>
+                  <div style="font-size:0.75rem;color:var(--text-muted);margin-top:2px;">Host: ${escapeHtml(m.hostName || 'Player')} · Status: ${escapeHtml(m.status)}</div>
+                </div>
+                <div style="display:flex;gap:6px;">
+                  <a href="match?id=${id}" class="btn btn-outline btn-sm" style="font-size:0.75rem;border-radius:8px;">View</a>
+                  <button class="btn btn-danger btn-sm" onclick="adminCancelMatch('${id}')" style="font-size:0.75rem;border-radius:8px;">Cancel & Refund</button>
+                </div>
+              </div>
+            `;
+          }).join('');
+          if (window.lucide) lucide.createIcons();
+        });
+    }
+
+    async function adminCancelMatch(matchId) {
+      if (!confirm('Cancel this match and refund all players?')) return;
+      try {
+        await cancelMatch(matchId, 'Admin cancelled match');
+        showToast('Match cancelled and refunded', 'success');
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
+    }
+
+    function subscribeActiveTeams() {
+      db.collection('teams')
+        .onSnapshot(snap => {
+          const countEl = document.getElementById('teams-stat-count');
+          const tabCountEl = document.getElementById('teams-tab-count');
+          if (countEl) countEl.textContent = snap.docs.length;
+          if (tabCountEl) tabCountEl.textContent = snap.docs.length;
+
+          const listEl = document.getElementById('teams-admin-list');
+          if (!listEl) return;
+
+          if (snap.empty) {
+            listEl.innerHTML = '<div class="empty-state"><p>No registered teams found.</p></div>';
+            return;
+          }
+
+          listEl.innerHTML = snap.docs.map(doc => {
+            const t = doc.data();
+            return `
+              <div style="background:#060608;border:1px solid rgba(255,255,255,0.06);border-radius:14px;padding:16px 18px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+                <div>
+                  <div style="font-weight:900;color:#fff;font-size:0.95rem;">[${escapeHtml(t.tag || 'TEAM')}] ${escapeHtml(t.name || 'Team')}</div>
+                  <div style="font-size:0.75rem;color:var(--text-muted);margin-top:2px;">Owner: ${escapeHtml(t.ownerName || 'Player')} · Members: ${(t.members || []).length}</div>
+                </div>
+                <button class="btn btn-danger btn-sm" onclick="adminDeleteTeam('${doc.id}')" style="font-size:0.75rem;border-radius:8px;">Dissolve Team</button>
+              </div>
+            `;
+          }).join('');
+          if (window.lucide) lucide.createIcons();
+        });
+    }
+
+    async function adminDeleteTeam(teamId) {
+      if (!confirm('Permanently dissolve this team?')) return;
+      try {
+        await db.collection('teams').doc(teamId).delete();
+        showToast('Team dissolved', 'success');
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
+    }
+
+    function subscribeStaffCalls() {
+      db.collection('support_tickets')
+        .where('status', '==', 'open')
+        .onSnapshot(snap => {
+          const countEl = document.getElementById('staff-calls-stat');
+          const tabCountEl = document.getElementById('tickets-tab-count');
+          if (countEl) countEl.textContent = snap.docs.length;
+          if (tabCountEl) tabCountEl.textContent = snap.docs.length;
+
+          const listEl = document.getElementById('staff-calls-list');
+          if (!listEl) return;
+
+          if (snap.empty) {
+            listEl.innerHTML = '<div class="empty-state"><p>No open disputes or tickets.</p></div>';
+            return;
+          }
+
+          listEl.innerHTML = snap.docs.map(doc => {
+            const tk = doc.data();
+            return `
+              <div class="ticket-card open">
+                <div style="display:flex;align-items:center;justify-content:space-between;">
+                  <span style="font-weight:900;color:#fff;">${escapeHtml(tk.title || 'Dispute Ticket')}</span>
+                  <span class="badge" style="background:rgba(239,68,68,0.2);color:var(--red);font-size:0.7rem;">OPEN</span>
+                </div>
+                <div style="font-size:0.82rem;color:var(--text-muted);">${escapeHtml(tk.description || 'No description provided.')}</div>
+                <div style="display:flex;justify-content:flex-end;gap:6px;">
+                  <button class="btn btn-primary btn-sm" onclick="resolveTicket('${doc.id}')" style="font-size:0.75rem;border-radius:8px;">Mark Resolved</button>
+                </div>
+              </div>
+            `;
+          }).join('');
+          if (window.lucide) lucide.createIcons();
+        });
+    }
+
+    async function resolveTicket(id) {
+      try {
+        await db.collection('support_tickets').doc(id).update({ status: 'resolved' });
+        showToast('Ticket marked as resolved', 'success');
+      } catch (err) {
+        showToast(err.message, 'error');
+      }
+    }
+
+    async function handleBroadcast(e) {
+      e.preventDefault();
+      const title = document.getElementById('broadcast-title').value.trim();
+      const body = document.getElementById('broadcast-body').value.trim();
+      const btn = document.getElementById('broadcast-btn');
+      if (!title || !body) return;
+      if (btn) btn.disabled = true;
+
+      try {
+        await db.collection('announcements').add({
+          title,
+          body,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+          author: currentUser?.displayName || 'Admin'
+        });
+        showToast('Global announcement broadcasted!', 'success');
+        document.getElementById('broadcast-title').value = '';
+        document.getElementById('broadcast-body').value = '';
+      } catch (err) {
+        showToast(err.message, 'error');
+      } finally {
+        if (btn) btn.disabled = false;
+      }
+    }
+
+    async function handleMasterDatabaseReset() {
+      if (prompt('Type RESET to confirm master wipe:') !== 'RESET') {
+        showToast('Reset cancelled', 'info');
+        return;
+      }
+      const btn = document.getElementById('reset-db-btn');
+      if (btn) btn.disabled = true;
+      showToast('Wiping platform records…', 'info');
+      try {
+        const res = await fullDatabaseReset();
+        showToast('Database reset complete! Cleaned ' + (res.deletedCount || 0) + ' records.', 'success');
+        setTimeout(() => location.reload(), 1500);
+      } catch (err) {
+        showToast('Error: ' + err.message, 'error');
+        if (btn) btn.disabled = false;
+      }
+    }
+
+    /* ── Main Authentication & Boot ───────────────────────────────── */
+    document.addEventListener('DOMContentLoaded', () => {
+      requireAuth().then(async (user) => {
+        currentUser = user;
+        currentUserData = await getUser(user.uid);
+        myStaffTier = getStaffTier(user, currentUserData);
+
+        if (myStaffTier === 'none') {
+          document.getElementById('page-loading').innerHTML = '<div style="text-align:center;padding:32px;"><i data-lucide="shield-x" style="width:48px;height:48px;color:var(--red);margin-bottom:12px;"></i><h2 style="color:var(--red);font-weight:900;margin-bottom:6px;">Access Denied</h2><p style="color:var(--text-muted);margin:8px 0 18px;font-size:0.9rem;">This panel is restricted to staff members only.</p><a href="dashboard" class="btn btn-primary btn-sm" style="border-radius:10px;">Return to Dashboard</a></div>';
+          if (window.lucide) lucide.createIcons();
+          return;
+        }
+
+        injectNav('admin');
+        const loadingEl = document.getElementById('page-loading');
+        if (loadingEl) loadingEl.classList.add('hidden');
+
+        // Set role badge
+        const roleBadge = document.getElementById('admin-role-badge');
+        if (roleBadge) {
+          if (myStaffTier === 'administrator') {
+            roleBadge.innerHTML = '<i data-lucide="shield-check"></i> Administrator';
+            roleBadge.style.background = 'rgba(245,158,11,0.18)';
+            roleBadge.style.color = 'var(--gold-bright)';
+            roleBadge.style.borderColor = 'rgba(245,158,11,0.5)';
+          } else if (myStaffTier === 'moderator') {
+            roleBadge.innerHTML = '<i data-lucide="shield"></i> Moderator';
+            roleBadge.style.background = 'rgba(59,130,246,0.18)';
+            roleBadge.style.color = '#60a5fa';
+            roleBadge.style.borderColor = 'rgba(59,130,246,0.5)';
+          }
+        }
+
+        // Hide Admin-only tabs for moderators
+        if (myStaffTier !== 'administrator') {
+          const bBtn = document.getElementById('admin-tabBtn-broadcast');
+          const dBtn = document.getElementById('admin-tabBtn-danger');
+          if (bBtn) bBtn.style.display = 'none';
+          if (dBtn) dBtn.style.display = 'none';
+        }
+
+        switchAdminTab('players');
+        loadInitialUsers();
+        initRedeemCodesListener();
+        generateRandomCodeInput();
+        subscribeStaffCalls();
+        subscribeActiveMatches();
+        subscribeActiveTeams();
+      }).catch((err) => {
+        console.error('Admin Auth Error:', err);
+        const loadingEl = document.getElementById('page-loading');
+        if (loadingEl) {
+          loadingEl.innerHTML = '<div style="text-align:center;padding:32px;"><h2 style="color:#fff;font-weight:900;margin-bottom:8px;">Sign in Required</h2><p style="color:var(--text-muted);margin-bottom:18px;">Please log in with Discord to access the Admin Panel.</p><button onclick="signInWithDiscord()" class="btn btn-primary btn-sm" style="border-radius:10px;">Sign in with Discord</button></div>';
+        }
+        if (window.lucide) lucide.createIcons();
+      });
+    });
+  </script>
 </body>
 </html>

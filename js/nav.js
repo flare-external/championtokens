@@ -384,12 +384,12 @@ function injectNav(activePage = '') {
       if (menuName) menuName.textContent = displayName;
       if (menuHandle) menuHandle.textContent = data.discordUsername ? `@${data.discordUsername}` : (data.email || `@${user.uid.slice(0, 8)}`);
 
-      // Admin link — show if isAdmin flag OR hardcoded Discord ID
+      // Admin link — show if isAdmin flag OR hardcoded Discord ID OR staff tier
       const adminLink = document.getElementById('nav-admin-link');
       if (adminLink) {
         const discordId = data.discordId || snap.id.replace('discord:', '');
-        const isAdmin = data.isAdmin === true || ['1121188319410278420'].includes(discordId);
-        if (isAdmin) adminLink.style.display = 'flex';
+        const isStaff = data.isAdmin === true || ['1121188319410278420'].includes(discordId) || (typeof getStaffTier === 'function' && getStaffTier(user, data) !== 'none');
+        if (isStaff) adminLink.style.display = 'flex';
       }
     });
 
