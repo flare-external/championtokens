@@ -7,83 +7,50 @@
   <link rel="icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
-  <link rel="stylesheet" href="css/style.css?v=4.0.1788051297432"/>
+  <link rel="stylesheet" href="css/style.css?v=4.0.1788051446801"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
 
   <style>
-    /* ── Quick Navigation Tabs Bar ───────────────────────────────── */
-    .quick-tabs-bar {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-      gap: 10px;
-      margin-bottom: 22px;
-    }
-
-    .quick-tab-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
+    /* ── Single Match Action Card ────────────────────────────────── */
+    .db-match-action-card {
       background: #000000;
       border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 14px;
-      padding: 12px 16px;
-      font-size: 0.86rem;
-      font-weight: 800;
-      color: #94a3b8;
-      text-decoration: none;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
-      transition: all 0.18s ease;
-      white-space: nowrap;
-    }
-    .quick-tab-btn i {
-      width: 16px;
-      height: 16px;
-      color: #64748b;
-      transition: color 0.18s ease, transform 0.18s ease;
-    }
-    .quick-tab-btn:hover {
-      background: #0e0e12;
-      border-color: rgba(255, 255, 255, 0.18);
-      color: #ffffff;
-      transform: translateY(-2px);
-    }
-    .quick-tab-btn:hover i {
-      color: var(--gold-bright);
-      transform: scale(1.1);
+      border-radius: 20px;
+      padding: 24px 28px;
+      margin-bottom: 24px;
+      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.85);
     }
 
-    /* ── Switching News Carousel ────────────────────────────────── */
+    /* ── Clean Text-Only Switching News Carousel ────────────────── */
     .news-carousel-container {
       position: relative;
       background: #000000;
       border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 22px;
+      border-radius: 20px;
       overflow: hidden;
       margin-bottom: 24px;
-      box-shadow: 0 16px 45px rgba(0, 0, 0, 0.9);
-      min-height: 270px;
+      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.85);
+      min-height: 220px;
     }
 
     .news-slides-track {
       position: relative;
       width: 100%;
-      min-height: 270px;
+      min-height: 220px;
     }
 
     .news-slide {
       position: absolute;
       inset: 0;
-      padding: 34px 38px;
+      padding: 30px 34px;
       display: flex;
       flex-direction: column;
       justify-content: center;
-      max-width: 620px;
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.4s ease, transform 0.4s ease;
-      transform: translateX(12px);
+      transition: opacity 0.35s ease, transform 0.35s ease;
+      transform: translateX(10px);
       z-index: 2;
     }
     .news-slide.active {
@@ -93,30 +60,7 @@
     }
     @media (max-width: 640px) {
       .news-slide {
-        padding: 24px 20px;
-      }
-    }
-
-    .news-bg-img {
-      position: absolute;
-      right: 0;
-      top: 0;
-      bottom: 0;
-      width: 55%;
-      height: 100%;
-      object-fit: cover;
-      opacity: 0.65;
-      mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.5) 20%, rgba(0,0,0,0.95) 70%, #000000 100%);
-      -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.4) 15%, rgba(0,0,0,0.95) 65%, #000000 100%);
-      pointer-events: none;
-      transition: opacity 0.4s ease;
-    }
-    @media (max-width: 768px) {
-      .news-bg-img {
-        width: 100%;
-        opacity: 0.2;
-        mask-image: none;
-        -webkit-mask-image: none;
+        padding: 22px 20px;
       }
     }
 
@@ -138,7 +82,7 @@
     }
 
     .news-title {
-      font-size: 1.75rem;
+      font-size: 1.65rem;
       font-weight: 900;
       color: #ffffff;
       letter-spacing: -0.02em;
@@ -147,22 +91,22 @@
     }
     @media (max-width: 640px) {
       .news-title {
-        font-size: 1.35rem;
+        font-size: 1.3rem;
       }
     }
 
     .news-desc {
       font-size: 0.88rem;
       color: #94a3b8;
-      line-height: 1.5;
-      margin-bottom: 18px;
+      line-height: 1.55;
+      max-width: 680px;
     }
 
     /* Carousel Nav Arrows & Dots */
     .carousel-controls {
       position: absolute;
       bottom: 20px;
-      right: 28px;
+      right: 24px;
       z-index: 10;
       display: flex;
       align-items: center;
@@ -191,8 +135,8 @@
       width: 32px;
       height: 32px;
       border-radius: 8px;
-      background: rgba(0, 0, 0, 0.6);
-      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
       color: #94a3b8;
       display: flex;
       align-items: center;
@@ -203,54 +147,7 @@
     .carousel-arrow-btn:hover {
       background: #18181b;
       color: #fff;
-      border-color: rgba(255, 255, 255, 0.25);
-    }
-
-    /* ── Morphed Player Stats Card ───────────────────────────────── */
-    .db-morphed-hub {
-      background: #000000;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 20px;
-      padding: 24px 28px;
-      margin-bottom: 24px;
-      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.85);
-    }
-
-    .db-hub-divider {
-      height: 1px;
-      background: rgba(255, 255, 255, 0.07);
-      margin: 20px 0 16px;
-    }
-
-    .db-stats-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 12px;
-      margin: 0;
-    }
-
-    .db-stat-card {
-      background: #060608;
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      border-radius: 14px;
-      padding: 14px 16px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      transition: border-color 0.18s ease, transform 0.18s ease;
-    }
-    .db-stat-card:hover {
-      border-color: rgba(255, 255, 255, 0.14);
-      transform: translateY(-1px);
-    }
-    .db-stat-icon-wrap {
-      width: 40px;
-      height: 40px;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
+      border-color: rgba(255, 255, 255, 0.22);
     }
   </style>
 </head>
@@ -264,31 +161,38 @@
   </div>
 
   <!-- Page content -->
-  <main class="page-wrap" id="main-content" style="max-width: 1050px;">
+  <main class="page-wrap" id="main-content" style="max-width: 900px;">
     
-    <!-- 1. Quick Navigation Tabs Bar -->
-    <div class="quick-tabs-bar">
-      <a href="matches" class="quick-tab-btn">
-        <i data-lucide="swords"></i> <span>Matches</span>
-      </a>
-      <a href="tournaments" class="quick-tab-btn">
-        <i data-lucide="crown"></i> <span>Tournaments</span>
-      </a>
-      <a href="leaderboard" class="quick-tab-btn">
-        <i data-lucide="trophy"></i> <span>Leaderboard</span>
-      </a>
-      <a href="shop" class="quick-tab-btn">
-        <i data-lucide="shopping-bag"></i> <span>Shop</span>
-      </a>
-      <a href="profile" class="quick-tab-btn">
-        <i data-lucide="user"></i> <span>Profile</span>
-      </a>
+    <!-- 1. Single Card to Join or Create Matches -->
+    <div class="db-match-action-card">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:18px;">
+        <div style="display:flex;align-items:center;gap:14px;">
+          <div style="width:48px;height:48px;border-radius:12px;background:rgba(245,158,11,0.12);display:flex;align-items:center;justify-content:center;color:var(--gold-bright);flex-shrink:0;">
+            <i data-lucide="swords" style="width:24px;height:24px;"></i>
+          </div>
+          <div>
+            <h1 style="font-size:1.35rem;font-weight:900;margin:0;color:#ffffff;letter-spacing:-0.02em;">
+              Arena Matches
+            </h1>
+            <div style="font-size:0.8rem;color:var(--text-muted);margin-top:2px;">
+              Join an open 1v1 lobby or create your own custom wager match.
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+          <a href="matches" class="btn btn-primary btn-sm" style="padding:9px 22px;font-size:0.85rem;gap:7px;border-radius:10px;">
+            <i data-lucide="swords" style="width:15px;height:15px;"></i> <span>Find Match</span>
+          </a>
+          <a href="matches" class="btn btn-outline btn-sm" style="padding:9px 20px;font-size:0.85rem;gap:7px;background:#060608;border:1px solid rgba(255,255,255,0.12);border-radius:10px;">
+            <i data-lucide="plus" style="width:15px;height:15px;"></i> <span>Create Match</span>
+          </a>
+        </div>
+      </div>
     </div>
 
-    <!-- 2. Switching News Banner Carousel (Placeholders) -->
+    <!-- 2. Switching News Carousel (Text-Only Placeholders, No Images) -->
     <div class="news-carousel-container" id="news-carousel" onmouseenter="pauseNewsAutoSwitch()" onmouseleave="resumeNewsAutoSwitch()">
-      <img src="news_ui_update.jpg" class="news-bg-img" id="news-bg-img" alt="News Preview" />
-      
       <div class="news-slides-track">
         <!-- Slide 1 -->
         <div class="news-slide active" id="news-slide-0">
@@ -301,11 +205,6 @@
           </div>
           <div class="news-desc">
             Placeholder description for news item. You can customize this text with any announcements, patch notes, or platform updates whenever you're ready.
-          </div>
-          <div>
-            <a href="matches" class="btn btn-primary btn-sm" style="padding:8px 18px;font-size:0.84rem;border-radius:10px;gap:6px;">
-              <i data-lucide="arrow-right"></i> <span>Check Details</span>
-            </a>
           </div>
         </div>
 
@@ -321,11 +220,6 @@
           <div class="news-desc">
             Placeholder description for competitive events and tournaments. Custom prize pools, tournament schedule, and registration details will go here.
           </div>
-          <div>
-            <a href="tournaments" class="btn btn-primary btn-sm" style="padding:8px 18px;font-size:0.84rem;border-radius:10px;gap:6px;">
-              <i data-lucide="crown"></i> <span>View Tournaments</span>
-            </a>
-          </div>
         </div>
 
         <!-- Slide 3 -->
@@ -339,11 +233,6 @@
           </div>
           <div class="news-desc">
             Placeholder description for leaderboard race and arena ranks. Details on weekly champion rewards and point systems will be posted here.
-          </div>
-          <div>
-            <a href="leaderboard" class="btn btn-primary btn-sm" style="padding:8px 18px;font-size:0.84rem;border-radius:10px;gap:6px;">
-              <i data-lucide="trophy"></i> <span>Leaderboard</span>
-            </a>
           </div>
         </div>
       </div>
@@ -362,84 +251,6 @@
           <button class="carousel-arrow-btn" onclick="nextNewsSlide()" title="Next slide">
             <i data-lucide="chevron-right" style="width:16px;height:16px;"></i>
           </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- 3. Morphed Player Header & Quick Stats -->
-    <div class="db-morphed-hub">
-      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;">
-        <div style="display:flex;align-items:center;gap:14px;">
-          <div style="width:46px;height:46px;border-radius:50%;background:#0a0a0c;display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0;">
-            <img id="db-user-avatar-img" src="" alt="" style="width:100%;height:100%;object-fit:cover;display:none;"/>
-            <i data-lucide="user" id="db-user-avatar-icon" style="width:22px;height:22px;color:var(--text-muted);"></i>
-          </div>
-          <div>
-            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-              <h2 style="font-size:1.35rem;font-weight:900;margin:0;color:#ffffff;letter-spacing:-0.02em;">
-                <span id="welcome-name">Champion</span>
-              </h2>
-              <span style="font-size:0.8rem;color:var(--text-muted);" id="welcome-handle">@user</span>
-            </div>
-            <div style="font-size:0.75rem;color:var(--text-faint);margin-top:2px;" id="welcome-epic">
-              Epic Games Connected
-            </div>
-          </div>
-        </div>
-
-        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-          <button class="btn btn-outline btn-sm" onclick="openTokenWalletModal('purchase')" style="padding:7px 16px;font-size:0.82rem;gap:6px;background:#060608;border:1px solid rgba(255,255,255,0.1);border-radius:10px;">
-            <i data-lucide="coins" style="width:14px;height:14px;"></i> <span>Wallet</span>
-          </button>
-          <a href="profile" class="btn btn-outline btn-sm" style="padding:7px 16px;font-size:0.82rem;gap:6px;background:#060608;border:1px solid rgba(255,255,255,0.1);border-radius:10px;">
-            <i data-lucide="user" style="width:14px;height:14px;"></i> <span>Profile</span>
-          </a>
-        </div>
-      </div>
-
-      <!-- Morphed Divider -->
-      <div class="db-hub-divider"></div>
-
-      <!-- 4 Morphed Quick Stat Cards -->
-      <div class="db-stats-grid">
-        <div class="db-stat-card">
-          <div class="db-stat-icon-wrap" style="background:rgba(245,158,11,0.14);color:var(--gold-bright);">
-            <i data-lucide="coins" style="width:20px;height:20px;"></i>
-          </div>
-          <div>
-            <div style="font-size:0.72rem;font-weight:800;color:var(--text-muted);text-transform:uppercase;">Token Balance</div>
-            <div style="font-size:1.25rem;font-weight:900;color:var(--gold-bright);" id="stat-balance">0.00</div>
-          </div>
-        </div>
-
-        <div class="db-stat-card">
-          <div class="db-stat-icon-wrap" style="background:rgba(16,185,129,0.14);color:#34d399;">
-            <i data-lucide="trending-up" style="width:20px;height:20px;"></i>
-          </div>
-          <div>
-            <div style="font-size:0.72rem;font-weight:800;color:var(--text-muted);text-transform:uppercase;">Match Earnings</div>
-            <div style="font-size:1.25rem;font-weight:900;color:#34d399;" id="stat-earned">0.00</div>
-          </div>
-        </div>
-
-        <div class="db-stat-card">
-          <div class="db-stat-icon-wrap" style="background:rgba(59,130,246,0.14);color:#60a5fa;">
-            <i data-lucide="trophy" style="width:20px;height:20px;"></i>
-          </div>
-          <div>
-            <div style="font-size:0.72rem;font-weight:800;color:var(--text-muted);text-transform:uppercase;">Matches Won</div>
-            <div style="font-size:1.25rem;font-weight:900;color:#fff;" id="stat-won">0</div>
-          </div>
-        </div>
-
-        <div class="db-stat-card">
-          <div class="db-stat-icon-wrap" style="background:rgba(168,85,247,0.14);color:#c084fc;">
-            <i data-lucide="percent" style="width:20px;height:20px;"></i>
-          </div>
-          <div>
-            <div style="font-size:0.72rem;font-weight:800;color:var(--text-muted);text-transform:uppercase;">Win Rate</div>
-            <div style="font-size:1.25rem;font-weight:900;color:#fff;" id="stat-winrate">0%</div>
-          </div>
         </div>
       </div>
     </div>
@@ -486,9 +297,9 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="js/firebase-config.js?v=3.6"></script>
-  <script src="js/auth.js?v=4.0.1788051297432"></script>
-  <script src="js/db.js?v=4.0.1788051297432"></script>
-  <script src="js/nav.js?v=4.0.1788051297432"></script>
+  <script src="js/auth.js?v=4.0.1788051446801"></script>
+  <script src="js/db.js?v=4.0.1788051446801"></script>
+  <script src="js/nav.js?v=4.0.1788051446801"></script>
 
   <script>
     let currentUser = null;
@@ -546,60 +357,6 @@
       startNewsAutoSwitch();
     }
 
-    /* ── Dashboard Rendering ───────────────────────────────────────── */
-    function renderDashboard(userData) {
-      let name = (userData && userData.displayName) || '';
-      if (!name || name === 'Champion' || name === 'Player') {
-        name = userData?.discordUsername || (currentUser && currentUser.displayName) || 'Player';
-      }
-      const nameEl = document.getElementById('welcome-name');
-      if (nameEl) nameEl.textContent = name;
-
-      const handleEl = document.getElementById('welcome-handle');
-      if (handleEl) {
-        handleEl.textContent = userData?.discordUsername ? '@' + userData.discordUsername : '';
-      }
-
-      const epicEl = document.getElementById('welcome-epic');
-      if (epicEl) {
-        if (userData?.epicUsername) {
-          epicEl.textContent = 'Epic: ' + userData.epicUsername;
-        } else {
-          epicEl.textContent = 'Epic Games Not Linked';
-        }
-      }
-
-      // Avatar
-      const img = document.getElementById('db-user-avatar-img');
-      const icon = document.getElementById('db-user-avatar-icon');
-      if (userData?.photoURL) {
-        if (img) { img.src = userData.photoURL; img.style.display = 'block'; }
-        if (icon) icon.style.display = 'none';
-      } else {
-        if (img) img.style.display = 'none';
-        if (icon) icon.style.display = 'block';
-      }
-
-      renderStats(userData || {});
-    }
-
-    function renderStats(data) {
-      const balEl = document.getElementById('stat-balance');
-      if (balEl) balEl.textContent = formatTokens(data.tokens ?? 0.00);
-
-      const earnedEl = document.getElementById('stat-earned');
-      if (earnedEl) earnedEl.textContent = formatTokens(data.totalEarned ?? 0.00);
-
-      const wonEl = document.getElementById('stat-won');
-      if (wonEl) wonEl.textContent = data.matchesWon ?? 0;
-
-      const played = data.matchesPlayed || 0;
-      const won = data.matchesWon || 0;
-      const wr = played > 0 ? Math.round((won / played) * 100) : 0;
-      const wrEl = document.getElementById('stat-winrate');
-      if (wrEl) wrEl.textContent = wr + '%';
-    }
-
     document.addEventListener('DOMContentLoaded', () => {
       startNewsAutoSwitch();
 
@@ -608,19 +365,6 @@
         injectNav('dashboard');
         const loadingEl = document.getElementById('page-loading');
         if (loadingEl) loadingEl.classList.add('hidden');
-
-        try {
-          const userData = await getUser(user.uid);
-          renderDashboard(userData || { displayName: user.displayName || 'Player', tokens: 1.00, totalEarned: 0.00, matchesPlayed: 0, matchesWon: 0 });
-        } catch (err) {
-          console.error('Error fetching user:', err);
-          renderDashboard({ displayName: user.displayName || 'Player', tokens: 1.00, totalEarned: 0.00, matchesPlayed: 0, matchesWon: 0 });
-        }
-
-        // Real-time balance and user updates
-        db.collection('users').doc(user.uid).onSnapshot((snap) => {
-          if (snap.exists) renderDashboard(snap.data());
-        }, (err) => console.warn('Users snapshot error:', err));
       }).catch(err => {
         console.error('Auth error:', err);
         const loadingEl = document.getElementById('page-loading');
