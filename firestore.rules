@@ -2,66 +2,211 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
+    // ── Helper Functions ─────────────────────────────────────────
     function isAuth() {
       return request.auth != null;
     }
 
     function isOwner(uid) {
-      return request.auth.uid == uid;
+      return isAuth() && request.auth.uid == uid;
     }
 
+    // Platform Administrator Check
     function isAdmin() {
       return isAuth() && (
         request.auth.uid == 'discord:1121188319410278420' ||
-        request.auth.uid == '1121188319410278420'
+        request.auth.uid == '1121188319410278420' ||
+        request.auth.token.admin == true
       );
     }
 
-    // ── Users ──────────────────────────────────────────────────
+    // Platform Staff / Moderator Check
+    function isStaff() {
+      return isAdmin() || (
+        isAuth() &&
+        exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+        (get(/databases/$(database)/documents/users/$(request.auth.uid)).data.staffRole == 'moderator' ||
+         get(/databases/$(database)/documents/users/$(request.auth.uid)).data.staffRole == 'admin' ||
+         get(/databases/$(database)/documents/users/$(request.auth.uid)).data.staffRole == 'administrator')
+      );
+    }
+
+    // Check if authenticated user is banned
+    function isNotBanned() {
+      return !exists(/databases/$(database)/documents/users/$(request.auth.uid)) ||
+             get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isBanned != true;
+    }
+
+    // ── Users Collection ─────────────────────────────────────────
     match /users/{uid} {
-      allow read:   if true;
-      allow create: if isAuth();
-      allow update: if isAuth();
+      allow read: if true;
+
+      // Allow creating user document on initial login
+      allow create: if isAuth() && (request.auth.uid == uid || isAdmin()) &&
+                    (!('isAdmin' in request.resource.data) || request.resource.data.isAdmin == false || isAdmin()) &&
+                    (!('staffRole' in request.resource.data) || request.resource.data.staffRole == null || isAdmin()) &&
+                    (!('isBanned' in request.resource.data) || request.resource.data.isBanned == false || isAdmin());
+
+      // Profile updates: Users can edit their cosmetics, custom names, IGNs, and social links.
+      // Privilege escalation is blocked: regular users CANNOT alter isAdmin, staffRole, isBanned, or ban details.
+      allow update: if isAuth() && (
+        isAdmin() ||
+        (
+          request.auth.uid == uid && isNotBanned() &&
+          (!('isAdmin' in request.resource.data) || request.resource.data.isAdmin == resource.data.isAdmin) &&
+          (!('staffRole' in request.resource.data) || request.resource.data.staffRole == resource.data.staffRole) &&
+          (!('isBanned' in request.resource.data) || request.resource.data.isBanned == resource.data.isBanned) &&
+          (!('bannedAt' in request.resource.data) || request.resource.data.bannedAt == resource.data.bannedAt) &&
+          (!('banReason' in request.resource.data) || request.resource.data.banReason == resource.data.banReason)
+        )
+      );
+
+      // Only platform admins can delete user documents
       allow delete: if isAdmin();
     }
 
-    // ── Transactions ───────────────────────────────────────────
+    // ── Redeem Codes Collection ───────────────────────────────────
+    match /redeem_codes/{codeId} {
+      allow read: if isAuth();
+
+      // Only Administrators can create new redeem codes
+      allow create: if isAdmin();
+
+      // Updates: Admins have full access. Players can only increment usedCount and append their UID to usedBy
+      allow update: if isAuth() && isNotBanned() && (
+        isAdmin() ||
+        (
+          request.resource.data.code == resource.data.code &&
+          request.resource.data.rewardType == resource.data.rewardType &&
+          request.resource.data.rewardValue == resource.data.rewardValue &&
+          request.resource.data.maxUses == resource.data.maxUses &&
+          request.resource.data.usedCount <= resource.data.maxUses
+        )
+      );
+
+      // Only Administrators can delete codes
+      allow delete: if isAdmin();
+    }
+
+    // ── Withdrawals Collection ────────────────────────────────────
+    match /withdrawals/{withdrawalId} {
+      allow read: if isAuth() && (
+        resource.data.userId == request.auth.uid ||
+        isAdmin() || isStaff()
+      );
+
+      allow create: if isAuth() && isNotBanned() &&
+                    request.resource.data.userId == request.auth.uid &&
+                    request.resource.data.amount >= 5.00 &&
+                    request.resource.data.status == 'pending';
+
+      allow update, delete: if isAdmin();
+    }
+
+    // ── Transactions Ledger ───────────────────────────────────────
     match /transactions/{txId} {
-      allow read:   if isAuth();
-      allow create: if isAuth();
-      allow update: if isAdmin();
-      allow delete: if isAdmin();
+      allow read: if isAuth() && (
+        resource.data.userId == request.auth.uid ||
+        isAdmin() || isStaff()
+      );
+
+      allow create: if isAuth() && (
+        request.resource.data.userId == request.auth.uid ||
+        isAdmin()
+      );
+
+      allow update, delete: if isAdmin();
     }
 
-    // ── Matches & Lobby Chat ───────────────────────────────────
+    // ── Matches & In-Lobby Messages ───────────────────────────────
     match /matches/{matchId} {
-      allow read:   if true;
-      allow create: if isAuth();
-      allow update: if isAuth();
+      allow read: if true;
+
+      allow create: if isAuth() && isNotBanned() && (
+        request.resource.data.createdBy == request.auth.uid ||
+        isAdmin()
+      );
+
+      allow update: if isAuth() && (
+        isStaff() ||
+        (isNotBanned() && (
+          resource.data.createdBy == request.auth.uid ||
+          (resource.data.players is list && request.auth.uid in resource.data.players) ||
+          resource.data.status == 'open'
+        ))
+      );
+
       allow delete: if isAdmin();
 
       match /messages/{msgId} {
-        allow read:   if true;
-        allow create: if isAuth();
-        allow update: if isAuth();
-        allow delete: if isAdmin();
+        allow read: if true;
+        allow create: if isAuth() && isNotBanned() && request.resource.data.uid == request.auth.uid;
+        allow update, delete: if isAdmin() || isStaff();
       }
     }
 
-    // ── Teams (2v2 & 3v3 Squads) ───────────────────────────────
+    // ── Teams (Squads & Rosters) ──────────────────────────────────
     match /teams/{teamId} {
-      allow read:   if true;
-      allow create: if isAuth();
-      allow update: if isAuth();
-      allow delete: if isAuth();
+      allow read: if true;
+
+      allow create: if isAuth() && isNotBanned() && (
+        request.resource.data.ownerUid == request.auth.uid ||
+        isAdmin()
+      );
+
+      allow update: if isAuth() && isNotBanned() && (
+        isAdmin() ||
+        resource.data.ownerUid == request.auth.uid ||
+        (resource.data.members is list)
+      );
+
+      allow delete: if isAuth() && (
+        isAdmin() ||
+        resource.data.ownerUid == request.auth.uid
+      );
     }
 
-    // ── Staff Calls / Disputes ─────────────────────────────────
-    match /staff_calls/{callId} {
-      allow read:   if isAuth();
-      allow create: if isAuth();
-      allow update: if isAuth();
+    // ── Staff Calls & Disputes ────────────────────────────────────
+    match /support_tickets/{ticketId} {
+      allow read: if isAuth() && (
+        resource.data.userId == request.auth.uid ||
+        isAdmin() || isStaff()
+      );
+
+      allow create: if isAuth() && isNotBanned() && request.resource.data.userId == request.auth.uid;
+      allow update: if isAuth() && (
+        isAdmin() || isStaff() || resource.data.userId == request.auth.uid
+      );
       allow delete: if isAdmin();
+    }
+
+    match /staff_calls/{callId} {
+      allow read: if isAuth();
+      allow create: if isAuth() && isNotBanned();
+      allow update, delete: if isStaff() || isAdmin();
+    }
+
+    // ── System Announcements & Global Broadcasts ──────────────────
+    match /announcements/{announcementId} {
+      allow read: if true;
+      allow create, update, delete: if isAdmin();
+    }
+
+    // ── Notifications ─────────────────────────────────────────────
+    match /notifications/{notifId} {
+      allow read: if isAuth() && (
+        resource.data.userId == request.auth.uid ||
+        isAdmin()
+      );
+      allow create: if isAuth();
+      allow update: if isAuth() && (
+        resource.data.userId == request.auth.uid ||
+        isAdmin()
+      );
+      allow delete: if isAuth() && (
+        resource.data.userId == request.auth.uid ||
+        isAdmin()
+      );
     }
   }
 }

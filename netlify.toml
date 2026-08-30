@@ -6,7 +6,7 @@
 [functions]
   node_bundler = "esbuild"
 
-# Global Security & HSTS Headers (Forces browser into HTTPS)
+# Global Security & HSTS Headers
 [[headers]]
   for = "/*"
   [headers.values]
@@ -14,6 +14,74 @@
     X-Content-Type-Options    = "nosniff"
     X-Frame-Options           = "SAMEORIGIN"
     Referrer-Policy           = "strict-origin-when-cross-origin"
+    Permissions-Policy        = "camera=(), microphone=(), geolocation=()"
+
+# ── Source Code & Sensitive Files Protection (404/403 Block) ──
+[[redirects]]
+  from   = "/.git/*"
+  to     = "/"
+  status = 404
+  force  = true
+
+[[redirects]]
+  from   = "/worker.js"
+  to     = "/"
+  status = 404
+  force  = true
+
+[[redirects]]
+  from   = "/package.json"
+  to     = "/"
+  status = 404
+  force  = true
+
+[[redirects]]
+  from   = "/package-lock.json"
+  to     = "/"
+  status = 404
+  force  = true
+
+[[redirects]]
+  from   = "/wrangler.jsonc"
+  to     = "/"
+  status = 404
+  force  = true
+
+[[redirects]]
+  from   = "/firestore.rules"
+  to     = "/"
+  status = 404
+  force  = true
+
+[[redirects]]
+  from   = "/firebase.json"
+  to     = "/"
+  status = 404
+  force  = true
+
+[[redirects]]
+  from   = "/.firebaserc"
+  to     = "/"
+  status = 404
+  force  = true
+
+[[redirects]]
+  from   = "/scratch/*"
+  to     = "/"
+  status = 404
+  force  = true
+
+[[redirects]]
+  from   = "/netlify/*"
+  to     = "/"
+  status = 404
+  force  = true
+
+[[redirects]]
+  from   = "/.env*"
+  to     = "/"
+  status = 404
+  force  = true
 
 # Clean URLs (serve /page without .html extension)
 [[redirects]]
@@ -90,4 +158,3 @@
   from   = "/social-callback"
   to     = "/social-callback.html"
   status = 200
-

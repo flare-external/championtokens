@@ -2,24 +2,24 @@
 node_modules/
 functions/node_modules/
 
-# Firebase
+# Scratch & development files
+scratch/
+*.log
+
+# Firebase & Deployment local files
 .firebase/
 firebase-debug.log
 firebase-debug.*.log
 .firebaserc.local
-
-# Netlify
+.wrangler/
 .netlify/
 
 # Environment / secrets — NEVER commit these
 .env
-.env.local
+.env.*
 *service-account*.json
 *serviceAccount*.json
 
-# OS
+# OS files
 .DS_Store
 Thumbs.db
-
-# Logs
-*.log

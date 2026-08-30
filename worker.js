@@ -70,11 +70,48 @@ async function createFirebaseCustomToken(serviceAccount, uid, claims = {}) {
 
 export default {
   async fetch(request, env, ctx) {
-    const url = new URL(request.url);
+        const url = new URL(request.url);
+    const pathname = url.pathname.toLowerCase();
+
+    // ── Source Code & Sensitive Files Defense ───────────────────
+    // Prevent any public access to git files, server workers, package configs, environment files, or scratch scripts
+    const BLOCKED_PREFIXES = [
+      '/.git', '/.github', '/.env', '/worker.js', '/package.json', '/package-lock.json',
+      '/wrangler.json', '/wrangler.jsonc', '/firestore.rules', '/firestore.indexes.json',
+      '/firebase.json', '/.firebaserc', '/scratch', '/node_modules', '/netlify', '/api/'
+    ];
+    const BLOCKED_EXACT = [
+      '/.gitignore', '/.ignore', '/.assetsignore', '/.wranglerignore', '/readme.md', '/license'
+    ];
+
+    if (
+      BLOCKED_PREFIXES.some(p => pathname.startsWith(p)) ||
+      BLOCKED_EXACT.includes(pathname) ||
+      pathname.includes('serviceaccount') ||
+      pathname.includes('service-account') ||
+      pathname.endsWith('.json') ||
+      pathname.endsWith('.rules') ||
+      pathname.endsWith('.toml') ||
+      pathname.endsWith('.md')
+    ) {
+      return new Response(JSON.stringify({ error: 'Access Denied', status: 403 }), {
+        status: 403,
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Content-Type-Options': 'nosniff',
+          'X-Frame-Options': 'DENY'
+        }
+      });
+    }
+
     const corsHeaders = {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+      'X-Content-Type-Options': 'nosniff',
+      'X-Frame-Options': 'SAMEORIGIN',
+      'Referrer-Policy': 'strict-origin-when-cross-origin',
+      'Strict-Transport-Security': 'max-age=31536000; includeSubDomains; preload'
     };
 
     // Handle CORS Preflight
