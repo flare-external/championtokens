@@ -2242,6 +2242,56 @@ const SHOP_TITLES = {
     borderColor: 'rgba(239, 68, 68, 0.45)',
     rarity: 'Rare',
     cost: 1.75
+  },
+  'title_clutch_god': {
+    id: 'title_clutch_god',
+    name: 'Clutch God',
+    icon: 'flame',
+    color: '#f59e0b',
+    bgColor: 'rgba(245, 158, 11, 0.15)',
+    borderColor: 'rgba(245, 158, 11, 0.45)',
+    rarity: 'Exclusive',
+    cost: 5.00
+  },
+  'title_high_roller': {
+    id: 'title_high_roller',
+    name: 'High Roller',
+    icon: 'gem',
+    color: '#a855f7',
+    bgColor: 'rgba(168, 85, 247, 0.15)',
+    borderColor: 'rgba(168, 85, 247, 0.45)',
+    rarity: 'Epic',
+    cost: 2.50
+  },
+  'title_demon': {
+    id: 'title_demon',
+    name: 'Demon',
+    icon: 'skull',
+    color: '#ec4899',
+    bgColor: 'rgba(236, 72, 153, 0.15)',
+    borderColor: 'rgba(236, 72, 153, 0.45)',
+    rarity: 'Epic',
+    cost: 2.25
+  },
+  'title_untouchable': {
+    id: 'title_untouchable',
+    name: 'Untouchable',
+    icon: 'shield',
+    color: '#3b82f6',
+    bgColor: 'rgba(59, 130, 246, 0.15)',
+    borderColor: 'rgba(59, 130, 246, 0.45)',
+    rarity: 'Rare',
+    cost: 1.75
+  },
+  'title_certified': {
+    id: 'title_certified',
+    name: 'Certified',
+    icon: 'check-circle',
+    color: '#10b981',
+    bgColor: 'rgba(16, 185, 129, 0.15)',
+    borderColor: 'rgba(16, 185, 129, 0.45)',
+    rarity: 'Uncommon',
+    cost: 1.00
   }
 };
 
@@ -2266,6 +2316,10 @@ function seededRandom(seed) {
 /**
  * Returns 12 featured daily shop PFPs (2 full rows):
  * Guaranteed 5 Exclusive, 3 Epic, 2 Rare, 2 Uncommon (12 total).
+ */
+/**
+ * Returns 6 featured daily shop PFPs (1 single clean row):
+ * 2 Exclusive, 2 Epic, 1 Rare, 1 Uncommon (6 total).
  */
 function getDailyShopPfps() {
   const now = new Date();
@@ -2293,10 +2347,10 @@ function getDailyShopPfps() {
     return picked;
   }
 
-  const pickedExclusive = pickRandomN(exclusives, 5, seed + 1);
-  const pickedEpic = pickRandomN(epics, 3, seed + 2);
-  const pickedRare = pickRandomN(rares, 2, seed + 3);
-  const pickedUncommon = pickRandomN(uncommons, 2, seed + 4);
+  const pickedExclusive = pickRandomN(exclusives, 2, seed + 1);
+  const pickedEpic = pickRandomN(epics, 2, seed + 2);
+  const pickedRare = pickRandomN(rares, 1, seed + 3);
+  const pickedUncommon = pickRandomN(uncommons, 1, seed + 4);
 
   return [...pickedExclusive, ...pickedEpic, ...pickedRare, ...pickedUncommon];
 }

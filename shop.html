@@ -24,7 +24,7 @@
   <link rel="icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
-  <link rel="stylesheet" href="css/style.css?v=4.0.1788118314430"/>
+  <link rel="stylesheet" href="css/style.css?v=4.0.1788118574836"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
@@ -158,6 +158,46 @@
       flex-shrink: 0;
     }
 
+  
+    .shop-one-row-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 14px;
+    }
+    @media (max-width: 1100px) {
+      .shop-one-row-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+    @media (max-width: 600px) {
+      .shop-one-row-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    .purchase-verifying-modal {
+      background: #000000;
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      border-radius: 20px;
+      padding: 30px 24px;
+      text-align: center;
+      max-width: 380px;
+      width: 100%;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.9);
+      position: relative;
+    }
+    .spinner-gold {
+      width: 42px;
+      height: 42px;
+      border: 3px solid rgba(245, 158, 11, 0.2);
+      border-top-color: var(--gold-bright);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto 16px;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
   </style>
 </head>
 <body>
@@ -219,7 +259,7 @@
         </div>
 
         <!-- 12 Daily Avatars (2 Rows) -->
-        <div id="daily-pfps-grid" style="display:grid;grid-template-columns:repeat(auto-fill, minmax(180px, 1fr));gap:16px;">
+        <div id="daily-pfps-grid" class="shop-one-row-grid">
           <!-- Rendered dynamically -->
         </div>
       </div>
@@ -236,7 +276,7 @@
         </div>
 
         <!-- Titles Grid -->
-        <div id="shop-titles-grid" style="display:grid;grid-template-columns:repeat(auto-fill, minmax(180px, 1fr));gap:16px;">
+        <div id="shop-titles-grid" class="shop-one-row-grid">
           <!-- Rendered dynamically -->
         </div>
       </div>
@@ -249,15 +289,16 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="js/firebase-config.js?v=3.8"></script>
-  <script src="js/auth.js?v=4.0.1788118314430"></script>
-  <script src="js/db.js?v=4.0.1788118314430"></script>
-  <script src="js/nav.js?v=4.0.1788118314430"></script>
+  <script src="js/auth.js?v=4.0.1788118574836"></script>
+  <script src="js/db.js?v=4.0.1788118574836"></script>
+  <script src="js/nav.js?v=4.0.1788118574836"></script>
 
   <script>
     let currentUser = null;
     let currentUserData = null;
 
     document.addEventListener('DOMContentLoaded', () => {
+      startShopTimer();
       requireAuth().then(async (user) => {
         currentUser = user;
         try {
@@ -272,7 +313,6 @@
         checkPremiumStatus();
         renderDailyPfps();
         renderShopTitles();
-        startShopTimer();
         if (window.lucide) lucide.createIcons();
       }).catch(err => {
         console.error('Shop auth error:', err);
@@ -606,6 +646,36 @@
       };
     }
 
+    
+    /* ── Server Verification & Processing Modal ────────────────────── */
+    function showPurchaseLoading(message = 'Verifying account & processing transaction...') {
+      let overlay = document.getElementById('shop-processing-overlay');
+      if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.id = 'shop-processing-overlay';
+        overlay.className = 'modal-overlay';
+        overlay.style.zIndex = '1000000';
+        document.body.appendChild(overlay);
+      }
+      overlay.innerHTML = `
+        <div class="purchase-verifying-modal">
+          <div class="spinner-gold"></div>
+          <h3 style="font-size:1.15rem;font-weight:900;color:#fff;margin:0 0 6px;">Processing Purchase</h3>
+          <p style="font-size:0.85rem;color:var(--text-muted);margin:0;" id="shop-processing-text">${escapeHtml(message)}</p>
+        </div>
+      `;
+      overlay.classList.add('open');
+      overlay.classList.add('active');
+    }
+
+    function hidePurchaseLoading() {
+      const overlay = document.getElementById('shop-processing-overlay');
+      if (overlay) {
+        overlay.classList.remove('open');
+        overlay.classList.remove('active');
+      }
+    }
+
     async function handleBuyPfp(pfpId) {
       if (!currentUser) return;
       const item = SHOP_PFPS[pfpId];
@@ -636,12 +706,26 @@
       });
       if (!ok) return;
 
+      showPurchaseLoading('Verifying balance & unlocking avatar...');
       try {
+        // Serverside verification
+        const freshUser = await getUser(currentUser.uid);
+        if (!freshUser) throw new Error('Failed to verify user account');
+        if (Number(freshUser.tokens || 0) < item.cost) {
+          throw new Error(`Insufficient tokens! You have ${formatTokens(freshUser.tokens || 0)} Tokens, but ${formatTokens(item.cost)} Tokens are required.`);
+        }
+        if ((freshUser.unlockedPfps || []).includes(pfpId) || item.isDefault) {
+          throw new Error('Avatar is already unlocked in your wardrobe.');
+        }
+
+        await new Promise(r => setTimeout(r, 600)); // Smooth animation delay
         await buyShopPfp(currentUser.uid, pfpId);
         currentUserData = await getUser(currentUser.uid);
         renderDailyPfps();
+        hidePurchaseLoading();
         showPfpPurchaseCelebration(item);
       } catch (err) {
+        hidePurchaseLoading();
         showToast(err.message, 'error');
       }
     }
@@ -671,12 +755,26 @@
       });
       if (!ok) return;
 
+      showPurchaseLoading('Verifying balance & unlocking title...');
       try {
+        // Serverside verification
+        const freshUser = await getUser(currentUser.uid);
+        if (!freshUser) throw new Error('Failed to verify user account');
+        if (Number(freshUser.tokens || 0) < item.cost) {
+          throw new Error(`Insufficient tokens! You have ${formatTokens(freshUser.tokens || 0)} Tokens, but ${formatTokens(item.cost)} Tokens are required.`);
+        }
+        if ((freshUser.unlockedTitles || []).includes(titleId)) {
+          throw new Error('Title is already unlocked.');
+        }
+
+        await new Promise(r => setTimeout(r, 600)); // Smooth animation delay
         await buyShopTitle(currentUser.uid, titleId);
         currentUserData = await getUser(currentUser.uid);
         renderShopTitles();
+        hidePurchaseLoading();
         showTitlePurchaseCelebration(item);
       } catch (err) {
+        hidePurchaseLoading();
         showToast(err.message, 'error');
       }
     }
@@ -694,15 +792,27 @@
       });
       if (!ok) return;
 
+      showPurchaseLoading('Verifying balance & activating Premium membership...');
       try {
+        // Serverside balance verification
+        const freshUser = await getUser(currentUser.uid);
+        if (!freshUser) throw new Error('Failed to verify user account');
+        if (Number(freshUser.tokens || 0) < 5.00) {
+          throw new Error(`Insufficient tokens! You have ${formatTokens(freshUser.tokens || 0)} Tokens, but 5.00 Tokens are required.`);
+        }
+
+        await new Promise(r => setTimeout(r, 600)); // Smooth animation delay
         await buyPremiumPass(currentUser.uid);
         currentUserData = await getUser(currentUser.uid);
         checkPremiumStatus();
+        hidePurchaseLoading();
         showPremiumPurchaseCelebration();
       } catch (err) {
+        hidePurchaseLoading();
         showToast(err.message, 'error');
       }
     }
+
   </script>
 </body>
 </html>
