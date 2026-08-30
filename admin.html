@@ -7,7 +7,7 @@
   <link rel="icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
-  <link rel="stylesheet" href="css/style.css?v=4.0.1788056234337"/>
+  <link rel="stylesheet" href="css/style.css?v=4.0.1788056654373"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
 
@@ -180,25 +180,47 @@
       opacity: 0.75;
     }
 
-    .role-option-card {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding: 14px 16px;
-      border-radius: 12px;
+    /* Visual PFP Selector styling */
+    .pfp-picker-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(88px, 1fr));
+      gap: 10px;
+      max-height: 280px;
+      overflow-y: auto;
+      padding: 6px;
       background: #060608;
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 14px;
+    }
+    .pfp-picker-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 8px 6px;
+      border-radius: 12px;
+      background: #000;
       border: 1px solid rgba(255, 255, 255, 0.08);
       cursor: pointer;
       transition: all 0.18s ease;
-      margin-bottom: 10px;
+      text-align: center;
     }
-    .role-option-card:hover {
-      background: #0e0e12;
-      border-color: rgba(255, 255, 255, 0.2);
+    .pfp-picker-item:hover {
+      background: #0d0d12;
+      border-color: rgba(255, 255, 255, 0.25);
+      transform: translateY(-2px);
     }
-    .role-option-card.active {
-      background: rgba(245, 158, 11, 0.14);
-      border-color: rgba(245, 158, 11, 0.5);
+    .pfp-picker-item.selected {
+      border-color: var(--gold-bright);
+      background: rgba(245, 158, 11, 0.12);
+      box-shadow: 0 0 12px rgba(245, 158, 11, 0.35);
+    }
+    .pfp-picker-img {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 6px;
+      background: #000;
     }
 
     [id^="admin-tab-"].hidden { display: none !important; }
@@ -351,55 +373,51 @@
 
     <!-- ── Tab: Redeem Codes Generator & Live Manager ──────────────── -->
     <div id="admin-tab-codes" class="hidden">
+      <!-- Code Generator Card -->
       <div class="card" style="padding:22px 24px;margin-bottom:20px;background:#000;border:1px solid rgba(255,255,255,0.08);border-radius:18px;">
         <div style="font-size:1.15rem;font-weight:900;color:#fff;margin-bottom:4px;display:flex;align-items:center;gap:8px;">
           <i data-lucide="sparkles" style="color:var(--gold-bright);"></i> Redeem Code Generator
         </div>
         <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:18px;">
-          Generate custom or randomized gift codes. Players can redeem them in their Token Wallet to claim free tokens or exclusive cosmetics.
+          Generate custom or randomized gift codes. Players can redeem them in their Token Wallet to claim tokens or cosmetics.
         </p>
 
+        <!-- Live Selected Reward Showcase Box -->
+        <div style="background:#060608;border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:14px 18px;margin-bottom:18px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+          <div style="display:flex;align-items:center;gap:14px;">
+            <div id="reward-live-preview-media" style="width:48px;height:48px;border-radius:12px;background:#000;border:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0;">
+              <img src="new_token.png" style="width:34px;height:34px;object-fit:contain;" />
+            </div>
+            <div>
+              <div style="font-size:0.72rem;font-weight:800;color:var(--text-muted);text-transform:uppercase;">Selected Reward</div>
+              <div style="font-size:1.05rem;font-weight:900;color:#fff;" id="reward-live-preview-title">5.00 Tokens</div>
+            </div>
+          </div>
+          <div id="reward-live-preview-badge">
+            <span class="badge" style="background:rgba(245,158,11,0.15);color:var(--gold-bright);border:1px solid rgba(245,158,11,0.3);font-size:0.75rem;padding:3px 9px;">TOKENS</span>
+          </div>
+        </div>
+
         <form onsubmit="handleAdminCreateCode(event)" style="display:flex;flex-direction:column;gap:16px;">
-          <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));gap:14px;">
+          <!-- Top row inputs -->
+          <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));gap:14px;">
             <div class="form-group" style="margin:0;">
               <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
                 <label class="form-label" style="margin:0;">Code String</label>
                 <button type="button" onclick="generateRandomCodeInput()" style="background:none;border:none;color:var(--gold-bright);font-size:0.72rem;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;gap:3px;">
-                  <i data-lucide="refresh-cw" style="width:11px;height:11px;"></i> Random Code
+                  <i data-lucide="refresh-cw" style="width:11px;height:11px;"></i> Randomize
                 </button>
               </div>
               <input class="form-input" id="admin-code-input" placeholder="XXXX-XXXX-XXXX" required style="text-transform:uppercase;font-weight:900;letter-spacing:0.06em;background:#060608;" />
             </div>
 
             <div class="form-group" style="margin:0;">
-              <label class="form-label">Reward Type</label>
+              <label class="form-label">Reward Category</label>
               <select class="form-input" id="admin-code-reward-type" onchange="handleRewardTypeChange()" style="font-weight:700;background:#060608;">
                 <option value="tokens">Tokens (Balance Credit)</option>
                 <option value="pfp">Avatar Cosmetic (PFP)</option>
                 <option value="title">Profile Title</option>
                 <option value="premium">Champion Premium Status</option>
-              </select>
-            </div>
-
-            <div class="form-group" style="margin:0;" id="admin-reward-value-wrap">
-              <label class="form-label" id="admin-reward-value-label">Token Amount (CT)</label>
-              <input type="number" step="0.25" min="0.25" class="form-input" id="admin-code-token-amt" placeholder="e.g. 5.00" value="5.00" required style="font-weight:800;background:#060608;" />
-              
-              <select class="form-input" id="admin-code-pfp-select" style="display:none;font-weight:700;background:#060608;">
-                <option value="pfp_exclusive_1">#23 Exclusive Avatar (Gold)</option>
-                <option value="pfp_exclusive_2">#24 Exclusive Avatar</option>
-                <option value="pfp_exclusive_3">#25 Exclusive Avatar</option>
-                <option value="pfp_exclusive_4">#26 Exclusive Avatar</option>
-                <option value="pfp_exclusive_5">#27 Exclusive Avatar</option>
-                <option value="pfp_epic_1">#15 Epic Avatar (Purple)</option>
-                <option value="pfp_epic_2">#16 Epic Avatar</option>
-                <option value="pfp_epic_3">#17 Epic Avatar</option>
-                <option value="pfp_rare_1">#8 Rare Avatar (Blue)</option>
-                <option value="pfp_rare_2">#9 Rare Avatar</option>
-              </select>
-
-              <select class="form-input" id="admin-code-title-select" style="display:none;font-weight:700;background:#060608;">
-                <option value="title_no_signal">"No signal" (Rare Title)</option>
               </select>
             </div>
 
@@ -409,9 +427,38 @@
             </div>
           </div>
 
-          <div class="form-group" style="margin:0;">
-            <label class="form-label">Campaign / Admin Note (Optional)</label>
-            <input class="form-input" id="admin-code-notes" placeholder="e.g. Discord Giveaway, Special Tournament Reward, Adrian Test" style="background:#060608;" />
+          <!-- Dynamic Reward Chooser -->
+          <!-- 1. Tokens Amount Input -->
+          <div id="reward-tokens-chooser" style="display:block;">
+            <label class="form-label">Token Amount (CT)</label>
+            <div style="display:flex;gap:8px;">
+              <input type="number" step="0.25" min="0.25" class="form-input" id="admin-code-token-amt" placeholder="e.g. 5.00" value="5.00" oninput="updateLivePreview()" style="font-weight:800;background:#060608;max-width:200px;" />
+              <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
+                <span class="wager-pill" onclick="setTokenCodeAmt(5)" style="padding:6px 12px;font-size:0.78rem;">5 CT</span>
+                <span class="wager-pill" onclick="setTokenCodeAmt(10)" style="padding:6px 12px;font-size:0.78rem;">10 CT</span>
+                <span class="wager-pill" onclick="setTokenCodeAmt(25)" style="padding:6px 12px;font-size:0.78rem;">25 CT</span>
+                <span class="wager-pill" onclick="setTokenCodeAmt(50)" style="padding:6px 12px;font-size:0.78rem;">50 CT</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2. Visual Avatar (PFP) Gallery Selector (All 30 Avatars) -->
+          <div id="reward-pfp-chooser" style="display:none;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+              <label class="form-label" style="margin:0;">Select Avatar Cosmetic (All 30 Available)</label>
+              <span style="font-size:0.75rem;color:var(--text-muted);">Click any avatar to select</span>
+            </div>
+            <div class="pfp-picker-grid" id="admin-pfp-picker-grid">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+
+          <!-- 3. Titles Selector -->
+          <div id="reward-title-chooser" style="display:none;">
+            <label class="form-label">Select Profile Title</label>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;" id="admin-title-picker-wrap">
+              <!-- Rendered via JS -->
+            </div>
           </div>
 
           <button type="submit" class="btn btn-gold btn-sm" id="create-code-btn" style="align-self:flex-start;padding:10px 22px;border-radius:10px;gap:7px;font-size:0.86rem;">
@@ -420,6 +467,7 @@
         </form>
       </div>
 
+      <!-- Generated Codes Live List -->
       <div class="card" style="padding:22px 24px;background:#000;border:1px solid rgba(255,255,255,0.08);border-radius:18px;">
         <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;margin-bottom:16px;">
           <div style="font-size:1.1rem;font-weight:900;color:#fff;display:flex;align-items:center;gap:8px;">
@@ -454,7 +502,7 @@
         <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:18px;">Pushes a direct system notification to every registered user's notification bell.</p>
         <form onsubmit="handleBroadcast(event)" style="display:flex;flex-direction:column;gap:14px;">
           <div class="form-group" style="margin:0;"><label class="form-label">Announcement Title</label><input class="form-input" id="broadcast-title" placeholder="e.g. Tournament Weekend is Live!" required style="background:#060608;" /></div>
-          <div class="form-group" style="margin:0;"><label class="form-label">Message Content</label><textarea class="form-input" id="broadcast-body" rows="3" placeholder="Write the announcement details…" required style="resize:vertical;background:#060608;"></textarea></div>
+          <div class="form-group" style="margin:0;"><label class="form-label">Message Content</label><textarea class="form-input" id="broadcast-body" rows="3" placeholder="Write the announcement details…" required style="resize:vertical;background:#060608;" style="background:#060608;"></textarea></div>
           <button type="submit" class="btn btn-primary" id="broadcast-btn" style="align-self:flex-start;padding:10px 20px;border-radius:10px;"><i data-lucide="send"></i> Broadcast to All Users</button>
         </form>
       </div>
@@ -569,15 +617,15 @@
     </div>
   </div>
 
-  <!-- Firebase SDKs & Core Scripts (Placed at end of Body) -->
+  <!-- Firebase SDKs & Core Scripts -->
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="js/firebase-config.js?v=3.6"></script>
-  <script src="js/auth.js?v=4.0.1788056234337"></script>
-  <script src="js/db.js?v=4.0.1788056234337"></script>
-  <script src="js/nav.js?v=4.0.1788056234337"></script>
+  <script src="js/auth.js?v=4.0.1788056654373"></script>
+  <script src="js/db.js?v=4.0.1788056654373"></script>
+  <script src="js/nav.js?v=4.0.1788056654373"></script>
 
   <script>
     let currentUser = null;
@@ -590,6 +638,11 @@
     let currentCodeFilter = 'all';
     let editingUserForBalance = null;
     let editingUserForRole = null;
+
+    // Selected state for code generator
+    let selectedRewardType = 'tokens';
+    let selectedPfpId = 'pfp_exclusive_1';
+    let selectedTitleId = 'title_no_signal';
 
     function switchAdminTab(tab) {
       ['players','matches','teams','tickets','codes','broadcast','danger'].forEach(t => {
@@ -827,33 +880,8 @@
       }
     }
 
-    /* ── Redeem Codes Logic ───────────────────────────────────────── */
-    function handleRewardTypeChange() {
-      const type = document.getElementById('admin-code-reward-type')?.value;
-      const label = document.getElementById('admin-reward-value-label');
-      const tokenInput = document.getElementById('admin-code-token-amt');
-      const pfpSelect = document.getElementById('admin-code-pfp-select');
-      const titleSelect = document.getElementById('admin-code-title-select');
-
-      if (tokenInput) tokenInput.style.display = 'none';
-      if (pfpSelect) pfpSelect.style.display = 'none';
-      if (titleSelect) titleSelect.style.display = 'none';
-
-      if (type === 'tokens') {
-        if (label) label.textContent = 'Token Amount (CT)';
-        if (tokenInput) { tokenInput.style.display = 'block'; tokenInput.required = true; }
-      } else if (type === 'pfp') {
-        if (label) label.textContent = 'Select Avatar Cosmetic';
-        if (pfpSelect) pfpSelect.style.display = 'block';
-      } else if (type === 'title') {
-        if (label) label.textContent = 'Select Profile Title';
-        if (titleSelect) titleSelect.style.display = 'block';
-      } else if (type === 'premium') {
-        if (label) label.textContent = 'Reward: Premium Membership';
-      }
-    }
-
-        function generateRandomCodeInput() {
+    /* ── Visual Redeem Code Generator Logic ───────────────────────── */
+    function generateRandomCodeInput() {
       const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
       let p1 = '', p2 = '', p3 = '';
       for (let i = 0; i < 4; i++) p1 += chars.charAt(Math.floor(Math.random() * chars.length));
@@ -864,12 +892,116 @@
       if (input) input.value = code;
     }
 
+    function setTokenCodeAmt(amt) {
+      const el = document.getElementById('admin-code-token-amt');
+      if (el) {
+        el.value = amt.toFixed(2);
+        updateLivePreview();
+      }
+    }
+
+    function handleRewardTypeChange() {
+      selectedRewardType = document.getElementById('admin-code-reward-type')?.value || 'tokens';
+
+      const tokenBox = document.getElementById('reward-tokens-chooser');
+      const pfpBox = document.getElementById('reward-pfp-chooser');
+      const titleBox = document.getElementById('reward-title-chooser');
+
+      if (tokenBox) tokenBox.style.display = selectedRewardType === 'tokens' ? 'block' : 'none';
+      if (pfpBox) pfpBox.style.display = selectedRewardType === 'pfp' ? 'block' : 'none';
+      if (titleBox) titleBox.style.display = selectedRewardType === 'title' ? 'block' : 'none';
+
+      if (selectedRewardType === 'pfp') renderPfpPickerGrid();
+      if (selectedRewardType === 'title') renderTitlePickerGrid();
+
+      updateLivePreview();
+    }
+
+    function renderPfpPickerGrid() {
+      const grid = document.getElementById('admin-pfp-picker-grid');
+      if (!grid || typeof SHOP_PFPS === 'undefined') return;
+
+      grid.innerHTML = Object.values(SHOP_PFPS).map(pfp => {
+        const isSel = pfp.id === selectedPfpId;
+        return `
+          <div class="pfp-picker-item ${isSel ? 'selected' : ''}" onclick="selectAdminPfp('${pfp.id}')">
+            <img src="${encodeURI(pfp.file)}" class="pfp-picker-img" alt="${pfp.name}" />
+            <div style="font-weight:900;font-size:0.75rem;color:#fff;">${escapeHtml(pfp.name)}</div>
+            <span class="badge" style="font-size:0.6rem;padding:1px 5px;color:${pfp.color || '#fff'};border:1px solid ${pfp.color || '#fff'};background:rgba(255,255,255,0.03);margin-top:2px;">
+              ${pfp.rarity}
+            </span>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function selectAdminPfp(pfpId) {
+      selectedPfpId = pfpId;
+      renderPfpPickerGrid();
+      updateLivePreview();
+    }
+
+    function renderTitlePickerGrid() {
+      const wrap = document.getElementById('admin-title-picker-wrap');
+      if (!wrap || typeof SHOP_TITLES === 'undefined') return;
+
+      wrap.innerHTML = Object.values(SHOP_TITLES).map(t => {
+        const isSel = t.id === selectedTitleId;
+        return `
+          <div class="role-option-card ${isSel ? 'active' : ''}" onclick="selectAdminTitle('${t.id}')" style="flex:1;min-width:200px;margin:0;">
+            <div style="width:36px;height:36px;border-radius:10px;background:rgba(239,68,68,0.2);color:#ef4444;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <i data-lucide="${t.icon || 'globe-off'}" style="width:18px;height:18px;"></i>
+            </div>
+            <div style="flex:1;">
+              <div style="font-weight:900;color:#ef4444;font-size:0.95rem;">${escapeHtml(t.name)}</div>
+              <div style="font-size:0.72rem;color:var(--text-muted);">${t.rarity || 'Rare'} Title</div>
+            </div>
+          </div>
+        `;
+      }).join('');
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function selectAdminTitle(titleId) {
+      selectedTitleId = titleId;
+      renderTitlePickerGrid();
+      updateLivePreview();
+    }
+
+    function updateLivePreview() {
+      const mediaEl = document.getElementById('reward-live-preview-media');
+      const titleEl = document.getElementById('reward-live-preview-title');
+      const badgeEl = document.getElementById('reward-live-preview-badge');
+      if (!mediaEl || !titleEl || !badgeEl) return;
+
+      if (selectedRewardType === 'tokens') {
+        const amt = parseFloat(document.getElementById('admin-code-token-amt')?.value || '5');
+        mediaEl.innerHTML = '<img src="new_token.png" style="width:34px;height:34px;object-fit:contain;" />';
+        titleEl.textContent = formatTokens(amt) + ' Tokens';
+        badgeEl.innerHTML = '<span class="badge" style="background:rgba(245,158,11,0.15);color:var(--gold-bright);border:1px solid rgba(245,158,11,0.3);font-size:0.75rem;padding:3px 9px;">TOKENS</span>';
+      } else if (selectedRewardType === 'pfp') {
+        const pfp = (typeof SHOP_PFPS !== 'undefined' && SHOP_PFPS[selectedPfpId]) ? SHOP_PFPS[selectedPfpId] : { name: '#23', file: 'cosmetics/exclusive/exclusive.png', rarity: 'Exclusive', color: '#f59e0b' };
+        mediaEl.innerHTML = `<img src="${encodeURI(pfp.file)}" style="width:100%;height:100%;object-fit:cover;" />`;
+        titleEl.textContent = 'Avatar ' + pfp.name + ' (' + pfp.rarity + ')';
+        badgeEl.innerHTML = `<span class="badge" style="background:rgba(255,255,255,0.06);color:${pfp.color || '#fff'};border:1px solid ${pfp.color || '#fff'};font-size:0.75rem;padding:3px 9px;">${pfp.rarity.toUpperCase()}</span>`;
+      } else if (selectedRewardType === 'title') {
+        const titleItem = (typeof SHOP_TITLES !== 'undefined' && SHOP_TITLES[selectedTitleId]) ? SHOP_TITLES[selectedTitleId] : { name: 'No signal', icon: 'globe-off' };
+        mediaEl.innerHTML = '<i data-lucide="globe-off" style="width:24px;height:24px;color:#ef4444;"></i>';
+        titleEl.textContent = titleItem.name;
+        badgeEl.innerHTML = '<span class="badge" style="background:rgba(239,68,68,0.15);color:#ef4444;border:1px solid rgba(239,68,68,0.45);font-size:0.75rem;padding:3px 9px;">TITLE</span>';
+      } else if (selectedRewardType === 'premium') {
+        mediaEl.innerHTML = '<i data-lucide="crown" style="width:24px;height:24px;color:var(--gold-bright);"></i>';
+        titleEl.textContent = 'Champion Premium Status';
+        badgeEl.innerHTML = '<span class="badge" style="background:rgba(245,158,11,0.15);color:var(--gold-bright);border:1px solid rgba(245,158,11,0.3);font-size:0.75rem;padding:3px 9px;">PREMIUM</span>';
+      }
+
+      if (window.lucide) lucide.createIcons();
+    }
+
     async function handleAdminCreateCode(e) {
       e.preventDefault();
       const codeInput = document.getElementById('admin-code-input');
-      const rewardType = document.getElementById('admin-code-reward-type')?.value || 'tokens';
       const maxUses = parseInt(document.getElementById('admin-code-max-uses')?.value || '1', 10);
-      const notes = '';
       const btn = document.getElementById('create-code-btn');
 
       const rawCode = codeInput?.value?.trim()?.toUpperCase();
@@ -880,8 +1012,10 @@
 
       let rewardValue = null;
       let rewardLabel = '';
+      let rewardImage = '';
+      let rewardColor = '';
 
-      if (rewardType === 'tokens') {
+      if (selectedRewardType === 'tokens') {
         const amt = parseFloat(document.getElementById('admin-code-token-amt')?.value || '0');
         if (!amt || amt <= 0) {
           showToast('Please enter a valid token amount', 'error');
@@ -889,17 +1023,20 @@
         }
         rewardValue = amt;
         rewardLabel = formatTokens(amt) + ' Tokens';
-      } else if (rewardType === 'pfp') {
-        const pfp = document.getElementById('admin-code-pfp-select');
-        rewardValue = pfp?.value || 'pfp_exclusive_1';
-        rewardLabel = pfp?.options[pfp.selectedIndex]?.text || 'Avatar Cosmetic';
-      } else if (rewardType === 'title') {
-        const title = document.getElementById('admin-code-title-select');
-        rewardValue = title?.value || 'title_no_signal';
-        rewardLabel = title?.options[title.selectedIndex]?.text || 'Profile Title';
-      } else if (rewardType === 'premium') {
+        rewardImage = 'new_token.png';
+      } else if (selectedRewardType === 'pfp') {
+        const pfp = (typeof SHOP_PFPS !== 'undefined' && SHOP_PFPS[selectedPfpId]) ? SHOP_PFPS[selectedPfpId] : { name: '#23', file: 'cosmetics/exclusive/exclusive.png', rarity: 'Exclusive', color: '#f59e0b' };
+        rewardValue = pfp.id;
+        rewardLabel = 'Avatar ' + pfp.name + ' (' + pfp.rarity + ')';
+        rewardImage = pfp.file;
+        rewardColor = pfp.color;
+      } else if (selectedRewardType === 'title') {
+        const titleItem = (typeof SHOP_TITLES !== 'undefined' && SHOP_TITLES[selectedTitleId]) ? SHOP_TITLES[selectedTitleId] : { name: 'No signal', icon: 'globe-off' };
+        rewardValue = titleItem.id;
+        rewardLabel = titleItem.name;
+      } else if (selectedRewardType === 'premium') {
         rewardValue = true;
-        rewardLabel = 'Champion Premium Status';
+        rewardLabel = 'Champion Premium';
       }
 
       if (btn) btn.disabled = true;
@@ -907,19 +1044,21 @@
       try {
         const existing = await db.collection('redeem_codes').where('code', '==', rawCode).get();
         if (!existing.empty) {
-          throw new Error('A code with this name already exists. Please choose another code.');
+          throw new Error('A code with this name already exists.');
         }
 
         await db.collection('redeem_codes').add({
           code: rawCode,
-          rewardType: rewardType,
+          rewardType: selectedRewardType,
           rewardValue: rewardValue,
           rewardLabel: rewardLabel,
+          rewardImage: rewardImage,
+          rewardColor: rewardColor,
           maxUses: maxUses,
           usedCount: 0,
           usedBy: [],
           isActive: true,
-          notes: notes,
+          notes: '',
           createdAt: firebase.firestore.FieldValue.serverTimestamp(),
           createdBy: currentUser?.uid || 'admin'
         });
@@ -994,6 +1133,17 @@
             `).join('')
           : '<div style="font-size:0.75rem;color:var(--text-faint);font-style:italic;">Not redeemed yet</div>';
 
+        let iconThumb = '<img src="new_token.png" style="width:28px;height:28px;object-fit:contain;" />';
+        if (c.rewardType === 'pfp' && c.rewardImage) {
+          iconThumb = `<img src="${encodeURI(c.rewardImage)}" style="width:28px;height:28px;border-radius:50%;object-fit:cover;" />`;
+        } else if (c.rewardType === 'title') {
+          iconThumb = '<i data-lucide="award" style="width:20px;height:20px;color:#ef4444;"></i>';
+        } else if (c.rewardType === 'premium') {
+          iconThumb = '<i data-lucide="crown" style="width:20px;height:20px;color:var(--gold-bright);"></i>';
+        }
+
+        const cleanLabel = (c.rewardLabel || 'Reward').replace(/["']/g, '');
+
         return `
           <div style="background:#060608;border:1px solid rgba(255,255,255,0.06);border-radius:14px;padding:16px 18px;margin-bottom:12px;">
             <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
@@ -1005,11 +1155,13 @@
                   </button>
                 </div>
 
-                <div>
-                  <div style="font-weight:800;font-size:0.92rem;color:#fff;display:flex;align-items:center;gap:6px;">
-                    <span>${escapeHtml(c.rewardLabel || 'Reward')}</span>
+                <div style="display:flex;align-items:center;gap:10px;">
+                  <div style="width:36px;height:36px;border-radius:8px;background:#000;border:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;">
+                    ${iconThumb}
                   </div>
-                  ${c.notes ? '<div style="font-size:0.75rem;color:var(--text-muted);margin-top:2px;">' + escapeHtml(c.notes) + '</div>' : ''}
+                  <div style="font-weight:900;font-size:0.92rem;color:#fff;">
+                    ${escapeHtml(cleanLabel)}
+                  </div>
                 </div>
               </div>
 
@@ -1293,8 +1445,9 @@
 
         switchAdminTab('players');
         loadInitialUsers();
-        initRedeemCodesListener();
         generateRandomCodeInput();
+        updateLivePreview();
+        initRedeemCodesListener();
         subscribeStaffCalls();
         subscribeActiveMatches();
         subscribeActiveTeams();

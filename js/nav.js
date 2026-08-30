@@ -792,14 +792,17 @@ function showGiftClaimedModal(info) {
       </div>
     `;
   } else if (info.type === 'title') {
+    const cleanTitle = (info.name || 'No signal').replace(/["']/g, '').replace(/\([^)]*\)/g, '').trim();
     mediaHtml = `
       <div style="position:relative;width:90px;height:90px;margin:0 auto 14px;display:flex;align-items:center;justify-content:center;">
-        <div style="width:68px;height:68px;border-radius:16px;background:rgba(245,158,11,0.15);border:1px solid var(--gold-bright);display:flex;align-items:center;justify-content:center;color:var(--gold-bright);font-size:2rem;">
-          <i data-lucide="award" style="width:34px;height:34px;"></i>
+        <div style="width:68px;height:68px;border-radius:16px;background:rgba(239, 68, 68, 0.15);border:1px solid rgba(239, 68, 68, 0.45);display:flex;align-items:center;justify-content:center;color:#ef4444;font-size:2rem;">
+          <i data-lucide="${info.icon || 'globe-off'}" style="width:34px;height:34px;"></i>
         </div>
       </div>
-      <div style="font-size:1.35rem;font-weight:900;color:#fff;margin-bottom:6px;">
-        "${escapeHtml(info.name || 'Title')}"
+      <div style="margin-bottom:10px;">
+        <span class="badge" style="background:rgba(239,68,68,0.15);color:#ef4444;border:1px solid rgba(239,68,68,0.45);font-size:1.15rem;font-weight:900;padding:6px 18px;border-radius:10px;">
+          ${escapeHtml(cleanTitle)}
+        </span>
       </div>
     `;
   } else if (info.type === 'premium') {
@@ -817,9 +820,6 @@ function showGiftClaimedModal(info) {
 
   overlay.innerHTML = `
     <div class="modal" style="max-width:440px;text-align:center;padding:32px 28px;background:#000000;border:1px solid rgba(255,255,255,0.12);border-radius:24px;box-shadow:0 24px 60px rgba(0,0,0,0.95);">
-      <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.35);color:var(--gold-bright);padding:4px 12px;border-radius:999px;font-size:0.75rem;font-weight:800;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:14px;">
-        <i data-lucide="gift" style="width:13px;height:13px;"></i> Gift Claimed
-      </div>
       <h2 style="font-size:1.45rem;font-weight:900;color:#fff;margin-bottom:16px;letter-spacing:-0.02em;">
         You Received a Gift!
       </h2>
@@ -874,30 +874,29 @@ async function handleRedeemCode() {
   try {
     const snap = await db.collection('redeem_codes').where('code', '==', rawCode).limit(1).get();
     if (snap.empty) {
-      throw new Error('Invalid code. Please check for typos and try again.');
+      throw new Error('Code already redeemed or does not exist.');
     }
 
     const codeDoc = snap.docs[0];
     const codeData = codeDoc.data();
 
     if (codeData.isActive === false) {
-      throw new Error('This code has been deactivated or expired.');
+      throw new Error('Code already redeemed or does not exist.');
     }
 
     const maxUses = Number(codeData.maxUses || 1);
     const usedCount = Number(codeData.usedCount || 0);
     if (usedCount >= maxUses) {
-      throw new Error('This code has already reached its maximum redemptions.');
+      throw new Error('Code already redeemed or does not exist.');
     }
 
     const usedBy = codeData.usedBy || [];
     if (usedBy.some(u => u.uid === user.uid)) {
-      throw new Error('You have already redeemed this code.');
+      throw new Error('Code already redeemed or does not exist.');
     }
 
     const userData = await getUser(user.uid);
 
-    // Prepare Gift Info for celebration modal
     let giftInfo = {
       type: codeData.rewardType || 'tokens',
       subtext: 'Your reward has been credited to your account balance.'
@@ -907,17 +906,17 @@ async function handleRedeemCode() {
 
     if (rewardType === 'tokens') {
       const amt = Number(codeData.rewardValue || 0);
-      if (amt <= 0) throw new Error('Code has no reward value.');
+      if (amt <= 0) throw new Error('Code already redeemed or does not exist.');
       await updateTokens(user.uid, amt, 'redeem_code', `Redeemed Code: ${rawCode}`);
       giftInfo.amount = amt;
-      giftInfo.subtext = `${formatTokens(amt)} Tokens have been instantly credited to your wallet balance.`;
+      giftInfo.subtext = `${formatTokens(amt)} Tokens have been credited to your wallet balance.`;
     } else if (rewardType === 'pfp') {
       const pfpId = codeData.rewardValue;
       await db.collection('users').doc(user.uid).update({
         unlockedPfps: firebase.firestore.FieldValue.arrayUnion(pfpId)
       });
-      const pfpItem = (typeof SHOP_PFPS !== 'undefined' && SHOP_PFPS[pfpId]) ? SHOP_PFPS[pfpId] : { name: codeData.rewardLabel || 'Avatar', file: 'cosmetics/uncomon/uncomon.png', rarity: 'Exclusive', color: 'var(--gold-bright)' };
-      giftInfo.name = pfpItem.name || codeData.rewardLabel;
+      const pfpItem = (typeof SHOP_PFPS !== 'undefined' && SHOP_PFPS[pfpId]) ? SHOP_PFPS[pfpId] : { name: codeData.rewardLabel || 'Avatar', file: codeData.rewardImage || 'cosmetics/uncomon/uncomon.png', rarity: 'Exclusive', color: 'var(--gold-bright)' };
+      giftInfo.name = pfpItem.name.startsWith('#') ? 'Avatar ' + pfpItem.name : pfpItem.name;
       giftInfo.image = pfpItem.file;
       giftInfo.rarity = pfpItem.rarity;
       giftInfo.color = pfpItem.color;
@@ -927,7 +926,9 @@ async function handleRedeemCode() {
       await db.collection('users').doc(user.uid).update({
         unlockedTitles: firebase.firestore.FieldValue.arrayUnion(titleId)
       });
-      giftInfo.name = codeData.rewardLabel || 'Title';
+      const titleItem = (typeof SHOP_TITLES !== 'undefined' && SHOP_TITLES[titleId]) ? SHOP_TITLES[titleId] : { name: 'No signal', icon: 'globe-off' };
+      giftInfo.name = titleItem.name || 'No signal';
+      giftInfo.icon = titleItem.icon || 'globe-off';
       giftInfo.subtext = 'New title unlocked! You can equip it in your Profile customization.';
     } else if (rewardType === 'premium') {
       await db.collection('users').doc(user.uid).update({
@@ -935,7 +936,7 @@ async function handleRedeemCode() {
       });
       giftInfo.subtext = 'Champion Premium membership is now active on your account!';
     } else {
-      throw new Error('Unknown reward type.');
+      throw new Error('Code already redeemed or does not exist.');
     }
 
     const newUsedCount = usedCount + 1;
@@ -955,11 +956,10 @@ async function handleRedeemCode() {
     closeTokenWalletModal();
     if (input) input.value = '';
 
-    // Show celebration gift modal!
     showGiftClaimedModal(giftInfo);
   } catch (err) {
     console.error('Redeem error:', err);
-    showToast(err.message || 'Failed to redeem code', 'error');
+    showToast(err.message || 'Code already redeemed or does not exist.', 'error');
   } finally {
     if (btn) btn.disabled = false;
   }
