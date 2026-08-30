@@ -11,11 +11,19 @@
   <link rel="icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
-  <link rel="stylesheet" href="css/style.css?v=4.0.1788047701470"/>
+  <link rel="stylesheet" href="css/style.css?v=4.0.1788048052736"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
     /* ── Dark Glass Leaderboard Aesthetics ── */
+    @keyframes spinRefresh {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .spinning-icon {
+      animation: spinRefresh 0.75s cubic-bezier(0.4, 0, 0.2, 1) infinite !important;
+    }
+
     .lb-hero-header {
       display: flex;
       align-items: center;
@@ -280,9 +288,9 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="js/firebase-config.js?v=3.8"></script>
-  <script src="js/auth.js?v=4.0.1788047701470"></script>
-  <script src="js/db.js?v=4.0.1788047701470"></script>
-  <script src="js/nav.js?v=4.0.1788047701470"></script>
+  <script src="js/auth.js?v=4.0.1788048052736"></script>
+  <script src="js/db.js?v=4.0.1788048052736"></script>
+  <script src="js/nav.js?v=4.0.1788048052736"></script>
 
   <script>
     let currentUser = null;
@@ -527,27 +535,35 @@
 
     async function handleRefresh() {
       const btn = document.getElementById('refresh-btn');
+      const icon = document.getElementById('refresh-icon');
       if (btn) btn.disabled = true;
-      await loadLeaderboard();
-      setTimeout(() => { if (btn) btn.disabled = false; }, 1500);
-      showToast('Leaderboard refreshed!', 'info');
+      if (icon) icon.classList.add('spinning-icon');
+
+      try {
+        await loadLeaderboard();
+        showToast('Leaderboard refreshed!', 'info');
+      } catch (err) {
+        showToast('Failed to refresh leaderboard', 'error');
+      } finally {
+        setTimeout(() => {
+          if (icon) icon.classList.remove('spinning-icon');
+          if (btn) btn.disabled = false;
+        }, 500);
+      }
     }
   </script>
 
   <main class="page-wrap" style="max-width: 1050px;">
     <!-- Sleek Glass Hero Header -->
     <div class="lb-hero-header">
-      <div>
+      <div style="display:flex;align-items:center;gap:12px;">
         <h1 style="font-size:1.65rem;font-weight:900;margin:0;display:flex;align-items:center;gap:10px;">
-          <i data-lucide="trophy" style="color:var(--gold-bright);width:26px;height:26px;"></i> Champion Leaderboard
+          <i data-lucide="trophy" style="color:var(--gold-bright);width:26px;height:26px;"></i> Leaderboard
         </h1>
-        <p style="font-size:0.85rem;color:var(--text-muted);margin:5px 0 0;">
-          Top ranked Fortnite players ranked by Arena victories and tournament token earnings.
-        </p>
       </div>
       <div>
-        <button class="btn btn-outline btn-sm" id="refresh-btn" onclick="handleRefresh()">
-          <i data-lucide="refresh-cw"></i> Refresh
+        <button class="btn btn-outline btn-sm" id="refresh-btn" onclick="handleRefresh()" style="display:inline-flex;align-items:center;gap:7px;">
+          <i data-lucide="refresh-cw" id="refresh-icon" style="width:14px;height:14px;"></i> <span>Refresh</span>
         </button>
       </div>
     </div>
