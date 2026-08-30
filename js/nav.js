@@ -26,8 +26,8 @@ function injectNav(activePage = '') {
   const links = [
     { href: 'dashboard',   key: 'dashboard',   icon: 'layout-dashboard', label: 'Dashboard'   },
     { href: 'matches',     key: 'matches',     icon: 'swords',           label: 'Matches'     },
-    { href: 'tournaments', key: 'tournaments', icon: 'trophy',           label: 'Tournaments' },
-    { href: 'leaderboard', key: 'leaderboard', icon: 'crown',            label: 'Leaderboard' },
+    { href: 'tournaments', key: 'tournaments', icon: 'crown',            label: 'Tournaments' },
+    { href: 'leaderboard', key: 'leaderboard', icon: 'trophy',           label: 'Leaderboard' },
     { href: 'shop',        key: 'shop',        icon: 'shopping-bag',     label: 'Shop'        },
   ];
 

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Champion Leaderboard — Champion Tokens</title>
+  <title>Champion Tokens</title>
   <meta name="title" content="Champion Tokens Leaderboard"/>
   <meta name="description" content="View top ranked Fortnite players, biggest token earners, win streaks, and champion podium standings on Champion Tokens!"/>
   <meta name="theme-color" content="#F59E0B"/>
@@ -11,7 +11,7 @@
   <link rel="icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
-  <link rel="stylesheet" href="css/style.css?v=4.0.1788050174847"/>
+  <link rel="stylesheet" href="css/style.css?v=4.0.1788050379083"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
@@ -288,9 +288,9 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="js/firebase-config.js?v=3.8"></script>
-  <script src="js/auth.js?v=4.0.1788050174847"></script>
-  <script src="js/db.js?v=4.0.1788050174847"></script>
-  <script src="js/nav.js?v=4.0.1788050174847"></script>
+  <script src="js/auth.js?v=4.0.1788050379083"></script>
+  <script src="js/db.js?v=4.0.1788050379083"></script>
+  <script src="js/nav.js?v=4.0.1788050379083"></script>
 
   <script>
     let currentUser = null;
@@ -568,86 +568,88 @@
       </div>
     </div>
 
-    <!-- Quick Stats Grid -->
-    <div class="lb-stats-grid">
-      <div class="lb-stat-card">
-        <div class="lb-stat-icon-wrap" style="background:rgba(245,158,11,0.15);color:var(--gold-bright);border:1px solid rgba(245,158,11,0.3);">
-          <i data-lucide="users" style="width:22px;height:22px;"></i>
+    <!-- Unified Morphed Leaderboard Master Hub -->
+    <div class="lb-morphed-hub">
+      <!-- 1. Quick Stats Row -->
+      <div class="lb-stats-grid">
+        <div class="lb-stat-card">
+          <div class="lb-stat-icon-wrap" style="background:rgba(245,158,11,0.15);color:var(--gold-bright);">
+            <i data-lucide="users" style="width:20px;height:20px;"></i>
+          </div>
+          <div>
+            <div style="font-size:0.72rem;font-weight:800;color:var(--text-muted);text-transform:uppercase;">Competitors</div>
+            <div style="font-size:1.25rem;font-weight:900;color:#fff;" id="stat-total-players">0</div>
+          </div>
         </div>
-        <div>
-          <div style="font-size:0.75rem;font-weight:800;color:var(--text-muted);text-transform:uppercase;">Competitors</div>
-          <div style="font-size:1.35rem;font-weight:900;color:#fff;" id="stat-total-players">0</div>
+
+        <div class="lb-stat-card">
+          <div class="lb-stat-icon-wrap" style="background:rgba(59,130,246,0.15);color:#60a5fa;">
+            <i data-lucide="trophy" style="width:20px;height:20px;"></i>
+          </div>
+          <div>
+            <div style="font-size:0.72rem;font-weight:800;color:var(--text-muted);text-transform:uppercase;">Victories Won</div>
+            <div style="font-size:1.25rem;font-weight:900;color:#fff;" id="stat-total-wins">0</div>
+          </div>
+        </div>
+
+        <div class="lb-stat-card">
+          <div class="lb-stat-icon-wrap" style="background:rgba(16,185,129,0.15);color:#34d399;">
+            <i data-lucide="coins" style="width:20px;height:20px;"></i>
+          </div>
+          <div>
+            <div style="font-size:0.72rem;font-weight:800;color:var(--text-muted);text-transform:uppercase;">Tokens Earned</div>
+            <div style="font-size:1.25rem;font-weight:900;color:var(--gold-bright);" id="stat-total-earned">0.00</div>
+          </div>
+        </div>
+
+        <div class="lb-stat-card">
+          <div class="lb-stat-icon-wrap" style="background:rgba(168,85,247,0.15);color:#c084fc;">
+            <i data-lucide="target" style="width:20px;height:20px;"></i>
+          </div>
+          <div>
+            <div style="font-size:0.72rem;font-weight:800;color:var(--text-muted);text-transform:uppercase;">Top Win Rate</div>
+            <div style="font-size:1.25rem;font-weight:900;color:#fff;" id="stat-top-winrate">0%</div>
+          </div>
         </div>
       </div>
 
-      <div class="lb-stat-card">
-        <div class="lb-stat-icon-wrap" style="background:rgba(59,130,246,0.15);color:#60a5fa;border:1px solid rgba(59,130,246,0.3);">
-          <i data-lucide="trophy" style="width:22px;height:22px;"></i>
+      <div class="lb-hub-divider"></div>
+
+      <!-- 2. Top 3 Podium Showcase -->
+      <div class="podium-section" id="podium-wrap">
+        <div class="empty-state" style="grid-column:1/-1;"><div class="spinner" style="margin:0 auto;"></div></div>
+      </div>
+
+      <div class="lb-hub-divider"></div>
+
+      <!-- 3. Controls & Search -->
+      <div class="lb-controls-row">
+        <div style="position:relative;flex:1;min-width:220px;">
+          <i data-lucide="search" style="position:absolute;left:14px;top:50%;transform:translateY(-50%);width:15px;height:15px;color:#64748b;"></i>
+          <input
+            id="player-search-input"
+            class="form-input"
+            style="padding-left:38px;background:#060608;border:1px solid rgba(255,255,255,0.07);border-radius:10px;font-size:0.85rem;color:#fff;"
+            placeholder="Search players..."
+            oninput="handleSearchLeaderboard(this.value)"
+          />
         </div>
-        <div>
-          <div style="font-size:0.75rem;font-weight:800;color:var(--text-muted);text-transform:uppercase;">Victories Won</div>
-          <div style="font-size:1.35rem;font-weight:900;color:#fff;" id="stat-total-wins">0</div>
+
+        <!-- Sort Tabs -->
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="lb-sort-tab active" data-sort="wins" onclick="setSortMode('wins')">
+            <i data-lucide="trophy" style="width:14px;height:14px;"></i> Most Wins
+          </button>
+          <button class="lb-sort-tab" data-sort="earnings" onclick="setSortMode('earnings')">
+            <i data-lucide="coins" style="width:14px;height:14px;"></i> Top Earnings
+          </button>
+          <button class="lb-sort-tab" data-sort="winrate" onclick="setSortMode('winrate')">
+            <i data-lucide="percent" style="width:14px;height:14px;"></i> Win Rate
+          </button>
         </div>
       </div>
 
-      <div class="lb-stat-card">
-        <div class="lb-stat-icon-wrap" style="background:rgba(16,185,129,0.15);color:#34d399;border:1px solid rgba(16,185,129,0.3);">
-          <i data-lucide="coins" style="width:22px;height:22px;"></i>
-        </div>
-        <div>
-          <div style="font-size:0.75rem;font-weight:800;color:var(--text-muted);text-transform:uppercase;">Tokens Earned</div>
-          <div style="font-size:1.35rem;font-weight:900;color:var(--gold-bright);" id="stat-total-earned">0.00</div>
-        </div>
-      </div>
-
-      <div class="lb-stat-card">
-        <div class="lb-stat-icon-wrap" style="background:rgba(168,85,247,0.15);color:#c084fc;border:1px solid rgba(168,85,247,0.3);">
-          <i data-lucide="target" style="width:22px;height:22px;"></i>
-        </div>
-        <div>
-          <div style="font-size:0.75rem;font-weight:800;color:var(--text-muted);text-transform:uppercase;">Top Win Rate</div>
-          <div style="font-size:1.35rem;font-weight:900;color:#fff;" id="stat-top-winrate">0%</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Top 3 Podium Showcase -->
-    <div class="podium-section" id="podium-wrap">
-      <div class="empty-state" style="grid-column:1/-1;"><div class="spinner" style="margin:0 auto;"></div></div>
-    </div>
-
-    <!-- Controls & Search -->
-    <div class="lb-controls-card">
-      <div style="position:relative;flex:1;min-width:220px;">
-        <i data-lucide="search" style="position:absolute;left:14px;top:50%;transform:translateY(-50%);width:15px;height:15px;color:#64748b;"></i>
-        <input
-          id="player-search-input"
-          class="form-input"
-          style="padding-left:38px;background:#050507;border:1px solid rgba(255,255,255,0.07);border-radius:10px;font-size:0.85rem;color:#fff;"
-          placeholder="Search players..."
-          oninput="handleSearchLeaderboard(this.value)"
-        />
-      </div>
-
-      <!-- Sort Tabs -->
-      <div style="display:flex;gap:8px;flex-wrap:wrap;">
-        <button class="lb-sort-tab active" data-sort="wins" onclick="setSortMode('wins')">
-          <i data-lucide="trophy" style="width:14px;height:14px;"></i> Most Wins
-        </button>
-        <button class="lb-sort-tab" data-sort="earnings" onclick="setSortMode('earnings')">
-          <i data-lucide="coins" style="width:14px;height:14px;"></i> Top Earnings
-        </button>
-        <button class="lb-sort-tab" data-sort="winrate" onclick="setSortMode('winrate')">
-          <i data-lucide="percent" style="width:14px;height:14px;"></i> Win Rate
-        </button>
-      </div>
-    </div>
-
-    <!-- Full Table -->
-    <div class="lb-table-card">
-      <div style="display:flex;align-items:center;gap:8px;font-weight:900;font-size:1.05rem;color:#fff;margin-bottom:14px;">
-        <i data-lucide="list" style="color:var(--gold-bright);width:18px;height:18px;"></i> Overall Standings
-      </div>
+      <!-- 4. Full Table Section -->
       <div class="lb-table-wrap">
         <table class="lb-custom-table">
           <thead>
