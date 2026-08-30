@@ -24,11 +24,11 @@ function injectNav(activePage = '') {
   } catch (e) {}
 
   const links = [
-    { href: 'dashboard',   key: 'dashboard',   icon: 'layout-dashboard', label: 'Dashboard'   },
-    { href: 'matches',     key: 'matches',     icon: 'swords',           label: 'Matches'     },
-    { href: 'tournaments', key: 'tournaments', icon: 'trophy',           label: 'Tournaments' },
-    { href: 'leaderboard', key: 'leaderboard', icon: 'crown',            label: 'Leaderboard' },
-    { href: 'shop',        key: 'shop',        icon: 'shopping-bag',     label: 'Shop'        },
+    { href: 'dashboard',   key: 'dashboard',   icon: 'layout-grid',   label: 'Dashboard'   },
+    { href: 'matches',     key: 'matches',      icon: 'swords',        label: 'Matches'     },
+    { href: 'tournaments', key: 'tournaments',  icon: 'trophy',        label: 'Tournaments' },
+    { href: 'leaderboard', key: 'leaderboard',  icon: 'award',         label: 'Leaderboard' },
+    { href: 'shop',        key: 'shop',         icon: 'shopping-cart', label: 'Shop'        },
   ];
 
   const navLinksHTML = links.map(l => `
