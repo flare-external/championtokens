@@ -7,17 +7,17 @@
   <link rel="icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
-  <link rel="stylesheet" href="css/style.css?v=4.0.1788050777984"/>
+  <link rel="stylesheet" href="css/style.css?v=4.0.1788050930001"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
 
   <style>
-    /* ── Morphed Master Hero & Stats Card ────────────────────────── */
+    /* ── Morphed Master Hero & Stats Hub ─────────────────────────── */
     .db-morphed-hub {
       background: #000000;
       border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 22px;
-      padding: 26px 28px;
+      border-radius: 20px;
+      padding: 24px 28px;
       margin-bottom: 24px;
       box-shadow: 0 14px 40px rgba(0, 0, 0, 0.85);
     }
@@ -25,7 +25,7 @@
     .db-hub-divider {
       height: 1px;
       background: rgba(255, 255, 255, 0.07);
-      margin: 22px 0 18px;
+      margin: 20px 0 16px;
     }
 
     .db-stats-grid {
@@ -39,10 +39,10 @@
       background: #060608;
       border: 1px solid rgba(255, 255, 255, 0.06);
       border-radius: 14px;
-      padding: 15px 18px;
+      padding: 14px 16px;
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 12px;
       transition: border-color 0.18s ease, transform 0.18s ease;
     }
     .db-stat-card:hover {
@@ -50,301 +50,98 @@
       transform: translateY(-1px);
     }
     .db-stat-icon-wrap {
-      width: 42px;
-      height: 42px;
-      border-radius: 11px;
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
     }
 
-    /* ── 7-Day Daily Gifts Showcase ────────────────────────────── */
-    .daily-gifts-card {
+    /* ── Live Matches Section Card ──────────────────────────────── */
+    .db-section-card {
       background: #000000;
       border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 22px;
-      padding: 26px 28px;
+      border-radius: 20px;
+      padding: 24px 26px;
       margin-bottom: 24px;
       box-shadow: 0 14px 40px rgba(0, 0, 0, 0.85);
-      position: relative;
-      overflow: hidden;
     }
 
-    .daily-gifts-header {
+    .db-section-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
-      gap: 14px;
-      margin-bottom: 20px;
+      gap: 12px;
+      margin-bottom: 18px;
     }
 
-    .daily-streak-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(245, 158, 11, 0.12);
-      border: 1px solid rgba(245, 158, 11, 0.3);
-      padding: 5px 12px;
-      border-radius: 999px;
-      font-size: 0.78rem;
-      font-weight: 800;
-      color: var(--gold-bright);
-    }
-
-    .daily-countdown-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: #060608;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      padding: 5px 12px;
-      border-radius: 999px;
-      font-size: 0.76rem;
-      font-weight: 700;
-      color: #94a3b8;
-      font-family: monospace;
-    }
-
-    .daily-days-grid {
+    .db-matches-grid {
       display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      gap: 10px;
-      margin-bottom: 20px;
-    }
-    @media (max-width: 820px) {
-      .daily-days-grid {
-        grid-template-columns: repeat(4, 1fr);
-      }
-    }
-    @media (max-width: 480px) {
-      .daily-days-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
-    .daily-day-box {
-      background: #060608;
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      border-radius: 16px;
-      padding: 16px 10px;
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      position: relative;
-      transition: all 0.2s ease;
-      min-height: 120px;
-    }
-    .daily-day-box.claimed {
-      background: rgba(16, 185, 129, 0.04);
-      border-color: rgba(16, 185, 129, 0.25);
-    }
-    .daily-day-box.available {
-      background: rgba(245, 158, 11, 0.07);
-      border-color: rgba(245, 158, 11, 0.45);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
-      cursor: pointer;
-    }
-    .daily-day-box.available:hover {
-      background: rgba(245, 158, 11, 0.12);
-      border-color: var(--gold-bright);
-      transform: translateY(-4px);
-    }
-    .daily-day-box.locked {
-      opacity: 0.6;
-    }
-    .daily-day-box.grand-day {
-      background: linear-gradient(180deg, rgba(245, 158, 11, 0.12) 0%, #060608 100%);
-      border-color: rgba(245, 158, 11, 0.35);
-    }
-
-    .daily-day-label {
-      font-size: 0.72rem;
-      font-weight: 800;
-      color: #71717a;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-    }
-    .daily-day-box.available .daily-day-label {
-      color: var(--gold-bright);
-    }
-
-    .daily-gift-icon-wrap {
-      width: 44px;
-      height: 44px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-    }
-    .daily-gift-icon-wrap img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.5));
-    }
-    .daily-day-box.available .daily-gift-icon-wrap {
-      animation: giftFloat 2s ease-in-out infinite;
-    }
-
-    @keyframes giftFloat {
-      0%, 100% { transform: translateY(0) scale(1); }
-      50% { transform: translateY(-4px) scale(1.08); }
-    }
-
-    .daily-day-reward-tag {
-      font-size: 0.75rem;
-      font-weight: 900;
-      color: #ffffff;
-    }
-    .daily-day-box.claimed .daily-day-reward-tag {
-      color: #34d399;
-      display: flex;
-      align-items: center;
-      gap: 3px;
-    }
-
-    /* ── Quick Arena Game Modes Grid ───────────────────────────── */
-    .arena-modes-card {
-      background: #000000;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 22px;
-      padding: 26px 28px;
-      margin-bottom: 24px;
-      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.85);
-    }
-
-    .arena-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
       gap: 14px;
     }
 
-    .arena-item {
+    .db-match-item {
       background: #060608;
       border: 1px solid rgba(255, 255, 255, 0.06);
       border-radius: 16px;
-      padding: 18px 20px;
+      padding: 16px 18px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       gap: 14px;
-      text-decoration: none;
-      color: inherit;
-      transition: all 0.2s ease;
+      transition: all 0.18s ease;
     }
-    .arena-item:hover {
-      border-color: rgba(255, 255, 255, 0.16);
+    .db-match-item:hover {
+      border-color: rgba(255, 255, 255, 0.14);
       background: #0b0b0e;
       transform: translateY(-2px);
     }
 
-    /* ── Gift Opening Modal & Animation ────────────────────────── */
-    .gift-modal-backdrop {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.88);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      z-index: 10000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.25s ease;
-    }
-    .gift-modal-backdrop.open {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    .gift-modal-card {
-      background: #000000;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 24px;
-      padding: 36px 32px 30px;
-      max-width: 440px;
+    /* ── Activity Table Styling ─────────────────────────────────── */
+    .db-activity-table {
       width: 100%;
-      text-align: center;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.95);
-      position: relative;
-      transform: scale(0.92);
-      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      border-collapse: separate;
+      border-spacing: 0 8px;
+      min-width: 500px;
     }
-    .gift-modal-backdrop.open .gift-modal-card {
-      transform: scale(1);
+    .db-activity-table th {
+      color: #64748b;
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 8px 14px;
+      border: none;
+      text-align: left;
     }
-
-    .gift-box-anim-wrap {
-      position: relative;
-      width: 120px;
-      height: 120px;
-      margin: 0 auto 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    .db-activity-table tbody tr {
+      background: #060608;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      transition: all 0.16s ease;
     }
-
-    .gift-box-img {
-      width: 100px;
-      height: 100px;
-      object-fit: contain;
-      cursor: pointer;
-      filter: drop-shadow(0 8px 25px rgba(0, 0, 0, 0.8));
-      transition: transform 0.2s ease;
+    .db-activity-table tbody tr:hover {
+      background: #0e0e12;
+      border-color: rgba(255, 255, 255, 0.12);
     }
-    .gift-box-img.shaking {
-      animation: giftShake 0.7s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+    .db-activity-table td {
+      padding: 12px 14px;
+      font-size: 0.84rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     }
-
-    @keyframes giftShake {
-      10%, 90% { transform: translate3d(-2px, 0, 0) rotate(-4deg); }
-      20%, 80% { transform: translate3d(4px, 0, 0) rotate(5deg); }
-      30%, 50%, 70% { transform: translate3d(-6px, 0, 0) rotate(-6deg) scale(1.05); }
-      40%, 60% { transform: translate3d(6px, 0, 0) rotate(6deg) scale(1.1); }
+    .db-activity-table td:first-child {
+      border-left: 1px solid rgba(255, 255, 255, 0.05);
+      border-top-left-radius: 10px;
+      border-bottom-left-radius: 10px;
     }
-
-    .gift-burst-glow {
-      position: absolute;
-      inset: -30px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(245, 158, 11, 0.35) 0%, rgba(245, 158, 11, 0) 70%);
-      opacity: 0;
-      transform: scale(0.4);
-      transition: all 0.5s ease;
-      pointer-events: none;
-    }
-    .gift-burst-glow.active {
-      opacity: 1;
-      transform: scale(1.4);
-    }
-
-    .gift-reward-reveal {
-      display: none;
-      animation: rewardPop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-    }
-    @keyframes rewardPop {
-      0% { opacity: 0; transform: scale(0.5); }
-      100% { opacity: 1; transform: scale(1); }
-    }
-
-    .gift-token-display {
-      font-size: 2.2rem;
-      font-weight: 900;
-      color: var(--gold-bright);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      margin: 12px 0;
-      letter-spacing: -0.02em;
+    .db-activity-table td:last-child {
+      border-right: 1px solid rgba(255, 255, 255, 0.05);
+      border-top-right-radius: 10px;
+      border-bottom-right-radius: 10px;
     }
   </style>
 </head>
@@ -354,35 +151,42 @@
   <!-- Loading screen -->
   <div class="page-loading" id="page-loading">
     <div class="spinner"></div>
-    <span>Loading your dashboard…</span>
+    <span>Loading dashboard…</span>
   </div>
 
   <!-- Page content -->
   <main class="page-wrap" id="main-content" style="max-width: 1050px;">
     
-    <!-- 1. Morphed Welcome Header & Stats Master Card -->
+    <!-- 1. Morphed Welcome Header & Player Stats Card -->
     <div class="db-morphed-hub">
       <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:18px;">
-        <div>
-          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-            <h1 style="font-size:1.65rem;font-weight:900;margin:0;color:#ffffff;letter-spacing:-0.02em;">
-              Welcome back, <span id="welcome-name" class="brand-accent">Champion</span>
-            </h1>
-            <span class="badge" style="background:rgba(16,185,129,0.12);color:#34d399;border:1px solid rgba(16,185,129,0.3);font-size:0.7rem;padding:3px 9px;font-weight:800;">
-              <i data-lucide="zap" style="width:11px;height:11px;"></i> ONLINE
-            </span>
+        <div style="display:flex;align-items:center;gap:14px;">
+          <div style="width:48px;height:48px;border-radius:50%;background:#0a0a0c;display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0;">
+            <img id="db-user-avatar-img" src="" alt="" style="width:100%;height:100%;object-fit:cover;display:none;"/>
+            <i data-lucide="user" id="db-user-avatar-icon" style="width:24px;height:24px;color:var(--text-muted);"></i>
           </div>
-          <div style="font-size:0.85rem;color:var(--text-muted);margin-top:4px;">
-            Compete in Fortnite 1v1 arenas, climb leaderboard ranks, and collect daily token rewards.
+          <div>
+            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+              <h1 style="font-size:1.45rem;font-weight:900;margin:0;color:#ffffff;letter-spacing:-0.02em;">
+                <span id="welcome-name">Champion</span>
+              </h1>
+              <span style="font-size:0.8rem;color:var(--text-muted);" id="welcome-handle">@user</span>
+            </div>
+            <div style="font-size:0.75rem;color:var(--text-faint);margin-top:2px;" id="welcome-epic">
+              Epic Games Connected
+            </div>
           </div>
         </div>
 
-        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-          <a href="matches" class="btn btn-primary btn-sm" style="padding:8px 18px;font-size:0.85rem;gap:7px;border-radius:10px;">
-            <i data-lucide="swords" style="width:15px;height:15px;"></i> Play Matches
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+          <a href="matches" class="btn btn-primary btn-sm" style="padding:7px 16px;font-size:0.82rem;gap:6px;border-radius:10px;">
+            <i data-lucide="swords" style="width:14px;height:14px;"></i> <span>Find Match</span>
           </a>
-          <button class="btn btn-outline btn-sm" onclick="openTokenWalletModal('purchase')" style="padding:8px 18px;font-size:0.85rem;gap:7px;background:#060608;border:1px solid rgba(255,255,255,0.1);border-radius:10px;">
-            <i data-lucide="coins" style="width:15px;height:15px;"></i> Add Tokens
+          <button class="btn btn-outline btn-sm" onclick="handleCreateMatchRedirect()" style="padding:7px 16px;font-size:0.82rem;gap:6px;background:#060608;border:1px solid rgba(255,255,255,0.1);border-radius:10px;">
+            <i data-lucide="plus" style="width:14px;height:14px;"></i> <span>Create</span>
+          </button>
+          <button class="btn btn-outline btn-sm" onclick="openTokenWalletModal('purchase')" style="padding:7px 16px;font-size:0.82rem;gap:6px;background:#060608;border:1px solid rgba(255,255,255,0.1);border-radius:10px;">
+            <i data-lucide="coins" style="width:14px;height:14px;"></i> <span>Wallet</span>
           </button>
         </div>
       </div>
@@ -397,30 +201,28 @@
             <i data-lucide="coins" style="width:20px;height:20px;"></i>
           </div>
           <div>
-            <div style="font-size:0.72rem;font-weight:800;color:var(--text-muted);text-transform:uppercase;">Total Earned</div>
-            <div style="font-size:1.28rem;font-weight:900;color:var(--gold-bright);display:flex;align-items:center;gap:4px;">
-              <span id="stat-earned">0.00</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="db-stat-card">
-          <div class="db-stat-icon-wrap" style="background:rgba(59,130,246,0.14);color:#60a5fa;">
-            <i data-lucide="swords" style="width:20px;height:20px;"></i>
-          </div>
-          <div>
-            <div style="font-size:0.72rem;font-weight:800;color:var(--text-muted);text-transform:uppercase;">Matches Played</div>
-            <div style="font-size:1.28rem;font-weight:900;color:#fff;" id="stat-played">0</div>
+            <div style="font-size:0.72rem;font-weight:800;color:var(--text-muted);text-transform:uppercase;">Token Balance</div>
+            <div style="font-size:1.25rem;font-weight:900;color:var(--gold-bright);" id="stat-balance">0.00</div>
           </div>
         </div>
 
         <div class="db-stat-card">
           <div class="db-stat-icon-wrap" style="background:rgba(16,185,129,0.14);color:#34d399;">
+            <i data-lucide="trending-up" style="width:20px;height:20px;"></i>
+          </div>
+          <div>
+            <div style="font-size:0.72rem;font-weight:800;color:var(--text-muted);text-transform:uppercase;">Match Earnings</div>
+            <div style="font-size:1.25rem;font-weight:900;color:#34d399;" id="stat-earned">0.00</div>
+          </div>
+        </div>
+
+        <div class="db-stat-card">
+          <div class="db-stat-icon-wrap" style="background:rgba(59,130,246,0.14);color:#60a5fa;">
             <i data-lucide="trophy" style="width:20px;height:20px;"></i>
           </div>
           <div>
             <div style="font-size:0.72rem;font-weight:800;color:var(--text-muted);text-transform:uppercase;">Matches Won</div>
-            <div style="font-size:1.28rem;font-weight:900;color:#fff;" id="stat-won">0</div>
+            <div style="font-size:1.25rem;font-weight:900;color:#fff;" id="stat-won">0</div>
           </div>
         </div>
 
@@ -430,179 +232,60 @@
           </div>
           <div>
             <div style="font-size:0.72rem;font-weight:800;color:var(--text-muted);text-transform:uppercase;">Win Rate</div>
-            <div style="font-size:1.28rem;font-weight:900;color:#fff;" id="stat-winrate">0%</div>
+            <div style="font-size:1.25rem;font-weight:900;color:#fff;" id="stat-winrate">0%</div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- 2. 7-Day Daily Gifts Showcase Card -->
-    <div class="daily-gifts-card" id="daily-rewards-section">
-      <div class="daily-gifts-header">
-        <div style="display:flex;align-items:center;gap:12px;">
-          <div style="width:40px;height:40px;border-radius:10px;background:rgba(245,158,11,0.14);display:flex;align-items:center;justify-content:center;color:var(--gold-bright);">
-            <i data-lucide="gift" style="width:20px;height:20px;"></i>
-          </div>
-          <div>
-            <div style="font-size:1.15rem;font-weight:900;color:#ffffff;display:flex;align-items:center;gap:8px;">
-              <span>7-Day Daily Rewards</span>
-              <span class="daily-streak-pill" id="streak-counter-pill">
-                <i data-lucide="flame" style="width:12px;height:12px;"></i> <span id="streak-count-text">Day 1</span>
-              </span>
-            </div>
-            <div style="font-size:0.75rem;color:var(--text-muted);margin-top:2px;">
-              Log in every day to claim free token packages. Complete all 7 days for the grand jackpot!
-            </div>
-          </div>
-        </div>
-
+    <!-- 2. Live Open Matches Lobbies -->
+    <div class="db-section-card">
+      <div class="db-section-header">
         <div style="display:flex;align-items:center;gap:10px;">
-          <div class="daily-countdown-pill" id="daily-timer-wrap" style="display:none;">
-            <i data-lucide="clock" style="width:13px;height:13px;"></i>
-            <span id="daily-timer-text">Next: --:--:--</span>
-          </div>
-          <button class="btn btn-gold btn-sm" id="claim-daily-btn" onclick="openDailyGiftModal()" style="padding:7px 18px;font-size:0.82rem;gap:6px;border-radius:10px;">
-            <i data-lucide="sparkles" style="width:14px;height:14px;"></i> <span>Claim Daily Gift</span>
-          </button>
-        </div>
-      </div>
-
-      <!-- 7 Days Grid -->
-      <div class="daily-days-grid" id="daily-days-container">
-        <!-- Rendered dynamically by renderDailyGifts -->
-      </div>
-    </div>
-
-    <!-- 3. Quick Arena Matchmaker Game Modes Grid -->
-    <div class="arena-modes-card">
-      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:18px;">
-        <div style="display:flex;align-items:center;gap:10px;">
-          <i data-lucide="gamepad-2" style="color:var(--gold-bright);width:22px;height:22px;"></i>
-          <span style="font-size:1.1rem;font-weight:900;color:#fff;">Quick Arena Modes</span>
+          <i data-lucide="swords" style="color:var(--gold-bright);width:20px;height:20px;"></i>
+          <span style="font-size:1.05rem;font-weight:900;color:#fff;">Open Matches</span>
         </div>
         <a href="matches" style="font-size:0.82rem;font-weight:700;color:var(--gold-bright);text-decoration:none;display:flex;align-items:center;gap:4px;">
-          Browse All Lobbies <i data-lucide="arrow-right" style="width:14px;height:14px;"></i>
+          View All <i data-lucide="arrow-right" style="width:14px;height:14px;"></i>
         </a>
       </div>
 
-      <div class="arena-grid">
-        <a href="matches?mode=boxfight" class="arena-item">
-          <div>
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
-              <span class="badge" style="background:rgba(245,158,11,0.15);color:var(--gold-bright);border:1px solid rgba(245,158,11,0.3);font-size:0.68rem;padding:2px 7px;">1v1</span>
-              <span style="font-size:0.75rem;color:var(--text-muted);">Instant Queue</span>
-            </div>
-            <div style="font-weight:900;font-size:1.05rem;color:#fff;">Box Fights</div>
-            <div style="font-size:0.75rem;color:var(--text-muted);margin-top:2px;">Fast-paced close quarters combat.</div>
-          </div>
-          <div style="display:flex;align-items:center;justify-content:space-between;font-size:0.78rem;color:var(--gold-bright);font-weight:800;border-top:1px solid rgba(255,255,255,0.06);padding-top:10px;">
-            <span>Entry from 0.50 CT</span>
-            <i data-lucide="arrow-right" style="width:14px;height:14px;"></i>
-          </div>
-        </a>
-
-        <a href="matches?mode=realistic" class="arena-item">
-          <div>
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
-              <span class="badge" style="background:rgba(59,130,246,0.15);color:#60a5fa;border:1px solid rgba(59,130,246,0.3);font-size:0.68rem;padding:2px 7px;">1v1</span>
-              <span style="font-size:0.75rem;color:var(--text-muted);">Ranked Map</span>
-            </div>
-            <div style="font-weight:900;font-size:1.05rem;color:#fff;">Realistics</div>
-            <div style="font-size:0.75rem;color:var(--text-muted);margin-top:2px;">Late-game competitive storm simulations.</div>
-          </div>
-          <div style="display:flex;align-items:center;justify-content:space-between;font-size:0.78rem;color:var(--gold-bright);font-weight:800;border-top:1px solid rgba(255,255,255,0.06);padding-top:10px;">
-            <span>Entry from 0.50 CT</span>
-            <i data-lucide="arrow-right" style="width:14px;height:14px;"></i>
-          </div>
-        </a>
-
-        <a href="matches?mode=buildfight" class="arena-item">
-          <div>
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
-              <span class="badge" style="background:rgba(168,85,247,0.15);color:#c084fc;border:1px solid rgba(168,85,247,0.3);font-size:0.68rem;padding:2px 7px;">1v1</span>
-              <span style="font-size:0.75rem;color:var(--text-muted);">High Ground</span>
-            </div>
-            <div style="font-weight:900;font-size:1.05rem;color:#fff;">Build Fights</div>
-            <div style="font-size:0.75rem;color:var(--text-muted);margin-top:2px;">Classic high ground mechanical 1v1 duels.</div>
-          </div>
-          <div style="display:flex;align-items:center;justify-content:space-between;font-size:0.78rem;color:var(--gold-bright);font-weight:800;border-top:1px solid rgba(255,255,255,0.06);padding-top:10px;">
-            <span>Entry from 0.50 CT</span>
-            <i data-lucide="arrow-right" style="width:14px;height:14px;"></i>
-          </div>
-        </a>
-
-        <a href="matches?mode=duos" class="arena-item">
-          <div>
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
-              <span class="badge" style="background:rgba(16,185,129,0.15);color:#34d399;border:1px solid rgba(16,185,129,0.3);font-size:0.68rem;padding:2px 7px;">2v2</span>
-              <span style="font-size:0.75rem;color:var(--text-muted);">Team Mode</span>
-            </div>
-            <div style="font-weight:900;font-size:1.05rem;color:#fff;">Duos 2v2</div>
-            <div style="font-size:0.75rem;color:var(--text-muted);margin-top:2px;">Team up with friends & split tournament pots.</div>
-          </div>
-          <div style="display:flex;align-items:center;justify-content:space-between;font-size:0.78rem;color:var(--gold-bright);font-weight:800;border-top:1px solid rgba(255,255,255,0.06);padding-top:10px;">
-            <span>Entry from 1.00 CT</span>
-            <i data-lucide="arrow-right" style="width:14px;height:14px;"></i>
-          </div>
-        </a>
+      <div class="db-matches-grid" id="db-open-matches-list">
+        <div class="empty-state" style="grid-column:1/-1;"><div class="spinner" style="margin:0 auto;"></div></div>
       </div>
     </div>
+
+    <!-- 3. Recent Match Activity -->
+    <div class="db-section-card">
+      <div class="db-section-header">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <i data-lucide="history" style="color:#60a5fa;width:20px;height:20px;"></i>
+          <span style="font-size:1.05rem;font-weight:900;color:#fff;">Recent Match History</span>
+        </div>
+        <a href="profile?tab=history" style="font-size:0.82rem;font-weight:700;color:#94a3b8;text-decoration:none;display:flex;align-items:center;gap:4px;">
+          Full History <i data-lucide="arrow-right" style="width:14px;height:14px;"></i>
+        </a>
+      </div>
+
+      <div style="overflow-x:auto;">
+        <table class="db-activity-table">
+          <thead>
+            <tr>
+              <th>Match</th>
+              <th>Opponent / Host</th>
+              <th>Result</th>
+              <th>Wager</th>
+              <th>Time</th>
+            </tr>
+          </thead>
+          <tbody id="db-recent-matches-body">
+            <tr><td colspan="5" style="text-align:center;padding:24px;"><div class="spinner" style="margin:0 auto;"></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
   </main>
-
-  <!-- Daily Gift Package Opening Modal -->
-  <div class="gift-modal-backdrop" id="gift-modal-backdrop">
-    <div class="gift-modal-card">
-      <div class="gift-burst-glow" id="gift-burst-glow"></div>
-
-      <!-- Phase 1: Tap to Open Gift Box -->
-      <div id="gift-phase-closed">
-        <div style="font-size:0.78rem;font-weight:800;color:var(--gold-bright);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;" id="gift-day-title">
-          Day 1 Daily Reward
-        </div>
-        <div style="font-size:1.35rem;font-weight:900;color:#fff;margin-bottom:18px;">
-          Tap The Gift Box To Open!
-        </div>
-
-        <div class="gift-box-anim-wrap" onclick="triggerOpenGiftAnimation()">
-          <img src="new_token.png" class="gift-box-img" id="gift-box-target" alt="Gift Box" />
-        </div>
-
-        <div style="font-size:0.82rem;color:var(--text-muted);margin-bottom:18px;">
-          Click the box above to unwrap your daily tokens.
-        </div>
-
-        <button class="btn btn-gold btn-full" onclick="triggerOpenGiftAnimation()" id="gift-open-action-btn" style="border-radius:12px;padding:10px;font-size:0.9rem;gap:6px;">
-          <i data-lucide="gift"></i> Open Package
-        </button>
-      </div>
-
-      <!-- Phase 2: Revealed Reward -->
-      <div id="gift-phase-opened" class="gift-reward-reveal">
-        <div style="width:52px;height:52px;border-radius:50%;background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.35);color:#34d399;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:1.5rem;">
-          <i data-lucide="check"></i>
-        </div>
-        <div style="font-size:1.3rem;font-weight:900;color:#fff;margin-bottom:4px;">
-          Congratulations!
-        </div>
-        <div style="font-size:0.82rem;color:var(--text-muted);">
-          You unwrapped your daily reward:
-        </div>
-
-        <div class="gift-token-display">
-          <img src="new_token.png" alt="CT" width="36" height="36" style="object-fit:contain;"/>
-          <span id="revealed-token-amount">+0.00 Tokens</span>
-        </div>
-
-        <div style="font-size:0.78rem;color:var(--text-faint);margin-bottom:20px;">
-          Tokens have been instantly credited to your wallet balance.
-        </div>
-
-        <button class="btn btn-primary btn-full" onclick="closeDailyGiftModal()" style="border-radius:12px;padding:10px;font-size:0.9rem;">
-          Awesome, Continue!
-        </button>
-      </div>
-    </div>
-  </div>
 
   <!-- Platform Footer -->
   <footer class="ct-footer" style="position:relative;z-index:999;margin-top:56px;border-top:1px solid rgba(255,255,255,0.08);padding:38px 24px 52px;background:rgba(0,0,0,0.85);display:block;visibility:visible;opacity:1;">
@@ -644,47 +327,59 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="js/firebase-config.js?v=3.6"></script>
-  <script src="js/auth.js?v=4.0.1788050777984"></script>
-  <script src="js/db.js?v=4.0.1788050777984"></script>
-  <script src="js/nav.js?v=4.0.1788050777984"></script>
+  <script src="js/auth.js?v=4.0.1788050930001"></script>
+  <script src="js/db.js?v=4.0.1788050930001"></script>
+  <script src="js/nav.js?v=4.0.1788050930001"></script>
 
   <script>
     let currentUser = null;
-    let currentProfileData = null;
-    let isOpeningGift = false;
-    let countdownInterval = null;
 
-    // 7 Days Reward Definitions (Min and Max random token ranges)
-    const DAILY_REWARDS_CONFIG = [
-      { day: 1, min: 0.15, max: 0.40, label: '0.15 - 0.40' },
-      { day: 2, min: 0.25, max: 0.60, label: '0.25 - 0.60' },
-      { day: 3, min: 0.35, max: 0.80, label: '0.35 - 0.80' },
-      { day: 4, min: 0.50, max: 1.00, label: '0.50 - 1.00' },
-      { day: 5, min: 0.65, max: 1.25, label: '0.65 - 1.25' },
-      { day: 6, min: 0.85, max: 1.60, label: '0.85 - 1.60' },
-      { day: 7, min: 1.50, max: 3.00, label: '1.50 - 3.00 CT Jackpot!' }
-    ];
+    function handleCreateMatchRedirect() {
+      window.location.href = 'matches';
+    }
 
     function renderDashboard(userData) {
-      currentProfileData = userData;
       let name = (userData && userData.displayName) || '';
       if (!name || name === 'Champion' || name === 'Player') {
         name = userData?.discordUsername || (currentUser && currentUser.displayName) || 'Player';
       }
-      const firstName = name.split(' ')[0];
       const nameEl = document.getElementById('welcome-name');
-      if (nameEl) nameEl.textContent = firstName;
+      if (nameEl) nameEl.textContent = name;
+
+      const handleEl = document.getElementById('welcome-handle');
+      if (handleEl) {
+        handleEl.textContent = userData?.discordUsername ? '@' + userData.discordUsername : '';
+      }
+
+      const epicEl = document.getElementById('welcome-epic');
+      if (epicEl) {
+        if (userData?.epicUsername) {
+          epicEl.textContent = 'Epic: ' + userData.epicUsername;
+        } else {
+          epicEl.textContent = 'Epic Games Not Linked';
+        }
+      }
+
+      // Avatar
+      const img = document.getElementById('db-user-avatar-img');
+      const icon = document.getElementById('db-user-avatar-icon');
+      if (userData?.photoURL) {
+        if (img) { img.src = userData.photoURL; img.style.display = 'block'; }
+        if (icon) icon.style.display = 'none';
+      } else {
+        if (img) img.style.display = 'none';
+        if (icon) icon.style.display = 'block';
+      }
 
       renderStats(userData || {});
-      renderDailyGifts(userData || {});
     }
 
     function renderStats(data) {
+      const balEl = document.getElementById('stat-balance');
+      if (balEl) balEl.textContent = formatTokens(data.tokens ?? 0.00);
+
       const earnedEl = document.getElementById('stat-earned');
       if (earnedEl) earnedEl.textContent = formatTokens(data.totalEarned ?? 0.00);
-
-      const playedEl = document.getElementById('stat-played');
-      if (playedEl) playedEl.textContent = data.matchesPlayed ?? 0;
 
       const wonEl = document.getElementById('stat-won');
       if (wonEl) wonEl.textContent = data.matchesWon ?? 0;
@@ -696,227 +391,125 @@
       if (wrEl) wrEl.textContent = wr + '%';
     }
 
-    /* ── 7-Day Daily Gifts Logic & Rendering ────────────────────────── */
-    function getDailyStreakInfo(userData) {
-      const lastClaim = userData?.lastDailyGiftClaim ? (userData.lastDailyGiftClaim.toDate ? userData.lastDailyGiftClaim.toDate() : new Date(userData.lastDailyGiftClaim)) : null;
-      let streakDay = Number(userData?.dailyStreakDay || 1);
-      if (streakDay < 1 || streakDay > 7) streakDay = 1;
-
-      const now = new Date();
-      let canClaim = false;
-      let msUntilNext = 0;
-
-      if (!lastClaim) {
-        canClaim = true;
-      } else {
-        const diffHours = (now.getTime() - lastClaim.getTime()) / (1000 * 60 * 60);
-        if (diffHours >= 24) {
-          canClaim = true;
-          // If missed for more than 48 hours, cycle cleanly
-          if (diffHours >= 48) {
-            streakDay = 1;
-          }
-        } else {
-          canClaim = false;
-          msUntilNext = (24 * 60 * 60 * 1000) - (now.getTime() - lastClaim.getTime());
-        }
-      }
-
-      return {
-        streakDay,
-        canClaim,
-        msUntilNext,
-        lastClaim
-      };
-    }
-
-    function renderDailyGifts(userData) {
-      const info = getDailyStreakInfo(userData);
-      const streakCountEl = document.getElementById('streak-count-text');
-      if (streakCountEl) streakCountEl.textContent = 'Day ' + info.streakDay;
-
-      const claimBtn = document.getElementById('claim-daily-btn');
-      const timerWrap = document.getElementById('daily-timer-wrap');
-      const timerText = document.getElementById('daily-timer-text');
-
-      if (info.canClaim) {
-        if (claimBtn) {
-          claimBtn.disabled = false;
-          claimBtn.innerHTML = '<i data-lucide="sparkles" style="width:14px;height:14px;"></i> <span>Claim Day ' + info.streakDay + ' Gift</span>';
-        }
-        if (timerWrap) timerWrap.style.display = 'none';
-      } else {
-        if (claimBtn) {
-          claimBtn.disabled = true;
-          claimBtn.innerHTML = '<i data-lucide="check" style="width:14px;height:14px;"></i> <span>Claimed Today</span>';
-        }
-        if (timerWrap) {
-          timerWrap.style.display = 'inline-flex';
-          startCountdown(info.msUntilNext);
-        }
-      }
-
-      const container = document.getElementById('daily-days-container');
+    /* ── Load Live Open Matches ────────────────────────────────────── */
+    function loadOpenMatches() {
+      const container = document.getElementById('db-open-matches-list');
       if (!container) return;
 
-      container.innerHTML = DAILY_REWARDS_CONFIG.map(cfg => {
-        const isPast = cfg.day < info.streakDay || (cfg.day === info.streakDay && !info.canClaim);
-        const isCurrent = cfg.day === info.streakDay && info.canClaim;
-        const isGrand = cfg.day === 7;
-
-        let statusClass = 'locked';
-        let badgeContent = '<span style="font-size:0.7rem;color:#71717a;"><i data-lucide="lock" style="width:12px;height:12px;"></i></span>';
-
-        if (isPast) {
-          statusClass = 'claimed';
-          badgeContent = '<span style="font-size:0.72rem;color:#34d399;font-weight:800;display:inline-flex;align-items:center;gap:3px;"><i data-lucide="check" style="width:12px;height:12px;"></i> Claimed</span>';
-        } else if (isCurrent) {
-          statusClass = 'available';
-          badgeContent = '<span style="font-size:0.72rem;color:var(--gold-bright);font-weight:800;animation:pulseGlow 2s infinite;">Ready!</span>';
-        }
-
-        return `
-          <div class="daily-day-box ${statusClass} ${isGrand ? 'grand-day' : ''}" ${isCurrent ? 'onclick="openDailyGiftModal()"' : ''}>
-            <div class="daily-day-label">Day ${cfg.day}</div>
-            <div class="daily-gift-icon-wrap">
-              <img src="new_token.png" alt="Gift ${cfg.day}" />
-            </div>
-            <div>
-              <div class="daily-day-reward-tag" style="${isCurrent ? 'color:var(--gold-bright);font-weight:900;' : ''}">
-                ${cfg.label}
+      db.collection('matches')
+        .where('status', '==', 'open')
+        .limit(6)
+        .onSnapshot(snap => {
+          if (snap.empty) {
+            container.innerHTML = `
+              <div class="empty-state" style="grid-column:1/-1;padding:24px;text-align:center;">
+                <div style="font-size:0.9rem;font-weight:700;color:#94a3b8;margin-bottom:8px;">No open matches right now</div>
+                <a href="matches" class="btn btn-outline btn-sm" style="font-size:0.8rem;border-radius:10px;background:#060608;">
+                  Create a Match
+                </a>
               </div>
-              <div style="margin-top:3px;">${badgeContent}</div>
-            </div>
-          </div>
-        `;
-      }).join('');
-
-      if (window.lucide) lucide.createIcons();
-    }
-
-    function startCountdown(ms) {
-      if (countdownInterval) clearInterval(countdownInterval);
-      let remaining = ms;
-
-      function update() {
-        if (remaining <= 0) {
-          clearInterval(countdownInterval);
-          if (currentUser) {
-            getUser(currentUser.uid).then(renderDashboard);
+            `;
+            return;
           }
-          return;
-        }
-        const hours = Math.floor(remaining / (1000 * 60 * 60));
-        const mins = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
-        const secs = Math.floor((remaining % (1000 * 60)) / 1000);
-        const timerText = document.getElementById('daily-timer-text');
-        if (timerText) {
-          timerText.textContent = 'Next in: ' + 
-            String(hours).padStart(2, '0') + ':' + 
-            String(mins).padStart(2, '0') + ':' + 
-            String(secs).padStart(2, '0');
-        }
-        remaining -= 1000;
-      }
 
-      update();
-      countdownInterval = setInterval(update, 1000);
+          container.innerHTML = snap.docs.map(doc => {
+            const m = doc.data();
+            const id = doc.id;
+            const wager = Number(m.wager || 0);
+
+            return `
+              <div class="db-match-item">
+                <div>
+                  <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;">
+                    <span class="badge" style="background:rgba(255,255,255,0.06);color:#fff;border:1px solid rgba(255,255,255,0.08);font-size:0.7rem;padding:2px 7px;">
+                      ${escapeHtml(m.mode || '1v1')}
+                    </span>
+                    <span style="font-size:0.75rem;font-weight:800;color:var(--gold-bright);">
+                      ${formatTokens(wager)} Tokens
+                    </span>
+                  </div>
+                  <div style="font-weight:800;font-size:0.95rem;color:#fff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+                    ${escapeHtml(m.title || '1v1 Arena')}
+                  </div>
+                  <div style="font-size:0.75rem;color:var(--text-muted);margin-top:2px;">
+                    Hosted by ${escapeHtml(m.hostName || 'Player')}
+                  </div>
+                </div>
+
+                <div style="display:flex;align-items:center;justify-content:space-between;border-top:1px solid rgba(255,255,255,0.06);padding-top:10px;">
+                  <span style="font-size:0.72rem;color:var(--text-faint);">${m.region || 'NA-East'}</span>
+                  <a href="match?id=${id}" class="btn btn-primary btn-sm" style="padding:4px 12px;font-size:0.78rem;border-radius:8px;">
+                    Join
+                  </a>
+                </div>
+              </div>
+            `;
+          }).join('');
+
+          if (window.lucide) lucide.createIcons();
+        }, err => {
+          console.warn('Error loading open matches:', err);
+          container.innerHTML = '<div style="color:var(--text-muted);font-size:0.85rem;grid-column:1/-1;">Check back soon for active matches.</div>';
+        });
     }
 
-    /* ── Gift Modal & Open Package Animation ────────────────────────── */
-    function openDailyGiftModal() {
-      const info = getDailyStreakInfo(currentProfileData);
-      if (!info.canClaim) {
-        showToast('Daily gift is already claimed today!', 'info');
-        return;
-      }
-
-      const dayTitle = document.getElementById('gift-day-title');
-      if (dayTitle) dayTitle.textContent = 'Day ' + info.streakDay + ' Daily Package';
-
-      document.getElementById('gift-phase-closed').style.display = 'block';
-      document.getElementById('gift-phase-opened').style.display = 'none';
-      document.getElementById('gift-burst-glow').classList.remove('active');
-      document.getElementById('gift-box-target').classList.remove('shaking');
-
-      const modal = document.getElementById('gift-modal-backdrop');
-      if (modal) modal.classList.add('open');
-      if (window.lucide) lucide.createIcons();
-    }
-
-    function closeDailyGiftModal() {
-      const modal = document.getElementById('gift-modal-backdrop');
-      if (modal) modal.classList.remove('open');
-    }
-
-    async function triggerOpenGiftAnimation() {
-      if (isOpeningGift || !currentUser) return;
-      isOpeningGift = true;
-
-      const box = document.getElementById('gift-box-target');
-      const burst = document.getElementById('gift-burst-glow');
-      const openBtn = document.getElementById('gift-open-action-btn');
-
-      if (openBtn) {
-        openBtn.disabled = true;
-        openBtn.innerHTML = '<div class="spinner" style="width:16px;height:16px;margin:0 auto;"></div>';
-      }
-
-      if (box) box.classList.add('shaking');
+    /* ── Load Recent Activity ──────────────────────────────────────── */
+    async function loadRecentMatches(userId) {
+      const tbody = document.getElementById('db-recent-matches-body');
+      if (!tbody) return;
 
       try {
-        const info = getDailyStreakInfo(currentProfileData);
-        const dayIdx = (info.streakDay - 1);
-        const cfg = DAILY_REWARDS_CONFIG[dayIdx] || DAILY_REWARDS_CONFIG[0];
-        
-        // Random amount between cfg.min and cfg.max rounded to 2 decimals
-        const rawAmount = cfg.min + (Math.random() * (cfg.max - cfg.min));
-        const rewardAmount = Math.round(rawAmount * 100) / 100;
+        const snap = await db.collection('matches')
+          .where('status', '==', 'completed')
+          .limit(5)
+          .get();
 
-        // Animate for 800ms
-        await new Promise(r => setTimeout(r, 800));
-
-        if (burst) burst.classList.add('active');
-
-        // Firestore Update
-        await updateTokens(
-          currentUser.uid,
-          rewardAmount,
-          'daily_reward',
-          'Day ' + info.streakDay + ' Daily Gift Reward'
-        );
-
-        const nextStreakDay = (info.streakDay >= 7) ? 1 : (info.streakDay + 1);
-        await db.collection('users').doc(currentUser.uid).update({
-          lastDailyGiftClaim: firebase.firestore.FieldValue.serverTimestamp(),
-          dailyStreakDay: nextStreakDay
-        });
-
-        // Reveal reward view
-        document.getElementById('gift-phase-closed').style.display = 'none';
-        const openedView = document.getElementById('gift-phase-opened');
-        openedView.style.display = 'block';
-
-        const amountEl = document.getElementById('revealed-token-amount');
-        if (amountEl) amountEl.textContent = '+' + formatTokens(rewardAmount) + ' Tokens';
-
-        showToast('+' + formatTokens(rewardAmount) + ' Tokens Added to Wallet!', 'success');
-
-        // Refresh user data
-        const updatedUser = await getUser(currentUser.uid);
-        renderDashboard(updatedUser);
-      } catch (err) {
-        console.error('Error claiming gift:', err);
-        showToast(err.message || 'Failed to claim daily reward', 'error');
-        closeDailyGiftModal();
-      } finally {
-        isOpeningGift = false;
-        if (openBtn) {
-          openBtn.disabled = false;
-          openBtn.innerHTML = '<i data-lucide="gift"></i> Open Package';
+        if (snap.empty) {
+          tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:18px;">No completed matches yet.</td></tr>';
+          return;
         }
+
+        tbody.innerHTML = snap.docs.map(doc => {
+          const m = doc.data();
+          const isWinner = m.winnerId === userId;
+          const isLoser = m.loserId === userId;
+          const isParticipant = isWinner || isLoser;
+
+          let resultBadge = '<span class="badge" style="background:rgba(255,255,255,0.06);color:#94a3b8;font-size:0.7rem;">Completed</span>';
+          if (isParticipant) {
+            resultBadge = isWinner
+              ? '<span class="badge" style="background:rgba(16,185,129,0.15);color:#34d399;border:1px solid rgba(16,185,129,0.3);font-size:0.7rem;">Victory</span>'
+              : '<span class="badge" style="background:rgba(239,68,68,0.15);color:#f87171;border:1px solid rgba(239,68,68,0.3);font-size:0.7rem;">Defeat</span>';
+          }
+
+          const timeStr = m.createdAt?.toDate ? timeAgo(m.createdAt.toDate()) : 'Recently';
+
+          return `
+            <tr onclick="window.location.href='match?id=${doc.id}'" style="cursor:pointer;">
+              <td style="font-weight:800;color:#fff;">${escapeHtml(m.title || m.mode || 'Match')}</td>
+              <td style="color:var(--text-muted);">${escapeHtml(m.hostName || 'Player')}</td>
+              <td>${resultBadge}</td>
+              <td style="font-weight:800;color:var(--gold-bright);">${formatTokens(m.wager || 0)} CT</td>
+              <td style="color:var(--text-faint);font-size:0.75rem;">${timeStr}</td>
+            </tr>
+          `;
+        }).join('');
+
         if (window.lucide) lucide.createIcons();
+      } catch (err) {
+        console.warn('Error loading recent matches:', err);
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:18px;">History loaded in profile.</td></tr>';
       }
+    }
+
+    function timeAgo(date) {
+      const seconds = Math.floor((new Date() - date) / 1000);
+      if (seconds < 60) return 'Just now';
+      const minutes = Math.floor(seconds / 60);
+      if (minutes < 60) return minutes + 'm ago';
+      const hours = Math.floor(minutes / 60);
+      if (hours < 24) return hours + 'h ago';
+      return Math.floor(hours / 24) + 'd ago';
     }
 
     document.addEventListener('DOMContentLoaded', () => {
@@ -929,8 +522,10 @@
         try {
           const userData = await getUser(user.uid);
           renderDashboard(userData || { displayName: user.displayName || 'Player', tokens: 1.00, totalEarned: 0.00, matchesPlayed: 0, matchesWon: 0 });
+          loadOpenMatches();
+          loadRecentMatches(user.uid);
         } catch (err) {
-          console.error('Error fetching initial user:', err);
+          console.error('Error fetching user:', err);
           renderDashboard({ displayName: user.displayName || 'Player', tokens: 1.00, totalEarned: 0.00, matchesPlayed: 0, matchesWon: 0 });
         }
 
