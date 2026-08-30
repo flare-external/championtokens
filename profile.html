@@ -7,7 +7,7 @@
   <link rel="icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
-  <link rel="stylesheet" href="css/style.css?v=4.0.1788049131913"/>
+  <link rel="stylesheet" href="css/style.css?v=4.0.1788049362106"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
@@ -122,7 +122,7 @@
       background: rgba(245, 158, 11, 0.22);
       border-style: solid;
       transform: scale(1.05);
-      box-shadow: 0 0 16px rgba(245, 158, 11, 0.4);
+      box-shadow: none;
     }
 
     /* Smart Animated Edit Pen Button */
@@ -146,7 +146,7 @@
       border-color: var(--gold-bright);
       color: var(--gold-bright);
       transform: rotate(15deg) scale(1.18);
-      box-shadow: 0 0 14px rgba(245, 158, 11, 0.45);
+      box-shadow: none;
     }
     .title-edit-pen-btn svg { display: block; flex-shrink: 0; padding: 0; }
 
@@ -240,7 +240,7 @@
     .team-item-card.is-active-team {
       border-color: rgba(245, 158, 11, 0.4);
       background: #0f121d;
-      box-shadow: 0 0 24px rgba(245, 158, 11, 0.08);
+      box-shadow: none;
     }
     .team-roster-grid {
       display: grid;
@@ -284,7 +284,7 @@
       background: rgba(245, 158, 11, 0.2);
       border-color: var(--gold-bright);
       color: var(--gold-bright);
-      box-shadow: 0 0 10px rgba(245, 158, 11, 0.3);
+      box-shadow: none;
     }
     .team-color-swatch {
       width: 26px;
@@ -365,7 +365,7 @@
       background: rgba(245, 158, 11, 0.2);
       color: var(--gold-bright);
       border: 1px solid rgba(245, 158, 11, 0.4);
-      box-shadow: 0 0 14px rgba(245, 158, 11, 0.18);
+      box-shadow: none;
     }
     .cosmetics-tab-btn i { width: 16px; height: 16px; }
 
@@ -425,7 +425,7 @@
     .cosmetics-option-card.equipped {
       border-color: var(--gold-bright);
       background: linear-gradient(135deg, rgba(245, 158, 11, 0.18) 0%, rgba(18, 24, 46, 0.95) 100%);
-      box-shadow: 0 0 22px rgba(245, 158, 11, 0.25);
+      box-shadow: none;
     }
 
     /* Modal Display Support */
@@ -509,7 +509,7 @@
       background: rgba(245, 158, 11, 0.18);
       border-color: var(--gold-bright);
       color: var(--gold-bright);
-      box-shadow: 0 0 16px rgba(245, 158, 11, 0.25);
+      box-shadow: none;
     }
     .setting-title {
       font-weight: 800;
@@ -548,7 +548,7 @@
       border-color: var(--gold-bright);
       color: var(--gold-bright);
       transform: rotate(12deg) scale(1.15);
-      box-shadow: 0 0 14px rgba(245, 158, 11, 0.45);
+      box-shadow: none;
     }
     .setting-pen-btn svg { display: block; flex-shrink: 0; }
 
@@ -861,7 +861,7 @@
               <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
                 <span style="font-size:1.6rem;font-weight:900;color:#fff;" id="profile-name">--</span>
                 <div id="profile-title-slot" style="display:none;"></div>
-                <div id="profile-badges-row" style="display:inline-flex;gap:6px;align-items:center;"></div>
+                <div id="profile-badges-row" style="display:none;"></div>
               </div>
               <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:4px;">
                 <span style="font-weight:700;color:var(--text-muted);font-size:0.85rem;" id="profile-discord-tag">@discord</span>
@@ -871,23 +871,13 @@
                   <i data-lucide="copy" id="profile-account-id-icon" style="width:12px;height:12px;opacity:0.7;"></i>
                 </button>
               </div>
-              <div id="hero-admin-token-pill" style="display:none;margin-top:6px;">
-                <span style="display:inline-flex;align-items:center;gap:6px;background:rgba(245,158,11,0.14);border:1px solid rgba(245,158,11,0.45);border-radius:6px;padding:3px 10px;font-size:0.75rem;color:var(--gold-bright);font-weight:800;">
-                  <i data-lucide="shield" style="width:12px;height:12px;color:var(--red);"></i>
-                  <span>Admin Balance View: <strong id="hero-admin-token-val" style="color:#fff;">0.00 Tokens</strong></span>
-                </span>
-              </div>
+              <div id="hero-admin-token-pill" style="display:none;"></div>
+              <div id="profile-rank-box" style="display:none;"></div>
+              <div id="premium-action-wrap" style="display:none;"></div>
               <div style="font-size:0.75rem;color:var(--text-faint);margin-top:4px;" id="profile-since"></div>
             </div>
           </div>
-          <div style="text-align:right;flex-shrink:0;display:flex;flex-direction:column;align-items:flex-end;justify-content:space-between;gap:12px;">
-            <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;">
-              <div id="profile-rank-box" style="display:none;">
-                <div style="font-size:0.72rem;color:var(--text-muted);text-transform:uppercase;font-weight:800;letter-spacing:0.04em;">Leaderboard Rank</div>
-                <div id="profile-rank-badge" style="margin-top:4px;"></div>
-              </div>
-              <div id="premium-action-wrap"></div>
-            </div>
+          <div style="text-align:right;flex-shrink:0;">
             <div id="profile-customize-action">
               <button class="btn btn-primary btn-sm" onclick="openCosmeticsModal('avatars')" style="padding:7px 16px;font-size:0.82rem;gap:7px;">
                 <i data-lucide="palette" style="width:14px;height:14px;"></i>
@@ -903,7 +893,7 @@
         <!-- Morphed Balance & Lifetime Earnings Grid (Visible to Self & Admins) -->
         <div id="profile-balance-section" style="margin-bottom:12px;">
           <div class="grid-2" style="gap:12px;">
-            <div class="morphed-stat-card" style="border-color:rgba(245,158,11,0.3);">
+            <div class="morphed-stat-card" style="border-color:rgba(255,255,255,0.06);">
               <div class="morphed-stat-header">
                 <span>Token Balance <span id="profile-tokens-admin-badge" style="display:none;color:var(--red);font-size:0.7rem;margin-left:6px;font-weight:800;">(Admin View)</span></span>
                 <i data-lucide="coins" style="width:16px;height:16px;color:var(--gold-bright);"></i>
@@ -915,7 +905,7 @@
                 </button>
               </div>
             </div>
-            <div class="morphed-stat-card" style="border-color:rgba(16,185,129,0.3);">
+            <div class="morphed-stat-card" style="border-color:rgba(255,255,255,0.06);">
               <div class="morphed-stat-header">
                 <span>Match Win Earnings</span>
                 <i data-lucide="trending-up" style="width:16px;height:16px;color:var(--green);"></i>
@@ -1271,9 +1261,9 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="js/firebase-config.js?v=3.2"></script>
-  <script src="js/auth.js?v=4.0.1788049131913"></script>
-  <script src="js/db.js?v=4.0.1788049131913"></script>
-  <script src="js/nav.js?v=4.0.1788049131913"></script>
+  <script src="js/auth.js?v=4.0.1788049362106"></script>
+  <script src="js/db.js?v=4.0.1788049362106"></script>
+  <script src="js/nav.js?v=4.0.1788049362106"></script>
 
   <script>
     let currentUser = null;
@@ -2483,20 +2473,16 @@
           `).join('');
 
           return `
-            <div class="team-item-card ${isOwner ? 'is-active-team' : ''}">
+            <div class="team-item-card" style="background:#060608;border:1px solid rgba(255,255,255,0.07);box-shadow:0 8px 24px rgba(0,0,0,0.6);border-radius:16px;padding:20px 22px;margin-bottom:16px;">
               <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-bottom:16px;">
                 <div style="display:flex;align-items:center;gap:14px;">
                   <!-- Square Emblem Badge -->
-                  <div style="width:52px;height:52px;border-radius:14px;border:1.5px solid ${team.borderColor || 'rgba(245,158,11,0.45)'};background:${team.bgColor || 'rgba(245,158,11,0.18)'};display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 6px 18px rgba(0,0,0,0.5);">
-                    <i data-lucide="${team.icon || 'shield'}" style="width:26px;height:26px;color:${team.iconColor || '#f59e0b'};"></i>
+                  <div style="width:48px;height:48px;border-radius:12px;border:1px solid rgba(255,255,255,0.1);background:#000000;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                    <i data-lucide="${team.icon || 'shield'}" style="width:24px;height:24px;color:${team.iconColor || '#fff'};"></i>
                   </div>
                   <div>
                     <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-                      <span style="background:${team.bgColor || 'rgba(245,158,11,0.18)'};color:${team.iconColor || '#fff'};border:1px solid ${team.borderColor || 'rgba(245,158,11,0.45)'};font-size:0.75rem;padding:3px 8px;border-radius:8px;font-weight:800;display:inline-flex;align-items:center;gap:4px;">
-                        <i data-lucide="${team.icon || 'shield'}" style="width:12px;height:12px;"></i>
-                        <span>Team ${escapeHtml(team.tag)}</span>
-                      </span>
-                      <span style="font-size:1.25rem;font-weight:900;color:#fff;">${escapeHtml(team.name)}</span>
+                      <span style="font-size:1.2rem;font-weight:900;color:#fff;">${escapeHtml(team.name)}</span>
                     </div>
                     <div style="font-size:0.75rem;color:var(--text-muted);margin-top:2px;">
                       ${team.members?.length || 1}/6 Players · Created by ${escapeHtml(team.ownerName || 'Leader')}
@@ -2506,23 +2492,23 @@
 
                 ${isViewingSelf ? `
                   <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
-                    <button class="btn btn-outline btn-sm" onclick="copyTeamInviteLink('${team.code}','${escapeHtml(team.name)}')" style="font-size:0.78rem;padding:6px 14px;gap:5px;border-radius:20px;" title="Copy 1-Click Join Link">
+                    <button class="btn btn-outline btn-sm" onclick="copyTeamInviteLink('${team.code}','${escapeHtml(team.name)}')" style="font-size:0.78rem;padding:6px 14px;gap:5px;border-radius:10px;background:#0d0d10;border-color:rgba(255,255,255,0.1);" title="Copy 1-Click Join Link">
                       <i data-lucide="link" style="width:13px;height:13px;"></i> Copy Link
                     </button>
-                    <span class="match-code-badge" title="Click to copy team code" onclick="copyTeamCode('${team.code}')" style="cursor:pointer;padding:5px 12px;font-size:0.8rem;border-radius:20px;">
+                    <span class="match-code-badge" title="Click to copy team code" onclick="copyTeamCode('${team.code}')" style="cursor:pointer;padding:5px 12px;font-size:0.8rem;border-radius:10px;background:#0d0d10;border-color:rgba(255,255,255,0.1);">
                       <i data-lucide="hash"></i>${team.code}
                     </span>
-                    <button class="btn btn-primary btn-sm" onclick="openInvitePlayerModal('${team.id}','${escapeHtml(team.name)}','${escapeHtml(team.tag)}')" style="font-size:0.78rem;padding:6px 14px;gap:5px;border-radius:20px;">
+                    <button class="btn btn-primary btn-sm" onclick="openInvitePlayerModal('${team.id}','${escapeHtml(team.name)}','${escapeHtml(team.tag || '')}')" style="font-size:0.78rem;padding:6px 14px;gap:5px;border-radius:10px;">
                       <i data-lucide="user-plus" style="width:13px;height:13px;"></i> Invite
                     </button>
-                    <button class="btn btn-danger btn-sm" onclick="handleLeaveTeam('${team.id}')" style="font-size:0.78rem;padding:6px 12px;gap:4px;border-radius:20px;">
+                    <button class="btn btn-danger btn-sm" onclick="handleLeaveTeam('${team.id}')" style="font-size:0.78rem;padding:6px 12px;gap:4px;border-radius:10px;">
                       <i data-lucide="log-out" style="width:13px;height:13px;"></i> ${isOwner ? 'Disband' : 'Leave'}
                     </button>
                   </div>
                 ` : ''}
               </div>
 
-              <div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:8px;font-weight:700;">
+              <div style="font-size:0.75rem;color:var(--text-muted);margin-bottom:8px;font-weight:700;">
                 Roster:
               </div>
               <div class="team-roster-grid">${membersHTML}</div>

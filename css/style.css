@@ -9,18 +9,18 @@
   --bg-card:       rgba(10, 10, 10, 0.95);
   --bg-card-hover: rgba(18, 18, 18, 0.98);
   --border:        rgba(255, 255, 255, 0.08);
-  --border-bright: rgba(245, 158, 11, 0.35);
+  --border-bright: rgba(255, 255, 255, 0.14);
 
   --gold:          #F59E0B;
   --gold-light:    #FDE68A;
   --gold-bright:   #FBBF24;
   --gold-dark:     #B45309;
   --gold-dim:      rgba(245, 158, 11, 0.12);
-  --gold-glow:     rgba(245, 158, 11, 0.35);
+  --gold-glow: rgba(0, 0, 0, 0);
 
   --accent:        #F59E0B;
   --accent-dim:    rgba(245, 158, 11, 0.12);
-  --accent-glow:   rgba(245, 158, 11, 0.35);
+  --accent-glow: rgba(0, 0, 0, 0);
 
   --blue:          #38bdf8;
   --blue-dim:      rgba(56, 189, 248, 0.12);
@@ -194,12 +194,12 @@ input[type="range"].ct-slider::-webkit-slider-thumb {
   background: linear-gradient(135deg, #FDE68A 0%, #F59E0B 100%);
   cursor: pointer;
   border: 2px solid #000;
-  box-shadow: 0 0 14px var(--gold-glow);
+  box-shadow: none;
   transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 input[type="range"].ct-slider::-webkit-slider-thumb:hover {
   transform: scale(1.22);
-  box-shadow: 0 0 22px var(--gold-glow);
+  box-shadow: none;
 }
 input[type="range"].ct-slider::-moz-range-thumb {
   width: 24px;
@@ -208,7 +208,7 @@ input[type="range"].ct-slider::-moz-range-thumb {
   background: linear-gradient(135deg, #FDE68A 0%, #F59E0B 100%);
   cursor: pointer;
   border: 2px solid #000;
-  box-shadow: 0 0 14px var(--gold-glow);
+  box-shadow: none;
 }
 
 /* ── Universal Inline Coin Images ──────────────────────────── */
@@ -361,7 +361,7 @@ input[type="range"].ct-slider::-moz-range-thumb {
   height: 2px;
   background: var(--gold-bright);
   border-radius: 2px 2px 0 0;
-  box-shadow: 0 0 10px var(--gold-glow);
+  box-shadow: none;
   transform: scaleX(0);
   transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -586,7 +586,7 @@ input[type="range"].ct-slider::-moz-range-thumb {
 }
 .nav-avatar-wrap:hover {
   border-color: var(--gold-bright);
-  box-shadow: 0 0 14px var(--gold-glow);
+  box-shadow: none;
   transform: translateY(-1px);
 }
 .nav-avatar-wrap img { width: 100%; height: 100%; object-fit: cover; }
@@ -699,7 +699,7 @@ input[type="range"].ct-slider::-moz-range-thumb {
 .btn-primary, .btn-gold {
   background: linear-gradient(135deg, #FDE68A 0%, #F59E0B 50%, #D97706 100%);
   color: #000;
-  box-shadow: 0 4px 18px var(--gold-glow);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.5);
 }
 .btn-primary:hover, .btn-gold:hover {
   transform: translateY(-2px);
@@ -1782,7 +1782,7 @@ input[type="range"].ct-slider::-moz-range-thumb {
   font-weight: 900;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  box-shadow: 0 0 12px var(--gold-glow);
+  box-shadow: none;
 }
 
 /* Click to Copy Epic Tag Chip */
@@ -1895,7 +1895,7 @@ input[type="range"].ct-slider::-moz-range-thumb {
   background: linear-gradient(135deg, rgba(245, 158, 11, 0.25) 0%, rgba(217, 119, 6, 0.15) 100%);
   border: 1px solid rgba(245, 158, 11, 0.6);
   color: #FBBF24;
-  box-shadow: 0 0 10px var(--gold-glow);
+  box-shadow: none;
 }
 .title-average {
   background: rgba(56, 189, 248, 0.15);
@@ -2260,7 +2260,7 @@ input[type="range"].ct-slider::-moz-range-thumb {
   background: linear-gradient(135deg, rgba(245, 158, 11, 0.3) 0%, rgba(217, 119, 6, 0.2) 100%);
   border: 1px solid #F59E0B;
   color: #FDE68A;
-  box-shadow: 0 0 14px var(--gold-glow);
+  box-shadow: none;
 }
 .rank-badge-top {
   background: rgba(56, 189, 248, 0.15);
