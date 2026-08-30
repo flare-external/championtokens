@@ -1444,9 +1444,9 @@ input[type="range"].ct-slider::-moz-range-thumb {
 .profile-avatar {
   width: 84px; height: 84px;
   border-radius: 50%;
-  background: var(--bg-card-hover);
-  border: 3px solid var(--gold-bright);
-  box-shadow: 0 0 20px var(--gold-glow);
+  background: #111422;
+  border: none;
+  box-shadow: none;
   overflow: hidden;
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0;

@@ -7,26 +7,21 @@
   <link rel="icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
-  <link rel="stylesheet" href="css/style.css?v=4.0.1788048753046"/>
+  <link rel="stylesheet" href="css/style.css?v=4.0.1788049131913"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
     /* Clean, Modern Profile Hero Card */
     .profile-hero-card {
-      background: rgba(14, 18, 34, 0.95);
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      border-radius: var(--radius-xl);
-      padding: 28px 32px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 24px;
+      background: #000000;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 20px;
+      padding: 28px 30px;
       margin-bottom: 24px;
       position: relative;
       overflow: hidden;
-      box-shadow: 0 12px 36px rgba(0,0,0,0.6);
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 14px 40px rgba(0,0,0,0.85);
+      transition: all 0.25s ease;
     }
     .profile-hero-card:hover {
       box-shadow: 0 16px 48px rgba(0,0,0,0.7), 0 0 30px rgba(245, 158, 11, 0.12);
@@ -67,26 +62,26 @@
       gap: 20px;
     }
     .profile-pfp {
-      width: 76px;
-      height: 76px;
+      width: 82px;
+      height: 82px;
       border-radius: 50%;
-      background: var(--bg-card-hover);
-      border: 2px solid var(--gold-bright);
+      background: #080808;
+      border: none !important;
+      outline: none !important;
+      box-shadow: none !important;
       overflow: hidden;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 1.8rem;
       font-weight: 900;
-      color: var(--gold-bright);
-      box-shadow: 0 0 20px var(--gold-glow);
+      color: #fff;
       flex-shrink: 0;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: transform 0.2s ease;
       position: relative;
     }
     .profile-pfp:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 30px var(--gold-bright);
+      transform: scale(1.03);
     }
     .profile-pfp img { width: 100%; height: 100%; object-fit: cover; }
 
@@ -192,12 +187,12 @@
 
     /* Epic Games Account Box */
     .epic-account-card {
-      background: rgba(14, 18, 34, 0.95);
-      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: #000000;
+      border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: var(--radius-lg);
       padding: 22px 24px;
       margin-bottom: 24px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.6);
     }
     .epic-badge-connected {
       display: inline-flex;
@@ -222,13 +217,12 @@
 
     /* Teams Section & Cards (Match UI Style) */
     .team-section-card {
-      background: rgba(11, 13, 20, 0.95);
+      background: #000000;
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: var(--radius-xl);
       padding: 24px;
       margin-bottom: 24px;
       box-shadow: 0 12px 36px rgba(0,0,0,0.7);
-      backdrop-filter: blur(12px);
     }
     .team-item-card {
       background: #0b0d14;
@@ -558,50 +552,90 @@
     }
     .setting-pen-btn svg { display: block; flex-shrink: 0; }
 
-    /* Profile Subtabs Navigation */
-    .profile-subtabs-bar {
+    /* Profile Top Subtabs Navigation */
+    .profile-top-subtabs-wrap {
+      margin-bottom: 22px;
       display: flex;
       align-items: center;
-      gap: 6px;
-      margin-bottom: 24px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-      padding-bottom: 2px;
+    }
+    .profile-subtabs-bar {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: #000000;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 4px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
       overflow-x: auto;
     }
     .profile-subtab-btn {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 10px 18px;
+      padding: 8px 18px;
       background: transparent;
       border: none;
-      border-bottom: 2px solid transparent;
+      border-radius: 10px;
       color: #94a3b8;
-      font-size: 0.9rem;
+      font-size: 0.86rem;
       font-weight: 700;
       cursor: pointer;
-      transition: all 0.18s ease;
+      transition: all 0.16s ease;
       white-space: nowrap;
     }
     .profile-subtab-btn i {
-      width: 16px;
-      height: 16px;
+      width: 15px;
+      height: 15px;
       color: #64748b;
-      transition: transform 0.18s ease, color 0.18s ease;
+      transition: color 0.16s ease;
     }
     .profile-subtab-btn:hover {
       color: #ffffff;
+      background: rgba(255, 255, 255, 0.05);
     }
     .profile-subtab-btn:hover i {
       color: #ffffff;
-      transform: translateY(-1px);
     }
     .profile-subtab-btn.active {
-      color: var(--gold-bright);
-      border-bottom-color: var(--gold-bright);
+      background: #18181b;
+      color: #ffffff;
+      font-weight: 800;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
     }
     .profile-subtab-btn.active i {
       color: var(--gold-bright);
+    }
+    
+    /* Morphed Stats Cards */
+    .morphed-stat-card {
+      background: #060608;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 14px;
+      padding: 16px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      transition: border-color 0.18s ease, transform 0.18s ease;
+    }
+    .morphed-stat-card:hover {
+      border-color: rgba(255, 255, 255, 0.14);
+      transform: translateY(-1px);
+    }
+    .morphed-stat-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      font-weight: 800;
+      color: #71717a;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .morphed-stat-value {
+      font-size: 1.3rem;
+      font-weight: 900;
+      color: #ffffff;
     }
     .profile-subtab-content {
       /* Instant seamless tab display */
@@ -795,110 +829,132 @@
     <span>Loading profile…</span>
   </div>
 
-  <main class="page-wrap">
-    <!-- Profile Hero with Banner Theme -->
-    <div class="profile-hero-card" id="profile-hero">
-
-      <div class="profile-user-group">
-        <div class="profile-pfp">
-          <img id="profile-avatar-img" src="" alt="" style="display:none"/>
-          <i data-lucide="user" id="profile-avatar-icon"></i>
-        </div>
-        <div>
-          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-            <span style="font-size:1.6rem;font-weight:900;" id="profile-name">--</span>
-            <div id="profile-title-slot" style="display:none;"></div>
-            <div id="profile-badges-row" style="display:inline-flex;gap:6px;align-items:center;"></div>
-          </div>
-          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:4px;">
-            <span style="font-weight:700;color:var(--text-muted);font-size:0.85rem;" id="profile-discord-tag">@discord</span>
-            <button type="button" class="account-id-pill" id="profile-account-id-btn" onclick="copyAccountId()" title="Click to copy Account ID" style="display:inline-flex;align-items:center;gap:6px;background:#050505;border:1px solid rgba(255,255,255,0.12);border-radius:6px;padding:3px 9px;font-size:0.75rem;font-family:monospace;color:#94a3b8;cursor:pointer;transition:all 0.18s ease;">
-              <i data-lucide="fingerprint" style="width:13px;height:13px;color:var(--gold-bright);"></i>
-              <span id="profile-account-id-text">ID: --</span>
-              <i data-lucide="copy" id="profile-account-id-icon" style="width:12px;height:12px;opacity:0.7;"></i>
-            </button>
-          </div>
-          <div id="hero-admin-token-pill" style="display:none;margin-top:6px;">
-            <span style="display:inline-flex;align-items:center;gap:6px;background:rgba(245,158,11,0.14);border:1px solid rgba(245,158,11,0.45);border-radius:6px;padding:3px 10px;font-size:0.75rem;color:var(--gold-bright);font-weight:800;">
-              <i data-lucide="shield" style="width:12px;height:12px;color:var(--red);"></i>
-              <span>Admin Balance View: <strong id="hero-admin-token-val" style="color:#fff;">0.00 Tokens</strong></span>
-            </span>
-          </div>
-          <div style="font-size:0.75rem;color:var(--text-faint);margin-top:4px;" id="profile-since"></div>
-        </div>
+  <main class="page-wrap" style="max-width: 1050px;">
+    <!-- Top Subtabs Segmented Bar -->
+    <div class="profile-top-subtabs-wrap">
+      <div class="profile-subtabs-bar">
+        <button class="profile-subtab-btn active" id="btn-subtab-overview" data-tab="overview" onclick="switchProfileSubtab('overview')">
+          <i data-lucide="user"></i> <span>Overview</span>
+        </button>
+        <button class="profile-subtab-btn" id="btn-subtab-history" data-tab="history" onclick="switchProfileSubtab('history')">
+          <i data-lucide="history"></i> <span>History</span>
+        </button>
+        <button class="profile-subtab-btn" id="btn-subtab-connections" data-tab="connections" onclick="switchProfileSubtab('connections')">
+          <i data-lucide="link-2"></i> <span>Connections</span>
+        </button>
       </div>
-      <div style="text-align:right;flex-shrink:0;display:flex;flex-direction:column;align-items:flex-end;justify-content:space-between;gap:12px;min-height:75px;">
-        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;">
-          <div id="profile-rank-box" style="display:none;">
-            <div style="font-size:0.75rem;color:var(--text-muted);text-transform:uppercase;font-weight:700;">Leaderboard Rank</div>
-            <div id="profile-rank-badge" style="margin-top:4px;"></div>
-          </div>
-          <div id="premium-action-wrap"></div>
-        </div>
-        <div id="profile-customize-action">
-          <button class="btn btn-primary btn-sm" onclick="openCosmeticsModal('avatars')" style="padding:7px 16px;font-size:0.82rem;gap:7px;">
-            <i data-lucide="palette" style="width:14px;height:14px;"></i>
-            <span>Customize</span>
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Profile Subtabs Bar -->
-    <div class="profile-subtabs-bar">
-      <button class="profile-subtab-btn active" id="btn-subtab-overview" data-tab="overview" onclick="switchProfileSubtab('overview')">
-        <i data-lucide="user"></i> Overview
-      </button>
-      <button class="profile-subtab-btn" id="btn-subtab-history" data-tab="history" onclick="switchProfileSubtab('history')">
-        <i data-lucide="history"></i> History
-      </button>
-      <button class="profile-subtab-btn" id="btn-subtab-connections" data-tab="connections" onclick="switchProfileSubtab('connections')">
-        <i data-lucide="link-2"></i> Connections
-      </button>
     </div>
 
     <!-- 1. TAB: Overview (My Profile) -->
     <div id="profile-tab-overview" class="profile-subtab-content">
-      <!-- Balance & Lifetime Match Earnings Grid (Visible to Self & Admins) -->
-      <div class="grid-2" style="margin-bottom:16px;" id="profile-balance-section">
-        <div class="card stat-card" style="border-color:rgba(245,158,11,0.3);background:linear-gradient(135deg,rgba(245,158,11,0.08) 0%,rgba(8,8,8,0.95) 100%);">
-          <div class="stat-icon stat-icon--gold"><i data-lucide="coins"></i></div>
-          <div class="stat-label">Token Balance <span id="profile-tokens-admin-badge" style="display:none;color:var(--red);font-size:0.7rem;margin-left:6px;font-weight:800;">(Admin View)</span></div>
-          <div class="stat-value stat-value--gold" id="profile-tokens-stat">0.00 Tokens</div>
-          <div id="profile-admin-adjust-wrap" style="display:none;margin-top:8px;">
-            <button type="button" class="btn btn-gold btn-sm" onclick="openProfileTokenAdjustModal()" style="font-size:0.75rem;padding:4px 12px;gap:5px;">
-              <i data-lucide="zap"></i> Admin Adjust Balance
-            </button>
+      <!-- Morphed Unified Profile Hero & Stats Card -->
+      <div class="profile-hero-card" id="profile-hero">
+
+        <!-- Top Profile User Group & Actions -->
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;">
+          <div class="profile-user-group">
+            <div class="profile-pfp">
+              <img id="profile-avatar-img" src="" alt="" style="display:none"/>
+              <i data-lucide="user" id="profile-avatar-icon"></i>
+            </div>
+            <div>
+              <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+                <span style="font-size:1.6rem;font-weight:900;color:#fff;" id="profile-name">--</span>
+                <div id="profile-title-slot" style="display:none;"></div>
+                <div id="profile-badges-row" style="display:inline-flex;gap:6px;align-items:center;"></div>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:4px;">
+                <span style="font-weight:700;color:var(--text-muted);font-size:0.85rem;" id="profile-discord-tag">@discord</span>
+                <button type="button" class="account-id-pill" id="profile-account-id-btn" onclick="copyAccountId()" title="Click to copy Account ID" style="display:inline-flex;align-items:center;gap:6px;background:#050505;border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:3px 9px;font-size:0.75rem;font-family:monospace;color:#94a3b8;cursor:pointer;transition:all 0.18s ease;">
+                  <i data-lucide="fingerprint" style="width:13px;height:13px;color:var(--gold-bright);"></i>
+                  <span id="profile-account-id-text">ID: --</span>
+                  <i data-lucide="copy" id="profile-account-id-icon" style="width:12px;height:12px;opacity:0.7;"></i>
+                </button>
+              </div>
+              <div id="hero-admin-token-pill" style="display:none;margin-top:6px;">
+                <span style="display:inline-flex;align-items:center;gap:6px;background:rgba(245,158,11,0.14);border:1px solid rgba(245,158,11,0.45);border-radius:6px;padding:3px 10px;font-size:0.75rem;color:var(--gold-bright);font-weight:800;">
+                  <i data-lucide="shield" style="width:12px;height:12px;color:var(--red);"></i>
+                  <span>Admin Balance View: <strong id="hero-admin-token-val" style="color:#fff;">0.00 Tokens</strong></span>
+                </span>
+              </div>
+              <div style="font-size:0.75rem;color:var(--text-faint);margin-top:4px;" id="profile-since"></div>
+            </div>
+          </div>
+          <div style="text-align:right;flex-shrink:0;display:flex;flex-direction:column;align-items:flex-end;justify-content:space-between;gap:12px;">
+            <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;">
+              <div id="profile-rank-box" style="display:none;">
+                <div style="font-size:0.72rem;color:var(--text-muted);text-transform:uppercase;font-weight:800;letter-spacing:0.04em;">Leaderboard Rank</div>
+                <div id="profile-rank-badge" style="margin-top:4px;"></div>
+              </div>
+              <div id="premium-action-wrap"></div>
+            </div>
+            <div id="profile-customize-action">
+              <button class="btn btn-primary btn-sm" onclick="openCosmeticsModal('avatars')" style="padding:7px 16px;font-size:0.82rem;gap:7px;">
+                <i data-lucide="palette" style="width:14px;height:14px;"></i>
+                <span>Customize</span>
+              </button>
+            </div>
           </div>
         </div>
-        <div class="card stat-card" style="border-color:rgba(16,185,129,0.3);background:linear-gradient(135deg,rgba(16,185,129,0.08) 0%,rgba(8,8,8,0.95) 100%);">
-          <div class="stat-icon stat-icon--green"><i data-lucide="trending-up"></i></div>
-          <div class="stat-label">Match Win Earnings</div>
-          <div class="stat-value" style="color:var(--green);" id="profile-earnings-stat">0.00 Tokens</div>
-        </div>
-      </div>
 
-      <!-- Stats grid (Wins, Losses, Win Rate %, Leaderboard Rank) -->
-      <div class="grid-4" style="margin-bottom:24px;">
-        <div class="card stat-card">
-          <div class="stat-icon stat-icon--green"><i data-lucide="trophy"></i></div>
-          <div class="stat-label">Matches Won</div>
-          <div class="stat-value" style="color:var(--green);" id="profile-won">0</div>
+        <!-- Morphed Separator -->
+        <div style="border-top:1px solid rgba(255,255,255,0.07);margin:22px 0 20px;"></div>
+
+        <!-- Morphed Balance & Lifetime Earnings Grid (Visible to Self & Admins) -->
+        <div id="profile-balance-section" style="margin-bottom:12px;">
+          <div class="grid-2" style="gap:12px;">
+            <div class="morphed-stat-card" style="border-color:rgba(245,158,11,0.3);">
+              <div class="morphed-stat-header">
+                <span>Token Balance <span id="profile-tokens-admin-badge" style="display:none;color:var(--red);font-size:0.7rem;margin-left:6px;font-weight:800;">(Admin View)</span></span>
+                <i data-lucide="coins" style="width:16px;height:16px;color:var(--gold-bright);"></i>
+              </div>
+              <div class="morphed-stat-value" style="color:var(--gold-bright);" id="profile-tokens-stat">0.00 Tokens</div>
+              <div id="profile-admin-adjust-wrap" style="display:none;margin-top:6px;">
+                <button type="button" class="btn btn-gold btn-sm" onclick="openProfileTokenAdjustModal()" style="font-size:0.75rem;padding:4px 12px;gap:5px;">
+                  <i data-lucide="zap"></i> Admin Adjust Balance
+                </button>
+              </div>
+            </div>
+            <div class="morphed-stat-card" style="border-color:rgba(16,185,129,0.3);">
+              <div class="morphed-stat-header">
+                <span>Match Win Earnings</span>
+                <i data-lucide="trending-up" style="width:16px;height:16px;color:var(--green);"></i>
+              </div>
+              <div class="morphed-stat-value" style="color:var(--green);" id="profile-earnings-stat">0.00 Tokens</div>
+            </div>
+          </div>
         </div>
-        <div class="card stat-card">
-          <div class="stat-icon stat-icon--accent"><i data-lucide="x-circle"></i></div>
-          <div class="stat-label">Matches Lost</div>
-          <div class="stat-value" style="color:var(--red);" id="profile-lost">0</div>
-        </div>
-        <div class="card stat-card">
-          <div class="stat-icon stat-icon--gold"><i data-lucide="activity"></i></div>
-          <div class="stat-label">Win Rate</div>
-          <div class="stat-value stat-value--gold" id="profile-winrate">0%</div>
-        </div>
-        <div class="card stat-card">
-          <div class="stat-icon stat-icon--purple"><i data-lucide="award"></i></div>
-          <div class="stat-label">Leaderboard Rank</div>
-          <div class="stat-value" style="color:#c084fc;font-size:1.4rem;" id="profile-rank-text">#--</div>
+
+        <!-- Morphed Match Counters Grid (Wins, Losses, Win Rate, Rank) -->
+        <div class="grid-4" style="gap:12px;">
+          <div class="morphed-stat-card">
+            <div class="morphed-stat-header">
+              <span>Matches Won</span>
+              <i data-lucide="trophy" style="width:16px;height:16px;color:var(--green);"></i>
+            </div>
+            <div class="morphed-stat-value" style="color:var(--green);" id="profile-won">0</div>
+          </div>
+          <div class="morphed-stat-card">
+            <div class="morphed-stat-header">
+              <span>Matches Lost</span>
+              <i data-lucide="x-circle" style="width:16px;height:16px;color:var(--red);"></i>
+            </div>
+            <div class="morphed-stat-value" style="color:var(--red);" id="profile-lost">0</div>
+          </div>
+          <div class="morphed-stat-card">
+            <div class="morphed-stat-header">
+              <span>Win Rate</span>
+              <i data-lucide="activity" style="width:16px;height:16px;color:var(--gold-bright);"></i>
+            </div>
+            <div class="morphed-stat-value" style="color:var(--gold-bright);" id="profile-winrate">0%</div>
+          </div>
+          <div class="morphed-stat-card">
+            <div class="morphed-stat-header">
+              <span>Leaderboard Rank</span>
+              <i data-lucide="award" style="width:16px;height:16px;color:#c084fc;"></i>
+            </div>
+            <div class="morphed-stat-value" style="color:#c084fc;font-size:1.35rem;" id="profile-rank-text">#--</div>
+          </div>
         </div>
       </div>
 
@@ -927,7 +983,7 @@
     <!-- 2. TAB: History -->
     <div id="profile-tab-history" class="profile-subtab-content" style="display:none;">
       <div class="grid-2" style="align-items:stretch;gap:20px;">
-        <div class="card" id="tx-card" style="display:flex;flex-direction:column;">
+        <div class="card" id="tx-card" style="display:flex;flex-direction:column;background:#000000;border:1px solid rgba(255,255,255,0.08);box-shadow:0 10px 30px rgba(0,0,0,0.7);">
           <div class="section-title" style="margin-bottom:14px;">
             <i data-lucide="activity"></i> Transaction History
           </div>
@@ -937,7 +993,7 @@
           <div class="ct-pagination" id="profile-tx-pagination"></div>
         </div>
 
-        <div class="card" style="display:flex;flex-direction:column;">
+        <div class="card" style="display:flex;flex-direction:column;background:#000000;border:1px solid rgba(255,255,255,0.08);box-shadow:0 10px 30px rgba(0,0,0,0.7);">
           <div class="section-title" style="margin-bottom:14px;">
             <i data-lucide="swords"></i> Match History
           </div>
@@ -1215,9 +1271,9 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="js/firebase-config.js?v=3.2"></script>
-  <script src="js/auth.js?v=4.0.1788048753046"></script>
-  <script src="js/db.js?v=4.0.1788048753046"></script>
-  <script src="js/nav.js?v=4.0.1788048753046"></script>
+  <script src="js/auth.js?v=4.0.1788049131913"></script>
+  <script src="js/db.js?v=4.0.1788049131913"></script>
+  <script src="js/nav.js?v=4.0.1788049131913"></script>
 
   <script>
     let currentUser = null;
