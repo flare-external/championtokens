@@ -751,6 +751,107 @@ async function handleWalletWithdraw() {
   }
 }
 
+
+/* ── Gift Received Celebration Modal ────────────────────────────── */
+function showGiftClaimedModal(info) {
+  let overlay = document.getElementById('ct-gift-received-modal');
+  if (!overlay) {
+    overlay = document.createElement('div');
+    overlay.id = 'ct-gift-received-modal';
+    overlay.className = 'modal-overlay';
+    overlay.style.zIndex = '999999';
+    document.body.appendChild(overlay);
+  }
+
+  let mediaHtml = '';
+  if (info.type === 'tokens') {
+    mediaHtml = `
+      <div style="position:relative;width:96px;height:96px;margin:0 auto 14px;display:flex;align-items:center;justify-content:center;">
+        <div style="position:absolute;inset:-8px;background:radial-gradient(circle, rgba(245,158,11,0.4) 0%, transparent 70%);border-radius:50%;"></div>
+        <img src="new_token.png" alt="CT" style="width:72px;height:72px;object-fit:contain;position:relative;z-index:2;filter:drop-shadow(0 8px 20px rgba(0,0,0,0.8));" />
+      </div>
+      <div style="font-size:2rem;font-weight:900;color:var(--gold-bright);letter-spacing:-0.02em;margin-bottom:6px;">
+        +${formatTokens(info.amount)} Tokens
+      </div>
+    `;
+  } else if (info.type === 'pfp') {
+    mediaHtml = `
+      <div style="position:relative;width:96px;height:96px;margin:0 auto 14px;display:flex;align-items:center;justify-content:center;">
+        <div style="position:absolute;inset:-8px;background:radial-gradient(circle, rgba(245,158,11,0.3) 0%, transparent 70%);border-radius:50%;"></div>
+        <div style="width:82px;height:82px;border-radius:50%;overflow:hidden;background:#000;border:2px solid ${info.color || 'var(--gold-bright)'};position:relative;z-index:2;">
+          <img src="${info.image || 'cosmetics/uncomon/uncomon.png'}" alt="Avatar" style="width:100%;height:100%;object-fit:cover;" />
+        </div>
+      </div>
+      <div style="font-size:1.35rem;font-weight:900;color:#fff;margin-bottom:6px;">
+        ${escapeHtml(info.name || 'Exclusive Avatar')}
+      </div>
+      <div style="margin-bottom:8px;">
+        <span class="badge" style="background:rgba(255,255,255,0.06);color:${info.color || 'var(--gold-bright)'};border:1px solid ${info.color || 'var(--gold-bright)'};font-size:0.75rem;padding:3px 10px;">
+          ${(info.rarity || 'EXCLUSIVE').toUpperCase()}
+        </span>
+      </div>
+    `;
+  } else if (info.type === 'title') {
+    mediaHtml = `
+      <div style="position:relative;width:90px;height:90px;margin:0 auto 14px;display:flex;align-items:center;justify-content:center;">
+        <div style="width:68px;height:68px;border-radius:16px;background:rgba(245,158,11,0.15);border:1px solid var(--gold-bright);display:flex;align-items:center;justify-content:center;color:var(--gold-bright);font-size:2rem;">
+          <i data-lucide="award" style="width:34px;height:34px;"></i>
+        </div>
+      </div>
+      <div style="font-size:1.35rem;font-weight:900;color:#fff;margin-bottom:6px;">
+        "${escapeHtml(info.name || 'Title')}"
+      </div>
+    `;
+  } else if (info.type === 'premium') {
+    mediaHtml = `
+      <div style="position:relative;width:90px;height:90px;margin:0 auto 14px;display:flex;align-items:center;justify-content:center;">
+        <div style="width:68px;height:68px;border-radius:16px;background:rgba(245,158,11,0.15);border:1px solid var(--gold-bright);display:flex;align-items:center;justify-content:center;color:var(--gold-bright);font-size:2rem;">
+          <i data-lucide="crown" style="width:34px;height:34px;"></i>
+        </div>
+      </div>
+      <div style="font-size:1.35rem;font-weight:900;color:var(--gold-bright);margin-bottom:6px;">
+        Champion Premium
+      </div>
+    `;
+  }
+
+  overlay.innerHTML = `
+    <div class="modal" style="max-width:440px;text-align:center;padding:32px 28px;background:#000000;border:1px solid rgba(255,255,255,0.12);border-radius:24px;box-shadow:0 24px 60px rgba(0,0,0,0.95);">
+      <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.35);color:var(--gold-bright);padding:4px 12px;border-radius:999px;font-size:0.75rem;font-weight:800;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:14px;">
+        <i data-lucide="gift" style="width:13px;height:13px;"></i> Gift Claimed
+      </div>
+      <h2 style="font-size:1.45rem;font-weight:900;color:#fff;margin-bottom:16px;letter-spacing:-0.02em;">
+        You Received a Gift!
+      </h2>
+
+      ${mediaHtml}
+
+      <div style="font-size:0.85rem;color:var(--text-muted);line-height:1.5;margin-bottom:22px;">
+        ${escapeHtml(info.subtext || 'The reward has been added to your account.')}
+      </div>
+
+      <button type="button" class="btn btn-gold btn-full" id="gift-modal-close-btn" style="border-radius:12px;padding:11px;font-size:0.9rem;gap:6px;">
+        <i data-lucide="check" style="width:16px;height:16px;"></i> <span>Awesome!</span>
+      </button>
+    </div>
+  `;
+
+  overlay.classList.add('open');
+  overlay.classList.add('active');
+  if (window.lucide) lucide.createIcons();
+
+  document.getElementById('gift-modal-close-btn').onclick = () => {
+    overlay.classList.remove('open');
+    overlay.classList.remove('active');
+  };
+  overlay.onclick = (e) => {
+    if (e.target === overlay) {
+      overlay.classList.remove('open');
+      overlay.classList.remove('active');
+    }
+  };
+}
+
 /* ── Universal Redeem Code Handler ─────────────────────────────── */
 async function handleRedeemCode() {
   const user = auth.currentUser;
@@ -771,7 +872,6 @@ async function handleRedeemCode() {
   if (btn) btn.disabled = true;
 
   try {
-    // Look up code in Firestore
     const snap = await db.collection('redeem_codes').where('code', '==', rawCode).limit(1).get();
     if (snap.empty) {
       throw new Error('Invalid code. Please check for typos and try again.');
@@ -797,37 +897,47 @@ async function handleRedeemCode() {
 
     const userData = await getUser(user.uid);
 
-    // Apply Reward
-    let rewardMsg = '';
+    // Prepare Gift Info for celebration modal
+    let giftInfo = {
+      type: codeData.rewardType || 'tokens',
+      subtext: 'Your reward has been credited to your account balance.'
+    };
+
     const rewardType = codeData.rewardType || 'tokens';
 
     if (rewardType === 'tokens') {
       const amt = Number(codeData.rewardValue || 0);
       if (amt <= 0) throw new Error('Code has no reward value.');
       await updateTokens(user.uid, amt, 'redeem_code', `Redeemed Code: ${rawCode}`);
-      rewardMsg = `+${formatTokens(amt)} Tokens credited to your balance!`;
+      giftInfo.amount = amt;
+      giftInfo.subtext = `${formatTokens(amt)} Tokens have been instantly credited to your wallet balance.`;
     } else if (rewardType === 'pfp') {
       const pfpId = codeData.rewardValue;
       await db.collection('users').doc(user.uid).update({
         unlockedPfps: firebase.firestore.FieldValue.arrayUnion(pfpId)
       });
-      rewardMsg = `Unlocked Avatar: ${codeData.rewardLabel || pfpId}!`;
+      const pfpItem = (typeof SHOP_PFPS !== 'undefined' && SHOP_PFPS[pfpId]) ? SHOP_PFPS[pfpId] : { name: codeData.rewardLabel || 'Avatar', file: 'cosmetics/uncomon/uncomon.png', rarity: 'Exclusive', color: 'var(--gold-bright)' };
+      giftInfo.name = pfpItem.name || codeData.rewardLabel;
+      giftInfo.image = pfpItem.file;
+      giftInfo.rarity = pfpItem.rarity;
+      giftInfo.color = pfpItem.color;
+      giftInfo.subtext = 'New avatar added to your wardrobe! You can equip it in your Profile.';
     } else if (rewardType === 'title') {
       const titleId = codeData.rewardValue;
       await db.collection('users').doc(user.uid).update({
         unlockedTitles: firebase.firestore.FieldValue.arrayUnion(titleId)
       });
-      rewardMsg = `Unlocked Title: "${codeData.rewardLabel || titleId}"!`;
+      giftInfo.name = codeData.rewardLabel || 'Title';
+      giftInfo.subtext = 'New title unlocked! You can equip it in your Profile customization.';
     } else if (rewardType === 'premium') {
       await db.collection('users').doc(user.uid).update({
         isPremium: true
       });
-      rewardMsg = 'Unlocked Champion Premium Membership!';
+      giftInfo.subtext = 'Champion Premium membership is now active on your account!';
     } else {
       throw new Error('Unknown reward type.');
     }
 
-    // Mark code as used
     const newUsedCount = usedCount + 1;
     const isNowExpired = (newUsedCount >= maxUses);
 
@@ -842,9 +952,11 @@ async function handleRedeemCode() {
       })
     });
 
-    showToast(`🎉 Code Redeemed! ${rewardMsg}`, 'success');
-    if (input) input.value = '';
     closeTokenWalletModal();
+    if (input) input.value = '';
+
+    // Show celebration gift modal!
+    showGiftClaimedModal(giftInfo);
   } catch (err) {
     console.error('Redeem error:', err);
     showToast(err.message || 'Failed to redeem code', 'error');
