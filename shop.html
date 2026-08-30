@@ -24,7 +24,7 @@
   <link rel="icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
-  <link rel="stylesheet" href="css/style.css?v=4.0.1788056956926"/>
+  <link rel="stylesheet" href="css/style.css?v=4.0.1788057079208"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
@@ -125,7 +125,6 @@
               <i data-lucide="crown" style="width:20px;height:20px;"></i>
             </div>
             <span class="username-premium" style="font-size:1.45rem;font-weight:900;letter-spacing:-0.02em;">Champion Premium</span>
-            <span id="shop-premium-status-pill"></span>
           </div>
           <p style="font-size:0.875rem;color:var(--text-muted);margin:0 0 14px;line-height:1.5;">
             Elevate your competitive profile with Radiant Gold username styling, VIP crown badge, priority matchmaking, and player tipping.
@@ -189,9 +188,9 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="js/firebase-config.js?v=3.8"></script>
-  <script src="js/auth.js?v=4.0.1788056956926"></script>
-  <script src="js/db.js?v=4.0.1788056956926"></script>
-  <script src="js/nav.js?v=4.0.1788056956926"></script>
+  <script src="js/auth.js?v=4.0.1788057079208"></script>
+  <script src="js/db.js?v=4.0.1788057079208"></script>
+  <script src="js/nav.js?v=4.0.1788057079208"></script>
 
   <script>
     let currentUser = null;
@@ -223,17 +222,12 @@
 
                 function checkPremiumStatus() {
       const actionBox = document.getElementById('shop-premium-action-box');
-      const statusPill = document.getElementById('shop-premium-status-pill');
       if (!actionBox) return;
 
       const isPremium = isUserPremiumActive(currentUserData);
       const daysRemaining = getPremiumDaysRemaining(currentUserData);
 
       if (isPremium) {
-        if (statusPill) {
-          statusPill.innerHTML = '<span class="badge" style="background:rgba(16,185,129,0.15);color:#34d399;border:1px solid rgba(16,185,129,0.35);font-size:0.72rem;padding:3px 9px;margin-left:6px;"><i data-lucide="check-circle" style="width:11px;height:11px;"></i> ACTIVE</span>';
-        }
-
         let expText = 'Active Membership';
         if (currentUserData?.premiumExpiresAt) {
           try {
@@ -244,7 +238,7 @@
 
         actionBox.innerHTML = `
           <div style="text-align:right;">
-            <div style="font-size:0.75rem;font-weight:800;color:var(--text-muted);text-transform:uppercase;">Membership Active</div>
+            <div style="font-size:0.75rem;font-weight:800;color:var(--text-muted);text-transform:uppercase;">Membership</div>
             <div style="font-size:1.55rem;font-weight:900;color:var(--gold-bright);letter-spacing:-0.02em;">${daysRemaining} ${daysRemaining === 1 ? 'Day' : 'Days'} Left</div>
             <div style="font-size:0.72rem;color:var(--text-faint);margin-top:2px;">${escapeHtml(expText)}</div>
           </div>
@@ -253,7 +247,6 @@
           </button>
         `;
       } else {
-        if (statusPill) statusPill.innerHTML = '';
         actionBox.innerHTML = `
           <div style="text-align:right;">
             <div style="font-size:0.72rem;font-weight:800;color:var(--text-muted);text-transform:uppercase;">30 Days Duration</div>
