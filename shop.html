@@ -24,7 +24,7 @@
   <link rel="icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
-  <link rel="stylesheet" href="css/style.css?v=4.0.1788117559465"/>
+  <link rel="stylesheet" href="css/style.css?v=4.0.1788117811135"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
@@ -97,6 +97,67 @@
       background: rgba(0,0,0,0.6);
       border: 1px solid rgba(255,255,255,0.06);
     }
+  
+    /* ── Purchase Celebration Modals ── */
+    .celebration-modal-card {
+      max-width: 460px;
+      width: 100%;
+      text-align: center;
+      padding: 32px 28px;
+      background: #000000;
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      border-radius: 24px;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.95), 0 0 35px rgba(245, 158, 11, 0.15);
+      animation: celebrationPopIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      overflow: hidden;
+    }
+    @keyframes celebrationPopIn {
+      0% { opacity: 0; transform: scale(0.92) translateY(16px); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    .celebration-glow-bg {
+      position: absolute;
+      top: -40px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 220px;
+      height: 220px;
+      background: radial-gradient(circle, rgba(245, 158, 11, 0.3) 0%, transparent 70%);
+      pointer-events: none;
+      border-radius: 50%;
+    }
+    .perks-list-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      text-align: left;
+      margin: 18px 0 24px;
+      background: #060608;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 14px 16px;
+    }
+    .perk-item-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.85rem;
+      color: #cbd5e1;
+      font-weight: 700;
+    }
+    .perk-icon-wrap {
+      width: 26px;
+      height: 26px;
+      border-radius: 7px;
+      background: rgba(245, 158, 11, 0.15);
+      color: var(--gold-bright);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
   </style>
 </head>
 <body>
@@ -188,9 +249,9 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="js/firebase-config.js?v=3.8"></script>
-  <script src="js/auth.js?v=4.0.1788117559465"></script>
-  <script src="js/db.js?v=4.0.1788117559465"></script>
-  <script src="js/nav.js?v=4.0.1788117559465"></script>
+  <script src="js/auth.js?v=4.0.1788117811135"></script>
+  <script src="js/db.js?v=4.0.1788117811135"></script>
+  <script src="js/nav.js?v=4.0.1788117811135"></script>
 
   <script>
     let currentUser = null;
@@ -342,6 +403,209 @@
       setInterval(updateTimer, 1000);
     }
 
+    
+    /* ── Purchase Celebration Modals ───────────────────────────────── */
+    function showPfpPurchaseCelebration(item) {
+      let overlay = document.getElementById('shop-celebration-overlay');
+      if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.id = 'shop-celebration-overlay';
+        overlay.className = 'modal-overlay';
+        overlay.style.zIndex = '999999';
+        document.body.appendChild(overlay);
+      }
+
+      overlay.innerHTML = `
+        <div class="celebration-modal-card">
+          <div class="celebration-glow-bg"></div>
+          
+          <div style="position:relative;width:96px;height:96px;margin:0 auto 16px;display:flex;align-items:center;justify-content:center;">
+            <div style="width:84px;height:84px;border-radius:50%;overflow:hidden;background:#000;border:2px solid ${item.color || 'var(--gold-bright)'};position:relative;z-index:2;box-shadow:0 8px 24px rgba(0,0,0,0.8);">
+              <img src="${encodeURI(item.file)}" alt="${escapeHtml(item.name)}" style="width:100%;height:100%;object-fit:cover;" />
+            </div>
+          </div>
+
+          <h2 style="font-size:1.4rem;font-weight:900;color:#fff;margin-bottom:6px;letter-spacing:-0.02em;">
+            Thank you for your purchase!
+          </h2>
+          <div style="font-size:0.95rem;font-weight:900;color:var(--gold-bright);margin-bottom:4px;">
+            Avatar ${escapeHtml(item.name)}
+          </div>
+          <span class="badge" style="background:rgba(255,255,255,0.06);color:${item.color || '#fff'};border:1px solid ${item.color || '#fff'};font-size:0.72rem;padding:3px 10px;margin-bottom:14px;">
+            ${item.rarity.toUpperCase()}
+          </span>
+
+          <p style="font-size:0.84rem;color:var(--text-muted);margin:0 0 20px;line-height:1.45;">
+            Your new avatar has been unlocked and added to your wardrobe!
+          </p>
+
+          <div style="display:flex;gap:10px;justify-content:center;">
+            <button class="btn btn-outline" id="btn-keep-current-pfp" style="flex:1;border-radius:12px;padding:10px;font-size:0.86rem;background:#060608;">
+              Keep Current
+            </button>
+            <button class="btn btn-gold" id="btn-equip-now-pfp" style="flex:1;border-radius:12px;padding:10px;font-size:0.86rem;gap:6px;">
+              <i data-lucide="check"></i> Equip Now
+            </button>
+          </div>
+        </div>
+      `;
+
+      overlay.classList.add('open');
+      overlay.classList.add('active');
+      if (window.lucide) lucide.createIcons();
+
+      document.getElementById('btn-keep-current-pfp').onclick = () => {
+        overlay.classList.remove('open');
+        overlay.classList.remove('active');
+      };
+      document.getElementById('btn-equip-now-pfp').onclick = async () => {
+        overlay.classList.remove('open');
+        overlay.classList.remove('active');
+        await handleEquipPfp(item.id);
+      };
+      overlay.onclick = (e) => {
+        if (e.target === overlay) {
+          overlay.classList.remove('open');
+          overlay.classList.remove('active');
+        }
+      };
+    }
+
+    function showTitlePurchaseCelebration(item) {
+      let overlay = document.getElementById('shop-celebration-overlay');
+      if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.id = 'shop-celebration-overlay';
+        overlay.className = 'modal-overlay';
+        overlay.style.zIndex = '999999';
+        document.body.appendChild(overlay);
+      }
+
+      overlay.innerHTML = `
+        <div class="celebration-modal-card">
+          <div class="celebration-glow-bg"></div>
+          
+          <div style="position:relative;width:90px;height:90px;margin:0 auto 16px;display:flex;align-items:center;justify-content:center;">
+            <div style="width:68px;height:68px;border-radius:16px;background:rgba(239, 68, 68, 0.15);border:1px solid rgba(239, 68, 68, 0.45);display:flex;align-items:center;justify-content:center;color:#ef4444;font-size:2rem;box-shadow:0 8px 24px rgba(0,0,0,0.8);">
+              <i data-lucide="${item.icon || 'globe-off'}" style="width:34px;height:34px;"></i>
+            </div>
+          </div>
+
+          <h2 style="font-size:1.4rem;font-weight:900;color:#fff;margin-bottom:10px;letter-spacing:-0.02em;">
+            Thank you for your purchase!
+          </h2>
+          
+          <div style="margin-bottom:12px;">
+            <span class="user-title-badge" style="display:inline-flex;align-items:center;gap:6px;background:${item.bgColor || 'rgba(239,68,68,0.15)'};color:${item.color || '#ef4444'};border:1px solid ${item.borderColor || 'rgba(239,68,68,0.45)'};padding:6px 16px;border-radius:12px;font-size:1.05rem;font-weight:900;">
+              <span>${escapeHtml(item.name)}</span>
+            </span>
+          </div>
+
+          <p style="font-size:0.84rem;color:var(--text-muted);margin:0 0 20px;line-height:1.45;">
+            Your new player title has been unlocked and is ready to display!
+          </p>
+
+          <div style="display:flex;gap:10px;justify-content:center;">
+            <button class="btn btn-outline" id="btn-done-title" style="flex:1;border-radius:12px;padding:10px;font-size:0.86rem;background:#060608;">
+              Done
+            </button>
+            <button class="btn btn-gold" id="btn-equip-now-title" style="flex:1;border-radius:12px;padding:10px;font-size:0.86rem;gap:6px;">
+              <i data-lucide="check"></i> Equip Title
+            </button>
+          </div>
+        </div>
+      `;
+
+      overlay.classList.add('open');
+      overlay.classList.add('active');
+      if (window.lucide) lucide.createIcons();
+
+      document.getElementById('btn-done-title').onclick = () => {
+        overlay.classList.remove('open');
+        overlay.classList.remove('active');
+      };
+      document.getElementById('btn-equip-now-title').onclick = async () => {
+        overlay.classList.remove('open');
+        overlay.classList.remove('active');
+        await handleToggleShopTitle(item.id);
+      };
+      overlay.onclick = (e) => {
+        if (e.target === overlay) {
+          overlay.classList.remove('open');
+          overlay.classList.remove('active');
+        }
+      };
+    }
+
+    function showPremiumPurchaseCelebration() {
+      let overlay = document.getElementById('shop-celebration-overlay');
+      if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.id = 'shop-celebration-overlay';
+        overlay.className = 'modal-overlay';
+        overlay.style.zIndex = '999999';
+        document.body.appendChild(overlay);
+      }
+
+      overlay.innerHTML = `
+        <div class="celebration-modal-card" style="max-width:480px;">
+          <div class="celebration-glow-bg"></div>
+          
+          <div style="position:relative;width:80px;height:80px;margin:0 auto 14px;display:flex;align-items:center;justify-content:center;">
+            <div style="width:68px;height:68px;border-radius:20px;background:rgba(245,158,11,0.18);border:1.5px solid rgba(245,158,11,0.5);display:flex;align-items:center;justify-content:center;color:var(--gold-bright);box-shadow:0 0 30px rgba(245,158,11,0.3);">
+              <i data-lucide="crown" style="width:36px;height:36px;"></i>
+            </div>
+          </div>
+
+          <h2 style="font-size:1.45rem;font-weight:900;color:#fff;margin-bottom:6px;letter-spacing:-0.02em;">
+            Thank you! Enjoy your perks
+          </h2>
+          <p style="font-size:0.85rem;color:var(--text-muted);margin:0 0 16px;line-height:1.45;">
+            Your <strong style="color:var(--gold-bright);">Champion Premium</strong> membership is now active on your account.
+          </p>
+
+          <!-- List of Unlocked Perks -->
+          <div class="perks-list-grid">
+            <div class="perk-item-row">
+              <div class="perk-icon-wrap"><i data-lucide="sparkles" style="width:14px;height:14px;"></i></div>
+              <span>Radiant Gold username styling everywhere</span>
+            </div>
+            <div class="perk-item-row">
+              <div class="perk-icon-wrap"><i data-lucide="crown" style="width:14px;height:14px;"></i></div>
+              <span>Exclusive VIP Crown profile badge</span>
+            </div>
+            <div class="perk-item-row">
+              <div class="perk-icon-wrap"><i data-lucide="gift" style="width:14px;height:14px;"></i></div>
+              <span>Player tipping system enabled</span>
+            </div>
+            <div class="perk-item-row">
+              <div class="perk-icon-wrap"><i data-lucide="zap" style="width:14px;height:14px;"></i></div>
+              <span>Priority match queueing & leaderboard highlight</span>
+            </div>
+          </div>
+
+          <button class="btn btn-gold btn-full" id="btn-close-premium-celebration" style="border-radius:12px;padding:12px;font-size:0.92rem;font-weight:800;gap:6px;">
+            <i data-lucide="sparkles"></i> Awesome, Enjoy Perks!
+          </button>
+        </div>
+      `;
+
+      overlay.classList.add('open');
+      overlay.classList.add('active');
+      if (window.lucide) lucide.createIcons();
+
+      document.getElementById('btn-close-premium-celebration').onclick = () => {
+        overlay.classList.remove('open');
+        overlay.classList.remove('active');
+      };
+      overlay.onclick = (e) => {
+        if (e.target === overlay) {
+          overlay.classList.remove('open');
+          overlay.classList.remove('active');
+        }
+      };
+    }
+
     async function handleBuyPfp(pfpId) {
       if (!currentUser) return;
       const item = SHOP_PFPS[pfpId];
@@ -374,91 +638,12 @@
 
       try {
         await buyShopPfp(currentUser.uid, pfpId);
-        showToast(`Unlocked "${item.name}"! Click Equip to wear it.`, 'success');
         currentUserData = await getUser(currentUser.uid);
         renderDailyPfps();
+        showPfpPurchaseCelebration(item);
       } catch (err) {
         showToast(err.message, 'error');
       }
-    }
-
-    async function handleEquipPfp(pfpId) {
-      if (!currentUser) return;
-      const item = SHOP_PFPS[pfpId];
-      if (!item) return;
-
-      try {
-        await equipShopPfp(currentUser.uid, pfpId);
-        showToast(`Equipped "${item.name}" avatar!`, 'success');
-        currentUserData = await getUser(currentUser.uid);
-        renderDailyPfps();
-      } catch (err) {
-        showToast(err.message, 'error');
-      }
-    }
-
-    function renderShopTitles() {
-      const grid = document.getElementById('shop-titles-grid');
-      if (!grid || typeof SHOP_TITLES === 'undefined') return;
-
-      const unlockedTitles = currentUserData?.unlockedTitles || [];
-      const equippedTitle = currentUserData?.equippedTitle || '';
-      const titles = Object.values(SHOP_TITLES);
-
-      grid.innerHTML = titles.map(item => {
-        const isOwned = unlockedTitles.includes(item.id);
-        const isEquipped = equippedTitle === item.id;
-
-        let borderStyle = isEquipped ? '2px solid var(--gold-bright)' : '1.5px solid rgba(255,255,255,0.09)';
-        let bgStyle = isEquipped ? 'rgba(245,158,11,0.12)' : '#0b0d14';
-        const onClickAction = isOwned ? `handleToggleShopTitle('${item.id}')` : `handleBuyTitle('${item.id}')`;
-
-        return `
-          <div class="cosmetics-option-card ${isEquipped ? 'equipped' : ''}" 
-               onclick="${onClickAction}"
-               style="border:${borderStyle};background:${bgStyle};padding:7px 7px 12px 7px;display:flex;flex-direction:column;align-items:center;text-align:center;border-radius:18px;cursor:pointer;position:relative;transition:all 0.18s ease;box-shadow:0 8px 24px rgba(0,0,0,0.6);">
-            
-            <!-- Large Rounded Square Top Box (Same size & aspect ratio as avatar) -->
-            <div style="position:relative;width:100%;aspect-ratio:1/1;border-radius:13px;overflow:hidden;background:radial-gradient(circle at center, rgba(239, 68, 68, 0.25) 0%, #10131e 100%);border:1px solid rgba(239,68,68,0.35);margin-bottom:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;">
-              <span style="position:absolute;top:6px;left:6px;background:rgba(0,0,0,0.75);backdrop-filter:blur(4px);color:#fff;font-size:0.75rem;font-weight:900;padding:2px 8px;border-radius:6px;border:1px solid rgba(255,255,255,0.15);">
-                ${escapeHtml(item.name)}
-              </span>
-              <span style="position:absolute;top:6px;right:6px;background:rgba(0,0,0,0.75);color:${item.color || '#ef4444'};font-size:0.65rem;font-weight:800;padding:2px 7px;border-radius:6px;border:1px solid ${item.color || '#ef4444'};">
-                ${item.rarity.toUpperCase()}
-              </span>
-
-              <!-- Big Center Title Icon & Badge -->
-              <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;margin-top:8px;">
-                <i data-lucide="${item.icon || 'globe-off'}" style="width:42px;height:42px;color:${item.color || '#ef4444'};filter:drop-shadow(0 0 14px ${item.color || '#ef4444'});"></i>
-                <span class="user-title-badge" style="display:inline-flex;align-items:center;gap:4px;background:${item.bgColor || 'rgba(239,68,68,0.15)'};color:${item.color || '#ef4444'};border:1px solid ${item.borderColor || 'rgba(239,68,68,0.45)'};padding:3px 10px;border-radius:10px;font-size:0.78rem;font-weight:900;letter-spacing:0.02em;">
-                  <span>${escapeHtml(item.name)}</span>
-                </span>
-              </div>
-            </div>
-
-            <!-- Bottom: Token icon and price / Status (Identical to PFP cards) -->
-            <div style="width:100%;display:flex;align-items:center;justify-content:center;min-height:28px;">
-              ${isEquipped ? `
-                <span style="font-size:0.78rem;font-weight:800;letter-spacing:0.08em;color:var(--gold-bright);text-transform:uppercase;">Equipped</span>
-              ` : isOwned ? `
-                <div style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;">
-                  <span style="font-size:0.75rem;font-weight:700;color:#94a3b8;">Owned</span>
-                  <button class="btn btn-primary btn-sm pfp-equip-btn" onclick="handleToggleShopTitle('${item.id}');event.stopPropagation();" style="padding:5px 16px;font-size:0.82rem;font-weight:800;border-radius:14px;">
-                    Equip
-                  </button>
-                </div>
-              ` : `
-                <div style="display:flex;align-items:center;gap:5px;font-size:0.98rem;font-weight:900;color:#fff;">
-                  <img src="new_token.png" style="width:18px;height:18px;object-fit:contain;" alt="CT" />
-                  <span>${formatTokens(item.cost)}</span>
-                </div>
-              `}
-            </div>
-          </div>
-        `;
-      }).join('');
-
-      if (window.lucide) lucide.createIcons();
     }
 
     async function handleBuyTitle(titleId) {
@@ -488,27 +673,9 @@
 
       try {
         await buyShopTitle(currentUser.uid, titleId);
-        showToast(`Unlocked "${item.name}"! Click Equip to display it.`, 'success');
         currentUserData = await getUser(currentUser.uid);
         renderShopTitles();
-      } catch (err) {
-        showToast(err.message, 'error');
-      }
-    }
-
-    async function handleToggleShopTitle(titleId) {
-      if (!currentUser) return;
-      try {
-        const isEquipped = currentUserData?.equippedTitle === titleId;
-        const newTitleId = isEquipped ? null : titleId;
-        await equipUserTitle(currentUser.uid, newTitleId);
-        currentUserData = await getUser(currentUser.uid);
-        renderShopTitles();
-        if (newTitleId) {
-          showToast(`Equipped "${SHOP_TITLES[titleId]?.name || 'Title'}" title!`, 'success');
-        } else {
-          showToast('Unequipped title', 'info');
-        }
+        showTitlePurchaseCelebration(item);
       } catch (err) {
         showToast(err.message, 'error');
       }
@@ -516,9 +683,10 @@
 
     async function handleBuyPremium() {
       if (!currentUser) return;
+      const isCurrentlyActive = isUserPremiumActive(currentUserData);
       const ok = await showConfirm({
-        title: 'Unlock Champion Premium',
-        message: 'Unlock Champion Premium for <strong>5.00 Tokens ($5.00)</strong> for 30 days?<br/><span style="color:var(--gold-bright);font-size:0.82rem;display:inline-block;margin-top:8px;">Includes Radiant Gold username, VIP profile crown & perks!</span>',
+        title: isCurrentlyActive ? 'Extend Champion Premium' : 'Unlock Champion Premium',
+        message: `Unlock Champion Premium for <strong>5.00 Tokens ($5.00)</strong> for 30 days?<br/><span style="color:var(--gold-bright);font-size:0.82rem;display:inline-block;margin-top:8px;">Includes Radiant Gold username, VIP profile crown & perks!</span>`,
         confirmText: 'Unlock Premium (5.00 Tokens)',
         cancelText: 'Cancel',
         type: 'warning',
@@ -528,8 +696,9 @@
 
       try {
         await buyPremiumPass(currentUser.uid);
-        showToast('Congratulations! Champion Premium activated!', 'success');
-        setTimeout(() => window.location.href = 'profile', 1200);
+        currentUserData = await getUser(currentUser.uid);
+        checkPremiumStatus();
+        showPremiumPurchaseCelebration();
       } catch (err) {
         showToast(err.message, 'error');
       }

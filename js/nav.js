@@ -650,8 +650,16 @@ async function handleWalletBuy(packName, tokenAmount, usdPrice) {
   const amount = parseFloat(tokenAmount);
   try {
     await updateTokens(user.uid, amount, 'purchase', `Deposited ${packName} Pack (${formatTokens(amount)} Tokens)`);
-    showToast(`Successfully added ${formatTokens(amount)} Tokens to your balance!`, 'success');
     closeTokenWalletModal();
+    if (typeof showGiftClaimedModal === 'function') {
+      showGiftClaimedModal({
+        type: 'tokens',
+        amount: amount,
+        subtext: `Thank you for your purchase! ${formatTokens(amount)} Tokens have been deposited into your wallet.`
+      });
+    } else {
+      showToast(`Successfully added ${formatTokens(amount)} Tokens to your balance!`, 'success');
+    }
   } catch (err) {
     showToast(err.message, 'error');
   }
@@ -671,9 +679,17 @@ async function handleCustomWalletBuy() {
   }
   try {
     await updateTokens(user.uid, val, 'purchase', `Custom Deposit (${formatTokens(val)} Tokens)`);
-    showToast(`Successfully added ${formatTokens(val)} Tokens to your balance!`, 'success');
     if (input) input.value = '';
     closeTokenWalletModal();
+    if (typeof showGiftClaimedModal === 'function') {
+      showGiftClaimedModal({
+        type: 'tokens',
+        amount: val,
+        subtext: `Thank you for your purchase! ${formatTokens(val)} Tokens have been deposited into your wallet.`
+      });
+    } else {
+      showToast(`Successfully added ${formatTokens(val)} Tokens to your balance!`, 'success');
+    }
   } catch (err) {
     showToast(err.message, 'error');
   }
