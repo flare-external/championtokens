@@ -7,7 +7,7 @@
   <link rel="icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
-  <link rel="stylesheet" href="css/style.css?v=4.0.1788055758182"/>
+  <link rel="stylesheet" href="css/style.css?v=4.0.1788056026478"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
 
@@ -368,7 +368,7 @@
                   <i data-lucide="refresh-cw" style="width:11px;height:11px;"></i> Random Code
                 </button>
               </div>
-              <input class="form-input" id="admin-code-input" placeholder="e.g. CT-XXXX-XXXX" required style="text-transform:uppercase;font-weight:900;letter-spacing:0.06em;background:#060608;" />
+              <input class="form-input" id="admin-code-input" placeholder="XXXX-XXXX-XXXX" required style="text-transform:uppercase;font-weight:900;letter-spacing:0.06em;background:#060608;" />
             </div>
 
             <div class="form-group" style="margin:0;">
@@ -575,9 +575,9 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="js/firebase-config.js?v=3.6"></script>
-  <script src="js/auth.js?v=4.0.1788055758182"></script>
-  <script src="js/db.js?v=4.0.1788055758182"></script>
-  <script src="js/nav.js?v=4.0.1788055758182"></script>
+  <script src="js/auth.js?v=4.0.1788056026478"></script>
+  <script src="js/db.js?v=4.0.1788056026478"></script>
+  <script src="js/nav.js?v=4.0.1788056026478"></script>
 
   <script>
     let currentUser = null;
@@ -853,13 +853,13 @@
       }
     }
 
-    function generateRandomCodeInput() {
+        function generateRandomCodeInput() {
       const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-      let part1 = '';
-      let part2 = '';
-      for (let i = 0; i < 4; i++) part1 += chars.charAt(Math.floor(Math.random() * chars.length));
-      for (let i = 0; i < 4; i++) part2 += chars.charAt(Math.floor(Math.random() * chars.length));
-      const code = 'CT-' + part1 + '-' + part2;
+      let p1 = '', p2 = '', p3 = '';
+      for (let i = 0; i < 4; i++) p1 += chars.charAt(Math.floor(Math.random() * chars.length));
+      for (let i = 0; i < 4; i++) p2 += chars.charAt(Math.floor(Math.random() * chars.length));
+      for (let i = 0; i < 4; i++) p3 += chars.charAt(Math.floor(Math.random() * chars.length));
+      const code = p1 + '-' + p2 + '-' + p3;
       const input = document.getElementById('admin-code-input');
       if (input) input.value = code;
     }

@@ -145,9 +145,9 @@ function injectNav(activePage = '') {
       </div>
     </a>
 
-        <!-- Universal Token Wallet Modal (Purchase, Withdraw, Redeem) -->
+            <!-- Universal Token Wallet Modal (Deposit & Redeem) -->
     <div class="modal-overlay" id="token-wallet-modal" onclick="if(event.target===this)closeTokenWalletModal()">
-      <div class="modal" style="max-width:540px;">
+      <div class="modal" style="max-width:520px;">
         <div class="modal-header" style="padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,0.07);margin-bottom:18px;">
           <div class="modal-title" style="display:flex;align-items:center;gap:10px;">
             <img src="new_token.png" alt="CT" style="width:28px;height:28px;object-fit:contain;" />
@@ -156,20 +156,17 @@ function injectNav(activePage = '') {
           <button class="modal-close" onclick="closeTokenWalletModal()"><i data-lucide="x"></i></button>
         </div>
 
-        <!-- 3 Segmented Tabs -->
+        <!-- 2 Segmented Tabs -->
         <div class="wallet-tabs">
           <button class="wallet-tab-btn active" id="tab-btn-wallet-purchase" onclick="switchWalletTab('purchase')">
             <i data-lucide="plus-circle"></i> <span>Deposit</span>
           </button>
-          <button class="wallet-tab-btn" id="tab-btn-wallet-withdraw" onclick="switchWalletTab('withdraw')">
-            <i data-lucide="arrow-up-right"></i> <span>Withdraw</span>
-          </button>
           <button class="wallet-tab-btn" id="tab-btn-wallet-redeem" onclick="switchWalletTab('redeem')">
-            <i data-lucide="gift"></i> <span>Redeem Code</span>
+            <i data-lucide="gift"></i> <span>Redeem</span>
           </button>
         </div>
 
-        <!-- Tab 1: Purchase / Deposit Tokens -->
+        <!-- Tab 1: Deposit Tokens -->
         <div id="wallet-tab-purchase-view">
           <div style="font-size:0.82rem;color:var(--text-muted);margin-bottom:14px;">
             Select a token pack or deposit a custom amount:
@@ -225,60 +222,17 @@ function injectNav(activePage = '') {
           </div>
         </div>
 
-        <!-- Tab 2: Withdraw Tokens -->
-        <div id="wallet-tab-withdraw-view" style="display:none;">
-          <div style="background:#060608;border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:18px 20px;margin-bottom:14px;">
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
-              <span style="font-size:0.75rem;font-weight:800;color:var(--text-muted);text-transform:uppercase;">Available Balance</span>
-              <span style="font-size:1.1rem;font-weight:900;color:var(--gold-bright);display:flex;align-items:center;gap:5px;">
-                <span id="withdraw-available-tokens">0.00</span> Tokens
-              </span>
-            </div>
-
-            <div class="form-group" style="margin-bottom:12px;">
-              <label class="form-label" style="font-size:0.75rem;">Payout Method</label>
-              <select id="wallet-withdraw-method" class="form-input" style="background:#000;border-radius:10px;">
-                <option value="paypal">PayPal (Email)</option>
-                <option value="crypto_ltc">Litecoin (LTC)</option>
-                <option value="crypto_sol">Solana (SOL)</option>
-                <option value="crypto_usdt">USDT (TRC20 / ERC20)</option>
-                <option value="bank_card">Debit Card / Bank Transfer</option>
-              </select>
-            </div>
-
-            <div class="form-group" style="margin-bottom:12px;">
-              <label class="form-label" style="font-size:0.75rem;" id="wallet-withdraw-address-label">PayPal Email or Address</label>
-              <input type="text" id="wallet-withdraw-address" class="form-input" placeholder="e.g. yourname@gmail.com or LTC address" style="background:#000;border-radius:10px;" />
-            </div>
-
-            <div class="form-group" style="margin-bottom:14px;">
-              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
-                <label class="form-label" style="font-size:0.75rem;margin:0;">Withdraw Amount (CT)</label>
-                <button type="button" onclick="setWalletWithdrawMax()" style="background:none;border:none;color:var(--gold-bright);font-size:0.72rem;font-weight:800;cursor:pointer;">MAX</button>
-              </div>
-              <input type="number" id="wallet-withdraw-amount" class="form-input" placeholder="Min 5.00" min="5" step="0.5" style="background:#000;border-radius:10px;" />
-            </div>
-
-            <button class="btn btn-primary btn-full" id="wallet-withdraw-submit-btn" onclick="handleWalletWithdraw()" style="border-radius:12px;padding:10px;font-size:0.86rem;">
-              Request Payout
-            </button>
-          </div>
-          <div style="font-size:0.72rem;color:var(--text-faint);text-align:center;line-height:1.4;">
-            Withdrawals are processed within 1–24 hours after verification. Minimum withdrawal: 5.00 Tokens.
-          </div>
-        </div>
-
-        <!-- Tab 3: Redeem Code -->
+        <!-- Tab 2: Redeem Code -->
         <div id="wallet-tab-redeem-view" style="display:none;">
           <div style="background:#060608;border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:22px 20px;text-align:center;margin-bottom:12px;">
             <div style="width:48px;height:48px;border-radius:12px;background:rgba(245,158,11,0.12);display:flex;align-items:center;justify-content:center;color:var(--gold-bright);margin:0 auto 12px;">
               <i data-lucide="gift" style="width:24px;height:24px;"></i>
             </div>
-            <div style="font-weight:900;font-size:1.15rem;color:#fff;margin-bottom:4px;">
-              Redeem Gift Code
+            <div style="font-weight:900;font-size:1.2rem;color:#fff;margin-bottom:4px;">
+              Redeem
             </div>
             <div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:16px;">
-              Enter your voucher or promo code below to claim free tokens or exclusive cosmetics:
+              Enter your code below to claim free tokens or exclusive cosmetics:
             </div>
 
             <div style="margin-bottom:14px;">
@@ -286,8 +240,8 @@ function injectNav(activePage = '') {
                 type="text"
                 id="wallet-redeem-code-input"
                 class="form-input"
-                placeholder="ENTER CODE (e.g. CT-XXXX-XXXX)"
-                style="text-align:center;font-weight:900;letter-spacing:0.08em;font-size:1.05rem;text-transform:uppercase;background:#000;border-radius:12px;padding:12px;"
+                placeholder="XXXX-XXXX-XXXX"
+                style="text-align:center;font-weight:900;letter-spacing:0.08em;font-size:1.1rem;text-transform:uppercase;background:#000;border-radius:12px;padding:12px;"
                 oninput="this.value = this.value.toUpperCase().trim()"
               />
             </div>
@@ -298,25 +252,7 @@ function injectNav(activePage = '') {
           </div>
 
           <div style="font-size:0.72rem;color:var(--text-faint);text-align:center;">
-            Codes are case-insensitive and can only be redeemed once per account.
-          </div>
-        </div>
-      </div>
-    </div>
-
-        <!-- Withdraw Tab -->
-        <div id="wallet-tab-withdraw-view" style="display:none;">
-          <div class="withdraw-coming-soon-box">
-            <div style="width:54px;height:54px;border-radius:50%;background:rgba(245,158,11,0.15);border:1px solid var(--gold-bright);display:flex;align-items:center;justify-content:center;color:var(--gold-bright);font-size:1.6rem;box-shadow:0 0 20px rgba(245,158,11,0.35);">
-              <i data-lucide="lock"></i>
-            </div>
-            <div style="font-size:1.25rem;font-weight:900;color:#fff;">Withdrawals Coming Soon</div>
-            <p style="font-size:0.85rem;color:var(--text-muted);line-height:1.5;max-width:360px;">
-              Our automated withdrawal gateway for instant <strong>Crypto (USDT / SOL / LTC)</strong> & <strong>PayPal</strong> payouts is currently undergoing security audits.
-            </p>
-            <span class="chip chip-gold" style="font-size:0.75rem;padding:4px 14px;font-weight:800;display:inline-flex;align-items:center;gap:6px;">
-              <i data-lucide="sparkles" style="width:13px;height:13px;"></i> Launching In Next Update
-            </span>
+            Codes can only be redeemed once per account.
           </div>
         </div>
       </div>
@@ -683,27 +619,20 @@ function closeTokenWalletModal() {
 
 function switchWalletTab(tab) {
   const btnPurchase = document.getElementById('tab-btn-wallet-purchase');
-  const btnWithdraw = document.getElementById('tab-btn-wallet-withdraw');
   const btnRedeem = document.getElementById('tab-btn-wallet-redeem');
 
   const viewPurchase = document.getElementById('wallet-tab-purchase-view');
-  const viewWithdraw = document.getElementById('wallet-tab-withdraw-view');
   const viewRedeem = document.getElementById('wallet-tab-redeem-view');
 
   if (btnPurchase) btnPurchase.classList.remove('active');
-  if (btnWithdraw) btnWithdraw.classList.remove('active');
   if (btnRedeem) btnRedeem.classList.remove('active');
 
   if (viewPurchase) viewPurchase.style.display = 'none';
-  if (viewWithdraw) viewWithdraw.style.display = 'none';
   if (viewRedeem) viewRedeem.style.display = 'none';
 
   if (tab === 'purchase') {
     if (btnPurchase) btnPurchase.classList.add('active');
     if (viewPurchase) viewPurchase.style.display = 'block';
-  } else if (tab === 'withdraw') {
-    if (btnWithdraw) btnWithdraw.classList.add('active');
-    if (viewWithdraw) viewWithdraw.style.display = 'block';
   } else if (tab === 'redeem') {
     if (btnRedeem) btnRedeem.classList.add('active');
     if (viewRedeem) viewRedeem.style.display = 'block';
