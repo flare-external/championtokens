@@ -7,7 +7,7 @@
   <link rel="icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
-  <link rel="stylesheet" href="css/style.css?v=4.0.1788136003463"/>
+  <link rel="stylesheet" href="css/style.css?v=4.0.1788136256035"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
 
@@ -683,9 +683,9 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="js/firebase-config.js?v=3.6"></script>
-  <script src="js/auth.js?v=4.0.1788136003463"></script>
-  <script src="js/db.js?v=4.0.1788136003463"></script>
-  <script src="js/nav.js?v=4.0.1788136003463"></script>
+  <script src="js/auth.js?v=4.0.1788136256035"></script>
+  <script src="js/db.js?v=4.0.1788136256035"></script>
+  <script src="js/nav.js?v=4.0.1788136256035"></script>
 
   <script>
     let currentUser = null;
@@ -1064,9 +1064,11 @@
       } else if (selectedRewardType === 'gearup') {
         const key = (document.getElementById('admin-code-gearup-key')?.value || '').trim() || 'GU-PENDING-KEY';
         const dur = (document.getElementById('admin-code-gearup-duration')?.value || '1 Month PC VIP').trim();
-        mediaEl.innerHTML = '<img src="gearup.png" style="width:100%;height:100%;object-fit:contain;padding:4px;" />';
-        titleEl.textContent = 'GearUP Booster (' + dur + ')';
-        badgeEl.innerHTML = '<span class="badge" style="background:rgba(56,189,248,0.15);color:#38bdf8;border:1px solid rgba(56,189,248,0.4);font-size:0.75rem;padding:3px 9px;">PC KEY</span>';
+        mediaEl.innerHTML = '<img src="gearup.png" style="width:84%;height:84%;object-fit:contain;" />';
+        mediaEl.style.borderColor = 'rgba(0, 240, 255, 0.5)';
+        mediaEl.style.boxShadow = '0 0 15px rgba(0, 240, 255, 0.25)';
+        titleEl.innerHTML = '<span style="color:#fff;">GearUP Booster</span> <span style="color:#00f0ff;font-size:0.85rem;">(' + escapeHtml(dur) + ')</span>';
+        badgeEl.innerHTML = '<span class="badge" style="background:rgba(0, 240, 255, 0.15);color:#00f0ff;border:1px solid rgba(0, 240, 255, 0.4);font-size:0.75rem;padding:3px 10px;font-weight:900;">PC KEY</span>';
       } else if (selectedRewardType === 'premium') {
         const days = parseInt(document.getElementById('admin-code-premium-days')?.value || '30', 10);
         mediaEl.innerHTML = '<i data-lucide="crown" style="width:24px;height:24px;color:var(--gold-bright);"></i>';

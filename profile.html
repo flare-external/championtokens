@@ -7,7 +7,7 @@
   <link rel="icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
-  <link rel="stylesheet" href="css/style.css?v=4.0.1788136003463"/>
+  <link rel="stylesheet" href="css/style.css?v=4.0.1788136256035"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
@@ -1261,9 +1261,9 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="js/firebase-config.js?v=3.2"></script>
-  <script src="js/auth.js?v=4.0.1788136003463"></script>
-  <script src="js/db.js?v=4.0.1788136003463"></script>
-  <script src="js/nav.js?v=4.0.1788136003463"></script>
+  <script src="js/auth.js?v=4.0.1788136256035"></script>
+  <script src="js/db.js?v=4.0.1788136256035"></script>
+  <script src="js/nav.js?v=4.0.1788136256035"></script>
 
   <script>
     let currentUser = null;
@@ -1634,33 +1634,40 @@
         if (isViewingSelf && claimedList.length > 0) {
           giftsWrap.style.display = 'block';
           giftsWrap.innerHTML = `
-            <div class="card" style="padding:20px 22px;background:#000;border:1px solid rgba(56,189,248,0.3);border-radius:18px;margin-bottom:24px;box-shadow:0 12px 30px rgba(0,0,0,0.8);">
-              <div style="font-size:1.05rem;font-weight:900;color:#fff;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+            <div style="padding:22px 24px;background:linear-gradient(180deg, #050c18 0%, #000206 100%);border:1.5px solid rgba(0, 240, 255, 0.35);border-radius:20px;margin-bottom:24px;box-shadow:0 16px 40px rgba(0,0,0,0.85), 0 0 30px rgba(0, 240, 255, 0.12);position:relative;overflow:hidden;">
+              <div style="position:absolute;top:-50px;right:-50px;width:160px;height:160px;background:radial-gradient(circle, rgba(0, 240, 255, 0.2) 0%, transparent 70%);border-radius:50%;pointer-events:none;"></div>
+              
+              <div style="font-size:1.1rem;font-weight:900;color:#fff;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;position:relative;z-index:2;">
                 <div style="display:flex;align-items:center;gap:8px;">
-                  <i data-lucide="gift" style="color:#38bdf8;"></i> Claimed Keys & Gifts Vault
+                  <i data-lucide="shield-check" style="color:#00f0ff;width:20px;height:20px;"></i>
+                  <span>Claimed VIP Licenses & Game Keys</span>
                 </div>
-                <span class="badge" style="background:rgba(56,189,248,0.15);color:#38bdf8;border:1px solid rgba(56,189,248,0.4);font-size:0.72rem;padding:2px 8px;">
-                  ${claimedList.length} ${claimedList.length === 1 ? 'Key' : 'Keys'}
+                <span style="background:rgba(0, 240, 255, 0.12);color:#00f0ff;border:1px solid rgba(0, 240, 255, 0.35);font-size:0.75rem;font-weight:800;padding:3px 10px;border-radius:8px;">
+                  ${claimedList.length} ${claimedList.length === 1 ? 'Key Vaulted' : 'Keys Vaulted'}
                 </span>
               </div>
-              <div style="display:flex;flex-direction:column;gap:10px;">
+
+              <div style="display:flex;flex-direction:column;gap:12px;position:relative;z-index:2;">
                 ${claimedList.map(g => `
-                  <div style="background:#060608;border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
-                    <div style="display:flex;align-items:center;gap:12px;">
-                      <div style="width:40px;height:40px;border-radius:10px;overflow:hidden;background:#000;border:1px solid rgba(56,189,248,0.4);display:flex;align-items:center;justify-content:center;padding:3px;">
-                        <img src="${encodeURI(g.image || 'gearup.png')}" style="width:100%;height:100%;object-fit:contain;" />
+                  <div style="background:#000000;border:1px solid rgba(0, 240, 255, 0.25);border-radius:16px;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;box-shadow:0 6px 18px rgba(0,0,0,0.6);">
+                    <div style="display:flex;align-items:center;gap:14px;">
+                      <div style="width:44px;height:44px;border-radius:12px;overflow:hidden;background:#000;border:1.5px solid rgba(0, 240, 255, 0.5);display:flex;align-items:center;justify-content:center;box-shadow:0 0 15px rgba(0, 240, 255, 0.25);">
+                        <img src="${encodeURI(g.image || 'gearup.png')}" style="width:84%;height:84%;object-fit:contain;" />
                       </div>
                       <div>
-                        <div style="font-weight:900;font-size:0.92rem;color:#fff;">${escapeHtml(g.title || 'Gift Key')}</div>
-                        <div style="font-size:0.75rem;color:#38bdf8;font-weight:800;">${escapeHtml(g.duration || 'PC VIP')}</div>
+                        <div style="font-weight:900;font-size:0.96rem;color:#fff;">${escapeHtml(g.title || 'GearUP Booster PC')}</div>
+                        <div style="font-size:0.75rem;color:#00f0ff;font-weight:800;display:flex;align-items:center;gap:4px;">
+                          <i data-lucide="zap" style="width:11px;height:11px;"></i> ${escapeHtml(g.duration || 'PC VIP Membership')}
+                        </div>
                       </div>
                     </div>
-                    <div style="display:flex;align-items:center;gap:8px;">
-                      <div style="font-family:monospace;font-size:0.95rem;font-weight:900;color:var(--gold-bright);background:#000;padding:6px 12px;border-radius:8px;border:1px solid rgba(255,255,255,0.12);">
+
+                    <div style="display:flex;align-items:center;gap:10px;">
+                      <div style="font-family:monospace;font-size:1.05rem;font-weight:900;color:#00f0ff;background:#060a12;padding:8px 14px;border-radius:10px;border:1px dashed rgba(0, 240, 255, 0.4);letter-spacing:0.04em;">
                         ${escapeHtml(g.key || 'N/A')}
                       </div>
-                      <button type="button" class="btn btn-outline btn-sm" onclick="copyGearupKey('${escapeHtml(g.key || '')}')" style="border-color:rgba(56,189,248,0.4);color:#38bdf8;padding:6px 12px;font-size:0.78rem;border-radius:8px;gap:4px;background:#000;">
-                        <i data-lucide="copy" style="width:12px;height:12px;"></i> Copy
+                      <button type="button" onclick="copyGearupKey('${escapeHtml(g.key || '')}')" style="background:rgba(0, 240, 255, 0.15);border:1px solid rgba(0, 240, 255, 0.4);color:#00f0ff;padding:8px 14px;font-size:0.82rem;font-weight:800;border-radius:10px;cursor:pointer;display:inline-flex;align-items:center;gap:5px;">
+                        <i data-lucide="copy" style="width:13px;height:13px;"></i> Copy
                       </button>
                     </div>
                   </div>

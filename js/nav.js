@@ -778,125 +778,169 @@ function showGiftClaimedModal(info) {
     document.body.appendChild(overlay);
   }
 
+  const isGearup = (info.type === 'gearup');
+  const isPremium = (info.type === 'premium');
+
   overlay.className = 'modal-overlay open active';
-  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.85);backdrop-filter:blur(10px);z-index:99999999;display:flex;align-items:center;justify-content:center;padding:20px;opacity:1;pointer-events:all;visibility:visible;';
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.88);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);z-index:99999999;display:flex;align-items:center;justify-content:center;padding:20px;opacity:1;pointer-events:all;visibility:visible;';
 
-  let mediaHtml = '';
-  if (info.type === 'tokens') {
-    mediaHtml = `
-      <div style="position:relative;width:100px;height:100px;margin:0 auto 16px;display:flex;align-items:center;justify-content:center;">
-        <div style="position:absolute;inset:-10px;background:radial-gradient(circle, rgba(245,158,11,0.4) 0%, transparent 70%);border-radius:50%;"></div>
-        <img src="new_token.png" alt="CT" style="width:76px;height:76px;object-fit:contain;position:relative;z-index:2;filter:drop-shadow(0 10px 25px rgba(245,158,11,0.5));" />
-      </div>
-      <div style="font-size:2.2rem;font-weight:900;color:var(--gold-bright);letter-spacing:-0.02em;margin-bottom:6px;">
-        +${formatTokens(info.amount)} Tokens
-      </div>
-    `;
-  } else if (info.type === 'pfp') {
-    mediaHtml = `
-      <div style="position:relative;width:100px;height:100px;margin:0 auto 16px;display:flex;align-items:center;justify-content:center;">
-        <div style="position:absolute;inset:-10px;background:radial-gradient(circle, rgba(245,158,11,0.35) 0%, transparent 70%);border-radius:50%;"></div>
-        <div style="width:86px;height:86px;border-radius:50%;overflow:hidden;background:#000;border:2.5px solid ${info.color || 'var(--gold-bright)'};position:relative;z-index:2;box-shadow:0 8px 24px rgba(0,0,0,0.8);">
-          <img src="${info.image || 'cosmetics/uncomon/uncomon.png'}" alt="Avatar" style="width:100%;height:100%;object-fit:cover;" />
-        </div>
-      </div>
-      <div style="font-size:1.4rem;font-weight:900;color:#fff;margin-bottom:6px;">
-        ${escapeHtml(info.name || 'Exclusive Avatar')}
-      </div>
-      <div style="margin-bottom:8px;">
-        <span class="badge" style="background:rgba(255,255,255,0.06);color:${info.color || 'var(--gold-bright)'};border:1px solid ${info.color || 'var(--gold-bright)'};font-size:0.75rem;padding:3px 10px;">
-          ${(info.rarity || 'EXCLUSIVE').toUpperCase()}
-        </span>
-      </div>
-    `;
-  } else if (info.type === 'title') {
-    const cleanTitle = (info.name || 'No signal').replace(/["']/g, '').replace(/\([^)]*\)/g, '').trim();
-    mediaHtml = `
-      <div style="position:relative;width:90px;height:90px;margin:0 auto 16px;display:flex;align-items:center;justify-content:center;">
-        <div style="width:72px;height:72px;border-radius:18px;background:rgba(239, 68, 68, 0.15);border:1.5px solid rgba(239, 68, 68, 0.45);display:flex;align-items:center;justify-content:center;color:#ef4444;font-size:2rem;box-shadow:0 0 30px rgba(239,68,68,0.3);">
-          <i data-lucide="${info.icon || 'globe-off'}" style="width:36px;height:36px;"></i>
-        </div>
-      </div>
-      <div style="margin-bottom:12px;">
-        <span class="badge" style="background:rgba(239,68,68,0.15);color:#ef4444;border:1.5px solid rgba(239,68,68,0.45);font-size:1.2rem;font-weight:900;padding:6px 20px;border-radius:12px;">
-          ${escapeHtml(cleanTitle)}
-        </span>
-      </div>
-    `;
-  } else if (info.type === 'gearup') {
+  let cardHtml = '';
+
+  if (isGearup) {
     const gearupKey = info.gearupKey || info.key || 'GU-PENDING-KEY';
-    mediaHtml = `
-      <div style="position:relative;width:110px;height:110px;margin:0 auto 14px;display:flex;align-items:center;justify-content:center;">
-        <div style="position:absolute;inset:-10px;background:radial-gradient(circle, rgba(56,189,248,0.4) 0%, transparent 70%);border-radius:50%;"></div>
-        <div style="width:96px;height:96px;border-radius:22px;overflow:hidden;background:#000;border:1.5px solid rgba(56,189,248,0.55);display:flex;align-items:center;justify-content:center;position:relative;z-index:2;box-shadow:0 0 35px rgba(56,189,248,0.3);">
-          <img src="gearup.png" alt="GearUP Booster" style="width:84%;height:84%;object-fit:contain;" />
-        </div>
-      </div>
-      
-      <div style="font-size:1.45rem;font-weight:900;color:#fff;margin-bottom:4px;letter-spacing:-0.02em;">
-        GearUP Booster (PC)
-      </div>
-      <div style="margin-bottom:14px;">
-        <span class="badge" style="background:rgba(56,189,248,0.15);color:#38bdf8;border:1px solid rgba(56,189,248,0.45);font-size:0.75rem;padding:3px 12px;font-weight:900;">
-          ${escapeHtml(info.duration || 'PC VIP MEMBERSHIP')}
-        </span>
-      </div>
+    const duration = info.duration || '1 Month PC VIP';
 
-      <!-- Copyable Key Box -->
-      <div style="background:#060608;border:1px solid rgba(56,189,248,0.4);border-radius:14px;padding:12px 16px;margin:12px 0 16px;display:flex;align-items:center;justify-content:space-between;gap:10px;box-shadow:0 8px 24px rgba(0,0,0,0.6);">
-        <div style="text-align:left;min-width:0;flex:1;">
-          <div style="font-size:0.68rem;font-weight:800;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.04em;">Your Activation Key</div>
-          <div style="font-family:monospace;font-size:1.15rem;font-weight:900;color:#38bdf8;letter-spacing:0.06em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" id="claimed-gearup-key-text">${escapeHtml(gearupKey)}</div>
-        </div>
-        <button type="button" class="btn btn-outline btn-sm" onclick="copyGearupKey('${escapeHtml(gearupKey)}')" id="btn-copy-gearup-key" style="border-color:rgba(56,189,248,0.5);color:#38bdf8;padding:7px 16px;border-radius:10px;font-size:0.82rem;gap:5px;flex-shrink:0;background:#000;">
-          <i data-lucide="copy" style="width:13px;height:13px;"></i> <span>Copy</span>
-        </button>
-      </div>
+    cardHtml = `
+      <div style="max-width:480px;width:100%;background:linear-gradient(180deg, #050b14 0%, #020408 100%);border:1.5px solid rgba(0, 240, 255, 0.4);border-radius:26px;padding:32px 26px 28px;text-align:center;position:relative;overflow:hidden;box-shadow:0 24px 70px rgba(0,0,0,0.95), 0 0 45px rgba(0, 240, 255, 0.2);animation:celebrationPopIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);">
+        
+        <!-- Ambient Ambient Cyber Glows -->
+        <div style="position:absolute;top:-60px;left:50%;transform:translateX(-50%);width:260px;height:260px;background:radial-gradient(circle, rgba(0, 240, 255, 0.25) 0%, rgba(2, 132, 199, 0.08) 50%, transparent 70%);border-radius:50%;pointer-events:none;"></div>
+        <div style="position:absolute;bottom:-40px;right:-40px;width:180px;height:180px;background:radial-gradient(circle, rgba(14, 165, 233, 0.15) 0%, transparent 70%);border-radius:50%;pointer-events:none;"></div>
 
-      <!-- Quick 3-Step Guide -->
-      <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:10px 14px;text-align:left;font-size:0.78rem;color:#94a3b8;line-height:1.5;margin-bottom:18px;">
-        <div style="font-weight:800;color:#fff;margin-bottom:4px;display:flex;align-items:center;gap:5px;">
-          <i data-lucide="zap" style="width:13px;height:13px;color:#38bdf8;"></i> How to activate on PC:
+        <!-- Top Tag -->
+        <div style="position:relative;z-index:2;display:inline-flex;align-items:center;gap:6px;background:rgba(0, 240, 255, 0.12);border:1px solid rgba(0, 240, 255, 0.4);color:#00f0ff;padding:4px 14px;border-radius:999px;font-size:0.72rem;font-weight:900;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:18px;">
+          <i data-lucide="zap" style="width:13px;height:13px;"></i> EXCLUSIVE GIFT UNLOCKED
         </div>
-        <div>1. Open the <strong>GearUP Booster</strong> app on your PC</div>
-        <div>2. Go to <strong>Profile / Membership</strong> &rarr; <strong>Redeem Code</strong></div>
-        <div>3. Paste your key to activate zero-ping boost!</div>
+
+        <!-- GearUP Visual Emblem -->
+        <div style="position:relative;z-index:2;width:112px;height:112px;margin:0 auto 16px;display:flex;align-items:center;justify-content:center;">
+          <div style="position:absolute;inset:-10px;background:radial-gradient(circle, rgba(0, 240, 255, 0.45) 0%, transparent 70%);border-radius:50%;"></div>
+          <div style="width:96px;height:96px;border-radius:24px;overflow:hidden;background:#000;border:2px solid rgba(0, 240, 255, 0.6);box-shadow:0 0 35px rgba(0, 240, 255, 0.4);display:flex;align-items:center;justify-content:center;position:relative;z-index:2;">
+            <img src="gearup.png" alt="GearUP Booster" style="width:86%;height:86%;object-fit:contain;" />
+          </div>
+        </div>
+
+        <!-- Title & Badges -->
+        <div style="position:relative;z-index:2;">
+          <h2 style="font-size:1.6rem;font-weight:900;color:#fff;margin:0 0 4px;letter-spacing:-0.02em;">
+            GearUP Booster <span style="background:linear-gradient(135deg, #38bdf8 0%, #00f0ff 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">(PC VIP)</span>
+          </h2>
+          <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:18px;flex-wrap:wrap;">
+            <span style="background:rgba(0, 240, 255, 0.12);color:#38bdf8;border:1px solid rgba(0, 240, 255, 0.35);font-size:0.75rem;font-weight:800;padding:2px 10px;border-radius:8px;">
+              ${escapeHtml(duration)}
+            </span>
+            <span style="background:rgba(255, 255, 255, 0.05);color:#94a3b8;border:1px solid rgba(255, 255, 255, 0.1);font-size:0.75rem;font-weight:800;padding:2px 10px;border-radius:8px;">
+              0ms Ping Boost
+            </span>
+          </div>
+
+          <!-- Digital Voucher Key Box -->
+          <div style="background:#000000;border:1.5px dashed rgba(0, 240, 255, 0.45);border-radius:16px;padding:14px 18px;margin:0 0 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;box-shadow:inset 0 2px 10px rgba(0,0,0,0.8), 0 8px 24px rgba(0,0,0,0.5);">
+            <div style="text-align:left;min-width:0;flex:1;">
+              <div style="font-size:0.68rem;font-weight:800;color:#64748b;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:2px;">PC Activation License Key</div>
+              <div style="font-family:monospace;font-size:1.15rem;font-weight:900;color:#00f0ff;letter-spacing:0.06em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" id="claimed-gearup-key-text">${escapeHtml(gearupKey)}</div>
+            </div>
+            <button type="button" onclick="copyGearupKey('${escapeHtml(gearupKey)}')" id="btn-copy-gearup-key" style="background:rgba(0, 240, 255, 0.15);border:1px solid rgba(0, 240, 255, 0.5);color:#00f0ff;padding:8px 16px;border-radius:12px;font-size:0.84rem;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:all 0.2s ease;flex-shrink:0;">
+              <i data-lucide="copy" style="width:14px;height:14px;"></i> <span>Copy Key</span>
+            </button>
+          </div>
+
+          <!-- Quick 3-Step Guide -->
+          <div style="background:rgba(255, 255, 255, 0.02);border:1px solid rgba(255, 255, 255, 0.06);border-radius:14px;padding:12px 16px;text-align:left;font-size:0.78rem;color:#94a3b8;line-height:1.55;margin-bottom:20px;">
+            <div style="font-weight:800;color:#fff;margin-bottom:6px;display:flex;align-items:center;gap:6px;">
+              <i data-lucide="shield-check" style="width:14px;height:14px;color:#00f0ff;"></i> Quick PC Activation:
+            </div>
+            <div style="display:flex;flex-direction:column;gap:3px;color:#cbd5e1;">
+              <div>1. Open the <strong>GearUP Booster</strong> app on your PC</div>
+              <div>2. Click your <strong>Profile / VIP</strong> &rarr; <strong>Redeem Code</strong></div>
+              <div>3. Paste your key to instantly activate zero-ping boost!</div>
+            </div>
+          </div>
+
+          <!-- Action Button -->
+          <button type="button" class="btn btn-full" id="gift-modal-close-btn" style="background:linear-gradient(135deg, #0284c7 0%, #00f0ff 100%);color:#000;font-weight:900;border:none;border-radius:14px;padding:13px;font-size:0.95rem;box-shadow:0 0 25px rgba(0, 240, 255, 0.35);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;">
+            <i data-lucide="check" style="width:17px;height:17px;"></i> <span>Done, Let's Game!</span>
+          </button>
+        </div>
       </div>
     `;
-  } else if (info.type === 'premium') {
-    mediaHtml = `
-      <div style="position:relative;width:90px;height:90px;margin:0 auto 16px;display:flex;align-items:center;justify-content:center;">
-        <div style="width:72px;height:72px;border-radius:20px;background:rgba(245,158,11,0.18);border:1.5px solid var(--gold-bright);display:flex;align-items:center;justify-content:center;color:var(--gold-bright);font-size:2.2rem;box-shadow:0 0 35px rgba(245,158,11,0.3);">
-          <i data-lucide="crown" style="width:38px;height:38px;"></i>
+  } else {
+    // Other Gifts (Tokens, PFP, Title, Premium)
+    let mediaHtml = '';
+    let headerTag = 'GIFT UNLOCKED';
+    let accentBorder = 'rgba(245, 158, 11, 0.4)';
+    let accentGlow = 'rgba(245, 158, 11, 0.2)';
+
+    if (info.type === 'tokens') {
+      mediaHtml = `
+        <div style="position:relative;width:100px;height:100px;margin:0 auto 16px;display:flex;align-items:center;justify-content:center;">
+          <div style="position:absolute;inset:-10px;background:radial-gradient(circle, rgba(245,158,11,0.4) 0%, transparent 70%);border-radius:50%;"></div>
+          <img src="new_token.png" alt="CT" style="width:76px;height:76px;object-fit:contain;position:relative;z-index:2;filter:drop-shadow(0 10px 25px rgba(245,158,11,0.5));" />
         </div>
-      </div>
-      <div style="font-size:1.45rem;font-weight:900;color:var(--gold-bright);margin-bottom:6px;">
-        Champion Premium
+        <div style="font-size:2.2rem;font-weight:900;color:var(--gold-bright);letter-spacing:-0.02em;margin-bottom:6px;">
+          +${formatTokens(info.amount)} Tokens
+        </div>
+      `;
+    } else if (info.type === 'pfp') {
+      mediaHtml = `
+        <div style="position:relative;width:100px;height:100px;margin:0 auto 16px;display:flex;align-items:center;justify-content:center;">
+          <div style="position:absolute;inset:-10px;background:radial-gradient(circle, rgba(245,158,11,0.35) 0%, transparent 70%);border-radius:50%;"></div>
+          <div style="width:86px;height:86px;border-radius:50%;overflow:hidden;background:#000;border:2.5px solid ${info.color || 'var(--gold-bright)'};position:relative;z-index:2;box-shadow:0 8px 24px rgba(0,0,0,0.8);">
+            <img src="${info.image || 'cosmetics/uncomon/uncomon.png'}" alt="Avatar" style="width:100%;height:100%;object-fit:cover;" />
+          </div>
+        </div>
+        <div style="font-size:1.4rem;font-weight:900;color:#fff;margin-bottom:6px;">
+          ${escapeHtml(info.name || 'Exclusive Avatar')}
+        </div>
+        <div style="margin-bottom:8px;">
+          <span class="badge" style="background:rgba(255,255,255,0.06);color:${info.color || 'var(--gold-bright)'};border:1px solid ${info.color || 'var(--gold-bright)'};font-size:0.75rem;padding:3px 10px;">
+            ${(info.rarity || 'EXCLUSIVE').toUpperCase()}
+          </span>
+        </div>
+      `;
+    } else if (info.type === 'title') {
+      const cleanTitle = (info.name || 'No signal').replace(/["']/g, '').replace(/\([^)]*\)/g, '').trim();
+      accentBorder = 'rgba(239, 68, 68, 0.45)';
+      accentGlow = 'rgba(239, 68, 68, 0.2)';
+      mediaHtml = `
+        <div style="position:relative;width:90px;height:90px;margin:0 auto 16px;display:flex;align-items:center;justify-content:center;">
+          <div style="width:72px;height:72px;border-radius:18px;background:rgba(239, 68, 68, 0.15);border:1.5px solid rgba(239, 68, 68, 0.45);display:flex;align-items:center;justify-content:center;color:#ef4444;font-size:2rem;box-shadow:0 0 30px rgba(239,68,68,0.3);">
+            <i data-lucide="${info.icon || 'globe-off'}" style="width:36px;height:36px;"></i>
+          </div>
+        </div>
+        <div style="margin-bottom:12px;">
+          <span class="badge" style="background:rgba(239,68,68,0.15);color:#ef4444;border:1.5px solid rgba(239,68,68,0.45);font-size:1.2rem;font-weight:900;padding:6px 20px;border-radius:12px;">
+            ${escapeHtml(cleanTitle)}
+          </span>
+        </div>
+      `;
+    } else if (info.type === 'premium') {
+      mediaHtml = `
+        <div style="position:relative;width:90px;height:90px;margin:0 auto 16px;display:flex;align-items:center;justify-content:center;">
+          <div style="width:72px;height:72px;border-radius:20px;background:rgba(245,158,11,0.18);border:1.5px solid var(--gold-bright);display:flex;align-items:center;justify-content:center;color:var(--gold-bright);font-size:2.2rem;box-shadow:0 0 35px rgba(245,158,11,0.3);">
+            <i data-lucide="crown" style="width:38px;height:38px;"></i>
+          </div>
+        </div>
+        <div style="font-size:1.45rem;font-weight:900;color:var(--gold-bright);margin-bottom:6px;">
+          Champion Premium
+        </div>
+      `;
+    }
+
+    cardHtml = `
+      <div style="max-width:460px;width:100%;text-align:center;padding:32px 28px;background:#000000;border:1px solid ${accentBorder};border-radius:24px;box-shadow:0 24px 60px rgba(0,0,0,0.95), 0 0 35px ${accentGlow};position:relative;overflow:hidden;animation:celebrationPopIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);">
+        <div style="position:absolute;top:-40px;left:50%;transform:translateX(-50%);width:220px;height:220px;background:radial-gradient(circle, ${accentGlow} 0%, transparent 70%);pointer-events:none;border-radius:50%;"></div>
+        
+        <h2 style="font-size:1.5rem;font-weight:900;color:#fff;margin-bottom:16px;letter-spacing:-0.02em;position:relative;z-index:2;">
+          You Received a Gift!
+        </h2>
+
+        <div style="position:relative;z-index:2;">
+          ${mediaHtml}
+
+          <div style="font-size:0.88rem;color:var(--text-muted);line-height:1.5;margin-bottom:22px;">
+            ${escapeHtml(info.subtext || 'The reward has been added to your account.')}
+          </div>
+
+          <button type="button" class="btn btn-gold btn-full" id="gift-modal-close-btn" style="border-radius:12px;padding:12px;font-size:0.92rem;font-weight:800;gap:6px;">
+            <i data-lucide="check" style="width:16px;height:16px;"></i> <span>Awesome!</span>
+          </button>
+        </div>
       </div>
     `;
   }
 
-  overlay.innerHTML = `
-    <div style="max-width:460px;width:100%;text-align:center;padding:32px 28px;background:#000000;border:1px solid rgba(245,158,11,0.4);border-radius:24px;box-shadow:0 24px 60px rgba(0,0,0,0.95), 0 0 35px rgba(245,158,11,0.15);position:relative;overflow:hidden;animation:celebrationPopIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);">
-      <div style="position:absolute;top:-40px;left:50%;transform:translateX(-50%);width:220px;height:220px;background:radial-gradient(circle, rgba(245,158,11,0.3) 0%, transparent 70%);pointer-events:none;border-radius:50%;"></div>
-      
-      <h2 style="font-size:1.5rem;font-weight:900;color:#fff;margin-bottom:16px;letter-spacing:-0.02em;position:relative;z-index:2;">
-        You Received a Gift!
-      </h2>
-
-      <div style="position:relative;z-index:2;">
-        ${mediaHtml}
-
-        <div style="font-size:0.88rem;color:var(--text-muted);line-height:1.5;margin-bottom:22px;">
-          ${escapeHtml(info.subtext || 'The reward has been added to your account.')}
-        </div>
-
-        <button type="button" class="btn btn-gold btn-full" id="gift-modal-close-btn" style="border-radius:12px;padding:12px;font-size:0.92rem;font-weight:800;gap:6px;">
-          <i data-lucide="check" style="width:16px;height:16px;"></i> <span>Awesome!</span>
-        </button>
-      </div>
-    </div>
-  `;
+  overlay.innerHTML = cardHtml;
 
   if (window.lucide) lucide.createIcons();
 
