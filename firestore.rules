@@ -20,6 +20,10 @@ service cloud.firestore {
       allow create: if isAuth();
       allow update: if isAuth();
       allow delete: if isAdmin();
+
+      match /notifications/{notifId} {
+        allow read, write: if isAuth();
+      }
     }
 
     // ── Redeem Codes ───────────────────────────────────────────
@@ -83,10 +87,7 @@ service cloud.firestore {
     }
 
     match /notifications/{notifId} {
-      allow read:   if isAuth();
-      allow create: if isAuth();
-      allow update: if isAuth();
-      allow delete: if isAuth();
+      allow read, write: if isAuth();
     }
 
     // ── Withdrawals ────────────────────────────────────────────

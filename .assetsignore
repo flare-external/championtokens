@@ -8,6 +8,8 @@ node_modules/**
 .wrangler/**
 scratch
 scratch/**
+src_js
+src_js/**
 api
 api/**
 functions
