@@ -25,7 +25,7 @@
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
   <link rel="manifest" href="manifest.json"/>
-  <link rel="stylesheet" href="css/style.css?v=4.0.1788156144957"/>
+  <link rel="stylesheet" href="css/style.css?v=4.0.1788156278752"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
@@ -199,6 +199,23 @@
       to { transform: rotate(360deg); }
     }
 
+  
+    .shop-two-row-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 14px;
+    }
+    @media (max-width: 1280px) {
+      .shop-two-row-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+    @media (max-width: 768px) {
+      .shop-two-row-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
   </style>
   <script src="js/protect.js"></script>
 </head>
@@ -261,7 +278,7 @@
         </div>
 
         <!-- 12 Daily Avatars (2 Rows) -->
-        <div id="daily-pfps-grid" class="shop-one-row-grid">
+        <div id="daily-pfps-grid" class="shop-two-row-grid">
           <!-- Rendered dynamically -->
         </div>
       </div>
@@ -278,7 +295,7 @@
         </div>
 
         <!-- Titles Grid -->
-        <div id="shop-titles-grid" class="shop-one-row-grid">
+        <div id="daily-titles-grid" class="shop-two-row-grid">
           <!-- Rendered dynamically -->
         </div>
       </div>
@@ -291,9 +308,9 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="js/firebase-config.js?v=3.8"></script>
-  <script src="js/auth.js?v=4.0.1788156144957"></script>
-  <script src="js/db.js?v=4.0.1788156144957"></script>
-  <script src="js/nav.js?v=4.0.1788156144957"></script>
+  <script src="js/auth.js?v=4.0.1788156278752"></script>
+  <script src="js/db.js?v=4.0.1788156278752"></script>
+  <script src="js/nav.js?v=4.0.1788156278752"></script>
 
   <script>
     let currentUser = null;
@@ -367,15 +384,16 @@
     }
 
     
+    
     function renderShopTitles() {
-      const grid = document.getElementById('shop-titles-grid');
+      const grid = document.getElementById('daily-titles-grid') || document.getElementById('shop-titles-grid');
       if (!grid || typeof SHOP_TITLES === 'undefined') return;
 
-      const titles = Object.values(SHOP_TITLES);
+      const dailyTitles = (typeof getDailyShopTitles === 'function') ? getDailyShopTitles() : Object.values(SHOP_TITLES).slice(0, 12);
       const unlocked = currentUserData?.unlockedTitles || [];
       const equippedTitle = currentUserData?.equippedTitle || '';
 
-      grid.innerHTML = titles.map(item => {
+      grid.innerHTML = dailyTitles.map(item => {
         const isOwned = unlocked.includes(item.id);
         const isEquipped = equippedTitle === item.id;
 
@@ -427,6 +445,7 @@
 
       if (window.lucide) lucide.createIcons();
     }
+
 
     async function handleEquipTitleFromShop(titleId) {
       if (!currentUser) return;
