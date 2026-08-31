@@ -2760,40 +2760,7 @@ async function equipShopPfp(uid, pfpId) {
   return item;
 }
 
-/**
- * Returns today's featured daily shop items based on UTC date seed and rarity weights.
- * High-cost items (Unreal, Champion, Elite) have lower weights and appear rarely.
- */
-function getDailyShopTitles(count = 5) {
-  const now = new Date();
-  const dateKey = `${now.getUTCFullYear()}-${now.getUTCMonth() + 1}-${now.getUTCDate()}`;
-  
-  // Create integer seed from dateKey string
-  let seed = 0;
-  for (let i = 0; i < dateKey.length; i++) {
-    seed = (seed * 31 + dateKey.charCodeAt(i)) >>> 0;
-  }
 
-  const eligible = Object.values(SHOP_TITLES).filter(t => t.weight > 0);
-  const selected = [];
-  const pool = [...eligible];
-
-  for (let step = 0; step < count && pool.length > 0; step++) {
-    const totalWeight = pool.reduce((sum, item) => sum + item.weight, 0);
-    let rand = seededRandom(seed + step * 7) * totalWeight;
-    
-    for (let i = 0; i < pool.length; i++) {
-      rand -= pool[i].weight;
-      if (rand <= 0 || i === pool.length - 1) {
-        selected.push(pool[i]);
-        pool.splice(i, 1);
-        break;
-      }
-    }
-  }
-
-  return selected;
-}
 
 /** Purchase a Title from Shop */
 async function buyShopTitle(uid, titleId) {

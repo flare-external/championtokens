@@ -25,7 +25,7 @@
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
   <link rel="manifest" href="manifest.json"/>
-  <link rel="stylesheet" href="css/style.css?v=4.0.1788156406613"/>
+  <link rel="stylesheet" href="css/style.css?v=4.0.1788156645050"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
@@ -308,9 +308,9 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="js/firebase-config.js?v=3.8"></script>
-  <script src="js/auth.js?v=4.0.1788156406613"></script>
-  <script src="js/db.js?v=4.0.1788156406613"></script>
-  <script src="js/nav.js?v=4.0.1788156406613"></script>
+  <script src="js/auth.js?v=4.0.1788156645050"></script>
+  <script src="js/db.js?v=4.0.1788156645050"></script>
+  <script src="js/nav.js?v=4.0.1788156645050"></script>
 
   <script>
     let currentUser = null;
@@ -447,13 +447,27 @@
     }
 
 
+    async function handleEquipPfp(pfpId) {
+      if (!currentUser) return;
+      try {
+        await equipShopPfp(currentUser.uid, pfpId);
+        currentUserData = await getUser(currentUser.uid);
+        renderDailyPfps();
+        const item = (typeof SHOP_PFPS !== 'undefined') ? SHOP_PFPS[pfpId] : null;
+        showToast(`Equipped avatar "${item?.name || 'Avatar'}"! Applied to profile.`, 'success');
+      } catch (err) {
+        showToast(err.message || 'Failed to equip avatar', 'error');
+      }
+    }
+
     async function handleEquipTitleFromShop(titleId) {
       if (!currentUser) return;
       try {
         await equipUserTitle(currentUser.uid, titleId);
         currentUserData = await getUser(currentUser.uid);
         renderShopTitles();
-        showToast(`Equipped "${SHOP_TITLES[titleId]?.name || 'Title'}" title!`, 'success');
+        const item = (typeof SHOP_TITLES !== 'undefined') ? SHOP_TITLES[titleId] : null;
+        showToast(`Equipped title "${item?.name || 'Title'}"! Displayed on profile & match rooms.`, 'success');
       } catch (err) {
         showToast(err.message || 'Failed to equip title', 'error');
       }

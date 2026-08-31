@@ -8,7 +8,7 @@
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
   <link rel="manifest" href="manifest.json"/>
-  <link rel="stylesheet" href="css/style.css?v=4.0.1788156406613"/>
+  <link rel="stylesheet" href="css/style.css?v=4.0.1788156645050"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
@@ -1439,9 +1439,9 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="js/firebase-config.js"></script>
-  <script src="js/auth.js?v=4.0.1788156406613"></script>
-  <script src="js/db.js?v=4.0.1788156406613"></script>
-  <script src="js/nav.js?v=4.0.1788156406613"></script>
+  <script src="js/auth.js?v=4.0.1788156645050"></script>
+  <script src="js/db.js?v=4.0.1788156645050"></script>
+  <script src="js/nav.js?v=4.0.1788156645050"></script>
 
   <script>
     let currentUser = null;
@@ -1837,6 +1837,20 @@
           const realDisplayName = isHiddenEnemy ? 'Anonymous' : (liveData.displayName || player.displayName || 'Player');
           const realEpicUsername = isHiddenEnemy ? '' : (liveData.epicUsername || player.epicUsername || '');
 
+          // Player Equipped Title Badge (Below Name, Above Epic IGN)
+          const playerEquippedTitle = !isHiddenEnemy ? (liveData.equippedTitle || player.equippedTitle || '') : '';
+          const titleObj = (playerEquippedTitle && typeof SHOP_TITLES !== 'undefined') ? SHOP_TITLES[playerEquippedTitle] : null;
+          let titleBadgeHTML = '';
+          if (titleObj) {
+            titleBadgeHTML = `
+              <div style="margin:2px 0 4px 0;display:flex;align-items:center;">
+                <span class="user-title-badge" style="display:inline-flex;align-items:center;gap:4px;background:${titleObj.bgColor || 'rgba(239,68,68,0.15)'};color:${titleObj.color || '#ef4444'};border:1px solid ${titleObj.borderColor || 'rgba(239,68,68,0.45)'};padding:1px 8px;border-radius:8px;font-size:0.72rem;font-weight:900;letter-spacing:0.02em;">
+                  <i data-lucide="${titleObj.icon || 'award'}" style="width:11px;height:11px;"></i>
+                  <span>${escapeHtml(titleObj.name)}</span>
+                </span>
+              </div>`;
+          }
+
           let epicChipHTML = '';
           if (isHiddenEnemy) {
             epicChipHTML = `
@@ -1882,6 +1896,7 @@
                   ${(!isHiddenEnemy && isPlayerHost) ? '<span class="badge" style="background:var(--gold-dim);color:var(--gold-bright);padding:1px 5px;font-size:0.62rem;font-weight:800;">HOST</span>' : ''}
                   ${(!isHiddenEnemy && player.isCovered) ? '<span class="badge" style="background:rgba(134,239,172,0.15);color:#86efac;padding:1px 5px;font-size:0.62rem;font-weight:700;">COVERED</span>' : ''}
                 </div>
+                ${titleBadgeHTML}
                 ${epicChipHTML}
               </div>
               ${readyStatusHTML}
