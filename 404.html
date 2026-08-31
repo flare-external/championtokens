@@ -24,7 +24,7 @@
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
   <link rel="manifest" href="manifest.json"/>
-  <link rel="stylesheet" href="css/style.css?v=4.0.1788154256801"/>
+  <link rel="stylesheet" href="css/style.css?v=4.0.1788154390858"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <script src="js/protect.js"></script>
@@ -44,44 +44,42 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 30px 20px 50px;
+      padding: 40px 20px;
       text-align: center;
       position: relative;
       z-index: 2;
-      max-width: 600px;
+      max-width: 580px;
       margin: 0 auto;
     }
-    .error-character-wrap {
-      position: relative;
-      margin-bottom: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .error-gif-img {
-      width: 240px;
-      max-width: 75vw;
+    .error-pet-img {
+      width: 180px;
+      max-width: 60vw;
       height: auto;
-      border-radius: 24px;
-      border: 2px solid rgba(245, 158, 11, 0.4);
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.8), 0 0 35px rgba(245, 158, 11, 0.25);
-      background: #090b10;
-      object-fit: cover;
       display: block;
+      margin: 0 auto 16px;
+      filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.7));
+    }
+    .error-tag-text {
+      font-size: clamp(2.2rem, 5vw, 3.2rem);
+      font-weight: 900;
+      color: var(--gold-bright);
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin: 0 0 6px;
     }
     .error-title {
-      font-size: clamp(1.7rem, 4vw, 2.4rem);
-      font-weight: 900;
+      font-size: clamp(1.4rem, 3.5vw, 1.85rem);
+      font-weight: 800;
       color: #ffffff;
       margin: 0 0 8px;
-      letter-spacing: -0.02em;
+      letter-spacing: -0.01em;
     }
     .error-desc {
-      font-size: 1.02rem;
+      font-size: 0.98rem;
       color: var(--text-muted);
-      line-height: 1.55;
+      line-height: 1.5;
       margin: 0 0 28px;
-      max-width: 440px;
+      max-width: 420px;
     }
     .error-actions {
       display: flex;
@@ -91,23 +89,10 @@
       flex-wrap: wrap;
       width: 100%;
     }
-    .error-glow-bg {
-      position: absolute;
-      width: 480px;
-      height: 480px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(245, 158, 11, 0.14) 0%, rgba(0, 0, 0, 0) 70%);
-      top: 45%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      pointer-events: none;
-      z-index: 1;
-    }
   </style>
 </head>
 <body>
   <div class="page-bg"></div>
-  <div class="error-glow-bg"></div>
 
   <!-- Minimal Header -->
   <header class="landing-nav" style="border-bottom:1px solid rgba(255,255,255,0.06);background:rgba(0,0,0,0.85);backdrop-filter:blur(12px);position:relative;z-index:10;">
@@ -125,11 +110,11 @@
     </div>
   </header>
 
-  <!-- Error Content with Animated GIF Character -->
+  <!-- Error Content: Pure Pet GIF + Error 404 -->
   <main class="error-container">
-    <div class="error-character-wrap">
-      <img src="error-404.gif" alt="Error 404 Animated Character" class="error-gif-img"/>
-    </div>
+    <img src="error-404.gif" alt="Champion Tokens Pet" class="error-pet-img"/>
+
+    <div class="error-tag-text">Error 404</div>
 
     <h1 class="error-title">Page Not Found</h1>
     
