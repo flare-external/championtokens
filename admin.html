@@ -8,7 +8,7 @@
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
   <link rel="manifest" href="manifest.json"/>
-  <link rel="stylesheet" href="css/style.css?v=4.0.1788156278752"/>
+  <link rel="stylesheet" href="css/style.css?v=4.0.1788156406613"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
 
@@ -744,9 +744,9 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="js/firebase-config.js?v=3.6"></script>
-  <script src="js/auth.js?v=4.0.1788156278752"></script>
-  <script src="js/db.js?v=4.0.1788156278752"></script>
-  <script src="js/nav.js?v=4.0.1788156278752"></script>
+  <script src="js/auth.js?v=4.0.1788156406613"></script>
+  <script src="js/db.js?v=4.0.1788156406613"></script>
+  <script src="js/nav.js?v=4.0.1788156406613"></script>
 
   <script>
     let currentUser = null;
@@ -1194,14 +1194,17 @@
 
       wrap.innerHTML = Object.values(SHOP_TITLES).map(t => {
         const isSel = t.id === selectedTitleId;
+        const color = t.color || '#ef4444';
+        const bg = t.bgColor || 'rgba(239,68,68,0.15)';
+        const border = isSel ? '2px solid var(--gold-bright)' : (t.borderColor || 'rgba(239,68,68,0.35)');
         return `
-          <div class="role-option-card ${isSel ? 'active' : ''}" onclick="selectAdminTitle('${t.id}')" style="flex:1;min-width:200px;margin:0;">
-            <div style="width:36px;height:36px;border-radius:10px;background:rgba(239,68,68,0.2);color:#ef4444;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-              <i data-lucide="${t.icon || 'globe-off'}" style="width:18px;height:18px;"></i>
+          <div class="role-option-card ${isSel ? 'active' : ''}" onclick="selectAdminTitle('${t.id}')" style="flex:1;min-width:180px;margin:0;border:${border};background:${isSel ? 'rgba(245,158,11,0.12)' : '#060608'};cursor:pointer;">
+            <div style="width:36px;height:36px;border-radius:10px;background:${bg};color:${color};display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <i data-lucide="${t.icon || 'award'}" style="width:18px;height:18px;"></i>
             </div>
             <div style="flex:1;">
-              <div style="font-weight:900;color:#ef4444;font-size:0.95rem;">${escapeHtml(t.name)}</div>
-              <div style="font-size:0.72rem;color:var(--text-muted);">${t.rarity || 'Rare'} Title</div>
+              <div style="font-weight:900;color:${color};font-size:0.92rem;">${escapeHtml(t.name)}</div>
+              <div style="font-size:0.7rem;color:var(--text-muted);">${t.rarity || 'Rare'} Title</div>
             </div>
           </div>
         `;
@@ -1232,10 +1235,10 @@
         titleEl.textContent = 'Avatar ' + pfp.name + ' (' + pfp.rarity + ')';
         badgeEl.innerHTML = `<span class="badge" style="background:rgba(255,255,255,0.06);color:${pfp.color || '#fff'};border:1px solid ${pfp.color || '#fff'};font-size:0.75rem;padding:3px 9px;">${pfp.rarity.toUpperCase()}</span>`;
       } else if (selectedRewardType === 'title') {
-        const titleItem = (typeof SHOP_TITLES !== 'undefined' && SHOP_TITLES[selectedTitleId]) ? SHOP_TITLES[selectedTitleId] : { name: 'No signal', icon: 'globe-off' };
-        mediaEl.innerHTML = '<i data-lucide="globe-off" style="width:24px;height:24px;color:#ef4444;"></i>';
-        titleEl.textContent = titleItem.name;
-        badgeEl.innerHTML = '<span class="badge" style="background:rgba(239,68,68,0.15);color:#ef4444;border:1px solid rgba(239,68,68,0.45);font-size:0.75rem;padding:3px 9px;">TITLE</span>';
+        const titleItem = (typeof SHOP_TITLES !== 'undefined' && SHOP_TITLES[selectedTitleId]) ? SHOP_TITLES[selectedTitleId] : { name: 'No signal', icon: 'globe-off', color: '#ef4444' };
+        mediaEl.innerHTML = `<i data-lucide="${titleItem.icon || 'award'}" style="width:24px;height:24px;color:${titleItem.color || '#ef4444'};"></i>`;
+        titleEl.textContent = 'Title: ' + titleItem.name;
+        badgeEl.innerHTML = `<span class="badge" style="background:${titleItem.bgColor || 'rgba(239,68,68,0.15)'};color:${titleItem.color || '#ef4444'};border:1px solid ${titleItem.borderColor || 'rgba(239,68,68,0.45)'};font-size:0.75rem;padding:3px 9px;">${(titleItem.rarity || 'TITLE').toUpperCase()}</span>`;
       } else if (selectedRewardType === 'gearup') {
         const key = (document.getElementById('admin-code-gearup-key')?.value || '').trim() || 'GU-PENDING-KEY';
         const dur = (document.getElementById('admin-code-gearup-duration')?.value || '1 Month PC VIP').trim();
