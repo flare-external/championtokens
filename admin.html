@@ -7,7 +7,7 @@
   <link rel="icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
-  <link rel="stylesheet" href="css/style.css?v=4.0.1788118574836"/>
+  <link rel="stylesheet" href="css/style.css?v=4.0.1788135215812"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
 
@@ -418,6 +418,7 @@
                 <option value="pfp">Avatar Cosmetic (PFP)</option>
                 <option value="title">Profile Title</option>
                 <option value="premium">Champion Premium Status</option>
+                <option value="gearup">GearUP Booster (PC Membership Key)</option>
               </select>
             </div>
 
@@ -458,6 +459,23 @@
             <label class="form-label">Select Profile Title</label>
             <div style="display:flex;gap:10px;flex-wrap:wrap;" id="admin-title-picker-wrap">
               <!-- Rendered via JS -->
+            </div>
+          </div>
+
+                    <!-- 5. GearUP Booster Configurator -->
+          <div id="reward-gearup-chooser" style="display:none;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+              <label class="form-label" style="margin:0;">GearUP Booster (PC) Activation Key</label>
+              <button type="button" onclick="setPlaceholderGearupKey()" style="background:none;border:none;color:#38bdf8;font-size:0.72rem;font-weight:800;cursor:pointer;">
+                + Set Placeholder (Update Later)
+              </button>
+            </div>
+            <div style="display:grid;grid-template-columns:2fr 1fr;gap:10px;margin-bottom:8px;">
+              <input class="form-input" id="admin-code-gearup-key" placeholder="e.g. GU-XXXX-XXXX-XXXX (Or leave blank to add later)" oninput="updateLivePreview()" style="font-family:monospace;font-weight:900;letter-spacing:0.04em;background:#060608;color:#38bdf8;border-color:rgba(56,189,248,0.4);" />
+              <input class="form-input" id="admin-code-gearup-duration" placeholder="e.g. 1 Month PC VIP" value="1 Month PC VIP" oninput="updateLivePreview()" style="font-weight:800;background:#060608;" />
+            </div>
+            <div style="font-size:0.75rem;color:var(--text-muted);">
+              💡 You can enter the real GearUP PC key now, or generate the code first and click <strong>"Edit Key"</strong> below once you obtain it.
             </div>
           </div>
 
@@ -632,14 +650,42 @@
   </div>
 
   <!-- Firebase SDKs & Core Scripts -->
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js">
+    function setPlaceholderGearupKey() {
+      const el = document.getElementById('admin-code-gearup-key');
+      if (el) {
+        el.value = 'GU-PC-' + Math.random().toString(36).substr(2, 6).toUpperCase() + '-' + Math.random().toString(36).substr(2, 6).toUpperCase();
+        updateLivePreview();
+      }
+    }
+
+    async function handleEditGearupKey(codeId, currentKey) {
+      const newKey = prompt('Enter the GearUP Booster PC license key for this code:', currentKey || '');
+      if (newKey === null) return;
+      const clean = newKey.trim();
+      if (!clean) {
+        showToast('Key cannot be empty', 'error');
+        return;
+      }
+      try {
+        await db.collection('redeem_codes').doc(codeId).update({
+          gearupKey: clean,
+          rewardValue: clean
+        });
+        showToast('GearUP Booster key updated successfully!', 'success');
+      } catch (e) {
+        showToast(e.message, 'error');
+      }
+    }
+
+  </script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="js/firebase-config.js?v=3.6"></script>
-  <script src="js/auth.js?v=4.0.1788118574836"></script>
-  <script src="js/db.js?v=4.0.1788118574836"></script>
-  <script src="js/nav.js?v=4.0.1788118574836"></script>
+  <script src="js/auth.js?v=4.0.1788135215812"></script>
+  <script src="js/db.js?v=4.0.1788135215812"></script>
+  <script src="js/nav.js?v=4.0.1788135215812"></script>
 
   <script>
     let currentUser = null;
@@ -929,11 +975,13 @@
       const pfpBox = document.getElementById('reward-pfp-chooser');
       const titleBox = document.getElementById('reward-title-chooser');
       const premBox = document.getElementById('reward-premium-chooser');
+      const gearupBox = document.getElementById('reward-gearup-chooser');
 
       if (tokenBox) tokenBox.style.display = selectedRewardType === 'tokens' ? 'block' : 'none';
       if (pfpBox) pfpBox.style.display = selectedRewardType === 'pfp' ? 'block' : 'none';
       if (titleBox) titleBox.style.display = selectedRewardType === 'title' ? 'block' : 'none';
       if (premBox) premBox.style.display = selectedRewardType === 'premium' ? 'block' : 'none';
+      if (gearupBox) gearupBox.style.display = selectedRewardType === 'gearup' ? 'block' : 'none';
 
       if (selectedRewardType === 'pfp') renderPfpPickerGrid();
       if (selectedRewardType === 'title') renderTitlePickerGrid();
@@ -1013,6 +1061,12 @@
         mediaEl.innerHTML = '<i data-lucide="globe-off" style="width:24px;height:24px;color:#ef4444;"></i>';
         titleEl.textContent = titleItem.name;
         badgeEl.innerHTML = '<span class="badge" style="background:rgba(239,68,68,0.15);color:#ef4444;border:1px solid rgba(239,68,68,0.45);font-size:0.75rem;padding:3px 9px;">TITLE</span>';
+      } else if (selectedRewardType === 'gearup') {
+        const key = (document.getElementById('admin-code-gearup-key')?.value || '').trim() || 'GU-PENDING-KEY';
+        const dur = (document.getElementById('admin-code-gearup-duration')?.value || '1 Month PC VIP').trim();
+        mediaEl.innerHTML = '<img src="gearup.png" style="width:100%;height:100%;object-fit:contain;padding:4px;" />';
+        titleEl.textContent = 'GearUP Booster (' + dur + ')';
+        badgeEl.innerHTML = '<span class="badge" style="background:rgba(56,189,248,0.15);color:#38bdf8;border:1px solid rgba(56,189,248,0.4);font-size:0.75rem;padding:3px 9px;">PC KEY</span>';
       } else if (selectedRewardType === 'premium') {
         const days = parseInt(document.getElementById('admin-code-premium-days')?.value || '30', 10);
         mediaEl.innerHTML = '<i data-lucide="crown" style="width:24px;height:24px;color:var(--gold-bright);"></i>';
@@ -1059,6 +1113,13 @@
         const titleItem = (typeof SHOP_TITLES !== 'undefined' && SHOP_TITLES[selectedTitleId]) ? SHOP_TITLES[selectedTitleId] : { name: 'No signal', icon: 'globe-off' };
         rewardValue = titleItem.id;
         rewardLabel = titleItem.name;
+      } else if (selectedRewardType === 'gearup') {
+        const key = (document.getElementById('admin-code-gearup-key')?.value || '').trim() || 'GU-PENDING-KEY';
+        const dur = (document.getElementById('admin-code-gearup-duration')?.value || '1 Month PC VIP').trim();
+        rewardValue = key;
+        rewardLabel = 'GearUP Booster PC (' + dur + ')';
+        rewardImage = 'gearup.png';
+        rewardColor = '#38bdf8';
       } else if (selectedRewardType === 'premium') {
         const days = parseInt(document.getElementById('admin-code-premium-days')?.value || '30', 10);
         rewardValue = days;
@@ -1080,6 +1141,8 @@
           rewardLabel: rewardLabel,
           rewardImage: rewardImage,
           rewardColor: rewardColor,
+          gearupKey: selectedRewardType === 'gearup' ? rewardValue : '',
+          gearupDuration: selectedRewardType === 'gearup' ? (document.getElementById('admin-code-gearup-duration')?.value || '1 Month PC VIP').trim() : '',
           maxUses: maxUses,
           usedCount: 0,
           usedBy: [],
@@ -1166,6 +1229,8 @@
           iconThumb = '<i data-lucide="award" style="width:20px;height:20px;color:#ef4444;"></i>';
         } else if (c.rewardType === 'premium') {
           iconThumb = '<i data-lucide="crown" style="width:20px;height:20px;color:var(--gold-bright);"></i>';
+        } else if (c.rewardType === 'gearup') {
+          iconThumb = '<img src="gearup.png" style="width:28px;height:28px;object-fit:contain;" />';
         }
 
         const cleanLabel = (c.rewardLabel || 'Reward').replace(/["']/g, '');
@@ -1187,6 +1252,14 @@
                   </div>
                   <div style="font-weight:900;font-size:0.92rem;color:#fff;">
                     ${escapeHtml(cleanLabel)}
+                    ${c.rewardType === 'gearup' ? `
+                      <div style="font-size:0.75rem;font-family:monospace;color:#38bdf8;margin-top:2px;display:flex;align-items:center;gap:6px;">
+                        <span>Key: <strong>${escapeHtml(c.gearupKey || c.rewardValue || 'Pending')}</strong></span>
+                        <button type="button" onclick="handleEditGearupKey('${c.id}', '${escapeHtml(c.gearupKey || c.rewardValue || '')}')" style="background:none;border:none;color:var(--gold-bright);font-size:0.7rem;font-weight:800;cursor:pointer;text-decoration:underline;">
+                          Edit Key
+                        </button>
+                      </div>
+                    ` : ''}
                   </div>
                 </div>
               </div>

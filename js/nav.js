@@ -821,6 +821,46 @@ function showGiftClaimedModal(info) {
         </span>
       </div>
     `;
+  } else if (info.type === 'gearup') {
+    const gearupKey = info.gearupKey || info.key || 'GU-PENDING-KEY';
+    mediaHtml = `
+      <div style="position:relative;width:110px;height:110px;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;">
+        <div style="position:absolute;inset:-10px;background:radial-gradient(circle, rgba(56,189,248,0.35) 0%, transparent 70%);border-radius:50%;"></div>
+        <div style="width:96px;height:96px;border-radius:20px;overflow:hidden;background:#000;border:1.5px solid rgba(56,189,248,0.5);display:flex;align-items:center;justify-content:center;position:relative;z-index:2;box-shadow:0 0 30px rgba(56,189,248,0.25);">
+          <img src="gearup.png" alt="GearUP Booster" style="width:84%;height:84%;object-fit:contain;" />
+        </div>
+      </div>
+      
+      <div style="font-size:1.35rem;font-weight:900;color:#fff;margin-bottom:4px;letter-spacing:-0.02em;">
+        GearUP Booster (PC)
+      </div>
+      <div style="margin-bottom:14px;">
+        <span class="badge" style="background:rgba(56,189,248,0.15);color:#38bdf8;border:1px solid rgba(56,189,248,0.45);font-size:0.75rem;padding:3px 12px;font-weight:900;">
+          ${escapeHtml(info.duration || 'PC VIP MEMBERSHIP')}
+        </span>
+      </div>
+
+      <!-- Copyable Key Box -->
+      <div style="background:#060608;border:1px solid rgba(56,189,248,0.35);border-radius:14px;padding:12px 16px;margin:12px 0 16px;display:flex;align-items:center;justify-content:space-between;gap:10px;box-shadow:0 8px 24px rgba(0,0,0,0.6);">
+        <div style="text-align:left;min-width:0;flex:1;">
+          <div style="font-size:0.68rem;font-weight:800;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.04em;">Your Activation Key</div>
+          <div style="font-family:monospace;font-size:1.1rem;font-weight:900;color:#38bdf8;letter-spacing:0.06em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" id="claimed-gearup-key-text">${escapeHtml(gearupKey)}</div>
+        </div>
+        <button type="button" class="btn btn-outline btn-sm" onclick="copyGearupKey('${escapeHtml(gearupKey)}')" id="btn-copy-gearup-key" style="border-color:rgba(56,189,248,0.5);color:#38bdf8;padding:6px 14px;border-radius:10px;font-size:0.8rem;gap:5px;flex-shrink:0;background:#000;">
+          <i data-lucide="copy" style="width:13px;height:13px;"></i> <span>Copy</span>
+        </button>
+      </div>
+
+      <!-- Quick 3-Step Guide -->
+      <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:10px 14px;text-align:left;font-size:0.76rem;color:#94a3b8;line-height:1.5;margin-bottom:18px;">
+        <div style="font-weight:800;color:#fff;margin-bottom:4px;display:flex;align-items:center;gap:5px;">
+          <i data-lucide="zap" style="width:13px;height:13px;color:#38bdf8;"></i> How to activate on PC:
+        </div>
+        <div>1. Open the <strong>GearUP Booster</strong> app on your PC</div>
+        <div>2. Go to <strong>Profile / Membership</strong> &rarr; <strong>Redeem Code</strong></div>
+        <div>3. Paste your key to activate zero-ping gaming!</div>
+      </div>
+    `;
   } else if (info.type === 'premium') {
     mediaHtml = `
       <div style="position:relative;width:90px;height:90px;margin:0 auto 14px;display:flex;align-items:center;justify-content:center;">
@@ -946,7 +986,27 @@ async function handleRedeemCode() {
       giftInfo.name = titleItem.name || 'No signal';
       giftInfo.icon = titleItem.icon || 'globe-off';
       giftInfo.subtext = 'New title unlocked! You can equip it in your Profile customization.';
-        } else if (rewardType === 'premium') {
+        } else if (rewardType === 'gearup') {
+      const gearupKey = codeData.gearupKey || codeData.rewardValue || 'GU-PENDING-KEY';
+      const duration = codeData.gearupDuration || '1 Month PC VIP';
+
+      // Store in user profile claimedGifts collection
+      await db.collection('users').doc(user.uid).update({
+        claimedGifts: firebase.firestore.FieldValue.arrayUnion({
+          type: 'gearup',
+          title: 'GearUP Booster (PC)',
+          key: gearupKey,
+          duration: duration,
+          image: 'gearup.png',
+          claimedAt: new Date().toISOString()
+        })
+      });
+
+      giftInfo.type = 'gearup';
+      giftInfo.gearupKey = gearupKey;
+      giftInfo.duration = duration;
+      giftInfo.subtext = 'Your GearUP Booster (PC) key is ready to activate! Copy it below or view it anytime in your Profile.';
+    } else if (rewardType === 'premium') {
       const daysToAdd = Number(codeData.rewardValue) || 30;
       let baseTime = Date.now();
       if (userData?.isPremium && userData?.premiumExpiresAt) {
@@ -1267,3 +1327,22 @@ function showBannedScreen(userData) {
 
 
 
+
+
+function copyGearupKey(key) {
+  if (!key) return;
+  navigator.clipboard.writeText(key).then(() => {
+    const btn = document.getElementById('btn-copy-gearup-key');
+    if (btn) {
+      btn.innerHTML = '<i data-lucide="check" style="width:13px;height:13px;"></i> <span>Copied!</span>';
+      if (window.lucide) lucide.createIcons();
+      setTimeout(() => {
+        btn.innerHTML = '<i data-lucide="copy" style="width:13px;height:13px;"></i> <span>Copy</span>';
+        if (window.lucide) lucide.createIcons();
+      }, 2500);
+    }
+    showToast('GearUP Booster key copied to clipboard!', 'success');
+  }).catch(() => {
+    prompt('Copy your GearUP Booster key:', key);
+  });
+}
