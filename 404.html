@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>404 — Page Not Found | Champion Tokens</title>
+  <meta name="title" content="404 — Page Not Found | Champion Tokens"/>
+  <meta name="description" content="The page or arena you are looking for was eliminated, moved, or never existed on Champion Tokens."/>
+  <meta name="theme-color" content="#F59E0B"/>
+
+  <meta property="og:type" content="website"/>
+  <meta property="og:url" content="https://championtokens.fun/404"/>
+  <meta property="og:site_name" content="Champion Tokens"/>
+  <meta property="og:title" content="404 — Page Not Found | Champion Tokens"/>
+  <meta property="og:description" content="The page or arena you are looking for was eliminated, moved, or never existed."/>
+  <meta property="og:image" content="https://championtokens.fun/champion-tokens_new.png"/>
+
+  <meta name="twitter:card" content="summary"/>
+  <meta name="twitter:title" content="404 — Page Not Found | Champion Tokens"/>
+  <meta name="twitter:description" content="The page or arena you are looking for was eliminated, moved, or never existed."/>
+  <meta name="twitter:image" content="https://championtokens.fun/champion-tokens_new.png"/>
+
+  <link rel="icon" type="image/png" href="champion-tokens_new.png"/>
+  <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
+  <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
+  <link rel="manifest" href="manifest.json"/>
+  <link rel="stylesheet" href="css/style.css?v=4.0.1788152710675"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <script src="js/protect.js"></script>
+
+  <style>
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: #000000;
+      color: var(--text-primary);
+      overflow-x: hidden;
+    }
+    .error-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+      text-align: center;
+      position: relative;
+      z-index: 2;
+      max-width: 680px;
+      margin: 0 auto;
+    }
+    .error-code-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      border-radius: 9999px;
+      background: rgba(245, 158, 11, 0.1);
+      border: 1px solid rgba(245, 158, 11, 0.35);
+      color: var(--gold-bright);
+      font-size: 0.85rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+      box-shadow: 0 0 20px rgba(245, 158, 11, 0.2);
+    }
+    .error-glitch-number {
+      font-size: clamp(5.5rem, 14vw, 9rem);
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -0.04em;
+      background: linear-gradient(135deg, #ffffff 0%, #f59e0b 50%, #d97706 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 12px;
+      filter: drop-shadow(0 0 45px rgba(245, 158, 11, 0.35));
+    }
+    .error-title {
+      font-size: clamp(1.6rem, 4vw, 2.3rem);
+      font-weight: 900;
+      color: #ffffff;
+      margin-bottom: 12px;
+      letter-spacing: -0.02em;
+    }
+    .error-desc {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 32px;
+      max-width: 520px;
+    }
+    .error-actions {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      width: 100%;
+    }
+    .error-glow-bg {
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(245, 158, 11, 0.12) 0%, rgba(0, 0, 0, 0) 70%);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      z-index: 1;
+    }
+  </style>
+</head>
+<body>
+  <div class="page-bg"></div>
+  <div class="error-glow-bg"></div>
+
+  <!-- Minimal Brand Header -->
+  <header class="landing-nav" style="border-bottom:1px solid rgba(255,255,255,0.06);background:rgba(0,0,0,0.85);backdrop-filter:blur(12px);position:relative;z-index:10;">
+    <a href="/" class="landing-brand" style="text-decoration:none;">
+      <img src="champion-tokens_new.png" alt="Champion Tokens" class="landing-brand-logo"/>
+      <span>Champion <span class="brand-accent">Tokens</span></span>
+    </a>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <a href="/" class="btn btn-outline btn-sm" style="text-decoration:none;padding:7px 16px;border-radius:var(--radius-md);gap:6px;">
+        <i data-lucide="home" style="width:14px;height:14px;"></i> Home
+      </a>
+      <a href="matches" class="btn btn-gold btn-sm" style="text-decoration:none;padding:7px 16px;border-radius:var(--radius-md);gap:6px;">
+        <i data-lucide="swords" style="width:14px;height:14px;"></i> Live Matches
+      </a>
+    </div>
+  </header>
+
+  <!-- Error Content -->
+  <main class="error-container">
+    <div class="error-code-badge">
+      <i data-lucide="shield-alert" style="width:15px;height:15px;"></i> Error 404
+    </div>
+    
+    <div class="error-glitch-number">404</div>
+
+    <h1 class="error-title">Page Lost in the Storm</h1>
+    
+    <p class="error-desc">
+      The arena, match, or link you are looking for has been eliminated, expired, or relocated.
+    </p>
+
+    <div class="error-actions">
+      <a href="/" class="btn btn-gold" style="padding:12px 24px;border-radius:var(--radius-lg);font-weight:800;font-size:0.95rem;text-decoration:none;gap:8px;">
+        <i data-lucide="home" style="width:18px;height:18px;"></i> Return to Home
+      </a>
+      <a href="matches" class="btn btn-outline" style="padding:12px 24px;border-radius:var(--radius-lg);font-weight:700;font-size:0.95rem;text-decoration:none;gap:8px;background:rgba(255,255,255,0.03);">
+        <i data-lucide="swords" style="width:18px;height:18px;color:var(--gold-bright);"></i> Find Matches
+      </a>
+      <a href="https://discord.gg/35xqcMTEbH" target="_blank" rel="noopener noreferrer" class="btn btn-outline" style="padding:12px 24px;border-radius:var(--radius-lg);font-weight:700;font-size:0.95rem;text-decoration:none;gap:8px;background:rgba(255,255,255,0.03);">
+        <i data-lucide="help-circle" style="width:18px;height:18px;color:#5865F2;"></i> Discord Support
+      </a>
+    </div>
+  </main>
+
+  <footer style="text-align:center;padding:24px;font-size:0.8rem;color:var(--text-muted);border-top:1px solid rgba(255,255,255,0.04);position:relative;z-index:2;">
+    &copy; 2026 Champion Tokens. All rights reserved. Not affiliated with Epic Games, Inc.
+  </footer>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    if (window.lucide) {
+      lucide.createIcons();
+    }
+  </script>
+</body>
+</html>
