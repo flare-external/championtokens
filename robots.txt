@@ -6,6 +6,7 @@ Allow: /shop
 Allow: /leaderboard
 Allow: /tournaments
 Allow: /rules
+Allow: /safety
 Allow: /privacy-policy
 Allow: /terms
 Allow: /llms.txt
