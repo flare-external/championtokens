@@ -24,7 +24,7 @@
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
   <link rel="manifest" href="manifest.json"/>
-  <link rel="stylesheet" href="css/style.css?v=4.0.1788153228408"/>
+  <link rel="stylesheet" href="css/style.css?v=4.0.1788154138660"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <script src="js/protect.js"></script>
@@ -44,66 +44,60 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 40px 20px;
+      padding: 30px 20px 50px;
       text-align: center;
       position: relative;
       z-index: 2;
-      max-width: 680px;
+      max-width: 600px;
       margin: 0 auto;
     }
-    .error-sad-icon {
-      font-size: 3.5rem;
-      color: var(--gold-bright);
-      margin-bottom: 8px;
-      font-family: monospace, sans-serif;
-      font-weight: 900;
-      letter-spacing: -2px;
-      text-shadow: 0 0 25px rgba(245, 158, 11, 0.4);
-      display: inline-flex;
+    .error-character-wrap {
+      position: relative;
+      margin-bottom: 20px;
+      display: flex;
       align-items: center;
       justify-content: center;
-      gap: 12px;
     }
-    .error-glitch-number {
-      font-size: clamp(5.5rem, 14vw, 8.5rem);
-      font-weight: 900;
-      line-height: 1;
-      letter-spacing: -0.04em;
-      background: linear-gradient(135deg, #ffffff 0%, #f59e0b 50%, #d97706 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin-bottom: 8px;
-      filter: drop-shadow(0 0 45px rgba(245, 158, 11, 0.35));
+    .error-gif-img {
+      width: 240px;
+      max-width: 75vw;
+      height: auto;
+      border-radius: 24px;
+      border: 2px solid rgba(245, 158, 11, 0.4);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.8), 0 0 35px rgba(245, 158, 11, 0.25);
+      background: #090b10;
+      object-fit: cover;
+      display: block;
     }
     .error-title {
-      font-size: clamp(1.6rem, 4vw, 2.3rem);
+      font-size: clamp(1.7rem, 4vw, 2.4rem);
       font-weight: 900;
       color: #ffffff;
-      margin-bottom: 10px;
+      margin: 0 0 8px;
       letter-spacing: -0.02em;
     }
     .error-desc {
-      font-size: 1.05rem;
+      font-size: 1.02rem;
       color: var(--text-muted);
-      line-height: 1.6;
-      margin-bottom: 32px;
-      max-width: 480px;
+      line-height: 1.55;
+      margin: 0 0 28px;
+      max-width: 440px;
     }
     .error-actions {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 14px;
+      gap: 12px;
       flex-wrap: wrap;
       width: 100%;
     }
     .error-glow-bg {
       position: absolute;
-      width: 500px;
-      height: 500px;
+      width: 480px;
+      height: 480px;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(245, 158, 11, 0.12) 0%, rgba(0, 0, 0, 0) 70%);
-      top: 50%;
+      background: radial-gradient(circle, rgba(245, 158, 11, 0.14) 0%, rgba(0, 0, 0, 0) 70%);
+      top: 45%;
       left: 50%;
       transform: translate(-50%, -50%);
       pointer-events: none;
@@ -115,7 +109,7 @@
   <div class="page-bg"></div>
   <div class="error-glow-bg"></div>
 
-  <!-- Minimal Brand Header -->
+  <!-- Minimal Header -->
   <header class="landing-nav" style="border-bottom:1px solid rgba(255,255,255,0.06);background:rgba(0,0,0,0.85);backdrop-filter:blur(12px);position:relative;z-index:10;">
     <a href="/" class="landing-brand" style="text-decoration:none;">
       <img src="champion-tokens_new.png" alt="Champion Tokens" class="landing-brand-logo"/>
@@ -131,13 +125,11 @@
     </div>
   </header>
 
-  <!-- Error Content -->
+  <!-- Error Content with Animated GIF Character -->
   <main class="error-container">
-    <div class="error-sad-icon">
-      <span>:(</span>
+    <div class="error-character-wrap">
+      <img src="error-404.gif" alt="Error 404 Animated Character" class="error-gif-img"/>
     </div>
-    
-    <div class="error-glitch-number">404</div>
 
     <h1 class="error-title">Page Not Found</h1>
     
@@ -146,19 +138,19 @@
     </p>
 
     <div class="error-actions">
-      <a href="/" class="btn btn-gold" style="padding:12px 24px;border-radius:var(--radius-lg);font-weight:800;font-size:0.95rem;text-decoration:none;gap:8px;">
-        <i data-lucide="home" style="width:18px;height:18px;"></i> Return to Home
+      <a href="/" class="btn btn-gold" style="padding:11px 22px;border-radius:var(--radius-lg);font-weight:800;font-size:0.92rem;text-decoration:none;gap:8px;">
+        <i data-lucide="home" style="width:17px;height:17px;"></i> Return to Home
       </a>
-      <a href="matches" class="btn btn-outline" style="padding:12px 24px;border-radius:var(--radius-lg);font-weight:700;font-size:0.95rem;text-decoration:none;gap:8px;background:rgba(255,255,255,0.03);">
-        <i data-lucide="swords" style="width:18px;height:18px;color:var(--gold-bright);"></i> Find Matches
+      <a href="matches" class="btn btn-outline" style="padding:11px 22px;border-radius:var(--radius-lg);font-weight:700;font-size:0.92rem;text-decoration:none;gap:8px;background:rgba(255,255,255,0.03);">
+        <i data-lucide="swords" style="width:17px;height:17px;color:var(--gold-bright);"></i> Find Matches
       </a>
-      <a href="https://discord.gg/35xqcMTEbH" target="_blank" rel="noopener noreferrer" class="btn btn-outline" style="padding:12px 24px;border-radius:var(--radius-lg);font-weight:700;font-size:0.95rem;text-decoration:none;gap:8px;background:rgba(255,255,255,0.03);">
-        <i data-lucide="help-circle" style="width:18px;height:18px;color:#5865F2;"></i> Discord Support
+      <a href="https://discord.gg/35xqcMTEbH" target="_blank" rel="noopener noreferrer" class="btn btn-outline" style="padding:11px 22px;border-radius:var(--radius-lg);font-weight:700;font-size:0.92rem;text-decoration:none;gap:8px;background:rgba(255,255,255,0.03);">
+        <i data-lucide="help-circle" style="width:17px;height:17px;color:#5865F2;"></i> Discord Support
       </a>
     </div>
   </main>
 
-  <footer style="text-align:center;padding:24px;font-size:0.8rem;color:var(--text-muted);border-top:1px solid rgba(255,255,255,0.04);position:relative;z-index:2;">
+  <footer style="text-align:center;padding:22px;font-size:0.8rem;color:var(--text-muted);border-top:1px solid rgba(255,255,255,0.04);position:relative;z-index:2;">
     &copy; 2026 Champion Tokens. All rights reserved. Not affiliated with Epic Games, Inc.
   </footer>
 
