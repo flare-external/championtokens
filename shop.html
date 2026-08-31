@@ -24,7 +24,7 @@
   <link rel="icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
-  <link rel="stylesheet" href="css/style.css?v=4.0.1788135412444"/>
+  <link rel="stylesheet" href="css/style.css?v=4.0.1788136003463"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
@@ -289,9 +289,9 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="js/firebase-config.js?v=3.8"></script>
-  <script src="js/auth.js?v=4.0.1788135412444"></script>
-  <script src="js/db.js?v=4.0.1788135412444"></script>
-  <script src="js/nav.js?v=4.0.1788135412444"></script>
+  <script src="js/auth.js?v=4.0.1788136003463"></script>
+  <script src="js/db.js?v=4.0.1788136003463"></script>
+  <script src="js/nav.js?v=4.0.1788136003463"></script>
 
   <script>
     let currentUser = null;
@@ -450,10 +450,10 @@
       if (!overlay) {
         overlay = document.createElement('div');
         overlay.id = 'shop-celebration-overlay';
-        overlay.className = 'modal-overlay';
-        overlay.style.zIndex = '999999';
         document.body.appendChild(overlay);
       }
+      overlay.className = 'modal-overlay open active';
+      overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.85);backdrop-filter:blur(10px);z-index:99999999;display:flex;align-items:center;justify-content:center;padding:20px;opacity:1;pointer-events:all;visibility:visible;';
 
       overlay.innerHTML = `
         <div class="celebration-modal-card">
@@ -516,10 +516,10 @@
       if (!overlay) {
         overlay = document.createElement('div');
         overlay.id = 'shop-celebration-overlay';
-        overlay.className = 'modal-overlay';
-        overlay.style.zIndex = '999999';
         document.body.appendChild(overlay);
       }
+      overlay.className = 'modal-overlay open active';
+      overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.85);backdrop-filter:blur(10px);z-index:99999999;display:flex;align-items:center;justify-content:center;padding:20px;opacity:1;pointer-events:all;visibility:visible;';
 
       overlay.innerHTML = `
         <div class="celebration-modal-card">
@@ -582,10 +582,10 @@
       if (!overlay) {
         overlay = document.createElement('div');
         overlay.id = 'shop-celebration-overlay';
-        overlay.className = 'modal-overlay';
-        overlay.style.zIndex = '999999';
         document.body.appendChild(overlay);
       }
+      overlay.className = 'modal-overlay open active';
+      overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.85);backdrop-filter:blur(10px);z-index:99999999;display:flex;align-items:center;justify-content:center;padding:20px;opacity:1;pointer-events:all;visibility:visible;';
 
       overlay.innerHTML = `
         <div class="celebration-modal-card" style="max-width:480px;">
@@ -653,10 +653,10 @@
       if (!overlay) {
         overlay = document.createElement('div');
         overlay.id = 'shop-processing-overlay';
-        overlay.className = 'modal-overlay';
-        overlay.style.zIndex = '1000000';
         document.body.appendChild(overlay);
       }
+      overlay.className = 'modal-overlay open active';
+      overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.85);backdrop-filter:blur(10px);z-index:10000000;display:flex;align-items:center;justify-content:center;padding:20px;opacity:1;pointer-events:all;visibility:visible;';
       overlay.innerHTML = `
         <div class="purchase-verifying-modal">
           <div class="spinner-gold"></div>
@@ -671,6 +671,7 @@
     function hidePurchaseLoading() {
       const overlay = document.getElementById('shop-processing-overlay');
       if (overlay) {
+        overlay.style.display = 'none';
         overlay.classList.remove('open');
         overlay.classList.remove('active');
       }
