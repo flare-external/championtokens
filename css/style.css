@@ -1710,19 +1710,8 @@ input[type="range"].ct-slider::-moz-range-thumb {
 @keyframes spin { to { transform: rotate(360deg); } }
 
 /* ── Loading Screen ────────────────────────────────────────── */
-.page-loading {
-  position: fixed;
-  inset: 0;
-  background: var(--bg-base);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 14px;
-  font-size: 0.95rem;
-  color: var(--text-muted);
-  z-index: 500;
-}
-.page-loading.hidden { display: none; }
+.page-loading { display: none !important; }
+.page-loading.hidden { display: none !important; }
 
 /* ── Responsive ────────────────────────────────────────────── */
 @media (max-width: 900px) {
