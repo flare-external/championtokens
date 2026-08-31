@@ -1,1 +1,2783 @@
-const _0x467253=_0x432c;(function(_0x12b97f,_0x1a2c0d){const _0x27a225=_0x432c,_0x523ae1=_0x12b97f();while(!![]){try{const _0x3a31cb=parseInt(_0x27a225(0x225))/(0xa57*-0x2+-0x6cf+0x1b7e)*(parseInt(_0x27a225(0x516))/(-0x22b+-0x14e6+0x1713))+-parseInt(_0x27a225(0x344))/(-0x2c6+0x2b5+0x14)+parseInt(_0x27a225(0x37e))/(0x12d7+0x11c9+-0x249c)+parseInt(_0x27a225(0x6e4))/(-0x165d*-0x1+-0x4*0x658+0x308)*(parseInt(_0x27a225(0x684))/(-0x3*0x2ee+0x2cf*0x6+-0x126*0x7))+parseInt(_0x27a225(0x402))/(-0x2583+0x13aa+-0xd0*-0x16)*(parseInt(_0x27a225(0x38d))/(0xbc6+-0x9f5*-0x2+0x7ea*-0x4))+parseInt(_0x27a225(0x61d))/(-0x3a1+-0x7*-0x133+-0x7*0xad)*(parseInt(_0x27a225(0x26d))/(0x4*0x4e9+0x1*0x1bdb+0x2f75*-0x1))+-parseInt(_0x27a225(0x64f))/(0x1c*0x37+-0x13*-0x5f+-0xd06*0x1);if(_0x3a31cb===_0x1a2c0d)break;else _0x523ae1['push'](_0x523ae1['shift']());}catch(_0x48c9cf){_0x523ae1['push'](_0x523ae1['shift']());}}}(_0x2445,-0x49dfb+-0x1c9ab+0x8b6f5));async function joinMatch(_0x279fa8,_0x3c5171){const _0x280a69=_0x432c,_0x461daa={'Ieuxr':function(_0x1a1b3c,_0x3f8c12){return _0x1a1b3c===_0x3f8c12;},'DrSyB':_0x280a69(0x631),'JTtbk':function(_0x4fb692,_0x510ee2){return _0x4fb692!==_0x510ee2;},'lhXGv':_0x280a69(0x367),'WbdyH':_0x280a69(0x488)+_0x280a69(0x1f2)+_0x280a69(0x49c)+_0x280a69(0x5a1),'vULoJ':function(_0x17fd5d,_0x503b80){return _0x17fd5d-_0x503b80;},'lBGCN':function(_0x528a47,_0xb065ca){return _0x528a47<=_0xb065ca;},'YnHvG':_0x280a69(0x251)+_0x280a69(0x4b0)+_0x280a69(0x527)+'reserved'+'\x20for\x20inv'+_0x280a69(0x467)+'ad\x20membe'+_0x280a69(0x6aa),'QzBis':function(_0x3c88c8,_0x5c3324){return _0x3c88c8===_0x5c3324;},'CwreX':'all','egrCu':function(_0x2c3294,_0x55e28e){return _0x2c3294>=_0x55e28e;},'ScYRG':function(_0x3b1187,_0x3aab85){return _0x3b1187<_0x3aab85;},'vpATW':function(_0x416072,_0x944e98){return _0x416072(_0x944e98);},'KLcqJ':function(_0x36a65b,_0x98051b){return _0x36a65b(_0x98051b);},'juinh':function(_0x3ecc79,_0x38ae2b){return _0x3ecc79>_0x38ae2b;},'tTBrY':function(_0x3bd53c,_0xdb1a3d){return _0x3bd53c+_0xdb1a3d;},'tIVbs':function(_0x7b8834,_0x282dfa){return _0x7b8834(_0x282dfa);},'VLagq':function(_0x53858a,_0x104407){return _0x53858a>_0x104407;},'ZsVwS':function(_0x472a3f,_0x3bef14){return _0x472a3f-_0x3bef14;},'lHyXQ':function(_0x55c3dc,_0x563d10){return _0x55c3dc+_0x563d10;},'dTvRb':_0x280a69(0x53d)+'ions','fCnqV':'match_wa'+_0x280a69(0x3b6),'hprKO':function(_0xbd2092,_0x24171c){return _0xbd2092||_0x24171c;},'ufZTz':'status','DlkyJ':_0x280a69(0x55b)},_0x489d58=_0x461daa[_0x280a69(0x602)](_0x279fa8,'')[_0x280a69(0x5ea)]();let _0x509d26=null;if(_0x461daa['Ieuxr'](_0x489d58[_0x280a69(0x2f4)],0x1*-0x20ab+-0x66e*-0x4+-0x1*-0x6f9)&&!_0x489d58[_0x280a69(0x625)]('-')){const _0x37fea0=await db[_0x280a69(0x28a)+'on'](_0x280a69(0x55b))['where']('code','==',_0x489d58[_0x280a69(0x547)+_0x280a69(0x492)]())[_0x280a69(0x339)](_0x461daa['ufZTz'],'==',_0x280a69(0x367))[_0x280a69(0x2c3)](-0x1f1b*0x1+0x1a2d+0x4ef)[_0x280a69(0x6e0)]();if(!_0x37fea0[_0x280a69(0x264)])_0x509d26=_0x37fea0[_0x280a69(0x362)][0x74a+-0x54d*0x3+0x89d]['ref'];}!_0x509d26&&(_0x509d26=db[_0x280a69(0x28a)+'on'](_0x461daa[_0x280a69(0x3ba)])['doc'](_0x489d58));const _0x41e521=db['collecti'+'on'](_0x280a69(0x2c2))[_0x280a69(0x31d)](_0x3c5171['uid']);return await db[_0x280a69(0x4bc)+_0x280a69(0x563)](async _0x2a0708=>{const _0x1565c9=_0x280a69,_0x9933a1=await _0x2a0708[_0x1565c9(0x6e0)](_0x509d26);if(!_0x9933a1[_0x1565c9(0x574)])throw new Error(_0x1565c9(0x2fe)+_0x1565c9(0x3a1)+_0x1565c9(0x537)+',\x20or\x20exp'+_0x1565c9(0x215));const _0x4c405c=_0x9933a1[_0x1565c9(0x2af)](),_0x434462=Number(_0x4c405c[_0x1565c9(0x50e)]||-0x1*0x20ff+0x1de3+0x1*0x31c);if(_0x461daa[_0x1565c9(0x592)](_0x4c405c[_0x1565c9(0x313)],_0x461daa[_0x1565c9(0x474)]))throw new Error(_0x1565c9(0x251)+'ch\x20has\x20a'+_0x1565c9(0x446)+_0x1565c9(0x551)+_0x1565c9(0x38f));if(_0x4c405c[_0x1565c9(0x222)+'t']&&_0x4c405c['expiresA'+'t'][_0x1565c9(0x5fc)]()<new Date())throw new Error(_0x1565c9(0x251)+_0x1565c9(0x621)+_0x1565c9(0x577)+_0x1565c9(0x28e)+_0x1565c9(0x431)+_0x1565c9(0x27c)+'e');const _0x2d0d7=_0x4c405c[_0x1565c9(0x1f8)]||[],_0x3de7e0=_0x4c405c[_0x1565c9(0x3c7)+'rs']||-0x15ee+-0x1*0x891+0x1e81;if(_0x2d0d7[_0x1565c9(0x2f4)]>=_0x3de7e0)throw new Error('This\x20mat'+_0x1565c9(0x649)+'ready\x20fu'+_0x1565c9(0x47f));if(_0x2d0d7[_0x1565c9(0x3e9)](_0x3737c3=>_0x3737c3[_0x1565c9(0x26e)]===_0x3c5171['uid']))throw new Error(_0x461daa[_0x1565c9(0x645)]);const _0x1321d5=_0x3de7e0/(-0x6*-0x5d7+0xc7*-0xd+-0x18ed),_0xdc842=_0x2d0d7['filter'](_0x53b58d=>_0x53b58d['team']===0x6*0x5f3+0x21b9*-0x1+-0x1f8||_0x53b58d[_0x1565c9(0x5fb)]||_0x53b58d[_0x1565c9(0x300)+'te']||_0x53b58d[_0x1565c9(0x26e)]===_0x4c405c[_0x1565c9(0x6a9)+'y']),_0x2c8c37=_0x2d0d7[_0x1565c9(0x3be)](_0x3e3970=>_0x3e3970[_0x1565c9(0x52c)]===0x32*0xb7+0x2233+0x45ef*-0x1||_0x3e3970['teamId']&&_0x4c405c['team2Id']&&_0x3e3970['teamId']===_0x4c405c[_0x1565c9(0x6eb)]),_0x4cfdab=(_0x4c405c['invitedT'+'eammates']||[])['find'](_0x22be77=>_0x22be77[_0x1565c9(0x26e)]===_0x3c5171[_0x1565c9(0x26e)]),_0x5f0ee6=(_0x4c405c[_0x1565c9(0x2b3)+_0x1565c9(0x712)]||[])['filter'](_0x11640c=>_0x11640c['status']===_0x1565c9(0x687)&&_0x11640c[_0x1565c9(0x26e)]!==_0x3c5171['uid'])['length'],_0x526ac1=_0x461daa[_0x1565c9(0x673)](_0x3de7e0,_0x2d0d7[_0x1565c9(0x2f4)]);if(!_0x4cfdab&&_0x461daa[_0x1565c9(0x1f1)](_0x526ac1,_0x5f0ee6)){const _0x5711ce=_0x4c405c[_0x1565c9(0x3af)]&&_0x461daa['Ieuxr'](_0x3c5171['teamId'],_0x4c405c[_0x1565c9(0x3af)])||_0x4c405c[_0x1565c9(0x6eb)]&&_0x461daa['Ieuxr'](_0x3c5171['teamId'],_0x4c405c[_0x1565c9(0x6eb)]);if(!_0x5711ce)throw new Error(_0x461daa[_0x1565c9(0x70e)]);}let _0x4c8315=-0x1*-0xfb3+0x160c*0x1+-0x25bd,_0x8dd860=![],_0x510331=![];if(_0x4cfdab)_0x4c8315=_0x4cfdab[_0x1565c9(0x52c)]||-0x1606+0x1*-0x210b+0x3712,_0x8dd860=!![],_0x510331=!!_0x4cfdab[_0x1565c9(0x2f8)+'d'];else{if(_0x461daa[_0x1565c9(0x6ce)](_0x4c405c[_0x1565c9(0x5d8)+'e'],_0x1565c9(0x52c))||_0x4c405c[_0x1565c9(0x3af)]){const _0x4fc4bf=_0x4c405c[_0x1565c9(0x3af)]&&_0x461daa[_0x1565c9(0x657)](_0x3c5171[_0x1565c9(0x3af)],_0x4c405c['teamId'])||(_0x4c405c[_0x1565c9(0x249)+'emberUid'+'s']||[])['includes'](_0x3c5171[_0x1565c9(0x26e)]),_0x15a532=_0x4c405c[_0x1565c9(0x6eb)]&&_0x461daa[_0x1565c9(0x6ce)](_0x3c5171['teamId'],_0x4c405c[_0x1565c9(0x6eb)])||(_0x4c405c[_0x1565c9(0x2e8)+'eredMemb'+_0x1565c9(0x489)]||[])[_0x1565c9(0x625)](_0x3c5171[_0x1565c9(0x26e)]);if(_0x4fc4bf&&_0xdc842[_0x1565c9(0x2f4)]<_0x1321d5)_0x4c8315=-0x476+0xc5a+-0x2a1*0x3,_0x8dd860=!![],_0x510331=_0x4c405c[_0x1565c9(0x672)+_0x1565c9(0x36d)]===_0x1565c9(0x325)||(_0x4c405c['coveredM'+_0x1565c9(0x6b5)+'s']||[])[_0x1565c9(0x625)](_0x3c5171[_0x1565c9(0x26e)]);else _0x15a532&&_0x2c8c37['length']<_0x1321d5?(_0x4c8315=0x5b+-0x51d*-0x1+-0x576,_0x8dd860=!![],_0x510331=_0x461daa['Ieuxr'](_0x4c405c[_0x1565c9(0x399)+'enCovera'+'ge'],_0x461daa[_0x1565c9(0x5d6)])||(_0x4c405c[_0x1565c9(0x2e8)+_0x1565c9(0x6d1)+_0x1565c9(0x489)]||[])[_0x1565c9(0x625)](_0x3c5171['uid'])):_0x4c8315=_0xdc842[_0x1565c9(0x2f4)]<_0x1321d5?0x3df*0x5+0x1fc8+-0x46*0xbb:-0x2076+0x1fb1+0xc7;}else _0x4c8315=_0xdc842[_0x1565c9(0x2f4)]<_0x1321d5?-0x2534*-0x1+0x16c9+-0x3bfc:0x2a8+0x4*-0x194+0x1d5*0x2;}_0x4c8315===0x3d*0x7c+-0x3e*-0x6e+-0x382f&&_0xdc842[_0x1565c9(0x2f4)]>=_0x1321d5&&(_0x4c8315=0x1dac+0xfd*-0x11+-0x59*0x25);if(_0x4c8315===0x1892+0xdbf+-0x264f&&_0x461daa['egrCu'](_0x2c8c37[_0x1565c9(0x2f4)],_0x1321d5))throw new Error(_0x1565c9(0x3de)+_0x1565c9(0x503)+'Team\x202)\x20'+_0x1565c9(0x1ff)+_0x1565c9(0x666));const _0x4c6189=_0x510331?-0x1*-0x280+0xece*-0x1+0x1c2*0x7:_0x434462,_0x4926dd=await _0x2a0708[_0x1565c9(0x6e0)](_0x41e521);if(!_0x4926dd['exists'])throw new Error(_0x1565c9(0x714)+_0x1565c9(0x437)+_0x1565c9(0x5f8));const _0x2f4320=_0x4926dd['data'](),_0x229670=Number(_0x2f4320[_0x1565c9(0x291)]||0x4*0x8cb+0x1*-0x799+-0x931*0x3);if(_0x4c6189>0x26fb+-0x1ffd+-0x1*0x6fe&&_0x461daa[_0x1565c9(0x38c)](_0x229670,_0x4c6189))throw new Error('Insuffic'+_0x1565c9(0x613)+'ens\x20to\x20j'+'oin\x20(Req'+_0x1565c9(0x4a2)+_0x461daa[_0x1565c9(0x69a)](formatTokens,_0x4c6189)+(_0x1565c9(0x4b8)+_0x1565c9(0x233)+'e\x20')+_0x461daa['KLcqJ'](formatTokens,_0x229670)+')');const _0x4c24f7=_0x4c8315===-0x260b+0x86f*0x4+-0x170*-0x3?_0x4c405c['teamTag']||_0x3c5171[_0x1565c9(0x2f1)]||'':_0x4c405c[_0x1565c9(0x508)]||_0x3c5171[_0x1565c9(0x2f1)]||'',_0x59c3f4={};_0x59c3f4[_0x1565c9(0x26e)]=_0x3c5171[_0x1565c9(0x26e)],_0x59c3f4[_0x1565c9(0x31a)+'ame']=_0x2f4320[_0x1565c9(0x31a)+_0x1565c9(0x6a8)]||_0x3c5171['displayN'+_0x1565c9(0x6a8)]||'Player',_0x59c3f4['epicUser'+'name']=_0x2f4320[_0x1565c9(0x6b9)+'name']||_0x3c5171[_0x1565c9(0x6b9)+_0x1565c9(0x422)]||'',_0x59c3f4[_0x1565c9(0x486)+'m']=!!(_0x2f4320[_0x1565c9(0x486)+'m']||_0x3c5171[_0x1565c9(0x486)+'m']),_0x59c3f4['photoURL']=_0x2f4320[_0x1565c9(0x713)]||_0x3c5171[_0x1565c9(0x713)]||'',_0x59c3f4[_0x1565c9(0x5fb)]=![],_0x59c3f4['ready']=![],_0x59c3f4[_0x1565c9(0x52c)]=_0x4c8315,_0x59c3f4[_0x1565c9(0x3af)]=_0x3c5171[_0x1565c9(0x3af)]||null,_0x59c3f4[_0x1565c9(0x2f1)]=_0x4c24f7,_0x59c3f4['isTeamma'+'te']=_0x8dd860,_0x59c3f4[_0x1565c9(0x355)+'nt']=_0x4c6189,_0x59c3f4[_0x1565c9(0x2f8)+'d']=_0x510331;const _0x305608=_0x59c3f4,_0x308023=(_0x4c405c['invitedT'+_0x1565c9(0x712)]||[])[_0x1565c9(0x357)](_0x147fb3=>{const _0x396ac2=_0x1565c9;if(_0x461daa[_0x396ac2(0x657)](_0x147fb3[_0x396ac2(0x26e)],_0x3c5171[_0x396ac2(0x26e)])){const _0x538701={..._0x147fb3};return _0x538701[_0x396ac2(0x313)]=_0x461daa[_0x396ac2(0x59d)],_0x538701;}return _0x147fb3;}),_0x4ca245=[..._0x2d0d7,_0x305608],_0x4e6cb8=[..._0x4c405c['playerUi'+'ds']||_0x2d0d7[_0x1565c9(0x357)](_0x3e4517=>_0x3e4517[_0x1565c9(0x26e)]),_0x3c5171[_0x1565c9(0x26e)]],_0x4c603d={};_0x4c603d[_0x1565c9(0x1f8)]=_0x4ca245,_0x4c603d[_0x1565c9(0x3c4)+'ds']=_0x4e6cb8,_0x4c603d[_0x1565c9(0x2b3)+_0x1565c9(0x712)]=_0x308023;const _0x5945d9=_0x4c603d;_0x461daa[_0x1565c9(0x3cd)](_0x4c6189,0x5c0+0xc*-0x141+-0x1dc*-0x5)&&(_0x5945d9[_0x1565c9(0x544)+'l']=_0x461daa[_0x1565c9(0x296)](_0x461daa['tIVbs'](Number,_0x4c405c[_0x1565c9(0x544)+'l']||-0x51+0x1229+-0x11d8),_0x4c6189));if(_0x461daa[_0x1565c9(0x37f)](_0x4c6189,0x2*0x12d7+-0x2*0xce3+-0xbe8)){const _0x5a1435=_0x461daa[_0x1565c9(0x4ee)](_0x229670,_0x4c6189),_0x26cf01=_0x461daa[_0x1565c9(0x1fb)](Number(_0x2f4320[_0x1565c9(0x329)+'nt']||-0x11df*0x1+-0x2513*0x1+0x36f2),_0x4c6189),_0xa7b721={};_0xa7b721[_0x1565c9(0x291)]=_0x5a1435,_0xa7b721[_0x1565c9(0x329)+'nt']=_0x26cf01,_0x2a0708[_0x1565c9(0x716)](_0x41e521,_0xa7b721);const _0x319c6d=db[_0x1565c9(0x28a)+'on'](_0x461daa[_0x1565c9(0x305)])[_0x1565c9(0x31d)]();_0x2a0708[_0x1565c9(0x3cc)](_0x319c6d,{'userId':_0x3c5171[_0x1565c9(0x26e)],'amount':-_0x4c6189,'type':_0x461daa[_0x1565c9(0x23c)],'description':_0x1565c9(0x35f)+_0x1565c9(0x53a)+_0x4c405c[_0x1565c9(0x2ba)]+_0x1565c9(0x54b)+_0x4c405c[_0x1565c9(0x66f)]+')','timestamp':firebase[_0x1565c9(0x632)+'e'][_0x1565c9(0x497)+'ue'][_0x1565c9(0x688)+_0x1565c9(0x494)]()});}return _0x2a0708[_0x1565c9(0x716)](_0x509d26,_0x5945d9),_0x509d26['id'];});}async function joinMatchWithTeam(_0xb413ed,_0x2a948c,_0x421cb1={}){const _0x1c581d=_0x432c,_0x335d25={'Vqbaj':function(_0x543318,_0x15c736){return _0x543318===_0x15c736;},'EHaEl':'matches','WUvLF':_0x1c581d(0x66f),'KybYF':_0x1c581d(0x313),'Skywo':function(_0x179daa,_0x444109){return _0x179daa(_0x444109);},'VsgkU':_0x1c581d(0x367),'HZWME':'This\x20mat'+_0x1c581d(0x35e)+_0x1c581d(0x446)+'tarted\x20o'+'r\x20ended','qlVkT':function(_0x115db5,_0x393481){return _0x115db5(_0x393481);},'DEzxG':'This\x20mat'+'ch\x20has\x20e'+'xpired\x20a'+_0x1c581d(0x28e)+_0x1c581d(0x431)+_0x1c581d(0x27c)+'e','RBOxT':'You\x20are\x20'+_0x1c581d(0x1f2)+_0x1c581d(0x49c)+_0x1c581d(0x5a1),'ypHWZ':function(_0x1fe3f7,_0x5cbbfb){return _0x1fe3f7/_0x5cbbfb;},'XgVWP':function(_0xa83d5d,_0x552778){return _0xa83d5d>=_0x552778;},'uVizL':_0x1c581d(0x559),'pzXDy':'#3b82f6','SEnYA':_0x1c581d(0x70d)+_0x1c581d(0x390)+'6,\x200.18)','bwVAk':_0x1c581d(0x5d7),'OlxEY':function(_0x3f6e6d,_0x53d7f6){return _0x3f6e6d-_0x53d7f6;},'ETuGY':function(_0x1b5dae,_0x384282){return _0x1b5dae>_0x384282;},'XuKok':function(_0x3a1b28,_0x5a5d77){return _0x3a1b28*_0x5a5d77;},'JuITu':function(_0x5c7e0e,_0x2d2c61){return _0x5c7e0e<_0x2d2c61;},'lbonL':function(_0x4b3ac0,_0x2d2343){return _0x4b3ac0(_0x2d2343);},'eHAcn':'Player','MFCkv':function(_0x3a11dd,_0x43ea2f,_0xa67894,_0x4db9e8,_0xbe54da){return _0x3a11dd(_0x43ea2f,_0xa67894,_0x4db9e8,_0xbe54da);},'Csepi':_0x1c581d(0x4b4)+'tions','qHtSA':_0x1c581d(0x3ea)+_0x1c581d(0x44a)+'e','BSNjQ':_0x1c581d(0x303)+_0x1c581d(0x4f9),'nIclx':'Captain','MNBGB':_0x1c581d(0x37a)+_0x1c581d(0x5bb)+'eam\x20invi'+'te\x20notif'+_0x1c581d(0x221)+'to'},_0x44a08b=_0x421cb1[_0x1c581d(0x3af)]||_0x2a948c[_0x1c581d(0x3af)];if(!_0x44a08b)throw new Error(_0x1c581d(0x462)+_0x1c581d(0x39c)+_0x1c581d(0x538)+_0x1c581d(0x473)+'to\x20join\x20'+'with\x20you'+_0x1c581d(0x53f)+_0x1c581d(0x6e1)+_0x1c581d(0x433)+'Teams\x20to'+_0x1c581d(0x436)+_0x1c581d(0x66c)+_0x1c581d(0x4eb));let _0x21a7ef=null;if(_0x335d25['Vqbaj'](_0xb413ed[_0x1c581d(0x2f4)],0x216f*-0x1+-0xe77+0x2*0x17f6)&&!_0xb413ed[_0x1c581d(0x625)]('-')){const _0x154fe9=await db[_0x1c581d(0x28a)+'on'](_0x335d25[_0x1c581d(0x6d0)])[_0x1c581d(0x339)](_0x335d25[_0x1c581d(0x319)],'==',_0xb413ed[_0x1c581d(0x547)+_0x1c581d(0x492)]())['where'](_0x335d25[_0x1c581d(0x64a)],'==',_0x1c581d(0x367))[_0x1c581d(0x2c3)](-0x20f7+-0x2043*0x1+0x413b)['get']();if(!_0x154fe9[_0x1c581d(0x264)])_0x21a7ef=_0x154fe9[_0x1c581d(0x362)][-0x3*-0x14b+-0x3*-0xb43+-0x647*0x6];}if(!_0x21a7ef){const _0x202211=await db[_0x1c581d(0x28a)+'on'](_0x335d25['EHaEl'])[_0x1c581d(0x31d)](_0xb413ed)['get']();if(_0x202211[_0x1c581d(0x574)])_0x21a7ef=_0x202211;}if(!_0x21a7ef||!_0x21a7ef[_0x1c581d(0x574)])throw new Error(_0x1c581d(0x2fe)+_0x1c581d(0x3a1)+_0x1c581d(0x537)+_0x1c581d(0x593)+_0x1c581d(0x215));const _0x4bde11=_0x21a7ef[_0x1c581d(0x2af)](),_0x10221d=_0x335d25[_0x1c581d(0x6cd)](Number,_0x4bde11['wager']||-0xc63+-0x1753*-0x1+-0xaf0);if(_0x4bde11['status']!==_0x335d25['VsgkU'])throw new Error(_0x335d25['HZWME']);if(_0x4bde11['expiresA'+'t']&&_0x4bde11['expiresA'+'t'][_0x1c581d(0x5fc)]()<new Date()){await _0x335d25[_0x1c581d(0x63f)](expireMatch,_0x21a7ef['id']);throw new Error(_0x335d25[_0x1c581d(0x63e)]);}if((_0x4bde11[_0x1c581d(0x1f8)]||[])['find'](_0x41046c=>_0x41046c[_0x1c581d(0x26e)]===_0x2a948c[_0x1c581d(0x26e)]))throw new Error(_0x335d25[_0x1c581d(0x47b)]);const _0x3a0b78=_0x335d25[_0x1c581d(0x2ab)](_0x4bde11['maxPlaye'+'rs']||0x269*-0x8+-0x22b8+-0x2*-0x1b01,-0x19d2*0x1+0x44f*-0x1+0x1e23),_0x3eb2c7=(_0x4bde11['players']||[])['filter'](_0x2dd839=>_0x2dd839[_0x1c581d(0x52c)]===-0x1fc*0x1+-0xcc5+-0x1*-0xec3||_0x2dd839[_0x1c581d(0x3af)]&&_0x2dd839[_0x1c581d(0x3af)]===_0x44a08b&&_0x2dd839[_0x1c581d(0x26e)]!==_0x4bde11[_0x1c581d(0x6a9)+'y'])[_0x1c581d(0x2f4)];if(_0x335d25['XgVWP'](_0x3eb2c7,_0x3a0b78))throw new Error('Opponent'+_0x1c581d(0x503)+_0x1c581d(0x27e)+_0x1c581d(0x1ff)+_0x1c581d(0x5c5));const _0x11c69f=_0x421cb1['tokenCov'+'erage']||_0x335d25[_0x1c581d(0x4f4)];let _0x2e4318=_0x421cb1['coveredM'+_0x1c581d(0x6b5)+'s']||[];const _0x5f188=_0x421cb1[_0x1c581d(0x5b4)+'e']||_0x1c581d(0x5ca);let _0x5f50ee=[],_0x102f5f=_0x2a948c[_0x1c581d(0x4c1)]||_0x1c581d(0x3aa),_0x17da47=_0x2a948c[_0x1c581d(0x2f1)]||'',_0x4b5cd2='swords',_0x32b3f8=_0x335d25[_0x1c581d(0x2b5)],_0x26cea0=_0x335d25[_0x1c581d(0x4a5)],_0x51b25f=_0x1c581d(0x70d)+_0x1c581d(0x390)+_0x1c581d(0x50d);try{const _0x1adf71=await db[_0x1c581d(0x28a)+'on'](_0x335d25[_0x1c581d(0x2ee)])[_0x1c581d(0x31d)](_0x44a08b)[_0x1c581d(0x6e0)]();if(_0x1adf71[_0x1c581d(0x574)]){const _0x1703c4=_0x1adf71[_0x1c581d(0x2af)]();_0x102f5f=_0x1703c4[_0x1c581d(0x422)]||_0x102f5f,_0x17da47=_0x1703c4['tag']||_0x17da47,_0x4b5cd2=_0x1703c4[_0x1c581d(0x22c)]||_0x4b5cd2,_0x32b3f8=_0x1703c4[_0x1c581d(0x4cd)+'r']||_0x32b3f8,_0x26cea0=_0x1703c4[_0x1c581d(0x697)]||_0x26cea0,_0x51b25f=_0x1703c4[_0x1c581d(0x6f9)+_0x1c581d(0x245)]||_0x51b25f;const _0x272383=Math[_0x1c581d(0x6f4)](0x1bc4+-0x111+0x5*-0x557,_0x335d25[_0x1c581d(0x40f)](_0x3a0b78,-0x2150+-0x27*-0x9e+0x93f)),_0x3b91d9=(_0x1703c4[_0x1c581d(0x3bf)]||[])['filter'](_0x2c04c6=>_0x2c04c6[_0x1c581d(0x26e)]!==_0x2a948c[_0x1c581d(0x26e)]);if(_0x11c69f===_0x1c581d(0x325))_0x2e4318=_0x3b91d9[_0x1c581d(0x45c)](0xfe7+0x898+-0x187f*0x1,_0x272383)['map'](_0x390555=>_0x390555[_0x1c581d(0x26e)]);else _0x335d25[_0x1c581d(0x260)](_0x11c69f,'1')&&_0x335d25['ETuGY'](_0x3b91d9['length'],-0x2377*-0x1+0x7*0x17b+-0x2dd4)&&!_0x2e4318[_0x1c581d(0x2f4)]&&(_0x2e4318=[_0x3b91d9[0x2472+-0x557*0x5+-0x1*0x9bf][_0x1c581d(0x26e)]]);_0x5f50ee=_0x3b91d9[_0x1c581d(0x45c)](-0x11*-0x47+0x9*-0xf9+0x40a,_0x272383)['map'](_0x96740f=>({'uid':_0x96740f['uid'],'displayName':_0x96740f['displayN'+_0x1c581d(0x6a8)]||'Teammate','photoURL':_0x96740f['photoURL']||'','epicUsername':_0x96740f[_0x1c581d(0x6b9)+'name']||'','team':0x2,'teamId':_0x44a08b,'isCovered':_0x2e4318[_0x1c581d(0x625)](_0x96740f['uid']),'invitedAt':Date['now'](),'status':_0x1c581d(0x687)}));}}catch(_0x565951){console[_0x1c581d(0x55f)](_0x1c581d(0x536)+_0x1c581d(0x28f)+'m\x20team\x20f'+_0x1c581d(0x227)+_0x1c581d(0x67d),_0x565951);}const _0x4bc395=_0x2e4318[_0x1c581d(0x2f4)],_0x1e13aa=_0x335d25[_0x1c581d(0x659)](_0x10221d,0xd53+0x15b*0xa+0x1*-0x1ae0+_0x4bc395);if(_0x335d25[_0x1c581d(0x5cf)](_0x335d25[_0x1c581d(0x4d5)](Number,_0x2a948c['tokens']||-0x1079+0x138b+-0x312*0x1),_0x1e13aa))throw new Error(_0x1c581d(0x61a)+_0x1c581d(0x613)+_0x1c581d(0x30f)+_0x1c581d(0x4a2)+formatTokens(_0x1e13aa)+('\x20tokens\x20'+'to\x20join')+(_0x4bc395>0x19d9*-0x1+-0x2277+-0xc10*-0x5?_0x1c581d(0x6c6)+'\x20'+_0x4bc395+(_0x1c581d(0x240)+'e(s)'):'')+')');const _0x2ed4f3={};_0x2ed4f3[_0x1c581d(0x26e)]=_0x2a948c['uid'],_0x2ed4f3['displayN'+_0x1c581d(0x6a8)]=_0x2a948c[_0x1c581d(0x31a)+_0x1c581d(0x6a8)]||_0x335d25[_0x1c581d(0x2fc)],_0x2ed4f3[_0x1c581d(0x6b9)+_0x1c581d(0x422)]=_0x2a948c['epicUser'+'name']||'',_0x2ed4f3['isPremiu'+'m']=!!_0x2a948c[_0x1c581d(0x486)+'m'],_0x2ed4f3[_0x1c581d(0x713)]=_0x2a948c['photoURL']||'',_0x2ed4f3[_0x1c581d(0x5fb)]=![],_0x2ed4f3[_0x1c581d(0x212)]=![],_0x2ed4f3[_0x1c581d(0x52c)]=0x2,_0x2ed4f3['teamId']=_0x44a08b,_0x2ed4f3[_0x1c581d(0x2f1)]=_0x17da47,_0x2ed4f3[_0x1c581d(0x370)+'ptain']=!![],_0x2ed4f3[_0x1c581d(0x355)+'nt']=_0x1e13aa,_0x2ed4f3[_0x1c581d(0x2f8)+'d']=![];const _0x40b28a=_0x2ed4f3,_0x736a9e=_0x4bde11[_0x1c581d(0x2b3)+_0x1c581d(0x712)]||[],_0x2c406b=[..._0x736a9e,..._0x5f50ee],_0x5c672f={'players':firebase[_0x1c581d(0x632)+'e'][_0x1c581d(0x497)+'ue']['arrayUni'+'on'](_0x40b28a),'playerUids':firebase[_0x1c581d(0x632)+'e'][_0x1c581d(0x497)+'ue'][_0x1c581d(0x6a5)+'on'](_0x2a948c[_0x1c581d(0x26e)]),'prizePool':firebase['firestor'+'e'][_0x1c581d(0x497)+'ue'][_0x1c581d(0x210)+'t'](_0x1e13aa),'invitedTeammates':_0x2c406b,'team2Id':_0x44a08b,'team2Name':_0x102f5f,'team2Tag':_0x17da47,'team2Icon':_0x4b5cd2,'team2IconColor':_0x32b3f8,'team2BgColor':_0x26cea0,'team2BorderColor':_0x51b25f,'team2TokenCoverage':_0x11c69f,'team2CoveredMemberUids':_0x2e4318,'team2SplitRule':_0x5f188};await _0x21a7ef['ref'][_0x1c581d(0x716)](_0x5c672f);_0x1e13aa>0x5*0x497+-0x229d+0xbaa*0x1&&await _0x335d25[_0x1c581d(0x58e)](updateTokens,_0x2a948c[_0x1c581d(0x26e)],-_0x1e13aa,'match_wa'+_0x1c581d(0x3b6),_0x1c581d(0x35f)+_0x1c581d(0x432)+_0x1c581d(0x409)+'\x20\x22'+_0x4bde11[_0x1c581d(0x2ba)]+'\x22\x20('+_0x4bde11[_0x1c581d(0x66f)]+')'+(_0x4bc395>0x11b4+0x176e*0x1+0xa2*-0x41?_0x1c581d(0x571)+'d\x20'+_0x4bc395+('\x20teammat'+_0x1c581d(0x57a)):''));if(_0x335d25[_0x1c581d(0x41e)](_0x5f50ee[_0x1c581d(0x2f4)],0x632+0x40c*0x5+-0x1a6e))for(const _0x240d95 of _0x5f50ee){try{await db[_0x1c581d(0x28a)+'on'](_0x1c581d(0x2c2))['doc'](_0x240d95[_0x1c581d(0x26e)])[_0x1c581d(0x28a)+'on'](_0x335d25[_0x1c581d(0x701)])[_0x1c581d(0x326)]({'type':_0x335d25[_0x1c581d(0x727)],'title':'Team\x20Mat'+'ch\x20Invit'+'e','body':(_0x2a948c[_0x1c581d(0x31a)+_0x1c581d(0x6a8)]||_0x335d25[_0x1c581d(0x706)])+(_0x1c581d(0x517)+'\x20you\x20to\x20'+_0x1c581d(0x4b7)+'m\x20match\x20'+'\x22')+_0x4bde11['title']+_0x1c581d(0x54b)+_0x335d25[_0x1c581d(0x4d5)](formatTokens,_0x10221d)+'\x20Tokens)'+(_0x240d95[_0x1c581d(0x2f8)+'d']?_0x1c581d(0x702)+'\x20Covered'+_0x1c581d(0x342):''),'matchId':_0x21a7ef['id'],'matchCode':_0x4bde11[_0x1c581d(0x66f)],'matchTitle':_0x4bde11[_0x1c581d(0x2ba)],'wager':_0x10221d,'hostName':_0x2a948c[_0x1c581d(0x31a)+_0x1c581d(0x6a8)]||_0x335d25[_0x1c581d(0x692)],'hostUid':_0x2a948c['uid'],'teamName':_0x102f5f,'team':0x2,'isCovered':!!_0x240d95[_0x1c581d(0x2f8)+'d'],'read':![],'accepted':![],'declined':![],'createdAt':firebase['firestor'+'e'][_0x1c581d(0x497)+'ue'][_0x1c581d(0x688)+'mestamp']()});}catch(_0x1261be){console[_0x1c581d(0x55f)](_0x335d25[_0x1c581d(0x3d6)],_0x240d95['uid'],_0x1261be);}}return _0x21a7ef['id'];}async function acceptMatchTeamInvite(_0xe4c4d4,_0x368eb4,_0x5dd34a=null){const _0xb1dbd0=_0x432c,_0x3ddfce={'YTNRM':_0xb1dbd0(0x251)+_0xb1dbd0(0x35e)+'lready\x20s'+'tarted\x20o'+_0xb1dbd0(0x38f),'NonNL':function(_0x469ca3,_0x2689b9){return _0x469ca3<_0x2689b9;},'FTjHZ':function(_0x3c981c,_0x2b73e6){return _0x3c981c(_0x2b73e6);},'LPhcR':_0xb1dbd0(0x251)+'ch\x20has\x20e'+_0xb1dbd0(0x4ef),'IxPVq':function(_0x49c49c,_0x90c75a){return _0x49c49c>=_0x90c75a;},'iXyKT':_0xb1dbd0(0x251)+'ch\x20is\x20al'+_0xb1dbd0(0x558)+'ll','BfVQY':_0xb1dbd0(0x2c2),'iiWwv':_0xb1dbd0(0x4b4)+_0xb1dbd0(0x5f5),'ccFkY':function(_0x12ae19,_0x39b383){return _0x12ae19(_0x39b383);},'dsSSk':function(_0x1a7cc3,_0x3d144d){return _0x1a7cc3>_0x3d144d;},'AOWDc':function(_0x41dc7c,_0x4c4176){return _0x41dc7c-_0x4c4176;},'Sioew':function(_0x273559,_0x89c1bb){return _0x273559*_0x89c1bb;},'QmJxL':_0xb1dbd0(0x251)+_0xb1dbd0(0x509)+_0xb1dbd0(0x24b)+'pired\x20(5'+_0xb1dbd0(0x322)+_0xb1dbd0(0x6e7),'nUycL':function(_0x14a7fb,_0x43363e){return _0x14a7fb===_0x43363e;},'ysGwx':function(_0x5561d2,_0x429f11){return _0x5561d2===_0x429f11;},'nzcJV':_0xb1dbd0(0x385),'UVNwY':function(_0x1aabe2,_0x275f9c){return _0x1aabe2>_0x275f9c;}},_0x4c04d5=db[_0xb1dbd0(0x28a)+'on']('matches')[_0xb1dbd0(0x31d)](_0xe4c4d4),_0x39e937=await _0x4c04d5[_0xb1dbd0(0x6e0)]();if(!_0x39e937['exists'])throw new Error(_0xb1dbd0(0x2fe)+_0xb1dbd0(0x658)+'or\x20was\x20r'+_0xb1dbd0(0x238));const _0x2956b0=_0x39e937[_0xb1dbd0(0x2af)]();if(_0x2956b0[_0xb1dbd0(0x313)]!==_0xb1dbd0(0x367))throw new Error(_0x3ddfce[_0xb1dbd0(0x4b9)]);if(_0x2956b0['expiresA'+'t']&&_0x3ddfce[_0xb1dbd0(0x257)](_0x2956b0[_0xb1dbd0(0x222)+'t']['toDate'](),new Date())){await _0x3ddfce[_0xb1dbd0(0x67a)](expireMatch,_0xe4c4d4);throw new Error(_0x3ddfce[_0xb1dbd0(0x206)]);}const _0x5455c4=_0x2956b0['players']||[];if(_0x3ddfce[_0xb1dbd0(0x302)](_0x5455c4[_0xb1dbd0(0x2f4)],_0x2956b0[_0xb1dbd0(0x3c7)+'rs']))throw new Error(_0x3ddfce['iXyKT']);if(_0x5455c4[_0xb1dbd0(0x3e9)](_0x5b68f3=>_0x5b68f3[_0xb1dbd0(0x26e)]===_0x368eb4[_0xb1dbd0(0x26e)])){if(_0x5dd34a){const _0x8266cf={};_0x8266cf[_0xb1dbd0(0x26f)]=!![],_0x8266cf[_0xb1dbd0(0x631)]=!![],await db[_0xb1dbd0(0x28a)+'on'](_0x3ddfce['BfVQY'])[_0xb1dbd0(0x31d)](_0x368eb4[_0xb1dbd0(0x26e)])['collecti'+'on'](_0x3ddfce['iiWwv'])[_0xb1dbd0(0x31d)](_0x5dd34a)['update'](_0x8266cf)[_0xb1dbd0(0x2df)](()=>{});}const _0x11e350={};return _0x11e350[_0xb1dbd0(0x396)]=_0xe4c4d4,_0x11e350[_0xb1dbd0(0x66f)]=_0x2956b0[_0xb1dbd0(0x66f)],_0x11e350;}const _0x200d26=(_0x2956b0[_0xb1dbd0(0x2b3)+_0xb1dbd0(0x712)]||[])[_0xb1dbd0(0x2bd)](_0x4488b6=>_0x4488b6[_0xb1dbd0(0x26e)]===_0x368eb4[_0xb1dbd0(0x26e)]);if(_0x200d26){const _0x472cbe=_0x200d26[_0xb1dbd0(0x22b)+'t']?_0x200d26['invitedA'+'t'][_0xb1dbd0(0x5fc)]?_0x200d26[_0xb1dbd0(0x22b)+'t'][_0xb1dbd0(0x5fc)]()['getTime']():_0x200d26[_0xb1dbd0(0x22b)+'t'][_0xb1dbd0(0x546)]?_0x200d26[_0xb1dbd0(0x22b)+'t'][_0xb1dbd0(0x546)]*(-0x1*-0x8b5+0x11*0x7+0x4*-0x151):_0x3ddfce[_0xb1dbd0(0x35c)](Number,_0x200d26['invitedA'+'t']):_0x2956b0[_0xb1dbd0(0x312)+'t']?_0x2956b0[_0xb1dbd0(0x312)+'t']['toDate']?_0x2956b0[_0xb1dbd0(0x312)+'t'][_0xb1dbd0(0x5fc)]()['getTime']():_0x2956b0[_0xb1dbd0(0x312)+'t'][_0xb1dbd0(0x546)]?_0x2956b0[_0xb1dbd0(0x312)+'t'][_0xb1dbd0(0x546)]*(-0x75*-0x1f+-0x55e*-0x5+0x1*-0x2519):0xb*-0x263+0x1*0x1489+0x5b8:-0x1b2d+0x1*0x14d1+0xb*0x94;if(_0x3ddfce[_0xb1dbd0(0x226)](_0x472cbe,-0x14*-0x175+0x1249+-0x2f6d)&&_0x3ddfce['AOWDc'](Date[_0xb1dbd0(0x6f5)](),_0x472cbe)>_0x3ddfce[_0xb1dbd0(0x273)](-0x6*-0x32d+0xb7*-0x2b+0xbb4,-0x1189*0x1+-0xbd*-0x7+0xc9a)*(0x67+0x1*0x1897+-0x1516))throw new Error(_0x3ddfce[_0xb1dbd0(0x3fd)]);}const _0x5ac00b=_0x200d26?.[_0xb1dbd0(0x52c)]||(_0x2956b0[_0xb1dbd0(0x6eb)]&&_0x3ddfce[_0xb1dbd0(0x4e5)](_0x2956b0[_0xb1dbd0(0x6eb)],_0x368eb4[_0xb1dbd0(0x3af)])?0x2*0x2c3+-0x3*0xa25+-0x1*-0x18eb:-0xe06+-0xc6e+0x1*0x1a75),_0x3c64d4=_0x3ddfce[_0xb1dbd0(0x27f)](_0x5ac00b,-0x1*0xfcb+-0x2079*0x1+0x3045)?_0x2956b0[_0xb1dbd0(0x2f1)]||'':_0x2956b0['team2Tag']||_0x368eb4[_0xb1dbd0(0x2f1)]||'',_0x3d9139=!!(_0x200d26?.['isCovere'+'d']||_0x5ac00b===-0x3*0x23b+0xa2f+-0x37d&&(_0x2956b0['coveredM'+_0xb1dbd0(0x6b5)+'s']||[])[_0xb1dbd0(0x625)](_0x368eb4[_0xb1dbd0(0x26e)])||_0x5ac00b===0x1*-0x102c+-0x44f*0x4+0x216a&&(_0x2956b0['team2Cov'+_0xb1dbd0(0x6d1)+'erUids']||[])[_0xb1dbd0(0x625)](_0x368eb4[_0xb1dbd0(0x26e)])),_0x4bb228=_0x3ddfce[_0xb1dbd0(0x35c)](Number,_0x2956b0[_0xb1dbd0(0x50e)]||0x26dd+-0x47c*0x7+0x1*-0x779);if(!_0x3d9139&&_0x3ddfce[_0xb1dbd0(0x257)](Number(_0x368eb4['tokens']||0x14b1*0x1+-0x4f0+-0xfc1),_0x4bb228))throw new Error('Insuffic'+'ient\x20tok'+_0xb1dbd0(0x30f)+_0xb1dbd0(0x4a2)+_0x3ddfce[_0xb1dbd0(0x67a)](formatTokens,_0x4bb228)+(_0xb1dbd0(0x70f)+_0xb1dbd0(0x6e6)+')'));const _0x294d40={};_0x294d40[_0xb1dbd0(0x26e)]=_0x368eb4[_0xb1dbd0(0x26e)],_0x294d40[_0xb1dbd0(0x31a)+_0xb1dbd0(0x6a8)]=_0x368eb4['displayN'+'ame']||_0x3ddfce['nzcJV'],_0x294d40[_0xb1dbd0(0x6b9)+_0xb1dbd0(0x422)]=_0x368eb4[_0xb1dbd0(0x6b9)+'name']||'',_0x294d40[_0xb1dbd0(0x486)+'m']=!!_0x368eb4[_0xb1dbd0(0x486)+'m'],_0x294d40['photoURL']=_0x368eb4[_0xb1dbd0(0x713)]||'',_0x294d40[_0xb1dbd0(0x5fb)]=![],_0x294d40[_0xb1dbd0(0x212)]=![],_0x294d40[_0xb1dbd0(0x52c)]=_0x5ac00b,_0x294d40[_0xb1dbd0(0x3af)]=_0x368eb4['teamId']||null,_0x294d40[_0xb1dbd0(0x2f1)]=_0x3c64d4,_0x294d40[_0xb1dbd0(0x355)+'nt']=_0x3d9139?0x24ce+0x1d2a+-0x41f8:_0x4bb228,_0x294d40[_0xb1dbd0(0x2f8)+'d']=_0x3d9139,_0x294d40[_0xb1dbd0(0x300)+'te']=!![];const _0x3ad359=_0x294d40,_0x5498a7=(_0x2956b0[_0xb1dbd0(0x2b3)+_0xb1dbd0(0x712)]||[])[_0xb1dbd0(0x357)](_0x5d43cd=>{const _0x2d971a=_0xb1dbd0;if(_0x5d43cd['uid']===_0x368eb4[_0x2d971a(0x26e)]){const _0x249a86={..._0x5d43cd};return _0x249a86[_0x2d971a(0x313)]=_0x2d971a(0x631),_0x249a86;}return _0x5d43cd;}),_0x1195fe={'players':firebase[_0xb1dbd0(0x632)+'e'][_0xb1dbd0(0x497)+'ue'][_0xb1dbd0(0x6a5)+'on'](_0x3ad359),'playerUids':firebase[_0xb1dbd0(0x632)+'e'][_0xb1dbd0(0x497)+'ue']['arrayUni'+'on'](_0x368eb4['uid']),'invitedTeammates':_0x5498a7};!_0x3d9139&&_0x3ddfce['UVNwY'](_0x4bb228,0x4*-0x359+0x4b4+0x8b0)&&(_0x1195fe[_0xb1dbd0(0x544)+'l']=firebase[_0xb1dbd0(0x632)+'e'][_0xb1dbd0(0x497)+'ue']['incremen'+'t'](_0x4bb228));await _0x4c04d5[_0xb1dbd0(0x716)](_0x1195fe);!_0x3d9139&&_0x3ddfce[_0xb1dbd0(0x226)](_0x4bb228,-0x2375*-0x1+0x1*-0x1e4c+0x529*-0x1)&&await updateTokens(_0x368eb4[_0xb1dbd0(0x26e)],-_0x4bb228,_0xb1dbd0(0x36a)+_0xb1dbd0(0x3b6),_0xb1dbd0(0x256)+'eam\x20matc'+_0xb1dbd0(0x419)+_0x2956b0['title']+_0xb1dbd0(0x54b)+_0x2956b0[_0xb1dbd0(0x66f)]+')');_0x5dd34a&&await db['collecti'+'on']('users')['doc'](_0x368eb4[_0xb1dbd0(0x26e)])[_0xb1dbd0(0x28a)+'on']('notifica'+'tions')[_0xb1dbd0(0x31d)](_0x5dd34a)[_0xb1dbd0(0x716)]({'read':!![],'accepted':!![],'acceptedAt':firebase[_0xb1dbd0(0x632)+'e'][_0xb1dbd0(0x497)+'ue'][_0xb1dbd0(0x688)+'mestamp']()})[_0xb1dbd0(0x2df)](()=>{});const _0x589e1f={};return _0x589e1f['matchId']=_0xe4c4d4,_0x589e1f[_0xb1dbd0(0x66f)]=_0x2956b0[_0xb1dbd0(0x66f)],_0x589e1f;}async function declineMatchTeamInvite(_0x15d9af,_0x58fcd7,_0x4254aa=null){const _0x40aac3=_0x432c,_0x5d4ecc={};_0x5d4ecc[_0x40aac3(0x2d7)]=_0x40aac3(0x2e7),_0x5d4ecc['zXbaM']='matches',_0x5d4ecc['aoaIM']='users',_0x5d4ecc[_0x40aac3(0x458)]=_0x40aac3(0x4b4)+_0x40aac3(0x5f5);const _0x267f6c=_0x5d4ecc;try{const _0x3a2ae6=db[_0x40aac3(0x28a)+'on'](_0x267f6c[_0x40aac3(0x4a4)])['doc'](_0x15d9af),_0x56d8d0=await _0x3a2ae6['get']();if(_0x56d8d0['exists']){const _0x190e7c=_0x56d8d0[_0x40aac3(0x2af)](),_0x342385=(_0x190e7c['invitedT'+_0x40aac3(0x712)]||[])[_0x40aac3(0x357)](_0x16d9ca=>{const _0x1054e7=_0x40aac3;if(_0x16d9ca[_0x1054e7(0x26e)]===_0x58fcd7){const _0x36c831={..._0x16d9ca};return _0x36c831['status']=_0x267f6c[_0x1054e7(0x2d7)],_0x36c831;}return _0x16d9ca;}),_0x65c073={};_0x65c073[_0x40aac3(0x2b3)+_0x40aac3(0x712)]=_0x342385,await _0x3a2ae6[_0x40aac3(0x716)](_0x65c073);}}catch(_0x223580){console[_0x40aac3(0x55f)](_0x40aac3(0x25c)+_0x40aac3(0x562)+'Invite\x20m'+_0x40aac3(0x3e4)+'ice:',_0x223580);}if(_0x4254aa)try{const _0x3b03f8={};_0x3b03f8['read']=!![],_0x3b03f8[_0x40aac3(0x2e7)]=!![],await db[_0x40aac3(0x28a)+'on'](_0x267f6c[_0x40aac3(0x476)])[_0x40aac3(0x31d)](_0x58fcd7)[_0x40aac3(0x28a)+'on'](_0x267f6c[_0x40aac3(0x458)])[_0x40aac3(0x31d)](_0x4254aa)[_0x40aac3(0x716)](_0x3b03f8);}catch(_0x2578cf){}return!![];}async function setPlayerReady(_0x1db04a,_0x343c23,_0x4acab4=!![]){const _0x5cd910=_0x432c,_0x3cbd8a={};_0x3cbd8a['kQnOT']=function(_0x4777a2,_0x13e824){return _0x4777a2===_0x13e824;},_0x3cbd8a[_0x5cd910(0x21b)]=_0x5cd910(0x55b),_0x3cbd8a['ylsik']=function(_0x3ce530,_0x33b741){return _0x3ce530!==_0x33b741;},_0x3cbd8a[_0x5cd910(0x639)]=_0x5cd910(0x367),_0x3cbd8a['BfUnR']=_0x5cd910(0x377)+_0x5cd910(0x39b)+_0x5cd910(0x542)+_0x5cd910(0x49d)+'atch\x20has'+_0x5cd910(0x537)+_0x5cd910(0x2a8)+'d',_0x3cbd8a['Jojro']=_0x5cd910(0x2dc),_0x3cbd8a['cukaS']=_0x5cd910(0x3de),_0x3cbd8a[_0x5cd910(0x2a5)]=_0x5cd910(0x5bf),_0x3cbd8a['hDCMG']=_0x5cd910(0x3ff)+_0x5cd910(0x717)+'0\x20minute'+'s\x20to\x20que'+_0x5cd910(0x449)+_0x5cd910(0x2b7)+'If\x20your\x20'+_0x5cd910(0x2e6)+_0x5cd910(0x68a)+_0x5cd910(0x66a)+_0x5cd910(0x345)+_0x5cd910(0x266)+',\x20click\x20'+_0x5cd910(0x531)+_0x5cd910(0x595)+_0x5cd910(0x2f3)+'nd\x20a\x20mod'+_0x5cd910(0x728)+'ill\x20reso'+_0x5cd910(0x6de)+_0x5cd910(0x331)+'n.';const _0x4907bd=_0x3cbd8a,_0x5e166b=db[_0x5cd910(0x28a)+'on'](_0x4907bd['vZbMc'])[_0x5cd910(0x31d)](_0x1db04a),_0x3abdb8=await _0x5e166b['get']();if(!_0x3abdb8[_0x5cd910(0x574)])throw new Error(_0x5cd910(0x2fe)+_0x5cd910(0x507));const _0x1b0c1f=_0x3abdb8[_0x5cd910(0x2af)]();if(_0x4907bd[_0x5cd910(0x482)](_0x1b0c1f['status'],_0x4907bd['njqtH'])&&_0x1b0c1f[_0x5cd910(0x313)]!==_0x5cd910(0x212))throw new Error(_0x4907bd[_0x5cd910(0x67e)]);let _0x483b13=(_0x1b0c1f[_0x5cd910(0x1f8)]||[])[_0x5cd910(0x357)](_0x6403df=>{const _0x19d79d=_0x5cd910;if(_0x4907bd[_0x19d79d(0x620)](_0x6403df[_0x19d79d(0x26e)],_0x343c23)){const _0x4d83b8={..._0x6403df};return _0x4d83b8['ready']=_0x4acab4,_0x4d83b8;}return _0x6403df;});const _0x137f7f=_0x4907bd[_0x5cd910(0x620)](_0x483b13[_0x5cd910(0x2f4)],_0x1b0c1f[_0x5cd910(0x3c7)+'rs'])&&_0x483b13[_0x5cd910(0x4c0)](_0x356b6d=>_0x356b6d['ready']),_0x47d0c0=_0x137f7f?_0x5cd910(0x3ce)+_0x5cd910(0x6e5):_0x4907bd[_0x5cd910(0x639)];await _0x5e166b[_0x5cd910(0x716)]({'players':_0x483b13,'status':_0x47d0c0,..._0x137f7f?{'startedAt':firebase[_0x5cd910(0x632)+'e']['FieldVal'+'ue']['serverTi'+'mestamp']()}:{}});if(_0x137f7f){const _0x2779bb=_0x483b13[_0x5cd910(0x2bd)](_0x5e4fcc=>_0x5e4fcc[_0x5cd910(0x5fb)]||_0x5e4fcc['uid']===_0x1b0c1f['createdB'+'y'])||_0x483b13[-0x7*0x239+-0x49*0x83+0x1a75*0x2],_0x3bf4de=_0x483b13[_0x5cd910(0x2bd)](_0xa7b2d=>_0xa7b2d[_0x5cd910(0x26e)]!==_0x2779bb?.[_0x5cd910(0x26e)])||_0x483b13[-0x31c+-0x74b+0x94*0x12],_0x42de48=_0x2779bb?_0x2779bb[_0x5cd910(0x6b9)+'name']||_0x2779bb[_0x5cd910(0x31a)+'ame']:_0x4907bd[_0x5cd910(0x5ee)],_0x5a170c=_0x3bf4de?_0x3bf4de[_0x5cd910(0x6b9)+_0x5cd910(0x422)]||_0x3bf4de['displayN'+_0x5cd910(0x6a8)]:_0x4907bd[_0x5cd910(0x451)],_0x4e4176=_0x5e166b[_0x5cd910(0x28a)+'on'](_0x4907bd['KxwMH']);await _0x4e4176[_0x5cd910(0x326)]({'isSystem':!![],'text':_0x4907bd[_0x5cd910(0x3c1)],'timestamp':firebase[_0x5cd910(0x632)+'e'][_0x5cd910(0x497)+'ue']['serverTi'+'mestamp']()})[_0x5cd910(0x2df)](console[_0x5cd910(0x55f)]),await _0x4e4176[_0x5cd910(0x326)]({'isSystem':!![],'text':_0x5cd910(0x25a)+_0x42de48+(_0x5cd910(0x463)+_0x5cd910(0x654))+_0x5a170c+(_0x5cd910(0x4dc)+_0x5cd910(0x54c)+_0x5cd910(0x45a)+'nite!'),'timestamp':firebase['firestor'+'e'][_0x5cd910(0x497)+'ue'][_0x5cd910(0x688)+'mestamp']()})[_0x5cd910(0x2df)](console[_0x5cd910(0x55f)]);}const _0x58bed7={};return _0x58bed7[_0x5cd910(0x332)]=_0x137f7f,_0x58bed7[_0x5cd910(0x42e)+'s']=_0x47d0c0,_0x58bed7;}async function leaveOrCancelMatch(_0x4e33ba,_0x4fdfc8){const _0x2160a7=_0x432c,_0x1629e8={'QjgoS':function(_0x330afa,_0x30c17c){return _0x330afa(_0x30c17c);},'vKuGE':function(_0x318e0c,_0x489a3d){return _0x318e0c>_0x489a3d;},'yyAkJ':function(_0x2123aa,_0xead1ae,_0x39125c,_0x336ca2,_0x14db65){return _0x2123aa(_0xead1ae,_0x39125c,_0x336ca2,_0x14db65);},'LkTFz':_0x2160a7(0x295),'JfYlW':_0x2160a7(0x55b),'LfzlC':_0x2160a7(0x2fe)+_0x2160a7(0x507),'XHStl':function(_0x1379fa,_0x39ec08){return _0x1379fa!==_0x39ec08;},'Wynia':_0x2160a7(0x367),'UPMnc':_0x2160a7(0x212),'XXGGD':_0x2160a7(0x565)+'eave\x20or\x20'+'cancel\x20a'+_0x2160a7(0x3dc)+'hat\x20is\x20a'+_0x2160a7(0x554)+_0x2160a7(0x4ad)+'ss\x20or\x20co'+_0x2160a7(0x669),'ucZyO':function(_0xac9a9f,_0x3c493e){return _0xac9a9f===_0x3c493e;},'aLuMn':_0x2160a7(0x6d2)+_0x2160a7(0x448)+_0x2160a7(0x48a)+_0x2160a7(0x414)+_0x2160a7(0x56f)+_0x2160a7(0x4a3),'jmqvx':function(_0x34740f,_0x59d498){return _0x34740f!==_0x59d498;},'REZDf':function(_0x5cd9b1,_0x1eefe7){return _0x5cd9b1>_0x1eefe7;},'AcArY':'left'},_0x1117b3=db[_0x2160a7(0x28a)+'on'](_0x1629e8[_0x2160a7(0x57e)])[_0x2160a7(0x31d)](_0x4e33ba),_0x34f5b2=await _0x1117b3[_0x2160a7(0x6e0)]();if(!_0x34f5b2[_0x2160a7(0x574)])throw new Error(_0x1629e8['LfzlC']);const _0x30f3df=_0x34f5b2['data']();if(_0x1629e8[_0x2160a7(0x3c0)](_0x30f3df[_0x2160a7(0x313)],_0x1629e8[_0x2160a7(0x72a)])&&_0x1629e8[_0x2160a7(0x3c0)](_0x30f3df['status'],_0x1629e8[_0x2160a7(0x3cf)]))throw new Error(_0x1629e8['XXGGD']);const _0x6c3f0d=_0x1629e8['ucZyO'](_0x30f3df[_0x2160a7(0x6a9)+'y'],_0x4fdfc8),_0x1195c9=_0x1629e8[_0x2160a7(0x6ca)](Number,_0x30f3df[_0x2160a7(0x50e)]);if(_0x6c3f0d){const _0xb3c577=(_0x30f3df[_0x2160a7(0x1f8)]||[])[_0x2160a7(0x357)](_0x5b278c=>{const _0x46b1c4=_0x2160a7,_0x4dd74d=_0x1629e8[_0x46b1c4(0x6ca)](Number,_0x5b278c['paidAmou'+'nt']!==undefined?_0x5b278c[_0x46b1c4(0x355)+'nt']:_0x5b278c[_0x46b1c4(0x26e)]===_0x30f3df['createdB'+'y']?_0x30f3df[_0x46b1c4(0x223)+_0x46b1c4(0x25f)+'it']||_0x1195c9:_0x1195c9);if(_0x1629e8['vKuGE'](_0x4dd74d,0x1df+-0x18b*-0x1+-0x36a))return _0x1629e8[_0x46b1c4(0x2c5)](updateTokens,_0x5b278c[_0x46b1c4(0x26e)],_0x4dd74d,_0x1629e8[_0x46b1c4(0x51f)],_0x46b1c4(0x338)+'cancelle'+_0x46b1c4(0x1fa)+_0x46b1c4(0x4a0)+_0x30f3df[_0x46b1c4(0x2ba)]+_0x46b1c4(0x20e));return Promise[_0x46b1c4(0x59a)]();});await Promise[_0x2160a7(0x325)](_0xb3c577),await _0x1117b3[_0x2160a7(0x716)]({'status':_0x2160a7(0x4f3)+'d','completedAt':firebase[_0x2160a7(0x632)+'e'][_0x2160a7(0x497)+'ue'][_0x2160a7(0x688)+_0x2160a7(0x494)]()});const _0x343c9d={};return _0x343c9d['action']=_0x2160a7(0x4f3)+'d',_0x343c9d[_0x2160a7(0x3e0)]=_0x1629e8[_0x2160a7(0x380)],_0x343c9d;}else{const _0x225002=(_0x30f3df[_0x2160a7(0x1f8)]||[])[_0x2160a7(0x2bd)](_0x550e0e=>_0x550e0e[_0x2160a7(0x26e)]===_0x4fdfc8),_0x21ed2e=(_0x30f3df[_0x2160a7(0x1f8)]||[])[_0x2160a7(0x3be)](_0x400e56=>_0x400e56[_0x2160a7(0x26e)]!==_0x4fdfc8),_0x4dc59d=(_0x30f3df[_0x2160a7(0x3c4)+'ds']||[])['filter'](_0x1f972e=>_0x1f972e!==_0x4fdfc8),_0x10a1ad=_0x1629e8[_0x2160a7(0x61e)](_0x225002?.['paidAmou'+'nt'],undefined)?_0x1629e8[_0x2160a7(0x6ca)](Number,_0x225002['paidAmou'+'nt']):_0x225002?.['isCovere'+'d']?-0x1d62*-0x1+0x1*0x34b+-0x1*0x20ad:_0x1195c9,_0x256749={};_0x256749[_0x2160a7(0x1f8)]=_0x21ed2e,_0x256749['playerUi'+'ds']=_0x4dc59d,_0x256749[_0x2160a7(0x313)]=_0x1629e8['Wynia'];const _0x2c922e=_0x256749;_0x1629e8[_0x2160a7(0x4da)](_0x10a1ad,0x104+0x16a9*-0x1+0x15a5)&&(_0x2c922e[_0x2160a7(0x544)+'l']=firebase[_0x2160a7(0x632)+'e'][_0x2160a7(0x497)+'ue'][_0x2160a7(0x210)+'t'](-_0x10a1ad));await _0x1117b3[_0x2160a7(0x716)](_0x2c922e);_0x10a1ad>0x69a+0x9*-0x3bf+0x277*0xb&&await updateTokens(_0x4fdfc8,_0x10a1ad,_0x1629e8[_0x2160a7(0x51f)],'↩️\x20Left\x20m'+_0x2160a7(0x53a)+_0x30f3df[_0x2160a7(0x2ba)]+_0x2160a7(0x20e));const _0x2dc4f1={};return _0x2dc4f1['action']=_0x1629e8[_0x2160a7(0x6b7)],_0x2dc4f1[_0x2160a7(0x3e0)]=_0x2160a7(0x3b8)+_0x2160a7(0x6ac)+_0x2160a7(0x4c3)+'our\x20toke'+_0x2160a7(0x3c8)+'refunded'+'.',_0x2dc4f1;}}async function expireMatch(_0x1548d3){const _0x41c99e=_0x432c,_0x5cc50e={'Iokda':function(_0x568a11,_0x3bc2c1){return _0x568a11(_0x3bc2c1);},'TzzQZ':function(_0x3a556e,_0x1407a2){return _0x3a556e!==_0x1407a2;},'kLEan':function(_0x24e51e,_0x57db9f){return _0x24e51e===_0x57db9f;},'MysID':function(_0x4e2adb,_0x5d64aa){return _0x4e2adb>_0x5d64aa;},'kclqi':function(_0x415c90,_0x2b6bc8,_0x17482c,_0x394ecf,_0x185269){return _0x415c90(_0x2b6bc8,_0x17482c,_0x394ecf,_0x185269);},'oATvU':_0x41c99e(0x295),'njmuz':'matches','SLGRI':function(_0x397b5f,_0x3ae56a){return _0x397b5f!==_0x3ae56a;},'jEneK':_0x41c99e(0x367),'HZPeW':_0x41c99e(0x4f3)+'d','yHgGs':_0x41c99e(0x5bf)},_0x3db1fb=db[_0x41c99e(0x28a)+'on'](_0x5cc50e[_0x41c99e(0x297)])[_0x41c99e(0x31d)](_0x1548d3),_0x40350c=await _0x3db1fb[_0x41c99e(0x6e0)]();if(!_0x40350c[_0x41c99e(0x574)])return;const _0x5113a5=_0x40350c['data']();if(_0x5cc50e[_0x41c99e(0x610)](_0x5113a5[_0x41c99e(0x313)],_0x5cc50e[_0x41c99e(0x2a6)])||_0x5113a5[_0x41c99e(0x726)+'t'])return;const _0x3a6934=_0x5cc50e[_0x41c99e(0x2cb)](Number,_0x5113a5['wager']),_0x24abfc=(_0x5113a5[_0x41c99e(0x1f8)]||[])[_0x41c99e(0x357)](_0x5b3d5a=>{const _0x34a3cf=_0x41c99e,_0x4a81bb=_0x5cc50e[_0x34a3cf(0x2cb)](Number,_0x5cc50e[_0x34a3cf(0x3bd)](_0x5b3d5a['paidAmou'+'nt'],undefined)?_0x5b3d5a[_0x34a3cf(0x355)+'nt']:_0x5cc50e[_0x34a3cf(0x3c3)](_0x5b3d5a[_0x34a3cf(0x26e)],_0x5113a5[_0x34a3cf(0x6a9)+'y'])?_0x5113a5[_0x34a3cf(0x223)+_0x34a3cf(0x25f)+'it']||_0x3a6934:_0x3a6934);if(_0x5cc50e['MysID'](_0x4a81bb,0x18f9+-0x2*0xcfc+0x11*0xf))return _0x5cc50e[_0x34a3cf(0x5f3)](updateTokens,_0x5b3d5a[_0x34a3cf(0x26e)],_0x4a81bb,_0x5cc50e[_0x34a3cf(0x2d9)],'⏱️\x20Lobby\x20'+'expired\x20'+_0x34a3cf(0x54a)+'t\x20limit)'+_0x34a3cf(0x315)+_0x5113a5[_0x34a3cf(0x2ba)]+('\x22\x20full\x20r'+'efund'));return Promise[_0x34a3cf(0x59a)]();});await Promise[_0x41c99e(0x325)](_0x24abfc),await _0x3db1fb[_0x41c99e(0x716)]({'status':_0x5cc50e[_0x41c99e(0x1f6)],'isExpired':!![],'completedAt':firebase[_0x41c99e(0x632)+'e']['FieldVal'+'ue']['serverTi'+_0x41c99e(0x494)]()}),await _0x3db1fb[_0x41c99e(0x28a)+'on'](_0x5cc50e[_0x41c99e(0x5fa)])[_0x41c99e(0x326)]({'isSystem':!![],'text':_0x41c99e(0x47d)+'EXPIRED:'+_0x41c99e(0x4ca)+_0x41c99e(0x693)+_0x41c99e(0x2db)+_0x41c99e(0x470)+_0x41c99e(0x48c)+'.\x20All\x20pa'+_0x41c99e(0x3f3)+_0x41c99e(0x70b)+_0x41c99e(0x423)+_0x41c99e(0x2dd)+'full\x20tok'+_0x41c99e(0x5d9)+'d.','timestamp':firebase[_0x41c99e(0x632)+'e'][_0x41c99e(0x497)+'ue'][_0x41c99e(0x688)+_0x41c99e(0x494)]()})[_0x41c99e(0x2df)](console[_0x41c99e(0x55f)]);}function calculateTeamPayouts(_0x1b75d4,_0x4fe0e1,_0x2ad0e7){const _0x1459f0=_0x432c,_0x3c9c2d={};_0x3c9c2d['kzfmd']=function(_0xe5f6bf,_0x1924bc){return _0xe5f6bf/_0x1924bc;},_0x3c9c2d[_0x1459f0(0x499)]=function(_0x5d704d,_0x58e331){return _0x5d704d*_0x58e331;},_0x3c9c2d[_0x1459f0(0x46d)]='keep',_0x3c9c2d[_0x1459f0(0x6ae)]=function(_0x3e0f87,_0x3e9ebe){return _0x3e0f87/_0x3e9ebe;},_0x3c9c2d[_0x1459f0(0x277)]=function(_0x88b85b,_0x56c034){return _0x88b85b*_0x56c034;},_0x3c9c2d['AWYjt']=function(_0x522ef5,_0x4872ad){return _0x522ef5*_0x4872ad;},_0x3c9c2d[_0x1459f0(0x374)]=function(_0x729718,_0x254190){return _0x729718+_0x254190;},_0x3c9c2d['VRAlr']=function(_0x3cd6bc,_0x36d224){return _0x3cd6bc/_0x36d224;},_0x3c9c2d[_0x1459f0(0x310)]=function(_0x31b1ab,_0x2a47b4){return _0x31b1ab*_0x2a47b4;},_0x3c9c2d['EQLTF']=function(_0x452a99,_0x4cd338){return _0x452a99*_0x4cd338;};const _0x3c1e67=_0x3c9c2d;if(!_0x1b75d4||!_0x1b75d4[_0x1459f0(0x2f4)])return[];const _0x262ce6=_0x1b75d4[0x1a*0x71+0x1df8+-0x2972]?.['team']||0x240d+-0x2b0*-0x1+-0x26bc,_0x21822f=(_0x262ce6===-0x2*-0x4f3+0x6bc+-0x10a0?_0x2ad0e7[_0x1459f0(0x333)+_0x1459f0(0x4e7)]:_0x2ad0e7[_0x1459f0(0x5b4)+'e'])||_0x1459f0(0x5d3),_0xdeaa60=_0x1b75d4[_0x1459f0(0x2bd)](_0x33488e=>_0x33488e[_0x1459f0(0x5fb)]||_0x33488e[_0x1459f0(0x370)+'ptain']||_0x262ce6===0x65f+0x269*0x10+-0x2cee&&_0x33488e[_0x1459f0(0x26e)]===_0x2ad0e7[_0x1459f0(0x6a9)+'y'])||_0x1b75d4[0x192d+0x1*0x1ea9+0x1*-0x37d6],_0x2f1e6a=_0x1b75d4['filter'](_0x3d6596=>_0x3d6596[_0x1459f0(0x26e)]!==_0xdeaa60?.[_0x1459f0(0x26e)]),_0x15d450=_0x3c1e67['kzfmd'](Math['round'](_0x3c1e67[_0x1459f0(0x499)](_0x4fe0e1/_0x1b75d4[_0x1459f0(0x2f4)],0x1b9c+-0x1d0+-0x1968)),-0x2*0xed6+-0x1b73+0x3983);if(_0x21822f===_0x3c1e67[_0x1459f0(0x46d)]){const _0x40c96c=_0x2f1e6a[_0x1459f0(0x3be)](_0x525d6f=>_0x525d6f[_0x1459f0(0x2f8)+'d']||_0x262ce6===-0x10cd+-0x264e+0x371c&&(_0x2ad0e7[_0x1459f0(0x672)+'erage']===_0x1459f0(0x325)||_0x2ad0e7[_0x1459f0(0x672)+_0x1459f0(0x36d)]==='1'&&_0x525d6f===_0x2f1e6a[-0x201f*0x1+-0x2499*-0x1+-0x47a]||(_0x2ad0e7['coveredM'+_0x1459f0(0x6b5)+'s']||[])[_0x1459f0(0x625)](_0x525d6f[_0x1459f0(0x26e)]))||_0x262ce6===0x1eaf+0x25dc+0x1*-0x4489&&(_0x2ad0e7['team2Tok'+'enCovera'+'ge']==='all'||(_0x2ad0e7[_0x1459f0(0x2e8)+_0x1459f0(0x6d1)+_0x1459f0(0x489)]||[])[_0x1459f0(0x625)](_0x525d6f[_0x1459f0(0x26e)]))),_0x2f84b0=_0x2f1e6a['filter'](_0x53a3dd=>!_0x40c96c['includes'](_0x53a3dd)),_0x58843a=_0x3c1e67[_0x1459f0(0x6ae)](Math['round'](_0x3c1e67[_0x1459f0(0x277)](_0x3c1e67[_0x1459f0(0x603)](_0x15d450,_0x3c1e67['CJjIR'](0x8e7+-0xf*-0x67+-0x1*0xeef,_0x40c96c[_0x1459f0(0x2f4)])),0xfbd+-0x4*0x59e+0x71f)),0x1*0x1826+0x1528+-0x1675*0x2),_0x48fffd={};return _0x48fffd['uid']=_0xdeaa60[_0x1459f0(0x26e)],_0x48fffd[_0x1459f0(0x6a7)]=_0x58843a,[_0x48fffd,..._0x40c96c[_0x1459f0(0x357)](_0x2bd466=>({'uid':_0x2bd466['uid'],'amount':0x0})),..._0x2f84b0[_0x1459f0(0x357)](_0x3ff871=>({'uid':_0x3ff871[_0x1459f0(0x26e)],'amount':_0x15d450}))];}if(_0x21822f===_0x1459f0(0x324)+'70'){const _0x3917cb=_0x3c1e67[_0x1459f0(0x3f0)](Math[_0x1459f0(0x5e6)](_0x3c1e67['Dywee'](_0x3c1e67[_0x1459f0(0x293)](_0x4fe0e1,0x95*0x1+-0x1368+0x4f*0x3d+0.7),0xdef+0x95b+0x7a2*-0x3)),0x13*0x198+-0x90d+-0x14d7),_0x4a2e36=Math[_0x1459f0(0x6f4)](0x1a*-0x106+0x1506+0x596,_0x4fe0e1-_0x3917cb),_0x4299a1=_0x2f1e6a['length']?Math[_0x1459f0(0x5e6)](_0x3c1e67[_0x1459f0(0x277)](_0x3c1e67[_0x1459f0(0x6ae)](_0x4a2e36,_0x2f1e6a[_0x1459f0(0x2f4)]),-0x459+0x18c1*0x1+-0x1404))/(-0xeb3+0x43*0x17+0x912):0x3da*0x5+0x505*0x1+0x1847*-0x1,_0x369a83={};return _0x369a83[_0x1459f0(0x26e)]=_0xdeaa60[_0x1459f0(0x26e)],_0x369a83[_0x1459f0(0x6a7)]=_0x3917cb,[_0x369a83,..._0x2f1e6a[_0x1459f0(0x357)](_0x1ceeea=>({'uid':_0x1ceeea[_0x1459f0(0x26e)],'amount':_0x4299a1}))];}return _0x1b75d4[_0x1459f0(0x357)](_0x4e6707=>({'uid':_0x4e6707[_0x1459f0(0x26e)],'amount':_0x15d450}));}function subscribeOpenMatches(_0x49f8a3){const _0x4d5406=_0x432c,_0x2774ae={'ssioE':function(_0x4d2362,_0x4df48f){return _0x4d2362>_0x4df48f;},'EfifN':function(_0x3d07ad,_0x526adb){return _0x3d07ad(_0x526adb);},'SlvqZ':function(_0x3d1b78,_0x10de07){return _0x3d1b78(_0x10de07);},'qOvSz':'subscrib'+_0x4d5406(0x2e2)+'ches\x20err'+_0x4d5406(0x6a1),'vzfcE':_0x4d5406(0x55b),'BuuND':_0x4d5406(0x367)};return db[_0x4d5406(0x28a)+'on'](_0x2774ae[_0x4d5406(0x34b)])[_0x4d5406(0x339)](_0x4d5406(0x313),'==',_0x2774ae['BuuND'])[_0x4d5406(0x58c)+'ot'](_0x3e523f=>{const _0x1b6cb7=_0x4d5406,_0x2705eb={'aUlhK':function(_0x1d45ef,_0x8a9c16){const _0x3d917f=_0x432c;return _0x2774ae[_0x3d917f(0x43e)](_0x1d45ef,_0x8a9c16);},'hbykM':function(_0x1d59e0,_0x1f2dd5){const _0x481506=_0x432c;return _0x2774ae[_0x481506(0x62b)](_0x1d59e0,_0x1f2dd5);}},_0x11c4e9=Date[_0x1b6cb7(0x6f5)](),_0x35a9ab=[];_0x3e523f['docs'][_0x1b6cb7(0x5b0)](_0x52c6f0=>{const _0x292a24=_0x1b6cb7,_0x315509=_0x52c6f0[_0x292a24(0x2af)](),_0x4d1232=_0x315509[_0x292a24(0x222)+'t']?_0x315509['expiresA'+'t'][_0x292a24(0x5fc)]()[_0x292a24(0x4c2)]():0x264b+0x1b86+-0x41d1*0x1;if(_0x2705eb['aUlhK'](_0x4d1232,-0x1*0x1135+0x15*0xc+0x1039)&&_0x4d1232<_0x11c4e9)_0x2705eb['hbykM'](expireMatch,_0x52c6f0['id'])[_0x292a24(0x2df)](console[_0x292a24(0x55f)]);else{const _0xa95bba={'id':_0x52c6f0['id'],..._0x315509};_0x35a9ab[_0x292a24(0x2ef)](_0xa95bba);}}),_0x35a9ab[_0x1b6cb7(0x648)]((_0x5d2140,_0x7b58a4)=>(_0x7b58a4['createdA'+'t']?.[_0x1b6cb7(0x546)]||-0x4*-0x841+-0x1224+-0x20*0x77)-(_0x5d2140['createdA'+'t']?.[_0x1b6cb7(0x546)]||-0x11*0xdd+-0x1*0x1cb3+-0x8*-0x56c)),_0x2774ae['SlvqZ'](_0x49f8a3,_0x35a9ab);},_0x632f4e=>{const _0x3ca051=_0x4d5406;console[_0x3ca051(0x55f)](_0x2774ae[_0x3ca051(0x30e)],_0x632f4e),_0x49f8a3([]);});}function subscribeUserMatches(_0x24b165,_0x3d9ce1){const _0x296223=_0x432c,_0x41feac={'UZQyc':'subscrib'+_0x296223(0x298)+_0x296223(0x5e7)+'or:','XLtPi':function(_0x1466c8,_0x1fd33c){return _0x1466c8(_0x1fd33c);},'vETuC':_0x296223(0x55b)};return db['collecti'+'on'](_0x41feac[_0x296223(0x705)])[_0x296223(0x58c)+'ot'](_0x498bae=>{const _0x2f5317=_0x296223,_0x1e1915=_0x498bae[_0x2f5317(0x362)][_0x2f5317(0x357)](_0x552e86=>({'id':_0x552e86['id'],..._0x552e86[_0x2f5317(0x2af)]()})),_0x289d80=_0x1e1915['filter'](_0x539d17=>(_0x539d17[_0x2f5317(0x3c4)+'ds']||[])[_0x2f5317(0x625)](_0x24b165)||_0x539d17[_0x2f5317(0x6a9)+'y']===_0x24b165);_0x289d80[_0x2f5317(0x648)]((_0x4e514a,_0x5631d3)=>(_0x5631d3[_0x2f5317(0x312)+'t']?.['seconds']||0x1*0x1d9f+-0xa54+-0x134b)-(_0x4e514a['createdA'+'t']?.[_0x2f5317(0x546)]||-0x5cc+-0xc5*-0x21+0xad*-0x1d)),_0x3d9ce1(_0x289d80);},_0x5ac3c1=>{const _0xa5f4e0=_0x296223;console['warn'](_0x41feac[_0xa5f4e0(0x4ff)],_0x5ac3c1),_0x41feac[_0xa5f4e0(0x541)](_0x3d9ce1,[]);});}async function declareWinner(_0x5be7fa,_0x28bc9a,_0x15d71b){const _0x3af394=_0x432c,_0x15d389={'ctikS':_0x3af394(0x2c2),'dxSRV':function(_0x8f1675,_0x371e68){return _0x8f1675===_0x371e68;},'YTDOU':_0x3af394(0x3f1)+'d','yvmlj':'Match\x20is'+'\x20already'+_0x3af394(0x32d)+'ed','LFbtq':_0x3af394(0x4f3)+'d','oYkMu':_0x3af394(0x3f4)+'\x20cancell'+'ed','WfLUu':function(_0x2a4807,_0x6944fe){return _0x2a4807!==_0x6944fe;},'UpSvc':_0x3af394(0x3c9)+_0x3af394(0x4ae)+'be\x20decla'+_0x3af394(0x6d3)+_0x3af394(0x63a)+_0x3af394(0x3dd)+_0x3af394(0x6f8)+'\x20all\x20pla'+'yers\x20rea'+_0x3af394(0x664),'hAPfp':function(_0x2a66b8,_0x379e4f){return _0x2a66b8*_0x379e4f;},'gvoOt':'discord:','QXRCd':function(_0x2d7b2b,_0x3eb55f){return _0x2d7b2b*_0x3eb55f;},'dUcDc':function(_0x42b920,_0x16f9c7){return _0x42b920/_0x16f9c7;},'NHXvw':_0x3af394(0x1fe)+'ot\x20found'+_0x3af394(0x48f)+'h','ieDwt':function(_0x2b9271,_0x1e0056){return _0x2b9271(_0x1e0056);},'yjfcB':function(_0x3b9206,_0x366862,_0x1c4e15,_0x31b18e,_0x5e5aab){return _0x3b9206(_0x366862,_0x1c4e15,_0x31b18e,_0x5e5aab);}},_0x9ef7d4=db[_0x3af394(0x28a)+'on'](_0x3af394(0x55b))['doc'](_0x5be7fa),_0xf9321=await _0x9ef7d4[_0x3af394(0x6e0)]();if(!_0xf9321[_0x3af394(0x574)])throw new Error(_0x3af394(0x2fe)+_0x3af394(0x507));const _0x8011d4=_0xf9321['data']();if(_0x15d389[_0x3af394(0x311)](_0x8011d4[_0x3af394(0x313)],_0x15d389[_0x3af394(0x4d6)]))throw new Error(_0x15d389['yvmlj']);if(_0x15d389['dxSRV'](_0x8011d4[_0x3af394(0x313)],_0x15d389[_0x3af394(0x52d)]))throw new Error(_0x15d389[_0x3af394(0x44c)]);if(_0x15d389[_0x3af394(0x6e3)](_0x8011d4[_0x3af394(0x313)],_0x3af394(0x3ce)+_0x3af394(0x6e5))&&_0x8011d4[_0x3af394(0x313)]!==_0x3af394(0x4bf))throw new Error(_0x15d389['UpSvc']);const _0x14a795=_0x8011d4[_0x3af394(0x1f8)]||[],_0x3060aa=Number(_0x8011d4[_0x3af394(0x3c7)+'rs']||0xf15+0x703+-0x1*0x1616);if(_0x14a795['length']<_0x3060aa)throw new Error(_0x3af394(0x3a9)+_0x3af394(0x6d6)+'inner\x20on'+_0x3af394(0x564)+'mplete\x20m'+_0x3af394(0x5e8)+_0x14a795[_0x3af394(0x2f4)]+'/'+_0x3060aa+(_0x3af394(0x2b6)+')'));const _0x355442=_0x15d389[_0x3af394(0x37d)](_0x15d389[_0x3af394(0x37d)](-0x21bb+0x1*0x187d+0x1*0x943,0xd*0x35+0x559+-0x1b*0x4a),0x995*0x3+0xe4a+-0x2721);if(_0x8011d4[_0x3af394(0x726)+'t']&&!ADMIN_DISCORD_IDS[_0x3af394(0x625)]((_0x15d71b||'')[_0x3af394(0x6ec)](_0x15d389[_0x3af394(0x3f2)],''))){const _0x3fc5d8=_0x8011d4['startedA'+'t']['toDate']?_0x8011d4[_0x3af394(0x726)+'t'][_0x3af394(0x5fc)]()[_0x3af394(0x4c2)]():_0x8011d4[_0x3af394(0x726)+'t'][_0x3af394(0x546)]?_0x15d389[_0x3af394(0x4e9)](_0x8011d4[_0x3af394(0x726)+'t'][_0x3af394(0x546)],-0x1e2*0x7+-0x538+0x164e):Date[_0x3af394(0x6f5)](),_0x100c79=Date[_0x3af394(0x6f5)]()-_0x3fc5d8;if(_0x100c79<_0x355442){const _0x15c8f7=Math[_0x3af394(0x364)](_0x15d389[_0x3af394(0x629)](_0x355442-_0x100c79,-0x4*0x946+-0x357+0x2c57)),_0xce1973=Math[_0x3af394(0x349)](_0x15c8f7/(-0x19d0+0x1*-0x1f3d+0x82f*0x7)),_0x553831=_0x15c8f7%(-0x2593+-0x1*-0x16b1+-0x56*-0x2d);throw new Error(_0x3af394(0x6bd)+'ait\x20'+_0xce1973+':'+(_0x553831<-0x13*0xb+-0xb23+0xbfe?'0':'')+_0x553831);}}const _0x7158bf=_0x14a795[_0x3af394(0x2bd)](_0x1486d7=>_0x1486d7['uid']===_0x28bc9a);if(!_0x7158bf)throw new Error(_0x15d389[_0x3af394(0x209)]);const _0x53069c=_0x15d389[_0x3af394(0x369)](Number,_0x8011d4[_0x3af394(0x544)+'l']||-0x2ca*0x1+0x38*-0x67+0x39e*0x7)*(0x3*0x7+-0x2036*0x1+-0x7*-0x497+0.9),_0x9dd15c=_0x15d389[_0x3af394(0x629)](Math['round'](_0x53069c*(-0x14fb+-0x26b9+0x3c18)),0x1a44+0x16b3+-0x5*0x9b7),_0x344b31={};_0x344b31[_0x3af394(0x26e)]=_0x28bc9a,_0x344b31[_0x3af394(0x31a)+'ame']=_0x7158bf[_0x3af394(0x31a)+_0x3af394(0x6a8)],await _0x9ef7d4[_0x3af394(0x716)]({'status':_0x15d389['YTDOU'],'winner':_0x344b31,'completedAt':firebase[_0x3af394(0x632)+'e'][_0x3af394(0x497)+'ue'][_0x3af394(0x688)+_0x3af394(0x494)]()}),await _0x15d389[_0x3af394(0x64e)](updateTokens,_0x28bc9a,_0x9dd15c,_0x3af394(0x34e)+'n','Won\x20matc'+_0x3af394(0x419)+_0x8011d4[_0x3af394(0x2ba)]+'\x22');const _0x5e180f=_0x14a795[_0x3af394(0x357)](_0x2bcd43=>{const _0x52a051=_0x3af394,_0x25bbd3=db[_0x52a051(0x28a)+'on'](_0x15d389['ctikS'])[_0x52a051(0x31d)](_0x2bcd43[_0x52a051(0x26e)]);return _0x25bbd3['update']({'matchesPlayed':firebase['firestor'+'e'][_0x52a051(0x497)+'ue']['incremen'+'t'](0x19f*-0x3+-0x1782+0xe30*0x2),..._0x2bcd43[_0x52a051(0x26e)]===_0x28bc9a?{'matchesWon':firebase[_0x52a051(0x632)+'e'][_0x52a051(0x497)+'ue'][_0x52a051(0x210)+'t'](0x10da*-0x2+0x111a+0x109b)}:{}});});return await Promise[_0x3af394(0x325)](_0x5e180f),_0x9dd15c;}async function submitMatchReport(_0x51a57e,_0x3f8e79,_0x2748e1){const _0x5da23e=_0x432c,_0x21fdad={'wjGTo':_0x5da23e(0x55b),'qzIMU':_0x5da23e(0x2fe)+'t\x20found','avmZO':function(_0x497a07,_0x6ad6d8){return _0x497a07===_0x6ad6d8;},'kvixS':'complete'+'d','ZuFzA':_0x5da23e(0x3f4)+_0x5da23e(0x3d2)+_0x5da23e(0x32d)+'ed','KodNF':function(_0xb83f04,_0x3cac56){return _0xb83f04*_0x3cac56;},'QMSbp':function(_0x5f5c2b,_0x5470af){return _0x5f5c2b/_0x5470af;},'JqDOk':function(_0x6b5027,_0x12510e){return _0x6b5027-_0x12510e;},'OyCvs':function(_0x1f4733,_0xd5a8a2){return _0x1f4733%_0xd5a8a2;},'izqwI':function(_0x1b274f,_0x1dc71f){return _0x1b274f<_0x1dc71f;},'IPJmF':function(_0x52d33b,_0x43046a){return _0x52d33b===_0x43046a;},'VexHN':_0x5da23e(0x2d4),'wXxGO':function(_0x56e2a5,_0x3fd472){return _0x56e2a5===_0x3fd472;},'YjFtQ':_0x5da23e(0x2b0),'BncVK':_0x5da23e(0x3ee),'tIGQt':function(_0x50e4c0,_0x501f95){return _0x50e4c0&&_0x501f95;},'rpYQP':function(_0x2d667b,_0x162190){return _0x2d667b(_0x162190);},'jAmHY':function(_0x2de3d8,_0x52a2dc){return _0x2de3d8>_0x52a2dc;},'ytQWQ':function(_0x581f4e,_0xc0483d,_0x1280ed,_0x549c2b,_0x1e010d){return _0x581f4e(_0xc0483d,_0x1280ed,_0x549c2b,_0x1e010d);},'TdKBk':_0x5da23e(0x2c2),'tYVrM':function(_0x210dfc,_0x24cd24){return _0x210dfc===_0x24cd24;},'VPZtH':'Team\x201','FSCSB':_0x5da23e(0x3aa),'atMqz':'disputed','Yghcj':_0x5da23e(0x4fd)+_0x5da23e(0x404)+_0x5da23e(0x56c),'maaNX':_0x5da23e(0x3c5)+'on','zBuvn':_0x5da23e(0x674)+'on','NkHZc':'open'},_0x6c657b=db['collecti'+'on'](_0x21fdad[_0x5da23e(0x334)])[_0x5da23e(0x31d)](_0x51a57e),_0x400268=await _0x6c657b[_0x5da23e(0x6e0)]();if(!_0x400268[_0x5da23e(0x574)])throw new Error(_0x21fdad['qzIMU']);const _0x489f05=_0x400268[_0x5da23e(0x2af)]();if(_0x21fdad['avmZO'](_0x489f05[_0x5da23e(0x313)],_0x21fdad['kvixS']))throw new Error(_0x21fdad[_0x5da23e(0x6d4)]);const _0x47689b=_0x21fdad[_0x5da23e(0x6c7)]((-0x4*-0x12a+-0x884+0x3e1)*(0x1b53+0x204+0x1*-0x1d1b),-0x1*-0x854+-0xf1*0xd+0x7d1);if(_0x489f05['startedA'+'t']){const _0x37e4ed=_0x489f05[_0x5da23e(0x726)+'t'][_0x5da23e(0x5fc)]?_0x489f05['startedA'+'t'][_0x5da23e(0x5fc)]()[_0x5da23e(0x4c2)]():_0x489f05[_0x5da23e(0x726)+'t']['seconds']?_0x489f05['startedA'+'t'][_0x5da23e(0x546)]*(0x1afb+-0xcd5*-0x1+-0x47d*0x8):Date[_0x5da23e(0x6f5)](),_0x3858ad=Date['now']()-_0x37e4ed;if(_0x3858ad<_0x47689b){const _0x3bbef7=Math[_0x5da23e(0x364)](_0x21fdad[_0x5da23e(0x395)](_0x21fdad[_0x5da23e(0x429)](_0x47689b,_0x3858ad),0x8dc+0x22ed+0x29*-0xf9)),_0x286be1=Math[_0x5da23e(0x349)](_0x3bbef7/(0x124+0xf2*0x2+-0x166*0x2)),_0xbd4d1c=_0x21fdad[_0x5da23e(0x681)](_0x3bbef7,-0x1a0d+0xa30+0x13d*0xd);throw new Error(_0x5da23e(0x6bd)+_0x5da23e(0x41b)+_0x286be1+':'+(_0x21fdad['izqwI'](_0xbd4d1c,0x20c5*0x1+0x4*0x7c3+0x1*-0x3fc7)?'0':'')+_0xbd4d1c);}}const _0x18c7d7=_0x489f05[_0x5da23e(0x1f8)]||[],_0x2a9c02=_0x18c7d7[_0x5da23e(0x2bd)](_0x5e3954=>_0x5e3954[_0x5da23e(0x26e)]===_0x3f8e79);if(!_0x2a9c02)throw new Error(_0x5da23e(0x488)+'not\x20a\x20pa'+_0x5da23e(0x3f3)+'t\x20in\x20thi'+_0x5da23e(0x5a2));const _0x1fefd9=_0x21fdad[_0x5da23e(0x683)](_0x2a9c02[_0x5da23e(0x52c)],_0x21fdad[_0x5da23e(0x426)])||_0x2a9c02[_0x5da23e(0x5fb)]||_0x21fdad[_0x5da23e(0x5b2)](_0x2a9c02[_0x5da23e(0x26e)],_0x489f05[_0x5da23e(0x6a9)+'y']),_0x14183b=_0x1fefd9?_0x5da23e(0x2d4):_0x21fdad[_0x5da23e(0x224)],_0x1be4cd=_0x1fefd9?_0x5da23e(0x46a)+_0x5da23e(0x6c2):'Team\x202\x20('+'Enemy)',_0x157b2e={};_0x1fefd9?(_0x157b2e[_0x5da23e(0x495)+_0x5da23e(0x58f)]=_0x2748e1,_0x157b2e[_0x5da23e(0x495)+_0x5da23e(0x6f0)]=_0x3f8e79,_0x157b2e[_0x5da23e(0x495)+_0x5da23e(0x4ac)+'ame']=_0x2a9c02[_0x5da23e(0x31a)+_0x5da23e(0x6a8)]||'Player',_0x157b2e[_0x5da23e(0x495)+'ortedAt']=firebase[_0x5da23e(0x632)+'e'][_0x5da23e(0x497)+'ue'][_0x5da23e(0x688)+'mestamp']()):(_0x157b2e['team2Rep'+_0x5da23e(0x58f)]=_0x2748e1,_0x157b2e[_0x5da23e(0x491)+'ortedBy']=_0x3f8e79,_0x157b2e[_0x5da23e(0x491)+_0x5da23e(0x4ac)+'ame']=_0x2a9c02['displayN'+_0x5da23e(0x6a8)]||_0x21fdad[_0x5da23e(0x6a4)],_0x157b2e['team2Rep'+_0x5da23e(0x6a2)]=firebase[_0x5da23e(0x632)+'e'][_0x5da23e(0x497)+'ue'][_0x5da23e(0x688)+_0x5da23e(0x494)]());const _0xf4e003=_0x1fefd9?_0x2748e1:_0x489f05[_0x5da23e(0x495)+_0x5da23e(0x58f)],_0x4975a0=_0x1fefd9?_0x489f05[_0x5da23e(0x491)+_0x5da23e(0x58f)]:_0x2748e1,_0x59a9a9=_0x6c657b[_0x5da23e(0x28a)+'on'](_0x5da23e(0x5bf));if(_0x21fdad[_0x5da23e(0x60e)](_0xf4e003,_0x4975a0)){if(_0x21fdad[_0x5da23e(0x683)](_0xf4e003,_0x4975a0)){const _0x505c53=_0xf4e003,_0x38abd7=_0x21fdad[_0x5da23e(0x5b2)](_0x505c53,'team1'),_0x41920b=_0x18c7d7[_0x5da23e(0x3be)](_0x49384f=>(_0x49384f[_0x5da23e(0x52c)]==='team1'||_0x49384f[_0x5da23e(0x5fb)]||_0x49384f['uid']===_0x489f05['createdB'+'y'])===_0x38abd7),_0x3f1251=_0x18c7d7['filter'](_0x1e5235=>(_0x1e5235[_0x5da23e(0x52c)]==='team1'||_0x1e5235[_0x5da23e(0x5fb)]||_0x1e5235[_0x5da23e(0x26e)]===_0x489f05[_0x5da23e(0x6a9)+'y'])!==_0x38abd7),_0x568c2d=_0x21fdad[_0x5da23e(0x54d)](Number,_0x489f05[_0x5da23e(0x544)+'l']||Number(_0x489f05[_0x5da23e(0x50e)])*_0x18c7d7[_0x5da23e(0x2f4)]),_0x5bb0f8=_0x568c2d*(-0x269*-0xf+-0x14fc+0x161*-0xb+0.9),_0x10621a=calculateTeamPayouts(_0x41920b,_0x5bb0f8,_0x489f05);_0x157b2e[_0x5da23e(0x313)]=_0x5da23e(0x3f1)+'d',_0x157b2e[_0x5da23e(0x4f5)+'ed']=![],_0x157b2e[_0x5da23e(0x410)+'am']=_0x505c53,_0x157b2e[_0x5da23e(0x539)]=_0x21fdad['wXxGO'](_0x41920b['length'],0x1bf0+-0x3*-0x31d+-0x2546)?{'uid':_0x41920b[-0x862*-0x4+0x236+0x7a*-0x4b][_0x5da23e(0x26e)],'displayName':_0x41920b[0x97e+0x1*0x1005+-0x1983][_0x5da23e(0x31a)+_0x5da23e(0x6a8)]}:null,_0x157b2e[_0x5da23e(0x3f1)+_0x5da23e(0x6e8)]=firebase[_0x5da23e(0x632)+'e'][_0x5da23e(0x497)+'ue']['serverTi'+'mestamp'](),await _0x6c657b[_0x5da23e(0x716)](_0x157b2e);for(const _0x5512b2 of _0x10621a){_0x21fdad[_0x5da23e(0x5aa)](_0x5512b2['amount'],-0x1a0*-0x2+0x782+0x6*-0x1cb)&&await _0x21fdad[_0x5da23e(0x43a)](updateTokens,_0x5512b2[_0x5da23e(0x26e)],_0x5512b2[_0x5da23e(0x6a7)],_0x5da23e(0x34e)+'n','Won\x20matc'+_0x5da23e(0x419)+_0x489f05['title']+'\x22');}for(const _0x439202 of _0x41920b){await db[_0x5da23e(0x28a)+'on'](_0x21fdad[_0x5da23e(0x1f0)])['doc'](_0x439202[_0x5da23e(0x26e)])[_0x5da23e(0x716)]({'matchesPlayed':firebase['firestor'+'e'][_0x5da23e(0x497)+'ue'][_0x5da23e(0x210)+'t'](-0x4a2*0x5+-0x674+0x1d9f),'matchesWon':firebase[_0x5da23e(0x632)+'e']['FieldVal'+'ue'][_0x5da23e(0x210)+'t'](-0x2135*0x1+0x2359+0x1*-0x223)})['catch'](console['warn']);}for(const _0x14cf02 of _0x3f1251){await db[_0x5da23e(0x28a)+'on'](_0x21fdad[_0x5da23e(0x1f0)])[_0x5da23e(0x31d)](_0x14cf02[_0x5da23e(0x26e)])[_0x5da23e(0x716)]({'matchesPlayed':firebase['firestor'+'e'][_0x5da23e(0x497)+'ue'][_0x5da23e(0x210)+'t'](-0x15*-0x91+0xf74+-0x1f4*0xe)})['catch'](console[_0x5da23e(0x55f)]);}await _0x59a9a9[_0x5da23e(0x326)]({'isSystem':!![],'text':'MATCH\x20CO'+'NFIRMED:'+_0x5da23e(0x671)+_0x5da23e(0x3b1)+_0x5da23e(0x55e)+'t\x20'+(_0x21fdad[_0x5da23e(0x231)](_0x505c53,_0x5da23e(0x2d4))?_0x21fdad['VPZtH']:_0x21fdad[_0x5da23e(0x4d2)])+(_0x5da23e(0x20a)+_0x5da23e(0x219)+'e\x20of\x20')+_0x21fdad[_0x5da23e(0x54d)](formatTokens,_0x5bb0f8)+(_0x5da23e(0x70f)+'has\x20been'+'\x20paid\x20ou'+'t.'),'timestamp':firebase['firestor'+'e'][_0x5da23e(0x497)+'ue'][_0x5da23e(0x688)+'mestamp']()});const _0x228521={};return _0x228521[_0x5da23e(0x313)]=_0x21fdad[_0x5da23e(0x597)],_0x228521[_0x5da23e(0x628)+_0x5da23e(0x472)]=_0x505c53,_0x228521['prize']=_0x5bb0f8,_0x228521;}else{_0x157b2e[_0x5da23e(0x313)]=_0x21fdad[_0x5da23e(0x4cb)],_0x157b2e[_0x5da23e(0x4f5)+'ed']=!![],_0x157b2e[_0x5da23e(0x4bf)+'At']=firebase['firestor'+'e'][_0x5da23e(0x497)+'ue'][_0x5da23e(0x688)+'mestamp'](),await _0x6c657b['update'](_0x157b2e),await db[_0x5da23e(0x28a)+'on']('staff_ca'+_0x5da23e(0x616))[_0x5da23e(0x326)]({'matchId':_0x51a57e,'matchCode':_0x489f05['code']||'','callerUid':_0x5da23e(0x719)+_0x5da23e(0x651)+_0x5da23e(0x56c),'calledByName':_0x21fdad[_0x5da23e(0x568)],'reason':_0x5da23e(0x5c9)+'sult\x20Dis'+'pute\x20(Co'+_0x5da23e(0x598)+_0x5da23e(0x4cf)+_0x5da23e(0x71c),'details':_0x5da23e(0x553)+_0x5da23e(0x677)+_0x5da23e(0x252)+_0x5da23e(0x4c4)+_0x489f05[_0x5da23e(0x2ba)]+_0x5da23e(0x54b)+_0x489f05['code']+(').\x20Team\x20'+_0x5da23e(0x407)+'d\x20')+(_0x21fdad[_0x5da23e(0x4e2)](_0xf4e003,_0x5da23e(0x2d4))?_0x21fdad[_0x5da23e(0x2ea)]:_0x21fdad[_0x5da23e(0x2bc)])+(_0x5da23e(0x668)+_0x5da23e(0x4b2)+'ed\x20')+(_0x4975a0===_0x5da23e(0x2d4)?_0x21fdad[_0x5da23e(0x2ea)]:_0x5da23e(0x674)+'on')+(_0x5da23e(0x530)+_0x5da23e(0x56e)+_0x5da23e(0x5c1)+'to\x20inspe'+'ct\x20match'+'.'),'status':_0x21fdad[_0x5da23e(0x21a)],'timestamp':firebase[_0x5da23e(0x632)+'e']['FieldVal'+'ue'][_0x5da23e(0x688)+_0x5da23e(0x494)]()}),await _0x59a9a9[_0x5da23e(0x326)]({'isSystem':!![],'text':_0x5da23e(0x328)+_0x5da23e(0x490)+_0x5da23e(0x29c)+_0x5da23e(0x36b)+_0x5da23e(0x3da)+_0x5da23e(0x598)+_0x5da23e(0x59c)+_0x5da23e(0x232)+_0x5da23e(0x4ba)+'\x20Moderat'+_0x5da23e(0x2c9)+_0x5da23e(0x6f6)+_0x5da23e(0x301)+_0x5da23e(0x430)+_0x5da23e(0x567)+'ew\x20evide'+_0x5da23e(0x38a)+_0x5da23e(0x3d5)+'the\x20offi'+_0x5da23e(0x25e)+'ner.','timestamp':firebase[_0x5da23e(0x632)+'e'][_0x5da23e(0x497)+'ue'][_0x5da23e(0x688)+_0x5da23e(0x494)]()});const _0x5de905={};return _0x5de905[_0x5da23e(0x313)]=_0x5da23e(0x4bf),_0x5de905;}}else{await _0x6c657b[_0x5da23e(0x716)](_0x157b2e),await _0x59a9a9[_0x5da23e(0x326)]({'isSystem':!![],'text':_0x1be4cd+('\x20submitt'+_0x5da23e(0x69d)+':\x20')+(_0x2748e1===_0x21fdad['VexHN']?_0x5da23e(0x3c5)+'on':_0x5da23e(0x674)+'on')+('.\x20Waitin'+_0x5da23e(0x548)+_0x5da23e(0x480)+'o\x20confir'+'m…'),'timestamp':firebase[_0x5da23e(0x632)+'e']['FieldVal'+'ue'][_0x5da23e(0x688)+_0x5da23e(0x494)]()});const _0x412c4c={};return _0x412c4c[_0x5da23e(0x313)]=_0x5da23e(0x6af)+_0x5da23e(0x2e6),_0x412c4c;}}async function retractMatchReport(_0x8dd5d6,_0x4e93a5){const _0x2405e4=_0x432c,_0x5f7d28={};_0x5f7d28['hiNHb']='matches',_0x5f7d28[_0x2405e4(0x2c8)]=_0x2405e4(0x2fe)+_0x2405e4(0x507),_0x5f7d28['iVlRF']=function(_0x143e15,_0x1e01fe){return _0x143e15===_0x1e01fe;},_0x5f7d28['hHqtB']=_0x2405e4(0x24c)+'etract:\x20'+_0x2405e4(0x3f4)+'\x20already'+_0x2405e4(0x32d)+'ed\x20and\x20v'+'erified',_0x5f7d28[_0x2405e4(0x21f)]=_0x2405e4(0x488)+_0x2405e4(0x412)+_0x2405e4(0x3f3)+_0x2405e4(0x6fc)+_0x2405e4(0x5a2),_0x5f7d28[_0x2405e4(0x4ea)]=_0x2405e4(0x2d4),_0x5f7d28[_0x2405e4(0x350)]=function(_0x5c1fb8,_0x296fd2){return _0x5c1fb8===_0x296fd2;},_0x5f7d28[_0x2405e4(0x34d)]='Team\x202\x20('+_0x2405e4(0x53b),_0x5f7d28['IQnTy']=_0x2405e4(0x618)+'4',_0x5f7d28[_0x2405e4(0x46c)]=_0x2405e4(0x2e5)+_0x2405e4(0x5c2)+_0x2405e4(0x421)+'ract',_0x5f7d28[_0x2405e4(0x207)]=_0x2405e4(0x30d)+'2',_0x5f7d28[_0x2405e4(0x5fe)]=_0x2405e4(0x4bf),_0x5f7d28[_0x2405e4(0x588)]=_0x2405e4(0x5bf);const _0x110400=_0x5f7d28,_0xdcd800=db[_0x2405e4(0x28a)+'on'](_0x110400[_0x2405e4(0x715)])[_0x2405e4(0x31d)](_0x8dd5d6),_0x112eea=await _0xdcd800[_0x2405e4(0x6e0)]();if(!_0x112eea[_0x2405e4(0x574)])throw new Error(_0x110400[_0x2405e4(0x2c8)]);const _0xada3bf=_0x112eea[_0x2405e4(0x2af)]();if(_0x110400[_0x2405e4(0x650)](_0xada3bf[_0x2405e4(0x313)],_0x2405e4(0x3f1)+'d'))throw new Error(_0x110400['hHqtB']);const _0x257122=_0xada3bf['players']||[],_0x448c3a=_0x257122['find'](_0x4eb4b7=>_0x4eb4b7[_0x2405e4(0x26e)]===_0x4e93a5);if(!_0x448c3a)throw new Error(_0x110400['jhAWI']);const _0x388878=_0x110400[_0x2405e4(0x650)](_0x448c3a[_0x2405e4(0x52c)],_0x110400[_0x2405e4(0x4ea)])||_0x448c3a[_0x2405e4(0x5fb)]||_0x110400['ZiOQp'](_0x448c3a['uid'],_0xada3bf[_0x2405e4(0x6a9)+'y']),_0x2aabc7=_0x388878?_0x2405e4(0x46a)+_0x2405e4(0x6c2):_0x110400[_0x2405e4(0x34d)],_0x5ba80c={};if(_0x388878){const _0xcd0f7b=_0x110400[_0x2405e4(0x32c)][_0x2405e4(0x3a5)]('|');let _0x4724e8=-0x656+0x1015+0x5*-0x1f3;while(!![]){switch(_0xcd0f7b[_0x4724e8++]){case'0':_0x5ba80c['team1Rep'+_0x2405e4(0x4ac)+'ame']=firebase[_0x2405e4(0x632)+'e'][_0x2405e4(0x497)+'ue'][_0x2405e4(0x48b)]();continue;case'1':if(!_0xada3bf[_0x2405e4(0x495)+'orted'])throw new Error(_0x110400[_0x2405e4(0x46c)]);continue;case'2':_0x5ba80c[_0x2405e4(0x495)+_0x2405e4(0x6f0)]=firebase['firestor'+'e'][_0x2405e4(0x497)+'ue'][_0x2405e4(0x48b)]();continue;case'3':_0x5ba80c[_0x2405e4(0x495)+_0x2405e4(0x58f)]=firebase[_0x2405e4(0x632)+'e'][_0x2405e4(0x497)+'ue'][_0x2405e4(0x48b)]();continue;case'4':_0x5ba80c[_0x2405e4(0x495)+_0x2405e4(0x6a2)]=firebase[_0x2405e4(0x632)+'e']['FieldVal'+'ue'][_0x2405e4(0x48b)]();continue;}break;}}else{const _0x549b96=_0x110400['ffavR'][_0x2405e4(0x3a5)]('|');let _0x4fbea8=0x26f*-0x4+-0x1e*-0x10d+0x2*-0xae5;while(!![]){switch(_0x549b96[_0x4fbea8++]){case'0':if(!_0xada3bf['team2Rep'+_0x2405e4(0x58f)])throw new Error(_0x110400['QFnta']);continue;case'1':_0x5ba80c['team2Rep'+_0x2405e4(0x6f0)]=firebase['firestor'+'e'][_0x2405e4(0x497)+'ue'][_0x2405e4(0x48b)]();continue;case'2':_0x5ba80c[_0x2405e4(0x491)+_0x2405e4(0x6a2)]=firebase['firestor'+'e'][_0x2405e4(0x497)+'ue'][_0x2405e4(0x48b)]();continue;case'3':_0x5ba80c[_0x2405e4(0x491)+_0x2405e4(0x4ac)+'ame']=firebase[_0x2405e4(0x632)+'e'][_0x2405e4(0x497)+'ue'][_0x2405e4(0x48b)]();continue;case'4':_0x5ba80c[_0x2405e4(0x491)+_0x2405e4(0x58f)]=firebase['firestor'+'e'][_0x2405e4(0x497)+'ue'][_0x2405e4(0x48b)]();continue;}break;}}(_0xada3bf[_0x2405e4(0x313)]===_0x110400['ZSYuf']||_0xada3bf[_0x2405e4(0x4f5)+'ed'])&&(_0x5ba80c[_0x2405e4(0x313)]=_0x2405e4(0x3ce)+_0x2405e4(0x6e5),_0x5ba80c['isDisput'+'ed']=![],_0x5ba80c[_0x2405e4(0x4bf)+'At']=firebase[_0x2405e4(0x632)+'e'][_0x2405e4(0x497)+'ue'][_0x2405e4(0x48b)]());await _0xdcd800[_0x2405e4(0x716)](_0x5ba80c);const _0x4c5983=_0xdcd800[_0x2405e4(0x28a)+'on'](_0x110400[_0x2405e4(0x588)]);await _0x4c5983[_0x2405e4(0x326)]({'isSystem':!![],'text':_0x2405e4(0x2c1)+_0x2aabc7+(_0x2405e4(0x33c)+_0x2405e4(0x386)+_0x2405e4(0x640)+'d\x20score.'+'\x20Both\x20te'+'ams\x20can\x20'+_0x2405e4(0x641)+_0x2405e4(0x5b5)),'timestamp':firebase[_0x2405e4(0x632)+'e'][_0x2405e4(0x497)+'ue']['serverTi'+_0x2405e4(0x494)]()});const _0x13f34a={};return _0x13f34a[_0x2405e4(0x2a2)]=!![],_0x13f34a;}async function adminResolveDispute(_0x54c523,_0x454c19,_0x47f761){const _0x4c4177=_0x432c,_0x4210fd={'MDZOQ':'Match\x20no'+_0x4c4177(0x507),'PEGVw':function(_0x4d2f19,_0x2ca2b7){return _0x4d2f19===_0x2ca2b7;},'snlkL':'team1','zrPiE':function(_0x1a2e4a,_0x29b14c){return _0x1a2e4a(_0x29b14c);},'RyOnb':function(_0x2918aa,_0x18d0ac){return _0x2918aa*_0x18d0ac;},'TveIc':function(_0x1bbb95,_0x260f78,_0x305158,_0x4bb349){return _0x1bbb95(_0x260f78,_0x305158,_0x4bb349);},'awxUJ':_0x4c4177(0x3f1)+'d','cDfwj':function(_0x4d734c,_0x4d4d9e){return _0x4d734c>_0x4d4d9e;},'rDYXu':function(_0x4eba1e,_0x2c3a83,_0x5175ce,_0x457e5e,_0x10d09e){return _0x4eba1e(_0x2c3a83,_0x5175ce,_0x457e5e,_0x10d09e);},'UJqhL':'users','MAbjO':_0x4c4177(0x5bf),'fyYeE':_0x4c4177(0x3aa),'UOwXX':function(_0x12d90c,_0x542ff6){return _0x12d90c(_0x542ff6);}},_0x55b92e=db[_0x4c4177(0x28a)+'on'](_0x4c4177(0x55b))[_0x4c4177(0x31d)](_0x54c523),_0x21f6ce=await _0x55b92e['get']();if(!_0x21f6ce[_0x4c4177(0x574)])throw new Error(_0x4210fd[_0x4c4177(0x31f)]);const _0x2b6108=_0x21f6ce[_0x4c4177(0x2af)](),_0x5c58c3=_0x2b6108[_0x4c4177(0x1f8)]||[],_0x5bdb97=_0x4210fd['PEGVw'](_0x454c19,_0x4210fd[_0x4c4177(0x62a)]),_0x589208=_0x5c58c3['filter'](_0x2a7d7f=>(_0x2a7d7f['team']===_0x4c4177(0x2d4)||_0x2a7d7f[_0x4c4177(0x5fb)]||_0x2a7d7f['uid']===_0x2b6108[_0x4c4177(0x6a9)+'y'])===_0x5bdb97),_0x578115=_0x5c58c3['filter'](_0x226fa9=>(_0x226fa9[_0x4c4177(0x52c)]==='team1'||_0x226fa9[_0x4c4177(0x5fb)]||_0x226fa9[_0x4c4177(0x26e)]===_0x2b6108[_0x4c4177(0x6a9)+'y'])!==_0x5bdb97),_0x1a98fd=Number(_0x2b6108[_0x4c4177(0x544)+'l']||_0x4210fd[_0x4c4177(0x519)](Number,_0x2b6108['wager'])*_0x5c58c3['length']),_0x2faa7f=_0x4210fd['RyOnb'](_0x1a98fd,-0x1379*0x1+-0x1382+0x26fb+0.9),_0x3800c7=_0x4210fd[_0x4c4177(0x68c)](calculateTeamPayouts,_0x589208,_0x2faa7f,_0x2b6108);await _0x55b92e[_0x4c4177(0x716)]({'status':_0x4210fd[_0x4c4177(0x427)],'isDisputed':![],'winnerTeam':_0x454c19,'resolvedByAdmin':_0x47f761,'winner':_0x589208[_0x4c4177(0x2f4)]===-0xa9*0x10+0x5fb*0x1+0x496?{'uid':_0x589208[-0x104e+0x1d7b+0xd2d*-0x1][_0x4c4177(0x26e)],'displayName':_0x589208[-0x1*-0x66a+-0xfba+0x10*0x95][_0x4c4177(0x31a)+'ame']}:null,'completedAt':firebase[_0x4c4177(0x632)+'e'][_0x4c4177(0x497)+'ue'][_0x4c4177(0x688)+_0x4c4177(0x494)]()});for(const _0x18d4e8 of _0x3800c7){_0x4210fd[_0x4c4177(0x346)](_0x18d4e8[_0x4c4177(0x6a7)],-0x3b2+-0xeb2+0x1264)&&await _0x4210fd[_0x4c4177(0x580)](updateTokens,_0x18d4e8[_0x4c4177(0x26e)],_0x18d4e8['amount'],'match_wi'+'n',_0x4c4177(0x3bc)+'h\x20(Staff'+_0x4c4177(0x323)+_0x4c4177(0x3ac)+_0x2b6108[_0x4c4177(0x2ba)]+'\x22');}for(const _0x10b568 of _0x589208){await db[_0x4c4177(0x28a)+'on'](_0x4210fd['UJqhL'])['doc'](_0x10b568[_0x4c4177(0x26e)])[_0x4c4177(0x716)]({'matchesPlayed':firebase[_0x4c4177(0x632)+'e'][_0x4c4177(0x497)+'ue']['incremen'+'t'](0x1704+-0x35*-0x6b+0xf6*-0x2f),'matchesWon':firebase['firestor'+'e']['FieldVal'+'ue'][_0x4c4177(0x210)+'t'](0x2*-0x557+-0xa63*-0x3+-0xa3d*0x2)})['catch'](console[_0x4c4177(0x55f)]);}for(const _0xa01ec of _0x578115){await db[_0x4c4177(0x28a)+'on'](_0x4210fd['UJqhL'])[_0x4c4177(0x31d)](_0xa01ec[_0x4c4177(0x26e)])[_0x4c4177(0x716)]({'matchesPlayed':firebase[_0x4c4177(0x632)+'e'][_0x4c4177(0x497)+'ue'][_0x4c4177(0x210)+'t'](-0x2210+-0x188*-0xe+0xca1)})[_0x4c4177(0x2df)](console[_0x4c4177(0x55f)]);}return await _0x55b92e[_0x4c4177(0x28a)+'on'](_0x4210fd[_0x4c4177(0x5fd)])[_0x4c4177(0x326)]({'isSystem':!![],'text':_0x4c4177(0x6ab)+'LING:\x20St'+'aff\x20Mode'+_0x4c4177(0x5a8)+_0x4c4177(0x4dd)+_0x4c4177(0x52a)+_0x4c4177(0x39f)+_0x4c4177(0x22d)+(_0x4210fd[_0x4c4177(0x2f7)](_0x454c19,_0x4210fd[_0x4c4177(0x62a)])?_0x4c4177(0x2fa):_0x4210fd[_0x4c4177(0x267)])+'!\x20'+_0x4210fd[_0x4c4177(0x45b)](formatTokens,_0x2faa7f)+('\x20Tokens\x20'+_0x4c4177(0x2e0)),'timestamp':firebase['firestor'+'e'][_0x4c4177(0x497)+'ue'][_0x4c4177(0x688)+_0x4c4177(0x494)]()}),_0x2faa7f;}async function voteMatchRematch(_0x2e970e,_0x7afcc3,_0x5a122f=_0x467253(0x5ac)){const _0xee825d=_0x467253,_0xd1d2cf={'iHJlu':_0xee825d(0x55b),'HogpX':_0xee825d(0x2fe)+'t\x20found','idqOR':function(_0x46b286,_0xe2a190){return _0x46b286!==_0xe2a190;},'ESxnH':_0xee825d(0x488)+'not\x20a\x20pa'+'rticipan'+'t\x20in\x20thi'+_0xee825d(0x5a2),'EMAZG':function(_0x56bfc5,_0x1f60d4){return _0x56bfc5(_0x1f60d4);},'mmKqo':function(_0x149d02,_0x21a678){return _0x149d02===_0x21a678;},'CCvDh':function(_0x5c8a10,_0x904dd2){return _0x5c8a10*_0x904dd2;},'LaGgD':'rematch','eWKqw':function(_0x70594a,_0x232306){return _0x70594a-_0x232306;},'WCePx':'Player','aAjKI':'double','gJUfK':_0xee825d(0x5bf),'ErbFZ':_0xee825d(0x55a),'PzDCe':function(_0x1ebd1a,_0x179a50){return _0x1ebd1a<_0x179a50;},'cPKTO':_0xee825d(0x36a)+'ger','YYhAG':function(_0x423b60,_0x8733ee){return _0x423b60===_0x8733ee;},'Ceqvh':_0xee825d(0x347)+_0xee825d(0x22e),'bcyTF':'Arena\x20Ma'+_0xee825d(0x4d3),'CDCEw':_0xee825d(0x3ce)+_0xee825d(0x6e5)},_0x2b141b=db['collecti'+'on'](_0xd1d2cf[_0xee825d(0x359)])[_0xee825d(0x31d)](_0x2e970e),_0x477840=await _0x2b141b['get']();if(!_0x477840[_0xee825d(0x574)])throw new Error(_0xd1d2cf[_0xee825d(0x368)]);const _0x36b4cc=_0x477840[_0xee825d(0x2af)]();if(_0xd1d2cf[_0xee825d(0x543)](_0x36b4cc[_0xee825d(0x313)],_0xee825d(0x3f1)+'d'))throw new Error(_0xee825d(0x347)+_0xee825d(0x47a)+_0xee825d(0x2b1)+_0xee825d(0x52b)+'\x20for\x20com'+_0xee825d(0x722)+_0xee825d(0x636));const _0x45c9df=_0x36b4cc[_0xee825d(0x1f8)]||[],_0x33e181=_0x45c9df[_0xee825d(0x2bd)](_0x5234a4=>_0x5234a4[_0xee825d(0x26e)]===_0x7afcc3);if(!_0x33e181)throw new Error(_0xd1d2cf['ESxnH']);const _0x41c574=_0xd1d2cf[_0xee825d(0x5a7)](Number,_0x36b4cc['wager']||-0x199e+0x1fe5+-0x646),_0x34e84f=_0xd1d2cf['mmKqo'](_0x5a122f,_0xee825d(0x373))?_0xd1d2cf['CCvDh'](_0x41c574,0x1*0x1441+-0xad*0x5+0x1*-0x10de):_0x41c574,_0x59ae60=await db[_0xee825d(0x28a)+'on']('users')[_0xee825d(0x31d)](_0x7afcc3)[_0xee825d(0x6e0)](),_0x1dc9d1=_0xd1d2cf['EMAZG'](Number,_0x59ae60[_0xee825d(0x2af)]()?.['tokens']||0x24da+-0x56e+0x2*-0xfb6);if(_0x1dc9d1<_0x34e84f)throw new Error(_0xee825d(0x61a)+_0xee825d(0x613)+_0xee825d(0x6c0)+(_0xd1d2cf[_0xee825d(0x23d)](_0x5a122f,_0xee825d(0x373))?'double\x20d'+'own':_0xd1d2cf[_0xee825d(0x4e4)])+_0xee825d(0x615)+_0xd1d2cf['EMAZG'](formatTokens,_0x34e84f)+(_0xee825d(0x5d2)+_0xee825d(0x3f8)+'e\x20')+formatTokens(_0x1dc9d1)+_0xee825d(0x5e3));const _0x13b2e3=_0xd1d2cf['CCvDh'](0x36*0x7+-0x51*-0x22+-0xbe2,0x1ca5*-0x1+-0x70e+0x279b),_0x1dc3e9=Date[_0xee825d(0x6f5)](),_0x52555d=_0x36b4cc[_0xee825d(0x6b0)+_0xee825d(0x39d)+_0xee825d(0x600)]?_0x36b4cc[_0xee825d(0x6b0)+'otesUpda'+'tedAt'][_0xee825d(0x5fc)]?_0x36b4cc[_0xee825d(0x6b0)+_0xee825d(0x39d)+_0xee825d(0x600)][_0xee825d(0x5fc)]()[_0xee825d(0x4c2)]():_0x36b4cc[_0xee825d(0x6b0)+_0xee825d(0x39d)+_0xee825d(0x600)]['seconds']?_0xd1d2cf[_0xee825d(0x6c8)](_0x36b4cc[_0xee825d(0x6b0)+'otesUpda'+_0xee825d(0x600)]['seconds'],-0x1d6a+-0x4*0x88a+0x6*0xb3f):0x1bb0+-0x24f8+0xc6*0xc:-0x1*0x18f9+-0x3*0x527+-0x23f*-0x12;let _0x1cdd07=Array[_0xee825d(0x4e0)](_0x36b4cc[_0xee825d(0x6b0)+_0xee825d(0x384)])?[..._0x36b4cc['rematchV'+'otes']]:[],_0x199d43=Array[_0xee825d(0x4e0)](_0x36b4cc['doubleVo'+'tes'])?[..._0x36b4cc[_0xee825d(0x619)+'tes']]:[];_0x52555d>-0x3*0x83b+0x35d+0x7*0x30c&&_0xd1d2cf[_0xee825d(0x667)](_0x1dc3e9,_0x52555d)>_0x13b2e3&&(_0x1cdd07=[],_0x199d43=[]);const _0x49a19d=_0x36b4cc['maxPlaye'+'rs']||_0x45c9df['length']||0x141b+-0x22c*-0x11+-0x3905*0x1,_0xe7be91=_0x33e181[_0xee825d(0x31a)+_0xee825d(0x6a8)]||_0xd1d2cf[_0xee825d(0x68f)];if(_0x5a122f===_0xd1d2cf[_0xee825d(0x4e4)]&&_0x1cdd07[_0xee825d(0x625)](_0x7afcc3)){_0x1cdd07=_0x1cdd07[_0xee825d(0x3be)](_0xe234d1=>_0xe234d1!==_0x7afcc3),await _0x2b141b[_0xee825d(0x716)]({'rematchVotes':_0x1cdd07,'rematchVotesUpdatedAt':firebase['firestor'+'e'][_0xee825d(0x497)+'ue']['serverTi'+'mestamp']()}),await _0x2b141b[_0xee825d(0x28a)+'on']('messages')['add']({'isSystem':!![],'text':_0xe7be91+(_0xee825d(0x24d)+'ed\x20their'+_0xee825d(0x3b5)+_0xee825d(0x652)),'timestamp':firebase[_0xee825d(0x632)+'e'][_0xee825d(0x497)+'ue'][_0xee825d(0x688)+'mestamp']()});const _0x4c0576={};return _0x4c0576[_0xee825d(0x572)]=![],_0x4c0576['cancelle'+'d']=!![],_0x4c0576[_0xee825d(0x708)]=_0xd1d2cf[_0xee825d(0x4e4)],_0x4c0576[_0xee825d(0x6ee)]=_0x1cdd07['length'],_0x4c0576['total']=_0x49a19d,_0x4c0576;}if(_0xd1d2cf[_0xee825d(0x23d)](_0x5a122f,_0xd1d2cf[_0xee825d(0x505)])&&_0x199d43[_0xee825d(0x625)](_0x7afcc3)){_0x199d43=_0x199d43[_0xee825d(0x3be)](_0x20cbbf=>_0x20cbbf!==_0x7afcc3),await _0x2b141b[_0xee825d(0x716)]({'doubleVotes':_0x199d43,'rematchVotesUpdatedAt':firebase['firestor'+'e']['FieldVal'+'ue']['serverTi'+_0xee825d(0x494)]()}),await _0x2b141b['collecti'+'on'](_0xee825d(0x5bf))['add']({'isSystem':!![],'text':_0xe7be91+(_0xee825d(0x24d)+_0xee825d(0x386)+_0xee825d(0x689)+_0xee825d(0x457)),'timestamp':firebase['firestor'+'e'][_0xee825d(0x497)+'ue'][_0xee825d(0x688)+_0xee825d(0x494)]()});const _0xaf326d={};return _0xaf326d[_0xee825d(0x572)]=![],_0xaf326d[_0xee825d(0x4f3)+'d']=!![],_0xaf326d[_0xee825d(0x708)]=_0xee825d(0x373),_0xaf326d[_0xee825d(0x6ee)]=_0x199d43['length'],_0xaf326d['total']=_0x49a19d,_0xaf326d;}if(_0x5a122f===_0xee825d(0x5ac)){if(!_0x1cdd07['includes'](_0x7afcc3))_0x1cdd07[_0xee825d(0x2ef)](_0x7afcc3);_0x199d43=_0x199d43['filter'](_0xb1077a=>_0xb1077a!==_0x7afcc3);}else{if(!_0x199d43[_0xee825d(0x625)](_0x7afcc3))_0x199d43[_0xee825d(0x2ef)](_0x7afcc3);_0x1cdd07=_0x1cdd07[_0xee825d(0x3be)](_0x47e7fd=>_0x47e7fd!==_0x7afcc3);}const _0xf14cab=_0xd1d2cf['mmKqo'](_0x5a122f,_0xd1d2cf['LaGgD'])?_0x1cdd07:_0x199d43;await _0x2b141b[_0xee825d(0x28a)+'on'](_0xd1d2cf[_0xee825d(0x327)])[_0xee825d(0x326)]({'isSystem':!![],'text':_0xe7be91+(_0xee825d(0x617)+'o\x20')+(_0xd1d2cf[_0xee825d(0x23d)](_0x5a122f,_0xd1d2cf[_0xee825d(0x505)])?_0xd1d2cf['ErbFZ']:_0xee825d(0x268))+'\x20'+_0xf14cab['length']+'/'+_0x49a19d,'timestamp':firebase[_0xee825d(0x632)+'e'][_0xee825d(0x497)+'ue'][_0xee825d(0x688)+'mestamp']()});if(_0xf14cab[_0xee825d(0x2f4)]>=_0x49a19d){const _0x2760fd=_0xd1d2cf[_0xee825d(0x23d)](_0x5a122f,'double')?_0x41c574*(0x2*-0xa27+-0xf81+0x23d1):_0x41c574,_0x594255=_0xd1d2cf['CCvDh'](_0x2760fd,_0x49a19d);for(const _0x577e28 of _0x45c9df){const _0x5dad29=await db['collecti'+'on'](_0xee825d(0x2c2))[_0xee825d(0x31d)](_0x577e28[_0xee825d(0x26e)])[_0xee825d(0x6e0)](),_0x23e896=Number(_0x5dad29[_0xee825d(0x2af)]()?.[_0xee825d(0x291)]||0xb7d*-0x1+0x2571*-0x1+0x30ee);if(_0xd1d2cf[_0xee825d(0x3ab)](_0x23e896,_0x2760fd))throw new Error((_0x577e28[_0xee825d(0x31a)+_0xee825d(0x6a8)]||_0xee825d(0x30b))+('\x20does\x20no'+'t\x20have\x20s'+_0xee825d(0x5b3)+_0xee825d(0x294)+'\x20(')+_0xd1d2cf[_0xee825d(0x5a7)](formatTokens,_0x2760fd)+('\x20Tokens\x20'+_0xee825d(0x64d)+')'));}for(const _0x16f695 of _0x45c9df){await updateTokens(_0x16f695[_0xee825d(0x26e)],-_0x2760fd,_0xd1d2cf[_0xee825d(0x6cb)],(_0xd1d2cf['YYhAG'](_0x5a122f,_0xd1d2cf[_0xee825d(0x505)])?_0xee825d(0x524)+_0xee825d(0x365)+'y':_0xd1d2cf[_0xee825d(0x679)])+'\x20—\x20'+(_0x36b4cc[_0xee825d(0x2ba)]||_0xd1d2cf['bcyTF']));}await _0x2b141b[_0xee825d(0x716)]({'wager':_0x2760fd,'prizePool':_0x594255,'status':_0xd1d2cf[_0xee825d(0x34c)],'team1Reported':null,'team2Reported':null,'team1ReportedBy':null,'team2ReportedBy':null,'team1ReportedByName':null,'team2ReportedByName':null,'team1ReportedAt':null,'team2ReportedAt':null,'winner':null,'winnerTeam':null,'isDisputed':![],'disputedAt':null,'rematchVotes':[],'doubleVotes':[],'rematchVotesUpdatedAt':null,'startedAt':firebase[_0xee825d(0x632)+'e'][_0xee825d(0x497)+'ue'][_0xee825d(0x688)+_0xee825d(0x494)](),'completedAt':null}),await _0x2b141b[_0xee825d(0x28a)+'on'](_0xd1d2cf[_0xee825d(0x327)])[_0xee825d(0x326)]({'isSystem':!![],'text':_0xee825d(0x569)+'STARTED:'+_0xee825d(0x4a7)+_0xee825d(0x4f7)+_0xee825d(0x330)+_0xee825d(0x475)+formatTokens(_0x2760fd)+(_0xee825d(0x70f)+_0xee825d(0x5cb)+'Prize:\x20')+_0xd1d2cf[_0xee825d(0x5a7)](formatTokens,_0xd1d2cf['CCvDh'](_0x594255,-0x14b*0x7+0x14cb+-0x5df*0x2+0.9))+(_0xee825d(0x250)+_0xee825d(0x343)+_0xee825d(0x5da)),'timestamp':firebase['firestor'+'e'][_0xee825d(0x497)+'ue'][_0xee825d(0x688)+_0xee825d(0x494)]()});const _0x6368fc={};return _0x6368fc[_0xee825d(0x572)]=!![],_0x6368fc[_0xee825d(0x708)]=_0x5a122f,_0x6368fc[_0xee825d(0x292)]=_0x2760fd,_0x6368fc;}else{await _0x2b141b[_0xee825d(0x716)]({'rematchVotes':_0x1cdd07,'doubleVotes':_0x199d43,'rematchVotesUpdatedAt':firebase['firestor'+'e']['FieldVal'+'ue'][_0xee825d(0x688)+_0xee825d(0x494)]()});const _0x3890c8={};return _0x3890c8[_0xee825d(0x572)]=![],_0x3890c8[_0xee825d(0x708)]=_0x5a122f,_0x3890c8[_0xee825d(0x6ee)]=_0xf14cab['length'],_0x3890c8[_0xee825d(0x2d5)]=_0x49a19d,_0x3890c8;}}async function getLeaderboard(){const _0x219545=_0x467253,_0x2863c0={'BJBZn':function(_0x5936a4,_0x3aa6f4){return _0x5936a4===_0x3aa6f4;},'UvsxU':_0x219545(0x29f),'Hfxnh':_0x219545(0x690),'hqUiY':_0x219545(0x2ce),'TdVUB':_0x219545(0x41a),'UuRRW':'guest-','ZwBnn':function(_0x305475,_0x565c22){return _0x305475-_0x565c22;},'RsQiX':function(_0x56181f,_0x23ff96){return _0x56181f(_0x23ff96);},'gZrum':_0x219545(0x2c2)},_0x3ca383=await db[_0x219545(0x28a)+'on'](_0x2863c0[_0x219545(0x58b)])[_0x219545(0x6e0)](),_0x222643=_0x3ca383['docs'][_0x219545(0x357)](_0x5eb4f6=>({'id':_0x5eb4f6['id'],..._0x5eb4f6['data']()}))[_0x219545(0x3be)](_0x4512f7=>{const _0x5f5d8e=_0x219545;if(_0x2863c0[_0x5f5d8e(0x533)](_0x4512f7[_0x5f5d8e(0x450)],!![])||_0x4512f7['id']['startsWi'+'th'](_0x2863c0[_0x5f5d8e(0x39e)])||_0x4512f7['uid']?.['startsWi'+'th'](_0x2863c0[_0x5f5d8e(0x39e)]))return![];const _0x4fb927=(_0x4512f7[_0x5f5d8e(0x31a)+_0x5f5d8e(0x6a8)]||'')[_0x5f5d8e(0x32f)+_0x5f5d8e(0x492)]();if(_0x4fb927[_0x5f5d8e(0x625)](_0x2863c0[_0x5f5d8e(0x26c)])||_0x4fb927[_0x5f5d8e(0x625)](_0x2863c0['hqUiY'])||_0x4fb927[_0x5f5d8e(0x27a)+'th'](_0x2863c0[_0x5f5d8e(0x58d)])||_0x4fb927[_0x5f5d8e(0x27a)+'th'](_0x2863c0['UuRRW']))return![];return!![];});return _0x222643[_0x219545(0x648)]((_0x508a18,_0x378277)=>{const _0x3ee8b2=_0x219545,_0x1c34c0=_0x2863c0[_0x3ee8b2(0x6fe)](_0x2863c0[_0x3ee8b2(0x55d)](Number,_0x378277['matchesW'+'on'])||-0x1f41+0x15cf+0x6*0x193,_0x2863c0[_0x3ee8b2(0x55d)](Number,_0x508a18['matchesW'+'on'])||-0x1162+0xdb1+0x3b1);if(_0x1c34c0!==0x21*0x35+-0x83d*-0x3+-0x1f8c)return _0x1c34c0;return(Number(_0x378277[_0x3ee8b2(0x42b)+_0x3ee8b2(0x391)])||-0xf29*-0x2+-0x2154+0x302)-(Number(_0x508a18['totalEar'+'ned'])||0x4*0x1bd+0x1b98+-0x228c);}),_0x222643;}async function getUserLeaderboardRank(_0x2be864){const _0x2c6704=_0x467253,_0x28beaf={'Writa':function(_0xb2872f){return _0xb2872f();},'FzeCw':function(_0x168042,_0x7351f8){return _0x168042===_0x7351f8;},'syeTy':_0x2c6704(0x376),'vczke':'rank-bad'+'ge-top','ZSRZY':_0x2c6704(0x6c1)+_0x2c6704(0x23a)+'l'};try{const _0x44a6db=await _0x28beaf[_0x2c6704(0x485)](getLeaderboard),_0x4a2612=_0x44a6db[_0x2c6704(0x56a)+'x'](_0x4fb7a8=>_0x4fb7a8['id']===_0x2be864||_0x4fb7a8[_0x2c6704(0x26e)]===_0x2be864);if(_0x28beaf[_0x2c6704(0x4de)](_0x4a2612,-(-0x1*-0x201a+-0x1c1*-0x1+-0x21da))){const _0x26a5a5={};return _0x26a5a5[_0x2c6704(0x633)]=null,_0x26a5a5[_0x2c6704(0x3a0)]=_0x28beaf[_0x2c6704(0x4df)],_0x26a5a5[_0x2c6704(0x56b)+'ss']=_0x2c6704(0x6c1)+'ge-norma'+'l',_0x26a5a5;}const _0x4fd9a4=_0x4a2612+(0xb5a+0x10+-0xb69),_0xec99af=_0x4fd9a4===0x7*-0x4f4+0x1*0x1093+0x121a?_0x2c6704(0x6c1)+'ge-1':_0x4fd9a4<=-0x5a6+0x3*0x615+-0xc96?_0x28beaf[_0x2c6704(0x228)]:_0x2c6704(0x6c1)+_0x2c6704(0x23a)+'l',_0x2cf3e6={};return _0x2cf3e6[_0x2c6704(0x633)]=_0x4fd9a4,_0x2cf3e6['display']='#'+_0x4fd9a4,_0x2cf3e6[_0x2c6704(0x56b)+'ss']=_0xec99af,_0x2cf3e6;}catch(_0x333561){const _0x44fe3a={};return _0x44fe3a['rank']=null,_0x44fe3a[_0x2c6704(0x3a0)]=_0x28beaf[_0x2c6704(0x4df)],_0x44fe3a[_0x2c6704(0x56b)+'ss']=_0x28beaf['ZSRZY'],_0x44fe3a;}}async function getUserTransactions(_0x3ece65,_0x2d62dd=0x2265+0x328*0xb+-0x450e){const _0x3f2592=_0x467253,_0x11c26f={};_0x11c26f['GVcCQ']=_0x3f2592(0x53d)+_0x3f2592(0x606);const _0xb786d0=_0x11c26f,_0x1333d8=await db[_0x3f2592(0x28a)+'on'](_0xb786d0[_0x3f2592(0x464)])['where'](_0x3f2592(0x442),'==',_0x3ece65)[_0x3f2592(0x6e0)](),_0x270c42=_0x1333d8['docs'][_0x3f2592(0x357)](_0x6a1bcc=>({'id':_0x6a1bcc['id'],..._0x6a1bcc[_0x3f2592(0x2af)]()}));return _0x270c42[_0x3f2592(0x648)]((_0x4c70f3,_0x222e11)=>(_0x222e11[_0x3f2592(0x445)+'p']?.[_0x3f2592(0x546)]||-0x21d7+0x1737+0x4*0x2a8)-(_0x4c70f3[_0x3f2592(0x445)+'p']?.['seconds']||0x1aff*0x1+-0x5*-0x55d+0x11f*-0x30)),_0x270c42[_0x3f2592(0x45c)](0xfc+0x1bff+-0x9a9*0x3,_0x2d62dd);}function generateTeamCode(){const _0x85e860=_0x467253,_0x638015={};_0x638015[_0x85e860(0x282)]=function(_0x45dae6,_0x224cda){return _0x45dae6+_0x224cda;},_0x638015[_0x85e860(0x3f9)]='TM-';const _0x3a8d58=_0x638015;return _0x3a8d58[_0x85e860(0x282)](_0x3a8d58['PtYHc'],Math['random']()[_0x85e860(0x3e5)](0x5c+-0x4*0x6b+-0xc*-0x1f)[_0x85e860(0x408)](0x1*0x2601+-0x605*-0x2+-0x3209,0xbc0+0xb*0x9d+-0x127a)['toUpperC'+'ase']());}const PROFANITY_BLOCKLIST=['nigger',_0x467253(0x61c),'faggot',_0x467253(0x425),_0x467253(0x71f),_0x467253(0x201),_0x467253(0x43d),'bitch',_0x467253(0x36e),'chink','spic','retard',_0x467253(0x46f),'pedophil'+'e',_0x467253(0x3df),_0x467253(0x383),_0x467253(0x21d),_0x467253(0x590),_0x467253(0x51d),_0x467253(0x37c),_0x467253(0x340)+'t',_0x467253(0x3ae),'pussy',_0x467253(0x3b9),_0x467253(0x248),_0x467253(0x2f5),'vagina',_0x467253(0x466),'bastard',_0x467253(0x522)+_0x467253(0x479),_0x467253(0x460),'shit',_0x467253(0x578)+_0x467253(0x2c7),_0x467253(0x4c6),'porn',_0x467253(0x3a2)];function isProfane(_0x14d73e){const _0x3cddbc=_0x467253;if(!_0x14d73e)return![];let _0x33715a=_0x14d73e[_0x3cddbc(0x32f)+_0x3cddbc(0x492)]()[_0x3cddbc(0x6ec)](/@/g,'a')['replace'](/0/g,'o')['replace'](/1|!|\|/g,'i')[_0x3cddbc(0x6ec)](/3/g,'e')[_0x3cddbc(0x6ec)](/5|\$/g,'s')[_0x3cddbc(0x6ec)](/7/g,'t')['replace'](/8/g,'b')[_0x3cddbc(0x6ec)](/[^a-z0-9]/g,'');for(const _0x5304d4 of PROFANITY_BLOCKLIST){const _0x831dd=_0x5304d4['replace'](/[^a-z0-9]/g,'');if(_0x33715a[_0x3cddbc(0x625)](_0x831dd))return!![];}return![];}async function createTeam(_0x5a924b,{name:_0x1609e2,tag:_0x529c0e,icon:_0x322688,iconColor:_0x544f43,bgColor:_0x5d3572,borderColor:_0x361069}){const _0x5195a9=_0x467253,_0x227041={'EQTjV':_0x5195a9(0x6c5)+'e\x20is\x20req'+_0x5195a9(0x5c4),'RdbOb':function(_0x92b319,_0x3a90c6){return _0x92b319(_0x3a90c6);},'VrmWH':function(_0x30bec8,_0x17bab8){return _0x30bec8(_0x17bab8);},'aHFMN':function(_0x2e3968){return _0x2e3968();},'shpWz':'Leader','jmuTI':_0x5195a9(0x6f1),'DdFBC':function(_0x24d126,_0x5c65a9){return _0x24d126||_0x5c65a9;},'uEIzo':_0x5195a9(0x33a),'fvrpZ':'rgba(245'+_0x5195a9(0x6e9)+_0x5195a9(0x42c),'WLrLk':function(_0xb3bb12,_0x17ed40){return _0xb3bb12||_0x17ed40;},'ORUiO':_0x5195a9(0x3e2)+_0x5195a9(0x6e9)+_0x5195a9(0x2a0),'mbCEK':'none','Uuyiw':_0x5195a9(0x2c2)};if(!_0x1609e2||!_0x1609e2[_0x5195a9(0x5ea)]())throw new Error(_0x227041[_0x5195a9(0x468)]);const _0x118428=_0x1609e2[_0x5195a9(0x5ea)](),_0x44267b=(_0x529c0e||_0x1609e2[_0x5195a9(0x513)+'g'](-0xd*-0x1c4+0x115*0x1f+-0x387f,-0x146f+0x3*0xb55+-0x484*0x3))[_0x5195a9(0x547)+_0x5195a9(0x492)]()['trim']()['replace'](/[^A-Z0-9]/g,'');if(_0x227041[_0x5195a9(0x700)](isProfane,_0x118428)||_0x227041[_0x5195a9(0x3cb)](isProfane,_0x44267b))throw new Error('Team\x20nam'+_0x5195a9(0x581)+_0x5195a9(0x6f7)+_0x5195a9(0x272)+'opriate\x20'+_0x5195a9(0x691)+_0x5195a9(0x3b3)+'oose\x20ano'+_0x5195a9(0x5ba));const _0x5c9eff=_0x227041[_0x5195a9(0x211)](generateTeamCode),_0x29fedd={};_0x29fedd[_0x5195a9(0x26e)]=_0x5a924b[_0x5195a9(0x26e)],_0x29fedd[_0x5195a9(0x31a)+_0x5195a9(0x6a8)]=_0x5a924b['displayN'+_0x5195a9(0x6a8)]||_0x227041[_0x5195a9(0x253)],_0x29fedd[_0x5195a9(0x713)]=_0x5a924b[_0x5195a9(0x713)]||'',_0x29fedd['isLeader']=!![];const _0x5191d5=_0x29fedd,_0x7266d=_0x322688||_0x227041['jmuTI'],_0x4a7b68=_0x227041[_0x5195a9(0x280)](_0x544f43,_0x227041[_0x5195a9(0x65e)]),_0x2708a6=_0x5d3572||_0x227041[_0x5195a9(0x50f)],_0x4bcb64=_0x227041[_0x5195a9(0x478)](_0x361069,_0x227041['ORUiO']),_0x2d029d=await db[_0x5195a9(0x28a)+'on']('teams')['add']({'name':_0x118428,'tag':_0x44267b,'code':_0x5c9eff,'icon':_0x7266d,'iconColor':_0x4a7b68,'bgColor':_0x2708a6,'borderColor':_0x4bcb64,'ownerUid':_0x5a924b[_0x5195a9(0x26e)],'ownerName':_0x5a924b[_0x5195a9(0x31a)+_0x5195a9(0x6a8)]||_0x227041[_0x5195a9(0x253)],'members':[_0x5191d5],'memberUids':[_0x5a924b[_0x5195a9(0x26e)]],'wagerCoverage':_0x227041[_0x5195a9(0x254)],'coveredMemberUids':[],'splitRule':_0x5195a9(0x5d3),'createdAt':firebase['firestor'+'e'][_0x5195a9(0x497)+'ue'][_0x5195a9(0x688)+_0x5195a9(0x494)]()}),_0x37472c={};_0x37472c[_0x5195a9(0x3af)]=_0x2d029d['id'],_0x37472c[_0x5195a9(0x4c1)]=_0x118428,_0x37472c[_0x5195a9(0x2f1)]=_0x44267b,await db['collecti'+'on'](_0x227041['Uuyiw'])[_0x5195a9(0x31d)](_0x5a924b[_0x5195a9(0x26e)])[_0x5195a9(0x716)](_0x37472c);const _0x37e09d={};return _0x37e09d['id']=_0x2d029d['id'],_0x37e09d['code']=_0x5c9eff,_0x37e09d[_0x5195a9(0x422)]=_0x118428,_0x37e09d[_0x5195a9(0x4f6)]=_0x44267b,_0x37e09d[_0x5195a9(0x22c)]=_0x7266d,_0x37e09d[_0x5195a9(0x4cd)+'r']=_0x4a7b68,_0x37e09d['bgColor']=_0x2708a6,_0x37e09d['borderCo'+_0x5195a9(0x245)]=_0x4bcb64,_0x37e09d;}async function getUserTeams(_0x549010){const _0x16b73c=_0x467253,_0x962c38={};_0x962c38[_0x16b73c(0x71b)]=_0x16b73c(0x5d7),_0x962c38[_0x16b73c(0x413)]=_0x16b73c(0x40b)+'ds',_0x962c38['OoNgL']=_0x16b73c(0x54f)+_0x16b73c(0x3d1),_0x962c38[_0x16b73c(0x3bb)]='getUserT'+_0x16b73c(0x4b1)+'ice:';const _0x4a8a22=_0x962c38,_0x2fe6d1=[],_0x40baaf=new Set();try{const _0x33ed31=await db[_0x16b73c(0x28a)+'on'](_0x4a8a22[_0x16b73c(0x71b)])[_0x16b73c(0x339)](_0x4a8a22[_0x16b73c(0x413)],_0x4a8a22['OoNgL'],_0x549010)['get']();_0x33ed31['docs'][_0x16b73c(0x5b0)](_0x442353=>{const _0x21e037=_0x16b73c;!_0x40baaf[_0x21e037(0x540)](_0x442353['id'])&&(_0x40baaf[_0x21e037(0x326)](_0x442353['id']),_0x2fe6d1[_0x21e037(0x2ef)]({'id':_0x442353['id'],..._0x442353[_0x21e037(0x2af)]()}));});const _0x31a018=await db[_0x16b73c(0x28a)+'on'](_0x4a8a22['jXFIO'])[_0x16b73c(0x339)](_0x16b73c(0x27b),'==',_0x549010)[_0x16b73c(0x6e0)]();_0x31a018[_0x16b73c(0x362)][_0x16b73c(0x5b0)](_0x179f8f=>{const _0x2ab057=_0x16b73c;!_0x40baaf['has'](_0x179f8f['id'])&&(_0x40baaf[_0x2ab057(0x326)](_0x179f8f['id']),_0x2fe6d1[_0x2ab057(0x2ef)]({'id':_0x179f8f['id'],..._0x179f8f['data']()}));});}catch(_0x50a161){console[_0x16b73c(0x55f)](_0x4a8a22['eLScS'],_0x50a161[_0x16b73c(0x3e0)]);}return _0x2fe6d1;}async function getUserTeam(_0x4286bf){const _0x490a0e=_0x467253,_0x133e6b={};_0x133e6b[_0x490a0e(0x5ec)]='teams',_0x133e6b[_0x490a0e(0x5a6)]=_0x490a0e(0x54f)+_0x490a0e(0x3d1);const _0x2d594b=_0x133e6b;try{const _0x3a8aa3=await getUser(_0x4286bf);if(!_0x3a8aa3)return null;if(_0x3a8aa3[_0x490a0e(0x3af)]){const _0x338af3=await db['collecti'+'on'](_0x2d594b[_0x490a0e(0x5ec)])['doc'](_0x3a8aa3[_0x490a0e(0x3af)])[_0x490a0e(0x6e0)]();if(_0x338af3[_0x490a0e(0x574)])return{'id':_0x338af3['id'],..._0x338af3[_0x490a0e(0x2af)]()};}const _0x10c2f3=await db['collecti'+'on'](_0x2d594b[_0x490a0e(0x5ec)])['where'](_0x490a0e(0x40b)+'ds',_0x2d594b['TxCPk'],_0x4286bf)['limit'](-0x1d49+-0x22ea+0x4034)[_0x490a0e(0x6e0)]();if(!_0x10c2f3['empty'])return{'id':_0x10c2f3[_0x490a0e(0x362)][0x5*-0x3a+0x5*-0x3b3+-0xf*-0x14f]['id'],..._0x10c2f3[_0x490a0e(0x362)][0x1a3d*-0x1+0x10ae*-0x2+0x49*0xd1][_0x490a0e(0x2af)]()};}catch(_0x430a12){console[_0x490a0e(0x55f)](_0x490a0e(0x4d7)+'eam\x20fall'+'back\x20not'+_0x490a0e(0x67d),_0x430a12[_0x490a0e(0x3e0)]);}return null;}async function updateTeamSettings(_0x347ae8,_0x82c85c){const _0x4691e2=_0x467253,_0x5eb89f={};_0x5eb89f['UUiwd']=_0x4691e2(0x5d7),_0x5eb89f['QpOuh']=_0x4691e2(0x559),_0x5eb89f[_0x4691e2(0x62c)]=_0x4691e2(0x5d3);const _0x3c90a8=_0x5eb89f,_0x36c344=db[_0x4691e2(0x28a)+'on'](_0x3c90a8['UUiwd'])[_0x4691e2(0x31d)](_0x347ae8);await _0x36c344['update']({'wagerCoverage':_0x82c85c[_0x4691e2(0x217)+'erage']||_0x3c90a8[_0x4691e2(0x4c9)],'coveredMemberUids':_0x82c85c[_0x4691e2(0x249)+_0x4691e2(0x6b5)+'s']||[],'splitRule':_0x82c85c[_0x4691e2(0x5b4)+'e']||_0x3c90a8['eYCLV'],'updatedAt':firebase[_0x4691e2(0x632)+'e'][_0x4691e2(0x497)+'ue']['serverTi'+_0x4691e2(0x494)]()});}async function setActiveTeam(_0x3aa741,_0x5c9a33){const _0x360269=_0x467253,_0x177943={};_0x177943['teamId']=_0x5c9a33['id'],_0x177943['teamName']=_0x5c9a33[_0x360269(0x422)],_0x177943[_0x360269(0x2f1)]=_0x5c9a33[_0x360269(0x4f6)],await db[_0x360269(0x28a)+'on'](_0x360269(0x2c2))[_0x360269(0x31d)](_0x3aa741)[_0x360269(0x716)](_0x177943);}async function joinTeamByCode(_0x877677,_0x52120d){const _0xef4e7b=_0x467253,_0x2e0f65={'PpXmE':_0xef4e7b(0x5d7),'bnOYK':function(_0x3f1407,_0x471b70){return _0x3f1407>=_0x471b70;},'NLZIv':_0xef4e7b(0x4a8)+_0xef4e7b(0x5f1)+_0xef4e7b(0x2a7)+_0xef4e7b(0x721)+_0xef4e7b(0x237)+_0xef4e7b(0x40c)+_0xef4e7b(0x570),'Sraph':function(_0x44712c,_0x2af021,_0xcdf65f){return _0x44712c(_0x2af021,_0xcdf65f);},'guECE':'Champion','LfHRk':'users'},_0x141e38=_0x877677[_0xef4e7b(0x5ea)]()['toUpperC'+_0xef4e7b(0x492)](),_0x415e85=await db['collecti'+'on'](_0x2e0f65[_0xef4e7b(0x59e)])[_0xef4e7b(0x339)](_0xef4e7b(0x66f),'==',_0x141e38)[_0xef4e7b(0x2c3)](-0x200b*-0x1+-0x4*0x944+0x506)[_0xef4e7b(0x6e0)]();if(_0x415e85['empty'])throw new Error(_0xef4e7b(0x710)+_0xef4e7b(0x3d8)+'\x20not\x20fou'+'nd');const _0x59a9e2=_0x415e85['docs'][-0x1c89*-0x1+0x1*0x221+0x32*-0x9d],_0x3ba7f7=_0x59a9e2[_0xef4e7b(0x2af)]();if(_0x3ba7f7[_0xef4e7b(0x3bf)]&&_0x2e0f65['bnOYK'](_0x3ba7f7['members'][_0xef4e7b(0x2f4)],0x363*-0x2+-0x18d0*-0x1+-0x1204))throw new Error(_0x2e0f65[_0xef4e7b(0x5a5)]);if(_0x3ba7f7[_0xef4e7b(0x3bf)]&&_0x3ba7f7[_0xef4e7b(0x3bf)][_0xef4e7b(0x3e9)](_0x137a80=>_0x137a80['uid']===_0x52120d[_0xef4e7b(0x26e)])){const _0x4241b4={};_0x4241b4['id']=_0x59a9e2['id'],_0x4241b4[_0xef4e7b(0x422)]=_0x3ba7f7['name'],_0x4241b4[_0xef4e7b(0x4f6)]=_0x3ba7f7[_0xef4e7b(0x4f6)],await _0x2e0f65['Sraph'](setActiveTeam,_0x52120d[_0xef4e7b(0x26e)],_0x4241b4);const _0x725824={};return _0x725824['id']=_0x59a9e2['id'],_0x725824['name']=_0x3ba7f7['name'],_0x725824[_0xef4e7b(0x4f6)]=_0x3ba7f7[_0xef4e7b(0x4f6)],_0x725824['code']=_0x3ba7f7[_0xef4e7b(0x66f)],_0x725824;}const _0x59cf4c={};_0x59cf4c[_0xef4e7b(0x26e)]=_0x52120d[_0xef4e7b(0x26e)],_0x59cf4c[_0xef4e7b(0x31a)+_0xef4e7b(0x6a8)]=_0x52120d[_0xef4e7b(0x31a)+_0xef4e7b(0x6a8)]||_0x2e0f65[_0xef4e7b(0x32a)],_0x59cf4c[_0xef4e7b(0x713)]=_0x52120d[_0xef4e7b(0x713)]||'',_0x59cf4c[_0xef4e7b(0x447)]=![];const _0x52c0dd=_0x59cf4c;await _0x59a9e2[_0xef4e7b(0x2b2)][_0xef4e7b(0x716)]({'members':firebase[_0xef4e7b(0x632)+'e']['FieldVal'+'ue'][_0xef4e7b(0x6a5)+'on'](_0x52c0dd),'memberUids':firebase[_0xef4e7b(0x632)+'e'][_0xef4e7b(0x497)+'ue'][_0xef4e7b(0x6a5)+'on'](_0x52120d['uid'])});const _0x3affc0={};_0x3affc0[_0xef4e7b(0x3af)]=_0x59a9e2['id'],_0x3affc0[_0xef4e7b(0x4c1)]=_0x3ba7f7['name'],_0x3affc0[_0xef4e7b(0x2f1)]=_0x3ba7f7[_0xef4e7b(0x4f6)],await db[_0xef4e7b(0x28a)+'on'](_0x2e0f65[_0xef4e7b(0x247)])['doc'](_0x52120d['uid'])[_0xef4e7b(0x716)](_0x3affc0);const _0x431541={};return _0x431541['id']=_0x59a9e2['id'],_0x431541['name']=_0x3ba7f7[_0xef4e7b(0x422)],_0x431541[_0xef4e7b(0x4f6)]=_0x3ba7f7['tag'],_0x431541[_0xef4e7b(0x66f)]=_0x3ba7f7[_0xef4e7b(0x66f)],_0x431541;}async function leaveTeam(_0x2ef85f,_0x331dd2){const _0x154982=_0x467253,_0xfbad5b={'vIXUK':_0x154982(0x2c2),'YeSBb':function(_0x293b10,_0x49da67){return _0x293b10(_0x49da67);},'lLNpl':function(_0x193db6,_0x401de9){return _0x193db6===_0x401de9;}},_0x1d7e7=db[_0x154982(0x28a)+'on'](_0x154982(0x5d7))['doc'](_0x2ef85f),_0x246546=await _0x1d7e7[_0x154982(0x6e0)]();if(!_0x246546['exists'])return;const _0x5e6226=_0x246546[_0x154982(0x2af)](),_0x54a397=_0x5e6226[_0x154982(0x27b)]===_0x331dd2;if(_0x54a397||_0x5e6226['members']&&_0x5e6226['members'][_0x154982(0x2f4)]<=-0x25ed+0x1ee7+0x7*0x101){for(const _0x30129c of _0x5e6226[_0x154982(0x3bf)]||[]){await db['collecti'+'on'](_0xfbad5b[_0x154982(0x26b)])['doc'](_0x30129c['uid'])[_0x154982(0x716)]({'teamId':firebase[_0x154982(0x632)+'e'][_0x154982(0x497)+'ue'][_0x154982(0x48b)](),'teamName':firebase[_0x154982(0x632)+'e'][_0x154982(0x497)+'ue'][_0x154982(0x48b)](),'teamTag':firebase[_0x154982(0x632)+'e'][_0x154982(0x497)+'ue']['delete']()})[_0x154982(0x2df)](()=>{});}await _0x1d7e7['delete']();const _0x4d3c5d={};return _0x4d3c5d[_0x154982(0x563)]='disbande'+'d',_0x4d3c5d;}else{const _0x391ff7=(_0x5e6226['members']||[])[_0x154982(0x3be)](_0x2d360f=>_0x2d360f[_0x154982(0x26e)]!==_0x331dd2),_0x1850a4=(_0x5e6226['memberUi'+'ds']||[])['filter'](_0x1cafd2=>_0x1cafd2!==_0x331dd2),_0x15f48a={};_0x15f48a[_0x154982(0x3bf)]=_0x391ff7,_0x15f48a[_0x154982(0x40b)+'ds']=_0x1850a4,await _0x1d7e7[_0x154982(0x716)](_0x15f48a);const _0x1cf048=await _0xfbad5b[_0x154982(0x372)](getUser,_0x331dd2);_0xfbad5b[_0x154982(0x682)](_0x1cf048?.[_0x154982(0x3af)],_0x2ef85f)&&await db[_0x154982(0x28a)+'on'](_0x154982(0x2c2))[_0x154982(0x31d)](_0x331dd2)['update']({'teamId':firebase[_0x154982(0x632)+'e'][_0x154982(0x497)+'ue'][_0x154982(0x48b)](),'teamName':firebase[_0x154982(0x632)+'e'][_0x154982(0x497)+'ue'][_0x154982(0x48b)](),'teamTag':firebase[_0x154982(0x632)+'e']['FieldVal'+'ue'][_0x154982(0x48b)]()})[_0x154982(0x2df)](()=>{});const _0x9f98bc={};return _0x9f98bc['action']=_0x154982(0x60d),_0x9f98bc;}}async function resolveStaffCall(_0xf89b19,_0x39c590,_0x9d41ec=''){const _0x528f81=_0x467253,_0x4f9dec={};_0x4f9dec['JBXbj']=_0x528f81(0x64b)+_0x528f81(0x616),_0x4f9dec['Jpbhi']=_0x528f81(0x6f3);const _0x313af0=_0x4f9dec;await db[_0x528f81(0x28a)+'on'](_0x313af0[_0x528f81(0x4aa)])[_0x528f81(0x31d)](_0xf89b19)[_0x528f81(0x716)]({'status':_0x313af0['Jpbhi'],'resolvedBy':_0x39c590,'resolutionNotes':_0x9d41ec[_0x528f81(0x5ea)](),'resolvedAt':firebase[_0x528f81(0x632)+'e'][_0x528f81(0x497)+'ue']['serverTi'+_0x528f81(0x494)]()});}async function adminAdjustTokens(_0x454a1f,_0x2600ef,_0x1f3e3f){const _0x396dbe=_0x467253,_0x11146a={'IuEnd':function(_0x30fff0,_0xdc9ca0){return _0x30fff0(_0xdc9ca0);},'Fbvzx':function(_0x3bbeee,_0x2198b9){return _0x3bbeee(_0x2198b9);},'Pteaz':'discord:','dmUXj':'users','wEuom':_0x396dbe(0x31a)+_0x396dbe(0x6a8),'aMCcQ':function(_0x1ce0c7,_0x4c963d,_0x377476,_0x3e369a,_0x148ec1){return _0x1ce0c7(_0x4c963d,_0x377476,_0x3e369a,_0x148ec1);},'dtLiH':_0x396dbe(0x5a3)},_0xdfd1d2=_0x11146a[_0x396dbe(0x35b)](Number,_0x2600ef);if(_0x11146a[_0x396dbe(0x1f3)](isNaN,_0xdfd1d2))throw new Error('Invalid\x20'+'token\x20am'+'ount');const _0x45c9bc=_0x454a1f['trim']()[_0x396dbe(0x6ec)](/^@/,'');let _0x16dc81=_0x45c9bc,_0x49bff5=await db['collecti'+'on'](_0x396dbe(0x2c2))[_0x396dbe(0x31d)](_0x45c9bc)['get']();if(!_0x49bff5[_0x396dbe(0x574)]){const _0x175c80='discord:'+_0x45c9bc[_0x396dbe(0x6ec)](_0x11146a['Pteaz'],'');_0x49bff5=await db[_0x396dbe(0x28a)+'on'](_0x396dbe(0x2c2))[_0x396dbe(0x31d)](_0x175c80)['get'](),_0x49bff5[_0x396dbe(0x574)]&&(_0x16dc81=_0x175c80);}if(!_0x49bff5[_0x396dbe(0x574)]){const _0x73b443=await db[_0x396dbe(0x28a)+'on'](_0x11146a[_0x396dbe(0x3d0)])[_0x396dbe(0x339)](_0x396dbe(0x5ed)+'sername','==',_0x45c9bc)[_0x396dbe(0x2c3)](-0x2485*0x1+0x2166+0x320)[_0x396dbe(0x6e0)]();if(!_0x73b443['empty'])_0x16dc81=_0x73b443[_0x396dbe(0x362)][0x1ecd+-0x238a+0x4bd]['id'],_0x49bff5=_0x73b443[_0x396dbe(0x362)][-0x1609+0x655*0x5+0x9a*-0x10];else{const _0x19fddc=await db[_0x396dbe(0x28a)+'on'](_0x396dbe(0x2c2))[_0x396dbe(0x339)](_0x11146a['wEuom'],'==',_0x45c9bc)['limit'](-0x1*-0xc67+-0x1*0x50f+0x1*-0x757)[_0x396dbe(0x6e0)]();!_0x19fddc[_0x396dbe(0x264)]&&(_0x16dc81=_0x19fddc[_0x396dbe(0x362)][-0xb*-0x1d3+-0x17e*0x4+-0xe19]['id'],_0x49bff5=_0x19fddc['docs'][0x6f2+0xa0b*0x1+-0x10fd]);}}if(!_0x49bff5[_0x396dbe(0x574)])throw new Error(_0x396dbe(0x317)+'\x20found\x20f'+_0x396dbe(0x278)+'ifier\x20\x22'+_0x454a1f+(_0x396dbe(0x605)+'e\x20enter\x20'+_0x396dbe(0x428)+_0x396dbe(0x4fe)+_0x396dbe(0x2ff)+_0x396dbe(0x662)+'name.'));return await _0x11146a[_0x396dbe(0x64c)](updateTokens,_0x16dc81,_0xdfd1d2,_0x11146a[_0x396dbe(0x20b)],_0x396dbe(0x6c9)+'justment'+':\x20'+_0x1f3e3f),{'targetUid':_0x16dc81,'userName':_0x49bff5[_0x396dbe(0x2af)]()?.[_0x396dbe(0x31a)+_0x396dbe(0x6a8)]||_0x16dc81};}async function adminForceCancelMatch(_0x492b02,_0x460dfd){const _0x380019=_0x467253,_0x1daff8={'GeHTi':'matches','PeMqt':_0x380019(0x2fe)+'t\x20found','xuPQE':function(_0x2e8b2d,_0x23c6c5){return _0x2e8b2d(_0x23c6c5);}},_0x467238=db[_0x380019(0x28a)+'on'](_0x1daff8['GeHTi'])[_0x380019(0x31d)](_0x492b02),_0x3fbfa4=await _0x467238['get']();if(!_0x3fbfa4[_0x380019(0x574)])throw new Error(_0x1daff8[_0x380019(0x2be)]);const _0x334374=_0x3fbfa4[_0x380019(0x2af)](),_0x42cebc=_0x1daff8['xuPQE'](Number,_0x334374[_0x380019(0x50e)]||0x4e8+-0x1ad9+0x15f1);if(_0x334374['players']&&_0x334374['players'][_0x380019(0x2f4)]>0x1*0x1161+0x15a*0x18+0x1*-0x31d1){const _0x43c143=_0x334374[_0x380019(0x1f8)][_0x380019(0x357)](_0x26fa9c=>updateTokens(_0x26fa9c[_0x380019(0x26e)],_0x42cebc,_0x380019(0x295),_0x380019(0x44e)+_0x460dfd+(')\x20cancel'+_0x380019(0x3c6)+_0x380019(0x419))+_0x334374['title']+_0x380019(0x20e)));await Promise[_0x380019(0x325)](_0x43c143);}await _0x467238[_0x380019(0x716)]({'status':_0x380019(0x4f3)+'d','cancelledBy':_0x460dfd,'completedAt':firebase[_0x380019(0x632)+'e'][_0x380019(0x497)+'ue'][_0x380019(0x688)+_0x380019(0x494)]()});}function isUserPremiumActive(_0x52530f){const _0x43e921=_0x467253,_0x116523={};_0x116523[_0x43e921(0x30c)]=function(_0x38efc9,_0x49c23a){return _0x38efc9===_0x49c23a;},_0x116523[_0x43e921(0x663)]=_0x43e921(0x2d8);const _0x5b3c89=_0x116523;if(!_0x52530f||!_0x52530f[_0x43e921(0x486)+'m'])return![];if(!_0x52530f['premiumE'+'xpiresAt'])return!![];try{const _0x261863=_0x5b3c89[_0x43e921(0x30c)](typeof _0x52530f[_0x43e921(0x5c6)+'xpiresAt'][_0x43e921(0x5fc)],_0x5b3c89[_0x43e921(0x663)])?_0x52530f[_0x43e921(0x5c6)+_0x43e921(0x6d8)]['toDate']():new Date(_0x52530f[_0x43e921(0x5c6)+'xpiresAt']);return _0x261863[_0x43e921(0x4c2)]()>Date[_0x43e921(0x6f5)]();}catch(_0x2774f0){return!![];}}function getPremiumDaysRemaining(_0x5b7817){const _0x1c275f=_0x467253,_0x341852={};_0x341852[_0x1c275f(0x33e)]=function(_0x49c3cf,_0x53eb76){return _0x49c3cf-_0x53eb76;},_0x341852[_0x1c275f(0x5eb)]=function(_0x186855,_0x35fb2c){return _0x186855<=_0x35fb2c;},_0x341852[_0x1c275f(0x60b)]=function(_0x25d0c8,_0x22dad5){return _0x25d0c8/_0x22dad5;},_0x341852[_0x1c275f(0x31e)]=function(_0x4e7c2a,_0x9b97a5){return _0x4e7c2a*_0x9b97a5;},_0x341852[_0x1c275f(0x2fd)]=function(_0x27a46a,_0x461a08){return _0x27a46a*_0x461a08;};const _0x14d3a8=_0x341852;if(!_0x5b7817||!_0x5b7817[_0x1c275f(0x486)+'m'])return 0x12b8*-0x2+0x50b*-0x1+-0x5*-0x87f;if(!_0x5b7817[_0x1c275f(0x5c6)+_0x1c275f(0x6d8)])return 0x1a9c+-0x1*-0x2550+-0x1fe7*0x2;try{const _0x42f416=typeof _0x5b7817['premiumE'+_0x1c275f(0x6d8)][_0x1c275f(0x5fc)]===_0x1c275f(0x2d8)?_0x5b7817[_0x1c275f(0x5c6)+_0x1c275f(0x6d8)]['toDate']():new Date(_0x5b7817['premiumE'+_0x1c275f(0x6d8)]),_0x1797ac=_0x14d3a8[_0x1c275f(0x33e)](_0x42f416[_0x1c275f(0x4c2)](),Date['now']());if(_0x14d3a8[_0x1c275f(0x5eb)](_0x1797ac,0xa67+0x19b0+-0x2417))return 0x11a1+0x409+-0x15aa;return Math[_0x1c275f(0x364)](_0x14d3a8[_0x1c275f(0x60b)](_0x1797ac,_0x14d3a8['efklu'](_0x14d3a8['WprPY'](_0x14d3a8[_0x1c275f(0x2fd)](-0x10f1*-0x1+0x18c0+-0x25c9,0x1e8c+0x238d+-0x511*0xd),0xa93+-0x1161+0x70a),0xa2d+-0x1fa+-0x1*0x81b)));}catch(_0x201e52){return 0xc*-0x2+-0x372+0x9c*0x6;}}async function buyPremiumPass(_0x99fa56,_0xfb8aaa=0x17f*-0x1+0x42+0x15b){const _0x443cd7=_0x467253,_0x1e9bbd={'XZtZK':function(_0xe81b06,_0x17ce5a){return _0xe81b06(_0x17ce5a);},'VJnGN':'User\x20not'+_0x443cd7(0x255),'ZstCu':_0x443cd7(0x2d8),'gbKHo':function(_0x4a6a88,_0x4afc1d){return _0x4a6a88>_0x4afc1d;},'cpiih':function(_0x2abe1c,_0x1c2b90){return _0x2abe1c*_0x1c2b90;},'pAWHO':function(_0x20ebaf,_0x182895){return _0x20ebaf*_0x182895;},'JezAH':function(_0x1fe228,_0x1772c2){return _0x1fe228*_0x1772c2;},'xLJCE':_0x443cd7(0x2c2)},_0x13b6b7=await _0x1e9bbd[_0x443cd7(0x644)](getUser,_0x99fa56);if(!_0x13b6b7)throw new Error(_0x1e9bbd['VJnGN']);if(Number(_0x13b6b7[_0x443cd7(0x291)]||0x17e1+-0x1f98+-0x18b*-0x5)<0x61*0x43+0x87+0x3b3*-0x7)throw new Error('Insuffic'+'ient\x20tok'+_0x443cd7(0x440)+_0x443cd7(0x3eb)+_0x443cd7(0x68e)+_0x443cd7(0x589)+_0x443cd7(0x5a9));await updateTokens(_0x99fa56,-(-0x90*0x1b+0x15f9+-0x6c4),_0x443cd7(0x71a),_0x443cd7(0x40a)+_0x443cd7(0x601)+_0x443cd7(0x203)+_0x443cd7(0x515)+_0xfb8aaa+_0x443cd7(0x5e4));let _0x195914=Date[_0x443cd7(0x6f5)]();if(_0x13b6b7[_0x443cd7(0x486)+'m']&&_0x13b6b7[_0x443cd7(0x5c6)+_0x443cd7(0x6d8)])try{const _0x19f47e=typeof _0x13b6b7[_0x443cd7(0x5c6)+_0x443cd7(0x6d8)][_0x443cd7(0x5fc)]===_0x1e9bbd[_0x443cd7(0x52e)]?_0x13b6b7['premiumE'+_0x443cd7(0x6d8)][_0x443cd7(0x5fc)]():new Date(_0x13b6b7[_0x443cd7(0x5c6)+_0x443cd7(0x6d8)]);_0x1e9bbd['gbKHo'](_0x19f47e[_0x443cd7(0x4c2)](),_0x195914)&&(_0x195914=_0x19f47e['getTime']());}catch(_0x4fc87d){}const _0x40b0f0=new Date(_0x195914+_0x1e9bbd['cpiih'](_0x1e9bbd['pAWHO'](_0x1e9bbd[_0x443cd7(0x725)](_0x1e9bbd['JezAH'](_0xfb8aaa,-0xd3*-0xe+-0x1*-0x21ad+-0x2d1f),-0x1*0xf13+-0x4*0x733+-0x1*-0x2c1b),-0x1e13+-0x35d+-0x4*-0x86b),0x529*0x6+0x905+-0x737*0x5));return await db[_0x443cd7(0x28a)+'on'](_0x1e9bbd[_0x443cd7(0x642)])[_0x443cd7(0x31d)](_0x99fa56)[_0x443cd7(0x716)]({'isPremium':!![],'premiumExpiresAt':firebase[_0x443cd7(0x632)+'e']['Timestam'+'p'][_0x443cd7(0x6c3)](_0x40b0f0)}),!![];}async function autoRefundDuplicatePremium(_0x4f3424){const _0x17b679=_0x467253,_0x5b0180={'dHaDq':_0x17b679(0x53d)+'ions','RCFLe':_0x17b679(0x239),'QLCRG':'shop','OpFob':function(_0x415a7e,_0x4b3d4d){return _0x415a7e>_0x4b3d4d;},'oHGus':function(_0x4ba2ed,_0x30d48d){return _0x4ba2ed*_0x30d48d;},'iSLnj':function(_0x4e0a47,_0x357a6c,_0x58e1cc,_0x3d7d58,_0xd068fe){return _0x4e0a47(_0x357a6c,_0x58e1cc,_0x3d7d58,_0xd068fe);},'RWZmD':_0x17b679(0x6b1)+_0x17b679(0x643)+_0x17b679(0x560)+'s'};try{const _0x4cc9ea=await db['collecti'+'on'](_0x5b0180[_0x17b679(0x5bd)])[_0x17b679(0x339)]('userId','==',_0x4f3424)[_0x17b679(0x339)](_0x5b0180['RCFLe'],'==',_0x5b0180[_0x17b679(0x656)])[_0x17b679(0x6e0)](),_0x1dfc6c=_0x4cc9ea[_0x17b679(0x362)][_0x17b679(0x3be)](_0x11c39c=>{const _0x18997e=_0x17b679,_0x26ba5a=_0x11c39c['data']()[_0x18997e(0x529)+_0x18997e(0x5be)]||'';return _0x26ba5a['includes'](_0x18997e(0x47c)+'Pass')||_0x26ba5a[_0x18997e(0x625)](_0x18997e(0x6c4)+_0x18997e(0x520));});if(_0x5b0180[_0x17b679(0x2de)](_0x1dfc6c['length'],-0x2019+0x244a+-0x430)){const _0x4c02a4=await db[_0x17b679(0x28a)+'on'](_0x17b679(0x53d)+_0x17b679(0x606))['where']('userId','==',_0x4f3424)[_0x17b679(0x339)](_0x17b679(0x239),'==',_0x17b679(0x6b1)+_0x17b679(0x643)+_0x17b679(0x560)+'s')[_0x17b679(0x2c3)](-0x21f0+-0x4e*-0x2b+-0x5*-0x42b)[_0x17b679(0x6e0)]();if(_0x4c02a4[_0x17b679(0x264)]){const _0x49661f=_0x1dfc6c[_0x17b679(0x2f4)]-(-0xd*-0x43+-0x1f02+0x1b9c),_0xbf79de=_0x5b0180['oHGus'](_0x49661f,-0x71*0xb+-0x214c+0x262c);await _0x5b0180[_0x17b679(0x69b)](updateTokens,_0x4f3424,_0xbf79de,_0x5b0180['RWZmD'],_0x17b679(0x48e)+'ed\x20'+_0xbf79de[_0x17b679(0x57b)](0x23fe+0x157d+-0x3979)+('\x20Tokens\x20'+'for\x20')+_0x49661f+(_0x17b679(0x371)+'te\x20Premi'+_0x17b679(0x5bc)+_0x17b679(0x4f2)));}}}catch(_0xf16663){console[_0x17b679(0x55f)]('autoRefu'+_0x17b679(0x32b)+_0x17b679(0x2f6)+_0x17b679(0x4f1)+'e:',_0xf16663);}}async function tipPlayer(_0x3c1831,_0x347cf3,_0x389def){const _0x143afc=_0x467253,_0x2e0cc1={'QvEvU':function(_0x1f4514,_0x5ac6a3){return _0x1f4514/_0x5ac6a3;},'AXKQH':function(_0x4441ea,_0x5434c3){return _0x4441ea(_0x5434c3);},'kVNhy':function(_0x72c5df,_0x1c34ca){return _0x72c5df<_0x1c34ca;},'LEWKe':function(_0x328656,_0x180b30){return _0x328656===_0x180b30;},'BVJbD':'You\x20cann'+_0x143afc(0x455)+_0x143afc(0x21c),'ETQfZ':_0x143afc(0x6ff)+_0x143afc(0x57d)+_0x143afc(0x5f8),'olKag':function(_0x5a3b2d,_0x8803b6,_0x2bf283,_0x507ca7,_0x512593){return _0x5a3b2d(_0x8803b6,_0x2bf283,_0x507ca7,_0x512593);},'KQhPr':_0x143afc(0x694)},_0x1c6703=_0x2e0cc1[_0x143afc(0x2bf)](Math['round'](_0x2e0cc1[_0x143afc(0x1fc)](Number,_0x389def)*(-0x2*0x9c1+-0x92c+0x1d12)),0x177f+-0x1109+-0x612);if(isNaN(_0x1c6703)||_0x2e0cc1[_0x143afc(0x57f)](_0x1c6703,0x4*0x12b+0x3*0x4df+-0x1*0x1349+0.1))throw new Error('Minimum\x20'+'tip\x20amou'+_0x143afc(0x208)+'10\x20Token'+'s');if(_0x2e0cc1['LEWKe'](_0x3c1831,_0x347cf3))throw new Error(_0x2e0cc1[_0x143afc(0x40d)]);const _0x15e763=await getUser(_0x3c1831);if(!_0x15e763)throw new Error(_0x2e0cc1[_0x143afc(0x1f5)]);if(Number(_0x15e763[_0x143afc(0x291)]||-0x6d9*-0x1+-0x1aef+-0x6b2*-0x3)<_0x1c6703)throw new Error('Insuffic'+'ient\x20tok'+_0x143afc(0x3fc)+'d\x20'+_0x2e0cc1[_0x143afc(0x1fc)](formatTokens,_0x1c6703)+'\x20Tokens)');const _0x80ec5c=await _0x2e0cc1['AXKQH'](getUser,_0x347cf3);if(!_0x80ec5c)throw new Error(_0x143afc(0x241)+'t\x20user\x20n'+'ot\x20found');await _0x2e0cc1[_0x143afc(0x477)](updateTokens,_0x3c1831,-_0x1c6703,_0x2e0cc1[_0x143afc(0x724)],'Tipped\x20'+formatTokens(_0x1c6703)+(_0x143afc(0x70f)+_0x143afc(0x5ff))+(_0x80ec5c[_0x143afc(0x5ed)+_0x143afc(0x510)]||_0x80ec5c[_0x143afc(0x31a)+_0x143afc(0x6a8)])),await _0x2e0cc1[_0x143afc(0x477)](updateTokens,_0x347cf3,_0x1c6703,_0x143afc(0x6b4)+_0x143afc(0x4f0),_0x143afc(0x24a)+'\x20'+formatTokens(_0x1c6703)+(_0x143afc(0x70f)+_0x143afc(0x59b)+'\x20@')+(_0x15e763[_0x143afc(0x5ed)+_0x143afc(0x510)]||_0x15e763[_0x143afc(0x31a)+_0x143afc(0x6a8)]));const _0x1947ae={};return _0x1947ae[_0x143afc(0x69c)]=_0x15e763,_0x1947ae[_0x143afc(0x24e)]=_0x80ec5c,_0x1947ae[_0x143afc(0x6a7)]=_0x1c6703,_0x1947ae;}async function linkEpicAccount(_0xe82b0d,_0x58f296,_0xbc8a28=''){const _0x219ab4=_0x467253,_0x31382d={};_0x31382d['JErNk']=_0x219ab4(0x5c8)+_0x219ab4(0x646)+'red',_0x31382d[_0x219ab4(0x634)]=function(_0x580dc2,_0x5b58fc){return _0x580dc2||_0x5b58fc;},_0x31382d['VjRvM']=_0x219ab4(0x2d1)+_0x219ab4(0x60a)+_0x219ab4(0x44d)+'c\x20Games\x20'+_0x219ab4(0x5c0)+_0x219ab4(0x4e8)+'ame',_0x31382d[_0x219ab4(0x4fa)]='epicAcco'+_0x219ab4(0x5ab),_0x31382d[_0x219ab4(0x665)]=_0x219ab4(0x28d)+_0x219ab4(0x23f),_0x31382d[_0x219ab4(0x535)]=_0x219ab4(0x2c2),_0x31382d['MXalF']='epicUser'+_0x219ab4(0x234)+'er',_0x31382d[_0x219ab4(0x25b)]=_0x219ab4(0x6b9)+'name';const _0x221758=_0x31382d;if(!_0xe82b0d)throw new Error(_0x221758[_0x219ab4(0x29a)]);const _0x427b51=(_0x58f296||'')[_0x219ab4(0x5ea)](),_0x29776e=_0x221758[_0x219ab4(0x634)](_0xbc8a28,'')[_0x219ab4(0x5ea)]();if(!_0x427b51||_0x427b51['length']<-0xe38+-0x1*-0x1c81+0x2b*-0x55)throw new Error(_0x221758['VjRvM']);if(_0x29776e){const _0x1af808=await db[_0x219ab4(0x28a)+'on']('users')['where'](_0x221758[_0x219ab4(0x4fa)],'==',_0x29776e)[_0x219ab4(0x2c3)](0x1bd6+0x435*0x2+0x23*-0x109)[_0x219ab4(0x6e0)](),_0x140485=_0x1af808['docs'][_0x219ab4(0x2bd)](_0xfbd15a=>_0xfbd15a['id']!==_0xe82b0d);if(_0x140485){const _0x455dfe=_0x140485[_0x219ab4(0x2af)]()?.[_0x219ab4(0x31a)+_0x219ab4(0x6a8)]||_0x140485[_0x219ab4(0x2af)]()?.[_0x219ab4(0x6b9)+_0x219ab4(0x422)]||_0x221758['sFuzm'];throw new Error(_0x219ab4(0x638)+_0x219ab4(0x5b8)+_0x219ab4(0x5e1)+_0x219ab4(0x1ff)+_0x219ab4(0x6df)+_0x219ab4(0x246)+_0x455dfe+(_0x219ab4(0x5b7)+_0x219ab4(0x6ad)+_0x219ab4(0x381)+'om\x20that\x20'+'account\x20'+'first.'));}}const _0x4b9228=_0x427b51[_0x219ab4(0x32f)+_0x219ab4(0x492)](),_0x5791b1=await db[_0x219ab4(0x28a)+'on'](_0x221758[_0x219ab4(0x535)])[_0x219ab4(0x339)](_0x221758[_0x219ab4(0x456)],'==',_0x4b9228)[_0x219ab4(0x2c3)](0x904*0x4+0xb2*0x9+-0x5b*0x77)['get']();let _0x1db53b=_0x5791b1[_0x219ab4(0x362)][_0x219ab4(0x2bd)](_0x92fbed=>_0x92fbed['id']!==_0xe82b0d);if(!_0x1db53b){const _0x48c80a=await db[_0x219ab4(0x28a)+'on'](_0x219ab4(0x2c2))[_0x219ab4(0x339)](_0x221758[_0x219ab4(0x25b)],'==',_0x427b51)[_0x219ab4(0x2c3)](0x1d15+0xae5+-0xc1*0x35)['get']();_0x1db53b=_0x48c80a[_0x219ab4(0x362)][_0x219ab4(0x2bd)](_0x5591eb=>_0x5591eb['id']!==_0xe82b0d);}if(_0x1db53b){const _0x28d8dc=_0x1db53b['data']()?.[_0x219ab4(0x31a)+_0x219ab4(0x6a8)]||_0x1db53b[_0x219ab4(0x2af)]()?.[_0x219ab4(0x6b9)+_0x219ab4(0x422)]||_0x221758[_0x219ab4(0x665)];throw new Error(_0x219ab4(0x2e1)+_0x219ab4(0x4a6)+_0x219ab4(0x2d3)+'\x22'+_0x427b51+(_0x219ab4(0x723)+_0x219ab4(0x218)+'ked\x20to\x20@')+_0x28d8dc+(_0x219ab4(0x5b7)+_0x219ab4(0x6ad)+_0x219ab4(0x381)+'om\x20that\x20'+_0x219ab4(0x5e1)+'first.'));}const _0x15b77d=db[_0x219ab4(0x28a)+'on']('users')[_0x219ab4(0x31d)](_0xe82b0d),_0x82d966={};_0x82d966['merge']=!![],await _0x15b77d[_0x219ab4(0x3cc)]({'epicUsername':_0x427b51,'epicUsername_lower':_0x4b9228,'epicAccountId':_0x29776e,'epicVerified':!![],'epicLinkedAt':firebase[_0x219ab4(0x632)+'e']['FieldVal'+'ue'][_0x219ab4(0x688)+_0x219ab4(0x494)]()},_0x82d966);const _0x846b={};return _0x846b[_0x219ab4(0x2a2)]=!![],_0x846b[_0x219ab4(0x6b9)+'name']=_0x427b51,_0x846b;}async function syncEpicAccountName(_0xf2375f){const _0x174dec=_0x467253,_0x343c92={};_0x343c92[_0x174dec(0x496)]=_0x174dec(0x2c2);const _0xf43e4b=_0x343c92;if(!_0xf2375f)throw new Error(_0x174dec(0x5c8)+'is\x20requi'+'red');const _0x123e6f=await getUser(_0xf2375f);if(!_0x123e6f||!_0x123e6f['epicUser'+_0x174dec(0x422)])throw new Error('No\x20verif'+_0x174dec(0x229)+_0x174dec(0x4d4)+_0x174dec(0x3f6)+_0x174dec(0x502)+'sync.\x20Li'+_0x174dec(0x685)+_0x174dec(0x388)+_0x174dec(0x401)+_0x174dec(0x53c));const _0x30a1ae={};_0x30a1ae[_0x174dec(0x33b)]=!![],await db[_0x174dec(0x28a)+'on'](_0xf43e4b[_0x174dec(0x496)])[_0x174dec(0x31d)](_0xf2375f)['set']({'epicVerified':!![],'epicLastSynced':firebase[_0x174dec(0x632)+'e'][_0x174dec(0x497)+'ue']['serverTi'+_0x174dec(0x494)]()},_0x30a1ae);const _0x21a779={};return _0x21a779[_0x174dec(0x2a2)]=!![],_0x21a779['epicUser'+_0x174dec(0x422)]=_0x123e6f[_0x174dec(0x6b9)+_0x174dec(0x422)],_0x21a779;}async function unlinkEpicAccount(_0x36ad5c){const _0x33a596=_0x467253,_0x25e3bd={'MNmdX':'User\x20not'+_0x33a596(0x255),'hdIko':_0x33a596(0x622)+_0x33a596(0x3d4)+'count\x20is'+_0x33a596(0x561)+_0x33a596(0x2a4)+'d','GWBgm':function(_0x1a352e,_0x5c423d){return _0x1a352e(_0x5c423d);},'uurul':function(_0x307b27,_0x3e7911,_0x5e4674,_0x588add,_0x5ee95a){return _0x307b27(_0x3e7911,_0x5e4674,_0x588add,_0x5ee95a);},'rpGpX':_0x33a596(0x4bb)+_0x33a596(0x6be),'VSJTA':_0x33a596(0x2c2)},_0x21c5d4=await getUser(_0x36ad5c);if(!_0x21c5d4)throw new Error(_0x25e3bd[_0x33a596(0x31b)]);if(!_0x21c5d4[_0x33a596(0x6b9)+_0x33a596(0x422)]&&!_0x21c5d4[_0x33a596(0x321)+_0x33a596(0x5ab)])throw new Error(_0x25e3bd[_0x33a596(0x4cc)]);if(_0x25e3bd[_0x33a596(0x4ab)](Number,_0x21c5d4[_0x33a596(0x291)]||-0x2e*0xcd+0x1189*0x1+0x3d*0x51)<0x4a7*0x7+0x4ac+0x1*-0x253b)throw new Error('Unlinkin'+_0x33a596(0x6a3)+_0x33a596(0x45d)+_0x33a596(0x589)+'$2.00).\x20'+_0x33a596(0x2e3)+_0x33a596(0x352)+_0x33a596(0x579)+_0x33a596(0x4ce)+'e.');await _0x25e3bd[_0x33a596(0x3a3)](updateTokens,_0x36ad5c,-(0x1*-0x509+0xbdc+0x6d1*-0x1),_0x25e3bd[_0x33a596(0x3f7)],'Unlinked'+_0x33a596(0x729)+_0x33a596(0x587)+'unt\x20(-2.'+'00\x20Token'+_0x33a596(0x287));const _0x3c9135=db[_0x33a596(0x28a)+'on'](_0x25e3bd[_0x33a596(0x4c8)])['doc'](_0x36ad5c);await _0x3c9135[_0x33a596(0x716)]({'epicUsername':firebase[_0x33a596(0x632)+'e'][_0x33a596(0x497)+'ue'][_0x33a596(0x48b)](),'epicUsername_lower':firebase[_0x33a596(0x632)+'e'][_0x33a596(0x497)+'ue'][_0x33a596(0x48b)](),'epicAccountId':firebase['firestor'+'e'][_0x33a596(0x497)+'ue'][_0x33a596(0x48b)](),'epicVerified':![],'epicUnlinkedAt':firebase[_0x33a596(0x632)+'e'][_0x33a596(0x497)+'ue'][_0x33a596(0x688)+_0x33a596(0x494)]()});const _0x66e9bd={};return _0x66e9bd['success']=!![],_0x66e9bd;}async function linkSocialAccount(_0x139b77,_0xf837d5,_0x3128f4){const _0x4c52d3=_0x467253,_0xec20f2={};_0xec20f2[_0x4c52d3(0x609)]='User\x20ID\x20'+'is\x20requi'+'red',_0xec20f2['zbunQ']=function(_0x2f50b3,_0x58e8e7){return _0x2f50b3===_0x58e8e7;},_0xec20f2[_0x4c52d3(0x484)]=function(_0x4223e5,_0x13285f){return _0x4223e5===_0x13285f;},_0xec20f2['pheuX']=_0x4c52d3(0x2ae)+'ted\x20plat'+'form';const _0x27754c=_0xec20f2;if(!_0x139b77)throw new Error(_0x27754c['YcEGh']);let _0x312591=(_0x3128f4||'')[_0x4c52d3(0x5ea)]();_0x312591=_0x312591[_0x4c52d3(0x6ec)](/^https?:\/\/(www\.)?(twitch\.tv\/|x\.com\/|twitter\.com\/)/i,''),_0x312591=_0x312591[_0x4c52d3(0x6ec)](/^@+/,'')[_0x4c52d3(0x5ea)]();if(!_0x312591||_0x312591[_0x4c52d3(0x2f4)]<-0x1ac5+-0x24f1+0x3fb7)throw new Error(_0x4c52d3(0x2d1)+_0x4c52d3(0x60a)+_0x4c52d3(0x71d)+(_0xf837d5===_0x4c52d3(0x360)?_0x4c52d3(0x3ca):'X')+(_0x4c52d3(0x5c7)+'e'));const _0x24a016=db['collecti'+'on'](_0x4c52d3(0x2c2))[_0x4c52d3(0x31d)](_0x139b77),_0x27d433={};if(_0xf837d5===_0x4c52d3(0x360))_0x27d433[_0x4c52d3(0x660)+_0x4c52d3(0x2a9)]=_0x312591,_0x27d433['twitchLi'+_0x4c52d3(0x5f9)]=firebase['firestor'+'e'][_0x4c52d3(0x497)+'ue'][_0x4c52d3(0x688)+_0x4c52d3(0x494)]();else{if(_0x27754c[_0x4c52d3(0x33d)](_0xf837d5,'x')||_0x27754c[_0x4c52d3(0x484)](_0xf837d5,'twitter'))_0x27d433['xUsernam'+'e']=_0x312591,_0x27d433[_0x4c52d3(0x39a)+'t']=firebase[_0x4c52d3(0x632)+'e'][_0x4c52d3(0x497)+'ue']['serverTi'+_0x4c52d3(0x494)]();else throw new Error(_0x27754c['pheuX']);}const _0x2f288d={};_0x2f288d[_0x4c52d3(0x33b)]=!![],await _0x24a016[_0x4c52d3(0x3cc)](_0x27d433,_0x2f288d);const _0x32ee6a={};return _0x32ee6a[_0x4c52d3(0x2a2)]=!![],_0x32ee6a['handle']=_0x312591,_0x32ee6a;}async function unlinkSocialAccount(_0xaea01a,_0x1bc56d){const _0x16f93e=_0x467253,_0x408f84={};_0x408f84[_0x16f93e(0x2f0)]=function(_0x13d3dd,_0x1d3963){return _0x13d3dd===_0x1d3963;},_0x408f84[_0x16f93e(0x4bd)]=_0x16f93e(0x360),_0x408f84[_0x16f93e(0x6a0)]=function(_0x14ba63,_0x2ab57b){return _0x14ba63===_0x2ab57b;};const _0x14a014=_0x408f84;if(!_0xaea01a)throw new Error('User\x20ID\x20'+_0x16f93e(0x646)+_0x16f93e(0x4af));const _0x5bcdcf=db[_0x16f93e(0x28a)+'on'](_0x16f93e(0x2c2))[_0x16f93e(0x31d)](_0xaea01a),_0x449154={};if(_0x14a014[_0x16f93e(0x2f0)](_0x1bc56d,_0x14a014[_0x16f93e(0x4bd)]))_0x449154[_0x16f93e(0x660)+'ername']=firebase[_0x16f93e(0x632)+'e'][_0x16f93e(0x497)+'ue'][_0x16f93e(0x48b)](),_0x449154[_0x16f93e(0x3e8)+'nkedAt']=firebase[_0x16f93e(0x632)+'e'][_0x16f93e(0x497)+'ue'][_0x16f93e(0x48b)]();else{if(_0x1bc56d==='x'||_0x14a014[_0x16f93e(0x6a0)](_0x1bc56d,_0x16f93e(0x356)))_0x449154[_0x16f93e(0x353)+'e']=firebase['firestor'+'e'][_0x16f93e(0x497)+'ue'][_0x16f93e(0x48b)](),_0x449154[_0x16f93e(0x39a)+'t']=firebase[_0x16f93e(0x632)+'e'][_0x16f93e(0x497)+'ue'][_0x16f93e(0x48b)]();else throw new Error('Unsuppor'+'ted\x20plat'+_0x16f93e(0x66d));}await _0x5bcdcf['update'](_0x449154);const _0xaa56e1={};return _0xaa56e1['success']=!![],_0xaa56e1;}const DEFAULT_STARTER_PFP_ID=_0x467253(0x65d)+_0x467253(0x518),DEFAULT_STARTER_PFP_URL=_0x467253(0x661)+'s/uncomo'+_0x467253(0x5ef)+'n.png',_0x45a029={};_0x45a029['id']='pfp_unco'+'mmon_1',_0x45a029[_0x467253(0x422)]='#1',_0x45a029['rarity']=_0x467253(0x4ed),_0x45a029[_0x467253(0x2e4)]=0x1,_0x45a029[_0x467253(0x696)]=_0x467253(0x661)+_0x467253(0x289)+_0x467253(0x5ef)+_0x467253(0x583),_0x45a029['isDefaul'+'t']=!![],_0x45a029[_0x467253(0x394)]=_0x467253(0x6cf);const _0x2538a2={};_0x2538a2['id']=_0x467253(0x65d)+_0x467253(0x5cc),_0x2538a2[_0x467253(0x422)]='#2',_0x2538a2[_0x467253(0x3a6)]=_0x467253(0x4ed),_0x2538a2['cost']=0x1,_0x2538a2[_0x467253(0x696)]=_0x467253(0x661)+_0x467253(0x289)+_0x467253(0x5ef)+'bn.png',_0x2538a2[_0x467253(0x394)]=_0x467253(0x6cf);const _0x551590={};_0x551590['id']=_0x467253(0x65d)+_0x467253(0x398),_0x551590[_0x467253(0x422)]='#3',_0x551590[_0x467253(0x3a6)]=_0x467253(0x4ed),_0x551590['cost']=0x1,_0x551590[_0x467253(0x696)]=_0x467253(0x661)+_0x467253(0x289)+_0x467253(0x5ef)+_0x467253(0x626),_0x551590[_0x467253(0x394)]=_0x467253(0x6cf);const _0x489763={};_0x489763['id']=_0x467253(0x65d)+_0x467253(0x284),_0x489763[_0x467253(0x422)]='#4',_0x489763['rarity']=_0x467253(0x4ed),_0x489763['cost']=0x1,_0x489763[_0x467253(0x696)]=_0x467253(0x661)+'s/uncomo'+_0x467253(0x5ef)+_0x467253(0x30a),_0x489763[_0x467253(0x394)]=_0x467253(0x6cf);const _0x13ee24={};_0x13ee24['id']=_0x467253(0x65d)+_0x467253(0x6db),_0x13ee24[_0x467253(0x422)]='#5',_0x13ee24[_0x467253(0x3a6)]=_0x467253(0x4ed),_0x13ee24[_0x467253(0x2e4)]=0x1,_0x13ee24[_0x467253(0x696)]='cosmetic'+_0x467253(0x289)+_0x467253(0x5ef)+_0x467253(0x6dd),_0x13ee24['color']=_0x467253(0x6cf);const _0x10be1d={};_0x10be1d['id']='pfp_unco'+_0x467253(0x314),_0x10be1d[_0x467253(0x422)]='#6',_0x10be1d[_0x467253(0x3a6)]=_0x467253(0x4ed),_0x10be1d[_0x467253(0x2e4)]=0x1,_0x10be1d[_0x467253(0x696)]=_0x467253(0x661)+_0x467253(0x289)+_0x467253(0x5ef)+_0x467253(0x3d9)+_0x467253(0x711),_0x10be1d[_0x467253(0x394)]=_0x467253(0x6cf);const _0x1df866={};_0x1df866['id']=_0x467253(0x65d)+_0x467253(0x5d1),_0x1df866['name']='#7',_0x1df866[_0x467253(0x3a6)]='Uncommon',_0x1df866['cost']=0x1,_0x1df866[_0x467253(0x696)]='cosmetic'+'s/uncomo'+'n/uncomo'+'nk.png',_0x1df866[_0x467253(0x394)]=_0x467253(0x6cf);const _0x30309f={};_0x30309f['id']=_0x467253(0x4d0)+'_1',_0x30309f[_0x467253(0x422)]='#8',_0x30309f[_0x467253(0x3a6)]=_0x467253(0x3db),_0x30309f[_0x467253(0x2e4)]=1.75,_0x30309f[_0x467253(0x696)]=_0x467253(0x661)+'s/rare/r'+_0x467253(0x2cd)+_0x467253(0x4b5),_0x30309f[_0x467253(0x394)]=_0x467253(0x279);const _0x360fbd={};_0x360fbd['id']='pfp_rare'+'_2',_0x360fbd['name']='#9',_0x360fbd[_0x467253(0x3a6)]='Rare',_0x360fbd[_0x467253(0x2e4)]=1.75,_0x360fbd[_0x467253(0x696)]=_0x467253(0x661)+_0x467253(0x443)+_0x467253(0x243),_0x360fbd[_0x467253(0x394)]=_0x467253(0x279);const _0x17fa04={};_0x17fa04['id']=_0x467253(0x4d0)+'_3',_0x17fa04['name']=_0x467253(0x1f9),_0x17fa04[_0x467253(0x3a6)]=_0x467253(0x3db),_0x17fa04['cost']=1.75,_0x17fa04[_0x467253(0x696)]=_0x467253(0x661)+_0x467253(0x443)+_0x467253(0x375)+_0x467253(0x711),_0x17fa04[_0x467253(0x394)]='#3b82f6';const _0xb61362={};_0xb61362['id']=_0x467253(0x4d0)+'_4',_0xb61362['name']='#11',_0xb61362['rarity']=_0x467253(0x3db),_0xb61362[_0x467253(0x2e4)]=1.75,_0xb61362['file']=_0x467253(0x661)+_0x467253(0x443)+_0x467253(0x630)+_0x467253(0x711),_0xb61362[_0x467253(0x394)]=_0x467253(0x279);const _0x279f82={};_0x279f82['id']=_0x467253(0x4d0)+'_5',_0x279f82['name']=_0x467253(0x523),_0x279f82[_0x467253(0x3a6)]=_0x467253(0x3db),_0x279f82[_0x467253(0x2e4)]=1.75,_0x279f82[_0x467253(0x696)]=_0x467253(0x661)+_0x467253(0x443)+_0x467253(0x26a)+'ng',_0x279f82[_0x467253(0x394)]=_0x467253(0x279);const _0x21f8e5={};_0x21f8e5['id']=_0x467253(0x4d0)+'_6',_0x21f8e5['name']='#13',_0x21f8e5[_0x467253(0x3a6)]=_0x467253(0x3db),_0x21f8e5[_0x467253(0x2e4)]=1.75,_0x21f8e5[_0x467253(0x696)]=_0x467253(0x661)+_0x467253(0x443)+'areyhyh.'+'png',_0x21f8e5[_0x467253(0x394)]=_0x467253(0x279);const _0x36b07c={};_0x36b07c['id']=_0x467253(0x4d0)+'_7',_0x36b07c[_0x467253(0x422)]=_0x467253(0x416),_0x36b07c[_0x467253(0x3a6)]=_0x467253(0x3db),_0x36b07c['cost']=1.75,_0x36b07c[_0x467253(0x696)]=_0x467253(0x661)+_0x467253(0x443)+_0x467253(0x50b),_0x36b07c[_0x467253(0x394)]=_0x467253(0x279);const _0x5193be={};_0x5193be['id']=_0x467253(0x678)+'_1',_0x5193be['name']=_0x467253(0x4a1),_0x5193be[_0x467253(0x3a6)]=_0x467253(0x521),_0x5193be['cost']=2.25,_0x5193be['file']=_0x467253(0x661)+_0x467253(0x68b)+_0x467253(0x545)+_0x467253(0x283),_0x5193be[_0x467253(0x394)]=_0x467253(0x341);const _0x22a048={};_0x22a048['id']=_0x467253(0x678)+'_2',_0x22a048[_0x467253(0x422)]='#16',_0x22a048[_0x467253(0x3a6)]=_0x467253(0x521),_0x22a048['cost']=2.25,_0x22a048[_0x467253(0x696)]=_0x467253(0x661)+_0x467253(0x1f4)+_0x467253(0x3e1)+_0x467253(0x4b5),_0x22a048[_0x467253(0x394)]=_0x467253(0x341);const _0x258b94={};_0x258b94['id']=_0x467253(0x678)+'_3',_0x258b94[_0x467253(0x422)]=_0x467253(0x54e),_0x258b94['rarity']=_0x467253(0x521),_0x258b94[_0x467253(0x2e4)]=2.25,_0x258b94[_0x467253(0x696)]='cosmetic'+_0x467253(0x216)+_0x467253(0x43f)+_0x467253(0x4b5),_0x258b94[_0x467253(0x394)]=_0x467253(0x341);const _0xd6e138={};_0xd6e138['id']=_0x467253(0x678)+'_4',_0xd6e138[_0x467253(0x422)]=_0x467253(0x500),_0xd6e138[_0x467253(0x3a6)]=_0x467253(0x521),_0xd6e138['cost']=2.25,_0xd6e138['file']=_0x467253(0x661)+_0x467253(0x514)+_0x467253(0x49a)+'hp.png',_0xd6e138[_0x467253(0x394)]='#a855f7';const _0x4489e1={};_0x4489e1['id']='pfp_epic'+'_5',_0x4489e1[_0x467253(0x422)]=_0x467253(0x25d),_0x4489e1['rarity']=_0x467253(0x521),_0x4489e1[_0x467253(0x2e4)]=2.25,_0x4489e1['file']=_0x467253(0x661)+_0x467253(0x68b)+_0x467253(0x348)+'o.png',_0x4489e1[_0x467253(0x394)]=_0x467253(0x341);const _0x55b9ec={};_0x55b9ec['id']=_0x467253(0x678)+'_6',_0x55b9ec[_0x467253(0x422)]=_0x467253(0x698),_0x55b9ec[_0x467253(0x3a6)]=_0x467253(0x521),_0x55b9ec[_0x467253(0x2e4)]=2.25,_0x55b9ec[_0x467253(0x696)]=_0x467253(0x661)+_0x467253(0x68b)+_0x467253(0x624)+'g',_0x55b9ec['color']=_0x467253(0x341);const _0x39c876={};_0x39c876['id']=_0x467253(0x678)+'_7',_0x39c876['name']=_0x467253(0x1f7),_0x39c876['rarity']=_0x467253(0x521),_0x39c876[_0x467253(0x2e4)]=2.25,_0x39c876[_0x467253(0x696)]=_0x467253(0x661)+_0x467253(0x68b)+'pikica.p'+'ng',_0x39c876[_0x467253(0x394)]='#a855f7';const _0x5bb6bb={};_0x5bb6bb['id']=_0x467253(0x678)+'_8',_0x5bb6bb[_0x467253(0x422)]=_0x467253(0x20c),_0x5bb6bb[_0x467253(0x3a6)]=_0x467253(0x521),_0x5bb6bb[_0x467253(0x2e4)]=2.25,_0x5bb6bb[_0x467253(0x696)]=_0x467253(0x661)+'s/epic/e'+_0x467253(0x27d)+'g',_0x5bb6bb[_0x467253(0x394)]='#a855f7';function _0x432c(_0x74a194,_0x2c3ac3){_0x74a194=_0x74a194-(0x223e+-0x403*0x5+-0xc41);const _0x3dc237=_0x2445();let _0x575f97=_0x3dc237[_0x74a194];if(_0x432c['jkTNDT']===undefined){var _0x563a2b=function(_0x3fc0db){const _0x1c8923='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+/=';let _0x1c483a='',_0x4f757b='';for(let _0x1da5df=-0xaba*-0x2+-0x18aa+0x336,_0x572d84,_0x26fe80,_0x548c08=0x2468+0x3bc+-0x2824*0x1;_0x26fe80=_0x3fc0db['charAt'](_0x548c08++);~_0x26fe80&&(_0x572d84=_0x1da5df%(0x2202+-0x2*-0xf59+-0x40b0)?_0x572d84*(0xcce+0x269b+-0x7*0x74f)+_0x26fe80:_0x26fe80,_0x1da5df++%(-0x22d7*-0x1+-0x6*-0x57+-0x24dd))?_0x1c483a+=String['fromCharCode'](-0x7f+-0xc3a*0x3+0x262c&_0x572d84>>(-(-0x331+0x1*-0xcee+0x1021)*_0x1da5df&0x1*0x1bca+-0x3e*0xb+0x2*-0xc8d)):-0x1*-0x13e5+0x1*0xb4d+0x16*-0x16b){_0x26fe80=_0x1c8923['indexOf'](_0x26fe80);}for(let _0x451f85=0x1dc4+-0x9d5+-0x13ef,_0x1acf8e=_0x1c483a['length'];_0x451f85<_0x1acf8e;_0x451f85++){_0x4f757b+='%'+('00'+_0x1c483a['charCodeAt'](_0x451f85)['toString'](0x1910+0x1*-0x166d+-0x293))['slice'](-(-0xd3d*-0x1+0x3f5*-0x7+-0x1*-0xe78));}return decodeURIComponent(_0x4f757b);};_0x432c['nvgKXF']=_0x563a2b,_0x432c['JrDLJu']={},_0x432c['jkTNDT']=!![];}const _0x640464=_0x3dc237[-0x5*-0x4df+0x11ed*0x1+-0x2a48];_0x432c['moemgF']!==_0x640464&&(_0x432c['JrDLJu']={},_0x432c['moemgF']=_0x640464);const _0x350a84=_0x432c['JrDLJu'][_0x74a194];return _0x350a84===undefined?(_0x575f97=_0x432c['nvgKXF'](_0x575f97),_0x432c['JrDLJu'][_0x74a194]=_0x575f97):_0x575f97=_0x350a84,_0x575f97;}const _0x4f21ad={};_0x4f21ad['id']=_0x467253(0x378)+_0x467253(0x4c5),_0x4f21ad['name']=_0x467253(0x2ed),_0x4f21ad['rarity']=_0x467253(0x556)+'e',_0x4f21ad['cost']=0x5,_0x4f21ad['file']=_0x467253(0x661)+_0x467253(0x306)+_0x467253(0x2bb)+_0x467253(0x5b1)+'g',_0x4f21ad[_0x467253(0x394)]='#f59e0b';const _0x2a7db3={};_0x2a7db3['id']=_0x467253(0x378)+_0x467253(0x263),_0x2a7db3['name']=_0x467253(0x6ea),_0x2a7db3[_0x467253(0x3a6)]=_0x467253(0x556)+'e',_0x2a7db3[_0x467253(0x2e4)]=0x5,_0x2a7db3[_0x467253(0x696)]=_0x467253(0x661)+_0x467253(0x306)+'ive/excl'+'usic.png',_0x2a7db3[_0x467253(0x394)]='#f59e0b';const _0x1b7edc={};_0x1b7edc['id']=_0x467253(0x378)+'usive_3',_0x1b7edc[_0x467253(0x422)]=_0x467253(0x611),_0x1b7edc[_0x467253(0x3a6)]='Exclusiv'+'e',_0x1b7edc[_0x467253(0x2e4)]=0x5,_0x1b7edc[_0x467253(0x696)]=_0x467253(0x661)+_0x467253(0x306)+_0x467253(0x20d)+_0x467253(0x4a9)+_0x467253(0x614),_0x1b7edc['color']=_0x467253(0x33a);const _0x5b7ed9={};_0x5b7ed9['id']=_0x467253(0x378)+_0x467253(0x23e),_0x5b7ed9[_0x467253(0x422)]=_0x467253(0x675),_0x5b7ed9[_0x467253(0x3a6)]=_0x467253(0x556)+'e',_0x5b7ed9['cost']=0x5,_0x5b7ed9[_0x467253(0x696)]='cosmetic'+_0x467253(0x68b)+'pic\x20one.'+'png',_0x5b7ed9[_0x467253(0x394)]=_0x467253(0x33a);const _0x56bebf={};_0x56bebf['id']='pfp_excl'+_0x467253(0x575),_0x56bebf[_0x467253(0x422)]='#27',_0x56bebf[_0x467253(0x3a6)]=_0x467253(0x556)+'e',_0x56bebf[_0x467253(0x2e4)]=0x5,_0x56bebf[_0x467253(0x696)]='cosmetic'+'s/epic/e'+_0x467253(0x270),_0x56bebf[_0x467253(0x394)]='#f59e0b';const _0x2c6af6={};_0x2c6af6['id']='pfp_excl'+_0x467253(0x453),_0x2c6af6[_0x467253(0x422)]=_0x467253(0x2c0),_0x2c6af6[_0x467253(0x3a6)]=_0x467253(0x556)+'e',_0x2c6af6[_0x467253(0x2e4)]=0x5,_0x2c6af6[_0x467253(0x696)]='cosmetic'+_0x467253(0x6b8)+_0x467253(0x42f)+_0x467253(0x4b5),_0x2c6af6[_0x467253(0x394)]='#f59e0b';const _0x25cf2b={};_0x25cf2b['id']=_0x467253(0x378)+_0x467253(0x599),_0x25cf2b[_0x467253(0x422)]=_0x467253(0x24f),_0x25cf2b[_0x467253(0x3a6)]=_0x467253(0x556)+'e',_0x25cf2b[_0x467253(0x2e4)]=0x5,_0x25cf2b[_0x467253(0x696)]=_0x467253(0x661)+'s/epic/1'+_0x467253(0x465)+'ng',_0x25cf2b['color']=_0x467253(0x33a);const _0x514413={};_0x514413['id']=_0x467253(0x378)+_0x467253(0x57c),_0x514413[_0x467253(0x422)]=_0x467253(0x525),_0x514413[_0x467253(0x3a6)]=_0x467253(0x556)+'e',_0x514413['cost']=0x5,_0x514413[_0x467253(0x696)]=_0x467253(0x661)+_0x467253(0x68b)+_0x467253(0x5c3)+_0x467253(0x354),_0x514413['color']=_0x467253(0x33a);const _0x3c3154={};_0x3c3154[_0x467253(0x65d)+_0x467253(0x518)]=_0x45a029,_0x3c3154[_0x467253(0x65d)+_0x467253(0x5cc)]=_0x2538a2,_0x3c3154[_0x467253(0x65d)+_0x467253(0x398)]=_0x551590,_0x3c3154[_0x467253(0x65d)+_0x467253(0x284)]=_0x489763,_0x3c3154[_0x467253(0x65d)+'mmon_5']=_0x13ee24,_0x3c3154['pfp_unco'+_0x467253(0x314)]=_0x10be1d,_0x3c3154[_0x467253(0x65d)+'mmon_7']=_0x1df866,_0x3c3154[_0x467253(0x4d0)+'_1']=_0x30309f,_0x3c3154[_0x467253(0x4d0)+'_2']=_0x360fbd,_0x3c3154['pfp_rare'+'_3']=_0x17fa04,_0x3c3154[_0x467253(0x4d0)+'_4']=_0xb61362,_0x3c3154[_0x467253(0x4d0)+'_5']=_0x279f82,_0x3c3154[_0x467253(0x4d0)+'_6']=_0x21f8e5,_0x3c3154['pfp_rare'+'_7']=_0x36b07c,_0x3c3154[_0x467253(0x678)+'_1']=_0x5193be,_0x3c3154[_0x467253(0x678)+'_2']=_0x22a048,_0x3c3154[_0x467253(0x678)+'_3']=_0x258b94,_0x3c3154[_0x467253(0x678)+'_4']=_0xd6e138,_0x3c3154[_0x467253(0x678)+'_5']=_0x4489e1,_0x3c3154['pfp_epic'+'_6']=_0x55b9ec,_0x3c3154[_0x467253(0x678)+'_7']=_0x39c876,_0x3c3154[_0x467253(0x678)+'_8']=_0x5bb6bb,_0x3c3154[_0x467253(0x378)+_0x467253(0x4c5)]=_0x4f21ad,_0x3c3154[_0x467253(0x378)+_0x467253(0x263)]=_0x2a7db3,_0x3c3154['pfp_excl'+_0x467253(0x459)]=_0x1b7edc,_0x3c3154[_0x467253(0x378)+'usive_4']=_0x5b7ed9,_0x3c3154[_0x467253(0x378)+_0x467253(0x575)]=_0x56bebf,_0x3c3154[_0x467253(0x378)+'usive_6']=_0x2c6af6,_0x3c3154[_0x467253(0x378)+'usive_7']=_0x25cf2b,_0x3c3154[_0x467253(0x378)+_0x467253(0x57c)]=_0x514413;const SHOP_PFPS=_0x3c3154,BANNERS_COMING_SOON=!![],SHOP_BANNERS={},_0x3d6895={};_0x3d6895['id']=_0x467253(0x2f2)+_0x467253(0x2da),_0x3d6895[_0x467253(0x422)]='No\x20signa'+'l',_0x3d6895[_0x467253(0x22c)]='globe-of'+'f',_0x3d6895[_0x467253(0x394)]='#ef4444',_0x3d6895[_0x467253(0x697)]=_0x467253(0x5ce)+_0x467253(0x5af)+_0x467253(0x676),_0x3d6895['borderCo'+'lor']=_0x467253(0x5ce)+_0x467253(0x5af)+_0x467253(0x6b6),_0x3d6895[_0x467253(0x3a6)]=_0x467253(0x3db),_0x3d6895['cost']=1.75;const _0x3c83c4={};_0x3c83c4['id']=_0x467253(0x3ed)+_0x467253(0x584),_0x3c83c4[_0x467253(0x422)]='Clutch\x20G'+'od',_0x3c83c4[_0x467253(0x22c)]=_0x467253(0x46b),_0x3c83c4[_0x467253(0x394)]=_0x467253(0x33a),_0x3c83c4[_0x467253(0x697)]=_0x467253(0x3e2)+_0x467253(0x6e9)+_0x467253(0x392),_0x3c83c4['borderCo'+_0x467253(0x245)]=_0x467253(0x3e2)+_0x467253(0x6e9)+_0x467253(0x2a0),_0x3c83c4[_0x467253(0x3a6)]=_0x467253(0x556)+'e',_0x3c83c4['cost']=0x5;const _0x4fdd03={};_0x4fdd03['id']='title_hi'+'gh_rolle'+'r',_0x4fdd03['name']=_0x467253(0x501)+_0x467253(0x627),_0x4fdd03[_0x467253(0x22c)]=_0x467253(0x707),_0x4fdd03[_0x467253(0x394)]=_0x467253(0x341),_0x4fdd03[_0x467253(0x697)]=_0x467253(0x441)+_0x467253(0x70a)+_0x467253(0x307),_0x4fdd03[_0x467253(0x6f9)+_0x467253(0x245)]=_0x467253(0x441)+_0x467253(0x70a)+_0x467253(0x5db),_0x4fdd03[_0x467253(0x3a6)]=_0x467253(0x521),_0x4fdd03[_0x467253(0x2e4)]=2.5;const _0x389887={};_0x389887['id']=_0x467253(0x3a4)+_0x467253(0x5ae),_0x389887[_0x467253(0x422)]='Demon',_0x389887[_0x467253(0x22c)]=_0x467253(0x5e5),_0x389887['color']=_0x467253(0x6da),_0x389887[_0x467253(0x697)]='rgba(236'+',\x2072,\x2015'+'3,\x200.15)',_0x389887[_0x467253(0x6f9)+_0x467253(0x245)]=_0x467253(0x230)+_0x467253(0x608)+_0x467253(0x591),_0x389887[_0x467253(0x3a6)]=_0x467253(0x521),_0x389887[_0x467253(0x2e4)]=2.25;const _0x1b7389={};_0x1b7389['id']='title_un'+_0x467253(0x51e)+'e',_0x1b7389[_0x467253(0x422)]=_0x467253(0x405)+'ble',_0x1b7389[_0x467253(0x22c)]=_0x467253(0x6f1),_0x1b7389[_0x467253(0x394)]=_0x467253(0x279),_0x1b7389[_0x467253(0x697)]=_0x467253(0x70d)+_0x467253(0x390)+'6,\x200.15)',_0x1b7389[_0x467253(0x6f9)+_0x467253(0x245)]=_0x467253(0x70d)+'\x20130,\x2024'+_0x467253(0x50d),_0x1b7389[_0x467253(0x3a6)]=_0x467253(0x3db),_0x1b7389['cost']=1.75;const _0xc2fec1={};_0xc2fec1['id']=_0x467253(0x2ec)+'rtified',_0xc2fec1[_0x467253(0x422)]=_0x467253(0x2d0)+'d',_0xc2fec1[_0x467253(0x22c)]=_0x467253(0x36c)+_0x467253(0x387),_0xc2fec1['color']=_0x467253(0x6cf),_0xc2fec1['bgColor']=_0x467253(0x320)+_0x467253(0x504)+'9,\x200.15)',_0xc2fec1[_0x467253(0x6f9)+_0x467253(0x245)]=_0x467253(0x320)+_0x467253(0x504)+'9,\x200.45)',_0xc2fec1[_0x467253(0x3a6)]=_0x467253(0x4ed),_0xc2fec1['cost']=0x1;const _0x24152b={};_0x24152b[_0x467253(0x2f2)+'_signal']=_0x3d6895,_0x24152b[_0x467253(0x3ed)+'utch_god']=_0x3c83c4,_0x24152b['title_hi'+'gh_rolle'+'r']=_0x4fdd03,_0x24152b[_0x467253(0x3a4)+_0x467253(0x5ae)]=_0x389887,_0x24152b[_0x467253(0x594)+_0x467253(0x51e)+'e']=_0x1b7389,_0x24152b['title_ce'+_0x467253(0x389)]=_0xc2fec1;const SHOP_TITLES=_0x24152b;async function equipUserTitle(_0x41f122,_0x357afa){const _0x748fb0=_0x467253,_0x48690f={};_0x48690f[_0x748fb0(0x22a)]='User\x20not'+_0x748fb0(0x255),_0x48690f['dUZQz']=_0x748fb0(0x2c2);const _0x2df390=_0x48690f,_0x1af3a4=await getUser(_0x41f122);if(!_0x1af3a4)throw new Error(_0x2df390[_0x748fb0(0x22a)]);const _0x5bca5e={};_0x5bca5e['equipped'+_0x748fb0(0x2c6)]=_0x357afa||null,await db['collecti'+'on'](_0x2df390[_0x748fb0(0x42d)])['doc'](_0x41f122)['update'](_0x5bca5e);}function seededRandom(_0x813b21){const _0x1858fc=_0x467253,_0x548cdc={};_0x548cdc[_0x1858fc(0x309)]=function(_0x5e3da1,_0x43c8c4){return _0x5e3da1*_0x43c8c4;};const _0x591944=_0x548cdc,_0xcfe46d=_0x591944[_0x1858fc(0x309)](Math['sin'](_0x813b21++),-0x1*-0x2c69+0x1472+-0xd5*0x1f);return _0xcfe46d-Math[_0x1858fc(0x349)](_0xcfe46d);}function getDailyShopPfps(){const _0x37b924=_0x467253,_0xdde1cb={'iiczM':function(_0x2e1212,_0x4148bb){return _0x2e1212>_0x4148bb;},'IKmAN':function(_0x1d626d,_0x7daeef){return _0x1d626d+_0x7daeef;},'NVtCJ':function(_0x1e19f5,_0x2fd847){return _0x1e19f5<_0x2fd847;},'FLeDF':function(_0x5255b7,_0x1e759a){return _0x5255b7>>>_0x1e759a;},'EbsXN':function(_0x28c716,_0x358be2){return _0x28c716*_0x358be2;},'Oqerj':function(_0x43473f,_0x203003,_0x991958,_0x17f439){return _0x43473f(_0x203003,_0x991958,_0x17f439);},'ZKqBt':function(_0x4ca6a9,_0x497216){return _0x4ca6a9+_0x497216;}},_0x55a167=new Date(),_0x4b1937=_0x55a167['getUTCFu'+'llYear']()+'-'+_0xdde1cb[_0x37b924(0x4b6)](_0x55a167['getUTCMo'+_0x37b924(0x637)](),-0xa28+-0x2c*0x9a+0x24a1)+'-'+_0x55a167['getUTCDa'+'te']();let _0x53cc2a=0xbef+0x4ab+-0x109a;for(let _0x1ae8b1=-0x19a5*0x1+-0xdd5*0x1+0x3e*0xa3;_0xdde1cb[_0x37b924(0x3fa)](_0x1ae8b1,_0x4b1937[_0x37b924(0x2f4)]);_0x1ae8b1++){_0x53cc2a=_0xdde1cb[_0x37b924(0x3a8)](_0xdde1cb[_0x37b924(0x3d3)](_0x53cc2a,0x1f9e+-0x61d+-0x43b*0x6)+_0x4b1937[_0x37b924(0x49f)+'At'](_0x1ae8b1),-0x202f+0x184c+0x7e3);}const _0x465010=Object[_0x37b924(0x48d)](SHOP_PFPS),_0xfff850=_0x465010[_0x37b924(0x3be)](_0x346743=>_0x346743[_0x37b924(0x3a6)]===_0x37b924(0x556)+'e'),_0x2d3c13=_0x465010[_0x37b924(0x3be)](_0x1c89a1=>_0x1c89a1[_0x37b924(0x3a6)]==='Epic'),_0x28ac4a=_0x465010[_0x37b924(0x3be)](_0x50b4e4=>_0x50b4e4[_0x37b924(0x3a6)]===_0x37b924(0x3db)),_0x476e71=_0x465010[_0x37b924(0x3be)](_0x2975fd=>_0x2975fd['rarity']==='Uncommon'&&!_0x2975fd[_0x37b924(0x4b3)+'t']);function _0x1dbd54(_0x3eed6d,_0xa90b38,_0x7a7410){const _0x5406db=_0x37b924,_0x45d304=[..._0x3eed6d],_0x2271e3=[];for(let _0x53f6b4=0x47c+0xdd3+-0x124f;_0x53f6b4<_0xa90b38&&_0xdde1cb[_0x5406db(0x304)](_0x45d304['length'],0x1c63+-0xbe9*-0x1+0x1*-0x284c);_0x53f6b4++){const _0x1f7c69=Math['floor'](seededRandom(_0x7a7410+_0x53f6b4*(0x491+0x2*-0x1369+0x224e))*_0x45d304[_0x5406db(0x2f4)]);_0x2271e3['push'](_0x45d304[_0x1f7c69]),_0x45d304[_0x5406db(0x60c)](_0x1f7c69,-0x1fd*0x3+-0x276+0x86e*0x1);}return _0x2271e3;}const _0x2cf594=_0xdde1cb[_0x37b924(0x438)](_0x1dbd54,_0xfff850,-0x7*0x1c9+-0xe72+0x1af3,_0x53cc2a+(-0x68*0x40+-0xf9*0x11+0x2a8a)),_0x54c22b=_0xdde1cb['Oqerj'](_0x1dbd54,_0x2d3c13,0x1ac+-0x1622+0x83*0x28,_0xdde1cb['ZKqBt'](_0x53cc2a,0x1343+0x1*0x14bf+-0x140*0x20)),_0x40f030=_0x1dbd54(_0x28ac4a,-0xaf6+-0x58*-0x10+0x577,_0x53cc2a+(0x22fd*0x1+-0x1c89+-0x671)),_0x14908e=_0x1dbd54(_0x476e71,0xb*-0x2d9+-0x43f+0x2393*0x1,_0x53cc2a+(0x152c+0x8b1+-0x1dd9));return[..._0x2cf594,..._0x54c22b,..._0x40f030,..._0x14908e];}async function buyShopPfp(_0x2971ab,_0x9c7316){const _0x11c762=_0x467253,_0x4bdeb4={'zQIuP':function(_0x5aed80,_0x108011){return _0x5aed80(_0x108011);},'NeFQO':function(_0x3d45eb,_0x10e305){return _0x3d45eb<_0x10e305;},'OOFbC':function(_0x53a12f,_0x5ca158){return _0x53a12f(_0x5ca158);},'ZvMHU':function(_0x1f43c1,_0x3b448e){return _0x1f43c1(_0x3b448e);},'RnQxF':function(_0x814305,_0x296dab){return _0x814305(_0x296dab);},'CUjhu':function(_0x575d2f,_0xaca3aa,_0x46d9d7,_0x5dddfd,_0x1b2738){return _0x575d2f(_0xaca3aa,_0x46d9d7,_0x5dddfd,_0x1b2738);},'AcQkC':'shop','jaAyn':_0x11c762(0x2c2)},_0x3756fd=SHOP_PFPS[_0x9c7316];if(!_0x3756fd)throw new Error(_0x11c762(0x205)+_0x11c762(0x471)+'\x20in\x20cata'+_0x11c762(0x653));const _0x1b9c1a=await _0x4bdeb4[_0x11c762(0x420)](getUser,_0x2971ab);if(!_0x1b9c1a)throw new Error(_0x11c762(0x317)+_0x11c762(0x255));if(_0x4bdeb4[_0x11c762(0x262)](_0x4bdeb4[_0x11c762(0x28c)](Number,_0x1b9c1a['tokens']||0x1f41+-0x39*-0x67+-0x3630),_0x3756fd['cost']))throw new Error('Insuffic'+'ient\x20tok'+_0x11c762(0x30f)+_0x11c762(0x4a2)+_0x4bdeb4[_0x11c762(0x5f2)](formatTokens,_0x3756fd[_0x11c762(0x2e4)])+('\x20Tokens,'+_0x11c762(0x233)+'e\x20')+_0x4bdeb4[_0x11c762(0x718)](formatTokens,_0x1b9c1a['tokens']||0x13*-0x20b+0x1a*0x35+0x216f)+_0x11c762(0x5e3));const _0x27a7fd=_0x1b9c1a[_0x11c762(0x214)+_0x11c762(0x53e)]||[];if(_0x27a7fd[_0x11c762(0x625)](_0x9c7316)||_0x3756fd['isDefaul'+'t'])throw new Error(_0x11c762(0x382)+_0x11c762(0x720)+_0x11c762(0x269)+_0x11c762(0x5dc));return await _0x4bdeb4['CUjhu'](updateTokens,_0x2971ab,-_0x3756fd[_0x11c762(0x2e4)],_0x4bdeb4[_0x11c762(0x70c)],'Purchase'+_0x11c762(0x512)+_0x11c762(0x236)+_0x3756fd[_0x11c762(0x422)]+_0x11c762(0x54b)+_0x3756fd['rarity']+')'),await db[_0x11c762(0x28a)+'on'](_0x4bdeb4[_0x11c762(0x276)])[_0x11c762(0x31d)](_0x2971ab)[_0x11c762(0x716)]({'unlockedPfps':firebase[_0x11c762(0x632)+'e'][_0x11c762(0x497)+'ue'][_0x11c762(0x6a5)+'on'](_0x9c7316)}),_0x3756fd;}async function equipShopPfp(_0x2588d1,_0x141e84){const _0xc08d23=_0x467253,_0x49f95b={'PKPDM':'Avatar\x20n'+_0xc08d23(0x471),'volQs':function(_0x1e788f,_0x1307f9){return _0x1e788f(_0x1307f9);},'WVGNq':_0xc08d23(0x317)+_0xc08d23(0x255),'KDpAh':_0xc08d23(0x462)+'\x20unlock\x20'+_0xc08d23(0x269)+_0xc08d23(0x281)+_0xc08d23(0x5cd)+_0xc08d23(0x200),'kJFkU':_0xc08d23(0x2c2)},_0x30c712=SHOP_PFPS[_0x141e84];if(!_0x30c712)throw new Error(_0x49f95b['PKPDM']);const _0x26fa55=await _0x49f95b[_0xc08d23(0x5df)](getUser,_0x2588d1);if(!_0x26fa55)throw new Error(_0x49f95b[_0xc08d23(0x2a1)]);const _0x26c3a5=_0x26fa55[_0xc08d23(0x214)+_0xc08d23(0x53e)]||[];if(!_0x30c712[_0xc08d23(0x4b3)+'t']&&!_0x26c3a5[_0xc08d23(0x625)](_0x141e84))throw new Error(_0x49f95b[_0xc08d23(0x379)]);const _0x3689bd={};return _0x3689bd[_0xc08d23(0x713)]=_0x30c712['file'],_0x3689bd[_0xc08d23(0x487)+_0xc08d23(0x623)]=_0x141e84,await db[_0xc08d23(0x28a)+'on'](_0x49f95b[_0xc08d23(0x2c4)])[_0xc08d23(0x31d)](_0x2588d1)[_0xc08d23(0x716)](_0x3689bd),_0x30c712;}function getDailyShopTitles(_0x3d5824=0x2185*0x1+0x1b34+0x50f*-0xc){const _0x50ba29=_0x467253,_0x159053={'zFEZT':function(_0x1c38f0,_0x189dec){return _0x1c38f0<_0x189dec;},'QPWwE':function(_0x664474,_0x55154a){return _0x664474>>>_0x55154a;},'PLDhM':function(_0x2d12b4,_0x36ae3a){return _0x2d12b4+_0x36ae3a;},'umiTb':function(_0x2b4976,_0x5d78b9){return _0x2b4976*_0x5d78b9;},'GtyDz':function(_0x3e3d8f,_0x1a663b){return _0x3e3d8f(_0x1a663b);},'uggJv':function(_0x389044,_0x2010b5){return _0x389044<_0x2010b5;},'cqzJK':function(_0x16b149,_0x2f6904){return _0x16b149===_0x2f6904;}},_0x5ea89a=new Date(),_0x2840b6=_0x5ea89a[_0x50ba29(0x4fb)+_0x50ba29(0x51a)]()+'-'+(_0x5ea89a[_0x50ba29(0x58a)+_0x50ba29(0x637)]()+(-0x1c63+0xea8+0x4*0x36f))+'-'+_0x5ea89a[_0x50ba29(0x265)+'te']();let _0x5232fd=0x2518+-0x108c+0xa*-0x20e;for(let _0xc223f9=-0x20b2+0x15fd+0x1*0xab5;_0x159053['zFEZT'](_0xc223f9,_0x2840b6[_0x50ba29(0x2f4)]);_0xc223f9++){_0x5232fd=_0x159053[_0x50ba29(0x528)](_0x159053['PLDhM'](_0x5232fd*(-0x1be8+-0x971+-0x95e*-0x4),_0x2840b6['charCode'+'At'](_0xc223f9)),-0x673*-0x2+0x16c7*-0x1+0x1*0x9e1);}const _0x41cc7c=Object[_0x50ba29(0x48d)](SHOP_TITLES)[_0x50ba29(0x3be)](_0x33fe97=>_0x33fe97[_0x50ba29(0x670)]>0x269b+-0xd*0x2ab+-0x3ec),_0x502f08=[],_0x396b9b=[..._0x41cc7c];for(let _0x409320=-0x1*-0x254+0x84a*-0x1+0x5f6;_0x159053[_0x50ba29(0x461)](_0x409320,_0x3d5824)&&_0x396b9b['length']>0x2089+0x1c1c+-0x3ca5*0x1;_0x409320++){const _0x5c25fc=_0x396b9b['reduce']((_0x49d985,_0x313dd)=>_0x49d985+_0x313dd['weight'],0xe8b+-0x87*0x1e+0x1*0x147);let _0x12933b=_0x159053['umiTb'](_0x159053[_0x50ba29(0x452)](seededRandom,_0x5232fd+_0x159053[_0x50ba29(0x42a)](_0x409320,0x3e*-0x95+0x1e3f+-0x5de*-0x1)),_0x5c25fc);for(let _0x2caa79=0x1*-0x16de+0x2024+-0x946;_0x159053['uggJv'](_0x2caa79,_0x396b9b[_0x50ba29(0x2f4)]);_0x2caa79++){_0x12933b-=_0x396b9b[_0x2caa79][_0x50ba29(0x670)];if(_0x12933b<=0x2470+0x296*-0xb+-0x7fe||_0x159053['cqzJK'](_0x2caa79,_0x396b9b['length']-(0x1*-0x1f2f+0x23a9+-0x479))){_0x502f08[_0x50ba29(0x2ef)](_0x396b9b[_0x2caa79]),_0x396b9b[_0x50ba29(0x60c)](_0x2caa79,0x64b+-0x167d+0x1d*0x8f);break;}}}return _0x502f08;}async function buyShopTitle(_0x43f130,_0x309234){const _0x4454d3=_0x467253,_0x4db191={'tntZY':function(_0x2805f2,_0x267e35){return _0x2805f2(_0x267e35);},'SRnKJ':function(_0x305887,_0x2bf195){return _0x305887<_0x2bf195;},'UOMAE':function(_0x5db327,_0x1e0f6e){return _0x5db327(_0x1e0f6e);},'GaQbF':_0x4454d3(0x382)+_0x4454d3(0x720)+_0x4454d3(0x4e3)+'le','rUSsL':_0x4454d3(0x71a),'xUKoa':'users'},_0x5bb0fd=SHOP_TITLES[_0x309234];if(!_0x5bb0fd)throw new Error(_0x4454d3(0x366)+_0x4454d3(0x658)+_0x4454d3(0x506));const _0x2a70c2=await _0x4db191[_0x4454d3(0x418)](getUser,_0x43f130);if(!_0x2a70c2)throw new Error(_0x4454d3(0x317)+_0x4454d3(0x255));if(_0x4db191[_0x4454d3(0x50c)](_0x4db191[_0x4454d3(0x316)](Number,_0x2a70c2[_0x4454d3(0x291)]||-0xd81+0xb1e*0x1+0x263),_0x5bb0fd[_0x4454d3(0x2e4)]))throw new Error('Insuffic'+_0x4454d3(0x613)+'ens\x20(Req'+_0x4454d3(0x4a2)+formatTokens(_0x5bb0fd[_0x4454d3(0x2e4)])+_0x4454d3(0x5e3));const _0x50638d=_0x2a70c2[_0x4454d3(0x214)+_0x4454d3(0x299)]||[];if(_0x50638d[_0x4454d3(0x625)](_0x309234))throw new Error(_0x4db191[_0x4454d3(0x699)]);return await updateTokens(_0x43f130,-_0x5bb0fd[_0x4454d3(0x2e4)],_0x4db191['rUSsL'],_0x4454d3(0x40a)+'d\x20Title:'+'\x20\x22'+_0x5bb0fd[_0x4454d3(0x422)]+'\x22'),await db[_0x4454d3(0x28a)+'on'](_0x4db191[_0x4454d3(0x335)])['doc'](_0x43f130)['update']({'unlockedTitles':firebase[_0x4454d3(0x632)+'e'][_0x4454d3(0x497)+'ue']['arrayUni'+'on'](_0x309234)}),_0x5bb0fd;}async function buyShopBanner(_0xb0772a,_0x3be3db){const _0x3453a1=_0x467253,_0x4b1b6a={'UsDmG':function(_0xac4b3e,_0x4f95c7){return _0xac4b3e(_0x4f95c7);},'FfUhz':function(_0x133f22,_0x2753ca){return _0x133f22<_0x2753ca;},'eIlJh':_0x3453a1(0x382)+_0x3453a1(0x720)+_0x3453a1(0x4d1)+_0x3453a1(0x36f),'JBoxa':function(_0x6bcf4a,_0x11b232,_0x130b5e,_0xaa445d,_0x487ff8){return _0x6bcf4a(_0x11b232,_0x130b5e,_0xaa445d,_0x487ff8);},'vwtZW':_0x3453a1(0x2c2)},_0x4dd342=SHOP_BANNERS[_0x3be3db];if(!_0x4dd342)throw new Error(_0x3453a1(0x308)+_0x3453a1(0x471)+_0x3453a1(0x242));const _0x34f2b2=await _0x4b1b6a['UsDmG'](getUser,_0xb0772a);if(!_0x34f2b2)throw new Error(_0x3453a1(0x317)+_0x3453a1(0x255));if(_0x4b1b6a[_0x3453a1(0x5e0)](Number(_0x34f2b2[_0x3453a1(0x291)]||-0x1ba7+0xd78*-0x1+0x291f),_0x4dd342[_0x3453a1(0x2e4)]))throw new Error('Insuffic'+_0x3453a1(0x613)+_0x3453a1(0x30f)+'uires\x20'+formatTokens(_0x4dd342[_0x3453a1(0x2e4)])+_0x3453a1(0x5e3));const _0x3c963d=_0x34f2b2[_0x3453a1(0x214)+_0x3453a1(0x6a6)]||[];if(_0x3c963d[_0x3453a1(0x625)](_0x3be3db))throw new Error(_0x4b1b6a['eIlJh']);return await _0x4b1b6a[_0x3453a1(0x3d7)](updateTokens,_0xb0772a,-_0x4dd342[_0x3453a1(0x2e4)],_0x3453a1(0x71a),_0x3453a1(0x40a)+_0x3453a1(0x66e)+_0x3453a1(0x66b)+_0x3453a1(0x236)+_0x4dd342['name']+'\x22'),await db[_0x3453a1(0x28a)+'on'](_0x4b1b6a['vwtZW'])[_0x3453a1(0x31d)](_0xb0772a)[_0x3453a1(0x716)]({'unlockedBanners':firebase[_0x3453a1(0x632)+'e']['FieldVal'+'ue'][_0x3453a1(0x6a5)+'on'](_0x3be3db),'equippedBanner':_0x3be3db}),_0x4dd342;}function _0x2445(){const _0x277072=['ugzW','CgLRAweUCg4','Aw5JBhvKzxm','AY5WBMC','BgvY','D2LUBMLUz1q','zfvJrgm','C25SA0W','rwzPzK4','zvLdtfy','ugHiwvi','DhLSzq','CMf0B3jZigm','yxjLChvZC3K','ywnJzxb0zwq','zMLYzxn0B3i','CMfUAW','AgT4AMq','y29TBwL0','yxrJAgvZ','BNrO','vgHPCYbfCgK','BMPXDeG','CIbTyxrJAca','ywrTAw5Fywq','t3nOEee','ienSzwfUzwq','rev6EeC','CwXwA1q','ihjLCg9YDgu','BM93ihzVDgu','EeXkq0u','CMvTAxvTx2q','wfP0wKS','v2jKEuG','AxmGCMvXDwK','q2HLC3q','C29YDa','y2GGAxmGywW','s3LIwuy','C3rHzMzFy2e','yu1dy1e','CMvXDwLYzwq','EwPMy0i','mZm5oty5m2DbyLHtsq','AvzSuKy','DxrVx2rPC3a','ihzVDgu','Bg9N','lcbZBYa','DgvHBv9PBNy','uuXduKC','swv1Ehi','DcbMB3vUzca','whvlB2S','txvXr0K','zxjZkq','EgLZDhm','CgzWx3vUy28','DuvjEM8','r2jtr1K','DhDPDgnOvxm','y29ZBwv0Awm','ig9YifvZzxi','sNnvAge','zgLLzcb1Ca','C0z1EM0','zhKGzNvSBce','zvDlCxC','ihzZifrLyw0','BxbSzxrLza','DcbQB2LUihC','zsbcyw5Uzxi','B3iGAM9PBIa','zM9YBq','zcbqCM9MAwW','y29Kzq','D2vPz2H0','iejVDgGGC2K','Dg9Rzw5dB3y','DLvmB0O','vgvHBsaYifC','iZi2','lcaWlJe1kq','DhjPz2DLCMu','CgzWx2vWAwm','q2vXDMG','rLrQsfO','r210ChK','C2v0DgLUzYa','AwnLoG','qMzvBLi','qwrTAw4','yw5UB3qGyMe','t3LdDNm','BeXoCgW','svbkBuy','nK9xC0fJBq','BMSGEw91CIa','ihjLy29Yzhm','CgvUzgLUzW','C2vYDMvYvgK','ierVDwjSzsa','igrVzxmGBM8','CY9LCgLJl2u','vhzLswm','Bgf5zwq','DhmGns4Wmca','v0nLuhG','z3vLC3q','D29YzhmUifa','BKLJBhG','BwLUDxrLihC','DgLWx3nLBNq','DceGuMvZzxq','zMLSzq','yMDdB2XVCG','iZiW','r2fryKy','DNbbvfC','AvnmBMO','C2vUzgvY','zwqGC2nVCMu','B3vUDa','ihjLC2v0igy','v0HQtKu','B3i6','B3j0zwrbDa','zYbYzxf1Axi','qM5JvKS','yxjYyxLvBMK','qMfUBMvYCW','yw1VDw50','yw1L','y3jLyxrLzei','CNmU','u1rbrKyGuLu','ihrOzsbTyxq','DcbIzsb1BMW','CwzkEui','D2fPDgLUz18','CMvTyxrJAfy','CMvMDw5Kx3a','z09SuLe','CNjVCJO','DgLWx3jLy2u','zw1IzxjvAwq','lcaWlJq1kq','qwnbCLK','CY9LCgLJl0u','zxbPy1vZzxi','qwrTAw4GyMe','yxrPB25Zigu','CMv3yxjKvg8','ugXLyxnLihC','Aw5Rx2zLzq','q2HLC3reyxq','zw5ZihrVia','CMfUAY1Iywq','sg9ZDcK','zNjVBurHDgu','q2HHBxbPB24','vgvHBsbUyw0','icyGy292zxi','s29KtKy','q0n2rgG','qwrTAw4Gywq','uwPNB1m','y1blve8','vgvHBsbjBNy','u2T5D28','uxPcAxm','iZeWyJK4mq','ruHHrwW','zxjLze1LBwi','twf0y2GGy2e','CMvKigfMDgu','wNvgEKe','zwfUDxaGBM8','zwnSyxjLihC','zwuGtxLZDgu','EhbPCMvZqxq','DcbIzsbKzwW','i2vJndG5oq','Bw1VBL81','AxrLoIa','A2LRlNbUzW','BhzLihrOzsa','zhKGBgLUA2u','z2v0','r28GDg8Guhi','AxrL','v2zmvxu','mte0nJq1meXezvjmza','zxnZ','Dg8Gzw50zxi','BgLTAxqPlG','zef0','lcaXntGSide','iZi0','DgvHBtjjza','CMvWBgfJzq','yMfpueG','DM90zxm','vgfYz2v0ifu','B3j0zwrcEq','C2HPzwXK','ugHqquG','CMvZB2X2zwq','Bwf4','BM93','zwvUigf1Dg8','ignVBNrHAw4','DgvKihDPDgG','yM9YzgvYq28','CMfUzg9T','yMf0y2G','DcbPBIb0AgK','y2HLC3q','wNDcBM4','u2vUzgvYihu','uMrIt2i','q3nLCgK','imk3ievUDhj5','ANvZDg1LBNq','qu5svMe','DKvuDum','qLnoALe','z2vT','DM90zvr5Cgu','BwfYA05VDgK','lca4nsWGmJq','DhmGAgf2zsa','qwnrA0m','CMDIysG1osW','ww5iDKC','ifrVA2vUCYa','vgvHBsbPBNy','lNbUzW','zwfTBwf0zxm','CgHVDg9vuKW','vxnLCIbYzwm','AgLosgi','DxbKyxrL','CYbOyxzLide','uM5rEey','C3LZDgvTx2e','C2HVCa','ALHgsu8','ienSywLTCYK','ywXPzca','zM9YBsbpD24','y3vUDa','ywr5ig93BIa','Bwf4ihjVC3q','CgXLDgvKig0','iIbPCYbHBhi','s1fOuhi','Cefxse8','C3rHCNrLzee','CuH0u0e','zxjHDg9YihC','ievWAwmGr2e','v3LUAwe','B0XWzeW','uvbUBNu','vgrlqMS','Bejhq04','ywXYzwfKEsa','rMj2ENG','CY9LCgLJl2e','rvrrzLO','sfPqzvC','iZiX','CgXHEwvYCW','iZeW','zcbIEsbOB3m','BeH5wfe','qvHluuG','zgvSzxrLzem','ugXHEwvYig4','AxmGywXYzwe','CgLUzYbPDa','D2HVCMu','vwHyqM0','B24GuhjLBwK','vejcsu8','qxzHDgfYig4','tfbOy1i','zMzHDLi','BNqGAxmGmc4','tKHyDNC','ihDVBIeGvg8','zhrmAuG','iZiY','AxzLl3z6CYa','iIbYzwz1BMq','BenOA3C','Aw5JCMvTzw4','yuHgtu4','CMvHzhK','ChfpzxC','Dw5SB2nRzwq','AxjLza','CY9LCgLJl2i','D2fNzxjdB3y','zwfKEsbSAw4','DgfSihbYAxO','tMTiwMm','DLPItwm','B3vYC2vSzG','BMf6Aq','tu1Zy1e','AMHbv0K','yw0GzMLYC3q','AwnHDgLVBIa','zxHWAxjLC0e','Ag9ZDenVDMu','wwPgDfe','mKnsAxjVwG','zhntu2S','zxrJAcbUB3q','DMn6A2u','AwvKievWAwm','AffHquG','Aw52AxrLzee','AwnVBG','DM9Yig9Mia','rw50CNK','ww91igHHDMu','CMDIysGYmZy','DfLwCK0','CMvZDwX0CYe','ihLVDsbOyxy','BMfTzv9SB3C','vgvHBsbUBYa','oIaI','zxiGy2fWywm','zw1VDMvK','DhLWzq','z2uTBM9YBwe','z0XOExm','zKnUCvy','Bw1lCw8','DxnPDMvFna','DxnLCG','ihrLyw1Tyxq','uMvJAxbPzw4','igLUihnOB3a','yxjLlNbUzW','zw9jDgS','Bg9Y','zcb0BYba','tgziuMS','y29JAW','y292zxjLze0','uMvJzwL2zwq','zsbOyxmGzxG','q2fUBM90ihi','ignHBMnLBgW','CMvJzwL2zxi','iZi5','ifrVA2vUCY4','vgHPCYbTyxq','zcbPBIbTyxq','C2HWv3O','BwjdruS','igzVDw5K','sM9PBMvKihq','tM9UtKW','C3qGy29ZDhm','CKHmt2C','vgvHBsa','ruDQs2K','zgvJBgLUzu0','iZe5','y2LHBcb3Aw4','CMvKrgvWB3m','vNfIywO','yw5PBwf0Aw8','tMvguu8','DxnPDMvFmG','zw1WDhK','z2v0vvrdrge','ig1PBNv0zxm','zNLzzuu','uKvnqvrdsa','DgHPCYbHDMe','yxjLD2vLlNa','DKLyvuS','sgz4BMG','nZq5ntCWuM12wMjH','DwLK','CMvHza','CgLJlNbUzW','B2XSzwn0Aw8','CYbPBMfWChi','u2LVzxC','zxiGywrTAw4','u21OBgq','AMfbEw4','uMHytNy','B3iGAwrLBNq','iZnIodjMnG','C3rHCNrZv2K','B3DUzxjvAwq','yxzHAwXHyMW','CgLRDxmUCg4','vgvHBsaYksa','ExnhD3G','rgrgqKm','DgfYigjLzM8','u0z3t28','zgr3Cs5WBMC','Bw1VBL80','zwzYsxO','BffgChe','CYbMzwuP','rxzmCue','CY91BMnVBw8','y29SBgvJDgK','zgfPBhLFy2G','t09gyKm','yw5VDgHLCIa','BMqGAxmGBM8','AfDPDgHuzwe','vxnLCNmGzxi','Dg9Rzw5Z','BMv3v2fNzxi','rvfmvey','Dcb0B2TLBNm','CMvMDw5K','DfrcCLK','BMPTDxO','zvvZzxjnyxq','vgL0BgvZ','sKvYtMS','ifrVA2vUCYe','oIbcB3rOihm','AwTHENC','yxjNzxq','z3vLC3rF','msWGmc40nsK','v1zhtNe','C3vJy2vZCW','Axn0CMf0B3i','BhKGBgLUA2u','s3H3tuG','AKvUzuS','zwfKEsbHDca','ig9YigvUzgu','zxjUyw1L','zLHyBMi','Exbiv1O','D29PrMC','CMf0B3i','vw5ZDxbWB3i','zgf0yq','DgvHBti','CYbVBMX5ige','CMvM','Aw52AxrLzfq','ignVBg9Yige','ChPyrhK','ihbSyxLLCNm','ysbNyw1LlIa','rxjYB3iGy2W','igvYCM9YoG','DgL0Bgu','AxzLl2v4y2W','EKj1DM4','zMLUza','ugvnCxq','uxzfDLu','iZi4','4OAP77Ipia','DxnLCNm','BgLTAxq','A0PgA1u','ExLbA0O','vgL0Bgu','CNnLBgy','EvzbBuq','B3iGAgfZigi','u2zyBNm','sw9Rzge','ifrVA2vUCW','yxjLihrVBY4','DgvZDgvY','zwfYBMLUz3m','q2vYDgLMAwu','ugXLyxnLigu','v2nur2O','C2vYBMfTzsa','DgvHBte','Dg90ywW','ugfZq2e','u0HoAuW','zNvUy3rPB24','B0fuDLu','x3nPz25HBa','ywL0Aw5Nihq','sg9ZDa','igeGmtaWjsa','t3bgB2i','y2f0y2G','yxDHCMrLzc4','vgHLievWAwm','zu9Wzw5nyxq','ugXLyxnLige','y29ZDa','tM8GCMvWB3i','B3bWB25LBNq','zgvJBgLUzwq','DgvHBtjdB3y','DgvYEsbdAgu','BwfHtLG','yw51CcbLCNi','DgL0BgvFy2u','iZiZ','yNDwqwS','ChvZAa','vgvLDxe','DgvHBvrHzW','DgL0BgvFBM8','CMvWB3j0ige','BgvUz3rO','CgvUAxm','yxrLuhjLBwK','uevhvNC','AxndB3zLCMu','zw5ZicHnExm','vgvHBsaX','ywrTAw5PC3q','zuHby24','v3bYufK','twf0y2GGBM8','suqSifvjrcW','AxnuzwfTBwe','Bwf0AwnHBgW','sxHqvNe','ww91CIbdyxa','AwLJEK0','zfr2uMi','CY9LEgnSDxm','nYWGmc4XnsK','qMfUBMvYig4','vK5qBw4','A2rHlNbUzW','qsbWBgf5zxi','q3zKCui','mhW0Fdf8m3W','Cu92u3O','zw5ZicHszxe','rhL3zwu','zhHtuLy','y3jLyxrLzee','C3rHDhvZ','Bw1VBL82','iokaLcaI','vu9nquu','vxnLCIbUB3q','yM9UDxm','v1v2tey','zgLZCgXHEu4','tu5TzfG','zwX5igf2ywK','zg9J','zwzRBhu','turAt1e','CMDIysGXnIW','zxbPy0fJy28','ig1PBNv0zsa','ierLy2LZAw8','y2fWDgfPBL8','ywXS','ywrK','z0PvzKS','reLtufvursa','Dg90ywXtCgu','z3vfq0u','BMreDxbSAwm','svfUvhK','ignVBxbSzxq','Ewf4C3e','Dg9mB3DLCKm','zMLYBwvKisa','C2L0Dwf0Aw8','ywXSuMvHzhK','DgvHBtjtCgW','D2Phvg8','EfvlB2e','Dw5KzwzPBMu','qwrTAw5PC3q','4OAP77Ipie1HDgnOia','D2HLCMu','i2y1owuWyG','BwvYz2u','ihjLDhjHy3q','EMj1BLe','uffvwwe','Efvwyw8','DgvYCM9YAxm','i2e4ntvMnW','iezYzwuH','ieDVB2qGBhu','mZy4nZG0u0rpt1nX','AxrOAw4Gmta','y0rMD2O','uMvTyxrJAca','zgnWzghdTMzR','zMXVB3i','qxDtv0e','DNPMy0u','q0rdrxC','v3f0rK8','Bwf0y2HFD2K','Aw4Gysb0zwe','wMLpuxa','ELLvBuu','zgqGDg9Rzw4','EfvZzxjUyw0','ndqUCg5N','CgfPzefTB3u','DhDPDhrLCG','BwfW','suqGCMvXDwK','AuHkBhu','Bwf0y2HLC1C','sxvfBMq','y2ngA1K','EuL3v3e','y2GGAgfZige','sM9PBMvKig0','DhDPDgnO','B0HhAK0','zg9JCW','rLfvu1q','y2vPBa','B3DUievUDhi','vgL0BguGBM8','D2fPDgLUzW','sg9NCfG','AwveD3q','Bwf0y2HFD2e','AwrLCYbYzxa','y2HLy2STy2K','zxjHz2u','A2LRzq','BMvY','AxnuzwfTq2e','igr1CgXPy2e','wwvtqMi','zg91yMXL','q0PQsvi','yxjLmJm0odC','iY0T','q2fUBM90igm','CgzWx2v4y2W','s0rWqwG','rMfPBgvKihq','C3vIC2nYAwi','CMfWAxn0','AefqzNa','ndKWoty0DeHnCwDz','vKXHz3e','yuX1tw4','Aw5RzwqGzNi','ww91igfSCMu','AgL0BgvY','B3rLCW','vgvHBw1HDgu','zwqGDgHLAxi','CMnSzq','rxbPyYbHy2m','CNrPzMLLza','BMnLigfUzca','rgfPBhKGrNi','u2nzuKC','nZqYnJrAq1nKuMm','s1vrvuC','CIbLBMrLza','ideZmcWGmJq','BMvK','msWGmc4XnsK','q2HLC3qGuge','y29SB3i','uu1tyNa','Bwf0y2Hjza','CNrLCIbuB2S','Bw1VBL8Z','DgvHBtjuB2S','EeXPBMTLzee','AgfUz2uGCMu','ihnLBgvJDca','B3rLC1vWzge','vxzZEfu','DguGAw4GzMe','zgLZCgXHEq','DcbMB3vUzcW','C2v4','DxvYDwW','DgL0BgvFzgu','C3bSAxq','CMfYAxr5','r2HND0u','rKXLrey','q2fUBM90igq','vgvHBsaY','uhPeq2u','BIKG4Ocuici','CYbKywLSEsa','AxnPCW','DgvHBuLK','icHIEsa','zgvZihzLCMK','DcbIzsbIyw4','BgvHC2uGy2G','zxiGy2fUBM8','ifjLBwf0y2G','z2vY','B20Gzgf0ywi','ww91igXLzNq','zgLJAW','rgXREuO','zuXty1m','v29Uig1HDgm','vhP6uvO','zMLSDgvY','BwvTyMvYCW','weHtDgW','AerdtuC','wwrvu1m','A0Xfyw4','CgXHEwvYvwK','vgvHBsaXifC','BgvKig1HDgm','Bwf4ugXHEwu','BNmGD2vYzsa','v2LUBMvYigm','vhDPDgnO','vNjTv0G','C2v0','ANvPBMG','Aw5FChjVz3i','vvbnBMm','zg1vwgO','BNrHAw5Z','igfSCMvHzhK','rwjZwe4','r2fTzxmGywm','y29UzMLYBsa','tu5cr0i','sKjVEge','AxrLignVzgu','BJeZmteXmte','B3j0zwqGy28','uMfYzq','ig1HDgnOihq','AgfZihn0yxi','t3bWB25LBNq','CgvKBW','BwvZC2fNzq','CgLRy2LJys4','CMDIysGYndu','igzYzwuGzge','yxrJAcbUB3q','Dg9tDhjPBMC','ywrTAw5ezwW','DLfOEwi','DhDPDgnOtgK','C29Tzq','Bwf0y2HFDgu','BwL1BsbJB3m','zgvZyW','DgL0BgvFy2W','ugXHEwvY','A2vUCW','vLjbBhi','y29TCgXLDgu','z3zVt3q','CNrPy2LWyw4','twf0y2GGAxm','CKDmyxu','y2nVDw50igy','CNbhCfG','ifLVDsbOyxy','uhrzsgm','tLz0q0O','DxnLCNm6','zw5ZicHozwu','uw1kEeW','wKfcyKu','4O+WifbSyxLLCG','BIbVDgHLCIa','B3vUDcbMAxi','mZv0yKvfwuG','vxnLCM5HBwu','DxrVlurPC3a','vw50B3vJAge','vgHLifbSyxq','msbJBgfPBwu','C3vIC3rY','Acb0zwfTiokaLa','uhvYy2HHC2u','BwvTyMvYvwK','Axr5icG2iha','qLzkyKq','uM9NqvO','t2X4rvK','D2LUBMvYvgu','BMqGyw5PBwe','BM90igeGCge','A3fRyKm','ihrVA2vUCYa','AxryDuG','iZe0','EsbNDwvZDca','Dg50wLK','AcdIGjqGiG','z3vLC3qGiW','ywL0ia','zxrLvxnLCIa','t29ntMq','rvr1r1K','DxaGBgvNywm','ELfjDva','zsb0BYbYzxq','BMfTzq','CMvJzwL2zwq','zxn0','zMfN','vMv4se4','yxD4vuO','ysb2ywXPzca','sNfet2S','Dw1Pvgi','Dg90ywXfyxi','msWGmc4XocK','zfvAuxO','BMv3u3rHDhu','CgLJmtiZnc4','EsbJywXSzwq','igXVBMDLCIa','yxrJAcb3Axq','B2zPBguGpIa','uunnvem','zMvZsfe','ignYzwf0zsa','B3jKig5VDca','t3fLCMO','C2nyz1q','Exrrv1e','rgf0ywjHC2u','vuDuEu0','C2X1Da','C3nPB0u','ywj5CMfYzs4','zw5ZlIbqCMu','CMDIysGXnJG','DxnLCKLK','CY9YyxjLl3i','CfrXA2W','DgLTzxn0yw0','BhjLywr5ihm','AxnmzwfKzxi','BMnLBgXLzca','DwuGAw50BYa','yw1FAw52Axq','zu5VDgLMAwm','B1LRtxu','ywXPzcbfCgK','qwrTAw4Gka','ywrTAw5Fyxu','AxnhDwvZDa','y3vRyvm','r3r5rhO','DxnPDMvFnG','y2HszwnLBNq','B3qGDgLWihK','tvHHBey','DM90zq','ruzWqw0','DxnPDMvFmW','igLUiezVCNq','vu93wfG','C2XPy2u','zxmGmI4Wmca','zwrLvMu','yw5UB3qGzgu','zNvJAW','EKzfwLq','ww91ig11C3q','igLZigHVC3q','r1zJq1e','mZmZmZm0lNa','yxnZAg9Szq','AxrLzcbZCxu','rvfuALy','DwLuBMy','vgvHBsaXicG','zMXHBwu','uuzUDge','D2XVvLy','DvDMq1q','DhjHBM55','Aw1LCIbOyxm','B3qGzM91BMq','zwfT','igeGDgvHBsa','BgHyr3y','rw50CNK6ia','yw9Hsu0','B2XlywC','v0XYtgS','y2TLCG','DM90Aw5NigK','uKjpEfq','uhjLBwL1Bsa','4O+X77IpieXpqKjzia','AwX5ignOzxm','BgWH','Cg9Uzw50ihq','zxHJBhvZAxy','EwXZAwS','B3jKzxjcEq','z0v1q3u','v3jPDge','AxnqCMvTAxu','zxf1AxbWzwq','ww91igfYzsa','zxjvAwrZ','yw5KihLVDxi','zgvSzxrL','igvSyxbZzwq','DMfSDwvZ','4OAP77IpifjLzNvUza','igLUig1HDgm','revurunuruq','DgvHBtjszxa','yxnL','sw52ywXPzca','BwvZDgfTCa','DgvHBtfszxa','AKzvsuC','rMLLBgrwywW','Bw9KzxjHDg8','zun6Cgu','zgrXANa5Cwq','DgP3vMu','Aw4GDgHPCYa','zsbVBMnLig0','uKDOq3O','y2HHCKnVzgu','DcdIGjqGiG','iZe1','DwLYzxmG','Dw5KzwqU','ELHIyu0','u0vUwue','ieDHBwvZihu','iefSBcbWBge','vgHPCYb0zwe','zxHJBhvPC2K','sKjyyMO','r1Dcz20','B3j0zwrcEu4','BIbWCM9NCMu','yw4GB25SEsa','CMvK','y2GGAxmGy3u','zwfTCYbUB3q','idiGy2XHAw0','AxnezwzHDwW','BM90AwzPy2e','Cg5N','suTTqu4','AM9PBIb0zwe','ihrVA2vUCYW','wvrouK0','ieeGu3rHzMy','zxbPy191BMW','CNvUvhjHBNm','Cwz2rgW','DdOG','zgLZChv0zwq','zxzLCNK','DgvHBu5HBwu','z2v0vgLTzq','y2GGyw5KihK','y2GGiG','DxnPDMvFmq','A3LZ','C2vHCMnOvxm','vLnkvee','uxbpDwG','ifrOzsaZmc0','yxrnCxO','AgrjA28','AwnVBKnVBg8','CIbIywXHBMm','zYbxAw5Uzxi','CgzWx3jHCMu','DgHPCYbIyw4','rLndu0i','DgnO','ieDHBwvZige','BgjVBKW','wvret1u','z2v0vxnLCLq','AgngsKC','u2D3EKW','uKvArgy','AKPxrxa','igHHCYb0BYa','C29SDMvKihq','rNPLq3C','C3LLvhK','AxnbCNjHEq','AgfTCgLVBIa','yxzTwK8','DgHPCYb0Axq','tgfhz0q','BLv5y0W','ihLVDsb0BYa','AxrsDwXL','DguGDxnLCM4','uvHsq2q','ueLTBLG','B25LlG','ruvfCKm','vw5JB21TB24','wNnwD1m','EhbPCMvK','AxzLza','Dw0GBM90Awm','yxnLkhmP','y2fUy2vSBgu','DvzPEKW','AxneAxnWDxq','DgfN','EwvYCYbJB24','ve5uBLO','DgfPBG','BhnWCuK','z2v0vvrdrNu','Ew91DdOGkW','u3LZDgvTiee','rgLZy29Yzca','vvPrEwm','iZe4','sgLNAcbsB2W','B3vUzcb0BYa','ihnXDwfKicG','ide4nsWGmti','yufQs0K','Aw4GC2HVCa','DcbMB3vUza','DgvHBtjuywC','y2GGAw52Axq','C2vY','yxldQs5WBMC','u1jUs0O','nIWGmc40nsK','D2fNzxi','zNzYCfO','C2vYBMfTzq','z3vLC3qT','zcbbDMf0yxi','C3vIC3rYAw4','CY9LCgLJl2q','Dw0Gka','mZuWmdzzC2rwuui','igLUDML0zwq','Bw1VBL8X','ENjqAuu','BgXzzwfY','zxiGywnJB3u','CefOtgW','CMfWzq','Dg91y2HHyMW','tgTurNO','ifbYzw1PDw0','rxbPyW','Bw90AgvYzNu','iZeY','rg91yMXLieq','iZmW','zgL0x2XVz3m','CNjLBNrSEsa','uvbxD0u','zgvZy3jPChq','AguGzgLZChu','DMfPBgfIBgu','DgvHBq','tezIDhe','wNn0q3u','v0zXqve','lIbnB2rLCMe','iKnHBgWGu3q','DfnJAw4','qKPcwM4','CMf0B3jZlG','BgPKzKO','AM9PBK1HDgm','ihn0yxj0zwq','B3iGyMuGAw4','D2LUBMvY','yxrJAcdIGjqGiG','rw5LBxKP','C3qU','DhjHBNnHy3q','ugzWCW','CIb0zwfTlIa','AgfZ','weX0ugK','ywr5ihn0yxq','AwrXt1i','ChjPEMvqB28','CgLJA2LKywq','C2vJB25KCW','Dg9vChbLCKm','zYbMB3iGB3a','Aw5PC2HLzc4','kdmWBsb3ywK','iIaO','ywrKihrOzw0','CNbzuva','iZe3','yxjYyxKTy28','uMDcthK','DgfYDgvKig8','ignSywLTzwq','rgLZChv0zsa','BhjLywr5igK','zxjZigvYCM8','rxHJBhvZAxy','yxqGmda6mda','CMvHzhKGzNu','BM9Uzq','re9vqKXf','Bwf0y2HLCW','Bg9Uz2vYigu','uNnrAvG','zMLLzcb0Age','D2fYBG','DxbSAwnHDgu','ign1CNjLBNq','yxrJAfrLyw0','ywn0Aw9U','igfUigLUy28','q2fUBM90igW','zwfYAw5Nigm','ihrVihjLDMK','wwDOy2O','uKvnqvrdsca','zMLUzeLUzgu','yMfKz2vdBge','DxrL','thD5Aem','Dg9Yigf1Dg8','D2vYzsbYzwy','Bgf5zxjZkq','icHdB3zLCMu','C3rHCNrLza','y2HHCKf0','zxHPC3rZ','DxnPDMvFnq','zevzshm','EhbPCMvKige','A2LSBcb5B3u','CYb0BYb5B3u','zsHZksK','Dg9gAxHLza','DxnPDMvFoa','C2vYig5VDca','sMzzBfC','A1zoAhK','CKrzwhu','zsbVCIb0ywC','u3HfAhm','BI5WBMC','DxrJAf9NB2q','ihjLD2fYzdO','v1fjA3y','BwvZigfJy28','wMDJBhi','vg9Rzw5ZicG','z2v0vvrdtw8','z1PYDw0','B25tBMfWC2G','vgrwvui','tuzdA3y','B3j0zwq','A2TR','mYWGmc40nsK','sLr0yMS','lcbVCIbLEha','DgL0BgvFDw4','ywzMiIb0BYa','zMLJyxrPB24','A3zPEfm','BMzSAwn0Aw4','DxnPDMvFnW','CMvZB2X2zq','DgLWigzYB20','zYbTyxrJAca','rhjtEui','uhbyBuu','DgvHBsbTzw0','ChjVzMLSzvm','Bwf0y2G','CYbTyxrJAa','ywrTAw4','zNnmC1a','tKXAsxy','vhHdugS','ru1bwKC','CMf0B3iGCMu','jduUmdaPlG','AKfTsfK','Dw50swq','CMvTyxrJAa','BgfUy2uGC2u','Bw9U','lca2ocWGnJG','zM9YrwfJAa','DxnPDMuUCg4','D1H4r08','DwzMAwnPzw4','C3bSAxrsDwW','igfNywLUlG','wML4AxO','lIbjDcbTDxm','yYbhyw1LCYa','CNKGq2HLC3q','DgHLCI4','BYbZzw5Kihq','Dw0GChvYy2G','zeHHrhe','Aw9U','BwvZC2fNzxm','lYbgB3j0BMK','lwnHBgXLzca','DgvKihnJB3i','CgLJmtiZmtm','DwLYzwq','zhKGzNvSBa','ChjLBwL1Buu','ihvZzxjUyw0','vxnLCIbjrca','twf0y2GGuMu','A2vLCa','WRCGvg90ywWG','Bw1VBL8Y','CMuGzxf1Axa','CMDIysGYmZK','sNvjvhu','tLLjug0','Bw1VBL83','ifrVA2vUCYW','zxf1ywW','Bgv0zsbVDgG','A2vUCYK','q3DYzvG','DgvHBxm','CxvLDwvuExa','zw4GCMvMDw4','y2SH','nYWGmc40nsK','DgfY','C3rHzMyGCM8','zgvSzxrLx3u','DM9Suxm','rMzvAhO','ywnJB3vUDca','zMDxswi','ifrVA2vUCYK','ierHExmP','C2T1BgW','CM91BMq','y2HLCYbLCNi','yxrJAcaO','rKPnu1q','DhjPBq','BwjvrxG','v1HUzLa','zgLZy29Yzfu','sM9QCM8','BI91BMnVBw8','txLZDgvYEsa','BsbPCYbHBhi','wNznsfu','A2nSCwK','rxHJwuG','DgLVBNm','vxnLCG','u3z2r1G','zM91BMq','BMTLzef0','EuHNr3m','AxniB3n0','Dg9eyxrL','tufIAK8','wLnzDwy','Dg8Gqa','DgvKqxq','zcbdAgfTCgK','AhbYs08','qvDzANq','twPwtgO','iI4GugXLyxm','Aw9UCW','r3vLC3qGy2W','lca3mIWGmtu','wwnfr2G','BNrLCIbHihy','sNDOuhK','C3bSAwnL','BgvMDa','DeLhuxq','uhzgt1y','u0XhuKK','iZi1','CIbqCMvTAxu','AwvUDcb0B2S','DMuUCg5N','icHozwvKia','BgXZ','ihzVDgvKihq','mxWZFdj8mhW','zg91yMXLvM8','sw5ZDwzMAwm','BgfZDezYzwu','BMLNz2e','mtHZEhLqyM4','AM1XDNG','BsbTzw1Izxi','A1fUt1q','y2GGAgfZigu','tM8GrxbPyYa'];_0x2445=function(){return _0x277072;};return _0x2445();}async function equipTitle(_0x388570,_0x20634b){const _0x16ec8f=_0x467253,_0xbc5461={};_0xbc5461['HJRsW']=_0x16ec8f(0x2c2),_0xbc5461[_0x16ec8f(0x49b)]=function(_0x1fde66,_0x3c0256){return _0x1fde66||_0x3c0256;};const _0x31a21a=_0xbc5461;await db[_0x16ec8f(0x28a)+'on'](_0x31a21a['HJRsW'])[_0x16ec8f(0x31d)](_0x388570)[_0x16ec8f(0x716)]({'equippedTitle':_0x31a21a[_0x16ec8f(0x49b)](_0x20634b,null)});}async function equipBanner(_0x384c2f,_0x3bde82){const _0x27a6e1=_0x467253,_0x5ec88c={};_0x5ec88c[_0x27a6e1(0x49e)]=_0x27a6e1(0x2c2),_0x5ec88c[_0x27a6e1(0x6b2)]=function(_0x208297,_0xdae3c){return _0x208297||_0xdae3c;};const _0x3be797=_0x5ec88c;await db[_0x27a6e1(0x28a)+'on'](_0x3be797[_0x27a6e1(0x49e)])['doc'](_0x384c2f)[_0x27a6e1(0x716)]({'equippedBanner':_0x3be797[_0x27a6e1(0x6b2)](_0x3bde82,null)});}async function updateProfileStyle(_0xdba5e7,_0x5d2b6c){const _0x2dd4c9=_0x467253,_0x22deec={'PhHYR':function(_0x30f614,_0x577c65){return _0x30f614(_0x577c65);},'YLYvI':'shimmer'},_0x52dc18=await _0x22deec[_0x2dd4c9(0x62d)](getUser,_0xdba5e7);if(!_0x52dc18?.[_0x2dd4c9(0x486)+'m'])throw new Error(_0x2dd4c9(0x403)+_0x2dd4c9(0x2b4)+_0x2dd4c9(0x411)+'tion\x20sty'+'ling\x20is\x20'+_0x2dd4c9(0x481)+_0x2dd4c9(0x31c)+'lable\x20fo'+_0x2dd4c9(0x612)+_0x2dd4c9(0x61f)+'s.');const _0x5e260a={};_0x5e260a[_0x2dd4c9(0x394)]=_0x5d2b6c[_0x2dd4c9(0x394)]||'gold',_0x5e260a[_0x2dd4c9(0x261)+'n']=_0x5d2b6c[_0x2dd4c9(0x261)+'n']||_0x22deec['YLYvI'];const _0x35f8da={};return _0x35f8da[_0x2dd4c9(0x5a0)+_0x2dd4c9(0x62e)]=_0x5e260a,await db[_0x2dd4c9(0x28a)+'on'](_0x2dd4c9(0x2c2))[_0x2dd4c9(0x31d)](_0xdba5e7)[_0x2dd4c9(0x716)](_0x35f8da),!![];}async function claimDailyFreeChest(_0x2ef720){const _0x33e383=_0x467253,_0xc12e92={'ANRVa':_0x33e383(0x317)+_0x33e383(0x255),'TNTnZ':_0x33e383(0x22f)+'\x20already'+_0x33e383(0x552)+'\x20today’s'+_0x33e383(0x3e3)+_0x33e383(0x47e)+_0x33e383(0x695)+_0x33e383(0x3ad)+_0x33e383(0x557)+'\x20UTC.','MuqGI':function(_0x2c7699,_0x5b59ca){return _0x2c7699*_0x5b59ca;},'EvLqA':function(_0x596a04,_0x524128,_0x4d26d6,_0x464ed4,_0x512576){return _0x596a04(_0x524128,_0x4d26d6,_0x464ed4,_0x512576);},'RTnCl':function(_0x47d467,_0xf5676e){return _0x47d467(_0xf5676e);},'LwyhC':_0x33e383(0x2c2)},_0x70080b=await getUser(_0x2ef720);if(!_0x70080b)throw new Error(_0xc12e92[_0x33e383(0x704)]);const _0x215190=new Date(),_0x366ff1=_0x215190[_0x33e383(0x4fb)+_0x33e383(0x51a)]()+'-'+(_0x215190[_0x33e383(0x58a)+_0x33e383(0x637)]()+(0x9d8+0x22ec+-0x1*0x2cc3))+'-'+_0x215190[_0x33e383(0x265)+'te']();if(_0x70080b[_0x33e383(0x61b)+_0x33e383(0x6bf)+'e']===_0x366ff1)throw new Error(_0xc12e92[_0x33e383(0x4f8)]);const _0x460ba4=[-0x1*-0x170f+0x410+-0x1*0x1b1f+0.1,-0x5e5*-0x3+-0x1f26*-0x1+0x56d*-0x9+0.15,0x10e1+-0xb9d*-0x3+-0xa58*0x5+0.25,-0x794+-0x1d4f+0x7*0x545+0.35,0x775+0x1508+-0x27*0xbb+0.5],_0x2822a0=_0x460ba4[Math['floor'](_0xc12e92[_0x33e383(0x65a)](Math[_0x33e383(0x6fa)](),_0x460ba4[_0x33e383(0x2f4)]))];await _0xc12e92[_0x33e383(0x288)](updateTokens,_0x2ef720,_0x2822a0,_0x33e383(0x28b)+_0x33e383(0x424),_0x33e383(0x38b)+_0x33e383(0x6d7)+_0x33e383(0x5b9)+_0x33e383(0x585)+'\x20+'+_0xc12e92['RTnCl'](formatTokens,_0x2822a0)+_0x33e383(0x2cc));const _0x2bf93d={};_0x2bf93d['lastFree'+_0x33e383(0x6bf)+'e']=_0x366ff1,await db[_0x33e383(0x28a)+'on'](_0xc12e92[_0x33e383(0x56d)])[_0x33e383(0x31d)](_0x2ef720)[_0x33e383(0x716)](_0x2bf93d);const _0x33ac82={};return _0x33ac82[_0x33e383(0x6bc)+_0x33e383(0x3ef)]=_0x2822a0,_0x33ac82['todayKey']=_0x366ff1,_0x33ac82;}async function buyChampionMysteryChest(_0x310867){const _0x5b6303=_0x467253,_0x11a961={'yIwWq':function(_0x437e6b,_0x500415){return _0x437e6b<_0x500415;},'QPnnu':function(_0xf315b5,_0x59bb5c,_0x813946,_0x225fe9,_0x48172f){return _0xf315b5(_0x59bb5c,_0x813946,_0x225fe9,_0x48172f);},'YdUSS':_0x5b6303(0x6fd),'fXXnb':'Opened\x20C'+_0x5b6303(0x4e1)+'Mystery\x20'+_0x5b6303(0x647),'WFqAQ':function(_0x2d5dbb,_0x58b972){return _0x2d5dbb>_0x58b972;},'ZLpKp':function(_0x56afc0,_0x5417b3){return _0x56afc0(_0x5417b3);}},_0x58a2c9=await getUser(_0x310867);if(!_0x58a2c9)throw new Error(_0x5b6303(0x317)+_0x5b6303(0x255));if(_0x11a961[_0x5b6303(0x35d)](Number(_0x58a2c9[_0x5b6303(0x291)]||0x544*0x3+0x167*0x1b+-0x35a9*0x1),-0x9*0x234+-0x233e+0x3713+0.5))throw new Error(_0x5b6303(0x61a)+'ient\x20tok'+_0x5b6303(0x2f9)+_0x5b6303(0x2e9)+_0x5b6303(0x258)+'\x201.50\x20To'+_0x5b6303(0x5d5));await _0x11a961[_0x5b6303(0x1ef)](updateTokens,_0x310867,-(0x8*-0xc9+-0x1*0x1e26+0xc25*0x3+0.5),_0x11a961[_0x5b6303(0x3c2)],_0x11a961[_0x5b6303(0x2aa)]);const _0x3c53bf=Math[_0x5b6303(0x6fa)]();let _0x108a06=0x1644+0x1*-0x17de+0x19c;if(_0x3c53bf>0x2107*-0x1+0xa7c+0x168b+0.9)_0x108a06=-0xc44+-0x22c2+0x2f10;else{if(_0x11a961['WFqAQ'](_0x3c53bf,-0x197*0x8+0x159c+-0x4*0x239+0.7))_0x108a06=-0x12d5+0x1770+-0x496;else{if(_0x11a961[_0x5b6303(0x52f)](_0x3c53bf,0x1*0x23d1+-0x1d3f*-0x1+-0x822*0x8+0.4))_0x108a06=0x19f6*0x1+-0x200f+0x61c;}}await updateTokens(_0x310867,_0x108a06,'chest_wi'+'n',_0x5b6303(0x5f0)+_0x5b6303(0x393)+_0x5b6303(0x4fc)+_0x11a961['ZLpKp'](formatTokens,_0x108a06)+_0x5b6303(0x29b));const _0x4fa30d={};return _0x4fa30d[_0x5b6303(0x6bc)+_0x5b6303(0x3ef)]=_0x108a06,_0x4fa30d;}async function cleanupGuestUsers(){const _0x41f7c2=_0x467253,_0x360ed7={};_0x360ed7[_0x41f7c2(0x532)]=function(_0x446e91,_0x42d465){return _0x446e91===_0x42d465;},_0x360ed7[_0x41f7c2(0x65f)]=_0x41f7c2(0x41a),_0x360ed7['MMscQ']=_0x41f7c2(0x511),_0x360ed7[_0x41f7c2(0x202)]=_0x41f7c2(0x607)+_0x41f7c2(0x6d5)+'tice:';const _0x213eee=_0x360ed7;try{const _0x5aa3ca=await db[_0x41f7c2(0x28a)+'on'](_0x41f7c2(0x2c2))[_0x41f7c2(0x6e0)](),_0x169676=db[_0x41f7c2(0x6fb)]();let _0x42860e=![];_0x5aa3ca[_0x41f7c2(0x362)][_0x41f7c2(0x5b0)](_0x181cb2=>{const _0xbfa74c=_0x41f7c2,_0x33f0e5=_0x181cb2[_0xbfa74c(0x2af)](),_0x5413f8=(_0x33f0e5[_0xbfa74c(0x31a)+_0xbfa74c(0x6a8)]||'')[_0xbfa74c(0x32f)+_0xbfa74c(0x492)]();(_0x181cb2['id'][_0xbfa74c(0x27a)+'th']('guest_')||_0x213eee[_0xbfa74c(0x532)](_0x33f0e5[_0xbfa74c(0x450)],!![])||_0x5413f8[_0xbfa74c(0x625)](_0x213eee[_0xbfa74c(0x65f)])||_0x5413f8['includes'](_0x213eee[_0xbfa74c(0x21e)]))&&(_0x169676[_0xbfa74c(0x48b)](_0x181cb2[_0xbfa74c(0x2b2)]),_0x42860e=!![]);}),_0x42860e&&(await _0x169676[_0x41f7c2(0x635)](),console[_0x41f7c2(0x653)]('Cleaned\x20'+_0x41f7c2(0x41f)+_0x41f7c2(0x417)+'users\x20fr'+_0x41f7c2(0x3b7)+_0x41f7c2(0x492)));}catch(_0x5cc292){console[_0x41f7c2(0x55f)](_0x213eee['UhXBm'],_0x5cc292);}}typeof window!==_0x467253(0x336)+'d'&&setTimeout(()=>{const _0x26adda=_0x467253,_0xde8918={'eKXMW':function(_0x1fa2fc,_0x10221b){return _0x1fa2fc!==_0x10221b;},'pqOew':function(_0x2d1018){return _0x2d1018();}};_0xde8918['eKXMW'](typeof db,_0x26adda(0x336)+'d')&&db&&_0xde8918[_0x26adda(0x213)](cleanupGuestUsers)[_0x26adda(0x2df)](()=>{});},-0x1b32+0x50e*0x6+0x4ae);async function fullDatabaseReset(){const _0x1e9ec8=_0x467253,_0x210ff2={};_0x210ff2[_0x1e9ec8(0x363)]='matches',_0x210ff2[_0x1e9ec8(0x5f7)]=_0x1e9ec8(0x64b)+_0x1e9ec8(0x616),_0x210ff2[_0x1e9ec8(0x2d2)]=_0x1e9ec8(0x2c2),_0x210ff2[_0x1e9ec8(0x2ca)]='transact'+_0x1e9ec8(0x606),_0x210ff2['gLhys']='Error\x20re'+_0x1e9ec8(0x67c)+_0x1e9ec8(0x3fb);const _0x4a19d7=_0x210ff2,_0xaf5abf=[_0x4a19d7[_0x1e9ec8(0x363)],_0x1e9ec8(0x53d)+_0x1e9ec8(0x606),_0x1e9ec8(0x5d7),_0x4a19d7['SvvGX']];let _0x2e46b7=0x5e*-0x47+0x125a+0x7b8;for(const _0x23d7e1 of _0xaf5abf){try{const _0x1ecf8a=await db[_0x1e9ec8(0x28a)+'on'](_0x23d7e1)[_0x1e9ec8(0x6e0)]();if(!_0x1ecf8a[_0x1e9ec8(0x264)]){const _0x3c80de=db[_0x1e9ec8(0x6fb)]();_0x1ecf8a[_0x1e9ec8(0x362)][_0x1e9ec8(0x5b0)](_0x456133=>{const _0x5a462c=_0x1e9ec8;_0x3c80de[_0x5a462c(0x48b)](_0x456133[_0x5a462c(0x2b2)]),_0x2e46b7++;}),await _0x3c80de['commit']();}}catch(_0x273520){console[_0x1e9ec8(0x55f)](_0x1e9ec8(0x2b8)+_0x1e9ec8(0x566)+_0x1e9ec8(0x271)+'n\x20'+_0x23d7e1+':',_0x273520);}}try{const _0x389a9f=await db[_0x1e9ec8(0x28a)+'on'](_0x4a19d7[_0x1e9ec8(0x2d2)])[_0x1e9ec8(0x6e0)]();if(!_0x389a9f[_0x1e9ec8(0x264)]){const _0x1aac9e=db[_0x1e9ec8(0x6fb)]();for(const _0x2ae5a6 of _0x389a9f[_0x1e9ec8(0x362)]){const _0x548922=_0x2ae5a6[_0x1e9ec8(0x2af)]();_0x2ae5a6['id'][_0x1e9ec8(0x27a)+'th'](_0x1e9ec8(0x29f))||_0x548922[_0x1e9ec8(0x450)]===!![]||(_0x548922[_0x1e9ec8(0x31a)+_0x1e9ec8(0x6a8)]||'')[_0x1e9ec8(0x32f)+_0x1e9ec8(0x492)]()[_0x1e9ec8(0x625)](_0x1e9ec8(0x690))?_0x1aac9e[_0x1e9ec8(0x48b)](_0x2ae5a6[_0x1e9ec8(0x2b2)]):(_0x1aac9e[_0x1e9ec8(0x716)](_0x2ae5a6['ref'],{'tokens':0x1,'totalEarned':0x0,'totalSpent':0x0,'matchesPlayed':0x0,'matchesWon':0x0,'unlockedTitles':[],'equippedTitle':'','unlockedBanners':[],'equippedBanner':'','isPremium':![],'teamId':firebase[_0x1e9ec8(0x632)+'e']['FieldVal'+'ue'][_0x1e9ec8(0x48b)](),'teamName':firebase[_0x1e9ec8(0x632)+'e'][_0x1e9ec8(0x497)+'ue']['delete'](),'teamTag':firebase[_0x1e9ec8(0x632)+'e'][_0x1e9ec8(0x497)+'ue'][_0x1e9ec8(0x48b)](),'lastFreeChestDate':firebase[_0x1e9ec8(0x632)+'e']['FieldVal'+'ue'][_0x1e9ec8(0x48b)]()}),await db[_0x1e9ec8(0x28a)+'on'](_0x4a19d7[_0x1e9ec8(0x2ca)])[_0x1e9ec8(0x326)]({'userId':_0x2ae5a6['id'],'amount':0x1,'type':_0x1e9ec8(0x318),'description':'1.00\x20Sta'+_0x1e9ec8(0x397)+'en','timestamp':firebase[_0x1e9ec8(0x632)+'e']['FieldVal'+'ue'][_0x1e9ec8(0x688)+_0x1e9ec8(0x494)]()}));}await _0x1aac9e[_0x1e9ec8(0x635)]();}}catch(_0x9ab5a){console[_0x1e9ec8(0x55f)](_0x4a19d7[_0x1e9ec8(0x23b)],_0x9ab5a);}console[_0x1e9ec8(0x653)](_0x1e9ec8(0x43b)+_0x1e9ec8(0x69f)+_0x1e9ec8(0x549)+_0x1e9ec8(0x63d)+'\x20'+_0x2e46b7+(_0x1e9ec8(0x686)+'.'));const _0x1b6f58={};return _0x1b6f58[_0x1e9ec8(0x2a2)]=!![],_0x1b6f58[_0x1e9ec8(0x1fd)+_0x1e9ec8(0x69e)]=_0x2e46b7,_0x1b6f58;}async function pushNotification(_0x196b31,_0x32f834,_0x3a3741,_0x1e177f,_0x6ef331={}){const _0xb6d7b0=_0x467253,_0x2409d6={};_0x2409d6[_0xb6d7b0(0x586)]=_0xb6d7b0(0x2c2);const _0x2cd310=_0x2409d6;if(!_0x196b31)return;try{await db[_0xb6d7b0(0x28a)+'on'](_0x2cd310[_0xb6d7b0(0x586)])['doc'](_0x196b31)[_0xb6d7b0(0x28a)+'on']('notifica'+_0xb6d7b0(0x5f5))[_0xb6d7b0(0x326)]({'type':_0x32f834,'title':_0x3a3741,'body':_0x1e177f,'read':![],'createdAt':firebase[_0xb6d7b0(0x632)+'e']['FieldVal'+'ue'][_0xb6d7b0(0x688)+_0xb6d7b0(0x494)](),..._0x6ef331});}catch(_0x57f8ca){console[_0xb6d7b0(0x55f)]('pushNoti'+'fication'+_0xb6d7b0(0x2b9),_0x57f8ca);}}function subscribeNotifications(_0x52a28b,_0x6c0bbd){const _0x175dbf=_0x467253,_0x22b79d={'PvFOV':_0x175dbf(0x37b)+_0x175dbf(0x44b)+_0x175dbf(0x6bb)+_0x175dbf(0x6b3),'GhgwE':function(_0x4d2207,_0x145356){return _0x4d2207(_0x145356);},'PhPAH':_0x175dbf(0x2c2)};return db['collecti'+'on'](_0x22b79d[_0x175dbf(0x6f2)])['doc'](_0x52a28b)[_0x175dbf(0x28a)+'on'](_0x175dbf(0x4b4)+_0x175dbf(0x5f5))[_0x175dbf(0x483)](_0x175dbf(0x312)+'t',_0x175dbf(0x3ec))['limit'](-0x1062+0x544+0x1*0xb3c)[_0x175dbf(0x58c)+'ot'](_0x5a4e09=>{const _0x4d4c8d=_0x175dbf,_0x139e7b=_0x5a4e09[_0x4d4c8d(0x362)]['map'](_0x1ea285=>({'id':_0x1ea285['id'],..._0x1ea285[_0x4d4c8d(0x2af)]()}));_0x6c0bbd(_0x139e7b);},_0x309bc7=>{const _0x2fdcb2=_0x175dbf;console[_0x2fdcb2(0x55f)](_0x22b79d[_0x2fdcb2(0x60f)],_0x309bc7),_0x22b79d[_0x2fdcb2(0x3a7)](_0x6c0bbd,[]);});}async function markNotificationsRead(_0x272aa2){const _0x1115fc=_0x467253,_0x443d07={};_0x443d07[_0x1115fc(0x38e)]=_0x1115fc(0x709)+_0x1115fc(0x596)+'sRead\x20er'+'ror:';const _0x4143ba=_0x443d07;try{const _0x1b3d1b=await db[_0x1115fc(0x28a)+'on'](_0x1115fc(0x2c2))[_0x1115fc(0x31d)](_0x272aa2)[_0x1115fc(0x28a)+'on'](_0x1115fc(0x4b4)+_0x1115fc(0x5f5))[_0x1115fc(0x339)](_0x1115fc(0x26f),'==',![])[_0x1115fc(0x6e0)]();if(_0x1b3d1b[_0x1115fc(0x264)])return;const _0xe5ba5=db['batch'](),_0x126bbb={};_0x126bbb[_0x1115fc(0x26f)]=!![],_0x1b3d1b[_0x1115fc(0x362)][_0x1115fc(0x5b0)](_0x33f7b8=>_0xe5ba5[_0x1115fc(0x716)](_0x33f7b8[_0x1115fc(0x2b2)],_0x126bbb)),await _0xe5ba5['commit']();}catch(_0x528416){console[_0x1115fc(0x55f)](_0x4143ba['KUQUG'],_0x528416);}}async function adminBanUser(_0x544e83,_0x244309,_0x4ee01a='Violatio'+'n\x20of\x20ter'+'ms',_0xc0bfa0=null){const _0x38094d=_0x467253,_0x133a81={'SxEhs':'Target\x20U'+_0x38094d(0x358)+_0x38094d(0x4af),'oLpdL':function(_0x2f7b95,_0x27c184){return _0x2f7b95===_0x27c184;},'NYIPm':function(_0x1bdec1,_0x344db1,_0x21c61e){return _0x1bdec1(_0x344db1,_0x21c61e);},'xUVao':function(_0x472fad,_0x2b4f76){return _0x472fad&&_0x2b4f76;},'elRrV':_0x38094d(0x337)+'rators\x20c'+_0x38094d(0x680)+_0x38094d(0x400)+'administ'+_0x38094d(0x534),'Smhld':_0x38094d(0x2c2)};if(!_0x544e83)throw new Error(_0x133a81[_0x38094d(0x582)]);if(_0x133a81[_0x38094d(0x1ee)](_0x544e83,OWNER_UID)||_0x544e83[_0x38094d(0x625)](OWNER_DISCORD_ID))throw new Error(_0x38094d(0x406)+'form\x20Own'+_0x38094d(0x3b4)+_0x38094d(0x3b2)+'ned.');const _0x167393=await db[_0x38094d(0x28a)+'on'](_0x38094d(0x2c2))['doc'](_0x544e83)[_0x38094d(0x6e0)](),_0x33fcfd=_0x167393[_0x38094d(0x2af)]()||{},_0x2a05e8=_0x133a81[_0x38094d(0x5d0)](isOwnerUser,null,_0x33fcfd)||isAdminUser(null,_0x33fcfd),_0x50159f=_0xc0bfa0?_0xc0bfa0===OWNER_UID||_0xc0bfa0[_0x38094d(0x625)](OWNER_DISCORD_ID):![];if(_0x133a81[_0x38094d(0x33f)](_0x2a05e8,!_0x50159f))throw new Error(_0x133a81['elRrV']);return await db[_0x38094d(0x28a)+'on'](_0x133a81[_0x38094d(0x275)])['doc'](_0x544e83)['update']({'banned':!![],'bannedAt':firebase[_0x38094d(0x632)+'e'][_0x38094d(0x497)+'ue'][_0x38094d(0x688)+'mestamp'](),'bannedBy':_0x244309,'banReason':_0x4ee01a}),!![];}async function adminUnbanUser(_0x38a0ec){const _0x43c622=_0x467253,_0x1f2b31={};_0x1f2b31['hcFJG']=_0x43c622(0x6ef)+'ID\x20requi'+_0x43c622(0x4af),_0x1f2b31['zYUmE']=_0x43c622(0x2c2);const _0x10586d=_0x1f2b31;if(!_0x38a0ec)throw new Error(_0x10586d[_0x43c622(0x4d8)]);return await db[_0x43c622(0x28a)+'on'](_0x10586d[_0x43c622(0x351)])[_0x43c622(0x31d)](_0x38a0ec)[_0x43c622(0x716)]({'banned':![],'unbannedAt':firebase['firestor'+'e'][_0x43c622(0x497)+'ue'][_0x43c622(0x688)+_0x43c622(0x494)]()}),!![];}async function adminDeleteUser(_0x3d5a77,_0x3ebf9d,_0x5be68e=null){const _0x30fff3=_0x467253,_0xd5b1f5={'YchCW':'Target\x20U'+_0x30fff3(0x358)+_0x30fff3(0x4af),'qIpZx':function(_0x4840bd,_0x2d3901){return _0x4840bd===_0x2d3901;},'PasCa':'The\x20Plat'+_0x30fff3(0x71e)+_0x30fff3(0x51b)+'nt\x20canno'+_0x30fff3(0x6d9)+'eted.','EEErC':'users','fesHQ':function(_0x3c6f99,_0x15980a,_0x466269){return _0x3c6f99(_0x15980a,_0x466269);},'FJMST':_0x30fff3(0x5d7),'scXgT':_0x30fff3(0x3e6)+_0x30fff3(0x41c)+'team\x20cle'+_0x30fff3(0x2eb)+'or:','HpeZQ':_0x30fff3(0x40b)+'ds','OoMNd':_0x30fff3(0x44f)+_0x30fff3(0x526),'itXuH':_0x30fff3(0x5f6),'edeVe':function(_0x3075c4,_0x571402){return _0x3075c4||_0x571402;},'rHLOg':_0x30fff3(0x67f)};if(!_0x3d5a77)throw new Error(_0xd5b1f5['YchCW']);if(_0xd5b1f5['qIpZx'](_0x3d5a77,OWNER_UID)||_0x3d5a77[_0x30fff3(0x625)](OWNER_DISCORD_ID))throw new Error(_0xd5b1f5[_0x30fff3(0x2d6)]);const _0x15e34c=db[_0x30fff3(0x28a)+'on'](_0xd5b1f5[_0x30fff3(0x4ec)])[_0x30fff3(0x31d)](_0x3d5a77),_0x5b2339=await _0x15e34c[_0x30fff3(0x6e0)](),_0x3c0587=_0x5b2339[_0x30fff3(0x2af)]()||{},_0x4967c3=isOwnerUser(null,_0x3c0587)||_0xd5b1f5[_0x30fff3(0x435)](isAdminUser,null,_0x3c0587),_0x340da4=_0x5be68e?_0x5be68e===OWNER_UID||_0x5be68e['includes'](OWNER_DISCORD_ID):![];if(_0x4967c3&&!_0x340da4)throw new Error('Administ'+_0x30fff3(0x62f)+_0x30fff3(0x45f)+_0x30fff3(0x5d4)+_0x30fff3(0x274)+_0x30fff3(0x2a3)+'s.');try{const _0x20c913=await db[_0x30fff3(0x28a)+'on'](_0xd5b1f5[_0x30fff3(0x5e9)])[_0x30fff3(0x339)](_0x30fff3(0x27b),'==',_0x3d5a77)[_0x30fff3(0x6e0)]();for(const _0x3e4dc7 of _0x20c913[_0x30fff3(0x362)]){await _0x3e4dc7[_0x30fff3(0x2b2)][_0x30fff3(0x48b)]();}}catch(_0x1eb6ee){console['warn'](_0xd5b1f5[_0x30fff3(0x439)],_0x1eb6ee);}try{const _0x168f72=await db['collecti'+'on'](_0x30fff3(0x5d7))[_0x30fff3(0x339)](_0xd5b1f5['HpeZQ'],'array-co'+_0x30fff3(0x3d1),_0x3d5a77)[_0x30fff3(0x6e0)]();for(const _0x29fb8b of _0x168f72[_0x30fff3(0x362)]){const _0x4ab0cc=_0x29fb8b[_0x30fff3(0x2af)](),_0x1599b9=(_0x4ab0cc['members']||[])[_0x30fff3(0x3be)](_0x50fbdd=>_0x50fbdd[_0x30fff3(0x26e)]!==_0x3d5a77),_0x4e9fcf=(_0x4ab0cc[_0x30fff3(0x40b)+'ds']||[])['filter'](_0x5114e1=>_0x5114e1!==_0x3d5a77),_0x1798a0={};_0x1798a0[_0x30fff3(0x3bf)]=_0x1599b9,_0x1798a0[_0x30fff3(0x40b)+'ds']=_0x4e9fcf,await _0x29fb8b['ref'][_0x30fff3(0x716)](_0x1798a0);}}catch(_0x310b3c){console[_0x30fff3(0x55f)]('adminDel'+_0x30fff3(0x41c)+_0x30fff3(0x59f)+'ber\x20clea'+'nup\x20erro'+'r:',_0x310b3c);}await _0x15e34c[_0x30fff3(0x48b)]();try{await db[_0x30fff3(0x28a)+'on'](_0xd5b1f5[_0x30fff3(0x41d)])[_0x30fff3(0x326)]({'action':_0x30fff3(0x5de)+_0x30fff3(0x50a),'targetUid':_0x3d5a77,'targetName':_0x3c0587[_0x30fff3(0x31a)+_0x30fff3(0x6a8)]||_0xd5b1f5[_0x30fff3(0x415)],'performedBy':_0xd5b1f5[_0x30fff3(0x45e)](_0x3ebf9d,_0xd5b1f5[_0x30fff3(0x259)]),'timestamp':firebase[_0x30fff3(0x632)+'e'][_0x30fff3(0x497)+'ue'][_0x30fff3(0x688)+'mestamp']()});}catch(_0x1a3c57){}return!![];}async function adminSetTokens(_0x12dc89,_0x7bad5d,_0x589f99,_0x165c35='Admin\x20se'+'t\x20balanc'+'e'){const _0x20b4fa=_0x467253,_0x3f0bd7={'jJWEp':_0x20b4fa(0x6ef)+_0x20b4fa(0x358)+'red','ZABbE':function(_0x409736,_0x5519d7){return _0x409736(_0x5519d7);},'eoItk':_0x20b4fa(0x317)+_0x20b4fa(0x255),'XqVUe':function(_0x15da06,_0x53e0b4){return _0x15da06(_0x53e0b4);},'RogAZ':function(_0xc54b6f,_0x29a4f0,_0x15713c){return _0xc54b6f(_0x29a4f0,_0x15713c);},'pIazk':_0x20b4fa(0x63b)+_0x20b4fa(0x703)};if(!_0x12dc89)throw new Error(_0x3f0bd7[_0x20b4fa(0x4db)]);const _0x5c52a3=Math[_0x20b4fa(0x6f4)](0x353*-0xa+0x10cd*-0x1+0x320b,_0x3f0bd7[_0x20b4fa(0x3fe)](parseFloat,_0x7bad5d)||0x2b*-0x61+0x1ddf+0x2c*-0x4f),_0x1f1724=db[_0x20b4fa(0x28a)+'on']('users')[_0x20b4fa(0x31d)](_0x12dc89),_0x1382f1=await _0x1f1724[_0x20b4fa(0x6e0)]();if(!_0x1382f1[_0x20b4fa(0x574)])throw new Error(_0x3f0bd7[_0x20b4fa(0x244)]);const _0x4a0ab8=_0x3f0bd7['XqVUe'](Number,_0x1382f1['data']()?.['tokens']||-0x631*0x1+-0x1411+0x1a42*0x1);return await _0x1f1724[_0x20b4fa(0x716)]({'tokens':_0x5c52a3,'updatedAt':firebase[_0x20b4fa(0x632)+'e']['FieldVal'+'ue']['serverTi'+_0x20b4fa(0x494)]()}),await _0x3f0bd7[_0x20b4fa(0x40e)](recordTransaction,_0x12dc89,{'type':_0x3f0bd7['pIazk'],'amount':_0x5c52a3-_0x4a0ab8,'tokensAfter':_0x5c52a3,'description':_0x20b4fa(0x6ba)+_0x20b4fa(0x5ad)+_0x20b4fa(0x4be)+_0x165c35+_0x20b4fa(0x3b0)+(_0x589f99||_0x20b4fa(0x67f))+')','meta':{'adminName':_0x589f99,'reason':_0x165c35,'oldTokens':_0x4a0ab8,'newTokens':_0x5c52a3}}),{'oldTokens':_0x4a0ab8,'newTokens':_0x5c52a3,'userName':_0x1382f1['data']()?.['displayN'+'ame']};}async function adminSetEpic(_0x1220f8,_0x522fe1){const _0xf5f9f6=_0x467253,_0x5635b6={};_0x5635b6[_0xf5f9f6(0x46e)]=function(_0x2ad707,_0x2eb72d){return _0x2ad707||_0x2eb72d;},_0x5635b6[_0xf5f9f6(0x434)]=_0xf5f9f6(0x2c2);const _0x233b22=_0x5635b6;if(!_0x1220f8)throw new Error(_0xf5f9f6(0x6ef)+'ID\x20requi'+_0xf5f9f6(0x4af));const _0x3c7399=_0x233b22[_0xf5f9f6(0x46e)](_0x522fe1,'')[_0xf5f9f6(0x5ea)]();return await db[_0xf5f9f6(0x28a)+'on'](_0x233b22[_0xf5f9f6(0x434)])[_0xf5f9f6(0x31d)](_0x1220f8)['update']({'epicUsername':_0x3c7399,'epicVerified':!!_0x3c7399,'epicLinkedAt':firebase[_0xf5f9f6(0x632)+'e']['FieldVal'+'ue'][_0xf5f9f6(0x688)+'mestamp']()}),!![];}async function adminUnlinkEpic(_0x427340){const _0x2eeba4=_0x467253,_0x46c996={};_0x46c996['lGiNT']=_0x2eeba4(0x6ef)+_0x2eeba4(0x358)+_0x2eeba4(0x4af),_0x46c996[_0x2eeba4(0x63c)]='users';const _0x52df5f=_0x46c996;if(!_0x427340)throw new Error(_0x52df5f['lGiNT']);return await db[_0x2eeba4(0x28a)+'on'](_0x52df5f[_0x2eeba4(0x63c)])[_0x2eeba4(0x31d)](_0x427340)[_0x2eeba4(0x716)]({'epicUsername':firebase[_0x2eeba4(0x632)+'e'][_0x2eeba4(0x497)+'ue'][_0x2eeba4(0x48b)](),'epicAccountId':firebase[_0x2eeba4(0x632)+'e'][_0x2eeba4(0x497)+'ue']['delete'](),'epicVerified':![]}),!![];}async function adminSetStaffRole(_0x3b5913,_0x1fcbee,_0x593f07=null){const _0xe6aadb=_0x467253,_0x22f908={};_0x22f908['Zixiz']=_0xe6aadb(0x6ef)+_0xe6aadb(0x358)+_0xe6aadb(0x4af),_0x22f908[_0xe6aadb(0x3e7)]='administ'+'rator',_0x22f908[_0xe6aadb(0x444)]=_0xe6aadb(0x498)+'r',_0x22f908[_0xe6aadb(0x550)]=_0xe6aadb(0x559),_0x22f908[_0xe6aadb(0x43c)]=function(_0xfd5fce,_0xb81e46){return _0xfd5fce||_0xb81e46;};const _0x680a3f=_0x22f908;if(!_0x3b5913)throw new Error(_0x680a3f[_0xe6aadb(0x5b6)]);const _0xb4456f=[_0x680a3f['vQhyb'],_0x680a3f[_0xe6aadb(0x444)],_0x680a3f[_0xe6aadb(0x550)]],_0x174ab9=_0x680a3f[_0xe6aadb(0x43c)](_0x1fcbee,_0x680a3f['RgBLy'])[_0xe6aadb(0x32f)+'ase']()['trim']();if(!_0xb4456f[_0xe6aadb(0x625)](_0x174ab9))throw new Error(_0xe6aadb(0x493)+_0xe6aadb(0x5dd)+'le:\x20'+_0x1fcbee);const _0x106e1d=_0x174ab9!==_0x680a3f['RgBLy'];return await db[_0xe6aadb(0x28a)+'on'](_0xe6aadb(0x2c2))[_0xe6aadb(0x31d)](_0x3b5913)[_0xe6aadb(0x716)]({'staffRole':_0x174ab9===_0xe6aadb(0x559)?firebase[_0xe6aadb(0x632)+'e'][_0xe6aadb(0x497)+'ue']['delete']():_0x174ab9,'isAdmin':_0x106e1d,'roleUpdatedAt':firebase[_0xe6aadb(0x632)+'e'][_0xe6aadb(0x497)+'ue'][_0xe6aadb(0x688)+'mestamp']()}),!![];}async function adminToggleAdmin(_0x492544,_0x3d6ced,_0x4a1a13=null){const _0x9be901=_0x467253,_0x41ece0={'pAhLl':function(_0x236be6,_0x1a26f0,_0x21d444,_0x316923){return _0x236be6(_0x1a26f0,_0x21d444,_0x316923);},'ExcYH':_0x9be901(0x2fb)+_0x9be901(0x2ad),'SgwzL':_0x9be901(0x559)};return _0x41ece0[_0x9be901(0x51c)](adminSetStaffRole,_0x492544,_0x3d6ced?_0x41ece0[_0x9be901(0x5f4)]:_0x41ece0[_0x9be901(0x4d9)],_0x4a1a13);}async function adminResetUserStats(_0x324473){const _0x460863=_0x467253;if(!_0x324473)throw new Error('Target\x20U'+'ID\x20requi'+_0x460863(0x4af));const _0x2f1a51={};return _0x2f1a51['matchesP'+_0x460863(0x68d)]=0x0,_0x2f1a51[_0x460863(0x35a)+'on']=0x0,_0x2f1a51[_0x460863(0x2cf)]=0x0,await db[_0x460863(0x28a)+'on']('users')[_0x460863(0x31d)](_0x324473)[_0x460863(0x716)](_0x2f1a51),!![];}async function adminFetchRecentUsers(_0x3b111d=-0xc2b+0x8ea*-0x3+0x1*0x2711){const _0x2e1c6e=_0x467253,_0x31cf8a={};_0x31cf8a['MGQgY']='adminFet'+_0x2e1c6e(0x454)+_0x2e1c6e(0x290)+'ror:';const _0x21a1e7=_0x31cf8a;try{const _0x4baa0a=await db[_0x2e1c6e(0x28a)+'on'](_0x2e1c6e(0x2c2))[_0x2e1c6e(0x2c3)](_0x3b111d)[_0x2e1c6e(0x6e0)]();return _0x4baa0a[_0x2e1c6e(0x362)][_0x2e1c6e(0x357)](_0x4b568c=>({'id':_0x4b568c['id'],..._0x4b568c[_0x2e1c6e(0x2af)]()}));}catch(_0x51490f){return console[_0x2e1c6e(0x55f)](_0x21a1e7['MGQgY'],_0x51490f),[];}}async function searchUsers(_0x2543d6){const _0x37e291=_0x467253,_0x59487c={'AwSWA':_0x37e291(0x35a)+'on','Gmtpy':_0x37e291(0x3ec),'TBBIO':_0x37e291(0x2c2),'rGLau':function(_0x3f69d6,_0x2efd16){return _0x3f69d6(_0x2efd16);},'lQFpq':_0x37e291(0x31a)+_0x37e291(0x6a8),'fgWIb':_0x37e291(0x5ed)+_0x37e291(0x510),'MjVLj':function(_0x3db914,_0x44fafd){return _0x3db914+_0x44fafd;}};if(!_0x2543d6||!_0x2543d6[_0x37e291(0x5ea)]())try{const _0x101c00=await db['collecti'+'on'](_0x37e291(0x2c2))[_0x37e291(0x483)](_0x59487c[_0x37e291(0x34a)],_0x59487c[_0x37e291(0x67b)])[_0x37e291(0x2c3)](-0x1c04+-0x2b3*0x1+0x1ec1)[_0x37e291(0x6e0)]();return _0x101c00[_0x37e291(0x362)]['map'](_0x2fb216=>({'id':_0x2fb216['id'],..._0x2fb216[_0x37e291(0x2af)]()}));}catch(_0x2b84c9){return[];}const _0x117623=_0x2543d6[_0x37e291(0x5ea)](),_0x427b81=_0x117623[_0x37e291(0x573)](-0x7*-0x323+0x1*-0xd26+-0x8cf)[_0x37e291(0x547)+_0x37e291(0x492)]()+_0x117623[_0x37e291(0x45c)](0xada+-0x86f+0x6*-0x67),_0x414eb2=_0x117623[_0x37e291(0x32f)+'ase'](),_0x4019e9=_0x117623[_0x37e291(0x547)+_0x37e291(0x492)](),_0x4791da=[],_0x2e63d1=new Set(),_0x2268f5=_0x1def7b=>{const _0x28641a=_0x37e291;!_0x2e63d1['has'](_0x1def7b['id'])&&(_0x2e63d1[_0x28641a(0x326)](_0x1def7b['id']),_0x4791da['push']({'id':_0x1def7b['id'],..._0x1def7b['data']()}));};try{if(_0x117623['length']>-0x121+-0x84b+-0xe*-0xad){const _0x55a32e=await db[_0x37e291(0x28a)+'on'](_0x59487c['TBBIO'])['doc'](_0x117623)[_0x37e291(0x6e0)]();if(_0x55a32e['exists'])_0x59487c[_0x37e291(0x3f5)](_0x2268f5,_0x55a32e);}const _0xd3bd57=[...new Set([_0x117623,_0x427b81,_0x414eb2,_0x4019e9])];for(const _0x3688be of _0xd3bd57){const _0x32046c=await db[_0x37e291(0x28a)+'on'](_0x37e291(0x2c2))[_0x37e291(0x339)](_0x59487c[_0x37e291(0x286)],'>=',_0x3688be)['where'](_0x59487c['lQFpq'],'<=',_0x3688be+'\uf8ff')[_0x37e291(0x2c3)](-0x353+0x2557+-0x21fc)[_0x37e291(0x6e0)]();_0x32046c['docs'][_0x37e291(0x5b0)](_0x2268f5);}for(const _0x41d80a of _0xd3bd57){const _0x58cb25=await db['collecti'+'on'](_0x59487c['TBBIO'])[_0x37e291(0x339)](_0x59487c[_0x37e291(0x5e2)],'>=',_0x41d80a)[_0x37e291(0x339)](_0x37e291(0x5ed)+_0x37e291(0x510),'<=',_0x41d80a+'\uf8ff')[_0x37e291(0x2c3)](0x194*0x4+-0x1*-0x1003+0x21*-0xad)[_0x37e291(0x6e0)]();_0x58cb25[_0x37e291(0x362)][_0x37e291(0x5b0)](_0x2268f5);}for(const _0x204d13 of _0xd3bd57){const _0x19e89f=await db[_0x37e291(0x28a)+'on'](_0x59487c[_0x37e291(0x204)])['where'](_0x37e291(0x6b9)+'name','>=',_0x204d13)[_0x37e291(0x339)](_0x37e291(0x6b9)+_0x37e291(0x422),'<=',_0x59487c[_0x37e291(0x604)](_0x204d13,'\uf8ff'))['limit'](-0x23bd+0x7*0x55d+-0x1c8)[_0x37e291(0x6e0)]();_0x19e89f['docs']['forEach'](_0x2268f5);}}catch(_0x22a873){console['warn'](_0x37e291(0x4c7)+_0x37e291(0x555)+'r:',_0x22a873);}return _0x4791da[_0x37e291(0x45c)](-0xf1d+0x4a9*-0x2+-0x1a1*-0xf,-0x5a6*-0x2+0x33b+-0xe78);}async function sendTeamInvite(_0x26aa19,_0x1eb1cc,_0x1c7be9,_0x21dd75,_0x2c43c8,_0x4e6865){const _0x48730f=_0x467253,_0x2acf23={};_0x2acf23['woiFg']=_0x48730f(0x655)+_0x48730f(0x6e2);const _0xf35f14=_0x2acf23;if(!_0x4e6865||_0x4e6865===_0x21dd75)throw new Error(_0x48730f(0x493)+'invite\x20t'+_0x48730f(0x29e));await pushNotification(_0x4e6865,_0xf35f14[_0x48730f(0x2ac)],_0x48730f(0x6cc)+_0x48730f(0x6dc)+_0x1eb1cc,_0x2c43c8+(_0x48730f(0x517)+_0x48730f(0x4e6)+'join\x20[')+_0x1c7be9+']\x20'+_0x1eb1cc,{'teamId':_0x26aa19,'teamName':_0x1eb1cc,'teamTag':_0x1c7be9,'inviterUid':_0x21dd75,'inviterName':_0x2c43c8});}async function acceptTeamInvite(_0x43f164,_0x2296e7,_0x244dcd){const _0xcce2d6=_0x467253,_0x179c53={};_0x179c53[_0xcce2d6(0x361)]=_0xcce2d6(0x317)+_0xcce2d6(0x255),_0x179c53[_0xcce2d6(0x6ed)]=_0xcce2d6(0x488)+_0xcce2d6(0x1f2)+_0xcce2d6(0x34f)+'m.\x20Leave'+'\x20your\x20cu'+'rrent\x20te'+_0xcce2d6(0x220)+'.',_0x179c53[_0xcce2d6(0x576)]=_0xcce2d6(0x5d7),_0x179c53[_0xcce2d6(0x32e)]=function(_0x54da16,_0x29ca65){return _0x54da16>=_0x29ca65;},_0x179c53['lChkw']='You\x20are\x20'+_0xcce2d6(0x1f2)+_0xcce2d6(0x49c)+'team',_0x179c53[_0xcce2d6(0x469)]='Player',_0x179c53[_0xcce2d6(0x285)]=_0xcce2d6(0x2c2),_0x179c53[_0xcce2d6(0x5a4)]=_0xcce2d6(0x4b4)+_0xcce2d6(0x5f5);const _0x34c329=_0x179c53,_0x41a88c=await getUser(_0x2296e7);if(!_0x41a88c)throw new Error(_0x34c329['oHGjM']);if(_0x41a88c['teamId'])throw new Error(_0x34c329[_0xcce2d6(0x6ed)]);const _0x24fe5f=await db[_0xcce2d6(0x28a)+'on'](_0x34c329[_0xcce2d6(0x576)])['doc'](_0x244dcd)[_0xcce2d6(0x6e0)]();if(!_0x24fe5f[_0xcce2d6(0x574)])throw new Error(_0xcce2d6(0x235)+_0xcce2d6(0x55c)+_0xcce2d6(0x65c));const _0x4cef16=_0x24fe5f['data']();if(_0x34c329[_0xcce2d6(0x32e)]((_0x4cef16[_0xcce2d6(0x3bf)]||[])['length'],-0x25a1+0x9b+-0x2*-0x1286))throw new Error('Team\x20is\x20'+'full\x20(ma'+'x\x206\x20memb'+_0xcce2d6(0x65b));if((_0x4cef16['memberUi'+'ds']||[])[_0xcce2d6(0x625)](_0x2296e7))throw new Error(_0x34c329[_0xcce2d6(0x20f)]);const _0x1ffadc={};_0x1ffadc['uid']=_0x2296e7,_0x1ffadc[_0xcce2d6(0x31a)+_0xcce2d6(0x6a8)]=_0x41a88c[_0xcce2d6(0x31a)+_0xcce2d6(0x6a8)]||_0x34c329[_0xcce2d6(0x469)],_0x1ffadc[_0xcce2d6(0x713)]=_0x41a88c[_0xcce2d6(0x713)]||'',_0x1ffadc[_0xcce2d6(0x447)]=![];const _0x3b19be=_0x1ffadc;await _0x24fe5f['ref'][_0xcce2d6(0x716)]({'members':firebase[_0xcce2d6(0x632)+'e']['FieldVal'+'ue'][_0xcce2d6(0x6a5)+'on'](_0x3b19be),'memberUids':firebase[_0xcce2d6(0x632)+'e'][_0xcce2d6(0x497)+'ue']['arrayUni'+'on'](_0x2296e7)});const _0x5f1285={};_0x5f1285[_0xcce2d6(0x3af)]=_0x244dcd,_0x5f1285[_0xcce2d6(0x4c1)]=_0x4cef16['name'],_0x5f1285['teamTag']=_0x4cef16[_0xcce2d6(0x4f6)],await db[_0xcce2d6(0x28a)+'on'](_0x34c329[_0xcce2d6(0x285)])['doc'](_0x2296e7)[_0xcce2d6(0x716)](_0x5f1285);try{const _0x3ed776={};_0x3ed776[_0xcce2d6(0x26f)]=!![],_0x3ed776['accepted']=!![],await db[_0xcce2d6(0x28a)+'on'](_0x34c329[_0xcce2d6(0x285)])['doc'](_0x2296e7)[_0xcce2d6(0x28a)+'on'](_0x34c329[_0xcce2d6(0x5a4)])[_0xcce2d6(0x31d)](_0x43f164)[_0xcce2d6(0x716)](_0x3ed776);}catch(_0x2bce09){}const _0x110e38={};return _0x110e38[_0xcce2d6(0x3af)]=_0x244dcd,_0x110e38['teamName']=_0x4cef16['name'],_0x110e38;}async function declineTeamInvite(_0x5f2600,_0x207829){const _0xbde02=_0x467253,_0x4577d5={};_0x4577d5[_0xbde02(0x29d)]=_0xbde02(0x4b4)+_0xbde02(0x5f5);const _0xbee77=_0x4577d5;try{const _0x2fe9f8={};_0x2fe9f8[_0xbde02(0x26f)]=!![],_0x2fe9f8[_0xbde02(0x2e7)]=!![],await db[_0xbde02(0x28a)+'on'](_0xbde02(0x2c2))[_0xbde02(0x31d)](_0x207829)[_0xbde02(0x28a)+'on'](_0xbee77[_0xbde02(0x29d)])[_0xbde02(0x31d)](_0x5f2600)['update'](_0x2fe9f8);}catch(_0x4f89ba){}}
+// ============================================================
+//  CHAMPION TOKENS — Database / Firestore Helpers
+// ============================================================
+
+// ── Utility Helpers ───────────────────────────────────────────
+
+/**
+ * Join a match as a player with atomic server-side transaction & concurrency checks.
+ * Guarantees race-condition defense against simultaneous clicks and reserved teammate verification.
+ */
+async function joinMatch(codeOrId, joiningUser) {
+  const sanitizedInput = (codeOrId || '').trim();
+
+  let targetMatchDocRef = null;
+  if (sanitizedInput.length === 6 && !sanitizedInput.includes('-')) {
+    const snap = await db.collection('matches')
+      .where('code', '==', sanitizedInput.toUpperCase())
+      .where('status', '==', 'waiting')
+      .limit(1)
+      .get();
+    if (!snap.empty) targetMatchDocRef = snap.docs[0].ref;
+  }
+  if (!targetMatchDocRef) {
+    targetMatchDocRef = db.collection('matches').doc(sanitizedInput);
+  }
+
+  const userDocRef = db.collection('users').doc(joiningUser.uid);
+
+  return await db.runTransaction(async (transaction) => {
+    const matchSnap = await transaction.get(targetMatchDocRef);
+    if (!matchSnap.exists) {
+      throw new Error('Match not found, started, or expired');
+    }
+
+    const match = matchSnap.data();
+    const wager = Number(match.wager || 0);
+
+    if (match.status !== 'waiting') {
+      throw new Error('This match has already started or ended');
+    }
+
+    if (match.expiresAt && match.expiresAt.toDate() < new Date()) {
+      throw new Error('This match has expired and is no longer available');
+    }
+
+    const currentPlayers = match.players || [];
+    const maxPlayers = match.maxPlayers || 2;
+
+    if (currentPlayers.length >= maxPlayers) {
+      throw new Error('This match is already full!');
+    }
+
+    if (currentPlayers.some(p => p.uid === joiningUser.uid)) {
+      throw new Error('You are already in this match');
+    }
+
+    const halfCount = maxPlayers / 2;
+    const existingTeam1 = currentPlayers.filter(p => p.team === 1 || p.isHost || p.isTeammate || p.uid === match.createdBy);
+    const existingTeam2 = currentPlayers.filter(p => p.team === 2 || (p.teamId && match.team2Id && p.teamId === match.team2Id));
+
+    // Reserved Teammates & Squad Allocation Logic
+    const invitedEntry = (match.invitedTeammates || []).find(tm => tm.uid === joiningUser.uid);
+    const pendingInvitedCount = (match.invitedTeammates || []).filter(tm => tm.status === 'pending' && tm.uid !== joiningUser.uid).length;
+
+    // Check if open slots are reserved for pending teammates
+    const availableTotalSlots = maxPlayers - currentPlayers.length;
+    if (!invitedEntry && availableTotalSlots <= pendingInvitedCount) {
+      // Check if user is on the same team
+      const isTeamAffiliate = (match.teamId && joiningUser.teamId === match.teamId) || (match.team2Id && joiningUser.teamId === match.team2Id);
+      if (!isTeamAffiliate) {
+        throw new Error('This match is currently reserved for invited squad members.');
+      }
+    }
+
+    let assignedTeam = 2;
+    let isTeammate = false;
+    let isCovered = false;
+
+    if (invitedEntry) {
+      assignedTeam = invitedEntry.team || 1;
+      isTeammate = true;
+      isCovered = !!invitedEntry.isCovered;
+    } else if (match.queueType === 'team' || match.teamId) {
+      const isHostTeamMember = (match.teamId && joiningUser.teamId === match.teamId) || (match.coveredMemberUids || []).includes(joiningUser.uid);
+      const isTeam2Member = (match.team2Id && joiningUser.teamId === match.team2Id) || (match.team2CoveredMemberUids || []).includes(joiningUser.uid);
+
+      if (isHostTeamMember && existingTeam1.length < halfCount) {
+        assignedTeam = 1;
+        isTeammate = true;
+        isCovered = (match.tokenCoverage === 'all') || (match.coveredMemberUids || []).includes(joiningUser.uid);
+      } else if (isTeam2Member && existingTeam2.length < halfCount) {
+        assignedTeam = 2;
+        isTeammate = true;
+        isCovered = (match.team2TokenCoverage === 'all') || (match.team2CoveredMemberUids || []).includes(joiningUser.uid);
+      } else {
+        assignedTeam = existingTeam1.length < halfCount ? 1 : 2;
+      }
+    } else {
+      assignedTeam = existingTeam1.length < halfCount ? 1 : 2;
+    }
+
+    // Verify team capacity limits
+    if (assignedTeam === 1 && existingTeam1.length >= halfCount) {
+      assignedTeam = 2;
+    }
+    if (assignedTeam === 2 && existingTeam2.length >= halfCount) {
+      throw new Error('Opponent squad (Team 2) is already full!');
+    }
+
+    const playerDeduction = isCovered ? 0 : wager;
+
+    // Atomic balance verification inside transaction
+    const userSnap = await transaction.get(userDocRef);
+    if (!userSnap.exists) {
+      throw new Error('User record not found');
+    }
+    const freshUserData = userSnap.data();
+    const freshUserTokens = Number(freshUserData.tokens || 0);
+
+    if (playerDeduction > 0 && freshUserTokens < playerDeduction) {
+      throw new Error(`Insufficient tokens to join (Requires ${formatTokens(playerDeduction)} tokens, you have ${formatTokens(freshUserTokens)})`);
+    }
+
+    const targetTeamTag = assignedTeam === 1 ? (match.teamTag || joiningUser.teamTag || '') : (match.team2Tag || joiningUser.teamTag || '');
+
+    const newPlayer = {
+      uid:          joiningUser.uid,
+      displayName:  freshUserData.displayName || joiningUser.displayName || 'Player',
+      epicUsername: freshUserData.epicUsername || joiningUser.epicUsername || '',
+      isPremium:    !!(freshUserData.isPremium || joiningUser.isPremium),
+      photoURL:     freshUserData.photoURL || joiningUser.photoURL || '',
+      isHost:       false,
+      ready:        false,
+      team:         assignedTeam,
+      teamId:       joiningUser.teamId || null,
+      teamTag:      targetTeamTag,
+      isTeammate:   isTeammate,
+      paidAmount:   playerDeduction,
+      isCovered:    isCovered,
+    };
+
+    const updatedInvited = (match.invitedTeammates || []).map(tm => {
+      if (tm.uid === joiningUser.uid) {
+        return { ...tm, status: 'accepted' };
+      }
+      return tm;
+    });
+
+    const newPlayersList = [...currentPlayers, newPlayer];
+    const newPlayerUids = [...(match.playerUids || currentPlayers.map(p => p.uid)), joiningUser.uid];
+
+    const matchUpdates = {
+      players:          newPlayersList,
+      playerUids:       newPlayerUids,
+      invitedTeammates: updatedInvited,
+    };
+
+    if (playerDeduction > 0) {
+      matchUpdates.prizePool = (Number(match.prizePool || 0) + playerDeduction);
+    }
+
+    // Apply atomic balance deduction
+    if (playerDeduction > 0) {
+      const updatedBalance = freshUserTokens - playerDeduction;
+      const updatedTotalSpent = (Number(freshUserData.totalSpent || 0) + playerDeduction);
+      transaction.update(userDocRef, {
+        tokens: updatedBalance,
+        totalSpent: updatedTotalSpent
+      });
+
+      const txRef = db.collection('transactions').doc();
+      transaction.set(txRef, {
+        userId: joiningUser.uid,
+        amount: -playerDeduction,
+        type: 'match_wager',
+        description: `Joined match — "${match.title}" (${match.code})`,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+      });
+    }
+
+    transaction.update(targetMatchDocRef, matchUpdates);
+
+    return targetMatchDocRef.id;
+  });
+}
+
+
+/**
+ * Join a match with your team (places joiningUser in Team 2 and auto-invites team roster).
+ */
+async function joinMatchWithTeam(codeOrId, joiningUser, options = {}) {
+  const chosenTeamId = options.teamId || joiningUser.teamId;
+  if (!chosenTeamId) {
+    throw new Error('You must select or be in a team to join with your team. Go to Profile > Teams to create or join one.');
+  }
+
+  let matchDoc = null;
+  if (codeOrId.length === 6 && !codeOrId.includes('-')) {
+    const snap = await db.collection('matches')
+      .where('code', '==', codeOrId.toUpperCase())
+      .where('status', '==', 'waiting')
+      .limit(1)
+      .get();
+    if (!snap.empty) matchDoc = snap.docs[0];
+  }
+  if (!matchDoc) {
+    const docSnap = await db.collection('matches').doc(codeOrId).get();
+    if (docSnap.exists) matchDoc = docSnap;
+  }
+
+  if (!matchDoc || !matchDoc.exists) throw new Error('Match not found, started, or expired');
+
+  const match = matchDoc.data();
+  const wager = Number(match.wager || 0);
+
+  if (match.status !== 'waiting') throw new Error('This match has already started or ended');
+
+  if (match.expiresAt && match.expiresAt.toDate() < new Date()) {
+    await expireMatch(matchDoc.id);
+    throw new Error('This match has expired and is no longer available');
+  }
+
+  if ((match.players || []).find(p => p.uid === joiningUser.uid)) {
+    throw new Error('You are already in this match');
+  }
+
+  const halfCount = (match.maxPlayers || 2) / 2;
+  const existingTeam2Count = (match.players || []).filter(p => p.team === 2 || (p.teamId && p.teamId === chosenTeamId && p.uid !== match.createdBy)).length;
+
+  if (existingTeam2Count >= halfCount) {
+    throw new Error('Opponent squad (Team 2) is already full');
+  }
+
+  const tokenCoverage = options.tokenCoverage || 'none'; // 'none' | '1' | 'all' | 'custom'
+  let coveredMemberUids = options.coveredMemberUids || [];
+  const splitRule = options.splitRule || 'keep'; // 'keep' | 'split'
+
+  // Fetch joining user's team details & members
+  let invitedTeammates = [];
+  let teamName = joiningUser.teamName || 'Team 2';
+  let teamTag = joiningUser.teamTag || '';
+  let teamIcon = 'swords';
+  let teamIconColor = '#3b82f6';
+  let teamBgColor = 'rgba(59, 130, 246, 0.18)';
+  let teamBorderColor = 'rgba(59, 130, 246, 0.45)';
+
+  try {
+    const teamSnap = await db.collection('teams').doc(chosenTeamId).get();
+    if (teamSnap.exists) {
+      const tData = teamSnap.data();
+      teamName = tData.name || teamName;
+      teamTag = tData.tag || teamTag;
+      teamIcon = tData.icon || teamIcon;
+      teamIconColor = tData.iconColor || teamIconColor;
+      teamBgColor = tData.bgColor || teamBgColor;
+      teamBorderColor = tData.borderColor || teamBorderColor;
+      const needed = Math.max(0, halfCount - 1);
+      const otherMembers = (tData.members || []).filter(m => m.uid !== joiningUser.uid);
+
+      if (tokenCoverage === 'all') {
+        coveredMemberUids = otherMembers.slice(0, needed).map(m => m.uid);
+      } else if (tokenCoverage === '1' && otherMembers.length > 0 && !coveredMemberUids.length) {
+        coveredMemberUids = [otherMembers[0].uid];
+      }
+
+      invitedTeammates = otherMembers.slice(0, needed).map(m => ({
+        uid: m.uid,
+        displayName: m.displayName || 'Teammate',
+        photoURL: m.photoURL || '',
+        epicUsername: m.epicUsername || '',
+        team: 2,
+        teamId: chosenTeamId,
+        isCovered: coveredMemberUids.includes(m.uid),
+        invitedAt: Date.now(),
+        status: 'pending'
+      }));
+    }
+  } catch (e) {
+    console.warn('joinMatchWithTeam team fetch notice:', e);
+  }
+
+  // Calculate upfront deposit
+  const coveredCount = coveredMemberUids.length;
+  const joinerTotalDeposit = wager * (1 + coveredCount);
+
+  if (Number(joiningUser.tokens || 0) < joinerTotalDeposit) {
+    throw new Error(`Insufficient tokens (Requires ${formatTokens(joinerTotalDeposit)} tokens to join${coveredCount > 0 ? ` & cover ${coveredCount} teammate(s)` : ''})`);
+  }
+
+  const newPlayer = {
+    uid:          joiningUser.uid,
+    displayName:  joiningUser.displayName || 'Player',
+    epicUsername: joiningUser.epicUsername || '',
+    isPremium:    !!joiningUser.isPremium,
+    photoURL:     joiningUser.photoURL || '',
+    isHost:       false,
+    ready:        false,
+    team:         2,
+    teamId:       chosenTeamId,
+    teamTag:      teamTag,
+    isTeamCaptain:true,
+    paidAmount:   joinerTotalDeposit,
+    isCovered:    false,
+  };
+
+  const existingInvited = match.invitedTeammates || [];
+  const combinedInvited = [...existingInvited, ...invitedTeammates];
+
+  const updateFields = {
+    players:                  firebase.firestore.FieldValue.arrayUnion(newPlayer),
+    playerUids:               firebase.firestore.FieldValue.arrayUnion(joiningUser.uid),
+    prizePool:                firebase.firestore.FieldValue.increment(joinerTotalDeposit),
+    invitedTeammates:         combinedInvited,
+    team2Id:                  chosenTeamId,
+    team2Name:                teamName,
+    team2Tag:                 teamTag,
+    team2Icon:                teamIcon,
+    team2IconColor:           teamIconColor,
+    team2BgColor:             teamBgColor,
+    team2BorderColor:         teamBorderColor,
+    team2TokenCoverage:       tokenCoverage,
+    team2CoveredMemberUids:   coveredMemberUids,
+    team2SplitRule:           splitRule,
+  };
+
+  await matchDoc.ref.update(updateFields);
+
+  if (joinerTotalDeposit > 0) {
+    await updateTokens(
+      joiningUser.uid,
+      -joinerTotalDeposit,
+      'match_wager',
+      `Joined match with team — "${match.title}" (${match.code})${coveredCount > 0 ? ` (Covered ${coveredCount} teammate(s))` : ''}`
+    );
+  }
+
+  // Send notifications to all invited Team 2 teammates
+  if (invitedTeammates.length > 0) {
+    for (const tm of invitedTeammates) {
+      try {
+        await db.collection('users').doc(tm.uid).collection('notifications').add({
+          type: 'match_team_invite',
+          title: 'Team Match Invite',
+          body: `${joiningUser.displayName || 'Your Captain'} invited you to join team match "${match.title}" (${formatTokens(wager)} Tokens)${tm.isCovered ? ' · Entry Covered Free!' : ''}`,
+          matchId: matchDoc.id,
+          matchCode: match.code,
+          matchTitle: match.title,
+          wager: wager,
+          hostName: joiningUser.displayName || 'Captain',
+          hostUid: joiningUser.uid,
+          teamName: teamName,
+          team: 2,
+          isCovered: !!tm.isCovered,
+          read: false,
+          accepted: false,
+          declined: false,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        });
+      } catch (notifErr) {
+        console.warn('Failed to send team invite notification to', tm.uid, notifErr);
+      }
+    }
+  }
+
+  return matchDoc.id;
+}
+
+/**
+ * Teammate accepts a match team invite from the notification menu.
+ */
+async function acceptMatchTeamInvite(matchId, acceptingUser, notifId = null) {
+  const matchRef = db.collection('matches').doc(matchId);
+  const matchSnap = await matchRef.get();
+  if (!matchSnap.exists) throw new Error('Match not found or was removed');
+
+  const match = matchSnap.data();
+  if (match.status !== 'waiting') throw new Error('This match has already started or ended');
+
+  // Check if 30-min timer expired
+  if (match.expiresAt && match.expiresAt.toDate() < new Date()) {
+    await expireMatch(matchId);
+    throw new Error('This match has expired');
+  }
+
+  const players = match.players || [];
+  if (players.length >= match.maxPlayers) throw new Error('This match is already full');
+  if (players.some(p => p.uid === acceptingUser.uid)) {
+    if (notifId) {
+      await db.collection('users').doc(acceptingUser.uid).collection('notifications').doc(notifId).update({
+        read: true,
+        accepted: true,
+      }).catch(() => {});
+    }
+    return { matchId, code: match.code };
+  }
+
+  const invitedEntry = (match.invitedTeammates || []).find(tm => tm.uid === acceptingUser.uid);
+  if (invitedEntry) {
+    const inviteTime = invitedEntry.invitedAt ? (invitedEntry.invitedAt.toDate ? invitedEntry.invitedAt.toDate().getTime() : (invitedEntry.invitedAt.seconds ? invitedEntry.invitedAt.seconds * 1000 : Number(invitedEntry.invitedAt))) : (match.createdAt ? (match.createdAt.toDate ? match.createdAt.toDate().getTime() : (match.createdAt.seconds ? match.createdAt.seconds * 1000 : 0)) : 0);
+    if (inviteTime > 0 && (Date.now() - inviteTime > 5 * 60 * 1000)) {
+      throw new Error('This match invite has expired (5 minute limit).');
+    }
+  }
+
+  const targetTeam = invitedEntry?.team || (match.team2Id && match.team2Id === acceptingUser.teamId ? 2 : 1);
+  const targetTeamTag = targetTeam === 1 ? (match.teamTag || '') : (match.team2Tag || acceptingUser.teamTag || '');
+  const isCovered = !!(invitedEntry?.isCovered || (targetTeam === 1 && (match.coveredMemberUids || []).includes(acceptingUser.uid)) || (targetTeam === 2 && (match.team2CoveredMemberUids || []).includes(acceptingUser.uid)));
+
+  const wager = Number(match.wager || 0);
+  if (!isCovered && Number(acceptingUser.tokens || 0) < wager) {
+    throw new Error(`Insufficient tokens (Requires ${formatTokens(wager)} Tokens to enter)`);
+  }
+
+  const newPlayer = {
+    uid: acceptingUser.uid,
+    displayName: acceptingUser.displayName || 'Teammate',
+    epicUsername: acceptingUser.epicUsername || '',
+    isPremium: !!acceptingUser.isPremium,
+    photoURL: acceptingUser.photoURL || '',
+    isHost: false,
+    ready: false,
+    team: targetTeam,
+    teamId: acceptingUser.teamId || null,
+    teamTag: targetTeamTag,
+    paidAmount: isCovered ? 0 : wager,
+    isCovered: isCovered,
+    isTeammate: true,
+  };
+
+  // Update invitedTeammates status in match
+  const updatedInvited = (match.invitedTeammates || []).map(tm => {
+    if (tm.uid === acceptingUser.uid) {
+      return { ...tm, status: 'accepted' };
+    }
+    return tm;
+  });
+
+  const updatePayload = {
+    players: firebase.firestore.FieldValue.arrayUnion(newPlayer),
+    playerUids: firebase.firestore.FieldValue.arrayUnion(acceptingUser.uid),
+    invitedTeammates: updatedInvited,
+  };
+  if (!isCovered && wager > 0) {
+    updatePayload.prizePool = firebase.firestore.FieldValue.increment(wager);
+  }
+
+  await matchRef.update(updatePayload);
+
+  if (!isCovered && wager > 0) {
+    await updateTokens(
+      acceptingUser.uid,
+      -wager,
+      'match_wager',
+      `Joined team match — "${match.title}" (${match.code})`
+    );
+  }
+
+  // Mark notification read & accepted
+  if (notifId) {
+    await db.collection('users').doc(acceptingUser.uid).collection('notifications').doc(notifId).update({
+      read: true,
+      accepted: true,
+      acceptedAt: firebase.firestore.FieldValue.serverTimestamp(),
+    }).catch(() => {});
+  }
+
+  return { matchId, code: match.code };
+}
+
+/**
+ * Teammate declines a match team invite.
+ */
+async function declineMatchTeamInvite(matchId, userUid, notifId = null) {
+  try {
+    const matchRef = db.collection('matches').doc(matchId);
+    const matchSnap = await matchRef.get();
+    if (matchSnap.exists) {
+      const match = matchSnap.data();
+      const updatedInvited = (match.invitedTeammates || []).map(tm => {
+        if (tm.uid === userUid) {
+          return { ...tm, status: 'declined' };
+        }
+        return tm;
+      });
+      await matchRef.update({ invitedTeammates: updatedInvited });
+    }
+  } catch (e) {
+    console.warn('declineMatchTeamInvite match notice:', e);
+  }
+
+  if (notifId) {
+    try {
+      await db.collection('users').doc(userUid).collection('notifications').doc(notifId).update({
+        read: true,
+        declined: true,
+      });
+    } catch (e) {}
+  }
+
+  return true;
+}
+
+/**
+ * Player toggles or sets Ready status in a match.
+ * If all players are ready (or owner/admin starts test), match status automatically becomes 'in_progress'.
+ */
+async function setPlayerReady(matchId, uid, isReady = true) {
+  const matchRef = db.collection('matches').doc(matchId);
+  const matchSnap = await matchRef.get();
+  if (!matchSnap.exists) throw new Error('Match not found');
+
+  const match = matchSnap.data();
+  if (match.status !== 'waiting' && match.status !== 'ready') {
+    throw new Error('Cannot change ready state once match has started or ended');
+  }
+
+  let updatedPlayers = (match.players || []).map(p => {
+    if (p.uid === uid) {
+      return { ...p, ready: isReady };
+    }
+    return p;
+  });
+
+  const allReady = (updatedPlayers.length === match.maxPlayers && updatedPlayers.every(p => p.ready));
+  const newStatus = allReady ? 'in_progress' : 'waiting';
+
+  await matchRef.update({
+    players: updatedPlayers,
+    status:  newStatus,
+    ...(allReady ? { startedAt: firebase.firestore.FieldValue.serverTimestamp() } : {}),
+  });
+
+  // Automated System Announcements on match start
+  if (allReady) {
+    const hostPlayer = updatedPlayers.find(p => p.isHost || p.uid === match.createdBy) || updatedPlayers[0];
+    const oppPlayer = updatedPlayers.find(p => p.uid !== hostPlayer?.uid) || updatedPlayers[1];
+    const hostName = hostPlayer ? (hostPlayer.epicUsername || hostPlayer.displayName) : 'Host';
+    const oppName  = oppPlayer ? (oppPlayer.epicUsername || oppPlayer.displayName) : 'Opponent';
+
+    const msgRef = matchRef.collection('messages');
+    await msgRef.add({
+      isSystem:  true,
+      text:      '⏰ Players have 10 minutes to queue into a game. If your opponent does not join within 10 minutes, click "Call Staff" to report and a moderator will resolve the situation.',
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+    }).catch(console.warn);
+    await msgRef.add({
+      isSystem:  true,
+      text:      `Team ${hostName} is host, so ${oppName} has to add them in Fortnite!`,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+    }).catch(console.warn);
+  }
+
+  return { allReady, newStatus };
+}
+
+/**
+ * Leave or cancel a match with full token refund.
+ * - If Host leaves: cancels match & refunds everyone (including host covered deposits).
+ * - If Joined player leaves: removes player, reduces prizePool, refunds player if they paid.
+ */
+async function leaveOrCancelMatch(matchId, uid) {
+  const matchRef = db.collection('matches').doc(matchId);
+  const matchSnap = await matchRef.get();
+  if (!matchSnap.exists) throw new Error('Match not found');
+
+  const match = matchSnap.data();
+  if (match.status !== 'waiting' && match.status !== 'ready') {
+    throw new Error('Cannot leave or cancel a match that is already in progress or completed');
+  }
+
+  const isHost = match.createdBy === uid;
+  const wager  = Number(match.wager);
+
+  if (isHost) {
+    // Cancel match and refund ALL players who paid tokens
+    const refundPromises = (match.players || []).map(p => {
+      const refundAmt = Number(p.paidAmount !== undefined ? p.paidAmount : (p.uid === match.createdBy ? (match.hostCoveredDeposit || wager) : wager));
+      if (refundAmt > 0) {
+        return updateTokens(p.uid, refundAmt, 'refund', `↩️ Match cancelled by host — "${match.title}" refund`);
+      }
+      return Promise.resolve();
+    });
+    await Promise.all(refundPromises);
+
+    await matchRef.update({
+      status:      'cancelled',
+      completedAt: firebase.firestore.FieldValue.serverTimestamp(),
+    });
+
+    return { action: 'cancelled', message: 'Match cancelled and your tokens were refunded.' };
+  } else {
+    // Non-host player leaving
+    const leavingPlayer = (match.players || []).find(p => p.uid === uid);
+    const updatedPlayers = (match.players || []).filter(p => p.uid !== uid);
+    const updatedUids    = (match.playerUids || []).filter(u => u !== uid);
+    const playerPaid = leavingPlayer?.paidAmount !== undefined ? Number(leavingPlayer.paidAmount) : (leavingPlayer?.isCovered ? 0 : wager);
+
+    const updateFields = {
+      players:    updatedPlayers,
+      playerUids: updatedUids,
+      status:     'waiting',
+    };
+    if (playerPaid > 0) {
+      updateFields.prizePool = firebase.firestore.FieldValue.increment(-playerPaid);
+    }
+
+    await matchRef.update(updateFields);
+
+    // Refund player if they paid tokens
+    if (playerPaid > 0) {
+      await updateTokens(uid, playerPaid, 'refund', `↩️ Left match — "${match.title}" refund`);
+    }
+
+    return { action: 'left', message: 'You left the match and your tokens were refunded.' };
+  }
+}
+
+/**
+ * Auto-expire waiting lobby after 30 minutes and issue 100% full refund to all players.
+ * NEVER expires running, started, in_progress, disputed, or completed matches.
+ */
+async function expireMatch(matchId) {
+  const matchRef = db.collection('matches').doc(matchId);
+  const matchSnap = await matchRef.get();
+  if (!matchSnap.exists) return;
+
+  const match = matchSnap.data();
+  // ONLY expire lobbies that are waiting and never started!
+  if (match.status !== 'waiting' || match.startedAt) return;
+
+  const wager = Number(match.wager);
+  const refundPromises = (match.players || []).map(p => {
+    const refundAmt = Number(p.paidAmount !== undefined ? p.paidAmount : (p.uid === match.createdBy ? (match.hostCoveredDeposit || wager) : wager));
+    if (refundAmt > 0) {
+      return updateTokens(p.uid, refundAmt, 'refund', `⏱️ Lobby expired (30m wait limit) — "${match.title}" full refund`);
+    }
+    return Promise.resolve();
+  });
+  await Promise.all(refundPromises);
+
+  await matchRef.update({
+    status:      'cancelled',
+    isExpired:   true,
+    completedAt: firebase.firestore.FieldValue.serverTimestamp(),
+  });
+
+  await matchRef.collection('messages').add({
+    isSystem:  true,
+    text:      '⏱️ LOBBY EXPIRED: The 30-minute waiting timer has elapsed. All participants have received a 100% full token refund.',
+    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+  }).catch(console.warn);
+}
+
+/** Helper to calculate earnings distribution based on team split rule */
+function calculateTeamPayouts(winningPlayers, totalPrize, match) {
+  if (!winningPlayers || !winningPlayers.length) return [];
+  const winningTeamNum = winningPlayers[0]?.team || 1;
+  const splitRule = (winningTeamNum === 2 ? match.team2SplitRule : match.splitRule) || 'equal';
+  const captain = winningPlayers.find(p => p.isHost || p.isTeamCaptain || (winningTeamNum === 1 && p.uid === match.createdBy)) || winningPlayers[0];
+  const teammates = winningPlayers.filter(p => p.uid !== captain?.uid);
+
+  const rawEach = Math.round((totalPrize / winningPlayers.length) * 100) / 100;
+
+  if (splitRule === 'keep') {
+    // Captain keeps the earnings of any covered teammates
+    const coveredTeammates = teammates.filter(p => p.isCovered || (winningTeamNum === 1 && (match.tokenCoverage === 'all' || (match.tokenCoverage === '1' && p === teammates[0]) || (match.coveredMemberUids || []).includes(p.uid))) || (winningTeamNum === 2 && (match.team2TokenCoverage === 'all' || (match.team2CoveredMemberUids || []).includes(p.uid))));
+    const uncoveredTeammates = teammates.filter(p => !coveredTeammates.includes(p));
+
+    const captainTotalPrize = Math.round(rawEach * (1 + coveredTeammates.length) * 100) / 100;
+
+    return [
+      { uid: captain.uid, amount: captainTotalPrize },
+      ...coveredTeammates.map(p => ({ uid: p.uid, amount: 0 })),
+      ...uncoveredTeammates.map(p => ({ uid: p.uid, amount: rawEach }))
+    ];
+  }
+
+  if (splitRule === 'captain_70') {
+    const captainShare = Math.round(totalPrize * 0.70 * 100) / 100;
+    const teamRemainder = Math.max(0, totalPrize - captainShare);
+    const eachTeammate = teammates.length ? Math.round((teamRemainder / teammates.length) * 100) / 100 : 0;
+    return [
+      { uid: captain.uid, amount: captainShare },
+      ...teammates.map(p => ({ uid: p.uid, amount: eachTeammate }))
+    ];
+  }
+
+  // 'split' / 'equal' / default
+  return winningPlayers.map(p => ({ uid: p.uid, amount: rawEach }));
+}
+
+/**
+ * Subscribe to open (status=waiting) matches in real-time.
+ * Filters out expired matches automatically.
+ */
+function subscribeOpenMatches(callback) {
+  return db.collection('matches')
+    .where('status', '==', 'waiting')
+    .onSnapshot((snap) => {
+      const now = Date.now();
+      const list = [];
+
+      snap.docs.forEach(d => {
+        const data = d.data();
+        const expTime = data.expiresAt ? data.expiresAt.toDate().getTime() : 0;
+
+        if (expTime > 0 && expTime < now) {
+          // Trigger expiration in background
+          expireMatch(d.id).catch(console.warn);
+        } else {
+          list.push({ id: d.id, ...data });
+        }
+      });
+
+      list.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
+      callback(list);
+    }, (err) => {
+      console.warn('subscribeOpenMatches error:', err);
+      callback([]);
+    });
+}
+
+/**
+ * Subscribe to all matches a user is a player in.
+ */
+function subscribeUserMatches(uid, callback) {
+  return db.collection('matches')
+    .onSnapshot((snap) => {
+      const all = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      const mine = all.filter(m => (m.playerUids || []).includes(uid) || m.createdBy === uid);
+      mine.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
+      callback(mine);
+    }, (err) => {
+      console.warn('subscribeUserMatches error:', err);
+      callback([]);
+    });
+}
+
+/**
+ * Declare a winner for a match. Host only.
+ * Awards 90% of prize pool to winner (10% fee).
+ * Blocked if match has expired past the 30-minute limit.
+ */
+async function declareWinner(matchId, winnerUid, hostUid) {
+  const matchRef  = db.collection('matches').doc(matchId);
+  const matchSnap = await matchRef.get();
+  if (!matchSnap.exists) throw new Error('Match not found');
+
+  const match = matchSnap.data();
+  if (match.status === 'completed') throw new Error('Match is already completed');
+  if (match.status === 'cancelled') throw new Error('Match is cancelled');
+
+  // Prevent win farming: match must be in_progress and have full players
+  if (match.status !== 'in_progress' && match.status !== 'disputed') {
+    throw new Error('Winner can only be declared after match has started with all players readied up');
+  }
+
+  const players = match.players || [];
+  const maxPlayers = Number(match.maxPlayers || 2);
+  if (players.length < maxPlayers) {
+    throw new Error(`Cannot declare winner on an incomplete match (${players.length}/${maxPlayers} players)`);
+  }
+
+  // 5-Minute anti-win-farming check (unless platform admin)
+  const MIN_MATCH_DURATION_MS = 5 * 60 * 1000;
+  if (match.startedAt && !ADMIN_DISCORD_IDS.includes((hostUid || '').replace('discord:', ''))) {
+    const startedTime = match.startedAt.toDate ? match.startedAt.toDate().getTime() : (match.startedAt.seconds ? match.startedAt.seconds * 1000 : Date.now());
+    const elapsed = Date.now() - startedTime;
+    if (elapsed < MIN_MATCH_DURATION_MS) {
+      const remainingSec = Math.ceil((MIN_MATCH_DURATION_MS - elapsed) / 1000);
+      const mins = Math.floor(remainingSec / 60);
+      const secs = remainingSec % 60;
+      throw new Error(`Please wait ${mins}:${secs < 10 ? '0' : ''}${secs}`);
+    }
+  }
+
+  const winner = players.find(p => p.uid === winnerUid);
+  if (!winner) throw new Error('Player not found in match');
+
+  const rawPrize = Number(match.prizePool || 0) * 0.90; // 90% to winner
+  const prize = Math.round(rawPrize * 100) / 100;
+
+  await matchRef.update({
+    status:      'completed',
+    winner: { uid: winnerUid, displayName: winner.displayName },
+    completedAt: firebase.firestore.FieldValue.serverTimestamp(),
+  });
+
+  await updateTokens(winnerUid, prize, 'match_win', `Won match — "${match.title}"`);
+
+  // Update stats for all players
+  const statsUpdates = players.map(player => {
+    const ref = db.collection('users').doc(player.uid);
+    return ref.update({
+      matchesPlayed: firebase.firestore.FieldValue.increment(1),
+      ...(player.uid === winnerUid
+        ? { matchesWon: firebase.firestore.FieldValue.increment(1) }
+        : {}),
+    });
+  });
+  await Promise.all(statsUpdates);
+
+  return prize;
+}
+
+/**
+ * Dual-Confirmation Match Score Submission Protocol
+ * Both Team 1 and Team 2 must submit the match winner.
+ * - If both agree: Winner is verified & paid instantly.
+ * - If conflicting: Dispute triggered & Staff Moderator auto-called!
+ * @param {string} matchId
+ * @param {string} reporterUid
+ * @param {string} reportedWinnerTeam - 'team1' | 'team2'
+ */
+async function submitMatchReport(matchId, reporterUid, reportedWinnerTeam) {
+  const matchRef = db.collection('matches').doc(matchId);
+  const matchSnap = await matchRef.get();
+  if (!matchSnap.exists) throw new Error('Match not found');
+
+  const match = matchSnap.data();
+  if (match.status === 'completed') {
+    throw new Error('Match is already completed');
+  }
+
+  // 5-Minute anti-win-farming check
+  const MIN_MATCH_DURATION_MS = 5 * 60 * 1000;
+  if (match.startedAt) {
+    const startedTime = match.startedAt.toDate ? match.startedAt.toDate().getTime() : (match.startedAt.seconds ? match.startedAt.seconds * 1000 : Date.now());
+    const elapsed = Date.now() - startedTime;
+    if (elapsed < MIN_MATCH_DURATION_MS) {
+      const remainingSec = Math.ceil((MIN_MATCH_DURATION_MS - elapsed) / 1000);
+      const mins = Math.floor(remainingSec / 60);
+      const secs = remainingSec % 60;
+      throw new Error(`Please wait ${mins}:${secs < 10 ? '0' : ''}${secs}`);
+    }
+  }
+
+  const players = match.players || [];
+  const reporterPlayer = players.find(p => p.uid === reporterUid);
+  if (!reporterPlayer) throw new Error('You are not a participant in this match');
+
+  const isTeam1 = reporterPlayer.team === 'team1' || reporterPlayer.isHost || reporterPlayer.uid === match.createdBy;
+  const reporterTeamKey = isTeam1 ? 'team1' : 'team2';
+  const reporterTeamName = isTeam1 ? 'Team 1 (Host)' : 'Team 2 (Enemy)';
+
+  const updatePayload = {};
+  if (isTeam1) {
+    updatePayload.team1Reported = reportedWinnerTeam;
+    updatePayload.team1ReportedBy = reporterUid;
+    updatePayload.team1ReportedByName = reporterPlayer.displayName || 'Player';
+    updatePayload.team1ReportedAt = firebase.firestore.FieldValue.serverTimestamp();
+  } else {
+    updatePayload.team2Reported = reportedWinnerTeam;
+    updatePayload.team2ReportedBy = reporterUid;
+    updatePayload.team2ReportedByName = reporterPlayer.displayName || 'Player';
+    updatePayload.team2ReportedAt = firebase.firestore.FieldValue.serverTimestamp();
+  }
+
+  const currentTeam1Report = isTeam1 ? reportedWinnerTeam : match.team1Reported;
+  const currentTeam2Report = isTeam1 ? match.team2Reported : reportedWinnerTeam;
+
+  const msgRef = matchRef.collection('messages');
+
+  // Both teams have reported
+  if (currentTeam1Report && currentTeam2Report) {
+    if (currentTeam1Report === currentTeam2Report) {
+      // 🏆 CONSENSUS: BOTH SIDES AGREE ON WINNER!
+      const winningTeam = currentTeam1Report;
+      const isWinnerTeam1 = winningTeam === 'team1';
+
+      const winningPlayers = players.filter(p => (p.team === 'team1' || p.isHost || p.uid === match.createdBy) === isWinnerTeam1);
+      const losingPlayers  = players.filter(p => (p.team === 'team1' || p.isHost || p.uid === match.createdBy) !== isWinnerTeam1);
+
+      const totalPool = Number(match.prizePool || (Number(match.wager) * players.length));
+      const rawPrize = totalPool * 0.90; // 90% payout
+      const payouts = calculateTeamPayouts(winningPlayers, rawPrize, match);
+
+      updatePayload.status = 'completed';
+      updatePayload.isDisputed = false;
+      updatePayload.winnerTeam = winningTeam;
+      updatePayload.winner = winningPlayers.length === 1 ? { uid: winningPlayers[0].uid, displayName: winningPlayers[0].displayName } : null;
+      updatePayload.completedAt = firebase.firestore.FieldValue.serverTimestamp();
+
+      await matchRef.update(updatePayload);
+
+      // Distribute prize tokens according to team split rules
+      for (const p of payouts) {
+        if (p.amount > 0) {
+          await updateTokens(p.uid, p.amount, 'match_win', `Won match — "${match.title}"`);
+        }
+      }
+
+      // Update win/loss stats
+      for (const p of winningPlayers) {
+        await db.collection('users').doc(p.uid).update({
+          matchesPlayed: firebase.firestore.FieldValue.increment(1),
+          matchesWon:    firebase.firestore.FieldValue.increment(1),
+        }).catch(console.warn);
+      }
+      for (const p of losingPlayers) {
+        await db.collection('users').doc(p.uid).update({
+          matchesPlayed: firebase.firestore.FieldValue.increment(1),
+        }).catch(console.warn);
+      }
+
+      // System chat notice
+      await msgRef.add({
+        isSystem: true,
+        text: `MATCH CONFIRMED: Both sides verified that ${winningTeam === "team1" ? "Team 1" : "Team 2"} won! Total prize of ${formatTokens(rawPrize)} Tokens has been paid out.`,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      });
+
+      return { status: 'completed', winningTeam, prize: rawPrize };
+
+    } else {
+      // ⚠️ CONFLICT / DISPUTE DETECTED!
+      updatePayload.status = 'disputed';
+      updatePayload.isDisputed = true;
+      updatePayload.disputedAt = firebase.firestore.FieldValue.serverTimestamp();
+
+      await matchRef.update(updatePayload);
+
+      // AUTO-SUMMON STAFF MODERATOR
+      await db.collection('staff_calls').add({
+        matchId,
+        matchCode: match.code || '',
+        callerUid: 'system_auto_dispute',
+        calledByName: 'System Auto-Dispute',
+        reason: 'Match Result Dispute (Conflicting Winner Claims)',
+        details: `Dispute triggered in match "${match.title}" (${match.code}). Team 1 claimed ${currentTeam1Report === 'team1' ? 'Team 1 Won' : 'Team 2 Won'} vs Team 2 claimed ${currentTeam2Report === 'team1' ? 'Team 1 Won' : 'Team 2 Won'}. Moderator auto-called to inspect match.`,
+        status: 'open',
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      });
+
+      // System chat notice
+      await msgRef.add({
+        isSystem: true,
+        text: `DISPUTE DETECTED: Both sides reported conflicting match results! A Staff Moderator has been automatically called to review evidence and confirm the official winner.`,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      });
+
+      return { status: 'disputed' };
+    }
+  } else {
+    // Only one side has reported so far
+    await matchRef.update(updatePayload);
+
+    await msgRef.add({
+      isSystem: true,
+      text: `${reporterTeamName} submitted score: ${reportedWinnerTeam === "team1" ? "Team 1 Won" : "Team 2 Won"}. Waiting for opponent to confirm…`,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+    });
+
+    return { status: 'waiting_opponent' };
+  }
+}
+
+/**
+ * Retract / Undo a submitted match report
+ * Allows a player to cancel or change their reported score if they made a mistake (e.g. accidentally clicked Lose).
+ * @param {string} matchId
+ * @param {string} reporterUid
+ */
+async function retractMatchReport(matchId, reporterUid) {
+  const matchRef = db.collection('matches').doc(matchId);
+  const matchSnap = await matchRef.get();
+  if (!matchSnap.exists) throw new Error('Match not found');
+
+  const match = matchSnap.data();
+  if (match.status === 'completed') {
+    throw new Error('Cannot retract: Match is already completed and verified');
+  }
+
+  const players = match.players || [];
+  const reporterPlayer = players.find(p => p.uid === reporterUid);
+  if (!reporterPlayer) throw new Error('You are not a participant in this match');
+
+  const isTeam1 = reporterPlayer.team === 'team1' || reporterPlayer.isHost || reporterPlayer.uid === match.createdBy;
+  const reporterTeamName = isTeam1 ? 'Team 1 (Host)' : 'Team 2 (Enemy)';
+
+  const updatePayload = {};
+  if (isTeam1) {
+    if (!match.team1Reported) throw new Error('No reported score to retract');
+    updatePayload.team1Reported = firebase.firestore.FieldValue.delete();
+    updatePayload.team1ReportedBy = firebase.firestore.FieldValue.delete();
+    updatePayload.team1ReportedByName = firebase.firestore.FieldValue.delete();
+    updatePayload.team1ReportedAt = firebase.firestore.FieldValue.delete();
+  } else {
+    if (!match.team2Reported) throw new Error('No reported score to retract');
+    updatePayload.team2Reported = firebase.firestore.FieldValue.delete();
+    updatePayload.team2ReportedBy = firebase.firestore.FieldValue.delete();
+    updatePayload.team2ReportedByName = firebase.firestore.FieldValue.delete();
+    updatePayload.team2ReportedAt = firebase.firestore.FieldValue.delete();
+  }
+
+  // If match was in disputed state, return it to in_progress
+  if (match.status === 'disputed' || match.isDisputed) {
+    updatePayload.status = 'in_progress';
+    updatePayload.isDisputed = false;
+    updatePayload.disputedAt = firebase.firestore.FieldValue.delete();
+  }
+
+  await matchRef.update(updatePayload);
+
+  const msgRef = matchRef.collection('messages');
+  await msgRef.add({
+    isSystem: true,
+    text: `↩️ ${reporterTeamName} retracted their reported score. Both teams can now vote again.`,
+    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+  });
+
+  return { success: true };
+}
+
+/**
+ * Staff manual resolution for disputed matches
+ */
+async function adminResolveDispute(matchId, winningTeam, adminUid) {
+  const matchRef = db.collection('matches').doc(matchId);
+  const matchSnap = await matchRef.get();
+  if (!matchSnap.exists) throw new Error('Match not found');
+
+  const match = matchSnap.data();
+  const players = match.players || [];
+  const isWinnerTeam1 = winningTeam === 'team1';
+
+  const winningPlayers = players.filter(p => (p.team === 'team1' || p.isHost || p.uid === match.createdBy) === isWinnerTeam1);
+  const losingPlayers  = players.filter(p => (p.team === 'team1' || p.isHost || p.uid === match.createdBy) !== isWinnerTeam1);
+
+  const totalPool = Number(match.prizePool || (Number(match.wager) * players.length));
+  const rawPrize = totalPool * 0.90;
+  const payouts = calculateTeamPayouts(winningPlayers, rawPrize, match);
+
+  await matchRef.update({
+    status: 'completed',
+    isDisputed: false,
+    winnerTeam: winningTeam,
+    resolvedByAdmin: adminUid,
+    winner: winningPlayers.length === 1 ? { uid: winningPlayers[0].uid, displayName: winningPlayers[0].displayName } : null,
+    completedAt: firebase.firestore.FieldValue.serverTimestamp(),
+  });
+
+  for (const p of payouts) {
+    if (p.amount > 0) {
+      await updateTokens(p.uid, p.amount, 'match_win', `Won match (Staff Decision) — "${match.title}"`);
+    }
+  }
+  for (const p of winningPlayers) {
+    await db.collection('users').doc(p.uid).update({
+      matchesPlayed: firebase.firestore.FieldValue.increment(1),
+      matchesWon:    firebase.firestore.FieldValue.increment(1),
+    }).catch(console.warn);
+  }
+  for (const p of losingPlayers) {
+    await db.collection('users').doc(p.uid).update({
+      matchesPlayed: firebase.firestore.FieldValue.increment(1),
+    }).catch(console.warn);
+  }
+
+  await matchRef.collection('messages').add({
+    isSystem: true,
+    text: `STAFF RULING: Staff Moderator resolved the dispute in favor of ${winningTeam === "team1" ? "Team 1" : "Team 2"}! ${formatTokens(rawPrize)} Tokens awarded.`,
+    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+  });
+
+  return rawPrize;
+}
+
+/**
+ * Handles voting for Rematch or Double Down after match completion.
+ * Checks player token balances, logs chat vote progress, and starts the rematch when all players agree.
+ * @param {string} matchId
+ * @param {string} uid
+ * @param {'rematch'|'double'} voteType
+ */
+async function voteMatchRematch(matchId, uid, voteType = 'rematch') {
+  const matchRef = db.collection('matches').doc(matchId);
+  const snap = await matchRef.get();
+  if (!snap.exists) throw new Error('Match not found');
+  const match = snap.data();
+
+  if (match.status !== 'completed') {
+    throw new Error('Rematch voting is only available for completed matches');
+  }
+
+  const players = match.players || [];
+  const player = players.find(p => p.uid === uid);
+  if (!player) throw new Error('You are not a participant in this match');
+
+  const currentWager = Number(match.wager || 1.00);
+  const requiredTokens = voteType === 'double' ? currentWager * 2 : currentWager;
+
+  // Check user balance
+  const userSnap = await db.collection('users').doc(uid).get();
+  const userTokens = Number(userSnap.data()?.tokens || 0);
+  if (userTokens < requiredTokens) {
+    throw new Error(`Insufficient tokens to ${voteType === 'double' ? 'double down' : 'rematch'} (Need ${formatTokens(requiredTokens)} Tokens, You have ${formatTokens(userTokens)} Tokens)`);
+  }
+
+  const REMATCH_EXPIRATION_MS = 90 * 1000; // 1 min 30 seconds
+  const now = Date.now();
+  const voteTime = match.rematchVotesUpdatedAt ? (match.rematchVotesUpdatedAt.toDate ? match.rematchVotesUpdatedAt.toDate().getTime() : (match.rematchVotesUpdatedAt.seconds ? match.rematchVotesUpdatedAt.seconds * 1000 : 0)) : 0;
+
+  let rematchVotes = Array.isArray(match.rematchVotes) ? [...match.rematchVotes] : [];
+  let doubleVotes  = Array.isArray(match.doubleVotes)  ? [...match.doubleVotes]  : [];
+
+  // Reset if existing votes have expired (> 90 seconds)
+  if (voteTime > 0 && (now - voteTime > REMATCH_EXPIRATION_MS)) {
+    rematchVotes = [];
+    doubleVotes = [];
+  }
+
+  const totalPlayers = match.maxPlayers || players.length || 2;
+  const playerName = player.displayName || 'Player';
+
+  // Toggle/Cancel: If user clicks the button they already voted for, CANCEL the vote
+  if (voteType === 'rematch' && rematchVotes.includes(uid)) {
+    rematchVotes = rematchVotes.filter(id => id !== uid);
+    await matchRef.update({
+      rematchVotes,
+      rematchVotesUpdatedAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    await matchRef.collection('messages').add({
+      isSystem: true,
+      text: `${playerName} cancelled their Rematch vote`,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+    });
+    return { started: false, cancelled: true, voteType: 'rematch', votes: rematchVotes.length, total: totalPlayers };
+  }
+
+  if (voteType === 'double' && doubleVotes.includes(uid)) {
+    doubleVotes = doubleVotes.filter(id => id !== uid);
+    await matchRef.update({
+      doubleVotes,
+      rematchVotesUpdatedAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    await matchRef.collection('messages').add({
+      isSystem: true,
+      text: `${playerName} cancelled their Double vote`,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+    });
+    return { started: false, cancelled: true, voteType: 'double', votes: doubleVotes.length, total: totalPlayers };
+  }
+
+  // Cast new vote or switch vote
+  if (voteType === 'rematch') {
+    if (!rematchVotes.includes(uid)) rematchVotes.push(uid);
+    doubleVotes = doubleVotes.filter(id => id !== uid);
+  } else {
+    if (!doubleVotes.includes(uid)) doubleVotes.push(uid);
+    rematchVotes = rematchVotes.filter(id => id !== uid);
+  }
+
+  const currentVotes = voteType === 'rematch' ? rematchVotes : doubleVotes;
+
+  // Cast vote announcement to chat
+  await matchRef.collection('messages').add({
+    isSystem: true,
+    text: `${playerName} voted to ${voteType === 'double' ? 'DOUBLE' : 'REMATCH'} ${currentVotes.length}/${totalPlayers}`,
+    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+  });
+
+  // Check if all players agreed
+  if (currentVotes.length >= totalPlayers) {
+    const newWager = voteType === 'double' ? currentWager * 2 : currentWager;
+    const newPrizePool = newWager * totalPlayers;
+
+    // Check balances for all participants
+    for (const p of players) {
+      const pSnap = await db.collection('users').doc(p.uid).get();
+      const pBal = Number(pSnap.data()?.tokens || 0);
+      if (pBal < newWager) {
+        throw new Error(`${p.displayName || 'A player'} does not have sufficient tokens (${formatTokens(newWager)} Tokens required)`);
+      }
+    }
+
+    // Deduct entry fee from each player
+    for (const p of players) {
+      await updateTokens(p.uid, -newWager, 'match_wager', `${voteType === "double" ? "Double Down Entry" : "Rematch Entry"} — ${match.title || "Arena Match"}`);
+    }
+
+    // Reset match state
+    await matchRef.update({
+      wager: newWager,
+      prizePool: newPrizePool,
+      status: 'in_progress',
+      team1Reported: null,
+      team2Reported: null,
+      team1ReportedBy: null,
+      team2ReportedBy: null,
+      team1ReportedByName: null,
+      team2ReportedByName: null,
+      team1ReportedAt: null,
+      team2ReportedAt: null,
+      winner: null,
+      winnerTeam: null,
+      isDisputed: false,
+      disputedAt: null,
+      rematchVotes: [],
+      doubleVotes: [],
+      rematchVotesUpdatedAt: null,
+      startedAt: firebase.firestore.FieldValue.serverTimestamp(),
+      completedAt: null,
+    });
+
+    // Announce rematch start in chat
+    await matchRef.collection('messages').add({
+      isSystem: true,
+      text: `REMATCH STARTED: All players confirmed! Entry: ${formatTokens(newWager)} Tokens · Total Prize: ${formatTokens(newPrizePool * 0.90)} Tokens. Good luck!`,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+    });
+
+    return { started: true, voteType, newWager };
+  } else {
+    await matchRef.update({
+      rematchVotes,
+      doubleVotes,
+      rematchVotesUpdatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+    });
+    return { started: false, voteType, votes: currentVotes.length, total: totalPlayers };
+  }
+}
+
+// ── Leaderboard ──────────────────────────────────────────────
+
+/** Fetch real users ordered by matchesWon DESC, then totalEarned DESC */
+async function getLeaderboard() {
+  const snap = await db.collection('users').get();
+  const users = snap.docs
+    .map(d => ({ id: d.id, ...d.data() }))
+    .filter(u => {
+      if (u.isGuest === true || u.id.startsWith('guest_') || u.uid?.startsWith('guest_')) return false;
+      const name = (u.displayName || '').toLowerCase();
+      if (name.includes('guest') || name.includes('tester') || name.startsWith('guest #') || name.startsWith('guest-')) return false;
+      return true;
+    });
+
+  users.sort((a, b) => {
+    const winsDiff = (Number(b.matchesWon) || 0) - (Number(a.matchesWon) || 0);
+    if (winsDiff !== 0) return winsDiff;
+    return (Number(b.totalEarned) || 0) - (Number(a.totalEarned) || 0);
+  });
+
+  return users;
+}
+
+/** Calculate user rank on the leaderboard */
+async function getUserLeaderboardRank(uid) {
+  try {
+    const users = await getLeaderboard();
+    const index = users.findIndex(u => (u.id === uid || u.uid === uid));
+    if (index === -1) {
+      return { rank: null, display: '#--', badgeClass: 'rank-badge-normal' };
+    }
+    const rank = index + 1;
+    const badgeClass = rank === 1 ? 'rank-badge-1' : (rank <= 3 ? 'rank-badge-top' : 'rank-badge-normal');
+    return { rank, display: `#${rank}`, badgeClass };
+  } catch (e) {
+    return { rank: null, display: '#--', badgeClass: 'rank-badge-normal' };
+  }
+}
+
+// ── Transactions ─────────────────────────────────────────────
+
+/** Fetch last N transactions for a user */
+async function getUserTransactions(uid, limitCount = 15) {
+  const snap = await db.collection('transactions')
+    .where('userId', '==', uid)
+    .get();
+  const list = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+  list.sort((a, b) => (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0));
+  return list.slice(0, limitCount);
+}
+
+// ── Teams (for 2v2 & 3v3) ────────────────────────────────────
+
+/** Generate a random 5-character team invite code */
+function generateTeamCode() {
+  return 'TM-' + Math.random().toString(36).substr(2, 5).toUpperCase();
+}
+
+/**
+ * Profanity & Inappropriate Words Filter
+ */
+const PROFANITY_BLOCKLIST = [
+  'nigger', 'nigga', 'faggot', 'fag', 'cunt', 'whore', 'slut', 'bitch',
+  'kike', 'chink', 'spic', 'retard', 'tranny', 'pedophile', 'pedo',
+  'hitler', 'nazi', 'kkk', 'rape', 'rapist', 'terrorist', 'isis',
+  'pussy', 'dick', 'cock', 'penis', 'vagina', 'asshole', 'bastard',
+  'motherfucker', 'fuck', 'shit', 'kill yourself', 'kys', 'porn', 'sex'
+];
+
+function isProfane(text) {
+  if (!text) return false;
+  let clean = text.toLowerCase()
+    .replace(/@/g, 'a')
+    .replace(/0/g, 'o')
+    .replace(/1|!|\|/g, 'i')
+    .replace(/3/g, 'e')
+    .replace(/5|\$/g, 's')
+    .replace(/7/g, 't')
+    .replace(/8/g, 'b')
+    .replace(/[^a-z0-9]/g, '');
+
+  for (const word of PROFANITY_BLOCKLIST) {
+    const cleanWord = word.replace(/[^a-z0-9]/g, '');
+    if (clean.includes(cleanWord)) {
+      return true;
+    }
+  }
+  return false;
+}
+
+/** Create a new team */
+async function createTeam(user, { name, tag, icon, iconColor, bgColor, borderColor }) {
+  if (!name || !name.trim()) throw new Error('Team name is required');
+  const trimmedName = name.trim();
+  const cleanTag = (tag || name.substring(0, 4)).toUpperCase().trim().replace(/[^A-Z0-9]/g, '');
+  
+  if (isProfane(trimmedName) || isProfane(cleanTag)) {
+    throw new Error('Team name or tag contains inappropriate words. Please choose another.');
+  }
+
+  const code = generateTeamCode();
+
+  const leader = {
+    uid:         user.uid,
+    displayName: user.displayName || 'Leader',
+    photoURL:    user.photoURL || '',
+    isLeader:    true,
+  };
+
+  const teamIcon = icon || 'shield';
+  const teamIconColor = iconColor || '#f59e0b';
+  const teamBgColor = bgColor || 'rgba(245, 158, 11, 0.18)';
+  const teamBorderColor = borderColor || 'rgba(245, 158, 11, 0.45)';
+
+  const teamRef = await db.collection('teams').add({
+    name:              trimmedName,
+    tag:               cleanTag,
+    code,
+    icon:              teamIcon,
+    iconColor:         teamIconColor,
+    bgColor:           teamBgColor,
+    borderColor:       teamBorderColor,
+    ownerUid:          user.uid,
+    ownerName:         user.displayName || 'Leader',
+    members:           [leader],
+    memberUids:        [user.uid],
+    wagerCoverage:     'none',
+    coveredMemberUids: [],
+    splitRule:         'equal',
+    createdAt:         firebase.firestore.FieldValue.serverTimestamp(),
+  });
+
+  // Link active team to user document
+  await db.collection('users').doc(user.uid).update({
+    teamId:   teamRef.id,
+    teamName: trimmedName,
+    teamTag:  cleanTag,
+  });
+
+  return { 
+    id: teamRef.id, 
+    code, 
+    name: trimmedName, 
+    tag: cleanTag,
+    icon: teamIcon,
+    iconColor: teamIconColor,
+    bgColor: teamBgColor,
+    borderColor: teamBorderColor
+  };
+}
+
+/** Fetch all teams a user belongs to or owns */
+async function getUserTeams(uid) {
+  const teams = [];
+  const seen = new Set();
+  try {
+    const snap = await db.collection('teams').where('memberUids', 'array-contains', uid).get();
+    snap.docs.forEach(doc => {
+      if (!seen.has(doc.id)) {
+        seen.add(doc.id);
+        teams.push({ id: doc.id, ...doc.data() });
+      }
+    });
+    const ownerSnap = await db.collection('teams').where('ownerUid', '==', uid).get();
+    ownerSnap.docs.forEach(doc => {
+      if (!seen.has(doc.id)) {
+        seen.add(doc.id);
+        teams.push({ id: doc.id, ...doc.data() });
+      }
+    });
+  } catch (e) {
+    console.warn('getUserTeams notice:', e.message);
+  }
+  return teams;
+}
+
+/** Fetch a user's current active team */
+async function getUserTeam(uid) {
+  try {
+    const user = await getUser(uid);
+    if (!user) return null;
+    if (user.teamId) {
+      const snap = await db.collection('teams').doc(user.teamId).get();
+      if (snap.exists) return { id: snap.id, ...snap.data() };
+    }
+    // Fallback search
+    const snap = await db.collection('teams').where('memberUids', 'array-contains', uid).limit(1).get();
+    if (!snap.empty) {
+      return { id: snap.docs[0].id, ...snap.docs[0].data() };
+    }
+  } catch (e) {
+    console.warn('getUserTeam fallback notice:', e.message);
+  }
+  return null;
+}
+
+/** Update team wager coverage and earnings split settings */
+async function updateTeamSettings(teamId, settings) {
+  const teamRef = db.collection('teams').doc(teamId);
+  await teamRef.update({
+    wagerCoverage:     settings.wagerCoverage || 'none', // 'none' | 'all' | 'custom'
+    coveredMemberUids: settings.coveredMemberUids || [],
+    splitRule:         settings.splitRule || 'equal',     // 'equal' | 'captain_first' | 'captain_70'
+    updatedAt:         firebase.firestore.FieldValue.serverTimestamp(),
+  });
+}
+
+/** Set user active team */
+async function setActiveTeam(uid, team) {
+  await db.collection('users').doc(uid).update({
+    teamId:   team.id,
+    teamName: team.name,
+    teamTag:  team.tag,
+  });
+}
+
+/** Join a team using invite code */
+async function joinTeamByCode(code, user) {
+  const cleanCode = code.trim().toUpperCase();
+  const snap = await db.collection('teams').where('code', '==', cleanCode).limit(1).get();
+  if (snap.empty) throw new Error('Team invite code not found');
+
+  const teamDoc = snap.docs[0];
+  const team = teamDoc.data();
+
+  if (team.members && team.members.length >= 6) {
+    throw new Error('This team is already at max roster capacity (6 players)');
+  }
+  if (team.members && team.members.some(m => m.uid === user.uid)) {
+    // Already on team, switch active
+    await setActiveTeam(user.uid, { id: teamDoc.id, name: team.name, tag: team.tag });
+    return { id: teamDoc.id, name: team.name, tag: team.tag, code: team.code };
+  }
+
+  const newMember = {
+    uid:         user.uid,
+    displayName: user.displayName || 'Champion',
+    photoURL:    user.photoURL || '',
+    isLeader:    false,
+  };
+
+  await teamDoc.ref.update({
+    members:    firebase.firestore.FieldValue.arrayUnion(newMember),
+    memberUids: firebase.firestore.FieldValue.arrayUnion(user.uid),
+  });
+
+  await db.collection('users').doc(user.uid).update({
+    teamId:   teamDoc.id,
+    teamName: team.name,
+    teamTag:  team.tag,
+  });
+
+  return { id: teamDoc.id, name: team.name, tag: team.tag, code: team.code };
+}
+
+/** Leave or disband team */
+async function leaveTeam(teamId, uid) {
+  const teamRef = db.collection('teams').doc(teamId);
+  const snap = await teamRef.get();
+  if (!snap.exists) return;
+
+  const team = snap.data();
+  const isOwner = team.ownerUid === uid;
+
+  if (isOwner || (team.members && team.members.length <= 1)) {
+    // Delete team and unlink members
+    for (const m of team.members || []) {
+      await db.collection('users').doc(m.uid).update({
+        teamId:   firebase.firestore.FieldValue.delete(),
+        teamName: firebase.firestore.FieldValue.delete(),
+        teamTag:  firebase.firestore.FieldValue.delete(),
+      }).catch(() => {});
+    }
+    await teamRef.delete();
+    return { action: 'disbanded' };
+  } else {
+    // Remove member
+    const updatedMembers = (team.members || []).filter(m => m.uid !== uid);
+    const updatedUids    = (team.memberUids || []).filter(u => u !== uid);
+
+    await teamRef.update({
+      members:    updatedMembers,
+      memberUids: updatedUids,
+    });
+
+    const u = await getUser(uid);
+    if (u?.teamId === teamId) {
+      await db.collection('users').doc(uid).update({
+        teamId:   firebase.firestore.FieldValue.delete(),
+        teamName: firebase.firestore.FieldValue.delete(),
+        teamTag:  firebase.firestore.FieldValue.delete(),
+      }).catch(() => {});
+    }
+    return { action: 'left' };
+  }
+}
+
+// ── Epic Games Linking handled in linkEpicAccount / syncEpicAccountName below ──
+
+// ── Admin Actions ────────────────────────────────────────────
+
+/** Mark a staff call as resolved */
+async function resolveStaffCall(callId, adminName, resolutionNotes = '') {
+  await db.collection('staff_calls').doc(callId).update({
+    status:          'resolved',
+    resolvedBy:      adminName,
+    resolutionNotes: resolutionNotes.trim(),
+    resolvedAt:      firebase.firestore.FieldValue.serverTimestamp(),
+  });
+}
+
+/** Admin grant or deduct tokens to any user (Resolves by raw UID, Discord ID, or Username) */
+async function adminAdjustTokens(identifier, amount, reason) {
+  const num = Number(amount);
+  if (isNaN(num)) throw new Error('Invalid token amount');
+
+  const raw = identifier.trim().replace(/^@/, '');
+  let targetUid = raw;
+
+  // Check if doc exists with raw input
+  let userSnap = await db.collection('users').doc(raw).get();
+
+  // If not, check with discord: prefix
+  if (!userSnap.exists) {
+    const withPrefix = `discord:${raw.replace('discord:', '')}`;
+    userSnap = await db.collection('users').doc(withPrefix).get();
+    if (userSnap.exists) {
+      targetUid = withPrefix;
+    }
+  }
+
+  // If still not, search by discordUsername or displayName
+  if (!userSnap.exists) {
+    const byUsername = await db.collection('users').where('discordUsername', '==', raw).limit(1).get();
+    if (!byUsername.empty) {
+      targetUid = byUsername.docs[0].id;
+      userSnap = byUsername.docs[0];
+    } else {
+      const byDisplayName = await db.collection('users').where('displayName', '==', raw).limit(1).get();
+      if (!byDisplayName.empty) {
+        targetUid = byDisplayName.docs[0].id;
+        userSnap = byDisplayName.docs[0];
+      }
+    }
+  }
+
+  if (!userSnap.exists) {
+    throw new Error(`User not found for identifier "${identifier}". Please enter a valid Discord ID, UID, or Username.`);
+  }
+
+  await updateTokens(targetUid, num, 'admin', `Admin adjustment: ${reason}`);
+  return { targetUid, userName: userSnap.data()?.displayName || targetUid };
+}
+
+/** Admin force cancel a match and refund players */
+async function adminForceCancelMatch(matchId, adminName) {
+  const matchRef = db.collection('matches').doc(matchId);
+  const snap = await matchRef.get();
+  if (!snap.exists) throw new Error('Match not found');
+
+  const match = snap.data();
+  const wager = Number(match.wager || 0);
+
+  if (match.players && match.players.length > 0) {
+    const refundPromises = match.players.map(p =>
+      updateTokens(p.uid, wager, 'refund', `Admin (${adminName}) cancelled match — "${match.title}" refund`)
+    );
+    await Promise.all(refundPromises);
+  }
+
+  await matchRef.update({
+    status:      'cancelled',
+    cancelledBy: adminName,
+    completedAt: firebase.firestore.FieldValue.serverTimestamp(),
+  });
+}
+
+// ── Premium Pass & Player Tipping ────────────────────────────
+
+/** Check if user's Champion Premium is currently active */
+function isUserPremiumActive(userData) {
+  if (!userData || !userData.isPremium) return false;
+  if (!userData.premiumExpiresAt) return true;
+  try {
+    const expDate = typeof userData.premiumExpiresAt.toDate === 'function' 
+      ? userData.premiumExpiresAt.toDate() 
+      : new Date(userData.premiumExpiresAt);
+    return expDate.getTime() > Date.now();
+  } catch (e) {
+    return true;
+  }
+}
+
+/** Get remaining days of active Champion Premium */
+function getPremiumDaysRemaining(userData) {
+  if (!userData || !userData.isPremium) return 0;
+  if (!userData.premiumExpiresAt) return 30;
+  try {
+    const expDate = typeof userData.premiumExpiresAt.toDate === 'function' 
+      ? userData.premiumExpiresAt.toDate() 
+      : new Date(userData.premiumExpiresAt);
+    const diffMs = expDate.getTime() - Date.now();
+    if (diffMs <= 0) return 0;
+    return Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+  } catch (e) {
+    return 30;
+  }
+}
+
+/** Purchase or Extend Champion Premium (Cost: 5.00 Tokens for 30 Days) */
+async function buyPremiumPass(uid, days = 30) {
+  const user = await getUser(uid);
+  if (!user) throw new Error('User not found');
+
+  if (Number(user.tokens || 0) < 5.00) {
+    throw new Error('Insufficient tokens. Premium costs 5.00 Tokens ($5.00).');
+  }
+
+  // Deduct 5.00 tokens
+  await updateTokens(uid, -5.00, 'shop', `Purchased Champion Premium (${days} Days)`);
+
+  let baseTime = Date.now();
+  if (user.isPremium && user.premiumExpiresAt) {
+    try {
+      const curExp = typeof user.premiumExpiresAt.toDate === 'function' ? user.premiumExpiresAt.toDate() : new Date(user.premiumExpiresAt);
+      if (curExp.getTime() > baseTime) {
+        baseTime = curExp.getTime();
+      }
+    } catch (e) {}
+  }
+
+  const newExpDate = new Date(baseTime + (days * 24 * 60 * 60 * 1000));
+
+  await db.collection('users').doc(uid).update({
+    isPremium: true,
+    premiumExpiresAt: firebase.firestore.Timestamp.fromDate(newExpDate)
+  });
+
+  return true;
+}
+
+/** Auto-refund duplicate premium purchases if user bought it multiple times */
+async function autoRefundDuplicatePremium(uid) {
+  try {
+    const snap = await db.collection('transactions')
+      .where('userId', '==', uid)
+      .where('type', '==', 'shop')
+      .get();
+    
+    const premiumPurchases = snap.docs.filter(d => {
+      const desc = d.data().description || '';
+      return desc.includes('Premium Pass') || desc.includes('Champion Premium');
+    });
+
+    if (premiumPurchases.length > 1) {
+      const refundCheckSnap = await db.collection('transactions')
+        .where('userId', '==', uid)
+        .where('type', '==', 'refund_premium_duplicates')
+        .limit(1)
+        .get();
+
+      if (refundCheckSnap.empty) {
+        const excessCount = premiumPurchases.length - 1;
+        const refundAmount = excessCount * 5.00;
+        await updateTokens(
+          uid,
+          refundAmount,
+          'refund_premium_duplicates',
+          `↩️ Refunded ${refundAmount.toFixed(2)} Tokens for ${excessCount} duplicate Premium purchase(s)`
+        );
+      }
+    }
+  } catch (e) {
+    console.warn('autoRefundDuplicatePremium notice:', e);
+  }
+}
+
+/** Tip tokens to another player */
+async function tipPlayer(senderUid, receiverUid, amount) {
+  const num = Math.round(Number(amount) * 100) / 100;
+  if (isNaN(num) || num < 0.10) {
+    throw new Error('Minimum tip amount is 0.10 Tokens');
+  }
+  if (senderUid === receiverUid) {
+    throw new Error('You cannot tip yourself');
+  }
+
+  const sender = await getUser(senderUid);
+  if (!sender) throw new Error('Sender user not found');
+  if (Number(sender.tokens || 0) < num) {
+    throw new Error(`Insufficient tokens (Need ${formatTokens(num)} Tokens)`);
+  }
+
+  const receiver = await getUser(receiverUid);
+  if (!receiver) throw new Error('Recipient user not found');
+
+  // Deduct from sender
+  await updateTokens(
+    senderUid,
+    -num,
+    'tip_sent',
+    `Tipped ${formatTokens(num)} Tokens to @${receiver.discordUsername || receiver.displayName}`
+  );
+
+  // Credit to receiver
+  await updateTokens(
+    receiverUid,
+    num,
+    'tip_received',
+    `Received ${formatTokens(num)} Tokens tip from @${sender.discordUsername || sender.displayName}`
+  );
+
+  return { sender, receiver, amount: num };
+}
+
+/**
+ * Link connected Epic Games account to user profile.
+ * Strictly enforces 1-to-1 linking: no two accounts can share the same Epic account/username.
+ */
+async function linkEpicAccount(uid, epicUsername, epicAccountId = '') {
+  if (!uid) throw new Error('User ID is required');
+  const cleanName = (epicUsername || '').trim();
+  const cleanId = (epicAccountId || '').trim();
+  if (!cleanName || cleanName.length < 2) {
+    throw new Error('Please enter a valid Epic Games / Fortnite username');
+  }
+
+  // 1. Check if another account already has this epicAccountId linked
+  if (cleanId) {
+    const idSnap = await db.collection('users')
+      .where('epicAccountId', '==', cleanId)
+      .limit(5)
+      .get();
+    const conflict = idSnap.docs.find(d => d.id !== uid);
+    if (conflict) {
+      const conflictName = conflict.data()?.displayName || conflict.data()?.epicUsername || 'another user';
+      throw new Error(`This Epic Games account is already linked to @${conflictName}. It must be unlinked from that account first.`);
+    }
+  }
+
+  // 2. Check if another account already has this exact epicUsername linked (case-insensitive check)
+  const lowerName = cleanName.toLowerCase();
+  const nameSnap = await db.collection('users')
+    .where('epicUsername_lower', '==', lowerName)
+    .limit(5)
+    .get();
+  let conflictUser = nameSnap.docs.find(d => d.id !== uid);
+  
+  if (!conflictUser) {
+    const rawSnap = await db.collection('users')
+      .where('epicUsername', '==', cleanName)
+      .limit(5)
+      .get();
+    conflictUser = rawSnap.docs.find(d => d.id !== uid);
+  }
+
+  if (conflictUser) {
+    const conflictName = conflictUser.data()?.displayName || conflictUser.data()?.epicUsername || 'another user';
+    throw new Error(`The Epic Games username "${cleanName}" is already linked to @${conflictName}. It must be unlinked from that account first.`);
+  }
+
+  // Safe to link!
+  const userRef = db.collection('users').doc(uid);
+  await userRef.set({
+    epicUsername:       cleanName,
+    epicUsername_lower: lowerName,
+    epicAccountId:      cleanId,
+    epicVerified:       true,
+    epicLinkedAt:       firebase.firestore.FieldValue.serverTimestamp(),
+  }, { merge: true });
+
+  return { success: true, epicUsername: cleanName };
+}
+
+/**
+ * Sync / verify connected Epic Games account.
+ */
+async function syncEpicAccountName(uid) {
+  if (!uid) throw new Error('User ID is required');
+  const user = await getUser(uid);
+  if (!user || !user.epicUsername) {
+    throw new Error('No verified Epic Games account found to sync. Link your Epic account first.');
+  }
+
+  await db.collection('users').doc(uid).set({
+    epicVerified:       true,
+    epicLastSynced:     firebase.firestore.FieldValue.serverTimestamp(),
+  }, { merge: true });
+
+  return { success: true, epicUsername: user.epicUsername };
+}
+
+/**
+ * Unlink connected Epic Games account from user profile.
+ * Deducts 2.00 Tokens unlinking fee. Frees the Epic account for future linking.
+ */
+async function unlinkEpicAccount(uid) {
+  const user = await getUser(uid);
+  if (!user) throw new Error('User not found');
+  if (!user.epicUsername && !user.epicAccountId) {
+    throw new Error('No Epic Games account is currently linked');
+  }
+
+  if (Number(user.tokens || 0) < 2.00) {
+    throw new Error('Unlinking requires 2.00 Tokens ($2.00). Please add tokens to your balance.');
+  }
+
+  await updateTokens(
+    uid,
+    -2.00,
+    'epic_unlink_fee',
+    'Unlinked Epic Games account (-2.00 Tokens fee)'
+  );
+
+  const userRef = db.collection('users').doc(uid);
+  await userRef.update({
+    epicUsername:       firebase.firestore.FieldValue.delete(),
+    epicUsername_lower: firebase.firestore.FieldValue.delete(),
+    epicAccountId:      firebase.firestore.FieldValue.delete(),
+    epicVerified:       false,
+    epicUnlinkedAt:     firebase.firestore.FieldValue.serverTimestamp(),
+  });
+
+  return { success: true };
+}
+
+/**
+ * Link social media account (Twitch or X).
+ */
+async function linkSocialAccount(uid, platform, handle) {
+  if (!uid) throw new Error('User ID is required');
+  let cleanHandle = (handle || '').trim();
+  cleanHandle = cleanHandle.replace(/^https?:\/\/(www\.)?(twitch\.tv\/|x\.com\/|twitter\.com\/)/i, '');
+  cleanHandle = cleanHandle.replace(/^@+/, '').trim();
+
+  if (!cleanHandle || cleanHandle.length < 1) {
+    throw new Error(`Please enter a valid ${platform === 'twitch' ? 'Twitch' : 'X'} username`);
+  }
+
+  const userRef = db.collection('users').doc(uid);
+  const updateData = {};
+  if (platform === 'twitch') {
+    updateData.twitchUsername = cleanHandle;
+    updateData.twitchLinkedAt = firebase.firestore.FieldValue.serverTimestamp();
+  } else if (platform === 'x' || platform === 'twitter') {
+    updateData.xUsername = cleanHandle;
+    updateData.xLinkedAt = firebase.firestore.FieldValue.serverTimestamp();
+  } else {
+    throw new Error('Unsupported platform');
+  }
+
+  await userRef.set(updateData, { merge: true });
+  return { success: true, handle: cleanHandle };
+}
+
+/**
+ * Unlink social media account (Twitch or X).
+ */
+async function unlinkSocialAccount(uid, platform) {
+  if (!uid) throw new Error('User ID is required');
+  const userRef = db.collection('users').doc(uid);
+  const updateData = {};
+  if (platform === 'twitch') {
+    updateData.twitchUsername = firebase.firestore.FieldValue.delete();
+    updateData.twitchLinkedAt = firebase.firestore.FieldValue.delete();
+  } else if (platform === 'x' || platform === 'twitter') {
+    updateData.xUsername = firebase.firestore.FieldValue.delete();
+    updateData.xLinkedAt = firebase.firestore.FieldValue.delete();
+  } else {
+    throw new Error('Unsupported platform');
+  }
+
+  await userRef.update(updateData);
+  return { success: true };
+}
+
+// ── Avatars & Cosmetics Shop Catalog ────────────────────────
+
+const DEFAULT_STARTER_PFP_ID = 'pfp_uncommon_1';
+const DEFAULT_STARTER_PFP_URL = 'cosmetics/uncomon/uncomon.png';
+
+const SHOP_PFPS = {
+  // Uncommon — 1.00 Token
+  'pfp_uncommon_1': { id: 'pfp_uncommon_1', name: '#1',  rarity: 'Uncommon', cost: 1.00, file: 'cosmetics/uncomon/uncomon.png', isDefault: true, color: '#10b981' },
+  'pfp_uncommon_2': { id: 'pfp_uncommon_2', name: '#2',  rarity: 'Uncommon', cost: 1.00, file: 'cosmetics/uncomon/uncomobn.png', color: '#10b981' },
+  'pfp_uncommon_3': { id: 'pfp_uncommon_3', name: '#3',  rarity: 'Uncommon', cost: 1.00, file: 'cosmetics/uncomon/uncomok.png', color: '#10b981' },
+  'pfp_uncommon_4': { id: 'pfp_uncommon_4', name: '#4',  rarity: 'Uncommon', cost: 1.00, file: 'cosmetics/uncomon/uncomokda.png', color: '#10b981' },
+  'pfp_uncommon_5': { id: 'pfp_uncommon_5', name: '#5',  rarity: 'Uncommon', cost: 1.00, file: 'cosmetics/uncomon/uncomokik.png', color: '#10b981' },
+  'pfp_uncommon_6': { id: 'pfp_uncommon_6', name: '#6',  rarity: 'Uncommon', cost: 1.00, file: 'cosmetics/uncomon/uncomon1311111.png', color: '#10b981' },
+  'pfp_uncommon_7': { id: 'pfp_uncommon_7', name: '#7',  rarity: 'Uncommon', cost: 1.00, file: 'cosmetics/uncomon/uncomonk.png', color: '#10b981' },
+
+  // Rare — 1.75 Tokens
+  'pfp_rare_1': { id: 'pfp_rare_1', name: '#8',  rarity: 'Rare', cost: 1.75, file: 'cosmetics/rare/rare too.png', color: '#3b82f6' },
+  'pfp_rare_2': { id: 'pfp_rare_2', name: '#9',  rarity: 'Rare', cost: 1.75, file: 'cosmetics/rare/rare.png', color: '#3b82f6' },
+  'pfp_rare_3': { id: 'pfp_rare_3', name: '#10', rarity: 'Rare', cost: 1.75, file: 'cosmetics/rare/rare23487.png', color: '#3b82f6' },
+  'pfp_rare_4': { id: 'pfp_rare_4', name: '#11', rarity: 'Rare', cost: 1.75, file: 'cosmetics/rare/rarepussy.png', color: '#3b82f6' },
+  'pfp_rare_5': { id: 'pfp_rare_5', name: '#12', rarity: 'Rare', cost: 1.75, file: 'cosmetics/rare/rarewee.png', color: '#3b82f6' },
+  'pfp_rare_6': { id: 'pfp_rare_6', name: '#13', rarity: 'Rare', cost: 1.75, file: 'cosmetics/rare/rareyhyh.png', color: '#3b82f6' },
+  'pfp_rare_7': { id: 'pfp_rare_7', name: '#14', rarity: 'Rare', cost: 1.75, file: 'cosmetics/rare/raré.png', color: '#3b82f6' },
+
+  // Epic — 2.25 Tokens
+  'pfp_epic_1': { id: 'pfp_epic_1', name: '#15', rarity: 'Epic', cost: 2.25, file: 'cosmetics/epic/epickidadddwq.png', color: '#a855f7' },
+  'pfp_epic_2': { id: 'pfp_epic_2', name: '#16', rarity: 'Epic', cost: 2.25, file: 'cosmetics/epic/apikcica.png', color: '#a855f7' },
+  'pfp_epic_3': { id: 'pfp_epic_3', name: '#17', rarity: 'Epic', cost: 2.25, file: 'cosmetics/epic/babyrare.png', color: '#a855f7' },
+  'pfp_epic_4': { id: 'pfp_epic_4', name: '#18', rarity: 'Epic', cost: 2.25, file: 'cosmetics/epic/dddqjp9qdhp.png', color: '#a855f7' },
+  'pfp_epic_5': { id: 'pfp_epic_5', name: '#19', rarity: 'Epic', cost: 2.25, file: 'cosmetics/epic/edcpdaöfko.png', color: '#a855f7' },
+  'pfp_epic_6': { id: 'pfp_epic_6', name: '#20', rarity: 'Epic', cost: 2.25, file: 'cosmetics/epic/epikia.png', color: '#a855f7' },
+  'pfp_epic_7': { id: 'pfp_epic_7', name: '#21', rarity: 'Epic', cost: 2.25, file: 'cosmetics/epic/epikica.png', color: '#a855f7' },
+  'pfp_epic_8': { id: 'pfp_epic_8', name: '#22', rarity: 'Epic', cost: 2.25, file: 'cosmetics/epic/epikus.png', color: '#a855f7' },
+
+  // Exclusive — 5.00 Tokens
+  'pfp_exclusive_1': { id: 'pfp_exclusive_1', name: '#23', rarity: 'Exclusive', cost: 5.00, file: 'cosmetics/exclusive/exclusive.png', color: '#f59e0b' },
+  'pfp_exclusive_2': { id: 'pfp_exclusive_2', name: '#24', rarity: 'Exclusive', cost: 5.00, file: 'cosmetics/exclusive/exclusic.png', color: '#f59e0b' },
+  'pfp_exclusive_3': { id: 'pfp_exclusive_3', name: '#25', rarity: 'Exclusive', cost: 5.00, file: 'cosmetics/exclusive/vzs excluisive.png', color: '#f59e0b' },
+  'pfp_exclusive_4': { id: 'pfp_exclusive_4', name: '#26', rarity: 'Exclusive', cost: 5.00, file: 'cosmetics/epic/epic one.png', color: '#f59e0b' },
+  'pfp_exclusive_5': { id: 'pfp_exclusive_5', name: '#27', rarity: 'Exclusive', cost: 5.00, file: 'cosmetics/epic/epic.png', color: '#f59e0b' },
+  'pfp_exclusive_6': { id: 'pfp_exclusive_6', name: '#28', rarity: 'Exclusive', cost: 5.00, file: 'cosmetics/epic/Epic1234.png', color: '#f59e0b' },
+  'pfp_exclusive_7': { id: 'pfp_exclusive_7', name: '#29', rarity: 'Exclusive', cost: 5.00, file: 'cosmetics/epic/1333334.png', color: '#f59e0b' },
+  'pfp_exclusive_8': { id: 'pfp_exclusive_8', name: '#30', rarity: 'Exclusive', cost: 5.00, file: 'cosmetics/epic/epic1231344.png', color: '#f59e0b' },
+};
+
+const BANNERS_COMING_SOON = true;
+const SHOP_BANNERS = {};
+
+const SHOP_TITLES = {
+  'title_no_signal': {
+    id: 'title_no_signal',
+    name: 'No signal',
+    icon: 'globe-off',
+    color: '#ef4444',
+    bgColor: 'rgba(239, 68, 68, 0.15)',
+    borderColor: 'rgba(239, 68, 68, 0.45)',
+    rarity: 'Rare',
+    cost: 1.75
+  },
+  'title_clutch_god': {
+    id: 'title_clutch_god',
+    name: 'Clutch God',
+    icon: 'flame',
+    color: '#f59e0b',
+    bgColor: 'rgba(245, 158, 11, 0.15)',
+    borderColor: 'rgba(245, 158, 11, 0.45)',
+    rarity: 'Exclusive',
+    cost: 5.00
+  },
+  'title_high_roller': {
+    id: 'title_high_roller',
+    name: 'High Roller',
+    icon: 'gem',
+    color: '#a855f7',
+    bgColor: 'rgba(168, 85, 247, 0.15)',
+    borderColor: 'rgba(168, 85, 247, 0.45)',
+    rarity: 'Epic',
+    cost: 2.50
+  },
+  'title_demon': {
+    id: 'title_demon',
+    name: 'Demon',
+    icon: 'skull',
+    color: '#ec4899',
+    bgColor: 'rgba(236, 72, 153, 0.15)',
+    borderColor: 'rgba(236, 72, 153, 0.45)',
+    rarity: 'Epic',
+    cost: 2.25
+  },
+  'title_untouchable': {
+    id: 'title_untouchable',
+    name: 'Untouchable',
+    icon: 'shield',
+    color: '#3b82f6',
+    bgColor: 'rgba(59, 130, 246, 0.15)',
+    borderColor: 'rgba(59, 130, 246, 0.45)',
+    rarity: 'Rare',
+    cost: 1.75
+  },
+  'title_certified': {
+    id: 'title_certified',
+    name: 'Certified',
+    icon: 'check-circle',
+    color: '#10b981',
+    bgColor: 'rgba(16, 185, 129, 0.15)',
+    borderColor: 'rgba(16, 185, 129, 0.45)',
+    rarity: 'Uncommon',
+    cost: 1.00
+  }
+};
+
+/** Equip or Unequip a Title */
+async function equipUserTitle(uid, titleId) {
+  const user = await getUser(uid);
+  if (!user) throw new Error('User not found');
+
+  await db.collection('users').doc(uid).update({
+    equippedTitle: titleId || null
+  });
+}
+
+/**
+ * Deterministic pseudo-random number generator for daily shop seeds.
+ */
+function seededRandom(seed) {
+  const x = Math.sin(seed++) * 10000;
+  return x - Math.floor(x);
+}
+
+/**
+ * Returns 12 featured daily shop PFPs (2 full rows):
+ * Guaranteed 5 Exclusive, 3 Epic, 2 Rare, 2 Uncommon (12 total).
+ */
+/**
+ * Returns 6 featured daily shop PFPs (1 single clean row):
+ * 2 Exclusive, 2 Epic, 1 Rare, 1 Uncommon (6 total).
+ */
+function getDailyShopPfps() {
+  const now = new Date();
+  const dateKey = `${now.getUTCFullYear()}-${now.getUTCMonth() + 1}-${now.getUTCDate()}`;
+  
+  let seed = 0;
+  for (let i = 0; i < dateKey.length; i++) {
+    seed = (seed * 31 + dateKey.charCodeAt(i)) >>> 0;
+  }
+
+  const allPfps = Object.values(SHOP_PFPS);
+  const exclusives = allPfps.filter(p => p.rarity === 'Exclusive');
+  const epics = allPfps.filter(p => p.rarity === 'Epic');
+  const rares = allPfps.filter(p => p.rarity === 'Rare');
+  const uncommons = allPfps.filter(p => p.rarity === 'Uncommon' && !p.isDefault);
+
+  function pickRandomN(arr, n, subSeed) {
+    const copy = [...arr];
+    const picked = [];
+    for (let i = 0; i < n && copy.length > 0; i++) {
+      const idx = Math.floor(seededRandom(subSeed + i * 13) * copy.length);
+      picked.push(copy[idx]);
+      copy.splice(idx, 1);
+    }
+    return picked;
+  }
+
+  const pickedExclusive = pickRandomN(exclusives, 2, seed + 1);
+  const pickedEpic = pickRandomN(epics, 2, seed + 2);
+  const pickedRare = pickRandomN(rares, 1, seed + 3);
+  const pickedUncommon = pickRandomN(uncommons, 1, seed + 4);
+
+  return [...pickedExclusive, ...pickedEpic, ...pickedRare, ...pickedUncommon];
+}
+
+/** Purchase a PFP from Shop */
+async function buyShopPfp(uid, pfpId) {
+  const item = SHOP_PFPS[pfpId];
+  if (!item) throw new Error('Avatar not found in catalog');
+
+  const user = await getUser(uid);
+  if (!user) throw new Error('User not found');
+  if (Number(user.tokens || 0) < item.cost) {
+    throw new Error(`Insufficient tokens (Requires ${formatTokens(item.cost)} Tokens, you have ${formatTokens(user.tokens || 0)} Tokens)`);
+  }
+
+  const unlocked = user.unlockedPfps || [];
+  if (unlocked.includes(pfpId) || item.isDefault) {
+    throw new Error('You already own this avatar');
+  }
+
+  await updateTokens(uid, -item.cost, 'shop', `Purchased Avatar: "${item.name}" (${item.rarity})`);
+  await db.collection('users').doc(uid).update({
+    unlockedPfps: firebase.firestore.FieldValue.arrayUnion(pfpId)
+  });
+
+  return item;
+}
+
+/** Equip a PFP from Customization Studio */
+async function equipShopPfp(uid, pfpId) {
+  const item = SHOP_PFPS[pfpId];
+  if (!item) throw new Error('Avatar not found');
+
+  const user = await getUser(uid);
+  if (!user) throw new Error('User not found');
+
+  const unlocked = user.unlockedPfps || [];
+  if (!item.isDefault && !unlocked.includes(pfpId)) {
+    throw new Error('You must unlock this avatar before equipping it');
+  }
+
+  await db.collection('users').doc(uid).update({
+    photoURL: item.file,
+    equippedPfp: pfpId
+  });
+
+  return item;
+}
+
+/**
+ * Returns today's featured daily shop items based on UTC date seed and rarity weights.
+ * High-cost items (Unreal, Champion, Elite) have lower weights and appear rarely.
+ */
+function getDailyShopTitles(count = 5) {
+  const now = new Date();
+  const dateKey = `${now.getUTCFullYear()}-${now.getUTCMonth() + 1}-${now.getUTCDate()}`;
+  
+  // Create integer seed from dateKey string
+  let seed = 0;
+  for (let i = 0; i < dateKey.length; i++) {
+    seed = (seed * 31 + dateKey.charCodeAt(i)) >>> 0;
+  }
+
+  const eligible = Object.values(SHOP_TITLES).filter(t => t.weight > 0);
+  const selected = [];
+  const pool = [...eligible];
+
+  for (let step = 0; step < count && pool.length > 0; step++) {
+    const totalWeight = pool.reduce((sum, item) => sum + item.weight, 0);
+    let rand = seededRandom(seed + step * 7) * totalWeight;
+    
+    for (let i = 0; i < pool.length; i++) {
+      rand -= pool[i].weight;
+      if (rand <= 0 || i === pool.length - 1) {
+        selected.push(pool[i]);
+        pool.splice(i, 1);
+        break;
+      }
+    }
+  }
+
+  return selected;
+}
+
+/** Purchase a Title from Shop */
+async function buyShopTitle(uid, titleId) {
+  const item = SHOP_TITLES[titleId];
+  if (!item) throw new Error('Title not found in shop');
+
+  const user = await getUser(uid);
+  if (!user) throw new Error('User not found');
+  if (Number(user.tokens || 0) < item.cost) {
+    throw new Error(`Insufficient tokens (Requires ${formatTokens(item.cost)} Tokens)`);
+  }
+
+  const unlocked = user.unlockedTitles || [];
+  if (unlocked.includes(titleId)) {
+    throw new Error('You already own this title');
+  }
+
+  await updateTokens(uid, -item.cost, 'shop', `Purchased Title: "${item.name}"`);
+  await db.collection('users').doc(uid).update({
+    unlockedTitles: firebase.firestore.FieldValue.arrayUnion(titleId)
+  });
+
+  return item;
+}
+
+/** Purchase a Profile Banner from Shop */
+async function buyShopBanner(uid, bannerId) {
+  const item = SHOP_BANNERS[bannerId];
+  if (!item) throw new Error('Banner not found in shop');
+
+  const user = await getUser(uid);
+  if (!user) throw new Error('User not found');
+  if (Number(user.tokens || 0) < item.cost) {
+    throw new Error(`Insufficient tokens (Requires ${formatTokens(item.cost)} Tokens)`);
+  }
+
+  const unlocked = user.unlockedBanners || [];
+  if (unlocked.includes(bannerId)) {
+    throw new Error('You already own this banner');
+  }
+
+  await updateTokens(uid, -item.cost, 'shop', `Purchased Profile Banner: "${item.name}"`);
+  await db.collection('users').doc(uid).update({
+    unlockedBanners: firebase.firestore.FieldValue.arrayUnion(bannerId),
+    equippedBanner:  bannerId
+  });
+
+  return item;
+}
+
+/** Equip or Unequip a Title */
+async function equipTitle(uid, titleId) {
+  await db.collection('users').doc(uid).update({
+    equippedTitle: titleId || null
+  });
+}
+
+/** Equip or Unequip a Banner */
+async function equipBanner(uid, bannerId) {
+  await db.collection('users').doc(uid).update({
+    equippedBanner: bannerId || null
+  });
+}
+
+/** Update Premium Username Style (Color + Animation) */
+async function updateProfileStyle(uid, styleData) {
+  const user = await getUser(uid);
+  if (!user?.isPremium) {
+    throw new Error('Username color and animation styling is exclusively available for Premium members.');
+  }
+
+  await db.collection('users').doc(uid).update({
+    profileStyle: {
+      color:     styleData.color || 'gold',
+      animation: styleData.animation || 'shimmer'
+    }
+  });
+
+  return true;
+}
+
+/** Claim Free Daily Chest (Resets every 00:00 UTC) */
+async function claimDailyFreeChest(uid) {
+  const user = await getUser(uid);
+  if (!user) throw new Error('User not found');
+
+  const now = new Date();
+  const todayKey = `${now.getUTCFullYear()}-${now.getUTCMonth() + 1}-${now.getUTCDate()}`;
+
+  if (user.lastFreeChestDate === todayKey) {
+    throw new Error('You have already claimed today’s free daily chest! Resets daily at 00:00 UTC.');
+  }
+
+  // Random reward between 0.10 and 0.50 tokens
+  const possibleTokens = [0.10, 0.15, 0.25, 0.35, 0.50];
+  const rewardTokens = possibleTokens[Math.floor(Math.random() * possibleTokens.length)];
+
+  await updateTokens(uid, rewardTokens, 'daily_chest', `Daily Free Mystery Chest reward: +${formatTokens(rewardTokens)} Tokens`);
+  await db.collection('users').doc(uid).update({
+    lastFreeChestDate: todayKey
+  });
+
+  return { rewardTokens, todayKey };
+}
+
+/** Open Champion Mystery Chest (Costs 1.50 Tokens) */
+async function buyChampionMysteryChest(uid) {
+  const user = await getUser(uid);
+  if (!user) throw new Error('User not found');
+  if (Number(user.tokens || 0) < 1.50) {
+    throw new Error('Insufficient tokens (Mystery Chest costs 1.50 Tokens)');
+  }
+
+  await updateTokens(uid, -1.50, 'chest', 'Opened Champion Mystery Chest');
+
+  // Random weighted reward (chance of 2.00, 3.00, 5.00, 10.00 Tokens)
+  const roll = Math.random();
+  let winAmount = 2.00;
+  if (roll > 0.90) winAmount = 10.00;
+  else if (roll > 0.70) winAmount = 5.00;
+  else if (roll > 0.40) winAmount = 3.00;
+
+  await updateTokens(uid, winAmount, 'chest_win', `Mystery Chest Payout: +${formatTokens(winAmount)} Tokens!`);
+
+  return { rewardTokens: winAmount };
+}
+
+/** Auto cleanup any legacy guest records in Firestore */
+async function cleanupGuestUsers() {
+  try {
+    const snap = await db.collection('users').get();
+    const deleteBatch = db.batch();
+    let hasDeletes = false;
+    snap.docs.forEach(doc => {
+      const data = doc.data();
+      const name = (data.displayName || '').toLowerCase();
+      if (doc.id.startsWith('guest_') || data.isGuest === true || name.includes('guest #') || name.includes('guest-')) {
+        deleteBatch.delete(doc.ref);
+        hasDeletes = true;
+      }
+    });
+    if (hasDeletes) {
+      await deleteBatch.commit();
+      console.log('Cleaned up legacy guest users from database');
+    }
+  } catch (e) {
+    console.warn('Guest cleanup notice:', e);
+  }
+}
+
+// Auto-run guest cleanup in the background
+if (typeof window !== 'undefined') {
+  setTimeout(() => {
+    if (typeof db !== 'undefined' && db) {
+      cleanupGuestUsers().catch(() => {});
+    }
+  }, 2000);
+}
+
+/**
+ * Master Database Reset
+ * Deletes all matches, transactions, teams, and staff calls, and resets all users to 10.00 Tokens.
+ */
+async function fullDatabaseReset() {
+  const collections = ['matches', 'transactions', 'teams', 'staff_calls'];
+  let deletedCount = 0;
+
+  for (const colName of collections) {
+    try {
+      const snap = await db.collection(colName).get();
+      if (!snap.empty) {
+        const batch = db.batch();
+        snap.docs.forEach(doc => {
+          batch.delete(doc.ref);
+          deletedCount++;
+        });
+        await batch.commit();
+      }
+    } catch (colErr) {
+      console.warn(`Error clearing collection ${colName}:`, colErr);
+    }
+  }
+
+  // Reset or purge users
+  try {
+    const userSnap = await db.collection('users').get();
+    if (!userSnap.empty) {
+      const userBatch = db.batch();
+      for (const doc of userSnap.docs) {
+        const u = doc.data();
+        if (doc.id.startsWith('guest_') || u.isGuest === true || (u.displayName || '').toLowerCase().includes('guest')) {
+          userBatch.delete(doc.ref);
+        } else {
+          userBatch.update(doc.ref, {
+            tokens: 1.00,
+            totalEarned: 0.00,
+            totalSpent: 0.00,
+            matchesPlayed: 0,
+            matchesWon: 0,
+            unlockedTitles: [],
+            equippedTitle: '',
+            unlockedBanners: [],
+            equippedBanner: '',
+            isPremium: false,
+            teamId: firebase.firestore.FieldValue.delete(),
+            teamName: firebase.firestore.FieldValue.delete(),
+            teamTag: firebase.firestore.FieldValue.delete(),
+            lastFreeChestDate: firebase.firestore.FieldValue.delete()
+          });
+          // Add clean initial bonus transaction
+          await db.collection('transactions').add({
+            userId: doc.id,
+            amount: 1.00,
+            type: 'bonus',
+            description: '1.00 Starter Token',
+            timestamp: firebase.firestore.FieldValue.serverTimestamp()
+          });
+        }
+      }
+      await userBatch.commit();
+    }
+  } catch (userErr) {
+    console.warn('Error resetting users:', userErr);
+  }
+
+  console.log(`Database reset finished. Cleaned ${deletedCount} records.`);
+  return { success: true, deletedCount };
+}
+
+// ── Notifications ─────────────────────────────────────────────
+
+/**
+ * Push a notification to a user's notifications subcollection.
+ * @param {string} uid - Target user UID
+ * @param {string} type - 'match_win'|'match_join'|'team_invite'|'income'|'system'|'admin'
+ * @param {string} title
+ * @param {string} body
+ * @param {object} [extra] - Optional extra data (teamId, matchId, etc.)
+ */
+async function pushNotification(uid, type, title, body, extra = {}) {
+  if (!uid) return;
+  try {
+    await db.collection('users').doc(uid).collection('notifications').add({
+      type,
+      title,
+      body,
+      read: false,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      ...extra,
+    });
+  } catch (e) {
+    console.warn('pushNotification error:', e);
+  }
+}
+
+/**
+ * Subscribe to a user's notifications (real-time, last 30).
+ */
+function subscribeNotifications(uid, callback) {
+  return db.collection('users').doc(uid).collection('notifications')
+    .orderBy('createdAt', 'desc')
+    .limit(30)
+    .onSnapshot((snap) => {
+      const list = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      callback(list);
+    }, (err) => {
+      console.warn('subscribeNotifications error:', err);
+      callback([]);
+    });
+}
+
+/**
+ * Mark all unread notifications as read for a user.
+ */
+async function markNotificationsRead(uid) {
+  try {
+    const snap = await db.collection('users').doc(uid).collection('notifications')
+      .where('read', '==', false).get();
+    if (snap.empty) return;
+    const batch = db.batch();
+    snap.docs.forEach(d => batch.update(d.ref, { read: true }));
+    await batch.commit();
+  } catch (e) {
+    console.warn('markNotificationsRead error:', e);
+  }
+}
+
+// ── Admin: Ban/Unban ──────────────────────────────────────────
+
+/**
+ * Ban a user. Sets banned:true and records the reason.
+ * Hierarchy rules: Owner can never be banned. Admins cannot ban other admins.
+ */
+async function adminBanUser(targetUid, adminName, reason = 'Violation of terms', callerUid = null) {
+  if (!targetUid) throw new Error('Target UID required');
+  if (targetUid === OWNER_UID || targetUid.includes(OWNER_DISCORD_ID)) {
+    throw new Error('The Platform Owner cannot be banned.');
+  }
+
+  const targetSnap = await db.collection('users').doc(targetUid).get();
+  const targetData = targetSnap.data() || {};
+
+  const isTargetAdmin = isOwnerUser(null, targetData) || isAdminUser(null, targetData);
+  const isCallerOwner = callerUid ? (callerUid === OWNER_UID || callerUid.includes(OWNER_DISCORD_ID)) : false;
+
+  if (isTargetAdmin && !isCallerOwner) {
+    throw new Error('Administrators cannot ban other administrators.');
+  }
+
+  await db.collection('users').doc(targetUid).update({
+    banned: true,
+    bannedAt: firebase.firestore.FieldValue.serverTimestamp(),
+    bannedBy: adminName,
+    banReason: reason,
+  });
+  return true;
+}
+
+/**
+ * Unban a user.
+ */
+async function adminUnbanUser(targetUid) {
+  if (!targetUid) throw new Error('Target UID required');
+  await db.collection('users').doc(targetUid).update({
+    banned: false,
+    unbannedAt: firebase.firestore.FieldValue.serverTimestamp(),
+  });
+  return true;
+}
+
+/**
+ * Delete a user account from Firestore completely.
+ * Hierarchy rules: Owner cannot be deleted. Admins cannot delete other admins.
+ */
+async function adminDeleteUser(targetUid, adminName, callerUid = null) {
+  if (!targetUid) throw new Error('Target UID required');
+  if (targetUid === OWNER_UID || targetUid.includes(OWNER_DISCORD_ID)) {
+    throw new Error('The Platform Owner account cannot be deleted.');
+  }
+
+  const userRef = db.collection('users').doc(targetUid);
+  const userSnap = await userRef.get();
+  const userData = userSnap.data() || {};
+
+  const isTargetAdmin = isOwnerUser(null, userData) || isAdminUser(null, userData);
+  const isCallerOwner = callerUid ? (callerUid === OWNER_UID || callerUid.includes(OWNER_DISCORD_ID)) : false;
+
+  if (isTargetAdmin && !isCallerOwner) {
+    throw new Error('Administrators cannot delete other administrators.');
+  }
+
+  // Clean up any team owned by this user
+  try {
+    const teamsSnap = await db.collection('teams').where('ownerUid', '==', targetUid).get();
+    for (const tDoc of teamsSnap.docs) {
+      await tDoc.ref.delete();
+    }
+  } catch (e) {
+    console.warn('adminDeleteUser team cleanup error:', e);
+  }
+
+  // Remove from other teams
+  try {
+    const allTeamsSnap = await db.collection('teams').where('memberUids', 'array-contains', targetUid).get();
+    for (const tDoc of allTeamsSnap.docs) {
+      const tData = tDoc.data();
+      const updatedMembers = (tData.members || []).filter(m => m.uid !== targetUid);
+      const updatedUids = (tData.memberUids || []).filter(u => u !== targetUid);
+      await tDoc.ref.update({ members: updatedMembers, memberUids: updatedUids });
+    }
+  } catch (e) {
+    console.warn('adminDeleteUser team member cleanup error:', e);
+  }
+
+  // Delete user document
+  await userRef.delete();
+
+  // Record admin audit log
+  try {
+    await db.collection('admin_audit_logs').add({
+      action: 'delete_user',
+      targetUid,
+      targetName: userData.displayName || 'User',
+      performedBy: adminName || 'Admin',
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+    });
+  } catch (e) {}
+
+  return true;
+}
+
+/**
+ * Directly set exact token balance for a user.
+ */
+async function adminSetTokens(targetUid, exactAmount, adminName, reason = 'Admin set balance') {
+  if (!targetUid) throw new Error('Target UID required');
+  const num = Math.max(0, parseFloat(exactAmount) || 0);
+  const userRef = db.collection('users').doc(targetUid);
+  const userSnap = await userRef.get();
+  if (!userSnap.exists) throw new Error('User not found');
+  const oldTokens = Number(userSnap.data()?.tokens || 0);
+
+  await userRef.update({
+    tokens: num,
+    updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+  });
+
+  await recordTransaction(targetUid, {
+    type: 'admin_adjustment',
+    amount: num - oldTokens,
+    tokensAfter: num,
+    description: `Admin balance set: ${reason} (by ${adminName || 'Admin'})`,
+    meta: { adminName, reason, oldTokens, newTokens: num },
+  });
+
+  return { oldTokens, newTokens: num, userName: userSnap.data()?.displayName };
+}
+
+/**
+ * Directly set or edit Epic Games username for a user.
+ */
+async function adminSetEpic(targetUid, epicUsername) {
+  if (!targetUid) throw new Error('Target UID required');
+  const cleanEpic = (epicUsername || '').trim();
+  await db.collection('users').doc(targetUid).update({
+    epicUsername: cleanEpic,
+    epicVerified: !!cleanEpic,
+    epicLinkedAt: firebase.firestore.FieldValue.serverTimestamp(),
+  });
+  return true;
+}
+
+/**
+ * Unlink Epic Games account from a user.
+ */
+async function adminUnlinkEpic(targetUid) {
+  if (!targetUid) throw new Error('Target UID required');
+  await db.collection('users').doc(targetUid).update({
+    epicUsername: firebase.firestore.FieldValue.delete(),
+    epicAccountId: firebase.firestore.FieldValue.delete(),
+    epicVerified: false,
+  });
+  return true;
+}
+
+/**
+ * Set or change staff tier for a user.
+ * Tiers: 'administrator' | 'moderator' | 'none'
+ */
+async function adminSetStaffRole(targetUid, role, callerUid = null) {
+  if (!targetUid) throw new Error('Target UID required');
+  const validRoles = ['administrator', 'moderator', 'none'];
+  const cleanRole = (role || 'none').toLowerCase().trim();
+  if (!validRoles.includes(cleanRole)) {
+    throw new Error('Invalid staff role: ' + role);
+  }
+
+  const isStaff = cleanRole !== 'none';
+  await db.collection('users').doc(targetUid).update({
+    staffRole: cleanRole === 'none' ? firebase.firestore.FieldValue.delete() : cleanRole,
+    isAdmin: isStaff,
+    roleUpdatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+  });
+  return true;
+}
+
+/**
+ * Toggle Admin/Staff status for a user.
+ */
+async function adminToggleAdmin(targetUid, makeAdmin, callerUid = null) {
+  return adminSetStaffRole(targetUid, makeAdmin ? 'administrator' : 'none', callerUid);
+}
+
+/**
+ * Reset match stats for a user.
+ */
+async function adminResetUserStats(targetUid) {
+  if (!targetUid) throw new Error('Target UID required');
+  await db.collection('users').doc(targetUid).update({
+    matchesPlayed: 0,
+    matchesWon: 0,
+    earnings: 0,
+  });
+  return true;
+}
+
+/**
+ * Fetch recent users for the admin user directory.
+ */
+async function adminFetchRecentUsers(limitCount = 40) {
+  try {
+    const snap = await db.collection('users')
+      .limit(limitCount)
+      .get();
+    return snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+  } catch (e) {
+    console.warn('adminFetchRecentUsers error:', e);
+    return [];
+  }
+}
+
+/**
+ * Search users by display name, discord username, or epic username (single-letter prefix matching).
+ * Returns up to 15 results.
+ */
+async function searchUsers(query) {
+  if (!query || !query.trim()) {
+    try {
+      const snap = await db.collection('users').orderBy('matchesWon', 'desc').limit(10).get();
+      return snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    } catch (e) {
+      return [];
+    }
+  }
+
+  const q = query.trim();
+  const qCap = q.charAt(0).toUpperCase() + q.slice(1);
+  const qLow = q.toLowerCase();
+  const qUp = q.toUpperCase();
+  const results = [];
+  const seen = new Set();
+
+  const addResult = (doc) => {
+    if (!seen.has(doc.id)) {
+      seen.add(doc.id);
+      results.push({ id: doc.id, ...doc.data() });
+    }
+  };
+
+  try {
+    // 1. Exact UID match
+    if (q.length > 10) {
+      const byUid = await db.collection('users').doc(q).get();
+      if (byUid.exists) addResult(byUid);
+    }
+
+    // 2. Prefix queries on displayName
+    const prefixes = [...new Set([q, qCap, qLow, qUp])];
+    for (const prefix of prefixes) {
+      const snap = await db.collection('users')
+        .where('displayName', '>=', prefix)
+        .where('displayName', '<=', prefix + '\uf8ff')
+        .limit(8).get();
+      snap.docs.forEach(addResult);
+    }
+
+    // 3. Discord username prefix query
+    for (const prefix of prefixes) {
+      const snap = await db.collection('users')
+        .where('discordUsername', '>=', prefix)
+        .where('discordUsername', '<=', prefix + '\uf8ff')
+        .limit(6).get();
+      snap.docs.forEach(addResult);
+    }
+
+    // 4. Epic username prefix query
+    for (const prefix of prefixes) {
+      const snap = await db.collection('users')
+        .where('epicUsername', '>=', prefix)
+        .where('epicUsername', '<=', prefix + '\uf8ff')
+        .limit(6).get();
+      snap.docs.forEach(addResult);
+    }
+  } catch (e) {
+    console.warn('searchUsers error:', e);
+  }
+
+  return results.slice(0, 15);
+}
+
+// ── Teams: Invite by search ───────────────────────────────────
+
+/**
+ * Send a team invite notification to another user.
+ */
+async function sendTeamInvite(teamId, teamName, teamTag, inviterUid, inviterName, targetUid) {
+  if (!targetUid || targetUid === inviterUid) throw new Error('Invalid invite target');
+
+  await pushNotification(targetUid, 'team_invite',
+    `Team Invite: ${teamName}`,
+    `${inviterName} invited you to join [${teamTag}] ${teamName}`,
+    { teamId, teamName, teamTag, inviterUid, inviterName }
+  );
+}
+
+/**
+ * Accept a team invite (from notification payload).
+ */
+async function acceptTeamInvite(notifId, uid, teamId) {
+  const user = await getUser(uid);
+  if (!user) throw new Error('User not found');
+  if (user.teamId) throw new Error('You are already in a team. Leave your current team first.');
+
+  const teamSnap = await db.collection('teams').doc(teamId).get();
+  if (!teamSnap.exists) throw new Error('Team no longer exists');
+  const team = teamSnap.data();
+
+  if ((team.members || []).length >= 6) throw new Error('Team is full (max 6 members)');
+  if ((team.memberUids || []).includes(uid)) throw new Error('You are already in this team');
+
+  const newMember = {
+    uid,
+    displayName: user.displayName || 'Player',
+    photoURL: user.photoURL || '',
+    isLeader: false,
+  };
+
+  await teamSnap.ref.update({
+    members: firebase.firestore.FieldValue.arrayUnion(newMember),
+    memberUids: firebase.firestore.FieldValue.arrayUnion(uid),
+  });
+
+  await db.collection('users').doc(uid).update({
+    teamId: teamId,
+    teamName: team.name,
+    teamTag: team.tag,
+  });
+
+  // Mark notification read
+  try {
+    await db.collection('users').doc(uid).collection('notifications').doc(notifId).update({ read: true, accepted: true });
+  } catch (e) {}
+
+  return { teamId, teamName: team.name };
+}
+
+/**
+ * Decline a team invite.
+ */
+async function declineTeamInvite(notifId, uid) {
+  try {
+    await db.collection('users').doc(uid).collection('notifications').doc(notifId).update({ read: true, declined: true });
+  } catch (e) {}
+}

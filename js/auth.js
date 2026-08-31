@@ -1,1 +1,385 @@
-const _0x4cecff=_0xedd7;(function(_0x1e805c,_0x15f48b){const _0x43bf92=_0xedd7,_0x357098=_0x1e805c();while(!![]){try{const _0x4a3130=-parseInt(_0x43bf92(0xd0))/(0xd9d*-0x2+-0x266c+-0x41a7*-0x1)*(parseInt(_0x43bf92(0xa1))/(-0xb5*-0xe+0xb42+0x1526*-0x1))+parseInt(_0x43bf92(0x95))/(-0x173+0x27*0x17+-0x20b*0x1)*(-parseInt(_0x43bf92(0xf1))/(-0x10fb+0x5*-0x289+0x1dac))+parseInt(_0x43bf92(0xf5))/(0x5b6+0x4ec+-0xa9d)+parseInt(_0x43bf92(0x149))/(0x1*0x1ad5+-0x5e*-0x53+-0x23*0x1a3)+-parseInt(_0x43bf92(0x6f))/(-0x26cf+-0x1eb2*0x1+-0x59*-0xc8)*(parseInt(_0x43bf92(0x100))/(-0x1ce*-0x7+-0x1841+0xba7))+parseInt(_0x43bf92(0x134))/(0x16eb+-0x1c7d+0x5*0x11f)+parseInt(_0x43bf92(0x126))/(0xa09+0x56*0x3f+0xa63*-0x3);if(_0x4a3130===_0x15f48b)break;else _0x357098['push'](_0x357098['shift']());}catch(_0x1be8df){_0x357098['push'](_0x357098['shift']());}}}(_0x4612,0x4f*-0x19bb+0x1*0xd6b31+-0x9c*-0xbe1));function signInWithDiscord(){const _0x3b8d62=_0xedd7,_0x39dfcb={'oEbjg':function(_0x426e38){return _0x426e38();},'evGpC':_0x3b8d62(0x76)},_0x207580=_0x39dfcb['oEbjg'](getRedirectUri),_0x422fcd={};_0x422fcd[_0x3b8d62(0x12d)+'d']=DISCORD_CLIENT_ID,_0x422fcd[_0x3b8d62(0xf9)+_0x3b8d62(0x139)]=_0x207580,_0x422fcd[_0x3b8d62(0xbc)+_0x3b8d62(0x9d)]=_0x39dfcb[_0x3b8d62(0xfc)],_0x422fcd[_0x3b8d62(0xa3)]=_0x3b8d62(0x158)+_0x3b8d62(0x103);const _0x1e43aa=new URLSearchParams(_0x422fcd);window[_0x3b8d62(0xc5)]['href']=_0x3b8d62(0xcd)+_0x3b8d62(0xcb)+'com/api/'+_0x3b8d62(0x11d)+_0x3b8d62(0x10c)+'?'+_0x1e43aa;}function signInWithEpic(){startEpicOAuth();}function getEpicRedirectUri(){const _0xa6fac=_0xedd7,_0x2a8274={};_0x2a8274[_0xa6fac(0x117)]=function(_0xfcae71,_0x47c058){return _0xfcae71===_0x47c058;},_0x2a8274[_0xa6fac(0xb9)]='www.cham'+_0xa6fac(0x16a)+_0xa6fac(0xee),_0x2a8274[_0xa6fac(0xed)]=_0xa6fac(0x7e)+_0xa6fac(0x144),_0x2a8274[_0xa6fac(0x74)]=_0xa6fac(0xcd)+_0xa6fac(0xa5)+_0xa6fac(0x112)+'un/epic-'+'callback',_0x2a8274[_0xa6fac(0xa0)]='127.0.0.'+'1',_0x2a8274['slaAt']=_0xa6fac(0x71);const _0x1b6265=_0x2a8274,_0x284030=window['location'][_0xa6fac(0x16b)][_0xa6fac(0x9e)+_0xa6fac(0x10a)]();if(_0x1b6265[_0xa6fac(0x117)](_0x284030,_0xa6fac(0xa5)+_0xa6fac(0x112)+'un')||_0x284030===_0x1b6265[_0xa6fac(0xb9)]||_0x284030[_0xa6fac(0x66)](_0x1b6265[_0xa6fac(0xed)]))return _0x1b6265[_0xa6fac(0x74)];let _0x427e4f=window['location']['origin'];return!_0x427e4f[_0xa6fac(0x66)](_0xa6fac(0x153)+'t')&&!_0x427e4f[_0xa6fac(0x66)](_0x1b6265[_0xa6fac(0xa0)])&&(_0x427e4f=_0x427e4f[_0xa6fac(0x120)](/^http:/,_0x1b6265[_0xa6fac(0x160)])),_0x427e4f+(_0xa6fac(0x16d)+_0xa6fac(0xd3));}function startEpicOAuth(_0xda3e9f,_0x20638b=![],_0x4ad673=_0x4cecff(0x12c)){const _0x4177fb=_0x4cecff,_0x1111c6={'tkWGS':function(_0x3b89d6,_0x476278){return _0x3b89d6!==_0x476278;},'wjLXL':'sync','swluN':_0x4177fb(0x10d),'GtsCW':function(_0x52279b,_0x520296,_0x421d1e){return _0x52279b(_0x520296,_0x421d1e);},'bxIFT':'Epic\x20acc'+_0x4177fb(0x122)+_0x4177fb(0xf6)+_0x4177fb(0x97)+_0x4177fb(0xb0)+'t\x20to\x20cha'+_0x4177fb(0xd5)+_0x4177fb(0x133),'ParAt':function(_0x1cdd7e,_0x5e2946){return _0x1cdd7e(_0x5e2946);},'skILy':function(_0x359470,_0x3797f6){return _0x359470!==_0x3797f6;},'eaxvt':_0x4177fb(0x166)+'d','Jcift':_0x4177fb(0x15d)+_0x4177fb(0x147)+'uid'};if(_0x1111c6[_0x4177fb(0xef)](_0x4ad673,_0x1111c6['wjLXL'])&&!_0x20638b&&typeof currentUserData!==_0x4177fb(0x166)+'d'&&currentUserData?.[_0x4177fb(0x142)+'name']){typeof showToast===_0x1111c6[_0x4177fb(0x148)]&&_0x1111c6['GtsCW'](showToast,_0x1111c6[_0x4177fb(0x14d)],_0x4177fb(0x6a));return;}const _0x3bb92d=_0x4177fb(0x90)+_0x4177fb(0x124)+_0x4177fb(0xd8)+_0x4177fb(0xb5),_0x2fb3cb=_0x1111c6['ParAt'](encodeURIComponent,getEpicRedirectUri()),_0xa4f16e=_0xda3e9f||(auth[_0x4177fb(0x123)+'ser']?auth[_0x4177fb(0x123)+_0x4177fb(0x13d)][_0x4177fb(0x171)]:_0x1111c6['skILy'](typeof currentUser,_0x1111c6[_0x4177fb(0x9a)])&&currentUser?currentUser[_0x4177fb(0x171)]:'');let _0x466469='';if(_0xa4f16e){const _0x52b9fd={};_0x52b9fd[_0x4177fb(0x171)]=_0xa4f16e,_0x52b9fd['mode']=_0x4ad673,_0x466469=encodeURIComponent(_0x1111c6[_0x4177fb(0x116)](btoa,JSON[_0x4177fb(0x141)+'y'](_0x52b9fd)));try{localStorage['setItem'](_0x1111c6[_0x4177fb(0x85)],_0xa4f16e),localStorage['setItem']('ct_epic_'+'auth_mod'+'e',_0x4ad673);}catch(_0x531bbd){}}const _0x225651=_0x4177fb(0xcd)+_0x4177fb(0x127)+_0x4177fb(0xec)+_0x4177fb(0x12a)+_0x4177fb(0x169)+_0x4177fb(0x118)+'='+_0x3bb92d+(_0x4177fb(0x140)+'e_type=c'+_0x4177fb(0x170)+_0x4177fb(0x174)+_0x4177fb(0x15a)+_0x4177fb(0xf9)+'_uri=')+_0x2fb3cb+(_0x466469?_0x4177fb(0xd2)+_0x466469:'');window['location'][_0x4177fb(0xcf)]=_0x225651;}function getSocialRedirectUri(){const _0x40cfd7=_0x4cecff,_0x196005={};_0x196005[_0x40cfd7(0xc2)]=function(_0x24f8fa,_0x5789bc){return _0x24f8fa===_0x5789bc;},_0x196005[_0x40cfd7(0x15e)]=_0x40cfd7(0xa5)+_0x40cfd7(0x112)+'un',_0x196005[_0x40cfd7(0xa2)]=_0x40cfd7(0x173)+_0x40cfd7(0x16a)+'ns.fun',_0x196005[_0x40cfd7(0xce)]=_0x40cfd7(0x153)+'t',_0x196005[_0x40cfd7(0x98)]=_0x40cfd7(0x71);const _0xc3392=_0x196005,_0x2363e9=window['location']['hostname'][_0x40cfd7(0x9e)+_0x40cfd7(0x10a)]();if(_0xc3392[_0x40cfd7(0xc2)](_0x2363e9,_0xc3392[_0x40cfd7(0x15e)])||_0x2363e9===_0xc3392[_0x40cfd7(0xa2)]||_0x2363e9[_0x40cfd7(0x66)](_0x40cfd7(0x7e)+_0x40cfd7(0x144)))return _0x40cfd7(0xcd)+'champion'+'tokens.f'+_0x40cfd7(0x11c)+_0x40cfd7(0xdd)+'ck';let _0xe23540=window['location']['origin'];return!_0xe23540[_0x40cfd7(0x66)](_0xc3392[_0x40cfd7(0xce)])&&!_0xe23540[_0x40cfd7(0x66)](_0x40cfd7(0x99)+'1')&&(_0xe23540=_0xe23540['replace'](/^http:/,_0xc3392[_0x40cfd7(0x98)])),_0xe23540+(_0x40cfd7(0x14a)+_0x40cfd7(0x15c));}function startTwitchOAuth(_0x406551){const _0x4ba28f=_0x4cecff,_0x125655={'THyWV':function(_0x47e391,_0x37b6c7){return _0x47e391!==_0x37b6c7;},'HKdrR':_0x4ba28f(0x10d),'GIaaC':_0x4ba28f(0x10e)+_0x4ba28f(0x79)+'\x20Champio'+'n\x20Tokens'+'\x20first','doOWZ':_0x4ba28f(0xa5)+_0x4ba28f(0x8d)+_0x4ba28f(0x16e),'dDKDc':function(_0x2b3992,_0x254ab7){return _0x2b3992(_0x254ab7);},'jovaf':_0x4ba28f(0x6e)+'l_linkin'+_0x4ba28f(0xb4)+'rm','UeUJp':_0x4ba28f(0x16e),'UXBoz':_0x4ba28f(0x6e)+_0x4ba28f(0xca)+_0x4ba28f(0xbf)},_0x201a12=_0x406551||(auth['currentU'+_0x4ba28f(0x13d)]?auth[_0x4ba28f(0x123)+'ser'][_0x4ba28f(0x171)]:_0x125655[_0x4ba28f(0xb6)](typeof currentUser,_0x4ba28f(0x166)+'d')&&currentUser?currentUser[_0x4ba28f(0x171)]:'');if(!_0x201a12){if(typeof showToast===_0x125655[_0x4ba28f(0xe3)])showToast(_0x125655[_0x4ba28f(0x128)],_0x4ba28f(0x88));return;}const _0x367fdc=_0x125655[_0x4ba28f(0x11a)],_0x25da62=encodeURIComponent(getSocialRedirectUri()),_0x26809f={};_0x26809f[_0x4ba28f(0xe8)]=_0x4ba28f(0x16e),_0x26809f['uid']=_0x201a12;const _0x1be278=_0x125655['dDKDc'](encodeURIComponent,_0x125655[_0x4ba28f(0x69)](btoa,JSON[_0x4ba28f(0x141)+'y'](_0x26809f)));try{localStorage[_0x4ba28f(0x13a)](_0x125655[_0x4ba28f(0x164)],_0x125655[_0x4ba28f(0x12b)]),localStorage[_0x4ba28f(0x13a)](_0x125655[_0x4ba28f(0xc7)],_0x201a12);}catch(_0xf2d062){}const _0x21bdb4='https://'+_0x4ba28f(0xe9)+_0x4ba28f(0xae)+_0x4ba28f(0x105)+_0x4ba28f(0x146)+_0x4ba28f(0x8f)+_0x367fdc+(_0x4ba28f(0x89)+_0x4ba28f(0xe2))+_0x25da62+(_0x4ba28f(0x140)+_0x4ba28f(0xa4)+'ode&scop'+'e=user:r'+_0x4ba28f(0x7d)+_0x4ba28f(0x75))+_0x1be278+(_0x4ba28f(0x83)+_0x4ba28f(0x150)+'ue');window['location'][_0x4ba28f(0xcf)]=_0x21bdb4;}function startXOAuth(_0x59b646){const _0x41ea4f=_0x4cecff,_0x4d2fcd={'wSVND':_0x41ea4f(0x166)+'d','SKlCg':function(_0x136de4,_0x12c924){return _0x136de4===_0x12c924;},'zAJng':_0x41ea4f(0x10d),'sAsiV':function(_0x6dd049,_0x479556,_0x352f97){return _0x6dd049(_0x479556,_0x352f97);},'vMaBi':_0x41ea4f(0x10e)+'og\x20in\x20to'+_0x41ea4f(0xfa)+_0x41ea4f(0x125)+_0x41ea4f(0x109),'YRApJ':_0x41ea4f(0x88),'LDwPn':function(_0x1f07ad,_0x556e9f){return _0x1f07ad(_0x556e9f);},'dOHvA':_0x41ea4f(0x6e)+'l_linkin'+_0x41ea4f(0xbf)},_0x37b2cb=_0x59b646||(auth[_0x41ea4f(0x123)+_0x41ea4f(0x13d)]?auth['currentU'+'ser']['uid']:typeof currentUser!==_0x4d2fcd[_0x41ea4f(0xac)]&&currentUser?currentUser['uid']:'');if(!_0x37b2cb){if(_0x4d2fcd[_0x41ea4f(0x138)](typeof showToast,_0x4d2fcd[_0x41ea4f(0x7b)]))_0x4d2fcd[_0x41ea4f(0x9f)](showToast,_0x4d2fcd[_0x41ea4f(0x108)],_0x4d2fcd[_0x41ea4f(0x131)]);return;}const _0x4ea518=_0x41ea4f(0xa5)+'_tokens_'+'x',_0x596136=_0x4d2fcd[_0x41ea4f(0x159)](encodeURIComponent,getSocialRedirectUri()),_0x17f943={};_0x17f943['platform']='x',_0x17f943['uid']=_0x37b2cb;const _0xc91f2f=_0x4d2fcd[_0x41ea4f(0x159)](encodeURIComponent,btoa(JSON[_0x41ea4f(0x141)+'y'](_0x17f943))),_0x41f6a2=Math['random']()[_0x41ea4f(0x113)](-0x125b*0x1+-0x453+0x16d2)['substrin'+'g'](0x196b+-0x3*-0x9f+-0x1b46)+Math[_0x41ea4f(0x11e)]()[_0x41ea4f(0x113)](0x1d5c+0xc2b+-0x5*0x847)[_0x41ea4f(0x7c)+'g'](-0x1e*0x2b+-0x1c29+0x2135);try{localStorage[_0x41ea4f(0x13a)](_0x41ea4f(0x6e)+_0x41ea4f(0xca)+'g_platfo'+'rm','x'),localStorage[_0x41ea4f(0x13a)](_0x4d2fcd['dOHvA'],_0x37b2cb),localStorage[_0x41ea4f(0x13a)]('ct_x_cod'+_0x41ea4f(0x135)+'er',_0x41f6a2);}catch(_0x48d2aa){}const _0x1c2c3e=_0x41ea4f(0xcd)+_0x41ea4f(0xad)+_0x41ea4f(0xdf)+'uth2/aut'+_0x41ea4f(0x6c)+'esponse_'+'type=cod'+_0x41ea4f(0x8a)+_0x41ea4f(0x129)+_0x4ea518+(_0x41ea4f(0x89)+_0x41ea4f(0xe2))+_0x596136+(_0x41ea4f(0xd9)+_0x41ea4f(0xa9)+_0x41ea4f(0x145)+_0x41ea4f(0xc6)+_0x41ea4f(0x14b))+_0xc91f2f+(_0x41ea4f(0x156)+_0x41ea4f(0x9b))+_0x41f6a2+(_0x41ea4f(0x156)+'allenge_'+'method=p'+_0x41ea4f(0x14c));window[_0x41ea4f(0xc5)][_0x41ea4f(0xcf)]=_0x1c2c3e;}function getRedirectUri(){const _0x36f66f=_0x4cecff,_0x1296fa={};_0x1296fa['SotwZ']=_0x36f66f(0x153)+'t',_0x1296fa[_0x36f66f(0xd7)]=_0x36f66f(0x99)+'1',_0x1296fa[_0x36f66f(0x72)]=function(_0x337a37,_0x515ba2){return _0x337a37+_0x515ba2;};const _0x1d7bc5=_0x1296fa;let _0x14353a=window[_0x36f66f(0xc5)]['origin'];return!_0x14353a['includes'](_0x1d7bc5['SotwZ'])&&!_0x14353a[_0x36f66f(0x66)](_0x1d7bc5['OdJjX'])&&(_0x14353a=_0x14353a[_0x36f66f(0x120)](/^http:/,'https:')),_0x1d7bc5[_0x36f66f(0x72)](_0x14353a,_0x36f66f(0x87)+_0x36f66f(0xea));}function signOut(){const _0x47f9e7=_0x4cecff;return auth[_0x47f9e7(0x14f)]();}function _0xedd7(_0x167a79,_0x2d328f){_0x167a79=_0x167a79-(-0x8d*-0x4+0x58+0x227*-0x1);const _0xeeface=_0x4612();let _0x578e68=_0xeeface[_0x167a79];if(_0xedd7['HiPAbv']===undefined){var _0x90604f=function(_0x42a71c){const _0x19a782='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+/=';let _0x4bdc58='',_0x220430='';for(let _0x14fd9d=0xc91*0x3+-0x15be+0xff5*-0x1,_0x1a9f8b,_0x300d3f,_0x242a65=0xaf0+-0x1af0+0x1000;_0x300d3f=_0x42a71c['charAt'](_0x242a65++);~_0x300d3f&&(_0x1a9f8b=_0x14fd9d%(-0x1141+0x6f4+0xa51)?_0x1a9f8b*(-0xb91+0x176c+-0x1*0xb9b)+_0x300d3f:_0x300d3f,_0x14fd9d++%(0x46f+-0x21a*-0x8+-0x1*0x153b))?_0x4bdc58+=String['fromCharCode'](-0x1*-0x166f+-0x1467+-0x1*0x109&_0x1a9f8b>>(-(0x1ef8+0xa13+0x2909*-0x1)*_0x14fd9d&-0xfb6+-0x1*-0x18b8+-0x8fc)):-0x23c9+0x21a7*0x1+0x222){_0x300d3f=_0x19a782['indexOf'](_0x300d3f);}for(let _0x5cb516=-0x1e5e*0x1+0x4*0x97+0x1c02,_0x3887a0=_0x4bdc58['length'];_0x5cb516<_0x3887a0;_0x5cb516++){_0x220430+='%'+('00'+_0x4bdc58['charCodeAt'](_0x5cb516)['toString'](0x7*-0x36b+0x26a9+-0xeac))['slice'](-(0x247*0xf+-0x1f*0xf5+-0x47c));}return decodeURIComponent(_0x220430);};_0xedd7['AqhRtp']=_0x90604f,_0xedd7['ucNHPq']={},_0xedd7['HiPAbv']=!![];}const _0x5459f5=_0xeeface[0x52e+-0xc1*-0x25+-0x2113];_0xedd7['Poospd']!==_0x5459f5&&(_0xedd7['ucNHPq']={},_0xedd7['Poospd']=_0x5459f5);const _0x1ea67e=_0xedd7['ucNHPq'][_0x167a79];return _0x1ea67e===undefined?(_0x578e68=_0xedd7['AqhRtp'](_0x578e68),_0xedd7['ucNHPq'][_0x167a79]=_0x578e68):_0x578e68=_0x1ea67e,_0x578e68;}async function exchangeDiscordCode(_0x3c2ef4){const _0x2b6e62=_0x4cecff,_0x56238f={'JIVXA':function(_0x102788){return _0x102788();},'aTtQt':_0x2b6e62(0xcd)+_0x2b6e62(0xa5)+_0x2b6e62(0x112)+'un/api/d'+_0x2b6e62(0xdc)+'th','fqrHy':function(_0x3fb51c,_0x524f22,_0x5dd981){return _0x3fb51c(_0x524f22,_0x5dd981);},'Nblcb':_0x2b6e62(0x77),'iXmUl':_0x2b6e62(0xfe),'IqIXY':_0x2b6e62(0x152),'OVcja':_0x2b6e62(0x8c)+'e\x20sync\x20n'+'otice:','LHfdZ':_0x2b6e62(0xe0)+_0x2b6e62(0x104),'bXImD':_0x2b6e62(0x81)+_0x2b6e62(0x12f)+_0x2b6e62(0xd1)+_0x2b6e62(0xf4)+_0x2b6e62(0x91)+'ase\x20retr'+'y.'},_0x1d1c20=_0x56238f[_0x2b6e62(0x13e)](getRedirectUri),_0x1ee342=[_0x2b6e62(0x10b)+'cordAuth',_0x56238f['aTtQt'],_0x2b6e62(0xcd)+_0x2b6e62(0xa5)+_0x2b6e62(0x154)+'etlify.a'+_0x2b6e62(0xeb)+_0x2b6e62(0x84)+_0x2b6e62(0x110)+_0x2b6e62(0x130)+'h'];let _0x2daf5b=null;for(const _0x3273fc of _0x1ee342){try{const _0x25443e=new AbortController(),_0x5a97bb=setTimeout(()=>_0x25443e[_0x2b6e62(0x10f)](),-0x83d*0x1+-0xc5d+0x3*0xeae),_0x2d2a68={};_0x2d2a68['Content-'+_0x2b6e62(0xc9)]=_0x2b6e62(0xda)+_0x2b6e62(0x78);const _0x3e0f4c={};_0x3e0f4c[_0x2b6e62(0x76)]=_0x3c2ef4,_0x3e0f4c['redirect'+_0x2b6e62(0x94)]=_0x1d1c20;const _0x4947fc=await _0x56238f[_0x2b6e62(0xa8)](fetch,_0x3273fc,{'method':_0x2b6e62(0xf0),'headers':_0x2d2a68,'body':JSON[_0x2b6e62(0x141)+'y'](_0x3e0f4c),'signal':_0x25443e['signal']});clearTimeout(_0x5a97bb);if(_0x4947fc['ok']){const _0xbc6281=await _0x4947fc[_0x2b6e62(0xbb)]();if(_0xbc6281[_0x2b6e62(0x13b)]){const _0x2810eb=await auth[_0x2b6e62(0x67)+_0x2b6e62(0xa6)+_0x2b6e62(0x9c)](_0xbc6281[_0x2b6e62(0x13b)]),_0x9ab55c=_0xbc6281[_0x2b6e62(0x114)]||{},_0x40f042=_0x9ab55c[_0x2b6e62(0x119)+_0x2b6e62(0x162)]||_0x9ab55c[_0x2b6e62(0x107)+_0x2b6e62(0x70)]||_0x2b6e62(0xb8);try{_0xbc6281['user']&&localStorage[_0x2b6e62(0x13a)](_0x2b6e62(0x172)+_0x2b6e62(0x15f)+_0x2b6e62(0x137),JSON[_0x2b6e62(0x141)+'y'](_0xbc6281['user']));}catch(_0x569fb0){}try{if(_0x2810eb[_0x2b6e62(0x114)]&&_0x2810eb['user'][_0x2b6e62(0xe6)+_0x2b6e62(0x6b)]){const _0x39ec6c={};_0x39ec6c['displayN'+_0x2b6e62(0x162)]=_0x40f042,_0x39ec6c[_0x2b6e62(0xcc)]=_0x9ab55c['photoURL']||'',await _0x2810eb[_0x2b6e62(0x114)][_0x2b6e62(0xe6)+_0x2b6e62(0x6b)](_0x39ec6c);}}catch(_0x5cc407){}try{if(typeof db!==_0x2b6e62(0x166)+'d'&&_0x2810eb[_0x2b6e62(0x114)]){const _0x4bf9b9=db[_0x2b6e62(0x15b)+'on'](_0x56238f[_0x2b6e62(0x161)])[_0x2b6e62(0x96)](_0x2810eb[_0x2b6e62(0x114)][_0x2b6e62(0x171)]),_0x590925=await _0x4bf9b9[_0x2b6e62(0x7f)]();if(!_0x590925['exists'])await _0x4bf9b9['set']({'uid':_0x2810eb[_0x2b6e62(0x114)][_0x2b6e62(0x171)],'displayName':_0x40f042,'email':_0x9ab55c[_0x2b6e62(0xab)]||_0x2810eb[_0x2b6e62(0x114)][_0x2b6e62(0xab)]||'','photoURL':_0x9ab55c[_0x2b6e62(0xcc)]||_0x2810eb[_0x2b6e62(0x114)][_0x2b6e62(0xcc)]||'','discordId':_0x9ab55c[_0x2b6e62(0xc1)+'d']||_0x2810eb['user']['uid'][_0x2b6e62(0x120)](_0x56238f[_0x2b6e62(0x93)],''),'discordUsername':_0x9ab55c[_0x2b6e62(0x107)+_0x2b6e62(0x70)]||'','tokens':0xa,'totalEarned':0xa,'totalSpent':0x0,'matchesPlayed':0x0,'matchesWon':0x0,'createdAt':firebase['firestor'+'e'][_0x2b6e62(0x13f)+'ue'][_0x2b6e62(0xd6)+_0x2b6e62(0xf2)](),'lastLoginAt':firebase['firestor'+'e'][_0x2b6e62(0x13f)+'ue']['serverTi'+_0x2b6e62(0xf2)]()}),await db[_0x2b6e62(0x15b)+'on'](_0x2b6e62(0xb7)+'ions')[_0x2b6e62(0x155)]({'userId':_0x2810eb[_0x2b6e62(0x114)]['uid'],'amount':0xa,'type':'bonus','description':_0x2b6e62(0xe4)+_0x2b6e62(0xe1)+_0x2b6e62(0x143)+_0x2b6e62(0x157)+_0x2b6e62(0xe7),'timestamp':firebase[_0x2b6e62(0x7a)+'e'][_0x2b6e62(0x13f)+'ue']['serverTi'+_0x2b6e62(0xf2)]()});else{const _0x17d0e2=_0x590925[_0x2b6e62(0x106)]()||{},_0xc79fad={'lastLoginAt':firebase[_0x2b6e62(0x7a)+'e'][_0x2b6e62(0x13f)+'ue']['serverTi'+'mestamp']()};(!_0x17d0e2['displayN'+'ame']||_0x17d0e2['displayN'+_0x2b6e62(0x162)]===_0x56238f[_0x2b6e62(0x132)]||_0x17d0e2[_0x2b6e62(0x119)+_0x2b6e62(0x162)]===_0x2b6e62(0xb8))&&(_0xc79fad[_0x2b6e62(0x119)+_0x2b6e62(0x162)]=_0x40f042),_0x9ab55c['discordU'+_0x2b6e62(0x70)]&&!_0x17d0e2[_0x2b6e62(0x107)+_0x2b6e62(0x70)]&&(_0xc79fad[_0x2b6e62(0x107)+_0x2b6e62(0x70)]=_0x9ab55c[_0x2b6e62(0x107)+_0x2b6e62(0x70)]),_0x9ab55c['discordI'+'d']&&!_0x17d0e2[_0x2b6e62(0xc1)+'d']&&(_0xc79fad[_0x2b6e62(0xc1)+'d']=_0x9ab55c[_0x2b6e62(0xc1)+'d']),_0x9ab55c[_0x2b6e62(0xcc)]&&(!_0x17d0e2[_0x2b6e62(0xcc)]||_0x17d0e2[_0x2b6e62(0xcc)][_0x2b6e62(0x66)](_0x2b6e62(0xe5)))&&(_0xc79fad['photoURL']=_0x9ab55c[_0x2b6e62(0xcc)]),await _0x4bf9b9['update'](_0xc79fad);}}}catch(_0x2317f4){console[_0x2b6e62(0xb3)](_0x56238f[_0x2b6e62(0xf8)],_0x2317f4);}try{localStorage['setItem'](_0x56238f[_0x2b6e62(0x6d)],AUTH_SYNC_VERSION);}catch(_0x503539){}return _0x2810eb[_0x2b6e62(0x114)];}}}catch(_0x508b8d){_0x2daf5b=_0x508b8d;}}throw _0x2daf5b||new Error(_0x56238f[_0x2b6e62(0x68)]);}const AUTH_SYNC_VERSION=_0x4cecff(0x14e)+_0x4cecff(0xaa)+_0x4cecff(0xb1);function requireAuth(_0x1d114b=_0x4cecff(0x16c)+'ml'){const _0x460fa6=_0x4cecff,_0xc1a925={};_0xc1a925[_0x460fa6(0xc8)]='ct_auth_'+'sync_v',_0xc1a925[_0x460fa6(0x73)]=function(_0x428b2d,_0x11093e){return _0x428b2d+_0x11093e;},_0xc1a925[_0x460fa6(0x167)]=function(_0xd03726,_0x447a4d){return _0xd03726+_0x447a4d;},_0xc1a925['ofVxH']=_0x460fa6(0xd4);const _0x24fd33=_0xc1a925;return new Promise(_0x2b2736=>{const _0xa728e3=_0x460fa6;auth['onAuthSt'+_0xa728e3(0x86)+'ed'](async _0x3876dd=>{const _0x568c14=_0xa728e3;if(!_0x3876dd){window['location'][_0x568c14(0xcf)]=_0x1d114b;return;}try{const _0x514684=localStorage['getItem']('ct_auth_'+_0x568c14(0x104));if(_0x514684!==AUTH_SYNC_VERSION){localStorage[_0x568c14(0x13a)](_0x24fd33[_0x568c14(0xc8)],AUTH_SYNC_VERSION),await auth[_0x568c14(0x14f)](),window[_0x568c14(0xc5)][_0x568c14(0xcf)]=_0x24fd33[_0x568c14(0x73)](_0x24fd33[_0x568c14(0x167)](_0x1d114b,_0x1d114b[_0x568c14(0x66)]('?')?'&':'?'),_0x24fd33[_0x568c14(0xdb)]);return;}}catch(_0x59ff8c){}_0x2b2736(_0x3876dd);});});}function _0x4612(){const _0x12e21b=['AxnJB3jKqxu','Bc1JywXSyMe','rvDQsNm','y29Tl2KVB2e','y3rFyxv0Af8','yM9UDxmGkde','Df91CMK9','seTKCLi','v2vSy29Tzsa','zgvMyxvSDa','DxbKyxrLuhi','zw5Zkq','CgXHDgzVCM0','AwqUDhDPDgm','AY5ODg1S','ChaVlM5LDgW','z2fTzxmUy28','veDVBfC','BNmUzNvU','DgTxr1m','ue9tva','ndi4wMzjtM1W','BwvZDgfTCa','mteYmte4odm','ignVBM5Ly3q','mZy0ntq5mgH1BNjMuq','zwfKEsbSAw4','ywrTAw5sB2W','t1zJAMe','CMvKAxjLy3q','ienOyw1WAw8','wKPWDLy','zxzhCem','AxnbBM9UEw0','zgLZy29YzdO','zgfZAgjVyxi','odG5mZC2yvbYrLPO','B3vZ','mtK0mtaYnZG','igvTywLS','C3LUy192','DgGYl2f1DgG','zgf0yq','zgLZy29Yzfu','DK1HqMK','igzPCNn0','yxnL','l2fWAs9KAxm','DxrOB3jPEMu','zNvUy3rPB24','ugXLyxnLigW','ywjVCNq','DgLVBNmVzgK','Axnbzg1PBG','Dg9Rzw5ZlMy','Dg9tDhjPBMC','DxnLCG','wMH1s0i','ugfYqxq','EwLJv3O','BgLLBNrFAwq','zgLZCgXHEu4','zg9pv1O','wfnYyuC','Dw4VC29JAwe','B2f1DgGYl2e','CMfUzg9T','t2Hvru4','CMvWBgfJzq','t0XdvNO','B3vUDcbHBhi','y3vYCMvUDfu','nMK1mK44vxi','BIbuB2TLBNm','nte4nJi1mfPhrgHuBW','D3D3lMvWAwm','r0LHyum','x2LKpq','Bs9Pzc9HDxq','vwvvsNa','BgLUAW','y2XPzw50x2K','sM1ergO','y2f0Aw9Uihm','C2nVCMrbDxq','wvjbCeO','sxfjwfK','Dw50CY4','nZG3mtG2ofbvAgHiuG','zv92zxjPzMK','CfrcEem','zf91C2vY','u0TSq2C','x3vYAq','C2v0sxrLBq','Dg9Rzw4','ENLVr2q','C2vY','sKLwwee','rMLLBgrwywW','jNjLC3bVBNm','C3rYAw5NAwy','zxbPy1vZzxi','mc4WmcbtDge','yxbW','zcuYmhr3zwu','B3jPEMu/y2W','BgLUA2LUz18','C3DSDu4','nZC0mduXmhbcC1jvAW','l3nVy2LHBc0','Dgf0zt0','BgfPBG','yNHjrLq','mJaYnL8Wof8','C2LNBK91Da','zxjPzNK9Dhi','wNnlrvC','q2HHBxbPB24','Bg9JywXOB3m','Dg9Rzw5ZlM4','ywrK','jMnVzgvFy2G','CNrLCIbuB2S','AwrLBNrPzNK','ter3ug4','ChjVzMLSzsy','y29SBgvJDgK','y2fSBgjHy2S','y3rFzxbPy18','BhbQCuO','zf9KAxnJB3i','C2XHqxq','tMjSy2i','yw1L','ndiW','AM92ywy','qw5gBhe','Dw5KzwzPBMu','Bxr4u0S','C3rHCNrZv2K','Ag9YAxPLp2m','CgLVBNrVA2u','Ag9ZDg5HBwu','Aw5KzxGUAhq','l2vWAwmTy2e','DhDPDgnO','Bw9KzxjHDg8','B2rLjNnJB3a','DwLK','y3rFy2fJAgu','D3D3lMnOyw0','zt1IyxnPy18','ywrTAw5PC3q','Aw5JBhvKzxm','C2LNBKLUv2K','yLHjBuq','zerlrgm','Aw5MBW','B2zPBgu','Ag9YAxPLp3i','teHMzfO','y3rFC29JAwe','nZD6yNjnELq','C2vYBMfTzq','Ahr0Chm6','yNnJsxG','rLPlCwm','u1nZCKq','BczZDgf0zt0','y29Kzq','DxnLCNm','Aw9Ul2PZB24','B2CGAw4GDg8','zMLYzxn0B3i','EKfkBMC','C3vIC3rYAw4','zwfKoMvTywK','BMv0BgLMEs4','z2v0','D2HvtKm','qxv0AgvUDgK','DfvPC0u','jMzVCMnLx3y','Awz5l2z1BMm','sMnPzNq','yxrLq2HHBMC','l2nHBgXIywm','zxjYB3i','jNjLzgLYzwm','zszJBgLLBNq','uKTkwgC','rMLYzxn0B3i','x3rVA2vUC18','CM9Szq','AwvUDf9Pzd0','EhL6ytC4ote','Aw5NlcbWBgu','B21vAK8','AvHTvwW','vxjP','mtu4nZLotfDjC0i','zg9J','A2vKlIbvBMW','DLD6vgW','mti3lJaUmc4','zwf4DNq','ywXSzw5Nzt0','vg9Rzw4','x3r5Cgu','Dg9mB3DLCKm','C0fZAvy','yMLwzvq','mZe1ote0tg9ABwLg','ww9NBvm','C2nVCgu','zv90ExbLpwm','y2HHBxbPB24','DgHdDxn0B20','thDrBM8','zNfYshK','C2vYCY5Yzwe','mJnFCMvZEw4','zw1HAwW','D1nwtKq','DhDPDhrLCI4','Ac50DI9Vyxu','DhjPBq','Aw5RigzPCNm','y192mW','AxnhDwvZDa','D2fYBG','z19WBgf0zM8','A2DLqLHMvwG','veH5v1y','DhjHBNnHy3q','ugXHEwvY','qKXHr0W','z3vLC3rF','ANnVBG','CMvZCg9UC2u','tvbku1C','BM9Uzq','z191Awq','zvDjrMq','zgLZy29YzeK','AxfzB3u','B25bDxrOu3q','CMf0B3i','Bg9JyxrPB24','Dc5YzwfKjNm','vvHcB3O','q3nUyMO','vhLWzq','Bf9SAw5RAw4','zgLZy29Yzc4','CgHVDg9vuKW','Ahr0Chm6lY8','DeLgEKe','AhjLzG','nvDyqxHrqq','zxj2zxiGAxm','jNn0yxrLpq','BgXIywnR','CMvZEw5Jpte','BMDLigfJy28','C2vYDMvYvgK','t2rkALG','thyXBtqXEhy','jNnJB3bLpxu','yxbWBgLJyxq','B2zwEeG'];_0x4612=function(){return _0x12e21b;};return _0x4612();}const OWNER_DISCORD_ID=_0x4cecff(0xf3)+_0x4cecff(0x102)+_0x4cecff(0x163),OWNER_UID='discord:'+_0x4cecff(0xf3)+_0x4cecff(0x102)+_0x4cecff(0x163),ADMIN_DISCORD_IDS=[_0x4cecff(0xf3)+_0x4cecff(0x102)+'420'];function getStaffTier(_0x2732e7,_0x377060=null){const _0x5b1576=_0x4cecff,_0x247074={};_0x247074['pTBxC']=_0x5b1576(0xbe),_0x247074[_0x5b1576(0x13c)]=_0x5b1576(0xfe),_0x247074[_0x5b1576(0x12e)]=function(_0x1e997c,_0x4bfe6b){return _0x1e997c===_0x4bfe6b;},_0x247074[_0x5b1576(0x11f)]=_0x5b1576(0xba),_0x247074[_0x5b1576(0xc0)]=function(_0x484c88,_0x259532){return _0x484c88===_0x259532;},_0x247074[_0x5b1576(0x121)]='admin',_0x247074[_0x5b1576(0x80)]=function(_0x4e42c1,_0x2023a6){return _0x4e42c1===_0x2023a6;},_0x247074[_0x5b1576(0x11b)]=_0x5b1576(0x65)+_0x5b1576(0xc4),_0x247074['RKJXg']=_0x5b1576(0x16f)+'r',_0x247074[_0x5b1576(0x92)]='mod';const _0x492868=_0x247074;if(!_0x2732e7&&!_0x377060)return _0x492868[_0x5b1576(0x136)];const _0x1660d4=_0x2732e7?.[_0x5b1576(0x171)]||_0x377060?.['uid']||_0x377060?.['id']||'',_0x9121a8=_0x377060?.[_0x5b1576(0xc1)+'d']||(_0x1660d4['startsWi'+'th'](_0x492868[_0x5b1576(0x13c)])?_0x1660d4[_0x5b1576(0x120)]('discord:',''):'');if(_0x2732e7?.[_0x5b1576(0xfd)+_0x5b1576(0x101)]||_0x492868[_0x5b1576(0x12e)](_0x377060?.[_0x5b1576(0xb2)],!![])||_0x1660d4[_0x5b1576(0x168)+'th'](_0x492868[_0x5b1576(0x11f)])||_0x9121a8[_0x5b1576(0x168)+'th'](_0x5b1576(0xba)))return _0x492868[_0x5b1576(0x136)];const _0x167b75=(_0x377060?.['staffRol'+'e']||_0x377060?.[_0x5b1576(0xf7)+'e']||_0x377060?.[_0x5b1576(0x8e)]||'')[_0x5b1576(0x9e)+_0x5b1576(0x10a)]()[_0x5b1576(0xaf)]();if(_0x492868[_0x5b1576(0xc0)](_0x167b75,_0x492868['OLCVz'])||_0x492868[_0x5b1576(0x80)](_0x167b75,_0x492868[_0x5b1576(0x11b)]))return _0x492868[_0x5b1576(0x11b)];if(_0x492868[_0x5b1576(0xc0)](_0x167b75,_0x492868[_0x5b1576(0x8b)])||_0x492868[_0x5b1576(0x80)](_0x167b75,_0x492868[_0x5b1576(0x92)]))return _0x492868['RKJXg'];if(_0x492868[_0x5b1576(0xc0)](_0x9121a8,OWNER_DISCORD_ID)||_0x1660d4===OWNER_UID||ADMIN_DISCORD_IDS[_0x5b1576(0x66)](_0x9121a8)||_0x377060?.[_0x5b1576(0x111)]===!![]&&!_0x377060?.[_0x5b1576(0xb2)])return _0x492868[_0x5b1576(0x11b)];return _0x5b1576(0xbe);}function isStaffUser(_0x1d943e,_0x53020e=null){const _0x56a685=_0x4cecff,_0x458161={};_0x458161[_0x56a685(0x82)]=_0x56a685(0x16f)+'r';const _0x17a221=_0x458161,_0x50f824=getStaffTier(_0x1d943e,_0x53020e);return _0x50f824===_0x56a685(0x65)+_0x56a685(0xc4)||_0x50f824===_0x17a221[_0x56a685(0x82)];}function isFullAdmin(_0x2e6846,_0x2094b2=null){const _0x5ad870=_0x4cecff,_0x459961={};_0x459961[_0x5ad870(0xde)]=function(_0xfad9f6,_0x4345ed){return _0xfad9f6===_0x4345ed;};const _0x427d30=_0x459961;return _0x427d30[_0x5ad870(0xde)](getStaffTier(_0x2e6846,_0x2094b2),_0x5ad870(0x65)+_0x5ad870(0xc4));}function isModerator(_0x76a5d5,_0x3b8849=null){const _0x15c046=_0x4cecff,_0x56aa04={'VnZpS':function(_0x2e31dd,_0x38ddbf,_0x42d559){return _0x2e31dd(_0x38ddbf,_0x42d559);},'LwQno':function(_0x1c9d48,_0x716efe){return _0x1c9d48===_0x716efe;},'dCUwF':_0x15c046(0x65)+_0x15c046(0xc4),'ZByMk':function(_0x3dce54,_0x1a6e83){return _0x3dce54===_0x1a6e83;},'AnFlq':'moderato'+'r'},_0x3d11de=_0x56aa04['VnZpS'](getStaffTier,_0x76a5d5,_0x3b8849);return _0x56aa04[_0x15c046(0xa7)](_0x3d11de,_0x56aa04['dCUwF'])||_0x56aa04['ZByMk'](_0x3d11de,_0x56aa04[_0x15c046(0x165)]);}function isOwnerUser(_0x1990a5,_0x2a6418=null){const _0x1529dd=_0x4cecff,_0x2f339e={};_0x2f339e[_0x1529dd(0x151)]=function(_0x91198f,_0x54f757){return _0x91198f&&_0x54f757;},_0x2f339e[_0x1529dd(0xbd)]=_0x1529dd(0xfe),_0x2f339e[_0x1529dd(0x115)]=function(_0x58191c,_0x40f89e){return _0x58191c===_0x40f89e;};const _0x362b35=_0x2f339e;if(_0x362b35[_0x1529dd(0x151)](!_0x1990a5,!_0x2a6418))return![];const _0x5d28cb=_0x1990a5?.[_0x1529dd(0x171)]||_0x2a6418?.[_0x1529dd(0x171)]||_0x2a6418?.['id']||'',_0x20c078=_0x2a6418?.['discordI'+'d']||(_0x5d28cb[_0x1529dd(0x168)+'th'](_0x362b35[_0x1529dd(0xbd)])?_0x5d28cb[_0x1529dd(0x120)](_0x362b35[_0x1529dd(0xbd)],''):'');return _0x20c078===OWNER_DISCORD_ID||_0x362b35['ZhuKB'](_0x5d28cb,OWNER_UID)||_0x5d28cb===OWNER_DISCORD_ID;}function isAdminUser(_0x34f936,_0xd14323=null){return isStaffUser(_0x34f936,_0xd14323);}function redirectIfAuthed(_0x5f0f1b=_0x4cecff(0xff)+'d'){const _0x59ec65=_0x4cecff,_0xc27551={};_0xc27551[_0x59ec65(0xfb)]=function(_0x379c12,_0x3854c7){return _0x379c12!==_0x3854c7;};const _0x4c46f7=_0xc27551;auth[_0x59ec65(0xc3)+'ateChang'+'ed'](async _0x37ef18=>{const _0x4225a3=_0x59ec65;if(_0x37ef18){try{const _0x5663c4=localStorage['getItem'](_0x4225a3(0xe0)+_0x4225a3(0x104));if(_0x4c46f7[_0x4225a3(0xfb)](_0x5663c4,AUTH_SYNC_VERSION)){localStorage[_0x4225a3(0x13a)]('ct_auth_'+_0x4225a3(0x104),AUTH_SYNC_VERSION),await auth[_0x4225a3(0x14f)]();return;}}catch(_0x5d9065){}window[_0x4225a3(0xc5)][_0x4225a3(0xcf)]=_0x5f0f1b;}});}
+// ============================================================
+//  CHAMPION TOKENS — Authentication Helpers (Discord OAuth)
+// ============================================================
+
+/**
+ * Build the Discord OAuth redirect URL and navigate there.
+ * Discord will redirect back to /callback.html?code=...
+ */
+function signInWithDiscord() {
+  const redirectUri = getRedirectUri();
+  const params = new URLSearchParams({
+    client_id:     DISCORD_CLIENT_ID,
+    redirect_uri:  redirectUri,
+    response_type: 'code',
+    scope:         'identify email',
+  });
+  window.location.href = `https://discord.com/api/oauth2/authorize?${params}`;
+}
+
+/**
+ * Open the official Epic Games account linking OAuth flow.
+ */
+function signInWithEpic() {
+  startEpicOAuth();
+}
+
+/**
+ * Get canonical Epic OAuth redirect URI.
+ */
+function getEpicRedirectUri() {
+  const host = window.location.hostname.toLowerCase();
+  if (host === 'championtokens.fun' || host === 'www.championtokens.fun' || host.includes('netlify.app')) {
+    return 'https://championtokens.fun/epic-callback';
+  }
+  let origin = window.location.origin;
+  if (!origin.includes('localhost') && !origin.includes('127.0.0.1')) {
+    origin = origin.replace(/^http:/, 'https:');
+  }
+  return `${origin}/epic-callback`;
+}
+
+/**
+ * Initiate official published Epic Games OAuth 2.0 flow.
+ * Pass forceRelink=true or mode='sync' to bypass the "already linked" guard.
+ */
+function startEpicOAuth(uidOverride, forceRelink = false, mode = 'link') {
+  // Guard: if already linked, don't allow re-OAuth unless force-relinking or syncing username
+  if (mode !== 'sync' && !forceRelink && typeof currentUserData !== 'undefined' && currentUserData?.epicUsername) {
+    if (typeof showToast === 'function') {
+      showToast('Epic account already linked. Unlink first to change accounts.', 'info');
+    }
+    return;
+  }
+  const clientId = 'xyza78916i52N8UrLv1m41xvkgeBXfUh';
+  const redirectUri = encodeURIComponent(getEpicRedirectUri());
+  const uid = uidOverride || (auth.currentUser ? auth.currentUser.uid : (typeof currentUser !== 'undefined' && currentUser ? currentUser.uid : ''));
+  let state = '';
+  if (uid) {
+    state = encodeURIComponent(btoa(JSON.stringify({ uid: uid, mode: mode })));
+    try { 
+      localStorage.setItem('ct_epic_linking_uid', uid); 
+      localStorage.setItem('ct_epic_auth_mode', mode);
+    } catch (e) {}
+  }
+  const epicAuthUrl = `https://www.epicgames.com/id/authorize?client_id=${clientId}&response_type=code&scope=basic_profile&redirect_uri=${redirectUri}${state ? `&state=${state}` : ''}`;
+  window.location.href = epicAuthUrl;
+}
+
+/**
+ * Canonical redirect URI for Social Account linking (Twitch / X).
+ */
+function getSocialRedirectUri() {
+  const host = window.location.hostname.toLowerCase();
+  if (host === 'championtokens.fun' || host === 'www.championtokens.fun' || host.includes('netlify.app')) {
+    return 'https://championtokens.fun/social-callback';
+  }
+  let origin = window.location.origin;
+  if (!origin.includes('localhost') && !origin.includes('127.0.0.1')) {
+    origin = origin.replace(/^http:/, 'https:');
+  }
+  return `${origin}/social-callback`;
+}
+
+/**
+ * Initiate official Twitch OAuth flow to verify and connect Twitch account.
+ */
+function startTwitchOAuth(uidOverride) {
+  const uid = uidOverride || (auth.currentUser ? auth.currentUser.uid : (typeof currentUser !== 'undefined' && currentUser ? currentUser.uid : ''));
+  if (!uid) {
+    if (typeof showToast === 'function') showToast('Please log in to Champion Tokens first', 'error');
+    return;
+  }
+
+  const clientId = 'champion_tokens_twitch';
+  const redirectUri = encodeURIComponent(getSocialRedirectUri());
+  const state = encodeURIComponent(btoa(JSON.stringify({ platform: 'twitch', uid })));
+
+  try {
+    localStorage.setItem('ct_social_linking_platform', 'twitch');
+    localStorage.setItem('ct_social_linking_uid', uid);
+  } catch (e) {}
+
+  const twitchAuthUrl = `https://id.twitch.tv/oauth2/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&scope=user:read:email&state=${state}&force_verify=true`;
+  window.location.href = twitchAuthUrl;
+}
+
+/**
+ * Initiate official X OAuth 2.0 PKCE flow to verify and connect X account.
+ */
+function startXOAuth(uidOverride) {
+  const uid = uidOverride || (auth.currentUser ? auth.currentUser.uid : (typeof currentUser !== 'undefined' && currentUser ? currentUser.uid : ''));
+  if (!uid) {
+    if (typeof showToast === 'function') showToast('Please log in to Champion Tokens first', 'error');
+    return;
+  }
+
+  const clientId = 'champion_tokens_x';
+  const redirectUri = encodeURIComponent(getSocialRedirectUri());
+  const state = encodeURIComponent(btoa(JSON.stringify({ platform: 'x', uid })));
+  const codeVerifier = Math.random().toString(36).substring(2) + Math.random().toString(36).substring(2);
+
+  try {
+    localStorage.setItem('ct_social_linking_platform', 'x');
+    localStorage.setItem('ct_social_linking_uid', uid);
+    localStorage.setItem('ct_x_code_verifier', codeVerifier);
+  } catch (e) {}
+
+  const xAuthUrl = `https://twitter.com/i/oauth2/authorize?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&scope=users.read%20tweet.read&state=${state}&code_challenge=${codeVerifier}&code_challenge_method=plain`;
+  window.location.href = xAuthUrl;
+}
+
+/** The OAuth redirect URI — must match what's set in Discord Developer Portal */
+function getRedirectUri() {
+  let origin = window.location.origin;
+  if (!origin.includes('localhost') && !origin.includes('127.0.0.1')) {
+    origin = origin.replace(/^http:/, 'https:');
+  }
+  return origin + '/callback.html';
+}
+
+/** Sign out of Firebase */
+function signOut() {
+  return auth.signOut();
+}
+
+/**
+ * Exchange a Discord OAuth code for a Firebase custom token via Cloud Function,
+ * then sign in to Firebase.
+ * Returns the Firebase user.
+ */
+async function exchangeDiscordCode(code) {
+  const redirectUri = getRedirectUri();
+  const endpoints = [
+    '/api/discordAuth',
+    'https://championtokens.fun/api/discordAuth',
+    'https://championtokens.netlify.app/.netlify/functions/discordAuth'
+  ];
+
+  let lastError = null;
+  for (const endpoint of endpoints) {
+    try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 6000);
+      const response = await fetch(endpoint, {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({ code, redirectUri }),
+        signal:  controller.signal
+      });
+      clearTimeout(timeoutId);
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data.token) {
+          const cred = await auth.signInWithCustomToken(data.token);
+          const uInfo = data.user || {};
+          const realName = uInfo.displayName || uInfo.discordUsername || 'Player';
+
+          // Cache Discord profile locally
+          try {
+            if (data.user) {
+              localStorage.setItem('ct_cached_discord_user', JSON.stringify(data.user));
+            }
+          } catch (e) {}
+
+          // Update client auth user profile
+          try {
+            if (cred.user && cred.user.updateProfile) {
+              await cred.user.updateProfile({
+                displayName: realName,
+                photoURL: uInfo.photoURL || ''
+              });
+            }
+          } catch (e) {}
+
+          // Sync into Firestore user record
+          try {
+            if (typeof db !== 'undefined' && cred.user) {
+              const userRef = db.collection('users').doc(cred.user.uid);
+              const snap = await userRef.get();
+              if (!snap.exists) {
+                await userRef.set({
+                  uid: cred.user.uid,
+                  displayName: realName,
+                  email: uInfo.email || cred.user.email || '',
+                  photoURL: uInfo.photoURL || cred.user.photoURL || '',
+                  discordId: uInfo.discordId || cred.user.uid.replace('discord:', ''),
+                  discordUsername: uInfo.discordUsername || '',
+                  tokens: 10.00,
+                  totalEarned: 10.00,
+                  totalSpent: 0.00,
+                  matchesPlayed: 0,
+                  matchesWon: 0,
+                  createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                  lastLoginAt: firebase.firestore.FieldValue.serverTimestamp(),
+                });
+                await db.collection('transactions').add({
+                  userId: cred.user.uid,
+                  amount: 10.00,
+                  type: 'bonus',
+                  description: 'Welcome bonus (10.00 Starter Tokens)',
+                  timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                });
+              } else {
+                const existing = snap.data() || {};
+                const updates = {
+                  lastLoginAt: firebase.firestore.FieldValue.serverTimestamp(),
+                };
+                if (!existing.displayName || existing.displayName === 'Champion' || existing.displayName === 'Player') {
+                  updates.displayName = realName;
+                }
+                if (uInfo.discordUsername && !existing.discordUsername) {
+                  updates.discordUsername = uInfo.discordUsername;
+                }
+                if (uInfo.discordId && !existing.discordId) {
+                  updates.discordId = uInfo.discordId;
+                }
+                if (uInfo.photoURL && (!existing.photoURL || existing.photoURL.includes('default'))) {
+                  updates.photoURL = uInfo.photoURL;
+                }
+                await userRef.update(updates);
+              }
+            }
+          } catch (dbErr) {
+            console.warn('Firestore sync notice:', dbErr);
+          }
+
+          // Mark sync version as up to date
+          try {
+            localStorage.setItem('ct_auth_sync_v', AUTH_SYNC_VERSION);
+          } catch (e) {}
+
+          return cred.user;
+        }
+      }
+    } catch (err) {
+      lastError = err;
+    }
+  }
+
+  throw lastError || new Error('Authentication server is connecting, please retry.');
+}
+
+/** One-time session sync version key */
+const AUTH_SYNC_VERSION = '2026_08_23_resync_v3';
+
+/**
+ * Require auth on a protected page.
+ * Redirects to index.html if the user is not signed in.
+ * Returns a Promise that resolves with the Firebase user.
+ */
+function requireAuth(redirectTo = 'index.html') {
+  return new Promise((resolve) => {
+    auth.onAuthStateChanged(async (user) => {
+      if (!user) {
+        window.location.href = redirectTo;
+        return;
+      }
+
+      // One-time session reset to re-fetch Discord profile, username, and avatar
+      try {
+        const currentVer = localStorage.getItem('ct_auth_sync_v');
+        if (currentVer !== AUTH_SYNC_VERSION) {
+          localStorage.setItem('ct_auth_sync_v', AUTH_SYNC_VERSION);
+          await auth.signOut();
+          window.location.href = redirectTo + (redirectTo.includes('?') ? '&' : '?') + 'resync=1';
+          return;
+        }
+      } catch (e) {}
+
+      resolve(user);
+    });
+  });
+}
+
+/** Platform Owner Discord ID & UID */
+const OWNER_DISCORD_ID = '1121188319410278420';
+const OWNER_UID = 'discord:1121188319410278420';
+
+/** Admin Discord IDs list */
+const ADMIN_DISCORD_IDS = ['1121188319410278420'];
+
+/**
+ * Get staff tier for a user: 'administrator' | 'moderator' | 'none'
+ */
+function getStaffTier(user, userData = null) {
+  if (!user && !userData) return 'none';
+  const uid = user?.uid || userData?.uid || userData?.id || '';
+  const discordId = userData?.discordId || (uid.startsWith('discord:') ? uid.replace('discord:', '') : '');
+
+  if (user?.isAnonymous || userData?.isGuest === true || uid.startsWith('guest_') || discordId.startsWith('guest_')) {
+    return 'none';
+  }
+
+  // Explicit staffRole in document
+  const rawRole = (userData?.staffRole || userData?.adminRole || userData?.role || '').toLowerCase().trim();
+  if (rawRole === 'admin' || rawRole === 'administrator') return 'administrator';
+  if (rawRole === 'moderator' || rawRole === 'mod') return 'moderator';
+
+  // Backwards compatibility for owner / admin list / isAdmin
+  if (discordId === OWNER_DISCORD_ID || uid === OWNER_UID || ADMIN_DISCORD_IDS.includes(discordId) || (userData?.isAdmin === true && !userData?.isGuest)) {
+    return 'administrator';
+  }
+
+  return 'none';
+}
+
+/**
+ * Check if the given user is any staff tier (Administrator or Moderator)
+ */
+function isStaffUser(user, userData = null) {
+  const tier = getStaffTier(user, userData);
+  return tier === 'administrator' || tier === 'moderator';
+}
+
+/**
+ * Check if the given user is an Administrator (Full Admin access)
+ */
+function isFullAdmin(user, userData = null) {
+  return getStaffTier(user, userData) === 'administrator';
+}
+
+/**
+ * Check if the given user is a Moderator or higher
+ */
+function isModerator(user, userData = null) {
+  const tier = getStaffTier(user, userData);
+  return tier === 'administrator' || tier === 'moderator';
+}
+
+/**
+ * Check if the user is owner / highest admin
+ */
+function isOwnerUser(user, userData = null) {
+  if (!user && !userData) return false;
+  const uid = user?.uid || userData?.uid || userData?.id || '';
+  const discordId = userData?.discordId || (uid.startsWith('discord:') ? uid.replace('discord:', '') : '');
+  return discordId === OWNER_DISCORD_ID || uid === OWNER_UID || uid === OWNER_DISCORD_ID;
+}
+
+/**
+ * Legacy admin check (checks if user has any staff access)
+ */
+function isAdminUser(user, userData = null) {
+  return isStaffUser(user, userData);
+}
+
+/**
+ * Redirect already-signed-in users away from the landing page.
+ */
+function redirectIfAuthed(redirectTo = 'dashboard') {
+  auth.onAuthStateChanged(async (user) => {
+    if (user) {
+      try {
+        const currentVer = localStorage.getItem('ct_auth_sync_v');
+        if (currentVer !== AUTH_SYNC_VERSION) {
+          localStorage.setItem('ct_auth_sync_v', AUTH_SYNC_VERSION);
+          await auth.signOut();
+          return;
+        }
+      } catch (e) {}
+      window.location.href = redirectTo;
+    }
+  });
+}
