@@ -1,0 +1,38 @@
+# Champion Tokens (CT) — Full Technical & Platform Documentation
+
+## 1. Platform Architecture
+- **Client**: Modern responsive Progressive Web App (HTML5, Vanilla ES6+, CSS3, Lucide Icons).
+- **Backend**: Cloudflare Edge Workers for OAuth2 authentication (Discord & Epic Games) and custom token generation.
+- **Database & Realtime State**: Google Cloud Firebase Firestore for player profiles, match lobbies, live chat, transaction ledger, cosmetic catalog, and notifications.
+- **Security**: Strict Firestore Security Rules enforcing role immutability, withdrawal limits, and transactional balance integrity.
+
+## 2. Matchmaking Protocol
+- Game Modes:
+  - Boxfights (Best of 5, 7, 9, or 11)
+  - Realistic 1v1 (Standard competitive maps)
+  - Zone Wars (Competitive end-game simulation)
+- Team Sizes: 1v1, 2v2, 3v3, 4v4.
+- Wager Options: Free practice (0.00 CT) or wagered (0.25 to 500.00+ CT).
+- Match Flow:
+  1. Creator opens lobby with wager amount, map, and region.
+  2. Opponent joins; tokens are placed in match escrow.
+  3. Fortnite lobby code is exchanged in real-time lobby chat.
+  4. Match concluded; players submit results (Win/Loss).
+  5. Both confirm -> Wager pool automatically credited to winner minus 0% (Premium) or standard platform fee.
+  6. Score dispute -> Match locked for Staff / Moderator ticket review with replay proof.
+
+## 3. Cosmetics & Shop System
+- Daily Avatar Shop refreshed dynamically at 00:00 UTC.
+- Tiers: Exclusive, Epic, Rare, Uncommon.
+- Custom Titles: Unlocked via shop or promotional codes (e.g. Clutch God, High Roller, Demon, Untouchable, Certified, No signal).
+- Wardrobe: Player profiles feature custom customization showing only owned cosmetics with one-click equip.
+
+## 4. Currency & Financial Rules
+- Currency: Champion Token (1.00 CT = $1.00 USD).
+- Deposits: PayPal, Card, Crypto, Gift codes.
+- Withdrawals: Minimum 5.00 CT, processed via manual or automated administrative review.
+- Refund Policy: Undisputed match cancellations immediately refund player escrow.
+
+## 5. Security & Responsible Gaming
+- Age requirement: 13+ with parental guidance or legal age in jurisdiction.
+- Fair Play Policy: Server-side validation on all transactions, zero tolerance for exploits.

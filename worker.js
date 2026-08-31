@@ -73,6 +73,16 @@ export default {
         const url = new URL(request.url);
     const pathname = url.pathname.toLowerCase();
 
+        // ── Standard Public Metadata & Standard Web Specs ──────────
+    const ALLOWED_PUBLIC_FILES = [
+      '/manifest.json', '/site.webmanifest', '/llms.txt', '/llms-full.txt',
+      '/robots.txt', '/sitemap.xml', '/security.txt', '/.well-known/security.txt', '/humans.txt'
+    ];
+
+    if (ALLOWED_PUBLIC_FILES.includes(pathname)) {
+      return env.ASSETS.fetch(request);
+    }
+
     // ── Source Code & Sensitive Files Defense ───────────────────
     // Prevent any public access to git files, server workers, package configs, environment files, or scratch scripts
     const BLOCKED_PREFIXES = [

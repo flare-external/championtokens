@@ -1,0 +1,22 @@
+User-agent: *
+Allow: /
+Allow: /dashboard
+Allow: /matches
+Allow: /shop
+Allow: /leaderboard
+Allow: /tournaments
+Allow: /rules
+Allow: /privacy-policy
+Allow: /terms
+Allow: /llms.txt
+Allow: /llms-full.txt
+
+# Disallow internal admin & backend directories
+Disallow: /admin
+Disallow: /admin.html
+Disallow: /api/
+Disallow: /scratch/
+Disallow: /.git/
+Disallow: /*.json$
+
+Sitemap: https://championtokens.fun/sitemap.xml

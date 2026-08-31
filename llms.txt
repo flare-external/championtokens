@@ -1,0 +1,31 @@
+# Champion Tokens (CT)
+> The premier automated Fortnite 1v1 matchmaking, wager battle, and tournament esports platform.
+
+## Overview
+Champion Tokens (https://championtokens.fun) provides real-time matchmaking for competitive Fortnite players with instant wager payouts, custom cosmetics, and live ladder rankings.
+
+## Core Features
+- **Matchmaking & Wagers**: Boxfights, Realistic 1v1, and Zone Wars (1v1 up to 4v4) with automated host lobby codes, wagering from 0.25 to 500+ CT, and real-time ledger settlement.
+- **Champion Premium**: VIP membership granting golden username styling, VIP crown badges, player tipping, priority matchmaking, and zero platform fees.
+- **Custom Player Cosmetics**: Over 30 unique hand-crafted avatars (Exclusive, Epic, Rare, Uncommon) refreshed daily at 00:00 UTC, and equipped player titles.
+- **Tournaments**: Automated bracket competitions, prize pools, and live leaderboards.
+- **Redeem & Gift System**: Token codes, cosmetic unlocks, and GearUP Booster PC membership keys.
+- **Platform Currency**: Champion Tokens (CT) pegged 1:1 with USD ($1.00 USD = 1.00 CT). Minimum withdrawal is 5.00 CT.
+
+## Canonical URLs
+- Home: https://championtokens.fun/
+- Dashboard: https://championtokens.fun/dashboard
+- Live Matches: https://championtokens.fun/matches
+- Cosmetics Shop: https://championtokens.fun/shop
+- Leaderboard: https://championtokens.fun/leaderboard
+- Tournaments: https://championtokens.fun/tournaments
+- Competitive Rules: https://championtokens.fun/rules
+- Privacy Policy: https://championtokens.fun/privacy-policy
+- Terms of Service: https://championtokens.fun/terms
+- Official Discord: https://discord.gg/35xqcMTEbH
+
+## Security & Fair Play
+- Anti-cheat enforcement: Replay file / video proof submission required for score disputes.
+- Real-time Firestore transaction ledger with server-side balance verification.
+- Prohibited: Alternate accounts, third-party software/macros, toxic conduct, match-fixing.
+- Vulnerability reports: Contact administration via Discord or security.txt.
