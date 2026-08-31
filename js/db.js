@@ -4,151 +4,52 @@
 
 // ── Utility Helpers ───────────────────────────────────────────
 
-/** Escape HTML to prevent XSS in dynamically rendered strings */
-function escapeHtml(str) {
-  return str ? String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;') : '';
-}
-
-// ── Users ────────────────────────────────────────────────────
-
 /**
- * Ensures user document exists with 10.00 Tokens starter balance.
- * Resolves best available display name from Discord profile, email, or cache.
- */
-async function ensureUserRecord(user) {
-  if (!user || !user.uid) return null;
-  const userRef = db.collection('users').doc(user.uid);
-  const snap = await userRef.get();
-
-  let discordUserCache = null;
-  try {
-    const raw = localStorage.getItem('ct_cached_discord_user');
-    if (raw) discordUserCache = JSON.parse(raw);
-  } catch (e) {}
-
-  let bestName = (user.displayName && user.displayName !== 'Champion' && user.displayName !== 'Player') ? user.displayName : null;
-  if (!bestName) {
-    if (discordUserCache?.displayName && discordUserCache.displayName !== 'Champion') {
-      bestName = discordUserCache.displayName;
-    } else if (discordUserCache?.discordUsername) {
-      bestName = discordUserCache.discordUsername;
-    } else if (user.email && user.email.includes('@')) {
-      bestName = user.email.split('@')[0];
-    } else if (user.uid.startsWith('discord:')) {
-      bestName = `Player_${user.uid.replace('discord:', '').slice(0, 5)}`;
-    } else {
-      bestName = 'Player';
-    }
-  }
-
-  const photoURL = user.photoURL || discordUserCache?.photoURL || '';
-  const discordId = discordUserCache?.discordId || (user.uid.startsWith('discord:') ? user.uid.replace('discord:', '') : '');
-  const discordUsername = discordUserCache?.discordUsername || '';
-
-  if (!snap.exists) {
-    const newUser = {
-      uid: user.uid,
-      displayName: bestName,
-      email: user.email || discordUserCache?.email || '',
-      photoURL: photoURL,
-      discordId: discordId,
-      discordUsername: discordUsername,
-      tokens: 1.00,
-      totalEarned: 0.00,
-      totalSpent: 0.00,
-      matchesPlayed: 0,
-      matchesWon: 0,
-      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-      lastLoginAt: firebase.firestore.FieldValue.serverTimestamp()
-    };
-    await userRef.set(newUser);
-    await db.collection('transactions').add({
-      userId: user.uid,
-      amount: 1.00,
-      type: 'bonus',
-      description: '1.00 Free Starter Token',
-      timestamp: firebase.firestore.FieldValue.serverTimestamp()
-    });
-    return { id: user.uid, ...newUser };
-  } else {
-    // Existing document — auto-repair if displayName is 'Champion' or 'Player'
-    const existing = snap.data();
-    if (!existing.displayName || existing.displayName === 'Champion' || existing.displayName === 'Player') {
-      if (bestName && bestName !== 'Champion' && bestName !== 'Player') {
-        await userRef.update({
-          displayName: bestName,
-          ...(discordUsername && !existing.discordUsername ? { discordUsername } : {}),
-          ...(discordId && !existing.discordId ? { discordId } : {}),
-          ...(photoURL && (!existing.photoURL || existing.photoURL.includes('default')) ? { photoURL } : {})
-        });
-        existing.displayName = bestName;
-      }
-    }
-    return { id: snap.id, ...existing };
-  }
-}
-
-/** Fetch a user document by UID (or create with 10.00 starter tokens if missing) */
-async function getUser(uid) {
-  if (!uid) return null;
-  const snap = await db.collection('users').doc(uid).get();
-  if (snap.exists) {
-    const data = snap.data();
-    // Auto-repair if displayName is 'Champion' or 'Player'
-    if (!data.displayName || data.displayName === 'Champion' || data.displayName === 'Player') {
-      let repairName = data.discordUsername;
-      if (!repairName) {
-        try {
-          const raw = localStorage.getItem('ct_cached_discord_user');
-          if (raw) {
-            const cached = JSON.parse(raw);
-            if (cached.displayName && cached.displayName !== 'Champion') repairName = cached.displayName;
-            else if (cached.discordUsername) repairName = cached.discordUsername;
-          }
-        } catch (e) {}
-      }
-      if (repairName && repairName !== 'Champion' && repairName !== 'Player') {
-        data.displayName = repairName;
-        db.collection('users').doc(uid).update({ displayName: repairName }).catch(console.warn);
-      }
-    }
-    return { id: snap.id, ...data };
-  }
-  const authUser = (typeof firebase !== 'undefined' && firebase.auth) ? firebase.auth().currentUser : null;
-  if (authUser && authUser.uid === uid) {
-    return await ensureUserRecord(authUser);
-  }
-  return null;
-}
-
-/**
- * Update a user's token balance and log a transaction.
+ * Update a user's token balance with atomic transaction locking & server-side balance checks.
  * @param {string} uid
  * @param {number} amount  positive = credit, negative = debit
- * @param {string} type    'bonus' | 'match_wager' | 'match_win' | 'refund' | 'purchase' | 'admin'
+ * @param {string} type    'bonus' | 'match_wager' | 'match_win' | 'refund' | 'purchase' | 'admin' | 'shop'
  * @param {string} description
  */
 async function updateTokens(uid, amount, type, description) {
   const roundedAmount = Math.round(Number(amount) * 100) / 100;
+  if (isNaN(roundedAmount) || roundedAmount === 0) return;
+
   const userRef = db.collection('users').doc(uid);
-  const update  = {
-    tokens: firebase.firestore.FieldValue.increment(roundedAmount),
-  };
-  if (roundedAmount > 0 && type === 'match_win') {
-    update.totalEarned = firebase.firestore.FieldValue.increment(roundedAmount);
-  }
-  if (roundedAmount < 0) {
-    update.totalSpent  = firebase.firestore.FieldValue.increment(Math.abs(roundedAmount));
-  }
+  const txRef = db.collection('transactions').doc();
 
-  await userRef.update(update);
+  return await db.runTransaction(async (transaction) => {
+    const userSnap = await transaction.get(userRef);
+    if (!userSnap.exists) {
+      throw new Error('User record not found');
+    }
 
-  await db.collection('transactions').add({
-    userId:      uid,
-    amount:      roundedAmount,
-    type,
-    description,
-    timestamp:   firebase.firestore.FieldValue.serverTimestamp(),
+    const userData = userSnap.data();
+    const currentTokens = Number(userData.tokens || 0);
+
+    if (roundedAmount < 0 && (currentTokens + roundedAmount < -0.0001)) {
+      throw new Error(`Insufficient tokens (Requires ${formatTokens(Math.abs(roundedAmount))} tokens, current balance is ${formatTokens(currentTokens)})`);
+    }
+
+    const update = {
+      tokens: firebase.firestore.FieldValue.increment(roundedAmount)
+    };
+
+    if (roundedAmount > 0 && type === 'match_win') {
+      update.totalEarned = firebase.firestore.FieldValue.increment(roundedAmount);
+    }
+    if (roundedAmount < 0) {
+      update.totalSpent = firebase.firestore.FieldValue.increment(Math.abs(roundedAmount));
+    }
+
+    transaction.update(userRef, update);
+    transaction.set(txRef, {
+      userId: uid,
+      amount: roundedAmount,
+      type: type || 'general',
+      description: description || '',
+      timestamp: firebase.firestore.FieldValue.serverTimestamp()
+    });
   });
 }
 

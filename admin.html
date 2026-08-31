@@ -8,7 +8,7 @@
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
   <link rel="manifest" href="manifest.json"/>
-  <link rel="stylesheet" href="css/style.css?v=4.0.1788155668623"/>
+  <link rel="stylesheet" href="css/style.css?v=4.0.1788156016116"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
 
@@ -312,6 +312,9 @@
       <button class="admin-nav-tab" id="admin-tabBtn-tickets" onclick="switchAdminTab('tickets')">
         <i data-lucide="alert-circle" style="width:15px;height:15px;"></i> Disputes (<span id="tickets-tab-count">0</span>)
       </button>
+      <button class="admin-nav-tab" id="admin-tabBtn-cosmetics" onclick="switchAdminTab('cosmetics')">
+        <i data-lucide="sparkles" style="width:15px;height:15px;color:var(--gold-bright);"></i> Cosmetics & Inventory
+      </button>
       <button class="admin-nav-tab" id="admin-tabBtn-codes" onclick="switchAdminTab('codes')">
         <i data-lucide="ticket" style="width:15px;height:15px;"></i> Redeem Codes (<span id="codes-tab-count">0</span>)
       </button>
@@ -374,6 +377,62 @@
     </div>
 
     <!-- ── Tab: Redeem Codes Generator & Live Manager ──────────────── -->
+    
+    <!-- ── Tab: Cosmetics & Inventory Management ─────────────── -->
+    <div id="admin-tab-cosmetics" class="hidden">
+      <div class="card" style="padding:24px 26px;background:#000;border:1px solid rgba(255,255,255,0.08);border-radius:18px;margin-bottom:24px;">
+        <div style="font-size:1.2rem;font-weight:900;color:#fff;margin-bottom:6px;display:flex;align-items:center;gap:10px;">
+          <i data-lucide="sparkles" style="color:var(--gold-bright);"></i> Manage Player Inventory & Cosmetics
+        </div>
+        <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:20px;">
+          Grant or revoke custom titles, avatar cosmetics, and profile banners for yourself or any player across the platform.
+        </p>
+
+        <form onsubmit="handleAdminCosmeticsSubmit(event)" style="display:flex;flex-direction:column;gap:16px;max-width:680px;">
+          <div class="form-group" style="margin:0;">
+            <label class="form-label">Target Player (UID or Discord ID)</label>
+            <div style="display:flex;gap:8px;">
+              <input class="form-input" id="admin-cosmetic-target-uid" placeholder="discord:1121188319410278420" required style="background:#060608;font-family:monospace;font-size:0.88rem;" />
+              <button type="button" class="btn btn-outline btn-sm" onclick="setAdminCosmeticsToSelf()" style="white-space:nowrap;padding:0 14px;border-radius:10px;">
+                Myself
+              </button>
+            </div>
+          </div>
+
+          <div class="form-group" style="margin:0;">
+            <label class="form-label">Cosmetic Item Category</label>
+            <select class="form-input" id="admin-cosmetic-category" onchange="populateAdminCosmeticsList()" style="background:#060608;">
+              <option value="titles">Custom Titles (36 Titles)</option>
+              <option value="pfps">Avatar Cosmetics (SHOP_PFPS)</option>
+              <option value="banners">Profile Banners (SHOP_BANNERS)</option>
+            </select>
+          </div>
+
+          <div class="form-group" style="margin:0;">
+            <label class="form-label">Select Cosmetic Item</label>
+            <select class="form-input" id="admin-cosmetic-item-select" style="background:#060608;">
+              <!-- Populated dynamically -->
+            </select>
+          </div>
+
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:6px;">
+            <button type="submit" class="btn btn-gold btn-sm" style="padding:10px 20px;border-radius:10px;gap:6px;">
+              <i data-lucide="plus-circle"></i> Grant Selected Item
+            </button>
+            <button type="button" class="btn btn-danger btn-sm" onclick="handleAdminRevokeCosmetic()" style="padding:10px 18px;border-radius:10px;gap:6px;">
+              <i data-lucide="minus-circle"></i> Revoke Item
+            </button>
+            <button type="button" class="btn btn-outline btn-sm" onclick="handleAdminGrantAllTitles()" style="padding:10px 18px;border-radius:10px;gap:6px;">
+              <i data-lucide="award"></i> Grant All 36 Titles
+            </button>
+            <button type="button" class="btn btn-outline btn-sm" onclick="handleAdminWipeTitles()" style="padding:10px 18px;border-radius:10px;gap:6px;color:#ef4444;">
+              <i data-lucide="trash-2"></i> Wipe All Titles
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
     <div id="admin-tab-codes" class="hidden">
       <!-- Code Generator Card -->
       <div class="card" style="padding:22px 24px;margin-bottom:20px;background:#000;border:1px solid rgba(255,255,255,0.08);border-radius:18px;">
@@ -685,9 +744,9 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="js/firebase-config.js?v=3.6"></script>
-  <script src="js/auth.js?v=4.0.1788155668623"></script>
-  <script src="js/db.js?v=4.0.1788155668623"></script>
-  <script src="js/nav.js?v=4.0.1788155668623"></script>
+  <script src="js/auth.js?v=4.0.1788156016116"></script>
+  <script src="js/db.js?v=4.0.1788156016116"></script>
+  <script src="js/nav.js?v=4.0.1788156016116"></script>
 
   <script>
     let currentUser = null;
@@ -706,13 +765,127 @@
     let selectedPfpId = 'pfp_exclusive_1';
     let selectedTitleId = 'title_no_signal';
 
+    
+    function setAdminCosmeticsToSelf() {
+      const input = document.getElementById('admin-cosmetic-target-uid');
+      if (input && currentUser) {
+        input.value = currentUser.uid;
+      }
+    }
+
+    function populateAdminCosmeticsList() {
+      const cat = document.getElementById('admin-cosmetic-category')?.value || 'titles';
+      const select = document.getElementById('admin-cosmetic-item-select');
+      if (!select) return;
+
+      if (cat === 'titles' && typeof SHOP_TITLES !== 'undefined') {
+        select.innerHTML = Object.values(SHOP_TITLES).map(t => `<option value="${t.id}">[${t.rarity}] ${t.name} (${t.cost} CT)</option>`).join('');
+      } else if (cat === 'pfps' && typeof SHOP_PFPS !== 'undefined') {
+        select.innerHTML = Object.values(SHOP_PFPS).map(p => `<option value="${p.id}">[${p.rarity}] ${p.name}</option>`).join('');
+      } else if (cat === 'banners' && typeof SHOP_BANNERS !== 'undefined') {
+        select.innerHTML = Object.keys(SHOP_BANNERS).map(b => `<option value="${b}">${SHOP_BANNERS[b].name || b}</option>`).join('');
+      }
+    }
+
+    async function handleAdminCosmeticsSubmit(e) {
+      if (e) e.preventDefault();
+      const targetUid = (document.getElementById('admin-cosmetic-target-uid')?.value || '').trim();
+      const cat = document.getElementById('admin-cosmetic-category')?.value;
+      const itemId = document.getElementById('admin-cosmetic-item-select')?.value;
+
+      if (!targetUid || !itemId) {
+        showToast('Please enter target UID and select an item', 'error');
+        return;
+      }
+
+      try {
+        const userRef = db.collection('users').doc(targetUid);
+        const fieldName = cat === 'titles' ? 'unlockedTitles' : (cat === 'pfps' ? 'unlockedPfps' : 'unlockedBanners');
+        await userRef.update({
+          [fieldName]: firebase.firestore.FieldValue.arrayUnion(itemId)
+        });
+        showToast(`Successfully granted ${itemId} to ${targetUid}!`, 'success');
+      } catch (err) {
+        showToast(err.message || 'Failed to grant cosmetic item', 'error');
+      }
+    }
+
+    async function handleAdminRevokeCosmetic() {
+      const targetUid = (document.getElementById('admin-cosmetic-target-uid')?.value || '').trim();
+      const cat = document.getElementById('admin-cosmetic-category')?.value;
+      const itemId = document.getElementById('admin-cosmetic-item-select')?.value;
+
+      if (!targetUid || !itemId) {
+        showToast('Please enter target UID and select an item', 'error');
+        return;
+      }
+
+      try {
+        const userRef = db.collection('users').doc(targetUid);
+        const fieldName = cat === 'titles' ? 'unlockedTitles' : (cat === 'pfps' ? 'unlockedPfps' : 'unlockedBanners');
+        const updatePayload = {
+          [fieldName]: firebase.firestore.FieldValue.arrayRemove(itemId)
+        };
+        if (cat === 'titles') {
+          const snap = await userRef.get();
+          if (snap.exists && snap.data().equippedTitle === itemId) {
+            updatePayload.equippedTitle = '';
+          }
+        }
+        await userRef.update(updatePayload);
+        showToast(`Revoked ${itemId} from ${targetUid}!`, 'success');
+      } catch (err) {
+        showToast(err.message || 'Failed to revoke cosmetic item', 'error');
+      }
+    }
+
+    async function handleAdminGrantAllTitles() {
+      const targetUid = (document.getElementById('admin-cosmetic-target-uid')?.value || '').trim();
+      if (!targetUid) {
+        showToast('Please enter target UID', 'error');
+        return;
+      }
+      if (typeof SHOP_TITLES === 'undefined') return;
+
+      try {
+        const allIds = Object.keys(SHOP_TITLES);
+        await db.collection('users').doc(targetUid).update({
+          unlockedTitles: firebase.firestore.FieldValue.arrayUnion(...allIds)
+        });
+        showToast(`Granted all ${allIds.length} titles to ${targetUid}!`, 'success');
+      } catch (err) {
+        showToast(err.message || 'Failed to grant titles', 'error');
+      }
+    }
+
+    async function handleAdminWipeTitles() {
+      const targetUid = (document.getElementById('admin-cosmetic-target-uid')?.value || '').trim();
+      if (!targetUid) {
+        showToast('Please enter target UID', 'error');
+        return;
+      }
+      try {
+        await db.collection('users').doc(targetUid).update({
+          unlockedTitles: [],
+          equippedTitle: ''
+        });
+        showToast(`Wiped all titles from ${targetUid}!`, 'success');
+      } catch (err) {
+        showToast(err.message || 'Failed to wipe titles', 'error');
+      }
+    }
+
     function switchAdminTab(tab) {
-      ['players','matches','teams','tickets','codes','broadcast','danger'].forEach(t => {
+      ['players','matches','teams','tickets','cosmetics','codes','broadcast','danger'].forEach(t => {
         const el = document.getElementById('admin-tab-' + t);
         const btn = document.getElementById('admin-tabBtn-' + t);
         if (el) el.classList.toggle('hidden', t !== tab);
         if (btn) btn.classList.toggle('active', t === tab);
       });
+      if (tab === 'cosmetics') {
+        populateAdminCosmeticsList();
+        setAdminCosmeticsToSelf();
+      }
       if (window.lucide) lucide.createIcons();
     }
 

@@ -23,12 +23,23 @@ function injectNav(activePage = '') {
     }
   } catch (e) {}
 
+  const now = new Date();
+  const todayKey = `${now.getUTCFullYear()}-${now.getUTCMonth() + 1}-${now.getUTCDate()}`;
+  if (activePage === 'shop') {
+    try { localStorage.setItem('ct_last_shop_viewed_day', todayKey); } catch(e) {}
+  }
+  let hasNewShopItems = false;
+  try {
+    const lastViewed = localStorage.getItem('ct_last_shop_viewed_day');
+    hasNewShopItems = (activePage !== 'shop') && (lastViewed !== todayKey);
+  } catch(e) {}
+
   const links = [
     { href: 'dashboard',   key: 'dashboard',   icon: 'layout-dashboard', label: 'Dashboard'   },
     { href: 'matches',     key: 'matches',     icon: 'swords',           label: 'Matches'     },
     { href: 'tournaments', key: 'tournaments', icon: 'crown',            label: 'Tournaments' },
     { href: 'leaderboard', key: 'leaderboard', icon: 'trophy',           label: 'Leaderboard' },
-    { href: 'shop',        key: 'shop',        icon: 'shopping-bag',     label: 'Shop'        },
+    { href: 'shop',        key: 'shop',        icon: 'shopping-bag',     label: 'Shop', hasBadge: hasNewShopItems },
   ];
 
   const navLinksHTML = links.map(l => `
@@ -36,6 +47,7 @@ function injectNav(activePage = '') {
       <i data-lucide="${l.icon}"></i>
       <span>${l.label}</span>
       ${l.badge ? `<span class="nav-soon-badge">${l.badge}</span>` : ''}
+      ${l.hasBadge ? `<span class="nav-shop-red-badge" style="background:#ef4444;color:#fff;font-size:0.66rem;font-weight:900;width:17px;height:17px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;margin-left:4px;box-shadow:0 0 10px rgba(239,68,68,0.75);line-height:1;">1</span>` : ''}
     </a>`).join('');
 
   const navHTML = `
