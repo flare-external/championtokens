@@ -24,7 +24,7 @@
   <link rel="icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
-  <link rel="stylesheet" href="css/style.css?v=4.0.1788136618954"/>
+  <link rel="stylesheet" href="css/style.css?v=4.0.1788137648370"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
@@ -289,9 +289,9 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="js/firebase-config.js?v=3.8"></script>
-  <script src="js/auth.js?v=4.0.1788136618954"></script>
-  <script src="js/db.js?v=4.0.1788136618954"></script>
-  <script src="js/nav.js?v=4.0.1788136618954"></script>
+  <script src="js/auth.js?v=4.0.1788137648370"></script>
+  <script src="js/db.js?v=4.0.1788137648370"></script>
+  <script src="js/nav.js?v=4.0.1788137648370"></script>
 
   <script>
     let currentUser = null;
@@ -444,239 +444,7 @@
     }
 
     
-    /* ── Purchase Celebration Modals ───────────────────────────────── */
-    function showPfpPurchaseCelebration(item) {
-      let overlay = document.getElementById('shop-celebration-overlay');
-      if (!overlay) {
-        overlay = document.createElement('div');
-        overlay.id = 'shop-celebration-overlay';
-        document.body.appendChild(overlay);
-      }
-      overlay.className = 'modal-overlay open active';
-      overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.85);backdrop-filter:blur(10px);z-index:99999999;display:flex;align-items:center;justify-content:center;padding:20px;opacity:1;pointer-events:all;visibility:visible;';
-
-      overlay.innerHTML = `
-        <div class="celebration-modal-card">
-          <div class="celebration-glow-bg"></div>
-          
-          <div style="position:relative;width:96px;height:96px;margin:0 auto 16px;display:flex;align-items:center;justify-content:center;">
-            <div style="width:84px;height:84px;border-radius:50%;overflow:hidden;background:#000;border:2px solid ${item.color || 'var(--gold-bright)'};position:relative;z-index:2;box-shadow:0 8px 24px rgba(0,0,0,0.8);">
-              <img src="${encodeURI(item.file)}" alt="${escapeHtml(item.name)}" style="width:100%;height:100%;object-fit:cover;" />
-            </div>
-          </div>
-
-          <h2 style="font-size:1.4rem;font-weight:900;color:#fff;margin-bottom:6px;letter-spacing:-0.02em;">
-            Thank you for your purchase!
-          </h2>
-          <div style="font-size:0.95rem;font-weight:900;color:var(--gold-bright);margin-bottom:4px;">
-            Avatar ${escapeHtml(item.name)}
-          </div>
-          <span class="badge" style="background:rgba(255,255,255,0.06);color:${item.color || '#fff'};border:1px solid ${item.color || '#fff'};font-size:0.72rem;padding:3px 10px;margin-bottom:14px;">
-            ${item.rarity.toUpperCase()}
-          </span>
-
-          <p style="font-size:0.84rem;color:var(--text-muted);margin:0 0 20px;line-height:1.45;">
-            Your new avatar has been unlocked and added to your wardrobe!
-          </p>
-
-          <div style="display:flex;gap:10px;justify-content:center;">
-            <button class="btn btn-outline" id="btn-keep-current-pfp" style="flex:1;border-radius:12px;padding:10px;font-size:0.86rem;background:#060608;">
-              Keep Current
-            </button>
-            <button class="btn btn-gold" id="btn-equip-now-pfp" style="flex:1;border-radius:12px;padding:10px;font-size:0.86rem;gap:6px;">
-              <i data-lucide="check"></i> Equip Now
-            </button>
-          </div>
-        </div>
-      `;
-
-      overlay.classList.add('open');
-      overlay.classList.add('active');
-      if (window.lucide) lucide.createIcons();
-
-      document.getElementById('btn-keep-current-pfp').onclick = () => {
-        overlay.classList.remove('open');
-        overlay.classList.remove('active');
-      };
-      document.getElementById('btn-equip-now-pfp').onclick = async () => {
-        overlay.classList.remove('open');
-        overlay.classList.remove('active');
-        await handleEquipPfp(item.id);
-      };
-      overlay.onclick = (e) => {
-        if (e.target === overlay) {
-          overlay.classList.remove('open');
-          overlay.classList.remove('active');
-        }
-      };
-    }
-
-    function showTitlePurchaseCelebration(item) {
-      let overlay = document.getElementById('shop-celebration-overlay');
-      if (!overlay) {
-        overlay = document.createElement('div');
-        overlay.id = 'shop-celebration-overlay';
-        document.body.appendChild(overlay);
-      }
-      overlay.className = 'modal-overlay open active';
-      overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.85);backdrop-filter:blur(10px);z-index:99999999;display:flex;align-items:center;justify-content:center;padding:20px;opacity:1;pointer-events:all;visibility:visible;';
-
-      overlay.innerHTML = `
-        <div class="celebration-modal-card">
-          <div class="celebration-glow-bg"></div>
-          
-          <div style="position:relative;width:90px;height:90px;margin:0 auto 16px;display:flex;align-items:center;justify-content:center;">
-            <div style="width:68px;height:68px;border-radius:16px;background:rgba(239, 68, 68, 0.15);border:1px solid rgba(239, 68, 68, 0.45);display:flex;align-items:center;justify-content:center;color:#ef4444;font-size:2rem;box-shadow:0 8px 24px rgba(0,0,0,0.8);">
-              <i data-lucide="${item.icon || 'globe-off'}" style="width:34px;height:34px;"></i>
-            </div>
-          </div>
-
-          <h2 style="font-size:1.4rem;font-weight:900;color:#fff;margin-bottom:10px;letter-spacing:-0.02em;">
-            Thank you for your purchase!
-          </h2>
-          
-          <div style="margin-bottom:12px;">
-            <span class="user-title-badge" style="display:inline-flex;align-items:center;gap:6px;background:${item.bgColor || 'rgba(239,68,68,0.15)'};color:${item.color || '#ef4444'};border:1px solid ${item.borderColor || 'rgba(239,68,68,0.45)'};padding:6px 16px;border-radius:12px;font-size:1.05rem;font-weight:900;">
-              <span>${escapeHtml(item.name)}</span>
-            </span>
-          </div>
-
-          <p style="font-size:0.84rem;color:var(--text-muted);margin:0 0 20px;line-height:1.45;">
-            Your new player title has been unlocked and is ready to display!
-          </p>
-
-          <div style="display:flex;gap:10px;justify-content:center;">
-            <button class="btn btn-outline" id="btn-done-title" style="flex:1;border-radius:12px;padding:10px;font-size:0.86rem;background:#060608;">
-              Done
-            </button>
-            <button class="btn btn-gold" id="btn-equip-now-title" style="flex:1;border-radius:12px;padding:10px;font-size:0.86rem;gap:6px;">
-              <i data-lucide="check"></i> Equip Title
-            </button>
-          </div>
-        </div>
-      `;
-
-      overlay.classList.add('open');
-      overlay.classList.add('active');
-      if (window.lucide) lucide.createIcons();
-
-      document.getElementById('btn-done-title').onclick = () => {
-        overlay.classList.remove('open');
-        overlay.classList.remove('active');
-      };
-      document.getElementById('btn-equip-now-title').onclick = async () => {
-        overlay.classList.remove('open');
-        overlay.classList.remove('active');
-        await handleToggleShopTitle(item.id);
-      };
-      overlay.onclick = (e) => {
-        if (e.target === overlay) {
-          overlay.classList.remove('open');
-          overlay.classList.remove('active');
-        }
-      };
-    }
-
-    function showPremiumPurchaseCelebration() {
-      let overlay = document.getElementById('shop-celebration-overlay');
-      if (!overlay) {
-        overlay = document.createElement('div');
-        overlay.id = 'shop-celebration-overlay';
-        document.body.appendChild(overlay);
-      }
-      overlay.className = 'modal-overlay open active';
-      overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.85);backdrop-filter:blur(10px);z-index:99999999;display:flex;align-items:center;justify-content:center;padding:20px;opacity:1;pointer-events:all;visibility:visible;';
-
-      overlay.innerHTML = `
-        <div class="celebration-modal-card" style="max-width:480px;">
-          <div class="celebration-glow-bg"></div>
-          
-          <div style="position:relative;width:80px;height:80px;margin:0 auto 14px;display:flex;align-items:center;justify-content:center;">
-            <div style="width:68px;height:68px;border-radius:20px;background:rgba(245,158,11,0.18);border:1.5px solid rgba(245,158,11,0.5);display:flex;align-items:center;justify-content:center;color:var(--gold-bright);box-shadow:0 0 30px rgba(245,158,11,0.3);">
-              <i data-lucide="crown" style="width:36px;height:36px;"></i>
-            </div>
-          </div>
-
-          <h2 style="font-size:1.45rem;font-weight:900;color:#fff;margin-bottom:6px;letter-spacing:-0.02em;">
-            Thank you! Enjoy your perks
-          </h2>
-          <p style="font-size:0.85rem;color:var(--text-muted);margin:0 0 16px;line-height:1.45;">
-            Your <strong style="color:var(--gold-bright);">Champion Premium</strong> membership is now active on your account.
-          </p>
-
-          <!-- List of Unlocked Perks -->
-          <div class="perks-list-grid">
-            <div class="perk-item-row">
-              <div class="perk-icon-wrap"><i data-lucide="sparkles" style="width:14px;height:14px;"></i></div>
-              <span>Radiant Gold username styling everywhere</span>
-            </div>
-            <div class="perk-item-row">
-              <div class="perk-icon-wrap"><i data-lucide="crown" style="width:14px;height:14px;"></i></div>
-              <span>Exclusive VIP Crown profile badge</span>
-            </div>
-            <div class="perk-item-row">
-              <div class="perk-icon-wrap"><i data-lucide="gift" style="width:14px;height:14px;"></i></div>
-              <span>Player tipping system enabled</span>
-            </div>
-            <div class="perk-item-row">
-              <div class="perk-icon-wrap"><i data-lucide="zap" style="width:14px;height:14px;"></i></div>
-              <span>Priority match queueing & leaderboard highlight</span>
-            </div>
-          </div>
-
-          <button class="btn btn-gold btn-full" id="btn-close-premium-celebration" style="border-radius:12px;padding:12px;font-size:0.92rem;font-weight:800;gap:6px;">
-            <i data-lucide="sparkles"></i> Awesome, Enjoy Perks!
-          </button>
-        </div>
-      `;
-
-      overlay.classList.add('open');
-      overlay.classList.add('active');
-      if (window.lucide) lucide.createIcons();
-
-      document.getElementById('btn-close-premium-celebration').onclick = () => {
-        overlay.classList.remove('open');
-        overlay.classList.remove('active');
-      };
-      overlay.onclick = (e) => {
-        if (e.target === overlay) {
-          overlay.classList.remove('open');
-          overlay.classList.remove('active');
-        }
-      };
-    }
-
-    
-    /* ── Server Verification & Processing Modal ────────────────────── */
-    function showPurchaseLoading(message = 'Verifying account & processing transaction...') {
-      let overlay = document.getElementById('shop-processing-overlay');
-      if (!overlay) {
-        overlay = document.createElement('div');
-        overlay.id = 'shop-processing-overlay';
-        document.body.appendChild(overlay);
-      }
-      overlay.className = 'modal-overlay open active';
-      overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.85);backdrop-filter:blur(10px);z-index:10000000;display:flex;align-items:center;justify-content:center;padding:20px;opacity:1;pointer-events:all;visibility:visible;';
-      overlay.innerHTML = `
-        <div class="purchase-verifying-modal">
-          <div class="spinner-gold"></div>
-          <h3 style="font-size:1.15rem;font-weight:900;color:#fff;margin:0 0 6px;">Processing Purchase</h3>
-          <p style="font-size:0.85rem;color:var(--text-muted);margin:0;" id="shop-processing-text">${escapeHtml(message)}</p>
-        </div>
-      `;
-      overlay.classList.add('open');
-      overlay.classList.add('active');
-    }
-
-    function hidePurchaseLoading() {
-      const overlay = document.getElementById('shop-processing-overlay');
-      if (overlay) {
-        overlay.style.display = 'none';
-        overlay.classList.remove('open');
-        overlay.classList.remove('active');
-      }
-    }
-
+    /* ── Clean & Responsive Shop Purchases ─────────────────────────── */
     async function handleBuyPfp(pfpId) {
       if (!currentUser) return;
       const item = SHOP_PFPS[pfpId];
@@ -686,16 +454,16 @@
         title: `Unlock Avatar ${item.name}`,
         message: `
           <div style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px;margin:8px 0 10px;">
-            <div style="width:110px;height:110px;border-radius:18px;overflow:hidden;border:2px solid ${item.color || 'var(--gold-bright)'};background:#0e1017;box-shadow:0 8px 24px rgba(0,0,0,0.6);">
+            <div style="width:100px;height:100px;border-radius:18px;overflow:hidden;border:2px solid ${item.color || 'var(--gold-bright)'};background:#0e1017;box-shadow:0 8px 24px rgba(0,0,0,0.6);">
               <img src="${encodeURI(item.file)}" alt="${escapeHtml(item.name)}" style="width:100%;height:100%;object-fit:cover;display:block;" />
             </div>
             <div>
-              <div style="font-weight:900;font-size:1.2rem;color:#fff;">${escapeHtml(item.name)}</div>
+              <div style="font-weight:900;font-size:1.15rem;color:#fff;">${escapeHtml(item.name)}</div>
               <span class="badge" style="font-size:0.68rem;padding:2px 8px;color:${item.color || '#fff'};border:1px solid ${item.color || '#fff'};background:rgba(255,255,255,0.04);margin-top:4px;">
                 ${item.rarity.toUpperCase()}
               </span>
             </div>
-            <div style="font-size:0.95rem;color:#cbd5e1;line-height:1.5;">
+            <div style="font-size:0.92rem;color:#cbd5e1;line-height:1.5;">
               Unlock this avatar for <strong style="color:var(--gold-bright);">${formatTokens(item.cost)} Tokens</strong>?
             </div>
           </div>
@@ -707,9 +475,7 @@
       });
       if (!ok) return;
 
-      showPurchaseLoading('Verifying balance & unlocking avatar...');
       try {
-        // Serverside verification
         const freshUser = await getUser(currentUser.uid);
         if (!freshUser) throw new Error('Failed to verify user account');
         if (Number(freshUser.tokens || 0) < item.cost) {
@@ -719,15 +485,13 @@
           throw new Error('Avatar is already unlocked in your wardrobe.');
         }
 
-        await new Promise(r => setTimeout(r, 600)); // Smooth animation delay
+        await new Promise(r => setTimeout(r, 350));
         await buyShopPfp(currentUser.uid, pfpId);
         currentUserData = await getUser(currentUser.uid);
         renderDailyPfps();
-        hidePurchaseLoading();
-        showPfpPurchaseCelebration(item);
+        showToast(`Unlocked Avatar ${item.name}! You can equip it in your Profile.`, 'success');
       } catch (err) {
-        hidePurchaseLoading();
-        showToast(err.message, 'error');
+        showToast(err.message || 'Failed to complete purchase', 'error');
       }
     }
 
@@ -744,7 +508,7 @@
               <i data-lucide="${item.icon || 'globe-off'}" style="width:20px;height:20px;"></i>
               <span>${escapeHtml(item.name)}</span>
             </span>
-            <div style="font-size:0.95rem;color:#cbd5e1;line-height:1.5;">
+            <div style="font-size:0.92rem;color:#cbd5e1;line-height:1.5;">
               Unlock the <strong>${item.rarity}</strong> title <strong>"${item.name}"</strong> for <strong style="color:var(--gold-bright);">${formatTokens(item.cost)} Tokens</strong>?
             </div>
           </div>
@@ -756,9 +520,7 @@
       });
       if (!ok) return;
 
-      showPurchaseLoading('Verifying balance & unlocking title...');
       try {
-        // Serverside verification
         const freshUser = await getUser(currentUser.uid);
         if (!freshUser) throw new Error('Failed to verify user account');
         if (Number(freshUser.tokens || 0) < item.cost) {
@@ -768,15 +530,13 @@
           throw new Error('Title is already unlocked.');
         }
 
-        await new Promise(r => setTimeout(r, 600)); // Smooth animation delay
+        await new Promise(r => setTimeout(r, 350));
         await buyShopTitle(currentUser.uid, titleId);
         currentUserData = await getUser(currentUser.uid);
         renderShopTitles();
-        hidePurchaseLoading();
-        showTitlePurchaseCelebration(item);
+        showToast(`Unlocked "${item.name}" title! Equipped to profile.`, 'success');
       } catch (err) {
-        hidePurchaseLoading();
-        showToast(err.message, 'error');
+        showToast(err.message || 'Failed to complete purchase', 'error');
       }
     }
 
@@ -793,24 +553,20 @@
       });
       if (!ok) return;
 
-      showPurchaseLoading('Verifying balance & activating Premium membership...');
       try {
-        // Serverside balance verification
         const freshUser = await getUser(currentUser.uid);
         if (!freshUser) throw new Error('Failed to verify user account');
         if (Number(freshUser.tokens || 0) < 5.00) {
           throw new Error(`Insufficient tokens! You have ${formatTokens(freshUser.tokens || 0)} Tokens, but 5.00 Tokens are required.`);
         }
 
-        await new Promise(r => setTimeout(r, 600)); // Smooth animation delay
+        await new Promise(r => setTimeout(r, 350));
         await buyPremiumPass(currentUser.uid);
         currentUserData = await getUser(currentUser.uid);
         checkPremiumStatus();
-        hidePurchaseLoading();
-        showPremiumPurchaseCelebration();
+        showToast('Champion Premium activated! Enjoy your perks.', 'success');
       } catch (err) {
-        hidePurchaseLoading();
-        showToast(err.message, 'error');
+        showToast(err.message || 'Failed to complete purchase', 'error');
       }
     }
 
