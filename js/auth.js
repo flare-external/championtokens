@@ -288,10 +288,69 @@ function requireAuth(redirectTo = 'index.html') {
         }
       } catch (e) {}
 
+      // Banned User Enforcement Check
+      try {
+        if (typeof db !== 'undefined') {
+          const uDoc = await db.collection('users').doc(user.uid).get();
+          if (uDoc.exists) {
+            const uData = uDoc.data() || {};
+            if (uData.isBanned === true || uData.banned === true) {
+              renderBannedScreen(uData);
+              return; // Halt execution and permanently lock screen
+            }
+          }
+        }
+      } catch (banErr) {
+        console.warn('Ban check notice:', banErr);
+      }
+
       resolve(user);
     });
   });
 }
+
+function renderBannedScreen(userData = {}) {
+  const existing = document.getElementById('ct-banned-overlay');
+  if (existing) return;
+
+  const overlay = document.createElement('div');
+  overlay.id = 'ct-banned-overlay';
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.96);backdrop-filter:blur(25px);z-index:99999999;display:flex;align-items:center;justify-content:center;padding:20px;';
+  
+  const banReason = userData.banReason || 'Violation of Champion Tokens Terms of Service and Fair Play rules.';
+  
+  overlay.innerHTML = `
+    <div style="max-width:480px;width:100%;background:#09090b;border:1.5px solid rgba(239,68,68,0.6);border-radius:24px;padding:36px 28px;text-align:center;box-shadow:0 25px 70px rgba(239,68,68,0.25);animation:fadeIn 0.25s ease;">
+      <div style="width:68px;height:68px;border-radius:20px;background:rgba(239,68,68,0.15);color:#f87171;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;border:1px solid rgba(239,68,68,0.35);">
+        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+      </div>
+      <h2 style="font-size:1.6rem;font-weight:900;color:#fff;margin:0 0 8px;letter-spacing:-0.02em;">Account Suspended</h2>
+      <p style="font-size:0.88rem;color:#94a3b8;line-height:1.55;margin:0 0 20px;">
+        Your Champion Tokens account has been permanently suspended by administration. Access to matchmaking, tournaments, shop, and platform tokens is locked.
+      </p>
+      <div style="background:#000000;border:1px solid rgba(255,255,255,0.09);border-radius:14px;padding:14px 16px;margin-bottom:24px;text-align:left;">
+        <div style="font-size:0.72rem;font-weight:800;color:#f87171;text-transform:uppercase;margin-bottom:4px;letter-spacing:0.04em;">Suspension Reason</div>
+        <div style="font-size:0.86rem;color:#ffffff;font-weight:600;word-break:break-word;">${(typeof escapeHtml === 'function') ? escapeHtml(banReason) : banReason}</div>
+      </div>
+      <div style="display:flex;gap:12px;">
+        <a href="https://discord.gg/35xqcMTEbH" target="_blank" rel="noopener noreferrer" class="btn btn-outline" style="flex:1;justify-content:center;background:rgba(255,255,255,0.04);border-color:rgba(255,255,255,0.15);font-size:0.85rem;border-radius:12px;text-decoration:none;color:#cbd5e1;padding:10px 16px;">Support Discord</a>
+        <button onclick="handleBannedSignOut()" class="btn btn-primary" style="flex:1;justify-content:center;background:#ef4444;border-color:#ef4444;color:#fff;font-size:0.85rem;border-radius:12px;font-weight:800;padding:10px 16px;cursor:pointer;">Sign Out</button>
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(overlay);
+
+  const loading = document.getElementById('page-loading');
+  if (loading) loading.classList.add('hidden');
+}
+
+window.handleBannedSignOut = async function() {
+  try {
+    if (typeof auth !== 'undefined') await auth.signOut();
+  } catch (e) {}
+  window.location.href = 'index.html';
+};
 
 /** Platform Owner Discord ID & UID */
 const OWNER_DISCORD_ID = '1121188319410278420';

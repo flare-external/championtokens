@@ -1394,3 +1394,23 @@ function copyGearupKey(key) {
       }
     });
   }
+
+
+  // Live Ban Realtime Watcher
+  if (typeof auth !== 'undefined' && typeof db !== 'undefined') {
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        db.collection('users').doc(user.uid).onSnapshot(docSnap => {
+          if (!docSnap.exists) return;
+          const uData = docSnap.data() || {};
+          if (uData.isBanned === true || uData.banned === true) {
+            if (typeof renderBannedScreen === 'function') {
+              renderBannedScreen(uData);
+            }
+          }
+        }, err => {
+          console.warn('Realtime ban listener notice:', err);
+        });
+      }
+    });
+  }

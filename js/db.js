@@ -186,6 +186,9 @@ function generateMatchCode() {
  * @param {object} matchData { mode: 'Realistic'|'Zone Wars'|'Box Fights', size: '1v1'|'2v2'|'3v3', wager: number }
  */
 async function createMatch(hostUser, matchData) {
+  if (hostUser.isBanned === true || hostUser.banned === true) {
+    throw new Error('Your account is suspended. You cannot create matches.');
+  }
   const wager = Math.round(parseFloat(matchData.wager) * 100) / 100;
   if (isNaN(wager) || wager < 0.50) {
     throw new Error('Minimum entry is 0.50 tokens ($0.50)');
@@ -3085,6 +3088,7 @@ async function adminBanUser(targetUid, adminName, reason = 'Violation of terms',
 async function adminUnbanUser(targetUid) {
   if (!targetUid) throw new Error('Target UID required');
   await db.collection('users').doc(targetUid).update({
+    isBanned: false,
     banned: false,
     unbannedAt: firebase.firestore.FieldValue.serverTimestamp(),
   });

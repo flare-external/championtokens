@@ -8,7 +8,7 @@
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
   <link rel="manifest" href="manifest.json"/>
-  <link rel="stylesheet" href="css/style.css?v=4.0.1788158534462"/>
+  <link rel="stylesheet" href="css/style.css?v=4.0.1788166609909"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
 
@@ -833,9 +833,9 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="js/firebase-config.js?v=3.6"></script>
-  <script src="js/auth.js?v=4.0.1788158534462"></script>
-  <script src="js/db.js?v=4.0.1788158534462"></script>
-  <script src="js/nav.js?v=4.0.1788158534462"></script>
+  <script src="js/auth.js?v=4.0.1788166609909"></script>
+  <script src="js/db.js?v=4.0.1788166609909"></script>
+  <script src="js/nav.js?v=4.0.1788166609909"></script>
 
   <script>
     let currentUser = null;
@@ -1040,7 +1040,7 @@
       } else if (currentPlayerFilter === 'moderators') {
         list = list.filter(u => getStaffTier(null, u) === 'moderator');
       } else if (currentPlayerFilter === 'banned') {
-        list = list.filter(u => u.isBanned === true);
+        list = list.filter(u => (u.isBanned === true) || (u.banned === true));
       } else if (currentPlayerFilter === 'epic') {
         list = list.filter(u => u.epicUsername);
       } else if (currentPlayerFilter === 'tokens') {
@@ -1058,7 +1058,7 @@
         const discord = u.discordUsername ? '@' + u.discordUsername : '';
         const epic = u.epicUsername ? 'Epic: ' + u.epicUsername : 'No Epic';
         const tokens = formatTokens(u.tokens ?? 0);
-        const isBanned = u.isBanned === true;
+        const isBanned = (u.isBanned === true) || (u.banned === true);
         const tier = getStaffTier(null, u);
 
         let roleTag = '';
@@ -1190,14 +1190,34 @@
       }
     }
 
-    async function handleToggleBan(uid, isBanned) {
+        async function handleToggleBan(uid, isBanned) {
       const action = isBanned ? 'unban' : 'ban';
-      if (!confirm(`Are you sure you want to ${action} this user?`)) return;
+      let reason = '';
+      if (!isBanned) {
+        reason = prompt('Enter ban reason:', 'Violation of Champion Tokens Terms & Fair Play Rules');
+        if (reason === null) return; // Cancelled
+      } else {
+        if (!confirm('Are you sure you want to unban this user?')) return;
+      }
+
       try {
-        await db.collection('users').doc(uid).update({
-          isBanned: !isBanned
-        });
-        showToast(`User ${action}ned successfully!`, 'success');
+        if (!isBanned) {
+          await db.collection('users').doc(uid).update({
+            isBanned: true,
+            banned: true,
+            bannedAt: firebase.firestore.FieldValue.serverTimestamp(),
+            bannedBy: currentUserData?.displayName || currentUser?.uid || 'Admin',
+            banReason: reason || 'Violation of Champion Tokens Terms & Fair Play Rules'
+          });
+          showToast('User banned successfully! Account is suspended.', 'success');
+        } else {
+          await db.collection('users').doc(uid).update({
+            isBanned: false,
+            banned: false,
+            unbannedAt: firebase.firestore.FieldValue.serverTimestamp()
+          });
+          showToast('User unbanned successfully! Access restored.', 'success');
+        }
         loadInitialUsers();
       } catch (err) {
         showToast(err.message, 'error');
