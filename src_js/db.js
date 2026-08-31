@@ -2233,65 +2233,365 @@ const BANNERS_COMING_SOON = true;
 const SHOP_BANNERS = {};
 
 const SHOP_TITLES = {
-  'title_no_signal': {
-    id: 'title_no_signal',
-    name: 'No signal',
-    icon: 'globe-off',
-    color: '#ef4444',
-    bgColor: 'rgba(239, 68, 68, 0.15)',
-    borderColor: 'rgba(239, 68, 68, 0.45)',
-    rarity: 'Rare',
-    cost: 1.75
+  "title_no_signal": {
+    "id": "title_no_signal",
+    "name": "No signal",
+    "icon": "globe-off",
+    "color": "#ef4444",
+    "bgColor": "rgba(239, 68, 68, 0.15)",
+    "borderColor": "rgba(239, 68, 68, 0.45)",
+    "rarity": "Rare",
+    "cost": 1.75
   },
-  'title_clutch_god': {
-    id: 'title_clutch_god',
-    name: 'Clutch God',
-    icon: 'flame',
-    color: '#f59e0b',
-    bgColor: 'rgba(245, 158, 11, 0.15)',
-    borderColor: 'rgba(245, 158, 11, 0.45)',
-    rarity: 'Exclusive',
-    cost: 5.00
+  "title_clutch_god": {
+    "id": "title_clutch_god",
+    "name": "Clutch God",
+    "icon": "flame",
+    "color": "#f59e0b",
+    "bgColor": "rgba(245, 158, 11, 0.15)",
+    "borderColor": "rgba(245, 158, 11, 0.45)",
+    "rarity": "Exclusive",
+    "cost": 5
   },
-  'title_high_roller': {
-    id: 'title_high_roller',
-    name: 'High Roller',
-    icon: 'gem',
-    color: '#a855f7',
-    bgColor: 'rgba(168, 85, 247, 0.15)',
-    borderColor: 'rgba(168, 85, 247, 0.45)',
-    rarity: 'Epic',
-    cost: 2.50
+  "title_high_roller": {
+    "id": "title_high_roller",
+    "name": "High Roller",
+    "icon": "gem",
+    "color": "#a855f7",
+    "bgColor": "rgba(168, 85, 247, 0.15)",
+    "borderColor": "rgba(168, 85, 247, 0.45)",
+    "rarity": "Epic",
+    "cost": 2.5
   },
-  'title_demon': {
-    id: 'title_demon',
-    name: 'Demon',
-    icon: 'skull',
-    color: '#ec4899',
-    bgColor: 'rgba(236, 72, 153, 0.15)',
-    borderColor: 'rgba(236, 72, 153, 0.45)',
-    rarity: 'Epic',
-    cost: 2.25
+  "title_demon": {
+    "id": "title_demon",
+    "name": "Demon",
+    "icon": "skull",
+    "color": "#ec4899",
+    "bgColor": "rgba(236, 72, 153, 0.15)",
+    "borderColor": "rgba(236, 72, 153, 0.45)",
+    "rarity": "Epic",
+    "cost": 2.25
   },
-  'title_untouchable': {
-    id: 'title_untouchable',
-    name: 'Untouchable',
-    icon: 'shield',
-    color: '#3b82f6',
-    bgColor: 'rgba(59, 130, 246, 0.15)',
-    borderColor: 'rgba(59, 130, 246, 0.45)',
-    rarity: 'Rare',
-    cost: 1.75
+  "title_untouchable": {
+    "id": "title_untouchable",
+    "name": "Untouchable",
+    "icon": "shield",
+    "color": "#3b82f6",
+    "bgColor": "rgba(59, 130, 246, 0.15)",
+    "borderColor": "rgba(59, 130, 246, 0.45)",
+    "rarity": "Rare",
+    "cost": 1.75
   },
-  'title_certified': {
-    id: 'title_certified',
-    name: 'Certified',
-    icon: 'check-circle',
-    color: '#10b981',
-    bgColor: 'rgba(16, 185, 129, 0.15)',
-    borderColor: 'rgba(16, 185, 129, 0.45)',
-    rarity: 'Uncommon',
-    cost: 1.00
+  "title_certified": {
+    "id": "title_certified",
+    "name": "Certified",
+    "icon": "check-circle",
+    "color": "#10b981",
+    "bgColor": "rgba(16, 185, 129, 0.15)",
+    "borderColor": "rgba(16, 185, 129, 0.45)",
+    "rarity": "Uncommon",
+    "cost": 1
+  },
+  "title_zero_ping": {
+    "id": "title_zero_ping",
+    "name": "zero ping",
+    "icon": "zap",
+    "color": "#00f0ff",
+    "bgColor": "rgba(0, 240, 255, 0.15)",
+    "borderColor": "rgba(0, 240, 255, 0.5)",
+    "rarity": "Exclusive",
+    "cost": 3.5
+  },
+  "title_200_only": {
+    "id": "title_200_only",
+    "name": "200 only",
+    "icon": "crosshair",
+    "color": "#ef4444",
+    "bgColor": "rgba(239, 68, 68, 0.15)",
+    "borderColor": "rgba(239, 68, 68, 0.5)",
+    "rarity": "Exclusive",
+    "cost": 4
+  },
+  "title_blank": {
+    "id": "title_blank",
+    "name": "blank",
+    "icon": "eye-off",
+    "color": "#94a3b8",
+    "bgColor": "rgba(148, 163, 184, 0.12)",
+    "borderColor": "rgba(148, 163, 184, 0.35)",
+    "rarity": "Uncommon",
+    "cost": 1.25
+  },
+  "title_uwu": {
+    "id": "title_uwu",
+    "name": "uwu",
+    "icon": "heart",
+    "color": "#f472b6",
+    "bgColor": "rgba(244, 114, 182, 0.15)",
+    "borderColor": "rgba(244, 114, 182, 0.45)",
+    "rarity": "Rare",
+    "cost": 2
+  },
+  "title_catgirl": {
+    "id": "title_catgirl",
+    "name": "catgirl",
+    "icon": "sparkles",
+    "color": "#ec4899",
+    "bgColor": "rgba(236, 72, 153, 0.15)",
+    "borderColor": "rgba(236, 72, 153, 0.45)",
+    "rarity": "Epic",
+    "cost": 2.5
+  },
+  "title_fully_beg": {
+    "id": "title_fully_beg",
+    "name": "fully beg",
+    "icon": "hand",
+    "color": "#fbbf24",
+    "bgColor": "rgba(251, 191, 36, 0.15)",
+    "borderColor": "rgba(251, 191, 36, 0.45)",
+    "rarity": "Rare",
+    "cost": 1.75
+  },
+  "title_hardstuck": {
+    "id": "title_hardstuck",
+    "name": "hardstuck",
+    "icon": "lock",
+    "color": "#f87171",
+    "bgColor": "rgba(248, 113, 113, 0.15)",
+    "borderColor": "rgba(248, 113, 113, 0.45)",
+    "rarity": "Rare",
+    "cost": 1.75
+  },
+  "title_fall_dmg": {
+    "id": "title_fall_dmg",
+    "name": "fall dmg",
+    "icon": "arrow-down-circle",
+    "color": "#fb923c",
+    "bgColor": "rgba(251, 146, 60, 0.15)",
+    "borderColor": "rgba(251, 146, 60, 0.45)",
+    "rarity": "Uncommon",
+    "cost": 1
+  },
+  "title_cringe_asf": {
+    "id": "title_cringe_asf",
+    "name": "cringe asf",
+    "icon": "smile",
+    "color": "#e879f9",
+    "bgColor": "rgba(232, 121, 249, 0.15)",
+    "borderColor": "rgba(232, 121, 249, 0.45)",
+    "rarity": "Rare",
+    "cost": 1.75
+  },
+  "title_washed": {
+    "id": "title_washed",
+    "name": "washed",
+    "icon": "droplet",
+    "color": "#38bdf8",
+    "bgColor": "rgba(56, 189, 248, 0.15)",
+    "borderColor": "rgba(56, 189, 248, 0.45)",
+    "rarity": "Rare",
+    "cost": 1.5
+  },
+  "title_unc": {
+    "id": "title_unc",
+    "name": "unc",
+    "icon": "coffee",
+    "color": "#d97706",
+    "bgColor": "rgba(217, 119, 6, 0.15)",
+    "borderColor": "rgba(217, 119, 6, 0.45)",
+    "rarity": "Uncommon",
+    "cost": 1.25
+  },
+  "title_retired": {
+    "id": "title_retired",
+    "name": "retired",
+    "icon": "sun",
+    "color": "#a3e635",
+    "bgColor": "rgba(163, 230, 53, 0.15)",
+    "borderColor": "rgba(163, 230, 53, 0.45)",
+    "rarity": "Rare",
+    "cost": 1.5
+  },
+  "title_femboy": {
+    "id": "title_femboy",
+    "name": "femboy",
+    "icon": "heart-handshake",
+    "color": "#f43f5e",
+    "bgColor": "rgba(244, 63, 94, 0.15)",
+    "borderColor": "rgba(244, 63, 94, 0.45)",
+    "rarity": "Epic",
+    "cost": 2.25
+  },
+  "title_token_stealer": {
+    "id": "title_token_stealer",
+    "name": "token stealer",
+    "icon": "coins",
+    "color": "#eab308",
+    "bgColor": "rgba(234, 179, 8, 0.18)",
+    "borderColor": "rgba(234, 179, 8, 0.55)",
+    "rarity": "Exclusive",
+    "cost": 4.5
+  },
+  "title_fear": {
+    "id": "title_fear",
+    "name": "fear",
+    "icon": "ghost",
+    "color": "#c084fc",
+    "bgColor": "rgba(192, 132, 252, 0.15)",
+    "borderColor": "rgba(192, 132, 252, 0.45)",
+    "rarity": "Epic",
+    "cost": 2.5
+  },
+  "title_nightmare": {
+    "id": "title_nightmare",
+    "name": "nightmare",
+    "icon": "moon",
+    "color": "#818cf8",
+    "bgColor": "rgba(129, 140, 248, 0.15)",
+    "borderColor": "rgba(129, 140, 248, 0.45)",
+    "rarity": "Epic",
+    "cost": 2.75
+  },
+  "title_geeg": {
+    "id": "title_geeg",
+    "name": "geeg",
+    "icon": "smile-plus",
+    "color": "#2dd4bf",
+    "bgColor": "rgba(45, 212, 191, 0.15)",
+    "borderColor": "rgba(45, 212, 191, 0.45)",
+    "rarity": "Rare",
+    "cost": 1.5
+  },
+  "title_owner": {
+    "id": "title_owner",
+    "name": "owner",
+    "icon": "crown",
+    "color": "#f59e0b",
+    "bgColor": "rgba(245, 158, 11, 0.22)",
+    "borderColor": "rgba(245, 158, 11, 0.65)",
+    "rarity": "Exclusive",
+    "cost": 10
+  },
+  "title_leave_already": {
+    "id": "title_leave_already",
+    "name": "leave already",
+    "icon": "log-out",
+    "color": "#f87171",
+    "bgColor": "rgba(248, 113, 113, 0.15)",
+    "borderColor": "rgba(248, 113, 113, 0.45)",
+    "rarity": "Rare",
+    "cost": 1.75
+  },
+  "title_forfeit": {
+    "id": "title_forfeit",
+    "name": "forfeit",
+    "icon": "flag",
+    "color": "#cbd5e1",
+    "bgColor": "rgba(203, 213, 225, 0.14)",
+    "borderColor": "rgba(203, 213, 225, 0.4)",
+    "rarity": "Uncommon",
+    "cost": 1
+  },
+  "title_lurking": {
+    "id": "title_lurking",
+    "name": "lurking",
+    "icon": "eye",
+    "color": "#64748b",
+    "bgColor": "rgba(100, 116, 139, 0.15)",
+    "borderColor": "rgba(100, 116, 139, 0.4)",
+    "rarity": "Uncommon",
+    "cost": 1
+  },
+  "title_stinky": {
+    "id": "title_stinky",
+    "name": "stinky",
+    "icon": "wind",
+    "color": "#84cc16",
+    "bgColor": "rgba(132, 204, 22, 0.15)",
+    "borderColor": "rgba(132, 204, 22, 0.45)",
+    "rarity": "Uncommon",
+    "cost": 1
+  },
+  "title_fanboy": {
+    "id": "title_fanboy",
+    "name": "fanboy",
+    "icon": "heart",
+    "color": "#f43f5e",
+    "bgColor": "rgba(244, 63, 94, 0.14)",
+    "borderColor": "rgba(244, 63, 94, 0.4)",
+    "rarity": "Rare",
+    "cost": 1.5
+  },
+  "title_be_my_fan": {
+    "id": "title_be_my_fan",
+    "name": "be my fan",
+    "icon": "star",
+    "color": "#a855f7",
+    "bgColor": "rgba(168, 85, 247, 0.16)",
+    "borderColor": "rgba(168, 85, 247, 0.5)",
+    "rarity": "Epic",
+    "cost": 2.5
+  },
+  "title_king": {
+    "id": "title_king",
+    "name": "king",
+    "icon": "crown",
+    "color": "#fbbf24",
+    "bgColor": "rgba(251, 191, 36, 0.2)",
+    "borderColor": "rgba(251, 191, 36, 0.6)",
+    "rarity": "Exclusive",
+    "cost": 5
+  },
+  "title_daddy": {
+    "id": "title_daddy",
+    "name": "daddy",
+    "icon": "sparkles",
+    "color": "#f472b6",
+    "bgColor": "rgba(244, 114, 182, 0.16)",
+    "borderColor": "rgba(244, 114, 182, 0.5)",
+    "rarity": "Exclusive",
+    "cost": 4
+  },
+  "title_gremlin": {
+    "id": "title_gremlin",
+    "name": "gremlin",
+    "icon": "skull",
+    "color": "#22c55e",
+    "bgColor": "rgba(34, 197, 94, 0.15)",
+    "borderColor": "rgba(34, 197, 94, 0.45)",
+    "rarity": "Rare",
+    "cost": 1.75
+  },
+  "title_popular": {
+    "id": "title_popular",
+    "name": "popular",
+    "icon": "flame",
+    "color": "#f97316",
+    "bgColor": "rgba(249, 115, 22, 0.16)",
+    "borderColor": "rgba(249, 115, 22, 0.5)",
+    "rarity": "Epic",
+    "cost": 2.75
+  },
+  "title_community_puh": {
+    "id": "title_community_puh",
+    "name": "community puh",
+    "icon": "users",
+    "color": "#38bdf8",
+    "bgColor": "rgba(56, 189, 248, 0.15)",
+    "borderColor": "rgba(56, 189, 248, 0.45)",
+    "rarity": "Rare",
+    "cost": 1.75
+  },
+  "title_tip_me": {
+    "id": "title_tip_me",
+    "name": "TIP ME",
+    "icon": "gift",
+    "color": "#10b981",
+    "bgColor": "rgba(16, 185, 129, 0.2)",
+    "borderColor": "rgba(16, 185, 129, 0.6)",
+    "rarity": "Exclusive",
+    "cost": 3.5
   }
 };
 
