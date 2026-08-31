@@ -3,28 +3,28 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>404 — Page Not Found | Champion Tokens</title>
-  <meta name="title" content="404 — Page Not Found | Champion Tokens"/>
-  <meta name="description" content="The page or arena you are looking for was eliminated, moved, or never existed on Champion Tokens."/>
+  <title>Champion Tokens</title>
+  <meta name="title" content="Champion Tokens"/>
+  <meta name="description" content="Something went wrong. The page wasn't found."/>
   <meta name="theme-color" content="#F59E0B"/>
 
   <meta property="og:type" content="website"/>
   <meta property="og:url" content="https://championtokens.fun/404"/>
   <meta property="og:site_name" content="Champion Tokens"/>
-  <meta property="og:title" content="404 — Page Not Found | Champion Tokens"/>
-  <meta property="og:description" content="The page or arena you are looking for was eliminated, moved, or never existed."/>
+  <meta property="og:title" content="Champion Tokens"/>
+  <meta property="og:description" content="Something went wrong. The page wasn't found."/>
   <meta property="og:image" content="https://championtokens.fun/champion-tokens_new.png"/>
 
   <meta name="twitter:card" content="summary"/>
-  <meta name="twitter:title" content="404 — Page Not Found | Champion Tokens"/>
-  <meta name="twitter:description" content="The page or arena you are looking for was eliminated, moved, or never existed."/>
+  <meta name="twitter:title" content="Champion Tokens"/>
+  <meta name="twitter:description" content="Something went wrong. The page wasn't found."/>
   <meta name="twitter:image" content="https://championtokens.fun/champion-tokens_new.png"/>
 
   <link rel="icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
   <link rel="manifest" href="manifest.json"/>
-  <link rel="stylesheet" href="css/style.css?v=4.0.1788152791878"/>
+  <link rel="stylesheet" href="css/style.css?v=4.0.1788153228408"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <script src="js/protect.js"></script>
@@ -51,38 +51,35 @@
       max-width: 680px;
       margin: 0 auto;
     }
-    .error-code-badge {
+    .error-sad-icon {
+      font-size: 3.5rem;
+      color: var(--gold-bright);
+      margin-bottom: 8px;
+      font-family: monospace, sans-serif;
+      font-weight: 900;
+      letter-spacing: -2px;
+      text-shadow: 0 0 25px rgba(245, 158, 11, 0.4);
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      padding: 6px 16px;
-      border-radius: 9999px;
-      background: rgba(245, 158, 11, 0.1);
-      border: 1px solid rgba(245, 158, 11, 0.35);
-      color: var(--gold-bright);
-      font-size: 0.85rem;
-      font-weight: 800;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      margin-bottom: 24px;
-      box-shadow: 0 0 20px rgba(245, 158, 11, 0.2);
+      justify-content: center;
+      gap: 12px;
     }
     .error-glitch-number {
-      font-size: clamp(5.5rem, 14vw, 9rem);
+      font-size: clamp(5.5rem, 14vw, 8.5rem);
       font-weight: 900;
       line-height: 1;
       letter-spacing: -0.04em;
       background: linear-gradient(135deg, #ffffff 0%, #f59e0b 50%, #d97706 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      margin-bottom: 12px;
+      margin-bottom: 8px;
       filter: drop-shadow(0 0 45px rgba(245, 158, 11, 0.35));
     }
     .error-title {
       font-size: clamp(1.6rem, 4vw, 2.3rem);
       font-weight: 900;
       color: #ffffff;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
       letter-spacing: -0.02em;
     }
     .error-desc {
@@ -90,7 +87,7 @@
       color: var(--text-muted);
       line-height: 1.6;
       margin-bottom: 32px;
-      max-width: 520px;
+      max-width: 480px;
     }
     .error-actions {
       display: flex;
@@ -136,16 +133,16 @@
 
   <!-- Error Content -->
   <main class="error-container">
-    <div class="error-code-badge">
-      <i data-lucide="shield-alert" style="width:15px;height:15px;"></i> Error 404
+    <div class="error-sad-icon">
+      <span>:(</span>
     </div>
     
     <div class="error-glitch-number">404</div>
 
-    <h1 class="error-title">Page Lost in the Storm</h1>
+    <h1 class="error-title">Page Not Found</h1>
     
     <p class="error-desc">
-      The arena, match, or link you are looking for has been eliminated, expired, or relocated.
+      Something went wrong. The page wasn't found.
     </p>
 
     <div class="error-actions">

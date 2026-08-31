@@ -4,473 +4,186 @@
 
 // ── Utility Helpers ───────────────────────────────────────────
 
-/** Escape HTML to prevent XSS in dynamically rendered strings */
-function escapeHtml(str) {
-  return str ? String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;') : '';
-}
-
-// ── Users ────────────────────────────────────────────────────
-
 /**
- * Ensures user document exists with 10.00 Tokens starter balance.
- * Resolves best available display name from Discord profile, email, or cache.
- */
-async function ensureUserRecord(user) {
-  if (!user || !user.uid) return null;
-  const userRef = db.collection('users').doc(user.uid);
-  const snap = await userRef.get();
-
-  let discordUserCache = null;
-  try {
-    const raw = localStorage.getItem('ct_cached_discord_user');
-    if (raw) discordUserCache = JSON.parse(raw);
-  } catch (e) {}
-
-  let bestName = (user.displayName && user.displayName !== 'Champion' && user.displayName !== 'Player') ? user.displayName : null;
-  if (!bestName) {
-    if (discordUserCache?.displayName && discordUserCache.displayName !== 'Champion') {
-      bestName = discordUserCache.displayName;
-    } else if (discordUserCache?.discordUsername) {
-      bestName = discordUserCache.discordUsername;
-    } else if (user.email && user.email.includes('@')) {
-      bestName = user.email.split('@')[0];
-    } else if (user.uid.startsWith('discord:')) {
-      bestName = `Player_${user.uid.replace('discord:', '').slice(0, 5)}`;
-    } else {
-      bestName = 'Player';
-    }
-  }
-
-  const photoURL = user.photoURL || discordUserCache?.photoURL || '';
-  const discordId = discordUserCache?.discordId || (user.uid.startsWith('discord:') ? user.uid.replace('discord:', '') : '');
-  const discordUsername = discordUserCache?.discordUsername || '';
-
-  if (!snap.exists) {
-    const newUser = {
-      uid: user.uid,
-      displayName: bestName,
-      email: user.email || discordUserCache?.email || '',
-      photoURL: photoURL,
-      discordId: discordId,
-      discordUsername: discordUsername,
-      tokens: 1.00,
-      totalEarned: 0.00,
-      totalSpent: 0.00,
-      matchesPlayed: 0,
-      matchesWon: 0,
-      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-      lastLoginAt: firebase.firestore.FieldValue.serverTimestamp()
-    };
-    await userRef.set(newUser);
-    await db.collection('transactions').add({
-      userId: user.uid,
-      amount: 1.00,
-      type: 'bonus',
-      description: '1.00 Free Starter Token',
-      timestamp: firebase.firestore.FieldValue.serverTimestamp()
-    });
-    return { id: user.uid, ...newUser };
-  } else {
-    // Existing document — auto-repair if displayName is 'Champion' or 'Player'
-    const existing = snap.data();
-    if (!existing.displayName || existing.displayName === 'Champion' || existing.displayName === 'Player') {
-      if (bestName && bestName !== 'Champion' && bestName !== 'Player') {
-        await userRef.update({
-          displayName: bestName,
-          ...(discordUsername && !existing.discordUsername ? { discordUsername } : {}),
-          ...(discordId && !existing.discordId ? { discordId } : {}),
-          ...(photoURL && (!existing.photoURL || existing.photoURL.includes('default')) ? { photoURL } : {})
-        });
-        existing.displayName = bestName;
-      }
-    }
-    return { id: snap.id, ...existing };
-  }
-}
-
-/** Fetch a user document by UID (or create with 10.00 starter tokens if missing) */
-async function getUser(uid) {
-  if (!uid) return null;
-  const snap = await db.collection('users').doc(uid).get();
-  if (snap.exists) {
-    const data = snap.data();
-    // Auto-repair if displayName is 'Champion' or 'Player'
-    if (!data.displayName || data.displayName === 'Champion' || data.displayName === 'Player') {
-      let repairName = data.discordUsername;
-      if (!repairName) {
-        try {
-          const raw = localStorage.getItem('ct_cached_discord_user');
-          if (raw) {
-            const cached = JSON.parse(raw);
-            if (cached.displayName && cached.displayName !== 'Champion') repairName = cached.displayName;
-            else if (cached.discordUsername) repairName = cached.discordUsername;
-          }
-        } catch (e) {}
-      }
-      if (repairName && repairName !== 'Champion' && repairName !== 'Player') {
-        data.displayName = repairName;
-        db.collection('users').doc(uid).update({ displayName: repairName }).catch(console.warn);
-      }
-    }
-    return { id: snap.id, ...data };
-  }
-  const authUser = (typeof firebase !== 'undefined' && firebase.auth) ? firebase.auth().currentUser : null;
-  if (authUser && authUser.uid === uid) {
-    return await ensureUserRecord(authUser);
-  }
-  return null;
-}
-
-/**
- * Update a user's token balance and log a transaction.
- * @param {string} uid
- * @param {number} amount  positive = credit, negative = debit
- * @param {string} type    'bonus' | 'match_wager' | 'match_win' | 'refund' | 'purchase' | 'admin'
- * @param {string} description
- */
-async function updateTokens(uid, amount, type, description) {
-  const roundedAmount = Math.round(Number(amount) * 100) / 100;
-  const userRef = db.collection('users').doc(uid);
-  const update  = {
-    tokens: firebase.firestore.FieldValue.increment(roundedAmount),
-  };
-  if (roundedAmount > 0 && type === 'match_win') {
-    update.totalEarned = firebase.firestore.FieldValue.increment(roundedAmount);
-  }
-  if (roundedAmount < 0) {
-    update.totalSpent  = firebase.firestore.FieldValue.increment(Math.abs(roundedAmount));
-  }
-
-  await userRef.update(update);
-
-  await db.collection('transactions').add({
-    userId:      uid,
-    amount:      roundedAmount,
-    type,
-    description,
-    timestamp:   firebase.firestore.FieldValue.serverTimestamp(),
-  });
-}
-
-// ── Matches ──────────────────────────────────────────────────
-
-/** Generate a random 6-character match code */
-function generateMatchCode() {
-  return Math.random().toString(36).substr(2, 6).toUpperCase();
-}
-
-/**
- * Create a new match with 30-min expiration and ready status.
- * @param {object} hostUser
- * @param {object} matchData { mode: 'Realistic'|'Zone Wars'|'Box Fights', size: '1v1'|'2v2'|'3v3', wager: number }
- */
-async function createMatch(hostUser, matchData) {
-  const wager = Math.round(parseFloat(matchData.wager) * 100) / 100;
-  if (isNaN(wager) || wager < 0.50) {
-    throw new Error('Minimum entry is 0.50 tokens ($0.50)');
-  }
-
-  const size = matchData.size || '1v1';
-  const mode = matchData.mode || 'Realistic';
-  const maxPlayers = size === '1v1' ? 2 : size === '2v2' ? 4 : 6;
-  const title = `${size} ${mode}`;
-  const code = generateMatchCode();
-
-  // Squad / Team queue settings
-  const queueType = matchData.queueType || 'solo'; // 'solo' | 'team'
-  const teamId = matchData.teamId || null;
-  let teamName = matchData.teamName || null;
-  let teamTag = matchData.teamTag || null;
-  let teamIcon = matchData.teamIcon || null;
-  let teamIconColor = matchData.teamIconColor || null;
-  let teamBgColor = matchData.teamBgColor || null;
-  let teamBorderColor = matchData.teamBorderColor || null;
-  let invitedTeammates = matchData.invitedTeammates || [];
-
-  // If team queue, automatically invite team roster if not pre-provided
-  if (queueType === 'team' && teamId) {
-    try {
-      const teamSnap = await db.collection('teams').doc(teamId).get();
-      if (teamSnap.exists) {
-        const tData = teamSnap.data();
-        teamName = teamName || tData.name;
-        teamTag = teamTag || tData.tag;
-        teamIcon = teamIcon || tData.icon || 'shield';
-        teamIconColor = teamIconColor || tData.iconColor || '#f59e0b';
-        teamBgColor = teamBgColor || tData.bgColor || 'rgba(245, 158, 11, 0.18)';
-        teamBorderColor = teamBorderColor || tData.borderColor || 'rgba(245, 158, 11, 0.45)';
-
-        if (!invitedTeammates || !invitedTeammates.length) {
-          const needed = Math.max(1, (maxPlayers / 2) - 1);
-          const otherMembers = (tData.members || []).filter(m => m.uid !== hostUser.uid);
-          invitedTeammates = otherMembers.slice(0, needed).map(m => ({
-            uid: m.uid,
-            displayName: m.displayName || 'Teammate',
-            photoURL: m.photoURL || '',
-            epicUsername: m.epicUsername || '',
-            invitedAt: Date.now(),
-            status: 'pending'
-          }));
-        }
-      }
-    } catch (e) {
-      console.warn('Could not auto-fetch team members for match invite:', e);
-    }
-  }
-
-  const tokenCoverage = matchData.tokenCoverage || 'none'; // 'none' | 'all' | 'custom'
-  const coveredMemberUids = matchData.coveredMemberUids || [];
-  const splitRule = matchData.splitRule || 'equal'; // 'equal' | 'captain_first' | 'captain_70'
-
-  // Calculate upfront tokens host needs to deposit
-  let hostDeposit = wager;
-  if (size !== '1v1' && teamId) {
-    if (tokenCoverage === 'all') {
-      const squadTeammates = Math.max(1, (maxPlayers / 2) - 1);
-      hostDeposit = wager * (1 + squadTeammates);
-    } else if (tokenCoverage === 'custom') {
-      hostDeposit = wager * (1 + coveredMemberUids.length);
-    }
-  }
-
-  if (Number(hostUser.tokens || 0) < hostDeposit) {
-    throw new Error(`Insufficient tokens (Requires ${formatTokens(hostDeposit)} tokens to create match)`);
-  }
-
-  // 30 Minutes from now
-  const expiresAt = new Date(Date.now() + 30 * 60 * 1000);
-
-  const hostPlayer = {
-    uid:          hostUser.uid,
-    displayName:  hostUser.displayName || 'Host',
-    epicUsername: hostUser.epicUsername || '',
-    isPremium:    !!hostUser.isPremium,
-    photoURL:     hostUser.photoURL || '',
-    isHost:       true,
-    ready:        false,
-    team:         1,
-    teamTag:      teamTag || '',
-    paidAmount:   hostDeposit,
-  };
-
-  let defaultMapCode = '9854-1829-8735';
-  if (mode === 'Zone Wars') defaultMapCode = '3537-4087-0888';
-  else if (mode === 'Box Fights') defaultMapCode = '2355-0939-8965';
-  const mapCode = matchData.mapCode || defaultMapCode;
-
-  const region = matchData.region || 'EU';
-  const platform = matchData.platform || 'All';
-  const rounds = matchData.rounds || (mode === 'Box Fights' ? 'First to 5' : (mode === 'Zone Wars' ? 'Best of 5' : 'First to 5'));
-  
-  let defaultLoot = 'Iron pump (Default AR)';
-  if (mode === 'Zone Wars') defaultLoot = 'Pump (AR)';
-  else if (mode === 'Box Fights') defaultLoot = 'Havoc only';
-  const lootPool = matchData.lootPool || defaultLoot;
-  const simpleEdit = matchData.simpleEdit || 'Disabled';
-
-  const matchRef = await db.collection('matches').add({
-    title,
-    size,
-    mode,
-    wager,
-    maxPlayers,
-    mapCode,
-    queueType,
-    teamId,
-    teamName,
-    teamTag,
-    teamIcon:        teamIcon || null,
-    teamIconColor:   teamIconColor || null,
-    teamBgColor:     teamBgColor || null,
-    teamBorderColor: teamBorderColor || null,
-    region,
-    platform,
-    rounds,
-    lootPool,
-    simpleEdit,
-    invitedTeammates,
-    tokenCoverage,
-    coveredMemberUids,
-    splitRule,
-    hostCoveredDeposit: hostDeposit,
-    players:    [hostPlayer],
-    playerUids: [hostUser.uid],
-    status:     'waiting', // waiting | in_progress | completed | cancelled
-    createdBy:  hostUser.uid,
-    hostName:   hostUser.displayName,
-    code,
-    prizePool:  hostDeposit,
-    winner:     null,
-    createdAt:  firebase.firestore.FieldValue.serverTimestamp(),
-    expiresAt:  firebase.firestore.Timestamp.fromDate(expiresAt),
-    completedAt:null,
-  });
-
-  // Hold the host's tokens
-  await updateTokens(
-    hostUser.uid,
-    -hostDeposit,
-    'match_wager',
-    `Created match — "${title}" (${code})`
-  );
-
-  // Send in-app notification to all invited teammates
-  // Send in-app notification to all invited teammates
-  if (queueType === 'team' && invitedTeammates.length > 0) {
-    for (const tm of invitedTeammates) {
-      try {
-        await db.collection('users').doc(tm.uid).collection('notifications').add({
-          type: 'match_team_invite',
-          title: 'Team Match Invite',
-          body: `${hostUser.displayName || 'Captain'} invited you to join team match "${title}" (${formatTokens(wager)} Tokens)${tm.isCovered ? ' · Entry Covered Free!' : ''}`,
-          matchId: matchRef.id,
-          matchCode: code,
-          matchTitle: title,
-          wager: wager,
-          hostName: hostUser.displayName || 'Captain',
-          hostUid: hostUser.uid,
-          teamName: teamName || 'Team 1',
-          team: 1,
-          isCovered: !!tm.isCovered,
-          read: false,
-          accepted: false,
-          declined: false,
-          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-        });
-      } catch (notifErr) {
-        console.warn('Failed to send team match notification to', tm.uid, notifErr);
-      }
-    }
-  }
-
-  return { id: matchRef.id, code, title };
-}
-
-/**
- * Join a match by its 6-character code or document ID.
+ * Join a match as a player with atomic server-side transaction & concurrency checks.
+ * Guarantees race-condition defense against simultaneous clicks and reserved teammate verification.
  */
 async function joinMatch(codeOrId, joiningUser) {
-  const cleanKey = (codeOrId || '').trim();
-  let matchDoc = null;
+  const sanitizedInput = (codeOrId || '').trim();
 
-  if (cleanKey.length === 6 && !cleanKey.includes('-')) {
+  let targetMatchDocRef = null;
+  if (sanitizedInput.length === 6 && !sanitizedInput.includes('-')) {
     const snap = await db.collection('matches')
-      .where('code', '==', cleanKey.toUpperCase())
+      .where('code', '==', sanitizedInput.toUpperCase())
       .where('status', '==', 'waiting')
       .limit(1)
       .get();
-    if (!snap.empty) matchDoc = snap.docs[0];
+    if (!snap.empty) targetMatchDocRef = snap.docs[0].ref;
+  }
+  if (!targetMatchDocRef) {
+    targetMatchDocRef = db.collection('matches').doc(sanitizedInput);
   }
 
-  if (!matchDoc) {
-    const snap = await db.collection('matches').doc(cleanKey).get();
-    if (snap.exists) matchDoc = snap;
-  }
+  const userDocRef = db.collection('users').doc(joiningUser.uid);
 
-  if (!matchDoc || !matchDoc.exists) throw new Error('Match not found, started, or expired');
+  return await db.runTransaction(async (transaction) => {
+    const matchSnap = await transaction.get(targetMatchDocRef);
+    if (!matchSnap.exists) {
+      throw new Error('Match not found, started, or expired');
+    }
 
-  const match = matchDoc.data();
-  const wager = Number(match.wager || 0);
+    const match = matchSnap.data();
+    const wager = Number(match.wager || 0);
 
-  if (match.status !== 'waiting') throw new Error('This match has already started or ended');
+    if (match.status !== 'waiting') {
+      throw new Error('This match has already started or ended');
+    }
 
-  // Check if 30-min timer expired
-  if (match.expiresAt && match.expiresAt.toDate() < new Date()) {
-    await expireMatch(matchDoc.id);
-    throw new Error('This match has expired and is no longer available');
-  }
+    if (match.expiresAt && match.expiresAt.toDate() < new Date()) {
+      throw new Error('This match has expired and is no longer available');
+    }
 
-  const players = match.players || [];
-  if (players.length >= match.maxPlayers) throw new Error('This match is already full');
-  if (players.find(p => p.uid === joiningUser.uid)) throw new Error('You are already in this match');
+    const currentPlayers = match.players || [];
+    const maxPlayers = match.maxPlayers || 2;
 
-  const halfCount = (match.maxPlayers || 2) / 2;
-  const existingTeam1Players = players.filter(p => p.team === 1 || p.isHost || p.isTeammate || p.uid === match.createdBy);
-  const existingTeam2Players = players.filter(p => p.team === 2 || (p.teamId && match.team2Id && p.teamId === match.team2Id));
+    if (currentPlayers.length >= maxPlayers) {
+      throw new Error('This match is already full!');
+    }
 
-  // Check if user is in invitedTeammates list
-  const invitedEntry = (match.invitedTeammates || []).find(tm => tm.uid === joiningUser.uid);
+    if (currentPlayers.some(p => p.uid === joiningUser.uid)) {
+      throw new Error('You are already in this match');
+    }
 
-  let assignedTeam = 2;
-  let isTeammate = false;
-  let isCovered = false;
+    const halfCount = maxPlayers / 2;
+    const existingTeam1 = currentPlayers.filter(p => p.team === 1 || p.isHost || p.isTeammate || p.uid === match.createdBy);
+    const existingTeam2 = currentPlayers.filter(p => p.team === 2 || (p.teamId && match.team2Id && p.teamId === match.team2Id));
 
-  if (invitedEntry) {
-    assignedTeam = invitedEntry.team || 1;
-    isTeammate = true;
-    isCovered = !!invitedEntry.isCovered;
-  } else if (match.queueType === 'team' || match.teamId) {
-    const isHostTeamMember = (match.teamId && joiningUser.teamId === match.teamId) || (match.coveredMemberUids || []).includes(joiningUser.uid);
-    const isTeam2Member = (match.team2Id && joiningUser.teamId === match.team2Id) || (match.team2CoveredMemberUids || []).includes(joiningUser.uid);
+    // Reserved Teammates & Squad Allocation Logic
+    const invitedEntry = (match.invitedTeammates || []).find(tm => tm.uid === joiningUser.uid);
+    const pendingInvitedCount = (match.invitedTeammates || []).filter(tm => tm.status === 'pending' && tm.uid !== joiningUser.uid).length;
 
-    if (isHostTeamMember && existingTeam1Players.length < halfCount) {
-      assignedTeam = 1;
+    // Check if open slots are reserved for pending teammates
+    const availableTotalSlots = maxPlayers - currentPlayers.length;
+    if (!invitedEntry && availableTotalSlots <= pendingInvitedCount) {
+      // Check if user is on the same team
+      const isTeamAffiliate = (match.teamId && joiningUser.teamId === match.teamId) || (match.team2Id && joiningUser.teamId === match.team2Id);
+      if (!isTeamAffiliate) {
+        throw new Error('This match is currently reserved for invited squad members.');
+      }
+    }
+
+    let assignedTeam = 2;
+    let isTeammate = false;
+    let isCovered = false;
+
+    if (invitedEntry) {
+      assignedTeam = invitedEntry.team || 1;
       isTeammate = true;
-      isCovered = (match.tokenCoverage === 'all') || (match.coveredMemberUids || []).includes(joiningUser.uid);
-    } else if (isTeam2Member && existingTeam2Players.length < halfCount) {
-      assignedTeam = 2;
-      isTeammate = true;
-      isCovered = (match.team2TokenCoverage === 'all') || (match.team2CoveredMemberUids || []).includes(joiningUser.uid);
+      isCovered = !!invitedEntry.isCovered;
+    } else if (match.queueType === 'team' || match.teamId) {
+      const isHostTeamMember = (match.teamId && joiningUser.teamId === match.teamId) || (match.coveredMemberUids || []).includes(joiningUser.uid);
+      const isTeam2Member = (match.team2Id && joiningUser.teamId === match.team2Id) || (match.team2CoveredMemberUids || []).includes(joiningUser.uid);
+
+      if (isHostTeamMember && existingTeam1.length < halfCount) {
+        assignedTeam = 1;
+        isTeammate = true;
+        isCovered = (match.tokenCoverage === 'all') || (match.coveredMemberUids || []).includes(joiningUser.uid);
+      } else if (isTeam2Member && existingTeam2.length < halfCount) {
+        assignedTeam = 2;
+        isTeammate = true;
+        isCovered = (match.team2TokenCoverage === 'all') || (match.team2CoveredMemberUids || []).includes(joiningUser.uid);
+      } else {
+        assignedTeam = existingTeam1.length < halfCount ? 1 : 2;
+      }
     } else {
-      assignedTeam = existingTeam1Players.length < halfCount ? 1 : 2;
+      assignedTeam = existingTeam1.length < halfCount ? 1 : 2;
     }
-  } else {
-    assignedTeam = existingTeam1Players.length < halfCount ? 1 : 2;
-  }
 
-  const playerDeduction = isCovered ? 0 : wager;
-
-  if (playerDeduction > 0 && Number(joiningUser.tokens || 0) < playerDeduction) {
-    throw new Error(`Insufficient tokens to join (Requires ${formatTokens(playerDeduction)} tokens)`);
-  }
-
-  const targetTeamTag = assignedTeam === 1 ? (match.teamTag || joiningUser.teamTag || '') : (match.team2Tag || joiningUser.teamTag || '');
-
-  const newPlayer = {
-    uid:          joiningUser.uid,
-    displayName:  joiningUser.displayName || 'Player',
-    epicUsername: joiningUser.epicUsername || '',
-    isPremium:    !!joiningUser.isPremium,
-    photoURL:     joiningUser.photoURL || '',
-    isHost:       false,
-    ready:        false,
-    team:         assignedTeam,
-    teamId:       joiningUser.teamId || null,
-    teamTag:      targetTeamTag,
-    isTeammate:   isTeammate,
-    paidAmount:   playerDeduction,
-    isCovered:    isCovered,
-  };
-
-  const updatedInvited = (match.invitedTeammates || []).map(tm => {
-    if (tm.uid === joiningUser.uid) {
-      return { ...tm, status: 'accepted' };
+    // Verify team capacity limits
+    if (assignedTeam === 1 && existingTeam1.length >= halfCount) {
+      assignedTeam = 2;
     }
-    return tm;
+    if (assignedTeam === 2 && existingTeam2.length >= halfCount) {
+      throw new Error('Opponent squad (Team 2) is already full!');
+    }
+
+    const playerDeduction = isCovered ? 0 : wager;
+
+    // Atomic balance verification inside transaction
+    const userSnap = await transaction.get(userDocRef);
+    if (!userSnap.exists) {
+      throw new Error('User record not found');
+    }
+    const freshUserData = userSnap.data();
+    const freshUserTokens = Number(freshUserData.tokens || 0);
+
+    if (playerDeduction > 0 && freshUserTokens < playerDeduction) {
+      throw new Error(`Insufficient tokens to join (Requires ${formatTokens(playerDeduction)} tokens, you have ${formatTokens(freshUserTokens)})`);
+    }
+
+    const targetTeamTag = assignedTeam === 1 ? (match.teamTag || joiningUser.teamTag || '') : (match.team2Tag || joiningUser.teamTag || '');
+
+    const newPlayer = {
+      uid:          joiningUser.uid,
+      displayName:  freshUserData.displayName || joiningUser.displayName || 'Player',
+      epicUsername: freshUserData.epicUsername || joiningUser.epicUsername || '',
+      isPremium:    !!(freshUserData.isPremium || joiningUser.isPremium),
+      photoURL:     freshUserData.photoURL || joiningUser.photoURL || '',
+      isHost:       false,
+      ready:        false,
+      team:         assignedTeam,
+      teamId:       joiningUser.teamId || null,
+      teamTag:      targetTeamTag,
+      isTeammate:   isTeammate,
+      paidAmount:   playerDeduction,
+      isCovered:    isCovered,
+    };
+
+    const updatedInvited = (match.invitedTeammates || []).map(tm => {
+      if (tm.uid === joiningUser.uid) {
+        return { ...tm, status: 'accepted' };
+      }
+      return tm;
+    });
+
+    const newPlayersList = [...currentPlayers, newPlayer];
+    const newPlayerUids = [...(match.playerUids || currentPlayers.map(p => p.uid)), joiningUser.uid];
+
+    const matchUpdates = {
+      players:          newPlayersList,
+      playerUids:       newPlayerUids,
+      invitedTeammates: updatedInvited,
+    };
+
+    if (playerDeduction > 0) {
+      matchUpdates.prizePool = (Number(match.prizePool || 0) + playerDeduction);
+    }
+
+    // Apply atomic balance deduction
+    if (playerDeduction > 0) {
+      const updatedBalance = freshUserTokens - playerDeduction;
+      const updatedTotalSpent = (Number(freshUserData.totalSpent || 0) + playerDeduction);
+      transaction.update(userDocRef, {
+        tokens: updatedBalance,
+        totalSpent: updatedTotalSpent
+      });
+
+      const txRef = db.collection('transactions').doc();
+      transaction.set(txRef, {
+        userId: joiningUser.uid,
+        amount: -playerDeduction,
+        type: 'match_wager',
+        description: `Joined match — "${match.title}" (${match.code})`,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+      });
+    }
+
+    transaction.update(targetMatchDocRef, matchUpdates);
+
+    return targetMatchDocRef.id;
   });
-
-  const updateFields = {
-    players:          firebase.firestore.FieldValue.arrayUnion(newPlayer),
-    playerUids:       firebase.firestore.FieldValue.arrayUnion(joiningUser.uid),
-    invitedTeammates: updatedInvited,
-  };
-  if (playerDeduction > 0) {
-    updateFields.prizePool = firebase.firestore.FieldValue.increment(playerDeduction);
-  }
-
-  await matchDoc.ref.update(updateFields);
-
-  if (playerDeduction > 0) {
-    await updateTokens(
-      joiningUser.uid,
-      -playerDeduction,
-      'match_wager',
-      `Joined match — "${match.title}" (${match.code})`
-    );
-  }
-
-  return matchDoc.id;
 }
+
 
 /**
  * Join a match with your team (places joiningUser in Team 2 and auto-invites team roster).

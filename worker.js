@@ -388,7 +388,7 @@ export default {
       }
     }
 
-        // Clean URL Rewrites for Static HTML Pages
+            // Clean URL Rewrites for Static HTML Pages
     if (!url.pathname.includes('.')) {
       const pagePath = url.pathname === '/' ? '/index.html' : `${url.pathname}.html`;
       const pageRequest = new Request(new URL(pagePath, request.url), request);
@@ -398,21 +398,27 @@ export default {
       }
     }
 
-    // Pass-through to Static Assets with 404 Fallback
+    // Try direct static asset fetch
     const assetResponse = await env.ASSETS.fetch(request);
-    if (assetResponse.status === 404 || assetResponse.status === 400) {
+    if (assetResponse.status === 200) {
+      return assetResponse;
+    }
+
+    // Always deliver custom 404 page on unknown routes
+    try {
       const notFoundRequest = new Request(new URL('/404.html', request.url), request);
       const notFoundResponse = await env.ASSETS.fetch(notFoundRequest);
       if (notFoundResponse.status === 200) {
         return new Response(notFoundResponse.body, {
           status: 404,
+          statusText: 'Not Found',
           headers: {
             ...notFoundResponse.headers,
             'Content-Type': 'text/html; charset=utf-8'
           }
         });
       }
-    }
+    } catch (e) {}
 
     return assetResponse;
   },
