@@ -1,16 +1,37 @@
 User-agent: *
 Allow: /
-Allow: /dashboard
 Allow: /matches
-Allow: /shop
 Allow: /leaderboard
+Allow: /shop
 Allow: /tournaments
-Allow: /rules
 Allow: /safety
-Allow: /privacy-policy
+Allow: /rules
 Allow: /terms
+Allow: /privacy-policy
 Allow: /llms.txt
 Allow: /llms-full.txt
+
+# Explicit allowances for Google, Bing, and Search AIs
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Applebot
+Allow: /
 
 # Disallow internal admin & backend directories
 Disallow: /admin
@@ -18,6 +39,5 @@ Disallow: /admin.html
 Disallow: /api/
 Disallow: /scratch/
 Disallow: /.git/
-Disallow: /*.json$
 
 Sitemap: https://championtokens.fun/sitemap.xml
