@@ -51,7 +51,8 @@ function injectNav(activePage = '') {
     </a>`).join('');
 
   const navHTML = `
-    <nav class="ct-nav" id="ct-nav">
+    <a href="#main-content" class="skip-to-content">Skip to main content</a>
+    <nav class="ct-nav" id="ct-nav" aria-label="Main Navigation" role="navigation">
       <div class="ct-nav__inner">
         <a href="dashboard" class="ct-nav__brand">
           <img src="champion-tokens_new.png" alt="Champion Tokens" class="brand-logo-img" width="44" height="44" />
@@ -61,7 +62,7 @@ function injectNav(activePage = '') {
         <div class="ct-nav__links">${navLinksHTML}</div>
 
         <div class="ct-nav__user">
-          <button class="nav-token-btn" onclick="openTokenWalletModal('purchase')" title="Add Tokens / View Wallet">
+          <button class="nav-token-btn" aria-label="View Token Wallet and Balance" onclick="openTokenWalletModal('purchase')" title="Add Tokens / View Wallet">
             <img src="new_token.png" alt="CT" class="nav-token-coin" width="28" height="28" />
             <span id="nav-balance">10.00</span>
             <span class="nav-token-plus">
@@ -74,7 +75,7 @@ function injectNav(activePage = '') {
 
           <!-- Notification Bell -->
           <div class="nav-notif-container" id="nav-notif-container">
-            <button class="nav-notif-btn" id="nav-notif-btn" onclick="toggleNotifDropdown(event)" title="Notifications">
+            <button class="nav-notif-btn" aria-label="View Notifications" aria-haspopup="true" aria-expanded="false" id="nav-notif-btn" onclick="toggleNotifDropdown(event)" title="Notifications">
               <i data-lucide="bell"></i>
               <span class="nav-notif-badge" id="nav-notif-badge" style="display:none;">0</span>
             </button>
@@ -94,7 +95,7 @@ function injectNav(activePage = '') {
 
           <!-- Profile Avatar with Dropdown Menu -->
           <div class="nav-profile-menu-container">
-            <div class="nav-profile-btn" id="nav-profile-btn" onclick="toggleNavProfileDropdown(event)" title="Account Menu">
+            <div class="nav-profile-btn" aria-label="Open User Account Menu" aria-haspopup="true" aria-expanded="false" role="button" tabindex="0" id="nav-profile-btn" onclick="toggleNavProfileDropdown(event)" title="Account Menu">
               <div class="nav-avatar-wrap">
                 <img id="nav-avatar-img" src="" alt="" style="display:none"/>
                 <i data-lucide="user" id="nav-avatar-icon"></i>
@@ -1370,3 +1371,26 @@ function copyGearupKey(key) {
     prompt('Copy your GearUP Booster key:', key);
   });
 }
+
+
+  // Accessibility: Keyboard 'Escape' key closes open modals and dropdowns
+  if (!window._hasA11yEscListener) {
+    window._hasA11yEscListener = true;
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        const notifDropdown = document.getElementById('nav-notif-dropdown');
+        if (notifDropdown && notifDropdown.classList.contains('active')) {
+          notifDropdown.classList.remove('active');
+        }
+        const profileDropdown = document.getElementById('nav-profile-dropdown');
+        if (profileDropdown && profileDropdown.classList.contains('active')) {
+          profileDropdown.classList.remove('active');
+        }
+        const activeModal = document.querySelector('.modal-overlay:not([style*="display: none"]):not(.hidden)');
+        if (activeModal && activeModal.id) {
+          const closeBtn = activeModal.querySelector('.modal-close');
+          if (closeBtn) closeBtn.click();
+        }
+      }
+    });
+  }

@@ -25,7 +25,7 @@
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
   <link rel="manifest" href="manifest.json"/>
-  <link rel="stylesheet" href="css/style.css?v=4.0.1788156645050"/>
+  <link rel="stylesheet" href="css/style.css?v=4.0.1788157541627"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
@@ -136,9 +136,9 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="js/firebase-config.js"></script>
-  <script src="js/auth.js?v=4.0.1788156645050"></script>
-  <script src="js/db.js?v=4.0.1788156645050"></script>
-  <script src="js/nav.js?v=4.0.1788156645050"></script>
+  <script src="js/auth.js?v=4.0.1788157541627"></script>
+  <script src="js/db.js?v=4.0.1788157541627"></script>
+  <script src="js/nav.js?v=4.0.1788157541627"></script>
 
   <script>
     let currentUser = null;
@@ -1183,7 +1183,7 @@
     }
   </script>
 
-  <main class="page-wrap" id="matches-main-content">
+  <main class="page-wrap" id="main-content" role="main" id="matches-main-content">
     <div class="page-header" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;">
       <div>
         <h1><i data-lucide="swords" style="color:var(--gold-bright);"></i> Matches</h1>
@@ -1265,11 +1265,11 @@
   </main>
 
   <!-- Create Match Modal (Wide, Comfortable 2-Column Esports Layout) -->
-  <div class="modal-overlay" id="create-modal" onclick="if(event.target===this)closeCreateModal()">
+  <div class="modal-overlay" role="dialog" aria-modal="true" id="create-modal" onclick="if(event.target===this)closeCreateModal()">
     <div class="modal" style="max-width: 780px; width: 95%; padding: 30px 34px; max-height: 90vh; overflow-y: auto; border: none; outline: none;">
       <div class="modal-header" style="margin-bottom: 20px; padding-bottom: 0; border: none;">
         <div class="modal-title" style="font-size: 1.35rem; font-weight: 900;"><i data-lucide="swords"></i> Create Token Match</div>
-        <button class="modal-close" onclick="closeCreateModal()"><i data-lucide="x"></i></button>
+        <button class="modal-close" aria-label="Close modal" onclick="closeCreateModal()"><i data-lucide="x"></i></button>
       </div>
 
       <form id="create-form" onsubmit="handleCreateMatch(event)">
@@ -1491,13 +1491,13 @@
   </div>
 
   <!-- Join with Team Modal -->
-  <div class="modal-overlay" id="join-team-modal" onclick="if(event.target===this)closeJoinTeamModal()">
+  <div class="modal-overlay" role="dialog" aria-modal="true" id="join-team-modal" onclick="if(event.target===this)closeJoinTeamModal()">
     <div class="modal" style="max-width: 580px; width: 95%; padding: 26px 28px; max-height: 90vh; overflow-y: auto; border: none; outline: none; border-radius: 20px; background: #0e0e10; border: 1px solid rgba(255,255,255,0.08);">
       <div class="modal-header" style="margin-bottom: 16px; padding-bottom: 0; border: none;">
         <div class="modal-title" style="font-size: 1.25rem; font-weight: 900; display:flex; align-items:center; gap:8px;">
           <i data-lucide="users" style="color:var(--gold-bright);"></i> Join Team Match
         </div>
-        <button class="modal-close" onclick="closeJoinTeamModal()"><i data-lucide="x"></i></button>
+        <button class="modal-close" aria-label="Close modal" onclick="closeJoinTeamModal()"><i data-lucide="x"></i></button>
       </div>
 
       <!-- Match Info Card -->

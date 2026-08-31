@@ -8,7 +8,7 @@
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
   <link rel="manifest" href="manifest.json"/>
-  <link rel="stylesheet" href="css/style.css?v=4.0.1788156645050"/>
+  <link rel="stylesheet" href="css/style.css?v=4.0.1788157541627"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
@@ -914,7 +914,7 @@
     <span>Loading match lobby…</span>
   </div>
 
-  <main class="match-page-layout" id="match-page-layout">
+  <main id="main-content" role="main" class="match-page-layout" id="match-page-layout">
     <!-- Left Stage Content -->
     <div class="match-stage-left">
       <!-- Back Button -->
@@ -1087,13 +1087,13 @@
   </main>
 
   <!-- Join with Team Modal -->
-  <div class="modal-overlay" id="match-join-team-modal" onclick="if(event.target===this)closeMatchJoinTeamModal()">
+  <div class="modal-overlay" role="dialog" aria-modal="true" id="match-join-team-modal" onclick="if(event.target===this)closeMatchJoinTeamModal()">
     <div class="modal" style="max-width: 580px; width: 95%; padding: 26px 28px; max-height: 90vh; overflow-y: auto; border: none; outline: none; border-radius: 20px; background: #0e0e10; border: 1px solid rgba(255,255,255,0.08);">
       <div class="modal-header" style="margin-bottom: 16px; padding-bottom: 0; border: none;">
         <div class="modal-title" style="font-size: 1.25rem; font-weight: 900; display:flex; align-items:center; gap:8px;">
           <i data-lucide="users" style="color:var(--gold-bright);"></i> Join Team Match
         </div>
-        <button class="modal-close" onclick="closeMatchJoinTeamModal()"><i data-lucide="x"></i></button>
+        <button class="modal-close" aria-label="Close modal" onclick="closeMatchJoinTeamModal()"><i data-lucide="x"></i></button>
       </div>
 
       <!-- Match Info Card -->
@@ -1200,7 +1200,7 @@
 
   <!-- Wide Player Profile Modal (Clean Esports Style) -->
   <!-- Player Profile Modal (Pixel-Perfect Match with Mockup & Social Connections) -->
-  <div class="modal-overlay" id="profile-modal" onclick="if(event.target===this)closeUserProfileModal()">
+  <div class="modal-overlay" role="dialog" aria-modal="true" id="profile-modal" onclick="if(event.target===this)closeUserProfileModal()">
     <div class="modal" style="max-width:500px;width:100%;padding:26px 28px 28px;background:linear-gradient(180deg, #101217 0%, #08090c 100%);border:1px solid rgba(255,255,255,0.1);border-radius:24px;box-shadow:0 24px 60px rgba(0,0,0,0.95);">
       
       <!-- Top Title Bar -->
@@ -1209,7 +1209,7 @@
           <div style="font-size:1.3rem;font-weight:900;color:#ffffff;line-height:1.2;">Player profile</div>
           <div id="modal-subtitle" style="font-size:0.82rem;color:#94a3b8;margin-top:2px;">View username's statistics</div>
         </div>
-        <button class="modal-close" onclick="closeUserProfileModal()" style="background:transparent;border:none;color:#ffffff;cursor:pointer;padding:4px;display:flex;align-items:center;justify-content:center;opacity:0.8;transition:opacity 0.2s;" onmouseenter="this.style.opacity='1'" onmouseleave="this.style.opacity='0.8'">
+        <button class="modal-close" aria-label="Close modal" onclick="closeUserProfileModal()" style="background:transparent;border:none;color:#ffffff;cursor:pointer;padding:4px;display:flex;align-items:center;justify-content:center;opacity:0.8;transition:opacity 0.2s;" onmouseenter="this.style.opacity='1'" onmouseleave="this.style.opacity='0.8'">
           <i data-lucide="x" style="width:20px;height:20px;"></i>
         </button>
       </div>
@@ -1347,11 +1347,11 @@
   </div>
 
   <!-- Call Staff Modal -->
-  <div class="modal-overlay" id="staff-modal" onclick="if(event.target===this)closeCallStaffModal()">
+  <div class="modal-overlay" role="dialog" aria-modal="true" id="staff-modal" onclick="if(event.target===this)closeCallStaffModal()">
     <div class="modal">
       <div class="modal-header">
         <div class="modal-title" style="color:var(--red);"><i data-lucide="shield-alert"></i> Call Staff / Moderator</div>
-        <button class="modal-close" onclick="closeCallStaffModal()"><i data-lucide="x"></i></button>
+        <button class="modal-close" aria-label="Close modal" onclick="closeCallStaffModal()"><i data-lucide="x"></i></button>
       </div>
       <form class="modal-form" onsubmit="submitStaffCall(event)">
         <div class="form-group">
@@ -1379,11 +1379,11 @@
   </div>
 
   <!-- Declare Winner Modal -->
-  <div class="modal-overlay" id="declare-modal" onclick="if(event.target===this)closeDeclareModal()">
+  <div class="modal-overlay" role="dialog" aria-modal="true" id="declare-modal" onclick="if(event.target===this)closeDeclareModal()">
     <div class="modal">
       <div class="modal-header">
         <div class="modal-title"><i data-lucide="trophy"></i> Declare Winner</div>
-        <button class="modal-close" onclick="closeDeclareModal()"><i data-lucide="x"></i></button>
+        <button class="modal-close" aria-label="Close modal" onclick="closeDeclareModal()"><i data-lucide="x"></i></button>
       </div>
       <div class="modal-form">
         <div class="form-group">
@@ -1401,14 +1401,14 @@
   </div>
 
   <!-- Competitive Rules Modal -->
-  <div class="modal-overlay" id="rules-modal" onclick="if(event.target===this)closeRulesModal()">
+  <div class="modal-overlay" role="dialog" aria-modal="true" id="rules-modal" onclick="if(event.target===this)closeRulesModal()">
     <div class="modal" style="max-width:540px;">
       <div class="modal-header">
         <div class="modal-title" style="display:flex;align-items:center;gap:8px;color:var(--gold-bright);">
           <i data-lucide="book-open"></i>
           <span id="rules-modal-title">Realistic Competitive Rules</span>
         </div>
-        <button class="modal-close" onclick="closeRulesModal()"><i data-lucide="x"></i></button>
+        <button class="modal-close" aria-label="Close modal" onclick="closeRulesModal()"><i data-lucide="x"></i></button>
       </div>
       <div style="padding:14px 4px;font-size:0.88rem;color:#cbd5e1;line-height:1.6;display:flex;flex-direction:column;gap:12px;" id="rules-modal-content">
         <div style="background:rgba(255,255,255,0.03);padding:14px 16px;border-radius:12px;">
@@ -1439,9 +1439,9 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="js/firebase-config.js"></script>
-  <script src="js/auth.js?v=4.0.1788156645050"></script>
-  <script src="js/db.js?v=4.0.1788156645050"></script>
-  <script src="js/nav.js?v=4.0.1788156645050"></script>
+  <script src="js/auth.js?v=4.0.1788157541627"></script>
+  <script src="js/db.js?v=4.0.1788157541627"></script>
+  <script src="js/nav.js?v=4.0.1788157541627"></script>
 
   <script>
     let currentUser = null;

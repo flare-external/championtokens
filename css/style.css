@@ -2666,3 +2666,151 @@ div[class*="netlify-drawer"],
   gap: 6px;
   flex-wrap: wrap;
 }
+
+
+/* ============================================================
+   CHAMPION TOKENS — SKELETON LOADERS & ACCESSIBILITY SUITE
+   ============================================================ */
+
+/* ── Shimmering Skeleton Animations ────────────────────────── */
+@keyframes ct-skeleton-shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.ct-skeleton {
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.03) 20%, rgba(255, 255, 255, 0.08) 50%, rgba(255, 255, 255, 0.03) 80%) !important;
+  background-size: 200% 100% !important;
+  animation: ct-skeleton-shimmer 1.6s infinite ease-in-out !important;
+  border-color: rgba(255, 255, 255, 0.06) !important;
+  color: transparent !important;
+  pointer-events: none !important;
+  user-select: none !important;
+}
+
+.ct-skeleton-text {
+  display: inline-block;
+  height: 14px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.04) 20%, rgba(255, 255, 255, 0.1) 50%, rgba(255, 255, 255, 0.04) 80%);
+  background-size: 200% 100%;
+  animation: ct-skeleton-shimmer 1.6s infinite ease-in-out;
+}
+
+.ct-skeleton-title {
+  display: inline-block;
+  height: 22px;
+  border-radius: 6px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.05) 20%, rgba(255, 255, 255, 0.12) 50%, rgba(255, 255, 255, 0.05) 80%);
+  background-size: 200% 100%;
+  animation: ct-skeleton-shimmer 1.6s infinite ease-in-out;
+}
+
+.ct-skeleton-avatar {
+  border-radius: 50%;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.04) 20%, rgba(255, 255, 255, 0.1) 50%, rgba(255, 255, 255, 0.04) 80%);
+  background-size: 200% 100%;
+  animation: ct-skeleton-shimmer 1.6s infinite ease-in-out;
+  flex-shrink: 0;
+}
+
+.ct-skeleton-badge {
+  display: inline-block;
+  height: 20px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.04) 20%, rgba(255, 255, 255, 0.09) 50%, rgba(255, 255, 255, 0.04) 80%);
+  background-size: 200% 100%;
+  animation: ct-skeleton-shimmer 1.6s infinite ease-in-out;
+}
+
+.ct-skeleton-card {
+  background: #060608 !important;
+  border: 1px solid rgba(255, 255, 255, 0.06) !important;
+  border-radius: 18px !important;
+  padding: 16px 18px !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+.ct-skeleton-btn {
+  height: 32px;
+  border-radius: 10px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.05) 20%, rgba(255, 255, 255, 0.12) 50%, rgba(255, 255, 255, 0.05) 80%);
+  background-size: 200% 100%;
+  animation: ct-skeleton-shimmer 1.6s infinite ease-in-out;
+}
+
+/* ── WCAG 2.1 AA / ADA Accessibility Standards ─────────────── */
+
+/* 1. Skip to main content link for keyboard / screen reader users */
+.skip-to-content {
+  position: absolute;
+  top: -120px;
+  left: 16px;
+  background: var(--gold-bright);
+  color: #000000 !important;
+  font-weight: 900;
+  font-size: 0.88rem;
+  padding: 12px 20px;
+  border-radius: 10px;
+  z-index: 9999999;
+  text-decoration: none;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.8), 0 0 16px rgba(245, 158, 11, 0.6);
+  transition: top 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.skip-to-content:focus,
+.skip-to-content:focus-visible {
+  top: 16px;
+  outline: 3px solid #ffffff !important;
+  outline-offset: 2px !important;
+}
+
+/* 2. Keyboard Focus Indicators */
+:focus-visible {
+  outline: 2px solid var(--gold-bright) !important;
+  outline-offset: 2px !important;
+}
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--gold-bright) !important;
+  outline-offset: 2px !important;
+}
+
+/* 3. Screen Reader Only Utility */
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* 4. Motion Sensitivity (Vestibular / Seizure Protection) */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .ct-skeleton,
+  .ct-skeleton-text,
+  .ct-skeleton-title,
+  .ct-skeleton-avatar,
+  .ct-skeleton-badge,
+  .ct-skeleton-btn {
+    animation: none !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+  }
+}

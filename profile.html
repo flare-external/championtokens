@@ -8,7 +8,7 @@
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
   <link rel="manifest" href="manifest.json"/>
-  <link rel="stylesheet" href="css/style.css?v=4.0.1788156645050"/>
+  <link rel="stylesheet" href="css/style.css?v=4.0.1788157541627"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
@@ -831,7 +831,7 @@
     <span>Loading profile…</span>
   </div>
 
-  <main class="page-wrap" style="max-width: 1050px;">
+  <main class="page-wrap" id="main-content" role="main" style="max-width: 1050px;">
     <!-- Top Subtabs Segmented Bar -->
     <div class="profile-top-subtabs-wrap">
       <div class="profile-subtabs-bar">
@@ -980,7 +980,51 @@
             <i data-lucide="activity"></i> Transaction History
           </div>
           <div class="tx-list" id="tx-list" style="flex:1;overflow-y:auto;overflow-x:hidden;max-height:460px;min-height:220px;">
-            <div class="empty-state"><div class="spinner" style="margin:0 auto;"></div></div>
+            
+  <div class="ct-skeleton-card" style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;margin-bottom:6px;border-radius:12px !important;">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <div class="ct-skeleton-avatar" style="width:30px;height:30px;border-radius:8px;"></div>
+      <div style="display:flex;flex-direction:column;gap:4px;">
+        <div class="ct-skeleton-title" style="width:100px;height:14px;"></div>
+        <div class="ct-skeleton-text" style="width:65px;height:10px;"></div>
+      </div>
+    </div>
+    <div class="ct-skeleton-badge" style="width:60px;height:20px;"></div>
+  </div>
+
+  <div class="ct-skeleton-card" style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;margin-bottom:6px;border-radius:12px !important;">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <div class="ct-skeleton-avatar" style="width:30px;height:30px;border-radius:8px;"></div>
+      <div style="display:flex;flex-direction:column;gap:4px;">
+        <div class="ct-skeleton-title" style="width:100px;height:14px;"></div>
+        <div class="ct-skeleton-text" style="width:65px;height:10px;"></div>
+      </div>
+    </div>
+    <div class="ct-skeleton-badge" style="width:60px;height:20px;"></div>
+  </div>
+
+  <div class="ct-skeleton-card" style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;margin-bottom:6px;border-radius:12px !important;">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <div class="ct-skeleton-avatar" style="width:30px;height:30px;border-radius:8px;"></div>
+      <div style="display:flex;flex-direction:column;gap:4px;">
+        <div class="ct-skeleton-title" style="width:100px;height:14px;"></div>
+        <div class="ct-skeleton-text" style="width:65px;height:10px;"></div>
+      </div>
+    </div>
+    <div class="ct-skeleton-badge" style="width:60px;height:20px;"></div>
+  </div>
+
+  <div class="ct-skeleton-card" style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;margin-bottom:6px;border-radius:12px !important;">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <div class="ct-skeleton-avatar" style="width:30px;height:30px;border-radius:8px;"></div>
+      <div style="display:flex;flex-direction:column;gap:4px;">
+        <div class="ct-skeleton-title" style="width:100px;height:14px;"></div>
+        <div class="ct-skeleton-text" style="width:65px;height:10px;"></div>
+      </div>
+    </div>
+    <div class="ct-skeleton-badge" style="width:60px;height:20px;"></div>
+  </div>
+
           </div>
           <div class="ct-pagination" id="profile-tx-pagination"></div>
         </div>
@@ -990,7 +1034,51 @@
             <i data-lucide="swords"></i> Match History
           </div>
           <div class="matches-history" id="match-history" style="flex:1;overflow-y:auto;overflow-x:hidden;max-height:460px;min-height:220px;">
-            <div class="empty-state"><div class="spinner" style="margin:0 auto;"></div></div>
+            
+  <div class="ct-skeleton-card" style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;margin-bottom:6px;border-radius:12px !important;">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <div class="ct-skeleton-avatar" style="width:30px;height:30px;border-radius:8px;"></div>
+      <div style="display:flex;flex-direction:column;gap:4px;">
+        <div class="ct-skeleton-title" style="width:100px;height:14px;"></div>
+        <div class="ct-skeleton-text" style="width:65px;height:10px;"></div>
+      </div>
+    </div>
+    <div class="ct-skeleton-badge" style="width:60px;height:20px;"></div>
+  </div>
+
+  <div class="ct-skeleton-card" style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;margin-bottom:6px;border-radius:12px !important;">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <div class="ct-skeleton-avatar" style="width:30px;height:30px;border-radius:8px;"></div>
+      <div style="display:flex;flex-direction:column;gap:4px;">
+        <div class="ct-skeleton-title" style="width:100px;height:14px;"></div>
+        <div class="ct-skeleton-text" style="width:65px;height:10px;"></div>
+      </div>
+    </div>
+    <div class="ct-skeleton-badge" style="width:60px;height:20px;"></div>
+  </div>
+
+  <div class="ct-skeleton-card" style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;margin-bottom:6px;border-radius:12px !important;">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <div class="ct-skeleton-avatar" style="width:30px;height:30px;border-radius:8px;"></div>
+      <div style="display:flex;flex-direction:column;gap:4px;">
+        <div class="ct-skeleton-title" style="width:100px;height:14px;"></div>
+        <div class="ct-skeleton-text" style="width:65px;height:10px;"></div>
+      </div>
+    </div>
+    <div class="ct-skeleton-badge" style="width:60px;height:20px;"></div>
+  </div>
+
+  <div class="ct-skeleton-card" style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;margin-bottom:6px;border-radius:12px !important;">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <div class="ct-skeleton-avatar" style="width:30px;height:30px;border-radius:8px;"></div>
+      <div style="display:flex;flex-direction:column;gap:4px;">
+        <div class="ct-skeleton-title" style="width:100px;height:14px;"></div>
+        <div class="ct-skeleton-text" style="width:65px;height:10px;"></div>
+      </div>
+    </div>
+    <div class="ct-skeleton-badge" style="width:60px;height:20px;"></div>
+  </div>
+
           </div>
           <div class="ct-pagination" id="profile-mh-pagination"></div>
         </div>
@@ -1035,11 +1123,11 @@
   </main>
 
   <!-- Create Team Modal -->
-  <div class="modal-overlay" id="create-team-modal" onclick="if(event.target===this)closeCreateTeamModal()">
+  <div class="modal-overlay" role="dialog" aria-modal="true" id="create-team-modal" onclick="if(event.target===this)closeCreateTeamModal()">
     <div class="modal" style="max-width:480px;">
       <div class="modal-header">
         <div class="modal-title"><i data-lucide="shield" style="color:var(--gold-bright);"></i> Create Team</div>
-        <button class="modal-close" onclick="closeCreateTeamModal()"><i data-lucide="x"></i></button>
+        <button class="modal-close" aria-label="Close modal" onclick="closeCreateTeamModal()"><i data-lucide="x"></i></button>
       </div>
       <form class="modal-form" onsubmit="submitCreateTeam(event)">
         
@@ -1100,11 +1188,11 @@
   </div>
 
   <!-- Join Team Modal -->
-  <div class="modal-overlay" id="join-team-modal" onclick="if(event.target===this)closeJoinTeamModal()">
+  <div class="modal-overlay" role="dialog" aria-modal="true" id="join-team-modal" onclick="if(event.target===this)closeJoinTeamModal()">
     <div class="modal">
       <div class="modal-header">
         <div class="modal-title"><i data-lucide="log-in"></i> Join Team</div>
-        <button class="modal-close" onclick="closeJoinTeamModal()"><i data-lucide="x"></i></button>
+        <button class="modal-close" aria-label="Close modal" onclick="closeJoinTeamModal()"><i data-lucide="x"></i></button>
       </div>
       <form class="modal-form" onsubmit="submitJoinTeam(event)">
         <div class="form-group">
@@ -1120,11 +1208,11 @@
   </div>
 
   <!-- Invite Player to Team Modal -->
-  <div class="modal-overlay" id="invite-player-modal" onclick="if(event.target===this)closeInvitePlayerModal()">
+  <div class="modal-overlay" role="dialog" aria-modal="true" id="invite-player-modal" onclick="if(event.target===this)closeInvitePlayerModal()">
     <div class="modal" style="max-width:460px;">
       <div class="modal-header">
         <div class="modal-title"><i data-lucide="user-plus"></i> Invite Player to Team</div>
-        <button class="modal-close" onclick="closeInvitePlayerModal()"><i data-lucide="x"></i></button>
+        <button class="modal-close" aria-label="Close modal" onclick="closeInvitePlayerModal()"><i data-lucide="x"></i></button>
       </div>
       <div style="margin-bottom:14px;">
         <input class="form-input" id="invite-player-search-input" placeholder="Type letters to search players live (e.g. A, F, Epic)…" autocomplete="off" oninput="handleInviteSearchLive(this.value)" style="width:100%;" />
@@ -1136,14 +1224,14 @@
   </div>
 
   <!-- Link Epic Games Modal -->
-  <div class="modal-overlay" id="link-epic-modal" onclick="if(event.target===this)closeLinkEpicModal()">
+  <div class="modal-overlay" role="dialog" aria-modal="true" id="link-epic-modal" onclick="if(event.target===this)closeLinkEpicModal()">
     <div class="modal" style="max-width:420px;text-align:center;">
       <div class="modal-header" style="justify-content:center;position:relative;">
         <div class="modal-title" style="display:flex;align-items:center;gap:10px;">
           <img src="epicgamesblack.webp" alt="Epic" style="width:24px;height:24px;object-fit:contain;border-radius:4px;"/>
           <span>Epic Games Account</span>
         </div>
-        <button class="modal-close" style="position:absolute;right:0;" onclick="closeLinkEpicModal()"><i data-lucide="x"></i></button>
+        <button class="modal-close" aria-label="Close modal" style="position:absolute;right:0;" onclick="closeLinkEpicModal()"><i data-lucide="x"></i></button>
       </div>
 
       <div id="modal-epic-content" style="padding:10px 0 6px;"></div>
@@ -1151,14 +1239,14 @@
   </div>
 
   <!-- Cosmetics Customizer Studio Modal -->
-  <div class="modal-overlay" id="cosmetics-customizer-modal" onclick="if(event.target===this)closeCosmeticsModal()">
+  <div class="modal-overlay" role="dialog" aria-modal="true" id="cosmetics-customizer-modal" onclick="if(event.target===this)closeCosmeticsModal()">
     <div class="modal" style="max-width:620px;max-height:85vh;overflow-y:auto;">
       <div class="modal-header">
         <div class="modal-title" style="display:flex;align-items:center;gap:10px;">
           <i data-lucide="palette" style="color:var(--gold-bright);"></i>
           <span id="cosmetics-modal-title">Profile Customization</span>
         </div>
-        <button class="modal-close" onclick="closeCosmeticsModal()"><i data-lucide="x"></i></button>
+        <button class="modal-close" aria-label="Close modal" onclick="closeCosmeticsModal()"><i data-lucide="x"></i></button>
       </div>
 
       <!-- Tab Switcher -->
@@ -1219,14 +1307,14 @@
   </div>
 
   <!-- Username Color Modal -->
-  <div class="modal-overlay" id="style-customizer-modal" onclick="if(event.target===this)closeStyleModal()">
+  <div class="modal-overlay" role="dialog" aria-modal="true" id="style-customizer-modal" onclick="if(event.target===this)closeStyleModal()">
     <div class="modal" style="max-width:440px;">
       <div class="modal-header">
         <div class="modal-title" style="display:flex;align-items:center;gap:10px;">
           <i data-lucide="sparkles" style="color:var(--gold-bright);"></i>
           <span>Subscriber Name Color</span>
         </div>
-        <button class="modal-close" onclick="closeStyleModal()"><i data-lucide="x"></i></button>
+        <button class="modal-close" aria-label="Close modal" onclick="closeStyleModal()"><i data-lucide="x"></i></button>
       </div>
 
       <!-- Live Real-Time Username Preview -->
@@ -1263,9 +1351,9 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="js/firebase-config.js?v=3.2"></script>
-  <script src="js/auth.js?v=4.0.1788156645050"></script>
-  <script src="js/db.js?v=4.0.1788156645050"></script>
-  <script src="js/nav.js?v=4.0.1788156645050"></script>
+  <script src="js/auth.js?v=4.0.1788157541627"></script>
+  <script src="js/db.js?v=4.0.1788157541627"></script>
+  <script src="js/nav.js?v=4.0.1788157541627"></script>
 
   <script>
     let currentUser = null;

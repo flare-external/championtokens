@@ -8,7 +8,7 @@
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
   <link rel="manifest" href="manifest.json"/>
-  <link rel="stylesheet" href="css/style.css?v=4.0.1788156645050"/>
+  <link rel="stylesheet" href="css/style.css?v=4.0.1788157541627"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
 
@@ -237,7 +237,7 @@
     <span>Authenticating Staff…</span>
   </div>
 
-  <main class="page-wrap" style="max-width: 1100px;">
+  <main class="page-wrap" id="main-content" role="main" style="max-width: 1100px;">
     <!-- Sleek Header -->
     <div class="admin-hero-header">
       <div>
@@ -357,7 +357,91 @@
       </div>
 
       <div id="player-search-results">
-        <div class="empty-state" style="padding:24px 0;"><div class="spinner" style="margin:0 auto;"></div></div>
+        
+  <div class="ct-skeleton-card" style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px;margin-bottom:12px;border-radius:16px !important;">
+    <div style="display:flex;align-items:center;gap:12px;">
+      <div class="ct-skeleton-avatar" style="width:44px;height:44px;border-radius:12px;"></div>
+      <div style="display:flex;flex-direction:column;gap:5px;">
+        <div class="ct-skeleton-title" style="width:130px;height:18px;"></div>
+        <div class="ct-skeleton-text" style="width:90px;height:12px;"></div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <div class="ct-skeleton-badge" style="width:65px;height:24px;"></div>
+      <div class="ct-skeleton-btn" style="width:75px;height:30px;"></div>
+    </div>
+  </div>
+
+  <div class="ct-skeleton-card" style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px;margin-bottom:12px;border-radius:16px !important;">
+    <div style="display:flex;align-items:center;gap:12px;">
+      <div class="ct-skeleton-avatar" style="width:44px;height:44px;border-radius:12px;"></div>
+      <div style="display:flex;flex-direction:column;gap:5px;">
+        <div class="ct-skeleton-title" style="width:130px;height:18px;"></div>
+        <div class="ct-skeleton-text" style="width:90px;height:12px;"></div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <div class="ct-skeleton-badge" style="width:65px;height:24px;"></div>
+      <div class="ct-skeleton-btn" style="width:75px;height:30px;"></div>
+    </div>
+  </div>
+
+  <div class="ct-skeleton-card" style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px;margin-bottom:12px;border-radius:16px !important;">
+    <div style="display:flex;align-items:center;gap:12px;">
+      <div class="ct-skeleton-avatar" style="width:44px;height:44px;border-radius:12px;"></div>
+      <div style="display:flex;flex-direction:column;gap:5px;">
+        <div class="ct-skeleton-title" style="width:130px;height:18px;"></div>
+        <div class="ct-skeleton-text" style="width:90px;height:12px;"></div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <div class="ct-skeleton-badge" style="width:65px;height:24px;"></div>
+      <div class="ct-skeleton-btn" style="width:75px;height:30px;"></div>
+    </div>
+  </div>
+
+  <div class="ct-skeleton-card" style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px;margin-bottom:12px;border-radius:16px !important;">
+    <div style="display:flex;align-items:center;gap:12px;">
+      <div class="ct-skeleton-avatar" style="width:44px;height:44px;border-radius:12px;"></div>
+      <div style="display:flex;flex-direction:column;gap:5px;">
+        <div class="ct-skeleton-title" style="width:130px;height:18px;"></div>
+        <div class="ct-skeleton-text" style="width:90px;height:12px;"></div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <div class="ct-skeleton-badge" style="width:65px;height:24px;"></div>
+      <div class="ct-skeleton-btn" style="width:75px;height:30px;"></div>
+    </div>
+  </div>
+
+  <div class="ct-skeleton-card" style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px;margin-bottom:12px;border-radius:16px !important;">
+    <div style="display:flex;align-items:center;gap:12px;">
+      <div class="ct-skeleton-avatar" style="width:44px;height:44px;border-radius:12px;"></div>
+      <div style="display:flex;flex-direction:column;gap:5px;">
+        <div class="ct-skeleton-title" style="width:130px;height:18px;"></div>
+        <div class="ct-skeleton-text" style="width:90px;height:12px;"></div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <div class="ct-skeleton-badge" style="width:65px;height:24px;"></div>
+      <div class="ct-skeleton-btn" style="width:75px;height:30px;"></div>
+    </div>
+  </div>
+
+  <div class="ct-skeleton-card" style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px;margin-bottom:12px;border-radius:16px !important;">
+    <div style="display:flex;align-items:center;gap:12px;">
+      <div class="ct-skeleton-avatar" style="width:44px;height:44px;border-radius:12px;"></div>
+      <div style="display:flex;flex-direction:column;gap:5px;">
+        <div class="ct-skeleton-title" style="width:130px;height:18px;"></div>
+        <div class="ct-skeleton-text" style="width:90px;height:12px;"></div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <div class="ct-skeleton-badge" style="width:65px;height:24px;"></div>
+      <div class="ct-skeleton-btn" style="width:75px;height:30px;"></div>
+    </div>
+  </div>
+
       </div>
     </div>
 
@@ -581,7 +665,8 @@
         </div>
 
         <div id="admin-codes-list-container">
-          <div class="empty-state"><div class="spinner" style="margin:0 auto;"></div></div>
+          
+  
         </div>
       </div>
     </div>
@@ -616,11 +701,11 @@
   </main>
 
   <!-- Staff Role Tier Modal -->
-  <div class="modal-overlay" id="role-modal" onclick="if(event.target===this)closeRoleModal()">
+  <div class="modal-overlay" role="dialog" aria-modal="true" id="role-modal" onclick="if(event.target===this)closeRoleModal()">
     <div class="modal" style="max-width:480px;padding:24px 26px;background:#000;border:1px solid rgba(255,255,255,0.1);border-radius:20px;">
       <div class="modal-header" style="margin-bottom:14px;border:none;padding:0;">
         <div class="modal-title" style="font-size:1.15rem;font-weight:900;color:#fff;"><i data-lucide="shield"></i> Manage Staff Role</div>
-        <button class="modal-close" onclick="closeRoleModal()"><i data-lucide="x"></i></button>
+        <button class="modal-close" aria-label="Close modal" onclick="closeRoleModal()"><i data-lucide="x"></i></button>
       </div>
       <div style="font-size:0.85rem;color:var(--text-muted);margin-bottom:16px;">
         Target User: <strong id="role-modal-name" style="color:#fff;">Player</strong> (<span id="role-modal-uid" style="font-family:monospace;font-size:0.75rem;"></span>)
@@ -665,11 +750,11 @@
   </div>
 
   <!-- Balance Management Modal -->
-  <div class="modal-overlay" id="balance-modal" onclick="if(event.target===this)closeDirectBalanceModal()">
+  <div class="modal-overlay" role="dialog" aria-modal="true" id="balance-modal" onclick="if(event.target===this)closeDirectBalanceModal()">
     <div class="modal" style="max-width:440px;padding:24px 26px;background:#000;border:1px solid rgba(255,255,255,0.1);border-radius:20px;">
       <div class="modal-header" style="margin-bottom:14px;border:none;padding:0;">
         <div class="modal-title" id="balance-modal-title" style="font-size:1.15rem;font-weight:900;color:#fff;"><i data-lucide="coins"></i> Manage User Tokens</div>
-        <button class="modal-close" onclick="closeDirectBalanceModal()"><i data-lucide="x"></i></button>
+        <button class="modal-close" aria-label="Close modal" onclick="closeDirectBalanceModal()"><i data-lucide="x"></i></button>
       </div>
       <div style="font-size:0.85rem;color:var(--text-muted);margin-bottom:16px;">
         Current Balance: <strong id="balance-modal-current" style="color:var(--gold-bright);">10.00 Tokens</strong>
@@ -744,9 +829,9 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="js/firebase-config.js?v=3.6"></script>
-  <script src="js/auth.js?v=4.0.1788156645050"></script>
-  <script src="js/db.js?v=4.0.1788156645050"></script>
-  <script src="js/nav.js?v=4.0.1788156645050"></script>
+  <script src="js/auth.js?v=4.0.1788157541627"></script>
+  <script src="js/db.js?v=4.0.1788157541627"></script>
+  <script src="js/nav.js?v=4.0.1788157541627"></script>
 
   <script>
     let currentUser = null;
