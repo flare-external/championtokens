@@ -636,6 +636,9 @@ input[type="range"].ct-slider::-moz-range-thumb {
 .ct-nav-spacer { height: var(--nav-h); }
 
 /* ── Layout ────────────────────────────────────────────────── */
+.page-wrap, main {
+  flex: 1 0 auto;
+}
 .page-wrap {
   position: relative;
   z-index: 1;
@@ -959,9 +962,10 @@ input[type="range"].ct-slider::-moz-range-thumb {
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.78);
-  backdrop-filter: blur(8px);
-  z-index: 200;
+  background: rgba(0, 0, 0, 0.82);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  z-index: 999999 !important;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2393,9 +2397,9 @@ div[class*="netlify-drawer"],
 /* ── Platform Universal Footer ─────────────────────────────── */
 .ct-footer {
   position: relative !important;
-  z-index: 999 !important;
+  z-index: 5 !important;
   width: 100%;
-  margin-top: 56px;
+  margin-top: auto !important;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
   padding: 38px 24px 52px;
   background: rgba(0, 0, 0, 0.85);
