@@ -834,13 +834,8 @@ function showGiftClaimedModal(info) {
           <img src="gearup.png" alt="GearUP Booster" style="width:82%;height:82%;object-fit:contain;" />
         </div>
       </div>
-      <div style="font-size:1.4rem;font-weight:900;color:#fff;margin-bottom:4px;">
+      <div style="font-size:1.4rem;font-weight:900;color:#fff;margin-bottom:16px;">
         GearUP Booster (PC)
-      </div>
-      <div style="margin-bottom:14px;">
-        <span class="badge" style="background:rgba(56,189,248,0.15);color:#38bdf8;border:1px solid rgba(56,189,248,0.4);font-size:0.75rem;padding:3px 12px;font-weight:800;">
-          ${escapeHtml(duration).toUpperCase()}
-        </span>
       </div>
       <!-- Clean Simple Key Box -->
       <div style="background:#060608;border:1px solid rgba(255,255,255,0.12);border-radius:12px;padding:10px 14px;margin:0 auto 16px;display:flex;align-items:center;justify-content:space-between;gap:8px;max-width:340px;">
