@@ -8,7 +8,7 @@
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
   <link rel="manifest" href="manifest.json"/>
-  <link rel="stylesheet" href="css/style.css?v=4.0.1788157689460"/>
+  <link rel="stylesheet" href="css/style.css?v=4.0.1788157840643"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
@@ -826,6 +826,12 @@
 </head>
 <body>
   <div class="page-bg"></div>
+  <!-- Loading screen -->
+  <div class="page-loading" id="page-loading">
+    <div class="spinner"></div>
+    <span>Loading profile…</span>
+  </div>
+
   
     <span>Loading profile…</span>
   </div>
@@ -860,12 +866,12 @@
             </div>
             <div>
               <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-                <span style="font-size:1.6rem;font-weight:900;color:#fff;" id="profile-name"><span class="ct-skeleton-title" style="width:140px;height:24px;vertical-align:middle;"></span></span>
+                <span style="font-size:1.6rem;font-weight:900;color:#fff;" id="profile-name">--</span>
                 <div id="profile-title-slot" style="display:none;"></div>
                 <div id="profile-badges-row" style="display:none;"></div>
               </div>
               <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:4px;">
-                <span style="font-weight:700;color:var(--text-muted);font-size:0.85rem;" id="profile-discord-tag"><span class="ct-skeleton-text" style="width:80px;height:12px;vertical-align:middle;"></span></span>
+                <span style="font-weight:700;color:var(--text-muted);font-size:0.85rem;" id="profile-discord-tag">@discord</span>
                 <button type="button" class="account-id-pill" id="profile-account-id-btn" onclick="copyAccountId()" title="Click to copy Account ID" style="display:inline-flex;align-items:center;gap:6px;background:#050505;border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:3px 9px;font-size:0.75rem;font-family:monospace;color:#94a3b8;cursor:pointer;transition:all 0.18s ease;">
                   <i data-lucide="fingerprint" style="width:13px;height:13px;color:var(--gold-bright);"></i>
                   <span id="profile-account-id-text">ID: --</span>
@@ -899,7 +905,7 @@
                 <span>Token Balance <span id="profile-tokens-admin-badge" style="display:none;color:var(--red);font-size:0.7rem;margin-left:6px;font-weight:800;">(Admin View)</span></span>
                 <i data-lucide="coins" style="width:16px;height:16px;color:var(--gold-bright);"></i>
               </div>
-              <div class="morphed-stat-value" style="color:var(--gold-bright);" id="profile-tokens-stat"><span class="ct-skeleton-title" style="width:100px;height:20px;vertical-align:middle;"></span></div>
+              <div class="morphed-stat-value" style="color:var(--gold-bright);" id="profile-tokens-stat">0.00 Tokens</div>
               <div id="profile-admin-adjust-wrap" style="display:none;margin-top:6px;">
                 <button type="button" class="btn btn-gold btn-sm" onclick="openProfileTokenAdjustModal()" style="font-size:0.75rem;padding:4px 12px;gap:5px;">
                   <i data-lucide="zap"></i> Admin Adjust Balance
@@ -911,7 +917,7 @@
                 <span>Match Win Earnings</span>
                 <i data-lucide="trending-up" style="width:16px;height:16px;color:var(--green);"></i>
               </div>
-              <div class="morphed-stat-value" style="color:var(--green);" id="profile-earnings-stat"><span class="ct-skeleton-title" style="width:100px;height:20px;vertical-align:middle;"></span></div>
+              <div class="morphed-stat-value" style="color:var(--green);" id="profile-earnings-stat">0.00 Tokens</div>
             </div>
           </div>
         </div>
@@ -923,21 +929,21 @@
               <span>Matches Won</span>
               <i data-lucide="trophy" style="width:16px;height:16px;color:var(--green);"></i>
             </div>
-            <div class="morphed-stat-value" style="color:var(--green);" id="profile-won"><span class="ct-skeleton-title" style="width:40px;height:20px;vertical-align:middle;"></span></div>
+            <div class="morphed-stat-value" style="color:var(--green);" id="profile-won">0</div>
           </div>
           <div class="morphed-stat-card">
             <div class="morphed-stat-header">
               <span>Matches Lost</span>
               <i data-lucide="x-circle" style="width:16px;height:16px;color:var(--red);"></i>
             </div>
-            <div class="morphed-stat-value" style="color:var(--red);" id="profile-lost"><span class="ct-skeleton-title" style="width:40px;height:20px;vertical-align:middle;"></span></div>
+            <div class="morphed-stat-value" style="color:var(--red);" id="profile-lost">0</div>
           </div>
           <div class="morphed-stat-card">
             <div class="morphed-stat-header">
               <span>Win Rate</span>
               <i data-lucide="activity" style="width:16px;height:16px;color:var(--gold-bright);"></i>
             </div>
-            <div class="morphed-stat-value" style="color:var(--gold-bright);" id="profile-winrate"><span class="ct-skeleton-title" style="width:50px;height:20px;vertical-align:middle;"></span></div>
+            <div class="morphed-stat-value" style="color:var(--gold-bright);" id="profile-winrate">0%</div>
           </div>
           <div class="morphed-stat-card">
             <div class="morphed-stat-header">
@@ -979,14 +985,8 @@
             <i data-lucide="activity"></i> Transaction History
           </div>
           <div class="tx-list" id="tx-list" style="flex:1;overflow-y:auto;overflow-x:hidden;max-height:460px;min-height:220px;">
-            
-  <div class="ct-skeleton-card" style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;margin-bottom:6px;border-radius:12px !important;">
-    <div style="display:flex;align-items:center;gap:10px;">
-      <div class="ct-skeleton-avatar" style="width:30px;height:30px;border-radius:8px;"></div>
-      <div style="display:flex;flex-direction:column;gap:4px;">
-        <div class="ct-skeleton-title" style="width:100px;height:14px;"></div>
-        <div class="ct-skeleton-text" style="width:65px;height:10px;"></div>
-      </div>
+            <div class="empty-state"><div class="spinner" style="margin:0 auto;"></div></div>
+          </div>
     </div>
     <div class="ct-skeleton-badge" style="width:60px;height:20px;"></div>
   </div>
@@ -1033,14 +1033,8 @@
             <i data-lucide="swords"></i> Match History
           </div>
           <div class="matches-history" id="match-history" style="flex:1;overflow-y:auto;overflow-x:hidden;max-height:460px;min-height:220px;">
-            
-  <div class="ct-skeleton-card" style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;margin-bottom:6px;border-radius:12px !important;">
-    <div style="display:flex;align-items:center;gap:10px;">
-      <div class="ct-skeleton-avatar" style="width:30px;height:30px;border-radius:8px;"></div>
-      <div style="display:flex;flex-direction:column;gap:4px;">
-        <div class="ct-skeleton-title" style="width:100px;height:14px;"></div>
-        <div class="ct-skeleton-text" style="width:65px;height:10px;"></div>
-      </div>
+            <div class="empty-state"><div class="spinner" style="margin:0 auto;"></div></div>
+          </div>
     </div>
     <div class="ct-skeleton-badge" style="width:60px;height:20px;"></div>
   </div>
@@ -1350,9 +1344,9 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="js/firebase-config.js?v=3.2"></script>
-  <script src="js/auth.js?v=4.0.1788157689460"></script>
-  <script src="js/db.js?v=4.0.1788157689460"></script>
-  <script src="js/nav.js?v=4.0.1788157689460"></script>
+  <script src="js/auth.js?v=4.0.1788157840643"></script>
+  <script src="js/db.js?v=4.0.1788157840643"></script>
+  <script src="js/nav.js?v=4.0.1788157840643"></script>
 
   <script>
     let currentUser = null;

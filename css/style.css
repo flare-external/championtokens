@@ -1710,7 +1710,18 @@ input[type="range"].ct-slider::-moz-range-thumb {
 @keyframes spin { to { transform: rotate(360deg); } }
 
 /* ── Loading Screen ────────────────────────────────────────── */
-.page-loading { display: none !important; }
+.page-loading {
+  position: fixed;
+  inset: 0;
+  background: #000000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  z-index: 99999;
+}
 .page-loading.hidden { display: none !important; }
 
 /* ── Responsive ────────────────────────────────────────────── */

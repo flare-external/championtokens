@@ -25,7 +25,7 @@
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
   <link rel="manifest" href="manifest.json"/>
-  <link rel="stylesheet" href="css/style.css?v=4.0.1788157689460"/>
+  <link rel="stylesheet" href="css/style.css?v=4.0.1788157840643"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
@@ -221,6 +221,12 @@
 </head>
 <body>
   <div class="page-bg"></div>
+  <!-- Loading screen -->
+  <div class="page-loading" id="page-loading">
+    <div class="spinner"></div>
+    <span>Loading shop…</span>
+  </div>
+
   
     <span>Loading shop…</span>
   </div>
@@ -277,9 +283,7 @@
         </div>
 
         <!-- 12 Daily Avatars (2 Rows) -->
-        <div id="daily-pfps-grid" class="shop-two-row-grid">
-          <!-- Rendered dynamically -->
-        </div>
+        <div id="daily-pfps-grid" class="shop-two-row-grid"><!-- Rendered dynamically --></div>
       </div>
 
       <!-- 3. Titles Section -->
@@ -294,9 +298,7 @@
         </div>
 
         <!-- Titles Grid -->
-        <div id="daily-titles-grid" class="shop-two-row-grid">
-          <!-- Rendered dynamically -->
-        </div>
+        <div id="daily-titles-grid" class="shop-two-row-grid"><!-- Rendered dynamically --></div>
       </div>
     </div>
   </main>
@@ -307,9 +309,9 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="js/firebase-config.js?v=3.8"></script>
-  <script src="js/auth.js?v=4.0.1788157689460"></script>
-  <script src="js/db.js?v=4.0.1788157689460"></script>
-  <script src="js/nav.js?v=4.0.1788157689460"></script>
+  <script src="js/auth.js?v=4.0.1788157840643"></script>
+  <script src="js/db.js?v=4.0.1788157840643"></script>
+  <script src="js/nav.js?v=4.0.1788157840643"></script>
 
   <script>
     let currentUser = null;
@@ -326,7 +328,7 @@
         }
         currentUserData = await getUser(user.uid);
         injectNav('shop');
-        document.getElementById('page-loading').classList.add('hidden');
+        const loadingEl = document.getElementById('page-loading'); if (loadingEl) loadingEl.classList.add('hidden');
 
         checkPremiumStatus();
         renderDailyPfps();
