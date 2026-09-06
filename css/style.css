@@ -2814,3 +2814,87 @@ textarea:focus-visible {
     background: rgba(255, 255, 255, 0.05) !important;
   }
 }
+
+/* ── Cookie Consent Banner & Legal Compliance ──────────────── */
+.ct-cookie-banner {
+  position: fixed;
+  bottom: 24px;
+  left: 24px;
+  right: 24px;
+  max-width: 620px;
+  margin: 0 auto;
+  background: rgba(9, 9, 11, 0.96);
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(20px);
+  border-radius: 18px;
+  padding: 20px 24px;
+  z-index: 999999;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  animation: slideUpFade 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideUpFade {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.ct-cookie-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.96rem;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.ct-cookie-header i {
+  color: var(--gold-bright);
+  width: 18px;
+  height: 18px;
+}
+
+.ct-cookie-body {
+  font-size: 0.83rem;
+  color: #94a3b8;
+  line-height: 1.55;
+}
+
+.ct-cookie-body a {
+  color: var(--gold-bright);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.ct-cookie-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.form-legal-notice {
+  font-size: 0.74rem;
+  color: #64748b;
+  line-height: 1.45;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.form-legal-notice a {
+  color: #94a3b8;
+  text-decoration: underline;
+}
+
+.form-legal-notice a:hover {
+  color: var(--gold-bright);
+}

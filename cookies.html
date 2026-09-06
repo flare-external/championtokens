@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cookies & Local Storage Policy — Champion Tokens</title>
+  <meta name="title" content="Cookies & Local Storage Policy — Champion Tokens"/>
+  <meta name="description" content="Detailed information on how Champion Tokens uses essential cookies, local storage, and session tokens to provide secure matchmaking and authentication."/>
+  <meta name="keywords" content="champion tokens cookie policy, privacy cookies, local storage policy, essential cookies"/>
+  <meta name="theme-color" content="#F59E0B"/>
+
+  <meta property="og:type" content="website"/>
+  <meta property="og:url" content="https://championtokens.fun/cookies"/>
+  <meta property="og:title" content="Cookies & Local Storage Policy — Champion Tokens"/>
+  <meta property="og:description" content="Learn why and how Champion Tokens uses strictly essential cookies and browser local storage for authentication, security, and preferences."/>
+  <meta property="og:image" content="https://championtokens.fun/champion-tokens_new.png"/>
+
+  <link rel="icon" type="image/png" href="champion-tokens_new.png"/>
+  <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
+  <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
+  <link rel="manifest" href="manifest.json"/>
+  <link rel="stylesheet" href="css/style.css?v=4.0.1788719219697"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <style>
+    .legal-wrap { max-width: 900px; margin: 0 auto; padding: 40px 24px 80px; }
+    .legal-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-2xl); padding: 42px 38px; box-shadow: var(--shadow-card); backdrop-filter: blur(24px); }
+    .legal-card h1 { font-size: 2.2rem; font-weight: 900; color: #fff; margin-bottom: 8px; letter-spacing: -0.02em; }
+    .legal-date { font-size: 0.85rem; color: var(--gold-bright); margin-bottom: 28px; font-weight: 700; }
+    .legal-section { margin-bottom: 28px; }
+    .legal-section h2 { font-size: 1.25rem; font-weight: 800; color: #fff; margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
+    .legal-section p { font-size: 0.92rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 12px; }
+    .legal-section ul { margin-left: 20px; display: flex; flex-direction: column; gap: 8px; font-size: 0.9rem; color: var(--text-muted); margin-bottom: 12px; list-style-type: disc; }
+    .cookie-table { width: 100%; border-collapse: collapse; margin: 16px 0 20px; font-size: 0.85rem; }
+    .cookie-table th, .cookie-table td { padding: 12px 14px; text-align: left; border: 1px solid rgba(255,255,255,0.1); }
+    .cookie-table th { background: rgba(255,255,255,0.04); color: #fff; font-weight: 800; }
+    .cookie-table td { color: #cbd5e1; }
+  </style>
+</head>
+<body>
+  <div class="page-bg"></div>
+  <a href="#main-content" class="skip-to-content">Skip to main content</a>
+
+  <!-- Header / Navigation -->
+  <header class="landing-nav" style="border-bottom: 1px solid var(--border);" role="banner">
+    <a href="/" class="landing-brand">
+      <img src="champion-tokens_new.png" alt="Champion Tokens Logo" class="landing-brand-logo" width="36" height="36"/>
+      <span>Champion <span class="brand-accent">Tokens</span></span>
+    </a>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <a href="/" class="btn btn-outline btn-sm"><i data-lucide="arrow-left"></i> Home</a>
+      <a href="/dashboard" class="btn btn-primary btn-sm"><i data-lucide="layout-dashboard"></i> Dashboard</a>
+    </div>
+  </header>
+
+  <main id="main-content" role="main" class="legal-wrap">
+    <div class="legal-card">
+      <h1>Cookies & Local Storage Policy</h1>
+      <div class="legal-date">Last Updated: September 2026 · Champion Tokens (championtokens.fun)</div>
+
+      <div class="legal-section">
+        <h2>1. What Are Cookies & Local Storage?</h2>
+        <p>Cookies and browser local storage technologies are small text files or key-value data structures stored on your device when you visit our website. They allow the platform to remember your active session, authenticate your Discord identity, and preserve your customized interface preferences.</p>
+      </div>
+
+      <div class="legal-section">
+        <h2>2. Why We Use Strictly Essential Storage</h2>
+        <p>Champion Tokens exclusively utilizes <strong>Strictly Necessary</strong> cookies and local storage tokens required for the platform to operate. We do not use third-party advertising cookies or cross-site tracking networks.</p>
+        
+        <table class="cookie-table">
+          <thead>
+            <tr>
+              <th>Storage Item</th>
+              <th>Type</th>
+              <th>Purpose</th>
+              <th>Duration</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Firebase Auth JWT</strong></td>
+              <td>Essential Cookie / IndexedDB</td>
+              <td>Maintains secure user login and encrypted session state.</td>
+              <td>Session / 30 Days</td>
+            </tr>
+            <tr>
+              <td><strong>ct_cookie_consent</strong></td>
+              <td>Local Storage</td>
+              <td>Remembers your cookie banner preferences.</td>
+              <td>1 Year</td>
+            </tr>
+            <tr>
+              <td><strong>ct_auth_sync_v</strong></td>
+              <td>Local Storage</td>
+              <td>Synchronizes your latest Discord avatar and username.</td>
+              <td>Persistent</td>
+            </tr>
+            <tr>
+              <td><strong>ct_epic_linking_uid</strong></td>
+              <td>Local Storage</td>
+              <td>Temporarily facilitates secure Epic Games OAuth linking.</td>
+              <td>Session (Deleted post-link)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="legal-section">
+        <h2>3. Third-Party Embeds & Services</h2>
+        <p>Our platform interacts with select essential infrastructure providers:</p>
+        <ul>
+          <li><strong>Discord Inc.:</strong> Facilitates OAuth 2.0 authentication when you click "Login with Discord".</li>
+          <li><strong>Google Cloud Firebase:</strong> Provides encrypted database synchronization and user authentication.</li>
+          <li><strong>Cloudflare:</strong> Provides DDoS protection, SSL encryption, and edge content delivery.</li>
+        </ul>
+      </div>
+
+      <div class="legal-section">
+        <h2>4. How to Manage or Disable Cookies</h2>
+        <p>You can choose to block or delete cookies through your browser settings (Chrome, Firefox, Safari, Edge). Please note that because our cookies are strictly essential for authentication and balance tracking, disabling cookies may prevent you from logging into your Champion Tokens account.</p>
+      </div>
+
+      <div class="legal-section">
+        <h2>5. Questions & Data Privacy Officer</h2>
+        <p>For any questions regarding our use of cookies and local storage, please contact our Data Privacy Officer at <a href="mailto:privacy@championtokens.fun" style="color:var(--gold-bright);">privacy@championtokens.fun</a> or visit our <a href="privacy-policy" style="color:var(--gold-bright);">Privacy Policy</a>.</p>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="ct-footer" style="text-align:center;padding:32px 20px 48px;border-top:1px solid rgba(255,255,255,0.08);background:#000;font-size:0.82rem;color:var(--text-muted);" role="contentinfo">
+    <div style="display:flex;justify-content:center;gap:18px;margin-bottom:12px;flex-wrap:wrap;font-weight:700;">
+      <a href="rules" style="color:#cbd5e1;">Rules & Guidelines</a>
+      <a href="safety" style="color:#cbd5e1;">Trust & Safety</a>
+      <a href="terms" style="color:#cbd5e1;">Terms of Service</a>
+      <a href="privacy-policy" style="color:#cbd5e1;">Privacy Policy</a>
+      <a href="refunds" style="color:#cbd5e1;">Refund Policy</a>
+      <a href="cookies" style="color:var(--gold-bright);">Cookies Policy</a>
+      <a href="https://discord.gg/35xqcMTEbH" target="_blank" rel="noopener noreferrer" style="color:#818cf8;">Discord Support</a>
+    </div>
+    <div>© 2026 Champion Tokens · Independent competitive platform · Not affiliated with Epic Games, Inc., Fortnite, or Discord Inc.</div>
+  </footer>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (window.lucide) lucide.createIcons();
+    });
+  </script>
+</body>
+</html>

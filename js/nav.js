@@ -1414,3 +1414,57 @@ function copyGearupKey(key) {
       }
     });
   }
+
+
+// ── Cookie Consent Banner ──────────────────────────────────
+function initCookieConsent() {
+  try {
+    const consent = localStorage.getItem('ct_cookie_consent');
+    if (consent) return; // Already accepted
+  } catch (e) {}
+
+  if (document.getElementById('ct-cookie-banner')) return;
+
+  const banner = document.createElement('div');
+  banner.id = 'ct-cookie-banner';
+  banner.className = 'ct-cookie-banner';
+  banner.setAttribute('role', 'region');
+  banner.setAttribute('aria-label', 'Cookie Consent Notice');
+  banner.innerHTML = `
+    <div class="ct-cookie-header">
+      <i data-lucide="cookie"></i>
+      <span>Cookie & Privacy Preferences</span>
+    </div>
+    <div class="ct-cookie-body">
+      We use strictly essential cookies and secure local storage to authenticate your Discord account, ensure fair-play matchmaking, and secure your wallet transactions. Read our <a href="cookies">Cookie Policy</a>, <a href="privacy-policy">Privacy Policy</a>, and <a href="refunds">Refund Policy</a>.
+    </div>
+    <div class="ct-cookie-actions">
+      <button type="button" class="btn btn-outline btn-sm" onclick="handleCookieChoice('essential')" style="font-size:0.8rem;padding:6px 14px;border-radius:10px;background:rgba(255,255,255,0.04);">
+        Essential Only
+      </button>
+      <button type="button" class="btn btn-gold btn-sm" onclick="handleCookieChoice('all')" style="font-size:0.8rem;padding:6px 16px;border-radius:10px;">
+        Accept All
+      </button>
+    </div>
+  `;
+
+  document.body.appendChild(banner);
+  if (window.lucide) lucide.createIcons();
+}
+
+window.handleCookieChoice = function(choice) {
+  try {
+    localStorage.setItem('ct_cookie_consent', choice || 'accepted');
+  } catch (e) {}
+  const banner = document.getElementById('ct-cookie-banner');
+  if (banner) {
+    banner.style.opacity = '0';
+    banner.style.transform = 'translateY(20px)';
+    banner.style.transition = 'all 0.25s ease';
+    setTimeout(() => banner.remove(), 250);
+  }
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+  setTimeout(initCookieConsent, 600);
+});
