@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
@@ -8,7 +8,7 @@
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
   <link rel="manifest" href="manifest.json"/>
-  <link rel="stylesheet" href="css/style.css?v=5.4"/>
+  <link rel="stylesheet" href="css/style.css?v=5.5"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
@@ -837,7 +837,7 @@
     <span>Loading profile…</span>
   </div>
 
-  <main class="page-wrap" id="main-content" role="main" style="max-width: 1050px;">
+  <main class="page-wrap" id="main-content" role="main" style="max-width: 1280px; width: 100%;">
     <!-- Top Subtabs Segmented Bar -->
     <div class="profile-top-subtabs-wrap">
       <div class="profile-subtabs-bar">
@@ -1120,19 +1120,19 @@
   <div class="modal-overlay" role="dialog" aria-modal="true" id="create-team-modal" onclick="if(event.target===this)closeCreateTeamModal()">
     <div class="modal" style="max-width:480px;">
       <div class="modal-header">
-        <div class="modal-title"><i data-lucide="shield" style="color:var(--gold-bright);"></i> Create Team</div>
+        <div class="modal-title"><i data-lucide="shield" style="color:var(--kick-green);"></i> Create Team</div>
         <button class="modal-close" aria-label="Close modal" onclick="closeCreateTeamModal()"><i data-lucide="x"></i></button>
       </div>
       <form class="modal-form" onsubmit="submitCreateTeam(event)">
         
         <!-- Live Team Badge Preview -->
         <div style="display:flex;align-items:center;gap:16px;background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:14px 18px;margin-bottom:16px;">
-          <div id="team-badge-preview" style="width:58px;height:58px;border-radius:14px;border:1.5px solid rgba(245,158,11,0.45);background:rgba(245,158,11,0.18);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.2s ease;">
-            <i id="team-badge-icon" data-lucide="shield" style="width:28px;height:28px;color:#f59e0b;"></i>
+          <div id="team-badge-preview" style="width:58px;height:58px;border-radius:14px;border:1.5px solid rgba(83,252,24,0.35);background:rgba(83,252,24,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.2s ease;">
+            <i id="team-badge-icon" data-lucide="shield" style="width:28px;height:28px;color:var(--kick-green);"></i>
           </div>
           <div>
             <div id="team-preview-name" style="font-weight:900;font-size:1.1rem;color:#fff;line-height:1.2;">Apex Champions</div>
-            <div id="team-preview-tag" style="font-size:0.75rem;font-weight:800;color:var(--gold-bright);margin-top:2px;">[APEX]</div>
+            <div id="team-preview-tag" style="font-size:0.75rem;font-weight:800;color:var(--kick-green);margin-top:2px;">[APEX]</div>
           </div>
         </div>
 
@@ -1347,7 +1347,7 @@
   <script src="js/firebase-config.js?v=3.2"></script>
   <script src="js/auth.js?v=4.0.1788871233902"></script>
   <script src="js/db.js?v=4.0.1788871233902"></script>
-  <script src="js/nav.js?v=5.4"></script>
+  <script src="js/nav.js?v=5.5"></script>
 
   <script>
     let currentUser = null;
@@ -1585,7 +1585,7 @@
         let bHtml = '';
         const staffTier = typeof getStaffTier === 'function' ? getStaffTier(null, data) : (data.isAdmin ? 'administrator' : 'none');
         if (staffTier === 'administrator') {
-          bHtml += `<span class="badge-staff" style="background:rgba(245,158,11,0.2);color:var(--gold-bright);border:1px solid rgba(245,158,11,0.5);"><i data-lucide="shield-check" style="width:12px;height:12px;"></i> ADMIN</span>`;
+          bHtml += `<span class="badge-staff" style="background:rgba(83,252,24,0.14);color:var(--kick-green);border:1px solid rgba(83,252,24,0.35);"><i data-lucide="shield-check" style="width:12px;height:12px;"></i> ADMIN</span>`;
         } else if (staffTier === 'moderator') {
           bHtml += `<span class="badge-staff" style="background:rgba(59,130,246,0.2);color:#60a5fa;border:1px solid rgba(59,130,246,0.5);"><i data-lucide="shield" style="width:12px;height:12px;"></i> MODERATOR</span>`;
         } else if (isStaff) {
@@ -1608,12 +1608,12 @@
           if (isPremium) {
             const daysLeft = (typeof getPremiumDaysRemaining === 'function') ? getPremiumDaysRemaining(data) : 30;
             premWrap.innerHTML = `
-              <a href="shop" class="badge" style="background:rgba(245,158,11,0.15);color:var(--gold-bright);border:1px solid rgba(245,158,11,0.35);font-size:0.75rem;padding:4px 10px;text-decoration:none;display:inline-flex;align-items:center;gap:5px;" title="Click to view or extend in Shop">
+              <a href="shop" class="badge" style="background:rgba(83,252,24,0.14);color:var(--kick-green);border:1px solid rgba(83,252,24,0.35);font-size:0.75rem;padding:4px 10px;text-decoration:none;display:inline-flex;align-items:center;gap:5px;" title="Click to view or extend in Shop">
                 <i data-lucide="crown" style="width:12px;height:12px;"></i> ${daysLeft} ${daysLeft === 1 ? 'Day' : 'Days'} Premium
               </a>`;
           } else {
             premWrap.innerHTML = `
-              <a href="shop" class="btn btn-gold btn-sm" style="font-size:0.75rem;padding:4px 12px;">
+              <a href="shop" class="btn btn-primary btn-sm" style="font-size:0.75rem;padding:4px 12px;">
                 <i data-lucide="crown"></i> Get Premium ($5.00)
               </a>`;
           }
@@ -2569,9 +2569,9 @@
         if (teams && teams.length > 0) {
           const t = teams[0];
           const tIcon = t.icon || 'shield';
-          const tColor = t.iconColor || '#f59e0b';
-          const tBg = t.bgColor || 'rgba(245,158,11,0.18)';
-          const tBorder = t.borderColor || 'rgba(245,158,11,0.45)';
+          const tColor = t.iconColor || 'var(--kick-green)';
+          const tBg = t.bgColor || 'rgba(83,252,24,0.15)';
+          const tBorder = t.borderColor || 'rgba(83,252,24,0.35)';
           hubTeam.innerHTML = `
             <div style="display:inline-flex;align-items:center;gap:6px;background:${tBg};border:1px solid ${tBorder};padding:4px 10px;border-radius:10px;">
               <i data-lucide="${tIcon}" style="width:13px;height:13px;color:${tColor};"></i>
@@ -2593,7 +2593,7 @@
       if (!teams || !teams.length) {
         el.innerHTML = isViewingSelf ? `
           <div style="padding:16px 6px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;">
-            <div style="width:48px;height:48px;border-radius:14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;margin-bottom:12px;color:var(--gold-bright);">
+            <div style="width:48px;height:48px;border-radius:14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;margin-bottom:12px;color:var(--kick-green);">
               <i data-lucide="shield" style="width:24px;height:24px;"></i>
             </div>
             <div style="font-weight:900;font-size:1.05rem;color:#fff;margin-bottom:4px;">No Teams Created Yet</div>
@@ -2614,7 +2614,7 @@
                 <span style="font-weight:700;font-size:0.85rem;color:#fff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${escapeHtml(m.displayName || 'Player')}</span>
               </div>
               <div style="display:flex;align-items:center;gap:5px;flex-shrink:0;">
-                ${m.isLeader || m.uid === team.ownerUid ? '<span class="badge" style="background:rgba(245,158,11,0.18);color:var(--gold-bright);border:1px solid rgba(245,158,11,0.4);font-size:0.65rem;padding:1px 6px;">LEADER</span>' : ''}
+                ${m.isLeader || m.uid === team.ownerUid ? '<span class="badge" style="background:rgba(83,252,24,0.15);color:var(--kick-green);border:1px solid rgba(83,252,24,0.35);font-size:0.65rem;padding:1px 6px;">LEADER</span>' : ''}
               </div>
             </div>
           `).join('');
@@ -2648,8 +2648,8 @@
                     <button class="btn btn-primary btn-sm" onclick="openInvitePlayerModal('${team.id}','${escapeHtml(team.name)}','${escapeHtml(team.tag || '')}')" style="font-size:0.78rem;padding:6px 14px;gap:5px;border-radius:10px;">
                       <i data-lucide="user-plus" style="width:13px;height:13px;"></i> Invite
                     </button>
-                    <button class="btn btn-danger btn-sm" onclick="handleLeaveTeam('${team.id}')" style="font-size:0.78rem;padding:6px 12px;gap:4px;border-radius:10px;">
-                      <i data-lucide="log-out" style="width:13px;height:13px;"></i> ${isOwner ? 'Disband' : 'Leave'}
+                    <button class="btn btn-danger btn-sm" onclick="handleLeaveTeam('${team.id}')" style="font-size:0.78rem;padding:6px 12px;gap:5px;border-radius:10px;display:inline-flex;align-items:center;">
+                      <i data-lucide="${isOwner ? 'trash-2' : 'log-out'}" style="width:13px;height:13px;"></i> <span>${isOwner ? 'Disband' : 'Leave'}</span>
                     </button>
                   </div>
                 ` : ''}
@@ -2802,7 +2802,7 @@
     ];
 
     const TEAM_BG_OPTIONS = [
-      { name: 'Gold Dark', bg: 'rgba(245, 158, 11, 0.18)', border: 'rgba(245, 158, 11, 0.45)', color: '#f59e0b' },
+      { name: 'Kick Neon', bg: 'rgba(83, 252, 24, 0.15)', border: 'rgba(83, 252, 24, 0.35)', color: '#53fc18' },
       { name: 'Red Dark', bg: 'rgba(239, 68, 68, 0.18)', border: 'rgba(239, 68, 68, 0.45)', color: '#ef4444' },
       { name: 'Blue Dark', bg: 'rgba(59, 130, 246, 0.18)', border: 'rgba(59, 130, 246, 0.45)', color: '#3b82f6' },
       { name: 'Purple Dark', bg: 'rgba(168, 85, 247, 0.18)', border: 'rgba(168, 85, 247, 0.45)', color: '#a855f7' },
@@ -2811,9 +2811,9 @@
     ];
 
     let _selectedTeamIcon = 'shield';
-    let _selectedTeamColor = '#f59e0b';
-    let _selectedTeamBg = 'rgba(245, 158, 11, 0.18)';
-    let _selectedTeamBorder = 'rgba(245, 158, 11, 0.45)';
+    let _selectedTeamColor = '#53fc18';
+    let _selectedTeamBg = 'rgba(83, 252, 24, 0.15)';
+    let _selectedTeamBorder = 'rgba(83, 252, 24, 0.35)';
 
     function initTeamBadgePicker() {
       const iconContainer = document.getElementById('team-icon-picker');

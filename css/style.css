@@ -6,20 +6,22 @@
 
 /* ── Custom Properties ─────────────────────────────────────── */
 :root {
-  --bg-base:       #040607;
-  --bg-surface:    #07090b;
-  --bg-sidebar:    #050708;
-  --bg-card:       #07090b;
-  --bg-card-hover: #0c0f12;
-  --bg-input:      #080a0c;
-  --border:        #15181c;
-  --border-bright: #20252b;
-  --border-hover:  #2b313a;
+  --bg-main:       #0b0e0f;
+  --bg-base:       #0b0e0f;
+  --bg-sidebar:    #0f1215;
+  --bg-surface:    #14171a;
+  --bg-card:       #181c20;
+  --bg-card-hover: #1f2429;
+  --bg-input:      #191c20;
+  --bg-active-nav: #24272c;
+
+  --border:        rgba(255, 255, 255, 0.08);
+  --border-bright: rgba(255, 255, 255, 0.15);
+  --border-hover:  rgba(255, 255, 255, 0.22);
 
   --kick-green:       #53fc18;
-  --kick-green-hover: #45d614;
-  --kick-green-glow:  rgba(83, 252, 24, 0.28);
-  --bg-active-nav:    #111519;
+  --kick-green-hover: #46e012;
+  --kick-green-glow:  rgba(83, 252, 24, 0.25);
 
   --gold:          #53fc18;
   --gold-light:    #7bff4a;
@@ -111,51 +113,13 @@ img { display: block; max-width: 100%; }
 input, select, textarea { font-family: inherit; }
 ul { list-style: none; }
 
-/* ── Premium Dark Atmosphere & Glow ───────────────────────── */
+/* ── Kick Dark Background ──────────────────────────────────── */
 .page-bg {
   position: fixed;
   inset: 0;
-  background-color: #000000;
-  background-image:
-    radial-gradient(circle at 50% -8%, rgba(83, 252, 24, 0.10), transparent 45%),
-    radial-gradient(circle at 90% 25%, rgba(83, 252, 24, 0.03), transparent 35%),
-    radial-gradient(circle at 10% 75%, rgba(83, 252, 24, 0.03), transparent 35%),
-    linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
-  background-size: 100% 100%, 100% 100%, 100% 100%, 48px 48px, 48px 48px;
+  background-color: var(--bg-main, #0b0e0f);
   pointer-events: none;
   z-index: 0;
-}
-
-/* ── Floating animated background icons ────────────────────── */
-.floating-icons-layer {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  overflow: hidden;
-}
-
-.floating-icon-item {
-  position: absolute;
-  color: var(--gold-bright);
-  opacity: 0.14;
-  filter: drop-shadow(0 0 10px var(--gold-glow));
-  animation: floatDrift ease-in-out infinite alternate;
-}
-
-@keyframes floatDrift {
-  0% {
-    transform: translateY(0) rotate(0deg) scale(1);
-    opacity: 0.10;
-  }
-  50% {
-    opacity: 0.18;
-  }
-  100% {
-    transform: translateY(-24px) rotate(10deg) scale(1.05);
-    opacity: 0.12;
-  }
 }
 
 /* ── Custom Theme Range Slider ─────────────────────────────── */
@@ -704,8 +668,9 @@ input[type="range"].ct-slider::-moz-range-thumb {
 }
 .sidebar .nav-link.active i,
 .sidebar .nav-link.active svg {
-  color: var(--kick-green, #53fc18) !important;
-  filter: drop-shadow(0 0 6px var(--kick-green-glow));
+  color: #ffffff !important;
+  fill: #ffffff !important;
+  filter: none !important;
 }
 
 .sidebar .nav-link i,

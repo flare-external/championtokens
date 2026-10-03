@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
@@ -25,7 +25,7 @@
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
   <link rel="manifest" href="manifest.json"/>
-  <link rel="stylesheet" href="css/style.css?v=5.4"/>
+  <link rel="stylesheet" href="css/style.css?v=5.5"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
@@ -236,30 +236,30 @@
     <div id="shop-content">
       <div class="shop-header-flex">
         <div class="page-header" style="margin-bottom:0;">
-          <h1><i data-lucide="shopping-cart" style="color:var(--gold-bright);"></i> Token Shop</h1>
+          <h1><i data-lucide="shopping-cart" style="color:var(--kick-green);"></i> Shop</h1>
           <p>Unlock Champion Premium, exclusive perks, and avatar cosmetics.</p>
         </div>
       </div>
 
       <!-- 1. Champion Premium Card -->
-      <div id="shop-premium-card-container" style="background:#000000;border:1px solid rgba(245,158,11,0.35);border-radius:22px;padding:26px 30px;margin-bottom:36px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:24px;box-shadow:0 14px 40px rgba(0,0,0,0.85);position:relative;overflow:hidden;">
-        <div style="position:absolute;top:0;right:0;width:300px;height:100%;background:radial-gradient(circle at right center, rgba(245,158,11,0.12) 0%, transparent 70%);pointer-events:none;"></div>
+      <div id="shop-premium-card-container" style="background:var(--bg-card);border:1px solid rgba(83,252,24,0.3);border-radius:20px;padding:26px 30px;margin-bottom:36px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:24px;box-shadow:0 14px 40px rgba(0,0,0,0.85);position:relative;overflow:hidden;">
+        <div style="position:absolute;top:0;right:0;width:300px;height:100%;background:radial-gradient(circle at right center, rgba(83,252,24,0.08) 0%, transparent 70%);pointer-events:none;"></div>
         
         <div style="max-width:580px;position:relative;z-index:2;">
           <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
-            <div style="width:38px;height:38px;border-radius:10px;background:rgba(245,158,11,0.18);border:1px solid rgba(245,158,11,0.4);display:flex;align-items:center;justify-content:center;color:var(--gold-bright);">
+            <div style="width:38px;height:38px;border-radius:10px;background:rgba(83,252,24,0.14);border:1px solid rgba(83,252,24,0.35);display:flex;align-items:center;justify-content:center;color:var(--kick-green);">
               <i data-lucide="crown" style="width:20px;height:20px;"></i>
             </div>
             <span class="username-premium" style="font-size:1.45rem;font-weight:900;letter-spacing:-0.02em;">Champion Premium</span>
           </div>
           <p style="font-size:0.875rem;color:var(--text-muted);margin:0 0 14px;line-height:1.5;">
-            Elevate your competitive profile with Radiant Gold username styling, VIP crown badge, priority matchmaking, and player tipping.
+            Elevate your competitive profile with Neon Kick VIP username styling, VIP crown badge, priority matchmaking, and player tipping.
           </p>
           <div style="display:flex;gap:14px;flex-wrap:wrap;font-size:0.8rem;color:#cbd5e1;">
-            <span style="display:inline-flex;align-items:center;gap:5px;"><i data-lucide="sparkles" style="width:13px;height:13px;color:var(--gold-bright);"></i> Radiant Gold Name</span>
-            <span style="display:inline-flex;align-items:center;gap:5px;"><i data-lucide="crown" style="width:13px;height:13px;color:var(--gold-bright);"></i> VIP Crown</span>
-            <span style="display:inline-flex;align-items:center;gap:5px;"><i data-lucide="gift" style="width:13px;height:13px;color:var(--gold-bright);"></i> Player Tipping</span>
-            <span style="display:inline-flex;align-items:center;gap:5px;"><i data-lucide="zap" style="width:13px;height:13px;color:var(--gold-bright);"></i> Exclusive Status</span>
+            <span style="display:inline-flex;align-items:center;gap:5px;"><i data-lucide="sparkles" style="width:13px;height:13px;color:var(--kick-green);"></i> Neon Kick VIP Name</span>
+            <span style="display:inline-flex;align-items:center;gap:5px;"><i data-lucide="crown" style="width:13px;height:13px;color:var(--kick-green);"></i> VIP Crown</span>
+            <span style="display:inline-flex;align-items:center;gap:5px;"><i data-lucide="gift" style="width:13px;height:13px;color:var(--kick-green);"></i> Player Tipping</span>
+            <span style="display:inline-flex;align-items:center;gap:5px;"><i data-lucide="zap" style="width:13px;height:13px;color:var(--kick-green);"></i> Exclusive Status</span>
           </div>
         </div>
 
@@ -278,8 +278,8 @@
             </p>
           </div>
           <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);padding:6px 14px;border-radius:20px;font-size:0.8rem;color:#cbd5e1;display:flex;align-items:center;gap:6px;">
-            <i data-lucide="clock" style="width:14px;height:14px;color:var(--gold-bright);"></i>
-            <span>Resets in: <strong id="daily-shop-timer" style="color:var(--gold-bright);font-family:monospace;font-weight:800;">--:--:--</strong></span>
+            <i data-lucide="clock" style="width:14px;height:14px;color:var(--kick-green);"></i>
+            <span>Resets in: <strong id="daily-shop-timer" style="color:var(--kick-green);font-family:monospace;font-weight:800;">--:--:--</strong></span>
           </div>
         </div>
 
@@ -312,7 +312,7 @@
   <script src="js/firebase-config.js?v=3.8"></script>
   <script src="js/auth.js?v=4.0.1788871233902"></script>
   <script src="js/db.js?v=4.0.1788871233902"></script>
-  <script src="js/nav.js?v=5.4"></script>
+  <script src="js/nav.js?v=5.5"></script>
 
   <script>
     let currentUser = null;
@@ -361,7 +361,7 @@
         actionBox.innerHTML = `
           <div style="text-align:right;">
             <div style="font-size:0.75rem;font-weight:800;color:var(--text-muted);text-transform:uppercase;">Membership</div>
-            <div style="font-size:1.55rem;font-weight:900;color:var(--gold-bright);letter-spacing:-0.02em;">${daysRemaining} ${daysRemaining === 1 ? 'Day' : 'Days'} Left</div>
+            <div style="font-size:1.55rem;font-weight:900;color:var(--kick-green);letter-spacing:-0.02em;">${daysRemaining} ${daysRemaining === 1 ? 'Day' : 'Days'} Left</div>
             <div style="font-size:0.72rem;color:var(--text-faint);margin-top:2px;">${escapeHtml(expText)}</div>
           </div>
           <button class="btn btn-outline btn-sm" onclick="handleBuyPremium()" style="padding:10px 18px;border-radius:12px;font-size:0.84rem;background:#060608;gap:6px;">
@@ -372,11 +372,11 @@
         actionBox.innerHTML = `
           <div style="text-align:right;">
             <div style="font-size:0.72rem;font-weight:800;color:var(--text-muted);text-transform:uppercase;">30 Days Duration</div>
-            <div style="font-size:1.5rem;font-weight:900;color:var(--gold-bright);display:flex;align-items:center;gap:6px;justify-content:flex-end;">
+            <div style="font-size:1.5rem;font-weight:900;color:var(--kick-green);display:flex;align-items:center;gap:6px;justify-content:flex-end;">
               5.00 <img src="new_token.png" style="width:26px;height:26px;object-fit:contain;" alt="CT"/>
             </div>
           </div>
-          <button class="btn btn-gold" onclick="handleBuyPremium()" style="padding:10px 22px;border-radius:12px;font-size:0.88rem;gap:6px;">
+          <button class="btn btn-primary" onclick="handleBuyPremium()" style="padding:10px 22px;border-radius:12px;font-size:0.88rem;gap:6px;">
             <i data-lucide="crown"></i> Unlock Premium
           </button>
         `;
@@ -399,8 +399,8 @@
         const isOwned = unlocked.includes(item.id);
         const isEquipped = equippedTitle === item.id;
 
-        let borderStyle = isEquipped ? '2px solid var(--gold-bright)' : '1.5px solid rgba(255,255,255,0.09)';
-        let bgStyle = isEquipped ? 'rgba(245,158,11,0.12)' : '#0b0d14';
+        let borderStyle = isEquipped ? '2px solid var(--kick-green)' : '1.5px solid rgba(255,255,255,0.09)';
+        let bgStyle = isEquipped ? 'rgba(83,252,24,0.10)' : '#0b0d14';
         const onClickAction = isOwned ? `handleEquipTitleFromShop('${item.id}')` : `handleBuyTitle('${item.id}')`;
 
         return `
@@ -426,7 +426,7 @@
 
             <div style="width:100%;display:flex;align-items:center;justify-content:center;min-height:28px;">
               ${isEquipped ? `
-                <span style="font-size:0.78rem;font-weight:800;letter-spacing:0.08em;color:var(--gold-bright);text-transform:uppercase;">Equipped</span>
+                <span style="font-size:0.78rem;font-weight:800;letter-spacing:0.08em;color:var(--kick-green);text-transform:uppercase;">Equipped</span>
               ` : isOwned ? `
                 <div style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;">
                   <span style="font-size:0.75rem;font-weight:700;color:#94a3b8;">Owned</span>
@@ -488,8 +488,8 @@
         const isOwned = item.isDefault || unlocked.includes(item.id);
         const isEquipped = (equippedPfp === item.id) || (currentPhotoURL === item.file);
 
-        let borderStyle = isEquipped ? '2px solid var(--gold-bright)' : '1.5px solid rgba(255,255,255,0.09)';
-        let bgStyle = isEquipped ? 'rgba(245,158,11,0.12)' : '#0b0d14';
+        let borderStyle = isEquipped ? '2px solid var(--kick-green)' : '1.5px solid rgba(255,255,255,0.09)';
+        let bgStyle = isEquipped ? 'rgba(83,252,24,0.10)' : '#0b0d14';
         const onClickAction = isOwned ? `handleEquipPfp('${item.id}')` : `handleBuyPfp('${item.id}')`;
 
         return `
@@ -511,7 +511,7 @@
             <!-- Bottom: Token icon and price / Status -->
             <div style="width:100%;display:flex;align-items:center;justify-content:center;min-height:28px;">
               ${isEquipped ? `
-                <span style="font-size:0.78rem;font-weight:800;letter-spacing:0.08em;color:var(--gold-bright);text-transform:uppercase;">Equipped</span>
+                <span style="font-size:0.78rem;font-weight:800;letter-spacing:0.08em;color:var(--kick-green);text-transform:uppercase;">Equipped</span>
               ` : isOwned ? `
                 <div style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;">
                   <span style="font-size:0.75rem;font-weight:700;color:#94a3b8;">Owned</span>
@@ -565,7 +565,7 @@
         title: `Unlock Avatar ${item.name}`,
         message: `
           <div style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px;margin:8px 0 10px;">
-            <div style="width:100px;height:100px;border-radius:18px;overflow:hidden;border:2px solid ${item.color || 'var(--gold-bright)'};background:#0e1017;box-shadow:0 8px 24px rgba(0,0,0,0.6);">
+            <div style="width:100px;height:100px;border-radius:18px;overflow:hidden;border:2px solid ${item.color || 'var(--kick-green)'};background:#0e1017;box-shadow:0 8px 24px rgba(0,0,0,0.6);">
               <img src="${encodeURI(item.file)}" alt="${escapeHtml(item.name)}" style="width:100%;height:100%;object-fit:cover;display:block;" />
             </div>
             <div>
@@ -575,7 +575,7 @@
               </span>
             </div>
             <div style="font-size:0.92rem;color:#cbd5e1;line-height:1.5;">
-              Unlock this avatar for <strong style="color:var(--gold-bright);">${formatTokens(item.cost)} Tokens</strong>?
+              Unlock this avatar for <strong style="color:var(--kick-green);">${formatTokens(item.cost)} Tokens</strong>?
             </div>
           </div>
         `,
@@ -620,7 +620,7 @@
               <span>${escapeHtml(item.name)}</span>
             </span>
             <div style="font-size:0.92rem;color:#cbd5e1;line-height:1.5;">
-              Unlock the <strong>${item.rarity}</strong> title <strong>"${item.name}"</strong> for <strong style="color:var(--gold-bright);">${formatTokens(item.cost)} Tokens</strong>?
+              Unlock the <strong>${item.rarity}</strong> title <strong>"${item.name}"</strong> for <strong style="color:var(--kick-green);">${formatTokens(item.cost)} Tokens</strong>?
             </div>
           </div>
         `,
@@ -656,7 +656,7 @@
       const isCurrentlyActive = isUserPremiumActive(currentUserData);
       const ok = await showConfirm({
         title: isCurrentlyActive ? 'Extend Champion Premium' : 'Unlock Champion Premium',
-        message: `Unlock Champion Premium for <strong>5.00 Tokens ($5.00)</strong> for 30 days?<br/><span style="color:var(--gold-bright);font-size:0.82rem;display:inline-block;margin-top:8px;">Includes Radiant Gold username, VIP profile crown & perks!</span>`,
+        message: `Unlock Champion Premium for <strong>5.00 Tokens ($5.00)</strong> for 30 days?<br/><span style="color:var(--kick-green);font-size:0.82rem;display:inline-block;margin-top:8px;">Includes Neon Kick VIP username, VIP profile crown & perks!</span>`,
         confirmText: 'Unlock Premium (5.00 Tokens)',
         cancelText: 'Cancel',
         type: 'warning',

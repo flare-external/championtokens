@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
@@ -8,7 +8,7 @@
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
   <link rel="manifest" href="manifest.json"/>
-  <link rel="stylesheet" href="css/style.css?v=5.4"/>
+  <link rel="stylesheet" href="css/style.css?v=5.5"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
@@ -1425,7 +1425,7 @@
   <script src="js/firebase-config.js"></script>
   <script src="js/auth.js?v=4.0.1788871233902"></script>
   <script src="js/db.js?v=4.0.1788871233902"></script>
-  <script src="js/nav.js?v=5.4"></script>
+  <script src="js/nav.js?v=5.5"></script>
 
   <script>
     let currentUser = null;
@@ -1722,9 +1722,9 @@
       const t1Name = document.getElementById('team1-card-name');
       const showT1Tag = (isMatchLive || isUserInTeam1) && match.teamTag;
       const t1Icon = match.teamIcon || 'shield';
-      const t1IconColor = match.teamIconColor || '#f59e0b';
-      const t1Bg = match.teamBgColor || 'rgba(245,158,11,0.18)';
-      const t1Border = match.teamBorderColor || 'rgba(245,158,11,0.45)';
+      const t1IconColor = match.teamIconColor || '#53fc18';
+      const t1Bg = match.teamBgColor || 'rgba(83,252,24,0.15)';
+      const t1Border = match.teamBorderColor || 'rgba(83,252,24,0.35)';
       const t1Title = match.teamName ? escapeHtml(match.teamName) : 'Team 1';
 
       if (t1Name) {

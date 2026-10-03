@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
@@ -8,12 +8,12 @@
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
   <link rel="manifest" href="manifest.json"/>
-  <link rel="stylesheet" href="css/style.css?v=5.4"/>
+  <link rel="stylesheet" href="css/style.css?v=5.5"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
 
   <style>
-    /* ── Admin Dashboard Styling ──────────────────────────────────── */
+    /* -- Admin Dashboard Styling ------------------------------------ */
     .admin-hero-header {
       display: flex;
       align-items: center;
@@ -241,12 +241,12 @@
   <!-- Loading screen -->
   <div class="page-loading" id="page-loading">
     <div class="spinner"></div>
-    <span>Loading admin console…</span>
+    <span>Loading admin console�</span>
   </div>
 
 
   
-    <span>Authenticating Staff…</span>
+    <span>Authenticating Staff�</span>
   </div>
 
   <main class="page-wrap" id="main-content" role="main" style="max-width: 1100px;">
@@ -338,11 +338,11 @@
       </button>
     </div>
 
-    <!-- ── Tab 1: Players & User Management ─────────────────── -->
+    <!-- -- Tab 1: Players & User Management ------------------- -->
     <div id="admin-tab-players">
       <div class="card" style="margin-bottom:18px;padding:18px 20px;background:#000;border:1px solid rgba(255,255,255,0.08);border-radius:18px;">
         <form class="admin-search-bar" onsubmit="handlePlayerSearch(event)" style="margin-bottom:14px;display:flex;gap:8px;">
-          <input class="form-input" id="player-search-input" placeholder="Search by username, Discord, Epic IGN, or paste full UID…" autocomplete="off" oninput="handlePlayerSearch(null)" style="font-size:0.92rem;background:#060608;" />
+          <input class="form-input" id="player-search-input" placeholder="Search by username, Discord, Epic IGN, or paste full UID�" autocomplete="off" oninput="handlePlayerSearch(null)" style="font-size:0.92rem;background:#060608;" />
           <button type="submit" class="btn btn-primary btn-sm" id="player-search-btn" style="border-radius:10px;"><i data-lucide="search"></i> Search</button>
         </form>
 
@@ -457,24 +457,24 @@
       </div>
     </div>
 
-    <!-- ── Tab 2: Live Matches ──────────────────────────────── -->
+    <!-- -- Tab 2: Live Matches -------------------------------- -->
     <div id="admin-tab-matches" class="hidden">
       <div id="active-matches-list"><div class="spinner" style="margin:20px auto;"></div></div>
     </div>
 
-    <!-- ── Tab 3: Active Teams ──────────────────────────────── -->
+    <!-- -- Tab 3: Active Teams -------------------------------- -->
     <div id="admin-tab-teams" class="hidden">
       <div id="teams-admin-list"><div class="spinner" style="margin:20px auto;"></div></div>
     </div>
 
-    <!-- ── Tab 4: Tickets & Staff Calls ─────────────────────── -->
+    <!-- -- Tab 4: Tickets & Staff Calls ----------------------- -->
     <div id="admin-tab-tickets" class="hidden">
       <div id="staff-calls-list" style="display:flex;flex-direction:column;gap:12px;"><div class="empty-state"><div class="spinner" style="margin:0 auto;"></div></div></div>
     </div>
 
-    <!-- ── Tab: Redeem Codes Generator & Live Manager ──────────────── -->
+    <!-- -- Tab: Redeem Codes Generator & Live Manager ---------------- -->
     
-    <!-- ── Tab: Cosmetics & Inventory Management ─────────────── -->
+    <!-- -- Tab: Cosmetics & Inventory Management --------------- -->
     <div id="admin-tab-cosmetics" class="hidden">
       <div class="card" style="padding:24px 26px;background:#000;border:1px solid rgba(255,255,255,0.08);border-radius:18px;margin-bottom:24px;">
         <div style="font-size:1.2rem;font-weight:900;color:#fff;margin-bottom:6px;display:flex;align-items:center;gap:10px;">
@@ -632,7 +632,7 @@
               <input class="form-input" id="admin-code-gearup-duration" placeholder="e.g. 1 Month PC VIP" value="1 Month PC VIP" oninput="updateLivePreview()" style="font-weight:800;background:#060608;" />
             </div>
             <div style="font-size:0.75rem;color:var(--text-muted);">
-              💡 You can enter the real GearUP PC key now, or generate the code first and click <strong>"Edit Key"</strong> below once you obtain it.
+              ?? You can enter the real GearUP PC key now, or generate the code first and click <strong>"Edit Key"</strong> below once you obtain it.
             </div>
           </div>
 
@@ -683,7 +683,7 @@
       </div>
     </div>
 
-    <!-- ── Tab 5: Broadcast ─────────────────────────────────── -->
+    <!-- -- Tab 5: Broadcast ----------------------------------- -->
     <div id="admin-tab-broadcast" class="hidden">
       <div class="card" style="padding:22px 24px;background:#000;border:1px solid rgba(255,255,255,0.08);border-radius:18px;">
         <div style="font-size:1.15rem;font-weight:900;color:#fff;margin-bottom:6px;display:flex;align-items:center;gap:8px;">
@@ -692,13 +692,13 @@
         <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:18px;">Pushes a direct system notification to every registered user's notification bell.</p>
         <form onsubmit="handleBroadcast(event)" style="display:flex;flex-direction:column;gap:14px;">
           <div class="form-group" style="margin:0;"><label class="form-label">Announcement Title</label><input class="form-input" id="broadcast-title" placeholder="e.g. Tournament Weekend is Live!" required style="background:#060608;" /></div>
-          <div class="form-group" style="margin:0;"><label class="form-label">Message Content</label><textarea class="form-input" id="broadcast-body" rows="3" placeholder="Write the announcement details…" required style="resize:vertical;background:#060608;" style="background:#060608;"></textarea></div>
+          <div class="form-group" style="margin:0;"><label class="form-label">Message Content</label><textarea class="form-input" id="broadcast-body" rows="3" placeholder="Write the announcement details�" required style="resize:vertical;background:#060608;" style="background:#060608;"></textarea></div>
           <button type="submit" class="btn btn-primary" id="broadcast-btn" style="align-self:flex-start;padding:10px 20px;border-radius:10px;"><i data-lucide="send"></i> Broadcast to All Users</button>
         </form>
       </div>
     </div>
 
-    <!-- ── Tab 6: Danger Zone ───────────────────────────────── -->
+    <!-- -- Tab 6: Danger Zone --------------------------------- -->
     <div id="admin-tab-danger" class="hidden">
       <div class="card" style="border-color:rgba(239,68,68,0.4);background:linear-gradient(135deg,rgba(239,68,68,0.06) 0%,#060608 100%);padding:22px 24px;border-radius:18px;">
         <div style="font-size:1.15rem;font-weight:900;color:#fca5a5;margin-bottom:6px;display:flex;align-items:center;gap:8px;">
@@ -843,7 +843,7 @@
   <script src="js/firebase-config.js?v=3.6"></script>
   <script src="js/auth.js?v=4.0.1788871233902"></script>
   <script src="js/db.js?v=4.0.1788871233902"></script>
-  <script src="js/nav.js?v=5.4"></script>
+  <script src="js/nav.js?v=5.5"></script>
 
   <script>
     let currentUser = null;
@@ -988,7 +988,7 @@
 
     async function loadInitialUsers() {
       const container = document.getElementById('player-search-results');
-      if (container) container.innerHTML = '<div class="empty-state"><div class="spinner" style="margin:0 auto;"></div><p style="margin-top:10px;">Loading users directory…</p></div>';
+      if (container) container.innerHTML = '<div class="empty-state"><div class="spinner" style="margin:0 auto;"></div><p style="margin-top:10px;">Loading users directory�</p></div>';
       try {
         loadedUsersList = await adminFetchRecentUsers(80);
         const statEl = document.getElementById('total-users-stat');
@@ -1089,7 +1089,7 @@
                   ${isBanned ? '<span class="badge" style="background:rgba(239,68,68,0.2);color:var(--red);border:1px solid rgba(239,68,68,0.4);font-size:0.68rem;padding:2px 6px;">BANNED</span>' : ''}
                 </div>
                 <div style="font-size:0.75rem;color:var(--text-muted);margin-top:2px;">
-                  ${escapeHtml(discord)} · ${escapeHtml(epic)}
+                  ${escapeHtml(discord)} � ${escapeHtml(epic)}
                 </div>
               </div>
             </div>
@@ -1119,7 +1119,7 @@
       if (window.lucide) lucide.createIcons();
     }
 
-    /* ── Balance Modal ────────────────────────────────────────────── */
+    /* -- Balance Modal ---------------------------------------------- */
     function openDirectBalanceModal(uid, name, tokens) {
       editingUserForBalance = uid;
       document.getElementById('balance-modal-title').innerHTML = '<i data-lucide="coins"></i> Manage ' + escapeHtml(name) + "'s Balance";
@@ -1168,7 +1168,7 @@
       }
     }
 
-    /* ── Staff Role Modal ─────────────────────────────────────────── */
+    /* -- Staff Role Modal ------------------------------------------- */
     function openRoleModal(uid, name, curRole) {
       editingUserForRole = uid;
       document.getElementById('role-modal-name').textContent = name;
@@ -1232,7 +1232,7 @@
       }
     }
 
-    /* ── Visual Redeem Code Generator Logic ───────────────────────── */
+    /* -- Visual Redeem Code Generator Logic ------------------------- */
     function generateRandomCodeInput() {
       const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
       let p1 = '', p2 = '', p3 = '';
@@ -1620,7 +1620,7 @@
       }
     }
 
-    /* ── Live Matches & Teams Listeners ───────────────────────────── */
+    /* -- Live Matches & Teams Listeners ----------------------------- */
     function subscribeActiveMatches() {
       db.collection('matches')
         .where('status', 'in', ['open', 'in_progress', 'disputed'])
@@ -1644,8 +1644,8 @@
             return `
               <div style="background:#060608;border:1px solid rgba(255,255,255,0.06);border-radius:14px;padding:16px 18px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
                 <div>
-                  <div style="font-weight:900;color:#fff;font-size:0.95rem;">${escapeHtml(m.title || m.mode || 'Match')} · ${formatTokens(m.wager || 0)} CT</div>
-                  <div style="font-size:0.75rem;color:var(--text-muted);margin-top:2px;">Host: ${escapeHtml(m.hostName || 'Player')} · Status: ${escapeHtml(m.status)}</div>
+                  <div style="font-weight:900;color:#fff;font-size:0.95rem;">${escapeHtml(m.title || m.mode || 'Match')} � ${formatTokens(m.wager || 0)} CT</div>
+                  <div style="font-size:0.75rem;color:var(--text-muted);margin-top:2px;">Host: ${escapeHtml(m.hostName || 'Player')} � Status: ${escapeHtml(m.status)}</div>
                 </div>
                 <div style="display:flex;gap:6px;">
                   <a href="match?id=${id}" class="btn btn-outline btn-sm" style="font-size:0.75rem;border-radius:8px;">View</a>
@@ -1690,7 +1690,7 @@
               <div style="background:#060608;border:1px solid rgba(255,255,255,0.06);border-radius:14px;padding:16px 18px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
                 <div>
                   <div style="font-weight:900;color:#fff;font-size:0.95rem;">[${escapeHtml(t.tag || 'TEAM')}] ${escapeHtml(t.name || 'Team')}</div>
-                  <div style="font-size:0.75rem;color:var(--text-muted);margin-top:2px;">Owner: ${escapeHtml(t.ownerName || 'Player')} · Members: ${(t.members || []).length}</div>
+                  <div style="font-size:0.75rem;color:var(--text-muted);margin-top:2px;">Owner: ${escapeHtml(t.ownerName || 'Player')} � Members: ${(t.members || []).length}</div>
                 </div>
                 <button class="btn btn-danger btn-sm" onclick="adminDeleteTeam('${doc.id}')" style="font-size:0.75rem;border-radius:8px;">Dissolve Team</button>
               </div>
@@ -1787,7 +1787,7 @@
       }
       const btn = document.getElementById('reset-db-btn');
       if (btn) btn.disabled = true;
-      showToast('Wiping platform records…', 'info');
+      showToast('Wiping platform records�', 'info');
       try {
         const res = await fullDatabaseReset();
         showToast('Database reset complete! Cleaned ' + (res.deletedCount || 0) + ' records.', 'success');
@@ -1798,7 +1798,7 @@
       }
     }
 
-    /* ── Main Authentication & Boot ───────────────────────────────── */
+    /* -- Main Authentication & Boot --------------------------------- */
     document.addEventListener('DOMContentLoaded', () => {
       requireAuth().then(async (user) => {
         currentUser = user;

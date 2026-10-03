@@ -201,7 +201,6 @@ function injectNav(activePage = '') {
   // Setup search controller
   setupNavSearch();
 
-  injectFloatingIcons();
   lucide.createIcons();
 
   // Close dropdowns on outside click
@@ -1308,30 +1307,7 @@ function toggleMobileNav() {
  * Injects animated floating Fortnite & gaming icons into the background
  */
 function injectFloatingIcons() {
-  if (document.getElementById('floating-icons-container')) return;
-
-  const icons = [
-    { name: 'crosshair', top: '12%', left: '8%',  size: 32, dur: '18s', delay: '0s' },
-    { name: 'swords',    top: '25%', left: '88%', size: 36, dur: '22s', delay: '2s' },
-    { name: 'shield',    top: '65%', left: '6%',  size: 30, dur: '20s', delay: '4s' },
-    { name: 'trophy',    top: '78%', left: '92%', size: 34, dur: '25s', delay: '1s' },
-    { name: 'zap',       top: '45%', left: '95%', size: 28, dur: '17s', delay: '5s' },
-    { name: 'flame',     top: '85%', left: '18%', size: 30, dur: '24s', delay: '3s' },
-    { name: 'target',    top: '38%', left: '3%',  size: 26, dur: '19s', delay: '6s' },
-    { name: 'crown',     top: '15%', left: '75%', size: 32, dur: '21s', delay: '2.5s' },
-  ];
-
-  const container = document.createElement('div');
-  container.id = 'floating-icons-container';
-  container.className = 'floating-icons-layer';
-
-  container.innerHTML = icons.map(ic => `
-    <div class="floating-icon-item" style="top:${ic.top};left:${ic.left};animation-duration:${ic.dur};animation-delay:${ic.delay};">
-      <i data-lucide="${ic.name}" style="width:${ic.size}px;height:${ic.size}px;"></i>
-    </div>
-  `).join('');
-
-  document.body.appendChild(container);
+  // Disabled: Clean background per Kick UI design
 }
 
 // ── Toast Notifications ───────────────────────────────────────

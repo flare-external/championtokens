@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
@@ -12,7 +12,7 @@
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
   <link rel="manifest" href="manifest.json"/>
-  <link rel="stylesheet" href="css/style.css?v=5.4"/>
+  <link rel="stylesheet" href="css/style.css?v=5.5"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
@@ -98,18 +98,19 @@
     }
 
     .podium-card--1 {
-      border-color: rgba(255, 255, 255, 0.12);
-      background: linear-gradient(180deg, rgba(245, 158, 11, 0.08) 0%, #000000 100%);
+      border: 1px solid rgba(83, 252, 24, 0.35);
+      background: linear-gradient(180deg, rgba(83, 252, 24, 0.08) 0%, var(--bg-card) 100%);
+      box-shadow: 0 0 25px rgba(83, 252, 24, 0.12);
       padding-top: 30px;
       padding-bottom: 26px;
     }
     .podium-card--2 {
-      border-color: rgba(203, 213, 225, 0.16);
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.04) 0%, #000000 100%);
+      border-color: var(--border);
+      background: var(--bg-card);
     }
     .podium-card--3 {
-      border-color: rgba(217, 119, 6, 0.18);
-      background: linear-gradient(180deg, rgba(217, 119, 6, 0.04) 0%, #000000 100%);
+      border-color: var(--border);
+      background: var(--bg-card);
     }
 
     .podium-avatar-wrap {
@@ -127,9 +128,9 @@
       position: relative;
     }
     .podium-avatar-wrap img { width: 100%; height: 100%; object-fit: cover; }
-    .podium-avatar-wrap--1 { width: 80px; height: 80px; border: none; box-shadow: none; }
-    .podium-avatar-wrap--2 { border: none; box-shadow: none; }
-    .podium-avatar-wrap--3 { border: none; box-shadow: none; }
+    .podium-avatar-wrap--1 { width: 80px; height: 80px; border: 2px solid var(--kick-green); box-shadow: 0 0 16px var(--kick-green-glow); }
+    .podium-avatar-wrap--2 { border: 2px solid rgba(255, 255, 255, 0.2); }
+    .podium-avatar-wrap--3 { border: 2px solid rgba(255, 255, 255, 0.12); }
 
     /* Rank Pills */
     .rank-pill {
@@ -143,19 +144,19 @@
       letter-spacing: 0.02em;
     }
     .rank-pill.rank-1 {
-      background: rgba(245, 158, 11, 0.22);
-      color: var(--gold-bright);
-      border: 1px solid rgba(245, 158, 11, 0.3);
+      background: rgba(83, 252, 24, 0.16);
+      color: var(--kick-green);
+      border: 1px solid rgba(83, 252, 24, 0.35);
     }
     .rank-pill.rank-2 {
-      background: rgba(203, 213, 225, 0.16);
-      color: #e2e8f0;
-      border: 1px solid rgba(203, 213, 225, 0.3);
+      background: rgba(255, 255, 255, 0.08);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.15);
     }
     .rank-pill.rank-3 {
-      background: rgba(217, 119, 6, 0.18);
-      color: #f59e0b;
-      border: 1px solid rgba(217, 119, 6, 0.3);
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-muted);
+      border: 1px solid rgba(255, 255, 255, 0.10);
     }
     .rank-pill.rank-other {
       background: rgba(255, 255, 255, 0.04);
@@ -284,8 +285,8 @@
       transform: translateY(-1px);
     }
     .lb-custom-table tbody tr.current-user {
-      background: rgba(245, 158, 11, 0.07);
-      border-color: rgba(245, 158, 11, 0.35);
+      background: rgba(83, 252, 24, 0.08);
+      border-color: rgba(83, 252, 24, 0.3);
     }
     .lb-custom-table td {
       padding: 14px 16px;
@@ -330,7 +331,7 @@
   <script src="js/firebase-config.js?v=3.8"></script>
   <script src="js/auth.js?v=4.0.1788871233902"></script>
   <script src="js/db.js?v=4.0.1788871233902"></script>
-  <script src="js/nav.js?v=5.4"></script>
+  <script src="js/nav.js?v=5.5"></script>
 
   <script>
     let currentUser = null;
@@ -474,13 +475,13 @@
           '<div style="min-width:0;width:100%;">' +
             '<div style="font-weight:900;font-size:1.05rem;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' +
               escapeHtml(u.displayName || 'Unknown') +
-              (isCurrent ? ' <span style="color:var(--gold-bright);font-size:0.75rem;font-weight:800;">(You)</span>' : '') +
+              (isCurrent ? ' <span style="color:var(--kick-green);font-size:0.75rem;font-weight:800;">(You)</span>' : '') +
             '</div>' +
             (u.epicUsername ? '<div style="margin-top:4px;"><span class="badge" style="background:rgba(0,120,242,0.15);color:#38bdf8;border:1px solid rgba(0,120,242,0.3);font-size:0.72rem;padding:2px 7px;"><i data-lucide="gamepad-2" style="width:11px;height:11px;"></i> ' + escapeHtml(u.epicUsername) + '</span></div>' : '') +
           '</div>' +
           '<div style="display:flex;flex-direction:column;gap:3px;align-items:center;margin-top:2px;">' +
-            '<div style="font-size:1.3rem;font-weight:900;color:var(--gold-bright);display:inline-flex;align-items:center;gap:6px;">' +
-              '<i data-lucide="trophy" style="width:17px;height:17px;color:var(--gold-bright);"></i> ' + wins + ' Wins' +
+            '<div style="font-size:1.3rem;font-weight:900;color:var(--kick-green);display:inline-flex;align-items:center;gap:6px;">' +
+              '<i data-lucide="trophy" style="width:17px;height:17px;color:var(--kick-green);"></i> ' + wins + ' Wins' +
             '</div>' +
             '<div style="font-size:0.75rem;color:var(--text-muted);">' +
               played + ' matches · ' + wr + ' win rate' +
@@ -530,7 +531,7 @@
               '<div>' +
                 '<div style="font-weight:800;font-size:0.95rem;color:#fff;">' +
                   escapeHtml(u.displayName || 'Unknown') +
-                  (isCurrent ? ' <span style="font-size:0.75rem;color:var(--gold-bright);font-weight:800;">(You)</span>' : '') +
+                  (isCurrent ? ' <span style="font-size:0.75rem;color:var(--kick-green);font-weight:800;">(You)</span>' : '') +
                   
                 '</div>' +
                 '<div style="font-size:0.74rem;color:var(--text-muted);display:flex;align-items:center;gap:8px;margin-top:2px;">' +
@@ -540,8 +541,8 @@
               '</div>' +
             '</div>' +
           '</td>' +
-          '<td style="color:var(--gold-bright);font-weight:900;font-size:1.02rem;">' +
-            '<span style="display:inline-flex;align-items:center;gap:5px;"><i data-lucide="trophy" style="width:14px;height:14px;"></i> ' + won + '</span>' +
+          '<td style="color:#ffffff;font-weight:900;font-size:1.02rem;">' +
+            '<span style="display:inline-flex;align-items:center;gap:5px;"><i data-lucide="trophy" style="width:14px;height:14px;color:var(--kick-green);"></i> ' + won + '</span>' +
           '</td>' +
           '<td style="color:#cbd5e1;font-weight:700;font-size:0.9rem;">' + played + '</td>' +
           '<td>' +
@@ -596,13 +597,13 @@
     }
   </script>
 
-  <main class="page-wrap" id="main-content" role="main" style="max-width: 1050px;">
+  <main class="page-wrap" id="main-content" role="main" style="max-width: 1280px; width: 100%;">
     <!-- 1. Morphed Master Header & Stats Card -->
     <div class="lb-morphed-header-card">
       <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;">
         <div style="display:flex;align-items:center;gap:12px;">
           <h1 style="font-size:1.65rem;font-weight:900;margin:0;display:flex;align-items:center;gap:10px;color:#fff;">
-            <i data-lucide="trophy" style="color:var(--gold-bright);width:26px;height:26px;"></i> Leaderboard
+            <i data-lucide="trophy" style="color:var(--kick-green);width:26px;height:26px;"></i> Leaderboard
           </h1>
         </div>
         <div>
@@ -618,7 +619,7 @@
       <!-- Morphed Quick Stats Grid -->
       <div class="lb-stats-grid">
         <div class="lb-stat-card">
-          <div class="lb-stat-icon-wrap" style="background:rgba(245,158,11,0.14);color:var(--gold-bright);">
+          <div class="lb-stat-icon-wrap" style="background:rgba(83,252,24,0.12);color:var(--kick-green);">
             <i data-lucide="users" style="width:20px;height:20px;"></i>
           </div>
           <div>
