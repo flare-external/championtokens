@@ -23,3 +23,5 @@ firebase-debug.*.log
 # OS files
 .DS_Store
 Thumbs.db
+
+.vercel
