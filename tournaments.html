@@ -1,19 +1,19 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Champion Tokens</title>
+  <title>Tournaments — Champion Tokens</title>
   <link rel="icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
   <link rel="manifest" href="manifest.json"/>
-  <link rel="stylesheet" href="css/style.css?v=5.1"/>
+  <link rel="stylesheet" href="css/style.css?v=5.2"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <script src="js/protect.js"></script>
-  <meta name="description" content="Join automated competitive Fortnite tournaments and bracket championships. Compete in 1v1, 2v2, and squads for massive Champion Token prize pools."/>
-  <meta name="keywords" content="fortnite tournaments, fortnite creative tournament, fortnite 1v1 tournament, fortnite prize pool, competitive fortnite brackets"/>
+  <meta name="description" content="Join automated competitive Fortnite tournaments and bracket championships. Compete in 1v1, 2v2, and squads for ranks and titles."/>
+  <meta name="keywords" content="fortnite tournaments, fortnite creative tournament, fortnite 1v1 tournament, competitive fortnite brackets"/>
 </head>
 <body>
   <div class="page-bg"></div>
@@ -23,17 +23,176 @@
     <span>Loading tournaments…</span>
   </div>
 
-
-  
-    <span>Loading tournaments…</span>
-  </div>
-
   <!-- Page content -->
-  <main class="page-wrap" id="main-content">
-    <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:55vh;text-align:center;">
-      <div style="font-size:2rem;font-weight:900;color:var(--gold-bright);letter-spacing:0.02em;display:flex;align-items:center;gap:12px;">
-        <i data-lucide="refresh-cw" style="width:32px;height:32px;color:var(--gold-bright);"></i> Under update.
+  <main class="page-wrap" id="main-content" style="max-width:1120px;margin:calc(var(--header-height) + 24px) auto 60px;padding:0 20px;">
+    
+    <!-- Hero / Header Banner -->
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:32px 28px;margin-bottom:24px;position:relative;overflow:hidden;">
+      <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(83,252,24,0.12);border:1px solid rgba(83,252,24,0.25);color:var(--kick-green);padding:5px 14px;border-radius:99px;font-size:0.78rem;font-weight:800;margin-bottom:14px;text-transform:uppercase;letter-spacing:0.04em;">
+        <i data-lucide="crown" style="width:14px;height:14px;"></i> Championship Series
       </div>
+      <h1 style="font-size:1.85rem;font-weight:900;color:#ffffff;margin:0 0 8px;letter-spacing:-0.02em;">
+        Automated Tournament Brackets
+      </h1>
+      <p style="font-size:0.92rem;color:var(--text-muted);max-width:680px;margin:0;line-height:1.5;">
+        Compete in structured single-elimination tournament brackets across Realistic, Box Fights, and Zone Wars. Climb national leaderboards and earn exclusive competitive titles.
+      </p>
+    </div>
+
+    <!-- 3 Pillar Feature Cards -->
+    <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:16px;margin-bottom:32px;">
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);padding:20px;display:flex;gap:14px;align-items:flex-start;">
+        <div style="width:42px;height:42px;border-radius:10px;background:rgba(83,252,24,0.12);color:var(--kick-green);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <i data-lucide="trophy" style="width:20px;height:20px;"></i>
+        </div>
+        <div>
+          <div style="font-weight:800;font-size:0.95rem;color:#ffffff;">Automated Brackets</div>
+          <div style="font-size:0.8rem;color:var(--text-muted);margin-top:4px;line-height:1.45;">
+            Dynamic single-elimination bracket tracking with automatic round advancement.
+          </div>
+        </div>
+      </div>
+
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);padding:20px;display:flex;gap:14px;align-items:flex-start;">
+        <div style="width:42px;height:42px;border-radius:10px;background:rgba(56,189,248,0.12);color:var(--blue);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <i data-lucide="shield-check" style="width:20px;height:20px;"></i>
+        </div>
+        <div>
+          <div style="font-weight:800;font-size:0.95rem;color:#ffffff;">Verified Matches</div>
+          <div style="font-size:0.8rem;color:var(--text-muted);margin-top:4px;line-height:1.45;">
+            Double-checked score reporting, screenshot submission, and dispute review.
+          </div>
+        </div>
+      </div>
+
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);padding:20px;display:flex;gap:14px;align-items:flex-start;">
+        <div style="width:42px;height:42px;border-radius:10px;background:rgba(168,85,247,0.12);color:#a855f7;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <i data-lucide="award" style="width:20px;height:20px;"></i>
+        </div>
+        <div>
+          <div style="font-weight:800;font-size:0.95rem;color:#ffffff;">Exclusive Titles</div>
+          <div style="font-size:0.8rem;color:var(--text-muted);margin-top:4px;line-height:1.45;">
+            Winning tournament cups unlocks badges and rank titles for your profile.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section Title -->
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;">
+      <h2 style="font-size:1.15rem;font-weight:900;color:#ffffff;display:flex;align-items:center;gap:8px;margin:0;">
+        <i data-lucide="calendar" style="width:18px;height:18px;color:var(--kick-green);"></i> Upcoming Tournament Cups
+      </h2>
+      <span style="font-size:0.75rem;font-weight:800;color:var(--text-faint);text-transform:uppercase;letter-spacing:0.04em;">
+        3 CUPS SCHEDULED
+      </span>
+    </div>
+
+    <!-- Tournament Cups Grid -->
+    <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(320px, 1fr));gap:20px;">
+      
+      <!-- Cup 1: Realistic 1v1 -->
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:22px;display:flex;flex-direction:column;gap:14px;transition:border-color 0.2s ease;">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px;">
+          <div>
+            <div style="font-size:1.05rem;font-weight:900;color:#ffffff;">Season 1 Realistics Cup</div>
+            <div style="font-size:0.78rem;color:var(--text-muted);margin-top:2px;">Automated 32-Player Bracket</div>
+          </div>
+          <span style="background:rgba(83,252,24,0.12);color:var(--kick-green);border:1px solid rgba(83,252,24,0.25);padding:3px 9px;border-radius:6px;font-size:0.74rem;font-weight:800;">1v1</span>
+        </div>
+
+        <div style="background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius-md);padding:14px;display:flex;flex-direction:column;gap:10px;font-size:0.82rem;">
+          <div style="display:flex;justify-content:space-between;color:var(--text-muted);">
+            <span>Bracket Type</span>
+            <strong style="color:#ffffff;">Single Elimination</strong>
+          </div>
+          <div style="display:flex;justify-content:space-between;color:var(--text-muted);">
+            <span>Slots</span>
+            <strong style="color:#ffffff;">32 Players</strong>
+          </div>
+          <div style="display:flex;justify-content:space-between;color:var(--text-muted);">
+            <span>Map Code</span>
+            <strong style="color:var(--kick-green);">9854-1829-8735</strong>
+          </div>
+          <div style="display:flex;justify-content:space-between;color:var(--text-muted);">
+            <span>Format</span>
+            <strong style="color:#ffffff;">First to 7 Rounds</strong>
+          </div>
+        </div>
+
+        <button class="btn btn-outline btn-full btn-sm" onclick="showNotifyMe('Season 1 Realistics Cup')" style="margin-top:auto;gap:8px;">
+          <i data-lucide="bell" style="width:14px;height:14px;"></i> Notify Me on Launch
+        </button>
+      </div>
+
+      <!-- Cup 2: Zone Wars 2v2 -->
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:22px;display:flex;flex-direction:column;gap:14px;transition:border-color 0.2s ease;">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px;">
+          <div>
+            <div style="font-size:1.05rem;font-weight:900;color:#ffffff;">Weekend Zone Wars Clash</div>
+            <div style="font-size:0.78rem;color:var(--text-muted);margin-top:2px;">Automated 16-Team Bracket</div>
+          </div>
+          <span style="background:rgba(56,189,248,0.12);color:var(--blue);border:1px solid rgba(56,189,248,0.25);padding:3px 9px;border-radius:6px;font-size:0.74rem;font-weight:800;">2v2</span>
+        </div>
+
+        <div style="background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius-md);padding:14px;display:flex;flex-direction:column;gap:10px;font-size:0.82rem;">
+          <div style="display:flex;justify-content:space-between;color:var(--text-muted);">
+            <span>Bracket Type</span>
+            <strong style="color:#ffffff;">Single Elimination</strong>
+          </div>
+          <div style="display:flex;justify-content:space-between;color:var(--text-muted);">
+            <span>Slots</span>
+            <strong style="color:#ffffff;">16 Teams (32 Players)</strong>
+          </div>
+          <div style="display:flex;justify-content:space-between;color:var(--text-muted);">
+            <span>Map Code</span>
+            <strong style="color:var(--kick-green);">7264-2987-0382</strong>
+          </div>
+          <div style="display:flex;justify-content:space-between;color:var(--text-muted);">
+            <span>Format</span>
+            <strong style="color:#ffffff;">First to 5 Rounds</strong>
+          </div>
+        </div>
+
+        <button class="btn btn-outline btn-full btn-sm" onclick="showNotifyMe('Weekend Zone Wars Clash')" style="margin-top:auto;gap:8px;">
+          <i data-lucide="bell" style="width:14px;height:14px;"></i> Notify Me on Launch
+        </button>
+      </div>
+
+      <!-- Cup 3: Box Fight 1v1 -->
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:22px;display:flex;flex-direction:column;gap:14px;transition:border-color 0.2s ease;">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px;">
+          <div>
+            <div style="font-size:1.05rem;font-weight:900;color:#ffffff;">Box Fight Champions Cup</div>
+            <div style="font-size:0.78rem;color:var(--text-muted);margin-top:2px;">Automated 16-Player Bracket</div>
+          </div>
+          <span style="background:rgba(168,85,247,0.12);color:#a855f7;border:1px solid rgba(168,85,247,0.25);padding:3px 9px;border-radius:6px;font-size:0.74rem;font-weight:800;">1v1</span>
+        </div>
+
+        <div style="background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius-md);padding:14px;display:flex;flex-direction:column;gap:10px;font-size:0.82rem;">
+          <div style="display:flex;justify-content:space-between;color:var(--text-muted);">
+            <span>Bracket Type</span>
+            <strong style="color:#ffffff;">Single Elimination</strong>
+          </div>
+          <div style="display:flex;justify-content:space-between;color:var(--text-muted);">
+            <span>Slots</span>
+            <strong style="color:#ffffff;">16 Players</strong>
+          </div>
+          <div style="display:flex;justify-content:space-between;color:var(--text-muted);">
+            <span>Map Code</span>
+            <strong style="color:var(--kick-green);">8234-9102-4419</strong>
+          </div>
+          <div style="display:flex;justify-content:space-between;color:var(--text-muted);">
+            <span>Format</span>
+            <strong style="color:#ffffff;">First to 7 Rounds</strong>
+          </div>
+        </div>
+
+        <button class="btn btn-outline btn-full btn-sm" onclick="showNotifyMe('Box Fight Champions Cup')" style="margin-top:auto;gap:8px;">
+          <i data-lucide="bell" style="width:14px;height:14px;"></i> Notify Me on Launch
+        </button>
+      </div>
+
     </div>
   </main>
 
@@ -45,10 +204,18 @@
   <script src="js/firebase-config.js?v=3.8"></script>
   <script src="js/auth.js?v=4.0.1788871233902"></script>
   <script src="js/db.js?v=4.0.1788871233902"></script>
-  <script src="js/nav.js?v=5.1"></script>
+  <script src="js/nav.js?v=5.2"></script>
 
   <script>
     let currentUser = null;
+
+    function showNotifyMe(cupName) {
+      if (typeof showToast === 'function') {
+        showToast(`You will be notified as soon as registrations open for ${cupName}!`, 'success');
+      } else {
+        alert(`You will be notified when registrations open for ${cupName}!`);
+      }
+    }
 
     document.addEventListener('DOMContentLoaded', () => {
       requireAuth().then(async (user) => {

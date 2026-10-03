@@ -1,23 +1,23 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Champion Tokens</title>
-  <meta name="title" content="Champion Tokens"/>
-  <meta name="description" content="Browse live open 1v1, 2v2, & 3v3 Fortnite matches across Realistic, Zone Wars, & Box Fights. Create your own lobby or join an open game for token prize pools."/>
-  <meta name="theme-color" content="#F59E0B"/>
+  <title>Live Matches — Champion Tokens</title>
+  <meta name="title" content="Live Matches — Champion Tokens"/>
+  <meta name="description" content="Browse live open 1v1, 2v2, & 3v3 Fortnite matches across Realistic, Zone Wars, & Box Fights. Create your own lobby or join an open game."/>
+  <meta name="theme-color" content="#53fc18"/>
 
   <meta property="og:type" content="website"/>
   <meta property="og:url" content="https://championtokens.fun/matches"/>
   <meta property="og:site_name" content="Champion Tokens"/>
-  <meta property="og:title" content="Champion Tokens"/>
+  <meta property="og:title" content="Live Matches — Champion Tokens"/>
   <meta property="og:description" content="Browse live 1v1, 2v2, & 3v3 Fortnite matches or create your own arena across Realistic, Zone Wars, & Box Fights!"/>
   <meta property="og:image" content="https://championtokens.fun/champion-tokens_new.png"/>
 
   <meta name="twitter:card" content="summary"/>
   <meta name="twitter:url" content="https://championtokens.fun/matches"/>
-  <meta name="twitter:title" content="Champion Tokens"/>
+  <meta name="twitter:title" content="Live Matches — Champion Tokens"/>
   <meta name="twitter:description" content="Browse live 1v1, 2v2, & 3v3 Fortnite matches or create your own arena across Realistic, Zone Wars, & Box Fights!"/>
   <meta name="twitter:image" content="https://championtokens.fun/champion-tokens_new.png"/>
 
@@ -25,9 +25,9 @@
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
   <link rel="manifest" href="manifest.json"/>
-  <link rel="stylesheet" href="css/style.css?v=5.1"/>
+  <link rel="stylesheet" href="css/style.css?v=5.2"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
     /* Remove outlines & borders across matches UI */
     *, *::before, *::after {
@@ -144,7 +144,7 @@
   <script src="js/firebase-config.js"></script>
   <script src="js/auth.js?v=4.0.1788871233902"></script>
   <script src="js/db.js?v=4.0.1788871233902"></script>
-  <script src="js/nav.js?v=5.1"></script>
+  <script src="js/nav.js?v=5.2"></script>
 
   <script>
     let currentUser = null;
@@ -167,6 +167,33 @@
         allMatches = matches;
         renderMatches();
       });
+
+      // URL Search / Filter query param initialization
+      try {
+        const urlParams = new URLSearchParams(window.location.search);
+        const q = urlParams.get('q') || urlParams.get('filter') || urlParams.get('search');
+        if (q) {
+          setTimeout(() => {
+            const sInput = document.getElementById('search-input');
+            const clearBtn = document.getElementById('search-clear-btn');
+            if (sInput) {
+              sInput.value = q;
+              if (clearBtn) clearBtn.style.display = 'inline-flex';
+            }
+            if (['1v1', '2v2', '3v3'].includes(q)) {
+              setSizeFilter(q);
+            } else if (q.toLowerCase().includes('realistic')) {
+              setModeFilter('Realistic');
+            } else if (q.toLowerCase().includes('box')) {
+              setModeFilter('Box Fights');
+            } else if (q.toLowerCase().includes('zone')) {
+              setModeFilter('Zone Wars');
+            } else {
+              handleMatchSearch(q);
+            }
+          }, 150);
+        }
+      } catch (e) {}
     });
 
     function setSizeFilter(size) {

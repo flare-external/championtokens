@@ -1,20 +1,20 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Champion Tokens</title>
-  <meta name="title" content="Champion Tokens"/>
-  <meta name="description" content="View the official Champion Tokens global leaderboard. Track the highest earning competitive Fortnite players, top match win rates, and tournament champions."/>
-  <meta name="theme-color" content="#F59E0B"/>
+  <title>Leaderboard — Champion Tokens</title>
+  <meta name="title" content="Leaderboard — Champion Tokens"/>
+  <meta name="description" content="View the official Champion Tokens global leaderboard. Track top competitive Fortnite players, highest win rates, and tournament champions."/>
+  <meta name="theme-color" content="#53fc18"/>
 
   <link rel="icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
   <link rel="manifest" href="manifest.json"/>
-  <link rel="stylesheet" href="css/style.css?v=5.1"/>
+  <link rel="stylesheet" href="css/style.css?v=5.2"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
     /* ── Dark Glass Leaderboard Aesthetics ── */
     @keyframes spinRefresh {
@@ -325,7 +325,7 @@
   <script src="js/firebase-config.js?v=3.8"></script>
   <script src="js/auth.js?v=4.0.1788871233902"></script>
   <script src="js/db.js?v=4.0.1788871233902"></script>
-  <script src="js/nav.js?v=5.1"></script>
+  <script src="js/nav.js?v=5.2"></script>
 
   <script>
     let currentUser = null;
@@ -375,7 +375,9 @@
 
       document.getElementById('stat-total-players').textContent = totalCompetitors;
       document.getElementById('stat-total-wins').textContent = totalWins;
-      document.getElementById('stat-total-earned').textContent = formatTokens(totalEarned);
+      const totalMatchesLogged = users.reduce((acc, u) => acc + Number(u.matchesPlayed || 0), 0);
+      const statMatchesEl = document.getElementById('stat-total-matches');
+      if (statMatchesEl) statMatchesEl.textContent = totalMatchesLogged;
       document.getElementById('stat-top-winrate').textContent = (highestWr > 0 ? highestWr + '%' : '100%');
     }
 
@@ -406,8 +408,8 @@
       }
 
       // Apply Sort
-      if (currentSortMode === 'earnings') {
-        list.sort((a, b) => (Number(b.totalEarned) || 0) - (Number(a.totalEarned) || 0) || (Number(b.matchesWon) || 0) - (Number(a.matchesWon) || 0));
+      if (currentSortMode === 'matches') {
+        list.sort((a, b) => (Number(b.matchesPlayed) || 0) - (Number(a.matchesPlayed) || 0) || (Number(b.matchesWon) || 0) - (Number(a.matchesWon) || 0));
       } else if (currentSortMode === 'winrate') {
         list.sort((a, b) => {
           const wrA = (Number(a.matchesPlayed) || 0) > 0 ? ((Number(a.matchesWon) || 0) / Number(a.matchesPlayed)) : 0;
@@ -416,7 +418,7 @@
         });
       } else {
         // Default: Wins
-        list.sort((a, b) => (Number(b.matchesWon) || 0) - (Number(a.matchesWon) || 0) || (Number(b.totalEarned) || 0) - (Number(a.totalEarned) || 0));
+        list.sort((a, b) => (Number(b.matchesWon) || 0) - (Number(a.matchesWon) || 0) || (Number(b.matchesPlayed) || 0) - (Number(a.matchesPlayed) || 0));
       }
 
       filteredUsers = list;
@@ -478,8 +480,8 @@
             '<div style="font-size:0.75rem;color:var(--text-muted);">' +
               played + ' matches · ' + wr + ' win rate' +
             '</div>' +
-            '<div style="font-size:0.8rem;font-weight:800;color:#fff;margin-top:4px;display:inline-flex;align-items:center;gap:5px;">' +
-              '<img src="new_token.png" alt="CT" style="width:15px;height:15px;object-fit:contain;"/> ' + formatTokens(earned) + ' Tokens' +
+            '<div style="font-size:0.8rem;font-weight:800;color:var(--kick-green);margin-top:4px;display:inline-flex;align-items:center;gap:5px;">' +
+              '<i data-lucide="award" style="width:14px;height:14px;color:var(--kick-green);"></i> Competitive Rank' +
             '</div>' +
           '</div>' +
         '</a>';
@@ -542,9 +544,9 @@
               wr +
             '</span>' +
           '</td>' +
-          '<td style="color:var(--gold-bright);font-weight:900;font-size:0.95rem;">' +
+          '<td style="color:var(--kick-green);font-weight:900;font-size:0.95rem;">' +
             '<span style="display:inline-flex;align-items:center;gap:6px;">' +
-              '<img src="new_token.png" alt="CT" style="width:16px;height:16px;object-fit:contain;"/> ' + formatTokens(earned) +
+              '<i data-lucide="zap" style="width:14px;height:14px;color:var(--kick-green);"></i> ' + ((won * 100) + (played * 10)) + ' PTS' +
             '</span>' +
           '</td>' +
         '</tr>';
@@ -631,12 +633,12 @@
         </div>
 
         <div class="lb-stat-card">
-          <div class="lb-stat-icon-wrap" style="background:rgba(16,185,129,0.14);color:#34d399;">
-            <i data-lucide="coins" style="width:20px;height:20px;"></i>
+          <div class="lb-stat-icon-wrap" style="background:rgba(83,252,24,0.14);color:var(--kick-green);">
+            <i data-lucide="swords" style="width:20px;height:20px;"></i>
           </div>
           <div>
-            <div style="font-size:0.72rem;font-weight:800;color:var(--text-muted);text-transform:uppercase;">Tokens Earned</div>
-            <div style="font-size:1.28rem;font-weight:900;color:var(--gold-bright);" id="stat-total-earned">0.00</div>
+            <div style="font-size:0.72rem;font-weight:800;color:var(--text-muted);text-transform:uppercase;">Matches Logged</div>
+            <div style="font-size:1.28rem;font-weight:900;color:#fff;" id="stat-total-matches">0</div>
           </div>
         </div>
 
@@ -676,8 +678,8 @@
           <button class="lb-sort-tab active" data-sort="wins" onclick="setSortMode('wins')">
             <i data-lucide="trophy" style="width:14px;height:14px;"></i> <span>Most Wins</span>
           </button>
-          <button class="lb-sort-tab" data-sort="earnings" onclick="setSortMode('earnings')">
-            <i data-lucide="coins" style="width:14px;height:14px;"></i> <span>Top Earnings</span>
+          <button class="lb-sort-tab" data-sort="matches" onclick="setSortMode('matches')">
+            <i data-lucide="swords" style="width:14px;height:14px;"></i> <span>Most Matches</span>
           </button>
           <button class="lb-sort-tab" data-sort="winrate" onclick="setSortMode('winrate')">
             <i data-lucide="percent" style="width:14px;height:14px;"></i> <span>Win Rate</span>
@@ -695,7 +697,7 @@
               <th>Wins</th>
               <th>Matches</th>
               <th>Win Rate</th>
-              <th>Total Earned</th>
+              <th>Points</th>
             </tr>
           </thead>
           <tbody id="lb-tbody">

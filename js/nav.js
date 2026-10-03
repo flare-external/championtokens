@@ -57,29 +57,27 @@ function injectNav(activePage = '') {
     <header class="top-nav" id="ct-nav">
       <div class="nav-left">
         <button class="sidebar-toggle-btn" id="btn-toggle-sidebar" onclick="toggleSidebar()" title="Toggle Sidebar">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="3" y1="12" x2="21" y2="12"></line>
-            <line x1="3" y1="6" x2="21" y2="6"></line>
-            <line x1="3" y1="18" x2="21" y2="18"></line>
-          </svg>
+          <i data-lucide="menu" style="width:20px;height:20px;"></i>
         </button>
 
-        <a href="matches" class="brand-logo">
-          <span class="brand-badge">CT</span>
-          <span>CHAMPION</span>
+        <a href="matches" class="brand-logo" title="Champion Tokens">
+          <span class="brand-logo-champion">CHAMPION</span> <span class="brand-logo-tokens">TOKENS</span>
         </a>
       </div>
 
       <div class="nav-center">
-        <div class="search-box">
+        <div class="search-box" id="nav-search-box">
           <div class="search-icon">
-            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="11" cy="11" r="8"></circle>
-              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-            </svg>
+            <i data-lucide="search" style="width:16px;height:16px;"></i>
           </div>
-          <input type="text" class="search-input" id="search-input" placeholder="Search matches, players..."/>
-          <span class="search-shortcut">/</span>
+          <input type="text" class="search-input" id="search-input" placeholder="Search matches, modes, players..." autocomplete="off"/>
+          <button class="search-clear-btn" id="search-clear-btn" style="display:none;" title="Clear search">
+            <i data-lucide="x" style="width:14px;height:14px;"></i>
+          </button>
+          <span class="search-shortcut" id="search-shortcut-key">/</span>
+          <div class="search-results-popover" id="search-results-popover">
+            <div id="search-popover-content"></div>
+          </div>
         </div>
       </div>
 
@@ -139,38 +137,36 @@ function injectNav(activePage = '') {
       </div>
     </header>
 
-    <!-- Left Sidebar (Solid Filled Icons - Matching Kick Reference media_1791055529807.png) -->
+    <!-- Left Sidebar (Kick Theme + Lucide Icons) -->
     <aside class="sidebar" id="app-sidebar">
       <div class="sidebar-nav-section">
         <!-- Matches -->
-        <a href="matches" class="nav-link ${activePage === 'matches' ? 'active' : ''}">
-          <svg viewBox="0 0 24 24" fill="currentColor">
-            <path d="M14.5 2.5a1 1 0 0 0-1.4 0l-4.6 4.6-2-2a1 1 0 0 0-1.4 0l-3 3a1 1 0 0 0 0 1.4l2 2-2 2a1 1 0 0 0 0 1.4l1.6 1.6-2.1 2.1a1 1 0 0 0 0 1.4l1.4 1.4a1 1 0 0 0 1.4 0l2.1-2.1 1.6 1.6a1 1 0 0 0 1.4 0l2-2 2 2a1 1 0 0 0 1.4 0l3-3a1 1 0 0 0 0-1.4l-2-2 4.6-4.6a1 1 0 0 0 0-1.4l-5-5z"/>
-          </svg>
+        <a href="matches" class="nav-link ${activePage === 'matches' ? 'active' : ''}" title="Matches">
+          <i data-lucide="swords"></i>
           <span class="nav-link-text">Matches</span>
         </a>
 
         <!-- Dashboard -->
-        <a href="dashboard" class="nav-link ${activePage === 'dashboard' ? 'active' : ''}">
-          <svg viewBox="0 0 24 24" fill="currentColor">
-            <path d="M3 3h8v8H3zm10 0h8v8h-8zM3 13h8v8H3zm10 0h8v8h-8z"/>
-          </svg>
+        <a href="dashboard" class="nav-link ${activePage === 'dashboard' ? 'active' : ''}" title="Dashboard">
+          <i data-lucide="layout-dashboard"></i>
           <span class="nav-link-text">Dashboard</span>
         </a>
 
+        <!-- Tournaments -->
+        <a href="tournaments" class="nav-link ${activePage === 'tournaments' ? 'active' : ''}" title="Tournaments">
+          <i data-lucide="crown"></i>
+          <span class="nav-link-text">Tournaments</span>
+        </a>
+
         <!-- Leaderboard -->
-        <a href="leaderboard" class="nav-link ${activePage === 'leaderboard' ? 'active' : ''}">
-          <svg viewBox="0 0 24 24" fill="currentColor">
-            <path d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94A5.01 5.01 0 0 0 11 15.9V19H7v2h10v-2h-4v-3.1a5.01 5.01 0 0 0 3.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1z"/>
-          </svg>
+        <a href="leaderboard" class="nav-link ${activePage === 'leaderboard' ? 'active' : ''}" title="Leaderboard">
+          <i data-lucide="trophy"></i>
           <span class="nav-link-text">Leaderboard</span>
         </a>
 
         <!-- Profile -->
-        <a href="profile" class="nav-link ${activePage === 'profile' ? 'active' : ''}">
-          <svg viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-          </svg>
+        <a href="profile" class="nav-link ${activePage === 'profile' ? 'active' : ''}" title="Profile">
+          <i data-lucide="user"></i>
           <span class="nav-link-text">Profile</span>
         </a>
       </div>
@@ -201,13 +197,9 @@ function injectNav(activePage = '') {
     }
   } catch (e) {}
 
-  // Search shortcut '/'
-  document.addEventListener('keydown', (e) => {
-    if (e.key === '/' && document.activeElement !== document.getElementById('search-input')) {
-      e.preventDefault();
-      document.getElementById('search-input')?.focus();
-    }
-  });
+  // Setup search controller
+  setupNavSearch();
+
   injectFloatingIcons();
   lucide.createIcons();
 
@@ -369,6 +361,188 @@ function injectNav(activePage = '') {
       }, (err) => {
         console.warn('Active match listener error:', err);
       });
+  });
+}
+
+/**
+ * Functional Searchbar Controller for Kick.com Theme Navigation
+ */
+function setupNavSearch() {
+  const searchInput = document.getElementById('search-input');
+  const clearBtn = document.getElementById('search-clear-btn');
+  const popover = document.getElementById('search-results-popover');
+  const popoverContent = document.getElementById('search-popover-content');
+  if (!searchInput || !popover || !popoverContent) return;
+
+  const NAV_SEARCH_ITEMS = [
+    { category: 'Quick Navigation', label: 'Live Matches & Arenas', sub: 'Open Lobbies', href: 'matches', icon: 'swords' },
+    { category: 'Quick Navigation', label: 'Player Dashboard', sub: 'Stats & Overview', href: 'dashboard', icon: 'layout-dashboard' },
+    { category: 'Quick Navigation', label: 'Competitive Leaderboard', sub: 'Global Rankings', href: 'leaderboard', icon: 'trophy' },
+    { category: 'Quick Navigation', label: 'Tournaments & Cups', sub: 'Championships', href: 'tournaments', icon: 'crown' },
+    { category: 'Quick Navigation', label: 'My Profile & Connections', sub: 'Account Settings', href: 'profile', icon: 'user' },
+    { category: 'Quick Navigation', label: 'Competitive Rules', sub: 'Regulations', href: 'rules', icon: 'shield-check' },
+    { category: 'Popular Modes', label: 'Realistic 1v1', sub: 'Finest Map', href: 'matches?filter=realistic', icon: 'target' },
+    { category: 'Popular Modes', label: 'Box Fights', sub: 'Speed Arena', href: 'matches?filter=box', icon: 'box' },
+    { category: 'Popular Modes', label: 'Zone Wars', sub: 'Endgame 2v2', href: 'matches?filter=zonewars', icon: 'flame' },
+    { category: 'Regions', label: 'Europe (EU)', sub: 'Server Region', href: 'matches?filter=EU', icon: 'globe' },
+    { category: 'Regions', label: 'North America (NA)', sub: 'Server Region', href: 'matches?filter=NA', icon: 'globe' }
+  ];
+
+  let selectedIndex = -1;
+
+  function renderSearch(query) {
+    const q = (query || '').trim().toLowerCase();
+    let html = '';
+
+    if (!q) {
+      html += '<div class="search-group-title"><i data-lucide="compass" style="width:12px;height:12px;"></i> Quick Navigation</div>';
+      NAV_SEARCH_ITEMS.slice(0, 6).forEach((item, idx) => {
+        html += `
+          <a href="${item.href}" class="search-result-item" data-index="${idx}">
+            <span class="search-result-icon"><i data-lucide="${item.icon}"></i></span>
+            <span>${item.label}</span>
+            <span class="search-result-sub">${item.sub}</span>
+          </a>`;
+      });
+      html += '<div class="search-group-title" style="margin-top:6px;"><i data-lucide="gamepad-2" style="width:12px;height:12px;"></i> Popular Gamemodes</div>';
+      NAV_SEARCH_ITEMS.slice(6, 9).forEach((item, idx) => {
+        html += `
+          <a href="${item.href}" class="search-result-item" data-index="${idx + 6}">
+            <span class="search-result-icon"><i data-lucide="${item.icon}"></i></span>
+            <span>${item.label}</span>
+            <span class="search-result-sub">${item.sub}</span>
+          </a>`;
+      });
+    } else {
+      const matches = NAV_SEARCH_ITEMS.filter(it => 
+        it.label.toLowerCase().includes(q) || 
+        it.sub.toLowerCase().includes(q) ||
+        it.category.toLowerCase().includes(q)
+      );
+
+      const isOnMatches = window.location.pathname.includes('matches');
+      if (isOnMatches && typeof allMatches !== 'undefined' && Array.isArray(allMatches)) {
+        const count = allMatches.filter(m => {
+          const title = (m.title || '').toLowerCase();
+          const host = (m.hostName || '').toLowerCase();
+          const code = (m.code || '').toLowerCase();
+          const mode = (m.mode || '').toLowerCase();
+          return title.includes(q) || host.includes(q) || code.includes(q) || mode.includes(q);
+        }).length;
+        html += `
+          <div class="search-group-title"><i data-lucide="swords" style="width:12px;height:12px;"></i> Matches on page (${count})</div>
+          <div style="padding:6px 12px 10px;font-size:0.8rem;color:var(--kick-green);font-weight:700;">
+            Filtering active lobbies live on screen...
+          </div>`;
+      } else {
+        html += `
+          <a href="matches?q=${encodeURIComponent(q)}" class="search-result-item" data-index="0" style="border:1px solid rgba(83,252,24,0.3);background:rgba(83,252,24,0.06);">
+            <span class="search-result-icon" style="color:var(--kick-green);"><i data-lucide="search"></i></span>
+            <span>Search live matches for "<strong>${q}</strong>"</span>
+            <span class="search-result-sub">Open Lobbies &rarr;</span>
+          </a>`;
+      }
+
+      if (matches.length > 0) {
+        html += '<div class="search-group-title" style="margin-top:6px;"><i data-lucide="layers" style="width:12px;height:12px;"></i> Direct Results</div>';
+        matches.forEach((item, idx) => {
+          html += `
+            <a href="${item.href}" class="search-result-item" data-index="${idx + 1}">
+              <span class="search-result-icon"><i data-lucide="${item.icon}"></i></span>
+              <span>${item.label}</span>
+              <span class="search-result-sub">${item.sub}</span>
+            </a>`;
+        });
+      } else if (!isOnMatches) {
+        html += `
+          <div class="search-empty-state">
+            <i data-lucide="help-circle"></i>
+            <div>No direct pages found for "${q}"</div>
+            <div style="font-size:0.75rem;margin-top:4px;color:var(--text-faint);">Try "Realistic", "1v1", "Leaderboard", or "Profile"</div>
+          </div>`;
+      }
+    }
+
+    popoverContent.innerHTML = html;
+    if (window.lucide) lucide.createIcons();
+    selectedIndex = -1;
+  }
+
+  function openSearch() {
+    renderSearch(searchInput.value);
+    popover.classList.add('open');
+  }
+
+  function closeSearch() {
+    popover.classList.remove('open');
+    selectedIndex = -1;
+  }
+
+  searchInput.addEventListener('focus', openSearch);
+  searchInput.addEventListener('input', (e) => {
+    const val = e.target.value;
+    if (clearBtn) clearBtn.style.display = val.length > 0 ? 'inline-flex' : 'none';
+    renderSearch(val);
+    popover.classList.add('open');
+    if (typeof handleMatchSearch === 'function') {
+      handleMatchSearch(val);
+    }
+  });
+
+  if (clearBtn) {
+    clearBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      searchInput.value = '';
+      clearBtn.style.display = 'none';
+      if (typeof handleMatchSearch === 'function') {
+        handleMatchSearch('');
+      }
+      renderSearch('');
+      searchInput.focus();
+    });
+  }
+
+  // Keyboard shortcut '/'
+  document.addEventListener('keydown', (e) => {
+    if (e.key === '/' && document.activeElement !== searchInput) {
+      e.preventDefault();
+      searchInput.focus();
+    }
+  });
+
+  searchInput.addEventListener('keydown', (e) => {
+    const items = popoverContent.querySelectorAll('.search-result-item');
+    if (e.key === 'Escape') {
+      closeSearch();
+      searchInput.blur();
+    } else if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      if (items.length === 0) return;
+      selectedIndex = (selectedIndex + 1) % items.length;
+      items.forEach((it, i) => it.classList.toggle('selected', i === selectedIndex));
+      items[selectedIndex]?.scrollIntoView({ block: 'nearest' });
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      if (items.length === 0) return;
+      selectedIndex = (selectedIndex - 1 + items.length) % items.length;
+      items.forEach((it, i) => it.classList.toggle('selected', i === selectedIndex));
+      items[selectedIndex]?.scrollIntoView({ block: 'nearest' });
+    } else if (e.key === 'Enter') {
+      if (selectedIndex >= 0 && items[selectedIndex]) {
+        e.preventDefault();
+        items[selectedIndex].click();
+      } else if (searchInput.value.trim()) {
+        e.preventDefault();
+        window.location.href = `matches?q=${encodeURIComponent(searchInput.value.trim())}`;
+      }
+    }
+  });
+
+  document.addEventListener('click', (e) => {
+    const box = document.getElementById('nav-search-box');
+    if (box && !box.contains(e.target)) {
+      closeSearch();
+    }
   });
 }
 
