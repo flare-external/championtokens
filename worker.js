@@ -171,17 +171,13 @@ export default {
           });
         }
 
-        // Return the closed.html page
-        try {
-          const closedReq = new Request(new URL('/closed.html', request.url), request);
-          const closedRes = await env.ASSETS.fetch(closedReq);
-          if (closedRes.status === 200) {
-            const h = new Headers(closedRes.headers);
-            h.set('Content-Type', 'text/html; charset=utf-8');
-            h.set('Cache-Control', 'no-cache, no-store, must-revalidate');
-            return new Response(closedRes.body, { status: 503, statusText: 'Service Unavailable', headers: h });
-          }
-        } catch (e) {}
+        // Allow /closed to load cleanly
+        if (pathname === '/closed' || pathname === '/closed.html') {
+          return env.ASSETS.fetch(new Request(new URL('/closed', request.url), request));
+        }
+
+        // Redirect all other web routes to /closed
+        return Response.redirect(new URL('/closed', request.url).toString(), 302);
       }
     }
 
