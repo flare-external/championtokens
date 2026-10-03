@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Website Closed — Champion Tokens</title>
+  <link rel="icon" type="image/png" href="champion-tokens_new.png"/>
+  <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
+  <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
+  <link rel="stylesheet" href="css/style.css?v=5.5"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+  <style>
+    body {
+      background-color: var(--bg-main, #0b0e0f);
+      color: #ffffff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 0;
+      padding: 24px;
+      position: relative;
+      overflow-x: hidden;
+      font-family: var(--font, 'Inter', sans-serif);
+    }
+
+    .closed-wrapper {
+      max-width: 620px;
+      width: 100%;
+      text-align: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    .closed-brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      margin-bottom: 28px;
+    }
+
+    .closed-card {
+      background: var(--bg-card, #181c20);
+      border: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+      border-radius: 24px;
+      padding: 44px 36px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(83, 252, 24, 0.04);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .closed-glow {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 260px;
+      height: 120px;
+      background: radial-gradient(circle, rgba(83, 252, 24, 0.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .closed-icon-wrap {
+      width: 76px;
+      height: 76px;
+      border-radius: 20px;
+      background: rgba(83, 252, 24, 0.10);
+      border: 1px solid rgba(83, 252, 24, 0.3);
+      color: var(--kick-green, #53fc18);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      box-shadow: 0 0 24px rgba(83, 252, 24, 0.2);
+      cursor: pointer;
+      user-select: none;
+      transition: transform 0.2s ease;
+    }
+    .closed-icon-wrap:active {
+      transform: scale(0.95);
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(239, 68, 68, 0.14);
+      border: 1px solid rgba(239, 68, 68, 0.35);
+      color: #ef4444;
+      padding: 5px 14px;
+      border-radius: 99px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #ef4444;
+      box-shadow: 0 0 8px #ef4444;
+      animation: pulse 2s infinite ease-in-out;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+
+    h1 {
+      font-family: var(--font-display, 'Outfit', sans-serif);
+      font-size: 2.1rem;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      margin: 0 0 12px;
+      color: #ffffff;
+    }
+
+    p {
+      color: var(--text-muted, #94a3b8);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin: 0 0 28px;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 28px;
+      text-align: left;
+    }
+
+    .info-card {
+      background: var(--bg-surface, #14171a);
+      border: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+      border-radius: 14px;
+      padding: 14px 16px;
+    }
+
+    .info-card-label {
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: var(--text-sub, #64748b);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .info-card-val {
+      font-size: 0.92rem;
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    .action-group {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .btn-discord {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: #5865F2;
+      color: #ffffff;
+      font-weight: 800;
+      font-size: 0.95rem;
+      padding: 13px 26px;
+      border-radius: 12px;
+      text-decoration: none;
+      transition: all 0.16s ease;
+      box-shadow: 0 4px 16px rgba(88, 101, 242, 0.3);
+    }
+    .btn-discord:hover {
+      background: #4752c4;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(88, 101, 242, 0.45);
+    }
+
+    .closed-footer {
+      margin-top: 24px;
+      font-size: 0.78rem;
+      color: var(--text-sub, #64748b);
+    }
+
+    /* Modal for developer unlock */
+    .admin-prompt {
+      display: none;
+      margin-top: 18px;
+      padding: 14px;
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 12px;
+    }
+    .admin-input {
+      background: #0b0e0f;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: #fff;
+      padding: 8px 12px;
+      font-size: 0.88rem;
+      width: 70%;
+      outline: none;
+    }
+    .admin-btn {
+      background: var(--kick-green);
+      color: #000;
+      font-weight: 800;
+      padding: 8px 14px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      margin-left: 6px;
+    }
+
+    @media (max-width: 600px) {
+      .info-grid {
+        grid-template-columns: 1fr;
+      }
+      .closed-card {
+        padding: 32px 20px;
+      }
+      h1 {
+        font-size: 1.7rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-bg"></div>
+
+  <div class="closed-wrapper">
+    <!-- Brand Header -->
+    <div class="closed-brand">
+      <span class="brand-logo-champion" style="font-family:'Outfit',sans-serif;font-weight:900;font-size:1.6rem;letter-spacing:-0.03em;">CHAMPION</span>
+      <span class="brand-logo-tokens" style="font-family:'Outfit',sans-serif;font-weight:900;font-size:1.6rem;letter-spacing:-0.03em;">TOKENS</span>
+    </div>
+
+    <!-- Main Card -->
+    <div class="closed-card">
+      <div class="closed-glow"></div>
+
+      <!-- Icon -->
+      <div class="closed-icon-wrap" id="unlock-trigger" title="Champion Tokens">
+        <i data-lucide="shield-alert" style="width:36px;height:36px;"></i>
+      </div>
+
+      <!-- Status Pill -->
+      <div>
+        <span class="status-badge">
+          <span class="status-dot"></span>
+          Platform Closed
+        </span>
+      </div>
+
+      <!-- Title & Explanation -->
+      <h1>Website is Currently Closed</h1>
+      <p>
+        Champion Tokens is temporarily closed to the public. Arenas, matchmaking lobbies, and player accounts are currently unavailable. Please check our official Discord for reopening dates and community announcements.
+      </p>
+
+      <!-- Status Information Grid -->
+      <div class="info-grid">
+        <div class="info-card">
+          <div class="info-card-label">
+            <i data-lucide="power" style="width:13px;height:13px;color:#ef4444;"></i> Status
+          </div>
+          <div class="info-card-val" style="color:#ef4444;">Offline</div>
+        </div>
+        <div class="info-card">
+          <div class="info-card-label">
+            <i data-lucide="wrench" style="width:13px;height:13px;color:var(--kick-green);"></i> Operations
+          </div>
+          <div class="info-card-val" style="color:var(--kick-green);">Maintenance</div>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="action-group">
+        <a href="https://discord.gg/35xqcMTEbH" target="_blank" rel="noopener noreferrer" class="btn-discord">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.894.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
+          </svg>
+          <span>Join Official Discord</span>
+        </a>
+      </div>
+
+      <!-- Developer / Admin Unlock Prompt (Hidden by default) -->
+      <div class="admin-prompt" id="admin-prompt">
+        <input type="password" id="admin-key" class="admin-input" placeholder="Admin Passcode..." autocomplete="off"/>
+        <button type="button" class="admin-btn" onclick="submitBypass()">Unlock</button>
+      </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="closed-footer">
+      © 2026 Champion Tokens. All rights reserved.
+    </div>
+  </div>
+
+  <script>
+    lucide.createIcons();
+
+    // Secret unlock interaction: click icon 5 times or press Ctrl+Shift+U
+    let clicks = 0;
+    const trigger = document.getElementById('unlock-trigger');
+    const promptEl = document.getElementById('admin-prompt');
+
+    if (trigger && promptEl) {
+      trigger.addEventListener('click', () => {
+        clicks++;
+        if (clicks >= 5) {
+          promptEl.style.display = 'block';
+          document.getElementById('admin-key')?.focus();
+        }
+      });
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'U' || e.key === 'u')) {
+        e.preventDefault();
+        if (promptEl) {
+          promptEl.style.display = promptEl.style.display === 'block' ? 'none' : 'block';
+          if (promptEl.style.display === 'block') document.getElementById('admin-key')?.focus();
+        }
+      }
+    });
+
+    function submitBypass() {
+      const val = document.getElementById('admin-key')?.value?.trim();
+      if (val === 'champion2026' || val === 'admin' || val === 'owner') {
+        localStorage.setItem('ct_bypass', '1');
+        document.cookie = 'ct_bypass=1; path=/; max-age=86400';
+        window.location.href = '/dashboard?bypass=admin';
+      } else {
+        alert('Incorrect passcode.');
+      }
+    }
+  </script>
+</body>
+</html>

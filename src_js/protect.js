@@ -4,6 +4,27 @@
 (function() {
   'use strict';
 
+  // 0. Website Closed Enforcer
+  const WEBSITE_CLOSED = true;
+  if (WEBSITE_CLOSED) {
+    const isBypass = localStorage.getItem('ct_bypass') === '1' ||
+                     document.cookie.includes('ct_bypass=1') ||
+                     window.location.search.includes('bypass=admin') ||
+                     window.location.search.includes('unlock=1');
+    if (window.location.search.includes('bypass=admin') || window.location.search.includes('unlock=1')) {
+      try {
+        localStorage.setItem('ct_bypass', '1');
+        document.cookie = 'ct_bypass=1; path=/; max-age=86400';
+      } catch(e) {}
+    }
+    const currentPath = window.location.pathname.toLowerCase();
+    const isClosedPage = currentPath.endsWith('closed.html') || currentPath.endsWith('/closed') || currentPath === '/closed';
+    if (!isBypass && !isClosedPage) {
+      window.location.replace('/closed.html');
+      return;
+    }
+  }
+
   // 1. Console Security Notice
   if (typeof console !== 'undefined') {
     const titleStyle = 'color:#f59e0b;font-size:22px;font-weight:900;text-shadow:0 0 10px rgba(245,158,11,0.5);';

@@ -129,6 +129,62 @@ export default {
       return new Response(null, { status: 204, headers: corsHeaders });
     }
 
+    // ── WEBSITE CLOSED / MAINTENANCE MODE ──────────────────────
+    const WEBSITE_CLOSED = true;
+
+    const cookieHeader = request.headers.get('Cookie') || '';
+    const hasBypassParam = url.searchParams.get('bypass') === 'admin' || url.searchParams.get('unlock') === '1';
+    const hasBypassCookie = cookieHeader.includes('ct_bypass=1');
+
+    if (hasBypassParam) {
+      const cleanUrl = new URL(request.url);
+      cleanUrl.searchParams.delete('bypass');
+      cleanUrl.searchParams.delete('unlock');
+      const bypassResponse = Response.redirect(cleanUrl.toString(), 302);
+      bypassResponse.headers.set('Set-Cookie', 'ct_bypass=1; Path=/; Max-Age=86400; SameSite=Lax');
+      return bypassResponse;
+    }
+
+    const isBypassed = hasBypassCookie;
+
+    if (WEBSITE_CLOSED && !isBypassed) {
+      const isStaticAsset = pathname.endsWith('.css') ||
+                            pathname.endsWith('.js') ||
+                            pathname.endsWith('.png') ||
+                            pathname.endsWith('.jpg') ||
+                            pathname.endsWith('.jpeg') ||
+                            pathname.endsWith('.svg') ||
+                            pathname.endsWith('.webp') ||
+                            pathname.endsWith('.gif') ||
+                            pathname.endsWith('.ico') ||
+                            pathname.endsWith('.woff') ||
+                            pathname.endsWith('.woff2') ||
+                            pathname.endsWith('.ttf') ||
+                            pathname.endsWith('.webmanifest');
+
+      if (!isStaticAsset) {
+        // Block API endpoints with JSON maintenance error
+        if (pathname.startsWith('/api/') || pathname.startsWith('/.netlify/')) {
+          return new Response(JSON.stringify({ error: 'Champion Tokens is currently closed for maintenance.', status: 503 }), {
+            status: 503,
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+          });
+        }
+
+        // Return the closed.html page
+        try {
+          const closedReq = new Request(new URL('/closed.html', request.url), request);
+          const closedRes = await env.ASSETS.fetch(closedReq);
+          if (closedRes.status === 200) {
+            const h = new Headers(closedRes.headers);
+            h.set('Content-Type', 'text/html; charset=utf-8');
+            h.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+            return new Response(closedRes.body, { status: 503, statusText: 'Service Unavailable', headers: h });
+          }
+        } catch (e) {}
+      }
+    }
+
     // ── API: /api/discordAuth ───────────────────────────────
     if (url.pathname === '/api/discordAuth' || url.pathname === '/.netlify/functions/discordAuth') {
       if (request.method !== 'POST') {
