@@ -37,9 +37,9 @@ function injectNav(activePage = '') {
   const links = [
     { href: 'dashboard',   key: 'dashboard',   icon: 'layout-dashboard', label: 'Dashboard'   },
     { href: 'matches',     key: 'matches',     icon: 'swords',           label: 'Matches'     },
-    { href: 'tournaments', key: 'tournaments', icon: 'crown',            label: 'Tournaments' },
-    { href: 'leaderboard', key: 'leaderboard', icon: 'trophy',           label: 'Leaderboard' },
     { href: 'shop',        key: 'shop',        icon: 'shopping-bag',     label: 'Shop', hasBadge: hasNewShopItems },
+    { href: 'leaderboard', key: 'leaderboard', icon: 'trophy',           label: 'Leaderboard' },
+    { href: 'tournaments', key: 'tournaments', icon: 'crown',            label: 'Tournaments' },
   ];
 
   const navLinksHTML = links.map(l => `
@@ -152,10 +152,11 @@ function injectNav(activePage = '') {
           <span class="nav-link-text">Matches</span>
         </a>
 
-        <!-- Tournaments -->
-        <a href="tournaments" class="nav-link ${activePage === 'tournaments' ? 'active' : ''}" title="Tournaments">
-          <i data-lucide="crown"></i>
-          <span class="nav-link-text">Tournaments</span>
+        <!-- Shop -->
+        <a href="shop" class="nav-link ${activePage === 'shop' ? 'active' : ''}" title="Shop">
+          <i data-lucide="shopping-bag"></i>
+          <span class="nav-link-text">Shop</span>
+          ${hasNewShopItems ? `<span class="nav-shop-red-badge" style="background:#ef4444;color:#fff;font-size:0.66rem;font-weight:900;width:17px;height:17px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;margin-left:auto;box-shadow:0 0 10px rgba(239,68,68,0.75);line-height:1;">1</span>` : ''}
         </a>
 
         <!-- Leaderboard -->
@@ -377,6 +378,7 @@ function setupNavSearch() {
   const NAV_SEARCH_ITEMS = [
     { category: 'Quick Navigation', label: 'Player Dashboard', sub: 'Stats & Overview', href: 'dashboard', icon: 'layout-dashboard' },
     { category: 'Quick Navigation', label: 'Live Matches & Arenas', sub: 'Open Lobbies', href: 'matches', icon: 'swords' },
+    { category: 'Quick Navigation', label: 'Cosmetics & Item Shop', sub: 'Avatars & Titles', href: 'shop', icon: 'shopping-bag' },
     { category: 'Quick Navigation', label: 'Competitive Leaderboard', sub: 'Global Rankings', href: 'leaderboard', icon: 'trophy' },
     { category: 'Quick Navigation', label: 'Tournaments & Cups', sub: 'Championships', href: 'tournaments', icon: 'crown' },
     { category: 'Quick Navigation', label: 'My Profile & Connections', sub: 'Account Settings', href: 'profile', icon: 'user' },
