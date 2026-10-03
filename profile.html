@@ -8,7 +8,7 @@
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
   <link rel="manifest" href="manifest.json"/>
-  <link rel="stylesheet" href="css/style.css?v=5.2"/>
+  <link rel="stylesheet" href="css/style.css?v=5.3"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
@@ -563,10 +563,10 @@
       display: inline-flex;
       align-items: center;
       gap: 5px;
-      background: #000000;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 14px;
-      padding: 4px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 4px 6px;
       box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
       overflow-x: auto;
     }
@@ -576,10 +576,10 @@
       gap: 8px;
       padding: 8px 18px;
       background: transparent;
-      border: none;
-      border-radius: 10px;
-      color: #94a3b8;
-      font-size: 0.86rem;
+      border: 1px solid transparent;
+      border-radius: 8px;
+      color: var(--text-muted);
+      font-size: 0.85rem;
       font-weight: 700;
       cursor: pointer;
       transition: all 0.16s ease;
@@ -588,7 +588,7 @@
     .profile-subtab-btn i {
       width: 15px;
       height: 15px;
-      color: #64748b;
+      color: var(--text-faint);
       transition: color 0.16s ease;
     }
     .profile-subtab-btn:hover {
@@ -599,13 +599,14 @@
       color: #ffffff;
     }
     .profile-subtab-btn.active {
-      background: #18181b;
+      background: rgba(83, 252, 24, 0.12);
+      border-color: var(--kick-green);
       color: #ffffff;
       font-weight: 800;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 0 12px rgba(83, 252, 24, 0.22);
     }
     .profile-subtab-btn.active i {
-      color: var(--gold-bright);
+      color: var(--kick-green);
     }
     
     /* Morphed Stats Cards */
@@ -1346,7 +1347,7 @@
   <script src="js/firebase-config.js?v=3.2"></script>
   <script src="js/auth.js?v=4.0.1788871233902"></script>
   <script src="js/db.js?v=4.0.1788871233902"></script>
-  <script src="js/nav.js?v=5.2"></script>
+  <script src="js/nav.js?v=5.3"></script>
 
   <script>
     let currentUser = null;

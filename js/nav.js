@@ -60,7 +60,7 @@ function injectNav(activePage = '') {
           <i data-lucide="menu" style="width:20px;height:20px;"></i>
         </button>
 
-        <a href="matches" class="brand-logo" title="Champion Tokens">
+        <a href="dashboard" class="brand-logo" title="Champion Tokens">
           <span class="brand-logo-champion">CHAMPION</span> <span class="brand-logo-tokens">TOKENS</span>
         </a>
       </div>
@@ -70,7 +70,7 @@ function injectNav(activePage = '') {
           <div class="search-icon">
             <i data-lucide="search" style="width:16px;height:16px;"></i>
           </div>
-          <input type="text" class="search-input" id="search-input" placeholder="Search matches, modes, players..." autocomplete="off"/>
+          <input type="text" class="search-input" id="search-input" placeholder="Search players, matches, modes..." autocomplete="off"/>
           <button class="search-clear-btn" id="search-clear-btn" style="display:none;" title="Clear search">
             <i data-lucide="x" style="width:14px;height:14px;"></i>
           </button>
@@ -140,16 +140,16 @@ function injectNav(activePage = '') {
     <!-- Left Sidebar (Kick Theme + Lucide Icons) -->
     <aside class="sidebar" id="app-sidebar">
       <div class="sidebar-nav-section">
-        <!-- Matches -->
-        <a href="matches" class="nav-link ${activePage === 'matches' ? 'active' : ''}" title="Matches">
-          <i data-lucide="swords"></i>
-          <span class="nav-link-text">Matches</span>
-        </a>
-
         <!-- Dashboard -->
         <a href="dashboard" class="nav-link ${activePage === 'dashboard' ? 'active' : ''}" title="Dashboard">
           <i data-lucide="layout-dashboard"></i>
           <span class="nav-link-text">Dashboard</span>
+        </a>
+
+        <!-- Matches -->
+        <a href="matches" class="nav-link ${activePage === 'matches' ? 'active' : ''}" title="Matches">
+          <i data-lucide="swords"></i>
+          <span class="nav-link-text">Matches</span>
         </a>
 
         <!-- Tournaments -->
@@ -375,8 +375,8 @@ function setupNavSearch() {
   if (!searchInput || !popover || !popoverContent) return;
 
   const NAV_SEARCH_ITEMS = [
-    { category: 'Quick Navigation', label: 'Live Matches & Arenas', sub: 'Open Lobbies', href: 'matches', icon: 'swords' },
     { category: 'Quick Navigation', label: 'Player Dashboard', sub: 'Stats & Overview', href: 'dashboard', icon: 'layout-dashboard' },
+    { category: 'Quick Navigation', label: 'Live Matches & Arenas', sub: 'Open Lobbies', href: 'matches', icon: 'swords' },
     { category: 'Quick Navigation', label: 'Competitive Leaderboard', sub: 'Global Rankings', href: 'leaderboard', icon: 'trophy' },
     { category: 'Quick Navigation', label: 'Tournaments & Cups', sub: 'Championships', href: 'tournaments', icon: 'crown' },
     { category: 'Quick Navigation', label: 'My Profile & Connections', sub: 'Account Settings', href: 'profile', icon: 'user' },
@@ -389,8 +389,55 @@ function setupNavSearch() {
   ];
 
   let selectedIndex = -1;
+  let playerSearchDebounce = null;
+  const cachedPlayersMap = new Map();
 
-  function renderSearch(query) {
+  function escapeNavText(str) {
+    if (!str) return '';
+    return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  async function fetchPlayersForQuery(qStr) {
+    const clean = (qStr || '').trim();
+    if (clean.length < 2) return [];
+    const low = clean.toLowerCase();
+    if (cachedPlayersMap.has(low)) return cachedPlayersMap.get(low);
+
+    let list = [];
+    if (typeof searchUsers === 'function') {
+      try {
+        const res = await searchUsers(clean);
+        if (Array.isArray(res) && res.length > 0) list = res;
+      } catch (e) {}
+    }
+
+    if (list.length === 0 && typeof db !== 'undefined' && db && typeof db.collection === 'function') {
+      try {
+        const prefixes = [clean, clean.charAt(0).toUpperCase() + clean.slice(1), clean.toLowerCase()];
+        const res = [];
+        const seen = new Set();
+        for (const p of prefixes) {
+          const snap = await db.collection('users')
+            .where('displayName', '>=', p)
+            .where('displayName', '<=', p + '\uf8ff')
+            .limit(6).get();
+          snap.docs.forEach(doc => {
+            if (!seen.has(doc.id)) {
+              seen.add(doc.id);
+              res.push({ id: doc.id, ...doc.data() });
+            }
+          });
+          if (res.length >= 6) break;
+        }
+        list = res;
+      } catch (e) {}
+    }
+
+    cachedPlayersMap.set(low, list.slice(0, 6));
+    return list.slice(0, 6);
+  }
+
+  function renderSearch(query, foundPlayers = null) {
     const q = (query || '').trim().toLowerCase();
     let html = '';
 
@@ -414,7 +461,7 @@ function setupNavSearch() {
           </a>`;
       });
     } else {
-      const matches = NAV_SEARCH_ITEMS.filter(it => 
+      const pageMatches = NAV_SEARCH_ITEMS.filter(it => 
         it.label.toLowerCase().includes(q) || 
         it.sub.toLowerCase().includes(q) ||
         it.category.toLowerCase().includes(q)
@@ -438,27 +485,57 @@ function setupNavSearch() {
         html += `
           <a href="matches?q=${encodeURIComponent(q)}" class="search-result-item" data-index="0" style="border:1px solid rgba(83,252,24,0.3);background:rgba(83,252,24,0.06);">
             <span class="search-result-icon" style="color:var(--kick-green);"><i data-lucide="search"></i></span>
-            <span>Search live matches for "<strong>${q}</strong>"</span>
+            <span>Search live matches for "<strong>${escapeNavText(q)}</strong>"</span>
             <span class="search-result-sub">Open Lobbies &rarr;</span>
           </a>`;
       }
 
-      if (matches.length > 0) {
-        html += '<div class="search-group-title" style="margin-top:6px;"><i data-lucide="layers" style="width:12px;height:12px;"></i> Direct Results</div>';
-        matches.forEach((item, idx) => {
+      // ── Players Section ──
+      const players = foundPlayers !== null ? foundPlayers : (cachedPlayersMap.get(q) || null);
+      if (players && players.length > 0) {
+        html += `<div class="search-group-title" style="margin-top:6px;"><i data-lucide="users" style="width:12px;height:12px;"></i> Players (${players.length})</div>`;
+        players.forEach((p, idx) => {
+          const name = escapeNavText(p.displayName || p.discordUsername || 'Player');
+          const epic = escapeNavText(p.epicUsername || '');
+          const avatar = p.photoURL ? `<img src="${escapeNavText(p.photoURL)}" class="player-result-avatar" onerror="this.onerror=null;this.parentElement.innerHTML='<div class=\\'player-result-avatar-fallback\\'>${name.charAt(0).toUpperCase()}</div>';"/>` : `<div class="player-result-avatar-fallback">${name.charAt(0).toUpperCase()}</div>`;
           html += `
-            <a href="${item.href}" class="search-result-item" data-index="${idx + 1}">
+            <a href="profile?uid=${encodeURIComponent(p.id)}" class="search-result-item player-result-item" data-index="${idx + 10}">
+              <span class="search-result-icon">${avatar}</span>
+              <div class="player-result-details">
+                <div class="player-result-name">${name}</div>
+                <div class="player-result-meta">
+                  ${epic ? `<span><i data-lucide="gamepad-2" style="width:11px;height:11px;"></i> ${epic}</span>` : ''}
+                  <span><i data-lucide="trophy" style="width:11px;height:11px;color:var(--kick-green);"></i> ${p.matchesWon || 0} Wins</span>
+                </div>
+              </div>
+              <span class="search-result-sub" style="color:var(--kick-green);font-weight:700;">Profile &rarr;</span>
+            </a>`;
+        });
+      } else if (q.length >= 2 && foundPlayers === null && !cachedPlayersMap.has(q)) {
+        html += `
+          <div id="search-players-loading-slot" style="padding:6px 12px 10px;font-size:0.75rem;color:var(--text-faint);display:flex;align-items:center;gap:8px;">
+            <div class="spinner" style="width:12px;height:12px;border-width:2px;border-top-color:var(--kick-green);margin:0;"></div>
+            <span>Searching players...</span>
+          </div>`;
+      }
+
+      // ── Direct Page Navigation ──
+      if (pageMatches.length > 0) {
+        html += '<div class="search-group-title" style="margin-top:6px;"><i data-lucide="layers" style="width:12px;height:12px;"></i> Direct Navigation</div>';
+        pageMatches.forEach((item, idx) => {
+          html += `
+            <a href="${item.href}" class="search-result-item" data-index="${idx + 20}">
               <span class="search-result-icon"><i data-lucide="${item.icon}"></i></span>
               <span>${item.label}</span>
               <span class="search-result-sub">${item.sub}</span>
             </a>`;
         });
-      } else if (!isOnMatches) {
+      } else if (!isOnMatches && (!players || players.length === 0) && foundPlayers !== null) {
         html += `
           <div class="search-empty-state">
             <i data-lucide="help-circle"></i>
-            <div>No direct pages found for "${q}"</div>
-            <div style="font-size:0.75rem;margin-top:4px;color:var(--text-faint);">Try "Realistic", "1v1", "Leaderboard", or "Profile"</div>
+            <div>No players or pages found for "${escapeNavText(q)}"</div>
+            <div style="font-size:0.75rem;margin-top:4px;color:var(--text-faint);">Try searching player names, "Realistic", "1v1", or "Leaderboard"</div>
           </div>`;
       }
     }
@@ -466,6 +543,17 @@ function setupNavSearch() {
     popoverContent.innerHTML = html;
     if (window.lucide) lucide.createIcons();
     selectedIndex = -1;
+
+    // Trigger async player lookup if not yet loaded
+    if (q.length >= 2 && foundPlayers === null && !cachedPlayersMap.has(q)) {
+      clearTimeout(playerSearchDebounce);
+      playerSearchDebounce = setTimeout(async () => {
+        const playersFound = await fetchPlayersForQuery(q);
+        if (searchInput.value.trim().toLowerCase() === q) {
+          renderSearch(q, playersFound);
+        }
+      }, 220);
+    }
   }
 
   function openSearch() {

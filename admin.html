@@ -8,7 +8,7 @@
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
   <link rel="manifest" href="manifest.json"/>
-  <link rel="stylesheet" href="css/style.css?v=5.2"/>
+  <link rel="stylesheet" href="css/style.css?v=5.3"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
 
@@ -55,34 +55,42 @@
 
     .admin-nav-tabs {
       display: flex;
-      gap: 8px;
+      gap: 6px;
       overflow-x: auto;
-      padding-bottom: 4px;
+      padding: 4px 6px;
       margin-bottom: 22px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
     }
     .admin-nav-tab {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 9px 18px;
-      border-radius: 12px;
-      background: #060608;
-      border: 1px solid rgba(255, 255, 255, 0.07);
-      color: #94a3b8;
-      font-size: 0.85rem;
-      font-weight: 800;
+      padding: 8px 16px;
+      border-radius: 8px;
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text-muted);
+      font-size: 0.82rem;
+      font-weight: 700;
       cursor: pointer;
       white-space: nowrap;
-      transition: all 0.18s ease;
+      transition: all 0.16s ease;
     }
     .admin-nav-tab:hover {
-      background: #0e0e12;
+      background: rgba(255, 255, 255, 0.05);
       color: #fff;
     }
     .admin-nav-tab.active {
-      background: #0e0e12;
-      border-color: rgba(255, 255, 255, 0.18);
-      color: var(--gold-bright);
+      background: rgba(83, 252, 24, 0.12);
+      border-color: var(--kick-green);
+      color: #ffffff;
+      font-weight: 800;
+      box-shadow: 0 0 12px rgba(83, 252, 24, 0.22);
+    }
+    .admin-nav-tab.active i {
+      color: var(--kick-green);
     }
 
     .admin-filter-pill {
@@ -835,7 +843,7 @@
   <script src="js/firebase-config.js?v=3.6"></script>
   <script src="js/auth.js?v=4.0.1788871233902"></script>
   <script src="js/db.js?v=4.0.1788871233902"></script>
-  <script src="js/nav.js?v=5.2"></script>
+  <script src="js/nav.js?v=5.3"></script>
 
   <script>
     let currentUser = null;

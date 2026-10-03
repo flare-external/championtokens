@@ -12,7 +12,7 @@
   <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
   <link rel="manifest" href="manifest.json"/>
-  <link rel="stylesheet" href="css/style.css?v=5.2"/>
+  <link rel="stylesheet" href="css/style.css?v=5.3"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
@@ -218,38 +218,43 @@
     }
 
     .lb-sort-tabs-wrap {
-      display: flex;
-      gap: 8px;
+      display: inline-flex;
+      gap: 6px;
       flex-wrap: wrap;
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      padding: 4px 6px;
+      border-radius: 12px;
     }
 
     .lb-sort-tab {
       display: inline-flex;
       align-items: center;
       gap: 7px;
-      height: 44px;
-      padding: 0 18px;
-      border-radius: 12px;
-      background: #060608;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      color: #94a3b8;
-      font-size: 0.84rem;
+      height: 38px;
+      padding: 0 16px;
+      border-radius: 8px;
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text-muted);
+      font-size: 0.82rem;
       font-weight: 700;
       cursor: pointer;
       transition: all 0.16s ease;
     }
     .lb-sort-tab:hover {
-      background: #101014;
+      background: rgba(255, 255, 255, 0.05);
       color: #fff;
     }
     .lb-sort-tab.active {
-      background: #18181b;
-      border-color: rgba(255, 255, 255, 0.2);
+      background: rgba(83, 252, 24, 0.12);
+      border-color: var(--kick-green);
       color: #ffffff;
       font-weight: 800;
+      box-shadow: 0 0 12px rgba(83, 252, 24, 0.22);
     }
     .lb-sort-tab.active i {
-      color: var(--gold-bright);
+      color: var(--kick-green);
     }
 
     .lb-custom-table {
@@ -325,7 +330,7 @@
   <script src="js/firebase-config.js?v=3.8"></script>
   <script src="js/auth.js?v=4.0.1788871233902"></script>
   <script src="js/db.js?v=4.0.1788871233902"></script>
-  <script src="js/nav.js?v=5.2"></script>
+  <script src="js/nav.js?v=5.3"></script>
 
   <script>
     let currentUser = null;

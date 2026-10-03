@@ -6,20 +6,20 @@
 
 /* ── Custom Properties ─────────────────────────────────────── */
 :root {
-  --bg-base:       #0b0e0f;
-  --bg-surface:    #0f1215;
-  --bg-sidebar:    #0f1215;
-  --bg-card:       #0f1215;
-  --bg-card-hover: #171a1e;
-  --bg-input:      #14171b;
-  --border:        #24272c;
-  --border-bright: #33373e;
-  --border-hover:  #3e434b;
+  --bg-base:       #040607;
+  --bg-surface:    #07090b;
+  --bg-sidebar:    #050708;
+  --bg-card:       #07090b;
+  --bg-card-hover: #0c0f12;
+  --bg-input:      #080a0c;
+  --border:        #15181c;
+  --border-bright: #20252b;
+  --border-hover:  #2b313a;
 
   --kick-green:       #53fc18;
   --kick-green-hover: #45d614;
   --kick-green-glow:  rgba(83, 252, 24, 0.28);
-  --bg-active-nav:    #24272c;
+  --bg-active-nav:    #111519;
 
   --gold:          #53fc18;
   --gold-light:    #7bff4a;
@@ -414,11 +414,11 @@ input[type="range"].ct-slider::-moz-range-thumb {
   top: calc(100% + 8px);
   left: 0;
   right: 0;
-  background: #0f1215;
+  background: var(--bg-surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.9), 0 0 20px rgba(83, 252, 24, 0.06);
-  max-height: 440px;
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.95), 0 0 20px rgba(83, 252, 24, 0.06);
+  max-height: 460px;
   overflow-y: auto;
   z-index: 1000;
   padding: 8px;
@@ -460,7 +460,7 @@ input[type="range"].ct-slider::-moz-range-thumb {
 }
 .search-result-item:hover,
 .search-result-item.selected {
-  background: #181b1f;
+  background: #111519;
   color: #ffffff;
 }
 .search-result-item:hover .search-result-icon,
@@ -472,8 +472,8 @@ input[type="range"].ct-slider::-moz-range-thumb {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
   flex-shrink: 0;
   transition: color 0.14s ease;
 }
@@ -483,6 +483,67 @@ input[type="range"].ct-slider::-moz-range-thumb {
   margin-left: auto;
   font-weight: 500;
 }
+
+/* Player Search Results */
+.player-result-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+}
+.player-result-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  object-fit: cover;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #000000;
+  flex-shrink: 0;
+}
+.player-result-avatar-fallback {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: rgba(83, 252, 24, 0.12);
+  color: var(--kick-green);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 0.85rem;
+  flex-shrink: 0;
+}
+.player-result-details {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1;
+}
+.player-result-name {
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 0.88rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.player-result-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.72rem;
+  color: var(--text-faint);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 1px;
+}
+.player-result-meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
 .search-empty-state {
   padding: 24px 16px;
   text-align: center;
@@ -497,6 +558,84 @@ input[type="range"].ct-slider::-moz-range-thumb {
   display: block;
   margin-left: auto;
   margin-right: auto;
+}
+
+/* ── Universal Kick UI Tab Systems ──────────────────────────── */
+.tabs-bar,
+.lb-sort-tabs-wrap,
+.profile-subtabs-bar,
+.admin-nav-tabs,
+.wallet-tabs,
+.cosmetics-modal-tabs {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  padding: 4px 6px;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+}
+
+.tab-btn,
+.filter-btn,
+.lb-sort-tab,
+.profile-subtab-btn,
+.admin-nav-tab,
+.wallet-tab-btn,
+.cosmetics-tab-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 7px 16px;
+  border-radius: 8px;
+  font-family: var(--font);
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  background: transparent;
+  border: 1px solid transparent;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.16s ease;
+  user-select: none;
+  outline: none !important;
+}
+
+.tab-btn:hover,
+.filter-btn:hover,
+.lb-sort-tab:hover,
+.profile-subtab-btn:hover,
+.admin-nav-tab:hover,
+.wallet-tab-btn:hover,
+.cosmetics-tab-btn:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.tab-btn.active,
+.filter-btn.active,
+.lb-sort-tab.active,
+.profile-subtab-btn.active,
+.admin-nav-tab.active,
+.wallet-tab-btn.active,
+.cosmetics-tab-btn.active {
+  background: rgba(83, 252, 24, 0.12) !important;
+  border: 1px solid var(--kick-green) !important;
+  color: #ffffff !important;
+  font-weight: 800;
+  box-shadow: 0 0 12px rgba(83, 252, 24, 0.22) !important;
+}
+
+.tab-btn.active i,
+.filter-btn.active i,
+.lb-sort-tab.active i,
+.profile-subtab-btn.active i,
+.admin-nav-tab.active i,
+.wallet-tab-btn.active i,
+.cosmetics-tab-btn.active i {
+  color: var(--kick-green) !important;
 }
 
 /* Right Nav Actions */
