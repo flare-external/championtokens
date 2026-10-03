@@ -140,9 +140,13 @@ export default {
       const cleanUrl = new URL(request.url);
       cleanUrl.searchParams.delete('bypass');
       cleanUrl.searchParams.delete('unlock');
-      const bypassResponse = Response.redirect(cleanUrl.toString(), 302);
-      bypassResponse.headers.set('Set-Cookie', 'ct_bypass=1; Path=/; Max-Age=86400; SameSite=Lax');
-      return bypassResponse;
+      return new Response(null, {
+        status: 302,
+        headers: {
+          'Location': cleanUrl.toString(),
+          'Set-Cookie': 'ct_bypass=1; Path=/; Max-Age=86400; SameSite=Lax'
+        }
+      });
     }
 
     const isBypassed = hasBypassCookie;
