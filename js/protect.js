@@ -18,9 +18,10 @@
       } catch(e) {}
     }
     const currentPath = window.location.pathname.toLowerCase();
-    const isClosedPage = currentPath.endsWith('closed.html') || currentPath.endsWith('/closed') || currentPath === '/closed';
-    if (!isBypass && !isClosedPage) {
-      window.location.replace('/closed.html');
+    const isErrorPage = currentPath.endsWith('error.html') || currentPath.endsWith('/error') || currentPath === '/error' ||
+                        currentPath.endsWith('closed.html') || currentPath.endsWith('/closed') || currentPath === '/closed';
+    if (!isBypass && !isErrorPage) {
+      window.location.replace('/error.html');
       return;
     }
   }

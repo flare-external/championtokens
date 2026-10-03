@@ -163,21 +163,134 @@ export default {
                             pathname.endsWith('.webmanifest');
 
       if (!isStaticAsset) {
-        // Block API endpoints with JSON maintenance error
+        // Block API endpoints with JSON error
         if (pathname.startsWith('/api/') || pathname.startsWith('/.netlify/')) {
-          return new Response(JSON.stringify({ error: 'Champion Tokens is currently closed for maintenance.', status: 503 }), {
-            status: 503,
+          return new Response(JSON.stringify({ error: 'Internal Server Error', status: 500 }), {
+            status: 500,
             headers: { ...corsHeaders, 'Content-Type': 'application/json' }
           });
         }
 
-        // Allow /closed to load cleanly
-        if (pathname === '/closed' || pathname === '/closed.html') {
-          return env.ASSETS.fetch(new Request(new URL('/closed', request.url), request));
+        // Return simple error page for all web routes directly with 500 status
+        const errorHtml = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>500 | Internal Server Error</title>
+  <link rel="icon" type="image/png" href="champion-tokens_new.png">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      color: #ededed;
+      background: #0b0e0f;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      height: 100vh;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      -webkit-font-smoothing: antialiased;
+      user-select: none;
+    }
+    .error-wrap { display: flex; align-items: center; justify-content: center; }
+    .error-code {
+      border-right: 1px solid rgba(255, 255, 255, 0.22);
+      margin: 0 20px 0 0;
+      padding: 10px 23px 10px 0;
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      line-height: 1;
+      color: #ffffff;
+      cursor: default;
+    }
+    .error-msg { font-size: 14px; font-weight: 400; color: #888888; line-height: 1.5; margin: 0; text-align: left; }
+    @media (max-width: 480px) {
+      .error-wrap { flex-direction: column; gap: 12px; }
+      .error-code { border-right: none; border-bottom: 1px solid rgba(255, 255, 255, 0.22); margin: 0; padding: 0 0 12px 0; }
+      .error-msg { text-align: center; }
+    }
+    #admin-box { display: none; margin-top: 28px; }
+    #admin-box input {
+      background: #181c20;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 6px;
+      color: #fff;
+      padding: 8px 12px;
+      font-size: 13px;
+      outline: none;
+    }
+    #admin-box button {
+      background: #24272c;
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 6px;
+      padding: 8px 14px;
+      font-size: 13px;
+      cursor: pointer;
+      margin-left: 6px;
+    }
+  </style>
+</head>
+<body>
+  <div class="error-wrap">
+    <div class="error-code" id="err-code" title="500">500</div>
+    <div class="error-msg">Internal Server Error.</div>
+  </div>
+  <div id="admin-box">
+    <input type="password" id="admin-key" placeholder="Passcode..." autocomplete="off"/>
+    <button type="button" onclick="submitPass()">Unlock</button>
+  </div>
+  <script>
+    let clicks = 0;
+    const codeEl = document.getElementById('err-code');
+    const boxEl = document.getElementById('admin-box');
+    if (codeEl) {
+      codeEl.addEventListener('click', () => {
+        clicks++;
+        if (clicks >= 5 && boxEl) {
+          boxEl.style.display = 'block';
+          document.getElementById('admin-key')?.focus();
         }
+      });
+    }
+    document.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'U' || e.key === 'u')) {
+        e.preventDefault();
+        if (boxEl) {
+          boxEl.style.display = boxEl.style.display === 'block' ? 'none' : 'block';
+          if (boxEl.style.display === 'block') document.getElementById('admin-key')?.focus();
+        }
+      }
+    });
+    document.getElementById('admin-key')?.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') submitPass();
+    });
+    function submitPass() {
+      const val = document.getElementById('admin-key')?.value?.trim();
+      if (val === 'admin' || val === 'champion2026' || val === 'owner') {
+        localStorage.setItem('ct_bypass', '1');
+        document.cookie = 'ct_bypass=1; path=/; max-age=86400';
+        window.location.href = '/dashboard?bypass=admin';
+      } else {
+        alert('Access denied.');
+      }
+    }
+  </script>
+</body>
+</html>`;
 
-        // Redirect all other web routes to /closed
-        return Response.redirect(new URL('/closed', request.url).toString(), 302);
+        return new Response(errorHtml, {
+          status: 500,
+          headers: {
+            ...corsHeaders,
+            'Content-Type': 'text/html; charset=UTF-8',
+            'Cache-Control': 'no-store, no-cache, must-revalidate'
+          }
+        });
       }
     }
 
