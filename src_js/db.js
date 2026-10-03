@@ -189,10 +189,7 @@ async function createMatch(hostUser, matchData) {
   if (hostUser.isBanned === true || hostUser.banned === true) {
     throw new Error('Your account is suspended. You cannot create matches.');
   }
-  const wager = Math.round(parseFloat(matchData.wager) * 100) / 100;
-  if (isNaN(wager) || wager < 0.50) {
-    throw new Error('Minimum entry is 0.50 tokens ($0.50)');
-  }
+  const wager = Math.max(0, Math.round((parseFloat(matchData.wager) || 0) * 100) / 100);
 
   const size = matchData.size || '1v1';
   const mode = matchData.mode || 'Realistic';
@@ -257,7 +254,7 @@ async function createMatch(hostUser, matchData) {
     }
   }
 
-  if (Number(hostUser.tokens || 0) < hostDeposit) {
+  if (hostDeposit > 0 && Number(hostUser.tokens || 0) < hostDeposit) {
     throw new Error(`Insufficient tokens (Requires ${formatTokens(hostDeposit)} tokens to create match)`);
   }
 
@@ -330,13 +327,15 @@ async function createMatch(hostUser, matchData) {
     completedAt:null,
   });
 
-  // Hold the host's tokens
-  await updateTokens(
-    hostUser.uid,
-    -hostDeposit,
-    'match_wager',
-    `Created match — "${title}" (${code})`
-  );
+  // Hold the host's tokens if deposit > 0
+  if (hostDeposit > 0) {
+    await updateTokens(
+      hostUser.uid,
+      -hostDeposit,
+      'match_wager',
+      `Created match — "${title}" (${code})`
+    );
+  }
 
   // Send in-app notification to all invited teammates
   // Send in-app notification to all invited teammates

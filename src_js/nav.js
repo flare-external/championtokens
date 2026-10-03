@@ -52,98 +52,131 @@ function injectNav(activePage = '') {
 
   const navHTML = `
     <a href="#main-content" class="skip-to-content">Skip to main content</a>
-    <nav class="ct-nav" id="ct-nav" aria-label="Main Navigation" role="navigation">
-      <div class="ct-nav__inner">
-        <a href="dashboard" class="ct-nav__brand">
-          <img src="champion-tokens_new.png" alt="Champion Tokens" class="brand-logo-img" width="44" height="44" />
-          <span class="brand-text">Champion <span class="brand-accent">Tokens</span></span>
+
+    <!-- Top Navigation Bar (Kick.com Dark Style) -->
+    <header class="top-nav" id="ct-nav">
+      <div class="nav-left">
+        <button class="sidebar-toggle-btn" id="btn-toggle-sidebar" onclick="toggleSidebar()" title="Toggle Sidebar">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+
+        <a href="matches" class="brand-logo">
+          <span class="brand-badge">CT</span>
+          <span>CHAMPION</span>
         </a>
+      </div>
 
-        <div class="ct-nav__links">${navLinksHTML}</div>
-
-        <div class="ct-nav__user">
-          <button class="nav-token-btn" aria-label="View Token Wallet and Balance" onclick="openTokenWalletModal('purchase')" title="Add Tokens / View Wallet">
-            <img src="new_token.png" alt="CT" class="nav-token-coin" width="28" height="28" />
-            <span id="nav-balance">10.00</span>
-            <span class="nav-token-plus">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
-                <line x1="12" y1="4" x2="12" y2="20"></line>
-                <line x1="4" y1="12" x2="20" y2="12"></line>
-              </svg>
-            </span>
-          </button>
-
-          <!-- Notification Bell -->
-          <div class="nav-notif-container" id="nav-notif-container">
-            <button class="nav-notif-btn" aria-label="View Notifications" aria-haspopup="true" aria-expanded="false" id="nav-notif-btn" onclick="toggleNotifDropdown(event)" title="Notifications">
-              <i data-lucide="bell"></i>
-              <span class="nav-notif-badge" id="nav-notif-badge" style="display:none;">0</span>
-            </button>
-            <div class="nav-notif-dropdown" id="nav-notif-dropdown">
-              <div class="nav-notif-header">
-                <span style="font-weight:800;font-size:0.9rem;color:#fff;">Notifications</span>
-                <button class="nav-notif-mark-read" onclick="handleMarkAllRead()">Mark all read</button>
-              </div>
-              <div id="nav-notif-list">
-                <div class="nav-notif-empty">
-                  <i data-lucide="bell-off" style="width:28px;height:28px;color:var(--text-faint);margin-bottom:8px;"></i>
-                  <div>No notifications yet</div>
-                </div>
-              </div>
-            </div>
+      <div class="nav-center">
+        <div class="search-box">
+          <div class="search-icon">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
           </div>
+          <input type="text" class="search-input" id="search-input" placeholder="Search matches, players..."/>
+          <span class="search-shortcut">/</span>
+        </div>
+      </div>
 
-          <!-- Profile Avatar with Dropdown Menu -->
-          <div class="nav-profile-menu-container">
-            <div class="nav-profile-btn" aria-label="Open User Account Menu" aria-haspopup="true" aria-expanded="false" role="button" tabindex="0" id="nav-profile-btn" onclick="toggleNavProfileDropdown(event)" title="Account Menu">
-              <div class="nav-avatar-wrap">
-                <img id="nav-avatar-img" src="" alt="" style="display:none"/>
-                <i data-lucide="user" id="nav-avatar-icon"></i>
-              </div>
+      <div class="nav-right">
+        <!-- Notification Bell -->
+        <div class="nav-notif-container" id="nav-notif-container">
+          <button class="nav-notif-btn" aria-label="Notifications" id="nav-notif-btn" onclick="toggleNotifDropdown(event)" title="Notifications">
+            <i data-lucide="bell"></i>
+            <span class="nav-notif-badge" id="nav-notif-badge" style="display:none;">0</span>
+          </button>
+          <div class="nav-notif-dropdown" id="nav-notif-dropdown">
+            <div class="nav-notif-header">
+              <span style="font-weight:800;font-size:0.9rem;color:#fff;">Notifications</span>
+              <button class="nav-notif-mark-read" onclick="handleMarkAllRead()">Mark all read</button>
             </div>
-
-            <!-- Dropdown Menu -->
-            <div class="nav-dropdown-menu" id="nav-profile-dropdown">
-              <div class="nav-dropdown-header">
-                <div style="font-weight:800;font-size:0.92rem;color:#fff;" id="nav-menu-username">Champion</div>
-                <div style="font-size:0.75rem;color:var(--text-muted);" id="nav-menu-handle">@user</div>
-              </div>
-              <a href="profile?tab=overview" class="nav-dropdown-item">
-                <i data-lucide="user"></i> My Profile
-              </a>
-              <a href="profile?tab=history" class="nav-dropdown-item">
-                <i data-lucide="history"></i> History
-              </a>
-              <a href="profile?tab=connections" class="nav-dropdown-item">
-                <i data-lucide="link-2"></i> Connections
-              </a>
-              <div class="nav-dropdown-divider"></div>
-              <a href="admin" class="nav-dropdown-item" id="nav-admin-link" style="display:none;color:var(--red);">
-                <i data-lucide="shield-check" style="color:var(--red);"></i> Admin Panel
-              </a>
-              <div class="nav-dropdown-item danger-highlight" onclick="handleSignOut()">
-                <i data-lucide="log-out" style="color:#ef4444;"></i> Sign Out
+            <div id="nav-notif-list">
+              <div class="nav-notif-empty">
+                <i data-lucide="bell-off" style="width:28px;height:28px;color:var(--text-faint);margin-bottom:8px;"></i>
+                <div>No notifications yet</div>
               </div>
             </div>
           </div>
         </div>
 
-        <button class="ct-nav__hamburger" id="nav-hamburger" onclick="toggleMobileNav()">
-          <i data-lucide="menu"></i>
-        </button>
-      </div>
+        <!-- Profile Avatar with Dropdown Menu -->
+        <div class="nav-profile-menu-container">
+          <div class="nav-profile-btn" aria-label="Open User Account Menu" role="button" tabindex="0" id="nav-profile-btn" onclick="toggleNavProfileDropdown(event)" title="Account Menu">
+            <div class="nav-avatar-wrap">
+              <img id="nav-avatar-img" src="" alt="" style="display:none"/>
+              <i data-lucide="user" id="nav-avatar-icon"></i>
+            </div>
+          </div>
 
-      <!-- Mobile drawer -->
-      <div class="ct-nav__mobile" id="nav-mobile">
-        ${navLinksHTML}
-        <button class="nav-signout-btn mobile-signout" onclick="handleSignOut()">
-          <i data-lucide="log-out"></i> Sign Out
-        </button>
+          <div class="nav-dropdown-menu" id="nav-profile-dropdown">
+            <div class="nav-dropdown-header">
+              <div style="font-weight:800;font-size:0.92rem;color:#fff;" id="nav-menu-username">Player</div>
+              <div style="font-size:0.75rem;color:var(--text-muted);" id="nav-menu-handle">@user</div>
+            </div>
+            <a href="profile?tab=overview" class="nav-dropdown-item">
+              <i data-lucide="user"></i> My Profile
+            </a>
+            <a href="matches" class="nav-dropdown-item">
+              <i data-lucide="swords"></i> Matches
+            </a>
+            <a href="profile?tab=connections" class="nav-dropdown-item">
+              <i data-lucide="link-2"></i> Connections
+            </a>
+            <div class="nav-dropdown-divider"></div>
+            <a href="admin" class="nav-dropdown-item" id="nav-admin-link" style="display:none;color:var(--red);">
+              <i data-lucide="shield-check" style="color:var(--red);"></i> Admin Panel
+            </a>
+            <div class="nav-dropdown-item danger-highlight" onclick="handleSignOut()">
+              <i data-lucide="log-out" style="color:#ef4444;"></i> Sign Out
+            </div>
+          </div>
+        </div>
       </div>
-    </nav>
-    <div class="ct-nav-spacer"></div>
+    </header>
 
-    <!-- Floating Active Match Indicator Widget (Top-Right under Navbar) -->
+    <!-- Left Sidebar (Solid Filled Icons - Matching Kick Reference media_1791055529807.png) -->
+    <aside class="sidebar" id="app-sidebar">
+      <div class="sidebar-nav-section">
+        <!-- Matches -->
+        <a href="matches" class="nav-link ${activePage === 'matches' ? 'active' : ''}">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M14.5 2.5a1 1 0 0 0-1.4 0l-4.6 4.6-2-2a1 1 0 0 0-1.4 0l-3 3a1 1 0 0 0 0 1.4l2 2-2 2a1 1 0 0 0 0 1.4l1.6 1.6-2.1 2.1a1 1 0 0 0 0 1.4l1.4 1.4a1 1 0 0 0 1.4 0l2.1-2.1 1.6 1.6a1 1 0 0 0 1.4 0l2-2 2 2a1 1 0 0 0 1.4 0l3-3a1 1 0 0 0 0-1.4l-2-2 4.6-4.6a1 1 0 0 0 0-1.4l-5-5z"/>
+          </svg>
+          <span class="nav-link-text">Matches</span>
+        </a>
+
+        <!-- Dashboard -->
+        <a href="dashboard" class="nav-link ${activePage === 'dashboard' ? 'active' : ''}">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M3 3h8v8H3zm10 0h8v8h-8zM3 13h8v8H3zm10 0h8v8h-8z"/>
+          </svg>
+          <span class="nav-link-text">Dashboard</span>
+        </a>
+
+        <!-- Leaderboard -->
+        <a href="leaderboard" class="nav-link ${activePage === 'leaderboard' ? 'active' : ''}">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94A5.01 5.01 0 0 0 11 15.9V19H7v2h10v-2h-4v-3.1a5.01 5.01 0 0 0 3.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1z"/>
+          </svg>
+          <span class="nav-link-text">Leaderboard</span>
+        </a>
+
+        <!-- Profile -->
+        <a href="profile" class="nav-link ${activePage === 'profile' ? 'active' : ''}">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+          </svg>
+          <span class="nav-link-text">Profile</span>
+        </a>
+      </div>
+    </aside>
+
+    <!-- Floating Active Match Indicator Widget -->
     <a href="#" id="nav-active-match-banner" class="active-match-floating-banner" style="display:none;" title="Active Match · Click to open room">
       <img id="nav-active-match-img" src="realistic.jpeg" class="active-match-banner-thumb" alt="Map" />
       <div class="active-match-banner-info">
@@ -156,122 +189,25 @@ function injectNav(activePage = '') {
       <div class="active-match-banner-action">
         <i data-lucide="arrow-up-right" style="width:16px;height:16px;"></i>
       </div>
-    </a>
-
-            <!-- Universal Token Wallet Modal (Deposit & Redeem) -->
-    <div class="modal-overlay" id="token-wallet-modal" onclick="if(event.target===this)closeTokenWalletModal()">
-      <div class="modal" style="max-width:520px;">
-        <div class="modal-header" style="padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,0.07);margin-bottom:18px;">
-          <div class="modal-title" style="display:flex;align-items:center;gap:10px;">
-            <img src="new_token.png" alt="CT" style="width:28px;height:28px;object-fit:contain;" />
-            <span style="font-weight:900;font-size:1.15rem;color:#fff;">Token Wallet</span>
-          </div>
-          <button class="modal-close" onclick="closeTokenWalletModal()"><i data-lucide="x"></i></button>
-        </div>
-
-        <!-- 2 Segmented Tabs -->
-        <div class="wallet-tabs">
-          <button class="wallet-tab-btn active" id="tab-btn-wallet-purchase" onclick="switchWalletTab('purchase')">
-            <i data-lucide="plus-circle"></i> <span>Deposit</span>
-          </button>
-          <button class="wallet-tab-btn" id="tab-btn-wallet-redeem" onclick="switchWalletTab('redeem')">
-            <i data-lucide="gift"></i> <span>Redeem</span>
-          </button>
-        </div>
-
-        <!-- Tab 1: Deposit Tokens -->
-        <div id="wallet-tab-purchase-view">
-          <div style="font-size:0.82rem;color:var(--text-muted);margin-bottom:14px;">
-            Select a token pack or deposit a custom amount:
-          </div>
-          <div class="wallet-packs-grid">
-            <div class="wallet-pack-card">
-              <img src="new_token.png" alt="5" style="width:40px;height:40px;object-fit:contain;margin-bottom:2px;" />
-              <div style="font-weight:900;font-size:1.3rem;color:var(--gold-bright);">5.00</div>
-              <div style="font-size:0.72rem;color:var(--text-muted);font-weight:700;">Starter Pack</div>
-              <button class="btn btn-outline btn-full btn-sm" onclick="handleWalletBuy('Starter', '5.00', '5.00')" style="margin-top:4px;border-radius:10px;font-size:0.8rem;">
-                Get for $5.00
-              </button>
-            </div>
-
-            <div class="wallet-pack-card popular">
-              <span class="badge" style="position:absolute;top:6px;right:6px;background:rgba(245,158,11,0.2);color:var(--gold-bright);border:1px solid rgba(245,158,11,0.4);font-size:0.65rem;padding:2px 7px;">Popular</span>
-              <img src="new_token.png" alt="10" style="width:40px;height:40px;object-fit:contain;margin-bottom:2px;" />
-              <div style="font-weight:900;font-size:1.3rem;color:var(--gold-bright);">10.00</div>
-              <div style="font-size:0.72rem;color:var(--text-muted);font-weight:700;">Standard Pack</div>
-              <button class="btn btn-primary btn-full btn-sm" onclick="handleWalletBuy('Standard', '10.00', '10.00')" style="margin-top:4px;border-radius:10px;font-size:0.8rem;">
-                Get for $10.00
-              </button>
-            </div>
-
-            <div class="wallet-pack-card">
-              <img src="new_token.png" alt="25" style="width:40px;height:40px;object-fit:contain;margin-bottom:2px;" />
-              <div style="font-weight:900;font-size:1.3rem;color:var(--gold-bright);">25.00</div>
-              <div style="font-size:0.72rem;color:var(--text-muted);font-weight:700;">Pro Pack</div>
-              <button class="btn btn-outline btn-full btn-sm" onclick="handleWalletBuy('Pro', '25.00', '25.00')" style="margin-top:4px;border-radius:10px;font-size:0.8rem;">
-                Get for $25.00
-              </button>
-            </div>
-
-            <div class="wallet-pack-card">
-              <img src="new_token.png" alt="50" style="width:40px;height:40px;object-fit:contain;margin-bottom:2px;" />
-              <div style="font-weight:900;font-size:1.3rem;color:var(--gold-bright);">50.00</div>
-              <div style="font-size:0.72rem;color:var(--text-muted);font-weight:700;">Champion Pack</div>
-              <button class="btn btn-outline btn-full btn-sm" onclick="handleWalletBuy('Champion', '50.00', '50.00')" style="margin-top:4px;border-radius:10px;font-size:0.8rem;">
-                Get for $50.00
-              </button>
-            </div>
-          </div>
-
-          <!-- Custom Amount Form -->
-          <div style="background:#060608;border:1px solid rgba(255,255,255,0.06);border-radius:14px;padding:14px 16px;margin-top:12px;">
-            <div style="font-size:0.75rem;font-weight:800;color:var(--text-muted);text-transform:uppercase;margin-bottom:8px;">Custom Amount</div>
-            <div style="display:flex;gap:8px;">
-              <input type="number" id="custom-token-deposit-input" class="form-input" placeholder="Amount (min 1.00)" min="1" step="1" style="flex:1;background:#000;border-radius:10px;" />
-              <button class="btn btn-primary btn-sm" onclick="handleCustomWalletBuy()" style="padding:0 18px;border-radius:10px;font-size:0.82rem;font-weight:800;">
-                Deposit
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Tab 2: Redeem Code -->
-        <div id="wallet-tab-redeem-view" style="display:none;">
-          <div style="background:#060608;border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:22px 20px;text-align:center;margin-bottom:12px;">
-            <div style="width:48px;height:48px;border-radius:12px;background:rgba(245,158,11,0.12);display:flex;align-items:center;justify-content:center;color:var(--gold-bright);margin:0 auto 12px;">
-              <i data-lucide="gift" style="width:24px;height:24px;"></i>
-            </div>
-            <div style="font-weight:900;font-size:1.2rem;color:#fff;margin-bottom:4px;">
-              Redeem
-            </div>
-            <div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:16px;">
-              Enter your code below to claim free tokens or exclusive cosmetics:
-            </div>
-
-            <div style="margin-bottom:14px;">
-              <input
-                type="text"
-                id="wallet-redeem-code-input"
-                class="form-input"
-                placeholder="XXXX-XXXX-XXXX"
-                style="text-align:center;font-weight:900;letter-spacing:0.08em;font-size:1.1rem;text-transform:uppercase;background:#000;border-radius:12px;padding:12px;"
-                oninput="this.value = this.value.toUpperCase().trim()"
-              />
-            </div>
-
-            <button class="btn btn-gold btn-full" id="wallet-redeem-submit-btn" onclick="handleRedeemCode()" style="border-radius:12px;padding:11px;font-size:0.88rem;gap:6px;">
-              <i data-lucide="sparkles" style="width:15px;height:15px;"></i> <span>Redeem Reward</span>
-            </button>
-          </div>
-
-          <div style="font-size:0.72rem;color:var(--text-faint);text-align:center;">
-            Codes can only be redeemed once per account.
-          </div>
-        </div>
-      </div>
-    </div>`;
+    </a>`;
 
   document.body.insertAdjacentHTML('afterbegin', navHTML);
+
+  // Restore sidebar state
+  try {
+    if (localStorage.getItem('ct_sidebar_collapsed') === '1' && window.innerWidth > 768) {
+      document.getElementById('app-sidebar')?.classList.add('collapsed');
+      document.body.classList.add('sidebar-collapsed');
+    }
+  } catch (e) {}
+
+  // Search shortcut '/'
+  document.addEventListener('keydown', (e) => {
+    if (e.key === '/' && document.activeElement !== document.getElementById('search-input')) {
+      e.preventDefault();
+      document.getElementById('search-input')?.focus();
+    }
+  });
   injectFloatingIcons();
   lucide.createIcons();
 
@@ -1085,9 +1021,23 @@ function handleSignOut() {
   signOut().then(() => { window.location.href = '/'; });
 }
 
+function toggleSidebar() {
+  const sidebar = document.getElementById('app-sidebar');
+  if (sidebar) {
+    if (window.innerWidth <= 768) {
+      sidebar.classList.toggle('mobile-open');
+    } else {
+      sidebar.classList.toggle('collapsed');
+      document.body.classList.toggle('sidebar-collapsed');
+      try {
+        localStorage.setItem('ct_sidebar_collapsed', sidebar.classList.contains('collapsed') ? '1' : '0');
+      } catch (e) {}
+    }
+  }
+}
+
 function toggleMobileNav() {
-  const drawer = document.getElementById('nav-mobile');
-  if (drawer) drawer.classList.toggle('open');
+  toggleSidebar();
 }
 
 /**
