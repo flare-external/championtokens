@@ -89,6 +89,9 @@
             <span class="ct-header-rank-elo">${meta.eloDisplay}</span>
           </div>
         </div>
+        <button type="button" class="ct-set-elo-btn" id="btn-nav-set-elo" title="Test tool to set your ELO">
+          Set ELO
+        </button>
       </div>
 
       <!-- Top Middle Navigation Links -->
@@ -168,6 +171,30 @@
         }
         localStorage.removeItem('ct_user');
         window.location.href = '/main';
+      });
+    }
+
+    // Set ELO Test Button
+    const navSetEloBtn = document.getElementById('btn-nav-set-elo');
+    if (navSetEloBtn) {
+      navSetEloBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const currentVal = localStorage.getItem('ct_user_elo') || '9999';
+        const input = prompt('Enter test ELO (e.g. 2450 for Elite, 3000 for Unreal, 9999, or 0 for Unranked):', currentVal);
+        if (input === null) return;
+        const val = parseInt(input.trim(), 10);
+        if (isNaN(val) || val < 0) {
+          alert('Please enter a valid non-negative number for ELO.');
+          return;
+        }
+        if (val === 0) {
+          localStorage.setItem('ct_is_unranked', 'true');
+          localStorage.setItem('ct_user_elo', '0');
+        } else {
+          localStorage.setItem('ct_is_unranked', 'false');
+          localStorage.setItem('ct_user_elo', val.toString());
+        }
+        window.location.reload();
       });
     }
 

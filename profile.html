@@ -7,7 +7,7 @@
   <title>Contender Profile — Champion Tokens</title>
   <link rel="icon" type="image/png" href="/champion-tokens_new.png"/>
   <link rel="stylesheet" href="/css/style.css?v=5.5"/>
-  <link rel="stylesheet" href="/css/ranked.css?v=4.5"/>
+  <link rel="stylesheet" href="/css/ranked.css?v=4.6"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
   <script src="/js/protect.js"></script>
@@ -15,7 +15,7 @@
     .pf-container {
       max-width: 960px;
       margin: 0 auto;
-      padding: 32px 20px 80px;
+      padding: 28px 20px 80px;
       position: relative;
       z-index: 10;
     }
@@ -29,9 +29,9 @@
       box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
     }
 
-    /* Banner Backdrop Image (Smaller & Customizable) */
+    /* Banner Backdrop Image (Compact & Clean) */
     .pf-banner-cover {
-      height: 135px;
+      height: 105px;
       background: linear-gradient(135deg, #090c10 0%, #151a23 50%, #0d1117 100%);
       background-size: cover;
       background-position: center;
@@ -44,12 +44,12 @@
       content: '';
       position: absolute;
       inset: 0;
-      background: radial-gradient(circle at top right, rgba(83, 252, 24, 0.12), transparent 70%);
+      background: radial-gradient(circle at top right, rgba(83, 252, 24, 0.1), transparent 70%);
       pointer-events: none;
     }
 
-    /* Edit Banner Button */
-    .pf-edit-banner-btn {
+    /* Edit Profile Button on Banner */
+    .pf-edit-profile-btn {
       position: absolute;
       top: 14px;
       right: 16px;
@@ -70,7 +70,7 @@
       z-index: 20;
     }
 
-    .pf-edit-banner-btn:hover {
+    .pf-edit-profile-btn:hover {
       background: rgba(83, 252, 24, 0.15);
       border-color: #53fc18;
       color: #53fc18;
@@ -78,33 +78,30 @@
 
     /* Banner Body */
     .pf-banner-body {
-      padding: 0 28px 28px;
+      padding: 0 28px 26px;
       position: relative;
     }
 
-    .pf-profile-flex {
+    /* Header Row: Avatar overlapping line + HUD Card */
+    .pf-header-row {
       display: flex;
       justify-content: space-between;
       align-items: flex-end;
       flex-wrap: wrap;
-      gap: 20px;
-      margin-top: -46px;
-    }
-
-    .pf-user-left {
-      display: flex;
-      align-items: flex-end;
-      gap: 20px;
+      gap: 16px;
+      margin-bottom: 12px;
     }
 
     /* PFP with Kick Neon Border */
     .pf-avatar-wrap {
+      margin-top: -45px;
       position: relative;
+      z-index: 5;
     }
 
     .pf-avatar-img {
-      width: 100px;
-      height: 100px;
+      width: 90px;
+      height: 90px;
       border-radius: 50%;
       object-fit: cover;
       background: #000;
@@ -113,13 +110,16 @@
       display: block;
     }
 
-    .pf-user-meta {
-      padding-bottom: 4px;
+    /* User Info (100% on the solid dark background below banner) */
+    .pf-user-info {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
     }
 
     .pf-username {
       font-family: 'Outfit', sans-serif;
-      font-size: 1.75rem;
+      font-size: 1.7rem;
       font-weight: 700;
       color: #ffffff;
       line-height: 1.1;
@@ -150,14 +150,14 @@
       background: rgba(83, 252, 24, 0.1);
     }
 
-    /* Edit Banner Modal Styling */
-    .ct-banner-modal-card {
+    /* Edit Profile Modal Card */
+    .ct-profile-modal-card {
       background: #0b0d12;
       border: 1px solid rgba(255, 255, 255, 0.12);
       border-radius: 18px;
       padding: 24px;
       width: 100%;
-      max-width: 440px;
+      max-width: 460px;
       box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8);
       position: relative;
     }
@@ -166,7 +166,7 @@
       padding: 10px 14px;
       border-radius: 8px;
       font-size: 0.78rem;
-      margin-top: 12px;
+      margin-top: 10px;
       line-height: 1.4;
       display: none;
     }
@@ -194,51 +194,25 @@
     <!-- Profile Banner & Identity Card -->
     <section class="pf-banner-card">
       
-      <!-- Backdrop Banner Cover with Edit Button -->
+      <!-- Compact Banner Cover with Edit Profile Button -->
       <div class="pf-banner-cover" id="pf-banner-cover">
-        <button type="button" class="pf-edit-banner-btn" id="btn-edit-banner" title="Change your profile banner">
-          <i data-lucide="camera" style="width:14px;height:14px;"></i>
-          <span>Edit Banner</span>
+        <button type="button" class="pf-edit-profile-btn" id="btn-open-edit-profile" title="Edit your contender profile and description">
+          <i data-lucide="edit-3" style="width:13px;height:13px;"></i>
+          <span>Edit Profile</span>
         </button>
       </div>
 
-      <!-- Banner Body: Avatar, Name + Badges, Contender ID, Compact HUD -->
+      <!-- Banner Body -->
       <div class="pf-banner-body">
-        <div class="pf-profile-flex">
-          
-          <!-- Left: PFP, Username with Badges Box, 12-Digit Contender ID -->
-          <div class="pf-user-left">
-            <div class="pf-avatar-wrap">
-              <img src="https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=120&auto=format&fit=crop&q=80" id="pf-avatar" class="pf-avatar-img" alt="Contender Avatar"/>
-            </div>
-
-            <div class="pf-user-meta">
-              <!-- Username Row with Badges Box -->
-              <div class="pf-username-row">
-                <span class="pf-username" id="pf-display-name">adrian</span>
-                
-                <!-- Badges Box -->
-                <div class="pf-badges-box" id="pf-badges-box">
-                  <div class="pf-badge pf-badge-beta" data-badge-tooltip="Given away to early beta testers of the site.">
-                    <i data-lucide="sparkles" style="width:12px;height:12px;"></i>
-                    <span>Beta Tester</span>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Contender ID Row -->
-              <div class="pf-id-row">
-                <span>Contender ID: <strong style="color:#ffffff;" id="pf-contender-id">112118831941</strong></span>
-                <button type="button" class="pf-copy-btn" id="btn-copy-id" title="Copy Contender ID">
-                  <i data-lucide="copy" style="width:14px;height:14px;"></i>
-                </button>
-              </div>
-            </div>
+        
+        <!-- Top Row: Avatar overlapping line + Compact Gaming HUD -->
+        <div class="pf-header-row">
+          <div class="pf-avatar-wrap">
+            <img src="https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=120&auto=format&fit=crop&q=80" id="pf-avatar" class="pf-avatar-img" alt="Contender Avatar"/>
           </div>
 
-          <!-- Right: Compact Gaming HUD Box (Rank | Place | ELO with Line Cuts & Top 50 Animated Gold) -->
+          <!-- Compact Gaming HUD Box (Rank | Place | ELO with Line Cuts & Top 50 Animated Gold) -->
           <div class="pf-hud-card" id="pf-hud-card">
-            
             <!-- Rank Column -->
             <div class="pf-hud-col">
               <div class="pf-hud-val">
@@ -271,54 +245,137 @@
                 <span>ELO</span>
               </div>
             </div>
+          </div>
+        </div>
 
+        <!-- User Info: Cleanly below the banner on solid dark background -->
+        <div class="pf-user-info">
+          <!-- Username + Badges Row -->
+          <div class="pf-username-row">
+            <span class="pf-username" id="pf-display-name">adrian</span>
+            
+            <!-- Badges Box (Icon Only + Rich Hover Tooltip) -->
+            <div class="pf-badges-box" id="pf-badges-box">
+              <div class="pf-badge-icon-item beta" data-tooltip="Beta Tester • Early platform pioneer (Season 1 Beta)">
+                <i data-lucide="sparkles" style="width:14px;height:14px;color:#53fc18;"></i>
+              </div>
+              <div class="pf-badge-icon-item verified" data-tooltip="Verified Contender • Authenticated tournament competitor">
+                <i data-lucide="shield-check" style="width:14px;height:14px;color:#38bdf8;"></i>
+              </div>
+              <div class="pf-badge-icon-item founder" data-tooltip="Unreal Pioneer • Top competitive standing">
+                <i data-lucide="crown" style="width:14px;height:14px;color:#fbbf24;"></i>
+              </div>
+            </div>
           </div>
 
+          <!-- 12-Digit Contender ID Row -->
+          <div class="pf-id-row">
+            <span>Contender ID: <strong style="color:#ffffff;" id="pf-contender-id">112118831941</strong></span>
+            <button type="button" class="pf-copy-btn" id="btn-copy-id" title="Copy Contender ID">
+              <i data-lucide="copy" style="width:14px;height:14px;"></i>
+            </button>
+          </div>
+
+          <!-- Description / Bio with Automod -->
+          <div class="pf-bio-text" id="pf-user-bio">
+            Competitive Fortnite contender. Grinding to #1 Unreal in Season 1 Ranked Arena.
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Ranked Combat Statistics Section -->
+    <section class="pf-stats-card">
+      <div class="pf-stats-header">
+        <div class="pf-stats-title">
+          <i data-lucide="bar-chart-2" style="width:18px;height:18px;color:#53fc18;"></i>
+          <span>Ranked Combat Statistics</span>
+        </div>
+        <div style="font-size:0.75rem;color:#64748b;">Season 1 Live</div>
+      </div>
+
+      <div class="pf-stats-grid">
+        <div class="pf-stat-box">
+          <div class="pf-stat-label">Matches Won</div>
+          <div class="pf-stat-num" id="stat-won" style="color:#53fc18;">148</div>
+          <div class="pf-stat-sub">Across all arenas</div>
+        </div>
+
+        <div class="pf-stat-box">
+          <div class="pf-stat-label">Win Rate</div>
+          <div class="pf-stat-num" id="stat-wr">68.5%</div>
+          <div class="pf-stat-sub">Top 1% bracket</div>
+        </div>
+
+        <div class="pf-stat-box">
+          <div class="pf-stat-label">Matches Played</div>
+          <div class="pf-stat-num" id="stat-played">216</div>
+          <div class="pf-stat-sub">Season 1 Total</div>
+        </div>
+
+        <div class="pf-stat-box">
+          <div class="pf-stat-label">Current Streak</div>
+          <div class="pf-stat-num" id="stat-streak" style="color:#fbbf24;">7 Wins 🔥</div>
+          <div class="pf-stat-sub">Best: 12 Wins</div>
+        </div>
+
+        <div class="pf-stat-box">
+          <div class="pf-stat-label">Avg. ELO Delta</div>
+          <div class="pf-stat-num" id="stat-delta" style="color:#38bdf8;">+36 ELO</div>
+          <div class="pf-stat-sub">Per match victory</div>
+        </div>
+
+        <div class="pf-stat-box">
+          <div class="pf-stat-label">Favorite Mode</div>
+          <div class="pf-stat-num" id="stat-mode" style="font-size:1.05rem;">Realistic 1v1</div>
+          <div class="pf-stat-sub">72% of matches</div>
         </div>
       </div>
     </section>
 
   </main>
 
-  <!-- Edit Banner Modal with Automated Moderation -->
-  <div class="ct-modal-overlay" id="banner-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);backdrop-filter:blur(10px);z-index:9999;align-items:center;justify-content:center;">
-    <div class="ct-banner-modal-card">
-      <button type="button" class="ct-modal-close-btn" id="btn-close-banner-modal" style="position:absolute;top:16px;right:16px;background:transparent;border:none;color:#94a3b8;cursor:pointer;">
+  <!-- Edit Profile Modal with Automated Moderation -->
+  <div class="ct-modal-overlay" id="profile-edit-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);backdrop-filter:blur(10px);z-index:9999;align-items:center;justify-content:center;">
+    <div class="ct-profile-modal-card">
+      <button type="button" class="ct-modal-close-btn" id="btn-close-edit-modal" style="position:absolute;top:16px;right:16px;background:transparent;border:none;color:#94a3b8;cursor:pointer;">
         <i data-lucide="x" style="width:20px;height:20px;"></i>
       </button>
 
       <div style="font-family:'Outfit',sans-serif;font-size:1.25rem;font-weight:700;margin-bottom:6px;">
-        Set Profile Banner
+        Edit Contender Profile
       </div>
-      <div style="font-size:0.8rem;color:#94a3b8;margin-bottom:18px;">
-        Upload an image or paste a direct image URL. All banners pass automated AI safety moderation.
+      <div style="font-size:0.8rem;color:#94a3b8;margin-bottom:16px;">
+        Customize your banner and bio. All changes are protected by automated safety moderation.
       </div>
 
-      <!-- Option 1: File Upload -->
+      <!-- Bio / Description Field -->
       <label style="display:block;font-size:0.75rem;font-weight:600;color:#64748b;margin-bottom:6px;text-transform:uppercase;">
-        Upload Image File
+        Contender Bio / Description
+      </label>
+      <textarea id="input-edit-bio" rows="3" maxlength="160" placeholder="Write a short description (no links or offensive terms)..." style="width:100%;box-sizing:border-box;background:#000;border:1px solid rgba(255,255,255,0.12);color:#fff;padding:10px 14px;border-radius:10px;font-size:0.85rem;outline:none;resize:none;font-family:inherit;margin-bottom:14px;"></textarea>
+
+      <!-- Banner Image Upload / URL -->
+      <label style="display:block;font-size:0.75rem;font-weight:600;color:#64748b;margin-bottom:6px;text-transform:uppercase;">
+        Banner Image (Upload or URL)
       </label>
       <input type="file" id="input-banner-file" accept="image/png,image/jpeg,image/webp,image/gif" style="display:none;" />
-      <button type="button" id="btn-trigger-upload" style="width:100%;padding:10px;background:#14171e;border:1px dashed rgba(255,255,255,0.2);color:#94a3b8;border-radius:10px;font-size:0.82rem;font-weight:600;cursor:pointer;margin-bottom:14px;display:flex;align-items:center;justify-content:center;gap:8px;">
+      <button type="button" id="btn-trigger-upload" style="width:100%;padding:10px;background:#14171e;border:1px dashed rgba(255,255,255,0.2);color:#94a3b8;border-radius:10px;font-size:0.82rem;font-weight:600;cursor:pointer;margin-bottom:8px;display:flex;align-items:center;justify-content:center;gap:8px;">
         <i data-lucide="upload" style="width:15px;height:15px;color:#53fc18;"></i>
-        <span id="label-upload-status">Choose file from device...</span>
+        <span id="label-upload-status">Upload banner file...</span>
       </button>
-
-      <!-- Option 2: Image URL -->
-      <label style="display:block;font-size:0.75rem;font-weight:600;color:#64748b;margin-bottom:6px;text-transform:uppercase;">
-        Or Image URL
-      </label>
-      <input type="url" id="input-banner-url" placeholder="https://example.com/banner.png" style="width:100%;box-sizing:border-box;background:#000;border:1px solid rgba(255,255,255,0.12);color:#fff;padding:10px 14px;border-radius:10px;font-size:0.85rem;outline:none;margin-bottom:12px;" />
+      <input type="url" id="input-banner-url" placeholder="Or paste image URL (https://...)" style="width:100%;box-sizing:border-box;background:#000;border:1px solid rgba(255,255,255,0.12);color:#fff;padding:10px 14px;border-radius:10px;font-size:0.85rem;outline:none;margin-bottom:12px;" />
 
       <!-- Moderation Status Message -->
-      <div class="ct-mod-alert" id="banner-mod-alert"></div>
+      <div class="ct-mod-alert" id="profile-mod-alert"></div>
 
       <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:16px;">
-        <button type="button" id="btn-cancel-banner" style="background:transparent;border:1px solid rgba(255,255,255,0.15);color:#94a3b8;padding:8px 16px;border-radius:8px;font-size:0.82rem;font-weight:600;cursor:pointer;">
+        <button type="button" id="btn-cancel-edit" style="background:transparent;border:1px solid rgba(255,255,255,0.15);color:#94a3b8;padding:8px 16px;border-radius:8px;font-size:0.82rem;font-weight:600;cursor:pointer;">
           Cancel
         </button>
-        <button type="button" id="btn-save-banner" style="background:#53fc18;border:none;color:#000;padding:8px 20px;border-radius:8px;font-size:0.82rem;font-weight:700;cursor:pointer;">
-          Apply Banner
+        <button type="button" id="btn-save-profile" style="background:#53fc18;border:none;color:#000;padding:8px 20px;border-radius:8px;font-size:0.82rem;font-weight:700;cursor:pointer;">
+          Save Profile
         </button>
       </div>
     </div>
@@ -356,9 +413,36 @@
       return null;
     }
 
-    // Automated Moderation Engine
+    // Automated Moderation Engine for Bio (No Bad Words, No Links)
+    function inspectBioSafety(bioText) {
+      if (!bioText) return { safe: true };
+
+      // 1. Link / URL detection regex
+      const linkRegex = /(https?:\/\/|www\.|\b[a-zA-Z0-9-]+\.(com|net|org|fun|gg|io|xyz|ru|to|co|tv|app|dev|me|live|info|biz)\b|discord\.gg|t\.me)/i;
+      if (linkRegex.test(bioText)) {
+        return { safe: false, reason: 'Automated Moderation: External links and URLs are not allowed in description.' };
+      }
+
+      // 2. Bad words / Profanity / Hate speech filter
+      const badWords = [
+        'fuck', 'shit', 'bitch', 'asshole', 'cunt', 'dick', 'pussy', 'nigger', 'nigga',
+        'faggot', 'retard', 'whore', 'slut', 'kill yourself', 'kys', 'nazi', 'hitler',
+        'porn', 'sex', 'rape', 'pedophile', 'gore', 'terrorist'
+      ];
+
+      const cleanLower = bioText.toLowerCase().replace(/[^a-z0-9\s]/g, ' ');
+      for (const word of badWords) {
+        const regex = new RegExp(`\\b${word}\\b`, 'i');
+        if (regex.test(cleanLower)) {
+          return { safe: false, reason: 'Automated Moderation: Description contains prohibited or offensive language.' };
+        }
+      }
+
+      return { safe: true };
+    }
+
+    // Automated Moderation Engine for Image (NSFW & Gore)
     async function inspectImageSafety(imgSrc, rawName = '') {
-      // 1. Text keyword inspection
       const forbiddenKeywords = [
         'gore', 'blood', 'wound', 'death', 'murder', 'kill', 'suicide', 'corpse',
         'porn', 'nsfw', 'hentai', 'sex', 'xxx', 'nude', 'naked', 'penis', 'boobs',
@@ -372,7 +456,6 @@
         }
       }
 
-      // 2. Client-side canvas pixel inspection
       return new Promise((resolve) => {
         const img = new Image();
         img.crossOrigin = 'Anonymous';
@@ -384,8 +467,7 @@
             canvas.width = size;
             canvas.height = size;
             ctx.drawImage(img, 0, 0, size, size);
-            const imageData = ctx.getImageData(0, 0, size, size);
-            const data = imageData.data;
+            const data = ctx.getImageData(0, 0, size, size).data;
 
             let skinPixels = 0;
             let bloodPixels = 0;
@@ -396,37 +478,28 @@
               const g = data[i + 1];
               const b = data[i + 2];
 
-              // Skin-tone heuristic
               if (r > 95 && g > 40 && b > 20 && (Math.max(r, g, b) - Math.min(r, g, b) > 15) && Math.abs(r - g) > 15 && r > g && r > b) {
                 skinPixels++;
               }
-
-              // Deep saturated red (blood / gore heuristic)
               if (r > 150 && g < 50 && b < 50) {
                 bloodPixels++;
               }
             }
 
-            const skinRatio = skinPixels / totalPixels;
-            const bloodRatio = bloodPixels / totalPixels;
-
-            if (skinRatio > 0.42) {
-              return resolve({ safe: false, reason: 'Automated Moderation: Image rejected for containing excessive skin exposure or suggestive content.' });
+            if (skinPixels / totalPixels > 0.42) {
+              return resolve({ safe: false, reason: 'Automated Moderation: Image rejected for containing excessive skin exposure.' });
             }
-
-            if (bloodRatio > 0.22) {
-              return resolve({ safe: false, reason: 'Automated Moderation: Image rejected for containing high concentration of graphic or violent red content.' });
+            if (bloodPixels / totalPixels > 0.22) {
+              return resolve({ safe: false, reason: 'Automated Moderation: Image rejected for containing graphic red/violent content.' });
             }
-
             resolve({ safe: true });
           } catch (e) {
-            // If crossOrigin blocks pixel reading, allow if text passed
             resolve({ safe: true });
           }
         };
 
         img.onerror = () => {
-          resolve({ safe: false, reason: 'Failed to load image. Please check the URL or file format.' });
+          resolve({ safe: false, reason: 'Failed to load image. Please verify file format.' });
         };
 
         img.src = imgSrc;
@@ -470,7 +543,14 @@
         bannerCoverEl.style.backgroundImage = `url('${savedBanner}')`;
       }
 
-      // 3. ELO & Rank Data
+      // 3. Custom Bio Loading
+      const savedBio = localStorage.getItem('ct_user_bio');
+      const bioEl = document.getElementById('pf-user-bio');
+      if (savedBio && bioEl) {
+        bioEl.textContent = savedBio;
+      }
+
+      // 4. ELO & Rank Data
       const savedElo = localStorage.getItem('ct_user_elo');
       const isUnranked = localStorage.getItem('ct_is_unranked') === 'true';
       const elo = savedElo !== null ? parseInt(savedElo, 10) : 9999;
@@ -485,7 +565,7 @@
       if (idEl) idEl.textContent = user.id;
       if (avatarEl && user.avatar) avatarEl.src = user.avatar;
 
-      // 4. Compact HUD Values
+      // 5. Compact HUD Values
       const hudRankEl = document.getElementById('pf-hud-rank');
       const hudIconEl = document.getElementById('pf-hud-icon');
       const hudPlaceEl = document.getElementById('pf-hud-place');
@@ -497,7 +577,6 @@
       if (hudPlaceEl) hudPlaceEl.textContent = meta.place;
       if (hudEloEl) hudEloEl.textContent = meta.eloDisplay;
 
-      // Top 50 Animated Gold Effect
       if (hudCardEl) {
         if (meta.numPlace <= 50) {
           hudCardEl.classList.add('top-50');
@@ -506,48 +585,50 @@
         }
       }
 
-      // 5. Copy ID Handler
+      // 6. Copy ID Handler
       document.getElementById('btn-copy-id')?.addEventListener('click', () => {
         navigator.clipboard.writeText(user.id).then(() => {
           showToast('Contender ID copied to clipboard!');
         });
       });
 
-      // 6. Edit Banner Handlers & Moderation Flow
-      const bannerModal = document.getElementById('banner-modal');
-      const openBannerBtn = document.getElementById('btn-edit-banner');
-      const closeBannerBtn = document.getElementById('btn-close-banner-modal');
-      const cancelBannerBtn = document.getElementById('btn-cancel-banner');
-      const saveBannerBtn = document.getElementById('btn-save-banner');
+      // 7. Edit Profile Handlers (Banner + Bio with Automod)
+      const editModal = document.getElementById('profile-edit-modal');
+      const openEditBtn = document.getElementById('btn-open-edit-profile');
+      const closeEditBtn = document.getElementById('btn-close-edit-modal');
+      const cancelEditBtn = document.getElementById('btn-cancel-edit');
+      const saveProfileBtn = document.getElementById('btn-save-profile');
+      const bioInput = document.getElementById('input-edit-bio');
       const fileInput = document.getElementById('input-banner-file');
       const triggerUploadBtn = document.getElementById('btn-trigger-upload');
       const urlInput = document.getElementById('input-banner-url');
-      const modAlert = document.getElementById('banner-mod-alert');
+      const modAlert = document.getElementById('profile-mod-alert');
       const uploadStatusLabel = document.getElementById('label-upload-status');
 
       let pendingBannerData = null;
       let pendingBannerName = '';
 
       function openModal() {
-        if (!bannerModal) return;
-        bannerModal.style.display = 'flex';
+        if (!editModal) return;
+        editModal.style.display = 'flex';
         modAlert.className = 'ct-mod-alert';
         modAlert.textContent = '';
+        if (bioInput) bioInput.value = localStorage.getItem('ct_user_bio') || bioEl.textContent.trim();
       }
 
       function closeModal() {
-        if (!bannerModal) return;
-        bannerModal.style.display = 'none';
+        if (!editModal) return;
+        editModal.style.display = 'none';
         pendingBannerData = null;
         pendingBannerName = '';
         if (fileInput) fileInput.value = '';
         if (urlInput) urlInput.value = '';
-        if (uploadStatusLabel) uploadStatusLabel.textContent = 'Choose file from device...';
+        if (uploadStatusLabel) uploadStatusLabel.textContent = 'Upload banner file...';
       }
 
-      if (openBannerBtn) openBannerBtn.addEventListener('click', openModal);
-      if (closeBannerBtn) closeBannerBtn.addEventListener('click', closeModal);
-      if (cancelBannerBtn) cancelBannerBtn.addEventListener('click', closeModal);
+      if (openEditBtn) openEditBtn.addEventListener('click', openModal);
+      if (closeEditBtn) closeEditBtn.addEventListener('click', closeModal);
+      if (cancelEditBtn) cancelEditBtn.addEventListener('click', closeModal);
 
       if (triggerUploadBtn && fileInput) {
         triggerUploadBtn.addEventListener('click', () => fileInput.click());
@@ -564,43 +645,57 @@
         });
       }
 
-      if (saveBannerBtn) {
-        saveBannerBtn.addEventListener('click', async () => {
+      if (saveProfileBtn) {
+        saveProfileBtn.addEventListener('click', async () => {
+          const newBio = (bioInput ? bioInput.value : '').trim();
+
+          // 1. Check Bio Safety
+          if (newBio) {
+            const bioCheck = inspectBioSafety(newBio);
+            if (!bioCheck.safe) {
+              modAlert.className = 'ct-mod-alert error';
+              modAlert.textContent = bioCheck.reason;
+              return;
+            }
+          }
+
+          // 2. Check Banner Safety if supplied
           const rawUrl = urlInput.value.trim();
           const targetImage = pendingBannerData || rawUrl;
           const targetName = pendingBannerName || rawUrl;
 
-          if (!targetImage) {
-            modAlert.className = 'ct-mod-alert error';
-            modAlert.textContent = 'Please choose a file or enter an image URL.';
-            return;
-          }
+          if (targetImage) {
+            modAlert.className = 'ct-mod-alert';
+            modAlert.style.display = 'block';
+            modAlert.style.background = 'rgba(255,255,255,0.06)';
+            modAlert.style.color = '#94a3b8';
+            modAlert.textContent = 'Scanning banner with automated safety moderation...';
 
-          modAlert.className = 'ct-mod-alert';
-          modAlert.style.display = 'block';
-          modAlert.style.background = 'rgba(255,255,255,0.06)';
-          modAlert.style.color = '#94a3b8';
-          modAlert.textContent = 'Scanning image with automated safety moderation...';
+            const modResult = await inspectImageSafety(targetImage, targetName);
+            if (!modResult.safe) {
+              modAlert.className = 'ct-mod-alert error';
+              modAlert.textContent = modResult.reason;
+              return;
+            }
 
-          const modResult = await inspectImageSafety(targetImage, targetName);
-
-          if (!modResult.safe) {
-            modAlert.className = 'ct-mod-alert error';
-            modAlert.textContent = modResult.reason;
-            return;
-          }
-
-          // Approved! Save and apply
-          modAlert.className = 'ct-mod-alert success';
-          modAlert.textContent = '✓ Passed automated safety moderation! Applying banner...';
-
-          setTimeout(() => {
             localStorage.setItem('ct_user_banner', targetImage);
             if (bannerCoverEl) {
               bannerCoverEl.style.backgroundImage = `url('${targetImage}')`;
             }
+          }
+
+          // Apply Bio
+          if (newBio) {
+            localStorage.setItem('ct_user_bio', newBio);
+            if (bioEl) bioEl.textContent = newBio;
+          }
+
+          modAlert.className = 'ct-mod-alert success';
+          modAlert.textContent = '✓ Profile passed automated moderation and was updated!';
+
+          setTimeout(() => {
             closeModal();
-            showToast('Profile banner updated successfully!');
+            showToast('Profile updated successfully!');
           }, 600);
         });
       }

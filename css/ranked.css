@@ -1487,12 +1487,12 @@ body {
   outline: none !important;
 }
 
-/* ── Profile Username & Badges Box ──────────────────────────── */
+/* ── Profile Username & Badges Box (Icon Only + Hover Tooltip) ── */
 .pf-username-row {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 10px;
   margin: 0 0 6px;
 }
 
@@ -1500,39 +1500,46 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  padding: 3px 6px;
-  border-radius: 8px;
 }
 
-.pf-badge {
+.pf-badge-icon-item {
   position: relative;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   display: inline-flex;
   align-items: center;
-  gap: 5px;
-  padding: 3px 8px;
-  border-radius: 6px;
-  font-size: 0.7rem;
-  font-weight: 600;
+  justify-content: center;
   cursor: pointer;
-  user-select: none;
   transition: all 0.15s ease;
 }
 
-.pf-badge-beta {
-  background: rgba(83, 252, 24, 0.1);
-  border: 1px solid rgba(83, 252, 24, 0.35);
-  color: #53fc18;
+.pf-badge-icon-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
 }
 
-.pf-badge-beta:hover {
-  background: rgba(83, 252, 24, 0.18);
-  box-shadow: 0 0 12px rgba(83, 252, 24, 0.25);
+.pf-badge-icon-item.beta {
+  border-color: rgba(83, 252, 24, 0.4);
+  background: rgba(83, 252, 24, 0.08);
 }
 
-.pf-badge::after {
-  content: attr(data-badge-tooltip);
+.pf-badge-icon-item.verified {
+  border-color: rgba(56, 189, 248, 0.4);
+  background: rgba(56, 189, 248, 0.08);
+}
+
+.pf-badge-icon-item.founder {
+  border-color: rgba(251, 191, 36, 0.4);
+  background: rgba(251, 191, 36, 0.08);
+}
+
+/* Tooltip on hover */
+.pf-badge-icon-item::after {
+  content: attr(data-tooltip);
   position: absolute;
   bottom: calc(100% + 8px);
   left: 50%;
@@ -1540,7 +1547,7 @@ body {
   background: rgba(10, 12, 16, 0.95);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(83, 252, 24, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   color: #f1f5f9;
   font-size: 0.72rem;
   font-weight: 500;
@@ -1550,15 +1557,94 @@ body {
   pointer-events: none;
   opacity: 0;
   visibility: hidden;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.8);
   transition: opacity 0.18s ease, transform 0.18s ease;
   z-index: 1000;
 }
 
-.pf-badge:hover::after {
+.pf-badge-icon-item:hover::after {
   opacity: 1;
   visibility: visible;
   transform: translateX(-50%) translateY(0);
+}
+
+/* ── Bio Text ───────────────────────────────────────────────── */
+.pf-bio-text {
+  font-size: 0.85rem;
+  color: #94a3b8;
+  line-height: 1.5;
+  margin-top: 8px;
+  max-width: 600px;
+}
+
+/* ── Statistics Card & Grid ─────────────────────────────────── */
+.pf-stats-card {
+  background: #08090c;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 24px 28px;
+  margin-top: 24px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+}
+
+.pf-stats-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.pf-stats-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pf-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 14px;
+}
+
+.pf-stat-box {
+  background: #000000;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  transition: border-color 0.15s ease;
+}
+
+.pf-stat-box:hover {
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.pf-stat-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.pf-stat-num {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.1;
+}
+
+.pf-stat-sub {
+  font-size: 0.68rem;
+  color: #475569;
+  margin-top: 2px;
 }
 
 /* ── Compact Rank / Place / ELO HUD Box ─────────────────────── */
@@ -1673,9 +1759,9 @@ body {
   background: linear-gradient(180deg, transparent, rgba(251, 191, 36, 0.45), transparent);
 }
 
-/* ── Banner & Edit Banner Button ────────────────────────────── */
+/* ── Banner & Edit Profile Button ───────────────────────────── */
 .pf-banner-cover {
-  height: 135px;
+  height: 105px;
   background: linear-gradient(135deg, #090c10 0%, #151a23 50%, #0d1117 100%);
   background-size: cover;
   background-position: center;
@@ -1683,18 +1769,18 @@ body {
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.pf-edit-banner-btn {
+.pf-edit-profile-btn {
   position: absolute;
   top: 14px;
   right: 16px;
-  background: rgba(0, 0, 0, 0.65);
+  background: rgba(0, 0, 0, 0.7);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   border: 1px solid rgba(255, 255, 255, 0.15);
   color: #ffffff;
   font-size: 0.74rem;
   font-weight: 600;
-  padding: 6px 12px;
+  padding: 6px 14px;
   border-radius: 8px;
   display: inline-flex;
   align-items: center;
@@ -1704,7 +1790,7 @@ body {
   z-index: 20;
 }
 
-.pf-edit-banner-btn:hover {
+.pf-edit-profile-btn:hover {
   background: rgba(83, 252, 24, 0.15);
   border-color: #53fc18;
   color: #53fc18;
