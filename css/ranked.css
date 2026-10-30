@@ -1,0 +1,1174 @@
+/* ============================================================
+   CHAMPION TOKENS / RANKED ARENA — Competitive Design System
+   ============================================================ */
+
+/* ── Live Status Bar ────────────────────────────────────────── */
+.ranked-ticker-bar {
+  background: var(--bg-surface, #14171a);
+  border-bottom: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-muted, #94a3b8);
+}
+
+.ranked-ticker-left {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.ticker-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ticker-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--kick-green, #53fc18);
+  box-shadow: 0 0 8px var(--kick-green, #53fc18);
+  animation: pulse-green 2s infinite ease-in-out;
+}
+
+@keyframes pulse-green {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.45; transform: scale(0.85); }
+}
+
+.ticker-value {
+  color: #ffffff;
+  font-weight: 800;
+}
+
+.season-countdown-pill {
+  background: rgba(83, 252, 24, 0.12);
+  border: 1px solid rgba(83, 252, 24, 0.35);
+  color: var(--kick-green, #53fc18);
+  padding: 3px 10px;
+  border-radius: 99px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* ── Main Ranked Stage ──────────────────────────────────────── */
+.ranked-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 24px 20px 80px;
+}
+
+/* ── Season Hero Banner ─────────────────────────────────────── */
+.season-hero-banner {
+  background: linear-gradient(135deg, #181c20 0%, #101316 100%);
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+  border-radius: 20px;
+  padding: 32px 36px;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 28px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
+}
+
+.season-hero-banner::before {
+  content: '';
+  position: absolute;
+  top: -60px;
+  right: -60px;
+  width: 320px;
+  height: 320px;
+  background: radial-gradient(circle, rgba(83, 252, 24, 0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.season-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(83, 252, 24, 0.15);
+  border: 1px solid rgba(83, 252, 24, 0.35);
+  color: var(--kick-green, #53fc18);
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 5px 14px;
+  border-radius: 99px;
+  margin-bottom: 14px;
+}
+
+.season-hero-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: clamp(2rem, 4.5vw, 3.2rem);
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  color: #ffffff;
+  margin-bottom: 12px;
+}
+
+.season-hero-title .highlight {
+  color: var(--kick-green, #53fc18);
+  text-shadow: 0 0 24px rgba(83, 252, 24, 0.35);
+}
+
+.season-hero-desc {
+  color: var(--text-muted, #94a3b8);
+  font-size: 1rem;
+  max-width: 720px;
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+.season-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 14px;
+}
+
+.season-metric-box {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+  border-radius: 12px;
+  padding: 14px 18px;
+}
+
+.season-metric-label {
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-sub, #64748b);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+
+.season-metric-val {
+  font-size: 1.25rem;
+  font-weight: 900;
+  color: #ffffff;
+  font-family: 'Outfit', sans-serif;
+}
+
+.season-metric-val.green {
+  color: var(--kick-green, #53fc18);
+}
+
+/* ── Queue & Matchmaking Center ─────────────────────────────── */
+.matchmaking-center {
+  background: var(--bg-card, #181c20);
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+  border-radius: 20px;
+  padding: 28px;
+  margin-bottom: 32px;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.5);
+}
+
+.hub-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 22px;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.hub-title-wrap h2 {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.45rem;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+  margin: 0 0 4px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.hub-subtitle {
+  color: var(--text-muted, #94a3b8);
+  font-size: 0.85rem;
+}
+
+/* Mode Switch: Ranked vs Friendlies */
+.mode-switch-group {
+  display: flex;
+  background: var(--bg-main, #0b0e0f);
+  padding: 4px;
+  border-radius: 12px;
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+}
+
+.mode-tab-btn {
+  padding: 8px 18px;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: var(--text-muted, #94a3b8);
+  background: transparent;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  transition: all 0.15s ease;
+}
+
+.mode-tab-btn:hover {
+  color: #ffffff;
+}
+
+.mode-tab-btn.active {
+  background: var(--bg-active-nav, #24272c);
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.mode-tab-btn.active .mode-badge {
+  background: var(--kick-green, #53fc18);
+  color: #000;
+}
+
+.mode-badge {
+  font-size: 0.68rem;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 900;
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+/* Playlist Cards Grid */
+.playlist-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.playlist-card {
+  background: var(--bg-surface, #14171a);
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+  border-radius: 14px;
+  padding: 18px;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  position: relative;
+  overflow: hidden;
+  user-select: none;
+}
+
+.playlist-card:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+  background: var(--bg-card-hover, #1f2429);
+}
+
+.playlist-card.selected {
+  border-color: var(--kick-green, #53fc18);
+  background: rgba(83, 252, 24, 0.06);
+  box-shadow: 0 0 20px rgba(83, 252, 24, 0.15);
+}
+
+.playlist-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 14px;
+  color: var(--kick-green, #53fc18);
+  border: 1px solid var(--border);
+}
+
+.playlist-card.selected .playlist-icon {
+  background: rgba(83, 252, 24, 0.15);
+  border-color: rgba(83, 252, 24, 0.4);
+}
+
+.playlist-name {
+  font-weight: 800;
+  font-size: 0.98rem;
+  color: #ffffff;
+  margin-bottom: 4px;
+}
+
+.playlist-meta {
+  font-size: 0.74rem;
+  color: var(--text-muted, #94a3b8);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.playlist-check {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--kick-green, #53fc18);
+  color: #000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-size: 11px;
+}
+
+.playlist-card.selected .playlist-check {
+  display: flex;
+}
+
+/* Party Bar & Queue Action Dock */
+.queue-action-dock {
+  background: var(--bg-surface, #14171a);
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+  border-radius: 16px;
+  padding: 18px 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.party-section {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.party-label {
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--text-sub, #64748b);
+  letter-spacing: 0.05em;
+}
+
+.party-slots {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.party-slot {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px dashed rgba(255, 255, 255, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.15s ease;
+}
+
+.party-slot:hover {
+  border-color: var(--kick-green, #53fc18);
+  background: rgba(83, 252, 24, 0.08);
+}
+
+.party-slot.leader {
+  border-style: solid;
+  border-color: var(--kick-green, #53fc18);
+  background: rgba(83, 252, 24, 0.12);
+}
+
+.party-slot-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.party-crown-badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: #fbbf24;
+  color: #000;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  font-size: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+}
+
+.queue-btn-group {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.elo-range-indicator {
+  font-size: 0.76rem;
+  color: var(--text-muted, #94a3b8);
+  background: rgba(0, 0, 0, 0.3);
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.elo-range-indicator .bold {
+  color: var(--kick-green, #53fc18);
+  font-weight: 800;
+}
+
+.btn-enter-queue {
+  background: var(--kick-green, #53fc18);
+  color: #000000;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 900;
+  font-size: 1.05rem;
+  letter-spacing: -0.01em;
+  padding: 14px 34px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 4px 20px rgba(83, 252, 24, 0.35);
+  transition: all 0.16s ease;
+}
+
+.btn-enter-queue:hover {
+  background: var(--kick-green-hover, #46e012);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 26px rgba(83, 252, 24, 0.5);
+}
+
+.btn-enter-queue:active {
+  transform: scale(0.98);
+}
+
+.btn-enter-queue.queueing {
+  background: #ef4444;
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(239, 68, 68, 0.35);
+}
+
+/* ── Queue Searching Modal Overlay ──────────────────────────── */
+.queue-status-banner {
+  display: none;
+  background: rgba(83, 252, 24, 0.08);
+  border: 1px solid var(--kick-green, #53fc18);
+  border-radius: 14px;
+  padding: 16px 20px;
+  margin-top: 18px;
+  align-items: center;
+  justify-content: space-between;
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+.queue-status-banner.active {
+  display: flex;
+}
+
+.queue-status-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.queue-radar {
+  width: 32px;
+  height: 32px;
+  border: 3px solid rgba(83, 252, 24, 0.3);
+  border-top-color: var(--kick-green, #53fc18);
+  border-radius: 50%;
+  animation: spin-radar 1s linear infinite;
+}
+
+@keyframes spin-radar {
+  to { transform: rotate(360deg); }
+}
+
+.queue-timer-text {
+  font-size: 1.15rem;
+  font-weight: 900;
+  font-family: 'Outfit', sans-serif;
+  color: #ffffff;
+}
+
+.btn-cancel-queue {
+  background: rgba(239, 68, 68, 0.18);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  color: #ef4444;
+  font-weight: 800;
+  font-size: 0.8rem;
+  padding: 7px 16px;
+  border-radius: 8px;
+  transition: all 0.15s ease;
+}
+
+.btn-cancel-queue:hover {
+  background: #ef4444;
+  color: #ffffff;
+}
+
+/* ── Rank Tiers & ELO System Section ────────────────────────── */
+.rank-system-section {
+  margin-bottom: 48px;
+}
+
+.section-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.section-head h2 {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.65rem;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+  margin: 0 0 6px;
+}
+
+.section-head p {
+  color: var(--text-muted, #94a3b8);
+  font-size: 0.88rem;
+  margin: 0;
+}
+
+/* Rank Rules Pills */
+.rank-rules-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.rule-pill-card {
+  background: var(--bg-card, #181c20);
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+  border-radius: 14px;
+  padding: 16px;
+  display: flex;
+  gap: 12px;
+}
+
+.rule-pill-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: rgba(83, 252, 24, 0.12);
+  color: var(--kick-green, #53fc18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.rule-pill-content h4 {
+  font-size: 0.88rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0 0 4px;
+}
+
+.rule-pill-content p {
+  font-size: 0.78rem;
+  color: var(--text-muted, #94a3b8);
+  line-height: 1.45;
+  margin: 0;
+}
+
+/* Rank Cards Grid (Ready for user rank images) */
+.ranks-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 12px;
+}
+
+.rank-tier-card {
+  background: var(--bg-surface, #14171a);
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+  border-radius: 14px;
+  padding: 18px 12px;
+  text-align: center;
+  position: relative;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.rank-tier-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.6);
+}
+
+.rank-art-slot {
+  width: 72px;
+  height: 72px;
+  margin: 0 auto 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.rank-art-slot img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Tier Color Accents */
+.tier-unranked .rank-art-slot { border-color: rgba(148, 163, 184, 0.3); color: #94a3b8; }
+.tier-bronze .rank-art-slot   { border-color: rgba(205, 127, 50, 0.4); color: #cd7f32; box-shadow: 0 0 14px rgba(205, 127, 50, 0.2); }
+.tier-silver .rank-art-slot   { border-color: rgba(192, 192, 192, 0.4); color: #c0c0c0; box-shadow: 0 0 14px rgba(192, 192, 192, 0.2); }
+.tier-gold .rank-art-slot     { border-color: rgba(245, 158, 11, 0.4); color: #f59e0b; box-shadow: 0 0 16px rgba(245, 158, 11, 0.25); }
+.tier-platinum .rank-art-slot { border-color: rgba(56, 189, 248, 0.4); color: #38bdf8; box-shadow: 0 0 18px rgba(56, 189, 248, 0.25); }
+.tier-diamond .rank-art-slot  { border-color: rgba(168, 85, 247, 0.4); color: #a855f7; box-shadow: 0 0 20px rgba(168, 85, 247, 0.3); }
+.tier-elite .rank-art-slot    { border-color: rgba(239, 68, 68, 0.4); color: #ef4444; box-shadow: 0 0 22px rgba(239, 68, 68, 0.35); }
+.tier-champion .rank-art-slot { border-color: rgba(249, 115, 22, 0.4); color: #f97316; box-shadow: 0 0 24px rgba(249, 115, 22, 0.4); }
+.tier-unreal .rank-art-slot   { border-color: var(--kick-green); color: var(--kick-green); box-shadow: 0 0 28px rgba(83, 252, 24, 0.45); }
+
+.rank-tier-name {
+  font-weight: 900;
+  font-size: 0.88rem;
+  letter-spacing: -0.01em;
+  color: #ffffff;
+  margin-bottom: 2px;
+  font-family: 'Outfit', sans-serif;
+}
+
+.rank-tier-elo {
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: var(--text-muted, #94a3b8);
+}
+
+.rank-cap-tag {
+  display: inline-block;
+  background: rgba(83, 252, 24, 0.15);
+  color: var(--kick-green, #53fc18);
+  font-size: 0.65rem;
+  font-weight: 900;
+  padding: 1px 6px;
+  border-radius: 4px;
+  margin-top: 4px;
+}
+
+/* ── Season 1 Battle Pass Preview ───────────────────────────── */
+.battlepass-section {
+  background: var(--bg-card, #181c20);
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+  border-radius: 20px;
+  padding: 28px;
+  margin-bottom: 40px;
+}
+
+.bp-header-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.bp-tier-bar-wrap {
+  background: var(--bg-surface, #14171a);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 18px;
+  margin-bottom: 22px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.bp-level-badge {
+  background: var(--kick-green, #53fc18);
+  color: #000;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 900;
+  font-size: 1.1rem;
+  padding: 6px 14px;
+  border-radius: 8px;
+  white-space: nowrap;
+}
+
+.bp-progress-outer {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.06);
+  height: 10px;
+  border-radius: 99px;
+  overflow: hidden;
+  position: relative;
+}
+
+.bp-progress-fill {
+  background: linear-gradient(90deg, #38bdf8 0%, var(--kick-green, #53fc18) 100%);
+  height: 100%;
+  width: 42%;
+  border-radius: 99px;
+  box-shadow: 0 0 10px rgba(83, 252, 24, 0.5);
+}
+
+.bp-rewards-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.bp-reward-card {
+  background: var(--bg-surface, #14171a);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 14px;
+  text-align: center;
+  position: relative;
+}
+
+.bp-reward-card.premium-pass {
+  border-color: rgba(245, 158, 11, 0.4);
+  background: linear-gradient(180deg, rgba(245, 158, 11, 0.06) 0%, #14171a 100%);
+}
+
+.bp-tier-num {
+  font-size: 0.72rem;
+  font-weight: 900;
+  color: var(--text-sub, #64748b);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+
+.bp-reward-icon {
+  width: 48px;
+  height: 48px;
+  margin: 0 auto 10px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.04);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+}
+
+.bp-reward-title {
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 2px;
+}
+
+.bp-reward-type {
+  font-size: 0.7rem;
+  color: var(--text-muted, #94a3b8);
+}
+
+.bp-antiabuse-note {
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 0.76rem;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ── Monthly Leaderboard Rewards Preview ────────────────────── */
+.monthly-rewards-section {
+  background: var(--bg-card, #181c20);
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+  border-radius: 20px;
+  padding: 28px;
+  margin-bottom: 40px;
+}
+
+.leaderboard-table-wrap {
+  overflow-x: auto;
+}
+
+.ranked-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.86rem;
+}
+
+.ranked-table th {
+  padding: 12px 16px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--text-sub, #64748b);
+  border-bottom: 1px solid var(--border);
+}
+
+.ranked-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  color: #ffffff;
+}
+
+.table-rank-badge {
+  font-weight: 900;
+  font-size: 0.95rem;
+  color: var(--kick-green, #53fc18);
+  font-family: 'Outfit', sans-serif;
+}
+
+.table-player-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.table-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  object-fit: cover;
+  background: #24272c;
+}
+
+.table-reward-pill {
+  background: rgba(83, 252, 24, 0.12);
+  color: var(--kick-green, #53fc18);
+  font-weight: 900;
+  font-size: 0.78rem;
+  padding: 4px 10px;
+  border-radius: 6px;
+  display: inline-block;
+}
+
+/* ── Sponsor & Ad Slot ──────────────────────────────────────── */
+.ad-slot-container {
+  background: var(--bg-surface, #14171a);
+  border: 1px dashed rgba(255, 255, 255, 0.14);
+  border-radius: 14px;
+  padding: 24px;
+  text-align: center;
+  margin-bottom: 40px;
+  position: relative;
+}
+
+.ad-slot-label {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  font-size: 0.65rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--text-sub, #64748b);
+  letter-spacing: 0.05em;
+}
+
+.ad-slot-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 4px;
+}
+
+.ad-slot-desc {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+/* ── Social & Friends Side Drawer ───────────────────────────── */
+.friends-drawer-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(4px);
+  z-index: 200;
+  display: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.friends-drawer-overlay.open {
+  display: block;
+  opacity: 1;
+}
+
+.friends-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 380px;
+  max-width: 90vw;
+  background: var(--bg-sidebar, #0f1215);
+  border-left: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+  z-index: 210;
+  transform: translateX(100%);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+}
+
+.friends-drawer.open {
+  transform: translateX(0);
+}
+
+.friends-drawer-header {
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.friends-drawer-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 900;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.friends-drawer-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+  padding: 0 12px;
+}
+
+.friends-tab-btn {
+  flex: 1;
+  padding: 10px 0;
+  text-align: center;
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: var(--text-muted);
+  border-bottom: 2px solid transparent;
+  transition: all 0.15s ease;
+}
+
+.friends-tab-btn.active {
+  color: var(--kick-green);
+  border-bottom-color: var(--kick-green);
+}
+
+.friends-add-bar {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  gap: 8px;
+}
+
+.friends-add-input {
+  flex: 1;
+  background: var(--bg-surface, #14171a);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 0.82rem;
+  color: #ffffff;
+  outline: none;
+}
+
+.friends-add-btn {
+  background: var(--kick-green);
+  color: #000;
+  font-weight: 800;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+}
+
+.friends-list-container {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.friend-item-card {
+  background: var(--bg-surface, #14171a);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.friend-item-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.friend-avatar-wrap {
+  position: relative;
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+}
+
+.friend-avatar-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  object-fit: cover;
+  background: #24272c;
+}
+
+.friend-status-dot {
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 2px solid var(--bg-surface);
+}
+
+.friend-status-dot.in-match  { background: #ef4444; }
+.friend-status-dot.in-queue  { background: #f59e0b; }
+.friend-status-dot.in-lobby  { background: var(--kick-green); }
+.friend-status-dot.offline   { background: #64748b; }
+
+.friend-item-info {
+  min-width: 0;
+}
+
+.friend-item-name {
+  font-size: 0.86rem;
+  font-weight: 800;
+  color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.friend-item-activity {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.friend-actions-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-friend-action {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  transition: all 0.15s ease;
+}
+
+.btn-friend-action:hover {
+  background: var(--bg-active-nav);
+  color: var(--kick-green);
+}
+
+/* Floating Friend Drawer Button */
+.floating-friends-trigger {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: var(--bg-card, #181c20);
+  border: 1px solid var(--border-bright, rgba(255, 255, 255, 0.15));
+  color: #ffffff;
+  padding: 10px 18px;
+  border-radius: 99px;
+  font-weight: 800;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+  z-index: 90;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.floating-friends-trigger:hover {
+  border-color: var(--kick-green);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 36px rgba(83, 252, 24, 0.25);
+}
+
+.floating-friends-badge {
+  background: var(--kick-green);
+  color: #000;
+  font-size: 0.7rem;
+  font-weight: 900;
+  padding: 2px 7px;
+  border-radius: 99px;
+}
+
+/* ── Responsive adjustments ─────────────────────────────────── */
+@media (max-width: 768px) {
+  .ranked-ticker-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .season-hero-banner {
+    padding: 24px 20px;
+  }
+  .matchmaking-center {
+    padding: 20px 16px;
+  }
+  .queue-action-dock {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .queue-btn-group {
+    flex-direction: column;
+    width: 100%;
+  }
+  .btn-enter-queue {
+    width: 100%;
+    justify-content: center;
+  }
+}
