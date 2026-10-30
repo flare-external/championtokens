@@ -45,7 +45,6 @@
     initPartyHub();
     initQueueModal();
     initReferralsModal();
-    initFriendsDrawer();
     initLiveTicker();
     updateRankUI();
     if (window.lucide) window.lucide.createIcons();
@@ -900,48 +899,7 @@
     }
   }
 
-  // Social & Friends Drawer
-  function initFriendsDrawer() {
-    const overlay = document.getElementById('friends-drawer-overlay');
-    const drawer = document.getElementById('friends-drawer');
-    const trigger = document.getElementById('btn-open-friends');
-    const closeBtn = document.getElementById('btn-close-friends');
 
-    function openFriends() {
-      if (overlay) overlay.classList.add('open');
-      if (drawer) drawer.classList.add('open');
-      renderFriendsList();
-    }
-
-    function closeFriends() {
-      if (overlay) overlay.classList.remove('open');
-      if (drawer) drawer.classList.remove('open');
-    }
-
-    if (trigger) trigger.addEventListener('click', openFriends);
-    if (closeBtn) closeBtn.addEventListener('click', closeFriends);
-    if (overlay) overlay.addEventListener('click', closeFriends);
-  }
-
-  function renderFriendsList() {
-    const container = document.getElementById('friends-list-container');
-    if (!container) return;
-
-    container.innerHTML = ONLINE_CONTENDERS.map(f => `
-      <div style="background:#000;border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:10px;display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
-        <div style="display:flex;align-items:center;gap:10px;">
-          <img src="${f.avatar}" style="width:34px;height:34px;border-radius:8px;object-fit:cover;" alt="${f.name}"/>
-          <div>
-            <div style="font-size:0.84rem;font-weight:600;color:#fff;">${f.name} <span style="color:#53fc18;font-size:0.7rem;">${f.elo.toLocaleString()} ELO</span></div>
-            <div style="font-size:0.7rem;color:#64748b;">${f.status}</div>
-          </div>
-        </div>
-        <button type="button" style="background:#14171a;border:1px solid rgba(255,255,255,0.1);color:#53fc18;padding:5px 10px;border-radius:6px;font-size:0.72rem;font-weight:600;cursor:pointer;" onclick="showToast('Invited ${f.name} to Party!')">
-          Invite
-        </button>
-      </div>
-    `).join('');
-  }
 
   // Real-Time Online Ticker
   function initLiveTicker() {
