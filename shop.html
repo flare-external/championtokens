@@ -322,14 +322,15 @@
 
     document.addEventListener('DOMContentLoaded', () => {
       startShopTimer();
-      requireAuth().then(async (user) => {
+      (async () => {
+        const user = (typeof auth !== 'undefined' && auth.currentUser) ? auth.currentUser : null;
         currentUser = user;
         try {
-          await autoRefundDuplicatePremium(user.uid);
+          if (user) await autoRefundDuplicatePremium(user.uid);
         } catch (e) {
           console.warn('Refund check notice:', e);
         }
-        currentUserData = await getUser(user.uid);
+        currentUserData = user ? await getUser(user.uid) : null;
         if (window.renderSharedRankedNav) renderSharedRankedNav('shop');
         const loadingEl = document.getElementById('page-loading'); if (loadingEl) loadingEl.classList.add('hidden');
 
@@ -337,7 +338,7 @@
         renderDailyPfps();
         renderShopTitles();
         if (window.lucide) lucide.createIcons();
-      }).catch(err => {
+      })().catch(err => {
         console.error('Shop auth error:', err);
         const loadingEl = document.getElementById('page-loading');
         if (loadingEl) loadingEl.classList.add('hidden');

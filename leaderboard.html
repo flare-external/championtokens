@@ -344,9 +344,16 @@
     let lbCurrentPage = 1;
     const LB_PER_PAGE = 10;
 
-    requireAuth().then(async (user) => {
-      currentUser = user;
+    document.addEventListener('DOMContentLoaded', async () => {
       if (window.renderSharedRankedNav) renderSharedRankedNav('leaderboard');
+      try {
+        if (typeof auth !== 'undefined') {
+          auth.onAuthStateChanged(async (user) => {
+            currentUser = user;
+            if (window.renderSharedRankedNav) renderSharedRankedNav('leaderboard');
+          });
+        }
+      } catch (e) {}
       await loadLeaderboard();
       const loadingEl = document.getElementById('page-loading');
       if (loadingEl) loadingEl.classList.add('hidden');

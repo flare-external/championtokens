@@ -816,13 +816,16 @@ body {
   letter-spacing: -0.01em;
   padding: 14px 44px;
   border-radius: 12px;
-  border: none;
+  border: 1.5px solid transparent;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  justify-content: center;
+  gap: 12px;
   box-shadow: 0 4px 20px rgba(83, 252, 24, 0.3);
-  transition: all 0.16s ease;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  min-height: 52px;
+  box-sizing: border-box;
 }
 
 .ct-big-queue-btn:hover {
@@ -831,27 +834,85 @@ body {
   box-shadow: 0 8px 28px rgba(83, 252, 24, 0.45);
 }
 
+/* Queueing / Searching State (Replacing Queue Match button) */
 .ct-big-queue-btn.queueing {
-  background: #ef4444;
-  color: #ffffff;
-  box-shadow: 0 4px 20px rgba(239, 68, 68, 0.35);
+  background: #08090c !important;
+  color: #ffffff !important;
+  border: 1.5px solid #53fc18 !important;
+  box-shadow: 0 0 25px rgba(83, 252, 24, 0.25), inset 0 0 15px rgba(83, 252, 24, 0.05) !important;
+  transform: none !important;
+  padding: 10px 16px 10px 20px;
+  cursor: default;
+  gap: 12px;
 }
 
-/* Live Searching Drawer */
-.ct-queue-banner {
-  display: none;
-  margin: 18px auto 0;
-  max-width: 500px;
-  padding: 14px 18px;
-  background: #000000;
-  border: 1px solid #53fc18;
-  border-radius: 12px;
+.ct-queue-spinner {
+  width: 20px;
+  height: 20px;
+  border: 2.5px solid rgba(83, 252, 24, 0.25);
+  border-top-color: #53fc18;
+  border-radius: 50%;
+  animation: ct-queue-spin 0.85s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes ct-queue-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.ct-queue-text-wrap {
+  display: inline-flex;
   align-items: center;
-  justify-content: space-between;
+  font-size: 0.96rem;
+  font-weight: 600;
+  color: #ffffff;
+  letter-spacing: 0.01em;
 }
 
-.ct-queue-banner.active {
-  display: flex;
+#queue-dots {
+  display: inline-block;
+  min-width: 16px;
+  text-align: left;
+  color: #53fc18;
+}
+
+.ct-queue-btn-timer {
+  font-family: monospace;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #94a3b8;
+  background: rgba(255, 255, 255, 0.06);
+  padding: 3px 8px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.ct-queue-btn-x {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #94a3b8;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  margin-left: 2px;
+}
+
+.ct-queue-btn-x:hover {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: #ef4444;
+  color: #ef4444;
+  transform: scale(1.08);
+}
+
+/* Old Live Searching Drawer */
+.ct-queue-banner {
+  display: none !important;
 }
 
 /* ── Queue Selection Modal ──────────────────────────────────── */

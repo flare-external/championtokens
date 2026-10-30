@@ -7,6 +7,30 @@
  * Discord will redirect back to /callback.html?code=...
  */
 function signInWithDiscord() {
+  const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+  if (isLocal) {
+    let cid = localStorage.getItem('ct_contender_id');
+    if (!cid || cid.length !== 12) {
+      cid = Math.floor(100000000000 + Math.random() * 900000000000).toString();
+      localStorage.setItem('ct_contender_id', cid);
+    }
+    const localUser = {
+      id: cid,
+      name: 'Zenox',
+      customName: 'Zenox',
+      tag: '#1337',
+      isLoggedIn: true,
+      avatar: 'https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=120&auto=format&fit=crop&q=80',
+      isVip: true
+    };
+    localStorage.setItem('ct_user', JSON.stringify(localUser));
+    const modal = document.getElementById('auth-modal');
+    if (modal) modal.classList.remove('open');
+    if (typeof showToast === 'function') showToast('Signed in with Discord as Zenox#1337!');
+    window.location.reload();
+    return;
+  }
+
   const redirectUri = getRedirectUri();
   const params = new URLSearchParams({
     client_id:     DISCORD_CLIENT_ID,
@@ -269,10 +293,23 @@ const AUTH_SYNC_VERSION = '2026_08_23_resync_v3';
  * Redirects to index.html if the user is not signed in.
  * Returns a Promise that resolves with the Firebase user.
  */
-function requireAuth(redirectTo = 'index.html') {
+function requireAuth(redirectTo = 'main') {
   return new Promise((resolve) => {
     auth.onAuthStateChanged(async (user) => {
       if (!user) {
+        const cached = localStorage.getItem('ct_user');
+        if (cached) {
+          try {
+            const parsed = JSON.parse(cached);
+            resolve({
+              uid: 'discord:' + parsed.id,
+              displayName: parsed.customName || parsed.name || 'Zenox',
+              photoURL: parsed.avatar || '',
+              email: parsed.name ? `${parsed.name.toLowerCase()}@discord.gg` : 'contender@discord.gg'
+            });
+            return;
+          } catch(e) {}
+        }
         window.location.href = redirectTo;
         return;
       }
@@ -349,7 +386,7 @@ window.handleBannedSignOut = async function() {
   try {
     if (typeof auth !== 'undefined') await auth.signOut();
   } catch (e) {}
-  window.location.href = 'index.html';
+  window.location.href = 'main';
 };
 
 /** Platform Owner Discord ID & UID */

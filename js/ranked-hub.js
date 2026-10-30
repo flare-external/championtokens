@@ -19,6 +19,7 @@
     gameMode: 'realistic',
     isQueueing: false,
     queueTimer: null,
+    dotsTimer: null,
     queueSeconds: 0,
     userRank: 'Elite',
     userElo: savedElo !== null ? parseInt(savedElo, 10) : 2450,
@@ -667,18 +668,20 @@
     const modal = document.getElementById('queue-select-modal');
     const closeBtn = document.getElementById('btn-close-queue-modal');
     const startQueueBtn = document.getElementById('btn-start-queue-modal');
-    const banner = document.getElementById('queue-status-banner');
-    const cancelBtn = document.getElementById('btn-cancel-queue');
-    const timerText = document.getElementById('queue-timer-text');
-    const statusMsg = document.getElementById('queue-status-msg');
     const modeLabel = document.getElementById('party-mode-label');
 
     if (openBtn) {
-      openBtn.addEventListener('click', () => {
+      openBtn.addEventListener('click', (e) => {
+        const cancelX = e.target.closest('#btn-cancel-queue-x');
+        if (cancelX) {
+          e.stopPropagation();
+          cancelQueue();
+          return;
+        }
         if (state.isQueueing) {
           cancelQueue();
         } else {
-          startQueue();
+          if (modal) modal.classList.add('open');
         }
       });
     }
@@ -733,29 +736,42 @@
       });
     }
 
-    if (cancelBtn) cancelBtn.addEventListener('click', cancelQueue);
-
     function startQueue() {
       state.isQueueing = true;
       state.queueSeconds = 0;
-      if (banner) banner.classList.add('active');
       if (openBtn) {
         openBtn.classList.add('queueing');
-        openBtn.innerHTML = `<i data-lucide="x-circle" style="width:20px;height:20px;"></i> <span>Cancel Queue</span>`;
+        openBtn.innerHTML = `
+          <div class="ct-queue-spinner"></div>
+          <span class="ct-queue-text-wrap">Search for players<span id="queue-dots">..</span></span>
+          <span id="queue-btn-timer" class="ct-queue-btn-timer">0:00</span>
+          <span id="btn-cancel-queue-x" class="ct-queue-btn-x" title="Cancel Queue">
+            <i data-lucide="x" style="width:16px;height:16px;"></i>
+          </span>
+        `;
+        if (window.lucide) window.lucide.createIcons();
       }
-      if (window.lucide) window.lucide.createIcons();
 
-      const modeName = getGamemodeDisplayName(state.gameMode);
-      if (statusMsg) {
-        statusMsg.textContent = `Searching ${state.teamSize} ${modeName} opponents (±300 ELO range)...`;
-      }
+      // Animated Dots: . , .. , ... , .
+      let dotStep = 2;
+      clearInterval(state.dotsTimer);
+      state.dotsTimer = setInterval(() => {
+        dotStep = (dotStep % 3) + 1;
+        const dotsEl = document.getElementById('queue-dots');
+        if (dotsEl) {
+          dotsEl.textContent = '.'.repeat(dotStep);
+        }
+      }, 420);
 
+      // Elapsed Timer
+      clearInterval(state.queueTimer);
       state.queueTimer = setInterval(() => {
         state.queueSeconds++;
         const mins = Math.floor(state.queueSeconds / 60);
         const secs = state.queueSeconds % 60;
         const fmt = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
-        if (timerText) timerText.textContent = fmt;
+        const timerBadge = document.getElementById('queue-btn-timer');
+        if (timerBadge) timerBadge.textContent = fmt;
 
         // Match Found Simulation after 8 seconds
         if (state.queueSeconds === 8) {
@@ -767,22 +783,23 @@
     function cancelQueue() {
       state.isQueueing = false;
       clearInterval(state.queueTimer);
-      if (banner) banner.classList.remove('active');
+      clearInterval(state.dotsTimer);
       if (openBtn) {
         openBtn.classList.remove('queueing');
         openBtn.innerHTML = `<i data-lucide="play" style="width:20px;height:20px;fill:currentColor;"></i> <span>Queue Match</span>`;
+        if (window.lucide) window.lucide.createIcons();
       }
-      if (window.lucide) window.lucide.createIcons();
+      showToast('Matchmaking cancelled.');
     }
 
     function matchFoundSimulation() {
       clearInterval(state.queueTimer);
-      if (banner) banner.classList.remove('active');
+      clearInterval(state.dotsTimer);
       if (openBtn) {
         openBtn.classList.remove('queueing');
         openBtn.innerHTML = `<i data-lucide="check" style="width:20px;height:20px;"></i> <span>Match Found!</span>`;
+        if (window.lucide) window.lucide.createIcons();
       }
-      if (window.lucide) window.lucide.createIcons();
       showMatchModal();
     }
   }
