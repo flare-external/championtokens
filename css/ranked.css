@@ -212,7 +212,7 @@ body {
   display: none;
   flex-direction: column;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.98);
-  z-index: 1000 !important;
+  z-index: 9999 !important;
   opacity: 1 !important;
 }
 
@@ -326,8 +326,67 @@ body {
 /* ── Landing Nav Header (Higher Stacking Context) ───────────── */
 .landing-nav {
   position: relative !important;
-  z-index: 100 !important;
+  z-index: 500 !important;
   background: #000000 !important;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.ct-nav-center {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 4px 6px;
+  border-radius: 99px;
+}
+
+.ct-nav-link {
+  color: #94a3b8;
+  text-decoration: none;
+  font-size: 0.82rem;
+  font-weight: 500;
+  padding: 6px 16px;
+  border-radius: 99px;
+  transition: all 0.16s ease;
+  display: inline-flex;
+  align-items: center;
+}
+
+.ct-nav-link:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.ct-nav-link.active {
+  color: #000000;
+  background: #53fc18;
+  font-weight: 600;
+  box-shadow: 0 0 14px rgba(83, 252, 24, 0.35);
+}
+
+.ct-nav-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #14171e;
+  border: 1px solid rgba(83, 252, 24, 0.3);
+  color: #53fc18;
+  text-decoration: none;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: 8px;
+  transition: all 0.15s ease;
+  user-select: none;
+}
+
+.ct-nav-back-btn:hover {
+  background: rgba(83, 252, 24, 0.15);
+  border-color: #53fc18;
+  transform: translateX(-2px);
 }
 
 /* ── Container ──────────────────────────────────────────────── */

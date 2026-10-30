@@ -89,7 +89,7 @@
 
     const icons = [
       { name: 'crosshair', top: '12%', left: '8%',  size: 32, dur: '18s', delay: '0s' },
-      { name: 'swords',    top: '25%', left: '88%', size: 36, dur: '22s', delay: '2s' },
+      { name: 'swords',    top: '42%', left: '84%', size: 36, dur: '22s', delay: '2s' },
       { name: 'shield',    top: '65%', left: '6%',  size: 30, dur: '20s', delay: '4s' },
       { name: 'trophy',    top: '78%', left: '92%', size: 34, dur: '25s', delay: '1s' },
       { name: 'zap',       top: '45%', left: '95%', size: 28, dur: '17s', delay: '5s' },
@@ -265,16 +265,10 @@
     const authModal = document.getElementById('auth-modal');
     const closeAuthBtn = document.getElementById('btn-close-auth-modal');
     const discordAuthBtn = document.getElementById('btn-auth-discord-instant');
-    const contenderForm = document.getElementById('form-contender-signup');
-    const contenderIdInput = document.getElementById('auth-contender-id-input');
 
     function renderAuthState() {
       const u = state.currentUser;
       const displayName = u.customName || u.name || u.id;
-
-      if (contenderIdInput) {
-        contenderIdInput.value = u.id;
-      }
 
       if (u.isLoggedIn) {
         if (signInBtn) signInBtn.style.display = 'none';
@@ -295,8 +289,11 @@
     }
 
     function openAuthModal() {
+      if (typeof signInWithDiscord === 'function') {
+        signInWithDiscord();
+        return;
+      }
       if (authModal) authModal.classList.add('open');
-      if (contenderIdInput) contenderIdInput.value = state.currentUser.id;
     }
 
     function closeAuthModal() {
@@ -311,29 +308,35 @@
       });
     }
 
-    // 1-Click Discord Sign In
+    // Discord Sign In Click
     if (discordAuthBtn) {
       discordAuthBtn.addEventListener('click', () => {
-        state.currentUser.isLoggedIn = true;
-        state.currentUser.name = 'Zenox';
-        state.currentUser.tag = '#1337';
-        state.currentUser.avatar = 'https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=120&auto=format&fit=crop&q=80';
-        localStorage.setItem('ct_user', JSON.stringify(state.currentUser));
-        closeAuthModal();
-        renderAuthState();
-        showToast('Signed in with Discord as Zenox#1337');
+        if (typeof signInWithDiscord === 'function') {
+          signInWithDiscord();
+        } else {
+          state.currentUser.isLoggedIn = true;
+          state.currentUser.name = 'Zenox';
+          state.currentUser.tag = '#1337';
+          state.currentUser.avatar = 'https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=120&auto=format&fit=crop&q=80';
+          localStorage.setItem('ct_user', JSON.stringify(state.currentUser));
+          closeAuthModal();
+          renderAuthState();
+          showToast('Signed in with Discord as Zenox#1337');
+        }
       });
     }
 
-    // Contender ID Activation
-    if (contenderForm) {
-      contenderForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        state.currentUser.isLoggedIn = true;
-        localStorage.setItem('ct_user', JSON.stringify(state.currentUser));
-        closeAuthModal();
-        renderAuthState();
-        showToast(`Contender profile #${state.currentUser.id} activated!`);
+    // Listen to real Firebase / Discord Auth State
+    if (typeof auth !== 'undefined') {
+      auth.onAuthStateChanged((fbUser) => {
+        if (fbUser) {
+          state.currentUser.isLoggedIn = true;
+          state.currentUser.name = fbUser.displayName || 'Player';
+          state.currentUser.avatar = fbUser.photoURL || 'https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=120&auto=format&fit=crop&q=80';
+          state.currentUser.id = fbUser.uid;
+          localStorage.setItem('ct_user', JSON.stringify(state.currentUser));
+          renderAuthState();
+        }
       });
     }
 
@@ -355,6 +358,9 @@
     // Sign out click
     if (signOutBtn) {
       signOutBtn.addEventListener('click', () => {
+        if (typeof signOut === 'function') {
+          try { signOut(); } catch (e) {}
+        }
         state.currentUser.isLoggedIn = false;
         state.currentUser.name = state.currentUser.id;
         state.currentUser.tag = '';

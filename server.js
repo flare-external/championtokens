@@ -42,8 +42,12 @@ const server = http.createServer((req, res) => {
   let pathname = decodeURIComponent(parsedUrl.pathname);
 
   // Normalize path
-  if (pathname === '/' || pathname === '') {
+  if (pathname === '/' || pathname === '' || pathname === '/main') {
     pathname = '/index.html';
+  }
+
+  if (pathname === '/season-pass') {
+    pathname = '/shop.html';
   }
 
   // Handle /profile/* dynamically

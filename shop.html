@@ -26,6 +26,7 @@
   <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
   <link rel="manifest" href="manifest.json"/>
   <link rel="stylesheet" href="css/style.css?v=5.5"/>
+  <link rel="stylesheet" href="css/ranked.css?v=4.2"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
@@ -220,7 +221,7 @@
   <script src="js/protect.js"></script>
   <meta name="keywords" content="fortnite cosmetics shop, fortnite custom titles, fortnite avatars, champion tokens shop, daily fortnite cosmetics, buy fortnite titles"/>
 </head>
-<body>
+<body data-ct-page="shop">
   <div class="page-bg"></div>
   <!-- Loading screen -->
   <div class="page-loading" id="page-loading">
@@ -313,6 +314,7 @@
   <script src="js/auth.js?v=4.0.1788871233902"></script>
   <script src="js/db.js?v=4.0.1788871233902"></script>
   <script src="js/nav.js?v=5.5"></script>
+  <script src="js/ranked-nav.js?v=4.2"></script>
 
   <script>
     let currentUser = null;
@@ -328,7 +330,7 @@
           console.warn('Refund check notice:', e);
         }
         currentUserData = await getUser(user.uid);
-        injectNav('shop');
+        if (window.renderSharedRankedNav) renderSharedRankedNav('shop');
         const loadingEl = document.getElementById('page-loading'); if (loadingEl) loadingEl.classList.add('hidden');
 
         checkPremiumStatus();
@@ -339,6 +341,10 @@
         console.error('Shop auth error:', err);
         const loadingEl = document.getElementById('page-loading');
         if (loadingEl) loadingEl.classList.add('hidden');
+        if (window.renderSharedRankedNav) renderSharedRankedNav('shop');
+        renderDailyPfps();
+        renderShopTitles();
+        if (window.lucide) lucide.createIcons();
       });
     });
 
