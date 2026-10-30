@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <base href="/" />
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Contender Profile — Champion Tokens</title>
-  <link rel="icon" type="image/png" href="champion-tokens_new.png"/>
-  <link rel="stylesheet" href="css/style.css?v=5.5"/>
-  <link rel="stylesheet" href="css/ranked.css?v=4.2"/>
+  <link rel="icon" type="image/png" href="/champion-tokens_new.png"/>
+  <link rel="stylesheet" href="/css/style.css?v=5.5"/>
+  <link rel="stylesheet" href="/css/ranked.css?v=4.4"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
-  <script src="js/protect.js"></script>
+  <script src="/js/protect.js"></script>
   <style>
     .pf-container {
       max-width: 960px;
@@ -32,7 +33,7 @@
     .pf-banner-cover {
       height: 180px;
       background: linear-gradient(180deg, rgba(8, 9, 12, 0.2) 0%, #08090c 100%),
-                  url('realistic.jpeg') center/cover no-repeat;
+                  url('/realistic.jpeg') center/cover no-repeat;
       position: relative;
       border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     }
@@ -98,17 +99,6 @@
       gap: 10px;
     }
 
-    .pf-season-badge {
-      font-size: 0.72rem;
-      font-weight: 700;
-      background: rgba(83, 252, 24, 0.12);
-      border: 1px solid rgba(83, 252, 24, 0.3);
-      color: #53fc18;
-      padding: 2px 10px;
-      border-radius: 99px;
-      letter-spacing: 0.02em;
-    }
-
     .pf-id-row {
       display: flex;
       align-items: center;
@@ -158,12 +148,18 @@
       gap: 2px;
     }
 
-    .pf-rank-label {
-      font-size: 0.72rem;
-      font-weight: 600;
-      color: #64748b;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
+    .pf-rank-header {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+
+    .pf-rank-place {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: #fbbf24;
+      line-height: 1;
     }
 
     .pf-rank-title {
@@ -176,7 +172,7 @@
 
     .pf-rank-elo {
       font-size: 0.85rem;
-      font-weight: 700;
+      font-weight: 600;
       color: #53fc18;
     }
   </style>
@@ -195,7 +191,7 @@
       <div class="pf-banner-body">
         <div class="pf-profile-flex">
           
-          <!-- Left: PFP, Username, Contender ID -->
+          <!-- Left: PFP, Username, 12-Digit Contender ID -->
           <div class="pf-user-left">
             <div class="pf-avatar-wrap">
               <img src="https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=120&auto=format&fit=crop&q=80" id="pf-avatar" class="pf-avatar-img" alt="Contender Avatar"/>
@@ -204,7 +200,6 @@
             <div class="pf-user-meta">
               <div class="pf-username">
                 <span id="pf-display-name">Zenox#1337</span>
-                <span class="pf-season-badge">Season 1 Contender</span>
               </div>
               <div class="pf-id-row">
                 <span>Contender ID: <strong style="color:#ffffff;" id="pf-contender-id">882194017402</strong></span>
@@ -215,13 +210,15 @@
             </div>
           </div>
 
-          <!-- Right: Competitive Rank & ELO Badge -->
+          <!-- Right: Competitive Rank, #Leaderboard Place & ELO Badge -->
           <div class="pf-rank-box">
-            <img src="medal-ranks/svg/06-elite.svg" id="pf-rank-icon" class="pf-rank-emblem" alt="Rank Emblem"/>
+            <img src="/medal-ranks/svg/10-star.svg" id="pf-rank-icon" class="pf-rank-emblem" alt="Rank Emblem"/>
             <div class="pf-rank-details">
-              <span class="pf-rank-label">Ranked Arena Division</span>
-              <span class="pf-rank-title" id="pf-rank-title">Elite Tier</span>
-              <span class="pf-rank-elo" id="pf-rank-elo">2,450 ELO</span>
+              <div class="pf-rank-header">
+                <span class="pf-rank-place" id="pf-rank-place">#1</span>
+                <span class="pf-rank-title" id="pf-rank-title">Unreal Tier</span>
+              </div>
+              <span class="pf-rank-elo" id="pf-rank-elo">9,999 ELO</span>
             </div>
           </div>
 
@@ -231,42 +228,47 @@
 
   </main>
 
-  <!-- Bottom Bar / Footer -->
-  <footer class="ct-footer" style="border-top:1px solid rgba(255,255,255,0.08);padding:32px 20px 44px;background:#000000;text-align:center;">
-    <div style="max-width:1000px;margin:0 auto;display:flex;flex-direction:column;gap:16px;">
-      <div style="font-size:0.75rem;color:#475569;">
-        © 2026 Champion Tokens • Protected by Cloudflare
-      </div>
+  <!-- Universal Pinned Bottom Bar -->
+  <footer class="ct-footer">
+    <div style="font-size:0.75rem;color:#475569;">
+      © 2026 Champion Tokens • Protected by Cloudflare
     </div>
   </footer>
 
   <!-- Scripts -->
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
-  <script src="js/ranked-nav.js"></script>
+  <script src="/js/ranked-nav.js"></script>
   <script>
     function getRankMeta(elo, isUnranked) {
       if (isUnranked || elo <= 0) {
-        return { name: 'Unranked', icon: 'medal-ranks/svg/01-bronze.svg', eloDisplay: '0/5 Placements' };
+        return { name: 'Unranked', icon: '/medal-ranks/svg/01-bronze.svg', eloDisplay: '0/5 Placements', place: '--' };
       }
-      if (elo < 500) return { name: 'Bronze', icon: 'medal-ranks/svg/01-bronze.svg', eloDisplay: `${elo.toLocaleString()} ELO` };
-      if (elo < 1000) return { name: 'Silver', icon: 'medal-ranks/svg/02-silver.svg', eloDisplay: `${elo.toLocaleString()} ELO` };
-      if (elo < 1500) return { name: 'Gold', icon: 'medal-ranks/svg/03-gold.svg', eloDisplay: `${elo.toLocaleString()} ELO` };
-      if (elo < 2000) return { name: 'Platinum', icon: 'medal-ranks/svg/04-platinum.svg', eloDisplay: `${elo.toLocaleString()} ELO` };
-      if (elo < 2400) return { name: 'Diamond', icon: 'medal-ranks/svg/05-diamond.svg', eloDisplay: `${elo.toLocaleString()} ELO` };
-      if (elo < 2700) return { name: 'Elite', icon: 'medal-ranks/svg/06-elite.svg', eloDisplay: `${elo.toLocaleString()} ELO` };
-      if (elo < 3000) return { name: 'Champion', icon: 'medal-ranks/svg/07-champion.svg', eloDisplay: `${elo.toLocaleString()} ELO` };
-      return { name: 'Unreal', icon: 'medal-ranks/svg/10-star.svg', eloDisplay: `${elo.toLocaleString()} ELO` };
+      if (elo < 500) return { name: 'Bronze', icon: '/medal-ranks/svg/01-bronze.svg', eloDisplay: `${elo.toLocaleString()} ELO`, place: '#2,180' };
+      if (elo < 1000) return { name: 'Silver', icon: '/medal-ranks/svg/02-silver.svg', eloDisplay: `${elo.toLocaleString()} ELO`, place: '#1,040' };
+      if (elo < 1500) return { name: 'Gold', icon: '/medal-ranks/svg/03-gold.svg', eloDisplay: `${elo.toLocaleString()} ELO`, place: '#612' };
+      if (elo < 2000) return { name: 'Platinum', icon: '/medal-ranks/svg/04-platinum.svg', eloDisplay: `${elo.toLocaleString()} ELO`, place: '#285' };
+      if (elo < 2400) return { name: 'Diamond', icon: '/medal-ranks/svg/05-diamond.svg', eloDisplay: `${elo.toLocaleString()} ELO`, place: '#118' };
+      if (elo < 2700) return { name: 'Elite', icon: '/medal-ranks/svg/06-elite.svg', eloDisplay: `${elo.toLocaleString()} ELO`, place: '#42' };
+      if (elo < 3000) return { name: 'Champion', icon: '/medal-ranks/svg/07-champion.svg', eloDisplay: `${elo.toLocaleString()} ELO`, place: '#14' };
+      return { name: 'Unreal', icon: '/medal-ranks/svg/10-star.svg', eloDisplay: `${elo.toLocaleString()} ELO`, place: '#1' };
+    }
+
+    function sanitizeTo12Digits(val) {
+      if (!val) return null;
+      const digits = String(val).replace(/\D/g, '');
+      if (digits.length >= 12) return digits.slice(0, 12);
+      return null;
     }
 
     function initProfile() {
-      let cid = localStorage.getItem('ct_contender_id');
-      if (!cid || cid.length !== 12) {
-        cid = '882194017402';
-        localStorage.setItem('ct_contender_id', cid);
+      // 1. Resolve 12-digit Contender ID (Never discord:...)
+      let contenderId = sanitizeTo12Digits(window.location.pathname);
+      if (!contenderId) {
+        contenderId = sanitizeTo12Digits(localStorage.getItem('ct_contender_id'));
       }
 
       let user = {
-        id: cid,
+        id: contenderId || '882194017402',
         name: 'Zenox',
         customName: '',
         tag: '#1337',
@@ -275,26 +277,39 @@
 
       const cached = localStorage.getItem('ct_user');
       if (cached) {
-        try { user = Object.assign(user, JSON.parse(cached)); } catch (e) {}
+        try {
+          const parsed = JSON.parse(cached);
+          user = Object.assign(user, parsed);
+          const sanitizedId = sanitizeTo12Digits(user.id || user.uid);
+          if (sanitizedId) user.id = sanitizedId;
+        } catch (e) {}
       }
+
+      // Guarantee exactly 12 digits
+      if (!/^\d{12}$/.test(user.id)) {
+        user.id = sanitizeTo12Digits(user.id) || Math.floor(100000000000 + Math.random() * 900000000000).toString();
+      }
+      localStorage.setItem('ct_contender_id', user.id);
 
       const savedElo = localStorage.getItem('ct_user_elo');
       const isUnranked = localStorage.getItem('ct_is_unranked') === 'true';
-      const elo = savedElo !== null ? parseInt(savedElo, 10) : 2450;
+      const elo = savedElo !== null ? parseInt(savedElo, 10) : 9999;
       const meta = getRankMeta(elo, isUnranked);
 
-      const displayName = user.customName || `${user.name}${user.tag || ''}`;
+      const displayName = user.customName || user.displayName || `${user.name || 'Contender'}${user.tag || ''}`;
       const nameEl = document.getElementById('pf-display-name');
       const idEl = document.getElementById('pf-contender-id');
       const avatarEl = document.getElementById('pf-avatar');
       const rankIconEl = document.getElementById('pf-rank-icon');
+      const rankPlaceEl = document.getElementById('pf-rank-place');
       const rankTitleEl = document.getElementById('pf-rank-title');
       const rankEloEl = document.getElementById('pf-rank-elo');
 
       if (nameEl) nameEl.textContent = displayName;
       if (idEl) idEl.textContent = user.id;
-      if (avatarEl) avatarEl.src = user.avatar;
+      if (avatarEl && user.avatar) avatarEl.src = user.avatar;
       if (rankIconEl) rankIconEl.src = meta.icon;
+      if (rankPlaceEl) rankPlaceEl.textContent = meta.place;
       if (rankTitleEl) rankTitleEl.textContent = `${meta.name} Tier`;
       if (rankEloEl) rankEloEl.textContent = meta.eloDisplay;
 
@@ -315,12 +330,11 @@
       if (!toast) {
         toast = document.createElement('div');
         toast.id = 'pf-toast';
-        toast.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#08090c;border:1px solid #53fc18;color:#fff;padding:10px 22px;border-radius:99px;font-size:0.85rem;font-weight:600;z-index:9999;box-shadow:0 10px 30px rgba(0,0,0,0.8);';
         document.body.appendChild(toast);
       }
       toast.textContent = msg;
       toast.style.display = 'block';
-      setTimeout(() => { toast.style.display = 'none'; }, 2600);
+      setTimeout(() => { toast.style.display = 'none'; }, 2200);
     }
   </script>
 </body>

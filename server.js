@@ -138,10 +138,14 @@ const server = http.createServer((req, res) => {
     pathname = '/shop.html';
   }
 
-  // Handle /profile/* dynamically
-  if (pathname.startsWith('/profile/')) {
-    const profilePath = path.join(ROOT, 'profile.html');
-    return serveFile(profilePath, res);
+  // Handle /profile and /profile/* dynamically (excluding static assets with file extensions)
+  if (pathname === '/profile' || pathname.startsWith('/profile/')) {
+    if (path.extname(pathname)) {
+      pathname = pathname.replace(/^\/profile/, '');
+    } else {
+      const profilePath = path.join(ROOT, 'profile.html');
+      return serveFile(profilePath, res);
+    }
   }
 
   let filePath = path.join(ROOT, pathname);

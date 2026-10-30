@@ -278,7 +278,7 @@
         if (islandName) islandName.textContent = displayName;
         if (dropdownAvatar) dropdownAvatar.src = u.avatar;
         if (dropdownName) dropdownName.textContent = `${displayName}${u.tag || ''}`;
-        if (dropdownProfileLink) dropdownProfileLink.href = `profile/${u.id}`;
+        if (dropdownProfileLink) dropdownProfileLink.href = `/profile/${u.id}`;
       } else {
         if (signInBtn) signInBtn.style.display = 'inline-flex';
         if (userIsland) userIsland.style.display = 'none';
@@ -349,7 +349,13 @@
           state.currentUser.isLoggedIn = true;
           state.currentUser.name = fbUser.displayName || 'Player';
           state.currentUser.avatar = fbUser.photoURL || 'https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=120&auto=format&fit=crop&q=80';
-          state.currentUser.id = fbUser.uid;
+          let cid = localStorage.getItem('ct_contender_id');
+          if (!cid || cid.length !== 12) {
+            const digits = (fbUser.uid || '').replace(/\D/g, '');
+            cid = digits.length >= 12 ? digits.slice(0, 12) : Math.floor(100000000000 + Math.random() * 900000000000).toString();
+            localStorage.setItem('ct_contender_id', cid);
+          }
+          state.currentUser.id = cid;
           localStorage.setItem('ct_user', JSON.stringify(state.currentUser));
           renderAuthState();
         }
