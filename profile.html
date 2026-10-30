@@ -11,244 +11,227 @@
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
   <script src="js/protect.js"></script>
   <style>
-    .pf-hero {
-      background: linear-gradient(180deg, rgba(83, 252, 24, 0.08) 0%, rgba(8, 9, 12, 0.6) 100%), #08090c;
+    .pf-container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 36px 20px 80px;
+      position: relative;
+      z-index: 10;
+    }
+
+    /* Clean Profile Banner Card */
+    .pf-banner-card {
+      background: #08090c;
       border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 18px;
-      padding: 32px 28px;
-      margin-bottom: 28px;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+    }
+
+    /* Banner Backdrop Image */
+    .pf-banner-cover {
+      height: 180px;
+      background: linear-gradient(180deg, rgba(8, 9, 12, 0.2) 0%, #08090c 100%),
+                  url('realistic.jpeg') center/cover no-repeat;
+      position: relative;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .pf-banner-cover::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top right, rgba(83, 252, 24, 0.15), transparent 70%);
+      pointer-events: none;
+    }
+
+    /* Banner Body */
+    .pf-banner-body {
+      padding: 0 32px 36px;
       position: relative;
     }
-    .pf-avatar-lg {
-      width: 90px;
-      height: 90px;
+
+    .pf-profile-flex {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      flex-wrap: wrap;
+      gap: 24px;
+      margin-top: -55px;
+    }
+
+    .pf-user-left {
+      display: flex;
+      align-items: flex-end;
+      gap: 22px;
+    }
+
+    /* PFP with Kick Neon Border */
+    .pf-avatar-wrap {
+      position: relative;
+    }
+
+    .pf-avatar-img {
+      width: 110px;
+      height: 110px;
       border-radius: 50%;
       object-fit: cover;
-      border: 3px solid #53fc18;
-      box-shadow: 0 0 20px rgba(83, 252, 24, 0.4);
+      background: #000;
+      border: 3.5px solid #53fc18;
+      box-shadow: 0 0 25px rgba(83, 252, 24, 0.35);
+      display: block;
     }
-    .pf-stat-card {
-      background: #08090c;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 14px;
-      padding: 20px;
-      text-align: left;
-      transition: all 0.15s ease;
+
+    .pf-user-meta {
+      padding-bottom: 6px;
     }
-    .pf-stat-card:hover {
-      border-color: rgba(83, 252, 24, 0.3);
-      transform: translateY(-2px);
-    }
-    .pf-subtab-btn {
-      background: transparent;
-      border: none;
-      color: #94a3b8;
-      padding: 10px 18px;
-      border-radius: 8px;
-      font-size: 0.85rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.15s ease;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .pf-subtab-btn.active {
-      background: #14171e;
-      color: #53fc18;
-      border: 1px solid rgba(83, 252, 24, 0.3);
-    }
-    .pf-match-row {
-      background: #000000;
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      border-radius: 12px;
-      padding: 14px 18px;
+
+    .pf-username {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.85rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin: 0 0 6px;
+      line-height: 1.1;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      margin-bottom: 10px;
-      transition: all 0.15s ease;
+      gap: 10px;
     }
-    .pf-match-row:hover {
-      border-color: rgba(255, 255, 255, 0.15);
+
+    .pf-season-badge {
+      font-size: 0.72rem;
+      font-weight: 700;
+      background: rgba(83, 252, 24, 0.12);
+      border: 1px solid rgba(83, 252, 24, 0.3);
+      color: #53fc18;
+      padding: 2px 10px;
+      border-radius: 99px;
+      letter-spacing: 0.02em;
     }
-    .pf-match-row.victory {
-      border-left: 3px solid #53fc18;
+
+    .pf-id-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.82rem;
+      color: #94a3b8;
     }
-    .pf-match-row.defeat {
-      border-left: 3px solid #ef4444;
+
+    .pf-copy-btn {
+      background: transparent;
+      border: none;
+      color: #53fc18;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 4px;
+      border-radius: 4px;
+      transition: background 0.15s ease;
+    }
+
+    .pf-copy-btn:hover {
+      background: rgba(83, 252, 24, 0.1);
+    }
+
+    /* Rank & ELO Badge Card */
+    .pf-rank-box {
+      background: #000000;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 14px;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .pf-rank-emblem {
+      width: 54px;
+      height: 54px;
+      object-fit: contain;
+      filter: drop-shadow(0 0 12px rgba(83, 252, 24, 0.25));
+    }
+
+    .pf-rank-details {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .pf-rank-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .pf-rank-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: #ffffff;
+      line-height: 1.1;
+    }
+
+    .pf-rank-elo {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #53fc18;
     }
   </style>
 </head>
 <body data-ct-page="profile" style="background:#000000;color:#ffffff;margin:0;font-family:'Inter',sans-serif;">
 
-  <!-- Main Container -->
-  <main class="ct-ranked-wrap" style="max-width:1080px;padding-top:36px;position:relative;z-index:10;">
+  <!-- Main Profile Container -->
+  <main class="pf-container">
 
-    <!-- Contender Identity Hero -->
-    <section class="pf-hero">
-      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;">
-        <div style="display:flex;align-items:center;gap:20px;">
-          <img src="https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=120&auto=format&fit=crop&q=80" id="pf-avatar" class="pf-avatar-lg" alt="Avatar"/>
-          <div>
-            <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
-              <h1 style="font-family:'Outfit',sans-serif;font-size:1.8rem;font-weight:700;margin:0;color:#fff;" id="pf-display-name">
-                Zenox#1337
-              </h1>
-              <span style="background:rgba(83,252,24,0.15);border:1px solid rgba(83,252,24,0.3);color:#53fc18;padding:2px 8px;border-radius:6px;font-size:0.75rem;font-weight:700;" id="pf-title-badge">
-                [Unreal God]
-              </span>
-              <button type="button" id="btn-edit-handle" style="background:transparent;border:1px solid rgba(255,255,255,0.15);color:#94a3b8;padding:4px 8px;border-radius:6px;cursor:pointer;font-size:0.72rem;display:inline-flex;align-items:center;gap:4px;">
-                <i data-lucide="edit-3" style="width:12px;height:12px;"></i>
-                <span>Edit</span>
-              </button>
+    <!-- Profile Banner & Identity Card -->
+    <section class="pf-banner-card">
+      <!-- Backdrop Banner Cover -->
+      <div class="pf-banner-cover"></div>
+
+      <!-- Banner Body: Avatar, Name, Contender ID, Rank & ELO -->
+      <div class="pf-banner-body">
+        <div class="pf-profile-flex">
+          
+          <!-- Left: PFP, Username, Contender ID -->
+          <div class="pf-user-left">
+            <div class="pf-avatar-wrap">
+              <img src="https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=120&auto=format&fit=crop&q=80" id="pf-avatar" class="pf-avatar-img" alt="Contender Avatar"/>
             </div>
 
-            <div style="display:flex;align-items:center;gap:14px;font-size:0.8rem;color:#94a3b8;">
-              <span id="pf-id-wrap" style="display:inline-flex;align-items:center;gap:6px;">
-                Contender ID: <strong style="color:#fff;" id="pf-contender-id">882194017402</strong>
-                <button type="button" id="btn-copy-id" style="background:none;border:none;color:#53fc18;cursor:pointer;padding:0;" title="Copy ID">
-                  <i data-lucide="copy" style="width:13px;height:13px;"></i>
+            <div class="pf-user-meta">
+              <div class="pf-username">
+                <span id="pf-display-name">Zenox#1337</span>
+                <span class="pf-season-badge">Season 1 Contender</span>
+              </div>
+              <div class="pf-id-row">
+                <span>Contender ID: <strong style="color:#ffffff;" id="pf-contender-id">882194017402</strong></span>
+                <button type="button" class="pf-copy-btn" id="btn-copy-id" title="Copy Contender ID">
+                  <i data-lucide="copy" style="width:14px;height:14px;"></i>
                 </button>
-              </span>
-              <span>•</span>
-              <span style="color:#fbbf24;font-weight:600;">★ Season 1 Pass Active</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Rank Emblem Callout -->
-        <div style="background:#000;border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:16px 24px;display:flex;align-items:center;gap:16px;">
-          <img src="medal-ranks/svg/06-elite.svg" id="pf-rank-icon" style="width:48px;height:48px;" alt="Rank"/>
-          <div>
-            <div style="font-size:0.74rem;font-weight:600;color:#64748b;text-transform:uppercase;">Current Division</div>
-            <div style="font-family:'Outfit',sans-serif;font-size:1.4rem;font-weight:700;color:#fff;" id="pf-rank-title">Elite Tier</div>
-            <div style="font-size:0.82rem;font-weight:700;color:#53fc18;" id="pf-rank-elo">2,450 ELO</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Career Statistics Grid -->
-    <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(160px, 1fr));gap:14px;margin-bottom:28px;">
-      <div class="pf-stat-card">
-        <div style="font-size:0.72rem;font-weight:600;color:#64748b;text-transform:uppercase;margin-bottom:4px;">Matches Played</div>
-        <div style="font-family:'Outfit',sans-serif;font-size:1.6rem;font-weight:700;color:#fff;" id="stat-matches">128</div>
-      </div>
-      <div class="pf-stat-card">
-        <div style="font-size:0.72rem;font-weight:600;color:#64748b;text-transform:uppercase;margin-bottom:4px;">Victories</div>
-        <div style="font-family:'Outfit',sans-serif;font-size:1.6rem;font-weight:700;color:#53fc18;" id="stat-wins">87</div>
-      </div>
-      <div class="pf-stat-card">
-        <div style="font-size:0.72rem;font-weight:600;color:#64748b;text-transform:uppercase;margin-bottom:4px;">Win Rate</div>
-        <div style="font-family:'Outfit',sans-serif;font-size:1.6rem;font-weight:700;color:#fff;" id="stat-wr">68.0%</div>
-      </div>
-      <div class="pf-stat-card">
-        <div style="font-size:0.72rem;font-weight:600;color:#64748b;text-transform:uppercase;margin-bottom:4px;">Win Streak</div>
-        <div style="font-family:'Outfit',sans-serif;font-size:1.6rem;font-weight:700;color:#fbbf24;" id="stat-streak">5 Wins</div>
-      </div>
-      <div class="pf-stat-card">
-        <div style="font-size:0.72rem;font-weight:600;color:#64748b;text-transform:uppercase;margin-bottom:4px;">Peak ELO</div>
-        <div style="font-family:'Outfit',sans-serif;font-size:1.6rem;font-weight:700;color:#fff;" id="stat-peak">2,610 ELO</div>
-      </div>
-      <div class="pf-stat-card">
-        <div style="font-size:0.72rem;font-weight:600;color:#64748b;text-transform:uppercase;margin-bottom:4px;">Battle Pass</div>
-        <div style="font-family:'Outfit',sans-serif;font-size:1.6rem;font-weight:700;color:#53fc18;">Tier 14</div>
-      </div>
-    </div>
-
-    <!-- Subtabs Navigation -->
-    <div style="display:flex;gap:8px;margin-bottom:20px;border-bottom:1px solid rgba(255,255,255,0.08);padding-bottom:12px;">
-      <button type="button" class="pf-subtab-btn active" data-tab="history">
-        <i data-lucide="swords" style="width:14px;height:14px;"></i>
-        <span>Match History</span>
-      </button>
-      <button type="button" class="pf-subtab-btn" data-tab="locker">
-        <i data-lucide="shield" style="width:14px;height:14px;"></i>
-        <span>Locker & Cosmetics</span>
-      </button>
-      <button type="button" class="pf-subtab-btn" data-tab="connections">
-        <i data-lucide="link" style="width:14px;height:14px;"></i>
-        <span>Linked Connections</span>
-      </button>
-    </div>
-
-    <!-- Tab 1: Match History -->
-    <section id="tab-history" style="display:block;">
-      <div id="pf-match-history-list">
-        <!-- Rendered dynamically -->
-      </div>
-    </section>
-
-    <!-- Tab 2: Locker / Cosmetics -->
-    <section id="tab-locker" style="display:none;">
-      <div style="background:#08090c;border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:24px;">
-        <h3 style="font-family:'Outfit',sans-serif;font-size:1.15rem;font-weight:700;color:#fff;margin:0 0 16px;">Unlocked Cosmetics</h3>
-        <div style="display:grid;grid-template-columns:repeat(auto-fill, minmax(220px, 1fr));gap:14px;" id="locker-items-grid">
-          <!-- Populated dynamically -->
-        </div>
-      </div>
-    </section>
-
-    <!-- Tab 3: Linked Connections -->
-    <section id="tab-connections" style="display:none;">
-      <div style="background:#08090c;border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:24px;">
-        <h3 style="font-family:'Outfit',sans-serif;font-size:1.15rem;font-weight:700;color:#fff;margin:0 0 8px;">Game & Social Accounts</h3>
-        <p style="font-size:0.82rem;color:#94a3b8;margin:0 0 20px;">Link your verified Epic Games IGN so scrim opponents can invite you in Fortnite.</p>
-
-        <div style="display:flex;flex-direction:column;gap:12px;">
-          <!-- Epic Games -->
-          <div style="background:#000;border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:16px;display:flex;align-items:center;justify-content:space-between;">
-            <div style="display:flex;align-items:center;gap:12px;">
-              <div style="width:36px;height:36px;border-radius:8px;background:#14171e;display:flex;align-items:center;justify-content:center;">
-                <i data-lucide="gamepad-2" style="width:18px;height:18px;color:#53fc18;"></i>
-              </div>
-              <div>
-                <div style="font-size:0.88rem;font-weight:600;color:#fff;">Epic Games IGN</div>
-                <div style="font-size:0.75rem;color:#53fc18;" id="conn-epic-name">ZenoxFN (Verified ✓)</div>
               </div>
             </div>
-            <button type="button" style="background:#14171e;border:1px solid rgba(255,255,255,0.1);color:#fff;padding:8px 14px;border-radius:8px;font-size:0.76rem;font-weight:600;cursor:pointer;" onclick="showToast('Epic Games IGN already verified.')">
-              Synced
-            </button>
           </div>
 
-          <!-- Discord -->
-          <div style="background:#000;border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:16px;display:flex;align-items:center;justify-content:space-between;">
-            <div style="display:flex;align-items:center;gap:12px;">
-              <div style="width:36px;height:36px;border-radius:8px;background:#5865f2;display:flex;align-items:center;justify-content:center;color:#fff;">
-                <i data-lucide="message-square" style="width:18px;height:18px;"></i>
-              </div>
-              <div>
-                <div style="font-size:0.88rem;font-weight:600;color:#fff;">Discord Account</div>
-                <div style="font-size:0.75rem;color:#94a3b8;" id="conn-discord-name">Zenox#1337</div>
-              </div>
+          <!-- Right: Competitive Rank & ELO Badge -->
+          <div class="pf-rank-box">
+            <img src="medal-ranks/svg/06-elite.svg" id="pf-rank-icon" class="pf-rank-emblem" alt="Rank Emblem"/>
+            <div class="pf-rank-details">
+              <span class="pf-rank-label">Ranked Arena Division</span>
+              <span class="pf-rank-title" id="pf-rank-title">Elite Tier</span>
+              <span class="pf-rank-elo" id="pf-rank-elo">2,450 ELO</span>
             </div>
-            <span style="font-size:0.76rem;color:#53fc18;font-weight:600;">Connected</span>
           </div>
+
         </div>
       </div>
     </section>
 
   </main>
 
-  <!-- Edit Handle Modal -->
-  <div class="ct-modal-overlay" id="edit-handle-modal">
-    <div class="ct-queue-modal-card" style="max-width:440px;">
-      <button type="button" class="ct-modal-close-btn" id="btn-close-handle-modal">
-        <i data-lucide="x" style="width:20px;height:20px;"></i>
-      </button>
-      <div class="ct-modal-title">Customize Handle</div>
-      <p style="font-size:0.8rem;color:#94a3b8;margin-bottom:16px;">
-        Contender handles must be family-friendly. Profanity and offensive phrases are strictly prohibited.
-      </p>
-      <input type="text" id="handle-input" placeholder="Enter new handle (e.g. Zenox)" style="width:100%;box-sizing:border-box;background:#000;border:1px solid rgba(255,255,255,0.12);color:#fff;padding:10px 14px;border-radius:10px;font-size:0.9rem;margin-bottom:12px;outline:none;"/>
-      <div id="handle-error-msg" style="color:#ef4444;font-size:0.76rem;margin-bottom:10px;display:none;"></div>
-      <button type="button" id="btn-save-handle" class="btn-modal-start-queue" style="margin-top:0;">Save Changes</button>
-    </div>
-  </div>
-
-  <!-- Footer -->
+  <!-- Bottom Bar / Footer -->
   <footer class="ct-footer" style="border-top:1px solid rgba(255,255,255,0.08);padding:32px 20px 44px;background:#000000;text-align:center;">
     <div style="max-width:1000px;margin:0 auto;display:flex;flex-direction:column;gap:16px;">
       <div style="font-size:0.75rem;color:#475569;">
@@ -261,153 +244,71 @@
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="js/ranked-nav.js"></script>
   <script>
-    const MATCH_HISTORY_DATA = [
-      { mode: '1v1 Realistic (BO9)', opponent: 'AeroSniper', oppElo: 3410, result: 'victory', score: '9 - 4', eloChange: '+35 ELO', time: '12m ago' },
-      { mode: '2v2 Box Fights (BO7)', opponent: 'Viper_FN & GhostClutch', oppElo: 3735, result: 'victory', score: '7 - 5', eloChange: '+42 ELO', time: '1h ago' },
-      { mode: '1v1 Build Fights (BO5)', opponent: 'AquaAim', oppElo: 2890, result: 'defeat', score: '2 - 5', eloChange: '-18 ELO', time: '3h ago' },
-      { mode: '1v1 Realistic (BO9)', opponent: 'KovaaK_God', oppElo: 3290, result: 'victory', score: '9 - 7', eloChange: '+38 ELO', time: '5h ago' },
-      { mode: 'Zone Wars Scrim (BO9)', opponent: 'FrostByte', oppElo: 2750, result: 'victory', score: '9 - 3', eloChange: '+28 ELO', time: 'Yesterday' }
-    ];
-
-    const LOCKER_ITEMS = [
-      { id: 't_unreal', name: '"Unreal God"', type: 'Title', rarity: 'Mythic', equipped: true },
-      { id: 't_boxfight', name: '"Boxfight Warlord"', type: 'Title', rarity: 'Legendary', equipped: false },
-      { id: 't_pioneer', name: '"Arena Pioneer"', type: 'Title', rarity: 'Epic', equipped: false },
-      { id: 'b_carbon', name: 'Carbon Neon Banner', type: 'Banner', rarity: 'Rare', equipped: true },
-      { id: 'a_shinobi', name: 'Cyber Shinobi', type: 'Avatar', rarity: 'Legendary', equipped: false }
-    ];
-
-    function renderHistory() {
-      const container = document.getElementById('pf-match-history-list');
-      if (!container) return;
-
-      container.innerHTML = MATCH_HISTORY_DATA.map(m => `
-        <div class="pf-match-row ${m.result}">
-          <div>
-            <div style="font-size:0.88rem;font-weight:600;color:#fff;">${m.mode}</div>
-            <div style="font-size:0.75rem;color:#64748b;">vs ${m.opponent} (${m.oppElo.toLocaleString()} ELO) • ${m.time}</div>
-          </div>
-          <div style="text-align:right;">
-            <div style="font-size:0.95rem;font-weight:700;color:${m.result === 'victory' ? '#53fc18' : '#ef4444'};">
-              ${m.result === 'victory' ? 'VICTORY' : 'DEFEAT'} ${m.score}
-            </div>
-            <div style="font-size:0.75rem;font-weight:600;color:${m.result === 'victory' ? '#53fc18' : '#ef4444'};">
-              ${m.eloChange}
-            </div>
-          </div>
-        </div>
-      `).join('');
+    function getRankMeta(elo, isUnranked) {
+      if (isUnranked || elo <= 0) {
+        return { name: 'Unranked', icon: 'medal-ranks/svg/01-bronze.svg', eloDisplay: '0/5 Placements' };
+      }
+      if (elo < 500) return { name: 'Bronze', icon: 'medal-ranks/svg/01-bronze.svg', eloDisplay: `${elo.toLocaleString()} ELO` };
+      if (elo < 1000) return { name: 'Silver', icon: 'medal-ranks/svg/02-silver.svg', eloDisplay: `${elo.toLocaleString()} ELO` };
+      if (elo < 1500) return { name: 'Gold', icon: 'medal-ranks/svg/03-gold.svg', eloDisplay: `${elo.toLocaleString()} ELO` };
+      if (elo < 2000) return { name: 'Platinum', icon: 'medal-ranks/svg/04-platinum.svg', eloDisplay: `${elo.toLocaleString()} ELO` };
+      if (elo < 2400) return { name: 'Diamond', icon: 'medal-ranks/svg/05-diamond.svg', eloDisplay: `${elo.toLocaleString()} ELO` };
+      if (elo < 2700) return { name: 'Elite', icon: 'medal-ranks/svg/06-elite.svg', eloDisplay: `${elo.toLocaleString()} ELO` };
+      if (elo < 3000) return { name: 'Champion', icon: 'medal-ranks/svg/07-champion.svg', eloDisplay: `${elo.toLocaleString()} ELO` };
+      return { name: 'Unreal', icon: 'medal-ranks/svg/10-star.svg', eloDisplay: `${elo.toLocaleString()} ELO` };
     }
 
-    function renderLocker() {
-      const grid = document.getElementById('locker-items-grid');
-      if (!grid) return;
-
-      grid.innerHTML = LOCKER_ITEMS.map(item => `
-        <div style="background:#000;border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:16px;">
-          <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
-            <span style="font-size:0.7rem;font-weight:700;color:#53fc18;text-transform:uppercase;">${item.type}</span>
-            <span style="font-size:0.7rem;color:#fbbf24;">${item.rarity}</span>
-          </div>
-          <div style="font-size:0.92rem;font-weight:600;color:#fff;margin-bottom:12px;">${item.name}</div>
-          <button type="button" style="width:100%;background:${item.equipped ? 'rgba(255,255,255,0.08)' : '#53fc18'};color:${item.equipped ? '#94a3b8' : '#000'};border:none;padding:8px;border-radius:8px;font-size:0.78rem;font-weight:700;cursor:pointer;" onclick="equipItem('${item.id}', '${item.name}')">
-            ${item.equipped ? 'Equipped ✓' : 'Equip'}
-          </button>
-        </div>
-      `).join('');
-    }
-
-    window.equipItem = function(id, name) {
-      LOCKER_ITEMS.forEach(it => {
-        if (it.type === 'Title') it.equipped = (it.id === id);
-      });
-      const badge = document.getElementById('pf-title-badge');
-      if (badge) badge.textContent = `[${name.replace(/"/g, '')}]`;
-      showToast(`Equipped title: ${name}`);
-      renderLocker();
-    };
-
-    // Subtabs Switcher
-    document.addEventListener('DOMContentLoaded', () => {
-      const tabBtns = document.querySelectorAll('.pf-subtab-btn');
-      tabBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-          tabBtns.forEach(b => b.classList.remove('active'));
-          btn.classList.add('active');
-          const target = btn.getAttribute('data-tab');
-          ['history', 'locker', 'connections'].forEach(t => {
-            const el = document.getElementById(`tab-${t}`);
-            if (el) el.style.display = (t === target) ? 'block' : 'none';
-          });
-        });
-      });
-
-      // Contender ID & Name setup
-      const cached = localStorage.getItem('ct_user');
-      if (cached) {
-        try {
-          const u = JSON.parse(cached);
-          if (u.name) document.getElementById('pf-display-name').textContent = u.customName || `${u.name}${u.tag || ''}`;
-          if (u.id) document.getElementById('pf-contender-id').textContent = u.id;
-          if (u.avatar) document.getElementById('pf-avatar').src = u.avatar;
-        } catch (e) {}
+    function initProfile() {
+      let cid = localStorage.getItem('ct_contender_id');
+      if (!cid || cid.length !== 12) {
+        cid = '882194017402';
+        localStorage.setItem('ct_contender_id', cid);
       }
 
-      // Copy ID button
+      let user = {
+        id: cid,
+        name: 'Zenox',
+        customName: '',
+        tag: '#1337',
+        avatar: 'https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=120&auto=format&fit=crop&q=80'
+      };
+
+      const cached = localStorage.getItem('ct_user');
+      if (cached) {
+        try { user = Object.assign(user, JSON.parse(cached)); } catch (e) {}
+      }
+
+      const savedElo = localStorage.getItem('ct_user_elo');
+      const isUnranked = localStorage.getItem('ct_is_unranked') === 'true';
+      const elo = savedElo !== null ? parseInt(savedElo, 10) : 2450;
+      const meta = getRankMeta(elo, isUnranked);
+
+      const displayName = user.customName || `${user.name}${user.tag || ''}`;
+      const nameEl = document.getElementById('pf-display-name');
+      const idEl = document.getElementById('pf-contender-id');
+      const avatarEl = document.getElementById('pf-avatar');
+      const rankIconEl = document.getElementById('pf-rank-icon');
+      const rankTitleEl = document.getElementById('pf-rank-title');
+      const rankEloEl = document.getElementById('pf-rank-elo');
+
+      if (nameEl) nameEl.textContent = displayName;
+      if (idEl) idEl.textContent = user.id;
+      if (avatarEl) avatarEl.src = user.avatar;
+      if (rankIconEl) rankIconEl.src = meta.icon;
+      if (rankTitleEl) rankTitleEl.textContent = `${meta.name} Tier`;
+      if (rankEloEl) rankEloEl.textContent = meta.eloDisplay;
+
+      // Copy ID handler
       document.getElementById('btn-copy-id')?.addEventListener('click', () => {
-        const id = document.getElementById('pf-contender-id')?.textContent || '';
-        navigator.clipboard.writeText(id).then(() => {
+        navigator.clipboard.writeText(user.id).then(() => {
           showToast('Contender ID copied to clipboard!');
         });
       });
 
-      // Handle Editor Modal
-      const modal = document.getElementById('edit-handle-modal');
-      const editBtn = document.getElementById('btn-edit-handle');
-      const closeBtn = document.getElementById('btn-close-handle-modal');
-      const saveBtn = document.getElementById('btn-save-handle');
-      const input = document.getElementById('handle-input');
-      const err = document.getElementById('handle-error-msg');
-
-      if (editBtn) editBtn.addEventListener('click', () => {
-        if (modal) modal.classList.add('open');
-      });
-      if (closeBtn) closeBtn.addEventListener('click', () => {
-        if (modal) modal.classList.remove('open');
-      });
-
-      const BANNED_WORDS = ['nigger', 'nigga', 'faggot', 'retard', 'bitch', 'cunt', 'whore', 'slut'];
-
-      if (saveBtn) saveBtn.addEventListener('click', () => {
-        const val = (input.value || '').trim();
-        if (!val || val.length < 3) {
-          err.textContent = 'Handle must be at least 3 characters long.';
-          err.style.display = 'block';
-          return;
-        }
-        const lower = val.toLowerCase();
-        for (const w of BANNED_WORDS) {
-          if (lower.includes(w)) {
-            err.textContent = 'Handle violates family-friendly community guidelines.';
-            err.style.display = 'block';
-            return;
-          }
-        }
-
-        err.style.display = 'none';
-        document.getElementById('pf-display-name').textContent = val;
-        let u = JSON.parse(localStorage.getItem('ct_user') || '{}');
-        u.customName = val;
-        localStorage.setItem('ct_user', JSON.stringify(u));
-        if (modal) modal.classList.remove('open');
-        showToast(`Handle updated to "${val}"!`);
-        if (window.renderSharedRankedNav) renderSharedRankedNav('profile');
-      });
-
-      renderHistory();
-      renderLocker();
       if (window.lucide) window.lucide.createIcons();
-    });
+    }
+
+    document.addEventListener('DOMContentLoaded', initProfile);
 
     function showToast(msg) {
       let toast = document.getElementById('pf-toast');
