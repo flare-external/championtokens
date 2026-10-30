@@ -6,7 +6,7 @@
   <title>Champion Tokens</title>
   <link rel="icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="stylesheet" href="css/style.css?v=5.5"/>
-  <link rel="stylesheet" href="css/ranked.css?v=2.0"/>
+  <link rel="stylesheet" href="css/ranked.css?v=3.0"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <script src="js/protect.js"></script>
@@ -25,7 +25,7 @@
     </div>
   </div>
 
-  <!-- ── Top Navigation Header (Champion Tokens Original) ────────── -->
+  <!-- ── Top Navigation Header ──────────────────────────────────── -->
   <header class="landing-nav" role="banner" style="background:#000000;border-bottom:1px solid rgba(255,255,255,0.08);padding:14px 28px;">
     <a href="/" class="brand-logo" style="text-decoration:none;">
       <span class="brand-logo-champion">CHAMPION</span> <span class="brand-logo-tokens">TOKENS</span>
@@ -42,106 +42,132 @@
         <span style="background:#53fc18;color:#000;font-size:0.65rem;font-weight:900;padding:1px 5px;border-radius:99px;">3</span>
       </button>
 
-      <button class="btn btn-discord btn-sm" id="header-signin" style="padding:8px 18px;border-radius:10px;">
-        <svg class="discord-logo" viewBox="0 0 127.14 96.36" fill="currentColor" style="width:16px;height:16px;">
-          <path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22h0C129.24,52.84,122.09,29.11,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,45.91,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,45.91,96.12,53,91.08,65.69,84.69,65.69Z"/>
-        </svg>
-        Sign In
-      </button>
+      <!-- Nav Actions (Login + Hamburger Menu) -->
+      <div class="ct-nav-actions">
+        <!-- Discord Login / Sign Up Button -->
+        <button class="btn btn-discord btn-sm" id="header-signin" style="padding:8px 18px;border-radius:10px;">
+          <svg class="discord-logo" viewBox="0 0 127.14 96.36" fill="currentColor" style="width:16px;height:16px;">
+            <path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22h0C129.24,52.84,122.09,29.11,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,45.91,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,45.91,96.12,53,91.08,65.69,84.69,65.69Z"/>
+          </svg>
+          <span>Log In / Sign Up</span>
+        </button>
+
+        <!-- Hamburger / Profile Menu Button -->
+        <button type="button" class="btn-hamburger" id="btn-hamburger" title="Menu">
+          <i data-lucide="menu" style="width:18px;height:18px;"></i>
+        </button>
+
+        <!-- Dropdown Menu -->
+        <div class="ct-dropdown-menu" id="ct-dropdown-menu">
+          <button type="button" class="ct-menu-item trigger-referrals">
+            <i data-lucide="gift" style="width:16px;height:16px;color:#fbbf24;"></i>
+            <span>Referrals & Bonuses</span>
+            <span class="ct-menu-badge">Free XP</span>
+          </button>
+          <a href="profile" class="ct-menu-item">
+            <i data-lucide="user" style="width:16px;height:16px;"></i>
+            <span>My Profile</span>
+          </a>
+          <a href="dashboard" class="ct-menu-item">
+            <i data-lucide="layout-dashboard" style="width:16px;height:16px;"></i>
+            <span>Dashboard</span>
+          </a>
+          <a href="rules" class="ct-menu-item">
+            <i data-lucide="shield" style="width:16px;height:16px;"></i>
+            <span>Competitive Rules</span>
+          </a>
+        </div>
+      </div>
     </nav>
   </header>
 
   <!-- ── Main Stage ─────────────────────────────────────────────── -->
   <main class="ct-ranked-wrap">
 
-    <!-- ── Hero ───────────────────────────────────────────────── -->
-    <section class="ct-hero-section">
-      <div class="ct-badge-eyebrow">
-        <span>Season 1 Live • $2,500 Monthly Prize Pool</span>
+    <!-- ── 3 Ads / Highlights in the Middle ────────────────────── -->
+    <section class="ct-ads-grid">
+      <!-- Ad 1: Beta Testing -->
+      <div class="ct-ad-card">
+        <div>
+          <span class="ct-ad-tag tag-beta">BETA TESTING</span>
+          <div class="ct-ad-title">Website in Beta Testing</div>
+          <div class="ct-ad-desc">We are actively testing matchmaking, ELO tracking, and server connections. Report bugs on Discord for exclusive Beta Founder rewards.</div>
+        </div>
+        <a href="https://discord.gg/35xqcMTEbH" target="_blank" rel="noopener noreferrer" class="ct-ad-link">
+          <span>Join Beta Discord</span>
+          <i data-lucide="arrow-right" style="width:13px;height:13px;"></i>
+        </a>
       </div>
-      <h1 class="ct-hero-heading">
-        Fortnite <span>Ranked Arena</span>
-      </h1>
-      <p class="ct-hero-tagline">
-        Competitive 1v1 & 2v2 matchmaking. 3,000 Max ELO, 5 placement matches, and monthly cash rewards.
-      </p>
+
+      <!-- Ad 2: Season Pass (Season 1) -->
+      <div class="ct-ad-card" onclick="window.location.href='shop'">
+        <div>
+          <span class="ct-ad-tag tag-pass">SEASON PASS</span>
+          <div class="ct-ad-title">Season 1: Zero Hour Pass</div>
+          <div class="ct-ad-desc">Level up 100 tiers of cosmetic loot, player titles, and XP boosters. Earn XP in all Ranked matches and unranked Friendlies.</div>
+        </div>
+        <div class="ct-ad-link">
+          <span>View Rewards Track</span>
+          <i data-lucide="arrow-right" style="width:13px;height:13px;"></i>
+        </div>
+      </div>
+
+      <!-- Ad 3: Invite Friends for Free Bonuses (Referrals) -->
+      <div class="ct-ad-card trigger-referrals">
+        <div>
+          <span class="ct-ad-tag tag-referral">FREE BONUSES</span>
+          <div class="ct-ad-title">Invite Friends, Earn Rewards</div>
+          <div class="ct-ad-desc">Share your personal referral link or code. Unlock free bonus XP and cosmetics when your friends sign up and queue their first match.</div>
+        </div>
+        <div class="ct-ad-link" style="color:#fbbf24;">
+          <span>Get Your Invite Code</span>
+          <i data-lucide="arrow-right" style="width:13px;height:13px;"></i>
+        </div>
+      </div>
     </section>
 
-    <!-- ── Matchmaking Card ────────────────────────────────────── -->
-    <section class="ct-arena-card">
-      <div class="ct-arena-top">
-        <div class="ct-arena-title">
-          <i data-lucide="swords" style="width:20px;height:20px;color:#53fc18;"></i>
-          <span>Matchmaking</span>
-        </div>
-
-        <div class="ct-mode-switch">
-          <button type="button" class="ct-mode-btn active" id="tab-mode-ranked">Ranked (±300 ELO)</button>
-          <button type="button" class="ct-mode-btn" id="tab-mode-friendly">Friendlies (XP)</button>
-        </div>
-      </div>
-
-      <!-- Playlists Chips -->
-      <div class="ct-playlist-row">
-        <div class="ct-playlist-chip selected" data-playlist="realistic">
-          <div class="ct-playlist-title">1v1 Realistic</div>
-          <div class="ct-playlist-sub">Speed & Aim • BO9</div>
-        </div>
-
-        <div class="ct-playlist-chip" data-playlist="boxfight">
-          <div class="ct-playlist-title">1v1 Box Fight</div>
-          <div class="ct-playlist-sub">Piece Control • BO7</div>
-        </div>
-
-        <div class="ct-playlist-chip" data-playlist="buildfight">
-          <div class="ct-playlist-title">1v1 Build Fight</div>
-          <div class="ct-playlist-sub">Height & Edits • BO5</div>
-        </div>
-
-        <div class="ct-playlist-chip" data-playlist="zonewars">
-          <div class="ct-playlist-title">1v1 Zone Wars</div>
-          <div class="ct-playlist-sub">Endgame Rotations • BO9</div>
-        </div>
-
-        <div class="ct-playlist-chip" data-playlist="duo-box">
-          <div class="ct-playlist-title">2v2 Box Fight</div>
-          <div class="ct-playlist-sub">Duo Chemistry • BO7</div>
-        </div>
-      </div>
-
-      <!-- Party + Action Row -->
-      <div class="ct-action-row">
-        <div class="ct-party-group">
-          <span style="font-size:0.75rem;font-weight:800;color:#64748b;text-transform:uppercase;">Party:</span>
-          <div class="ct-party-slot leader" title="You (Leader)">
-            <img src="champion-tokens_new.png" alt="Leader"/>
+    <!-- ── Matchmaking Queue Center (Below in the Middle) ──────── -->
+    <section class="ct-matchmake-hub">
+      <!-- Your Rank & ELO Display -->
+      <div class="ct-user-rank-strip">
+        <div class="ct-rank-badge-preview">
+          <div class="ct-rank-icon-tiny">
+            <i data-lucide="flame" style="width:18px;height:18px;"></i>
           </div>
-          <div class="ct-party-slot" id="party-slot-2" title="Invite Friend">
-            <i data-lucide="plus" style="width:14px;height:14px;color:#64748b;"></i>
+          <div>
+            <div class="ct-rank-name-bold">Elite Tier</div>
+            <div class="ct-elo-display">2,450 ELO</div>
           </div>
         </div>
 
-        <div class="ct-queue-actions">
-          <div class="ct-elo-spread" id="queue-elo-indicator">
-            Search: <strong>±300 ELO</strong>
-          </div>
-          <button type="button" class="ct-btn-queue" id="btn-enter-queue">
-            <i data-lucide="play" style="width:16px;height:16px;fill:currentColor;"></i>
-            <span>Enter Queue</span>
-          </button>
+        <div class="ct-divider-vertical"></div>
+
+        <div class="ct-placements-stat">
+          <div>Placements: <strong>5 / 5 Completed</strong></div>
+          <div style="font-size:0.7rem;color:#64748b;">Peak Cap: 3,000 ELO</div>
+        </div>
+
+        <div class="ct-divider-vertical"></div>
+
+        <div class="ct-placements-stat">
+          <div>Decay: <strong style="color:#53fc18;">Active</strong></div>
+          <div style="font-size:0.7rem;color:#64748b;">28 Inactive Days</div>
         </div>
       </div>
 
-      <!-- Friendlies Warning (Clean & minimal) -->
-      <div id="friendly-antiabuse-alert" style="display:none;font-size:0.75rem;color:#94a3b8;margin-top:14px;padding:8px 12px;background:#000;border:1px solid rgba(255,255,255,0.06);border-radius:8px;">
-        <span style="color:#fbbf24;font-weight:800;">Notice:</span> Friendlies award Battle Pass XP. XP disables after 2 consecutive wins against the same player.
+      <!-- Big Queue Button -->
+      <div>
+        <button type="button" class="ct-big-queue-btn" id="btn-open-queue-modal">
+          <i data-lucide="play" style="width:22px;height:22px;fill:currentColor;"></i>
+          <span>Queue Match</span>
+        </button>
       </div>
 
-      <!-- Active Queue Radar Banner -->
+      <!-- Active Queue Radar Banner (Visible while queueing) -->
       <div class="ct-queue-banner" id="queue-status-banner">
         <div style="display:flex;align-items:center;gap:12px;">
           <div class="queue-radar" style="width:24px;height:24px;border:2px solid rgba(83,252,24,0.3);border-top-color:#53fc18;border-radius:50%;animation:spin-radar 1s linear infinite;"></div>
-          <div>
+          <div style="text-align:left;">
             <div style="font-weight:900;font-size:1rem;color:#fff;" id="queue-timer-text">0:00</div>
             <div style="font-size:0.75rem;color:#94a3b8;" id="queue-status-msg">Searching opponents within ±300 ELO...</div>
           </div>
@@ -152,7 +178,7 @@
       </div>
     </section>
 
-    <!-- ── Rank Tiers ─────────────────────────────────────────── -->
+    <!-- ── Rank Tiers Row ─────────────────────────────────────── -->
     <section class="ct-ranks-bar">
       <div class="ct-ranks-head">
         <h3>Rank Tiers (3,000 ELO Cap)</h3>
@@ -216,11 +242,11 @@
       </div>
     </section>
 
-    <!-- ── Monthly Cash Prizes (Simple Preview) ────────────────── -->
+    <!-- ── Monthly Leaderboard Cash Rewards ───────────────────── -->
     <section class="ct-monthly-strip">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
         <h3 style="font-family:'Outfit',sans-serif;font-size:1.15rem;font-weight:900;color:#ffffff;margin:0;">
-          Monthly Leaderboard ($2,500 Pool)
+          Monthly Leaderboard ($2,500 Prize Pool)
         </h3>
         <a href="leaderboard" style="color:#53fc18;font-size:0.8rem;font-weight:800;text-decoration:none;">View Full →</a>
       </div>
@@ -232,7 +258,7 @@
             <th>Player</th>
             <th>ELO</th>
             <th>Win Rate</th>
-            <th>Prize</th>
+            <th>Monthly Prize</th>
           </tr>
         </thead>
         <tbody>
@@ -275,27 +301,100 @@
       </table>
     </section>
 
-    <!-- ── Battle Pass Strip ──────────────────────────────────── -->
-    <section class="ct-bp-strip">
-      <div>
-        <div style="font-size:0.75rem;font-weight:900;color:#53fc18;text-transform:uppercase;">Season 1 Pass</div>
-        <div style="font-size:1.05rem;font-weight:900;color:#fff;">Battle Pass • Tier 42 / 100</div>
-      </div>
-      <div class="ct-bp-progress">
-        <div class="ct-bp-bar-bg">
-          <div class="ct-bp-bar-fill"></div>
-        </div>
-        <span style="font-size:0.78rem;font-weight:800;color:#94a3b8;">4,200 XP</span>
-      </div>
-      <a href="shop" class="btn btn-outline btn-sm" style="border-radius:8px;font-size:0.78rem;padding:6px 14px;">View Rewards</a>
-    </section>
-
-    <!-- ── Sponsor Slot ───────────────────────────────────────── -->
-    <div class="ct-sponsor-slot">
-      Sponsored Partner Slot
-    </div>
-
   </main>
+
+  <!-- ── Interactive Queue Selection Modal (Step 1 & Step 2) ───── -->
+  <div class="ct-modal-overlay" id="queue-select-modal">
+    <div class="ct-queue-modal-card">
+      <button type="button" class="ct-modal-close-btn" id="btn-close-queue-modal">
+        <i data-lucide="x" style="width:20px;height:20px;"></i>
+      </button>
+
+      <div class="ct-modal-title">Queue Match</div>
+      <div style="font-size:0.8rem;color:#94a3b8;margin-bottom:16px;">Select match size and game mode to begin matchmaking.</div>
+
+      <!-- Step 1: 1v1, 2v2, 3v3 -->
+      <div class="ct-step-label">
+        <i data-lucide="users" style="width:14px;height:14px;color:#53fc18;"></i>
+        <span>Step 1: Select Team Size</span>
+      </div>
+      <div class="ct-size-selector">
+        <div class="ct-size-btn active" data-size="1v1">1v1</div>
+        <div class="ct-size-btn" data-size="2v2">2v2</div>
+        <div class="ct-size-btn" data-size="3v3">3v3</div>
+      </div>
+
+      <!-- Step 2: Gamemode -->
+      <div class="ct-step-label">
+        <i data-lucide="gamepad-2" style="width:14px;height:14px;color:#53fc18;"></i>
+        <span>Step 2: Select Gamemode</span>
+      </div>
+      <div class="ct-mode-selector">
+        <div class="ct-mode-card active" data-gamemode="realistic">
+          <div class="ct-mode-card-title">Realistic</div>
+          <div class="ct-mode-card-sub">Speed & Aim • BO9</div>
+        </div>
+        <div class="ct-mode-card" data-gamemode="boxfight">
+          <div class="ct-mode-card-title">Box Fights</div>
+          <div class="ct-mode-card-sub">Piece Control • BO7</div>
+        </div>
+        <div class="ct-mode-card" data-gamemode="buildfight">
+          <div class="ct-mode-card-title">Build Fights</div>
+          <div class="ct-mode-card-sub">Height & Edits • BO5</div>
+        </div>
+        <div class="ct-mode-card" data-gamemode="zonewars">
+          <div class="ct-mode-card-title">Zone Wars</div>
+          <div class="ct-mode-card-sub">Endgame Rotations • BO9</div>
+        </div>
+      </div>
+
+      <!-- Queue Action Button -->
+      <button type="button" class="btn-modal-start-queue" id="btn-start-queue-modal">
+        Queue 1v1 Realistic
+      </button>
+    </div>
+  </div>
+
+  <!-- ── Referrals (Free Bonuses) Modal ────────────────────────── -->
+  <div class="ct-modal-overlay" id="referrals-modal">
+    <div class="ct-queue-modal-card">
+      <button type="button" class="ct-modal-close-btn" id="btn-close-referrals">
+        <i data-lucide="x" style="width:20px;height:20px;"></i>
+      </button>
+
+      <div class="ct-modal-title" style="display:flex;align-items:center;gap:8px;">
+        <i data-lucide="gift" style="width:22px;height:22px;color:#fbbf24;"></i>
+        <span>Referrals & Bonuses</span>
+      </div>
+      <div style="font-size:0.8rem;color:#94a3b8;margin-bottom:16px;">
+        Invite friends using your unique link or code to claim free bonus XP and cosmetics.
+      </div>
+
+      <!-- Referral Link Box -->
+      <div class="referral-link-box">
+        <input type="text" class="referral-input" id="referral-link-input" value="https://championtokens.fun/?ref=CHAMP-8821" readonly/>
+        <button type="button" class="btn-copy-ref" id="btn-copy-ref-link">Copy</button>
+      </div>
+
+      <!-- Stats Grid -->
+      <div class="ref-stats-grid">
+        <div class="ref-stat-box">
+          <div class="ref-stat-label">Friends Invited</div>
+          <div class="ref-stat-val">0</div>
+        </div>
+        <div class="ref-stat-box">
+          <div class="ref-stat-label">Total Bonuses</div>
+          <div class="ref-stat-val" style="color:#53fc18;">+0 XP</div>
+        </div>
+      </div>
+
+      <!-- Referred Players List -->
+      <div style="font-size:0.75rem;font-weight:800;color:#64748b;text-transform:uppercase;margin-bottom:8px;">Referred Contenders:</div>
+      <div style="background:#000;border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:16px;text-align:center;font-size:0.78rem;color:#64748b;">
+        No contenders have signed up with your code yet. Share it in Discord or on TikTok to earn rewards!
+      </div>
+    </div>
+  </div>
 
   <!-- ── Friends Side Drawer ────────────────────────────────────── -->
   <div class="friends-drawer-overlay" id="friends-drawer-overlay"></div>
@@ -310,17 +409,12 @@
       </button>
     </div>
 
-    <div class="friends-add-bar" style="border-bottom:1px solid rgba(255,255,255,0.06);padding:12px 16px;display:flex;gap:8px;">
-      <input type="text" class="friends-add-input" id="friends-add-input" placeholder="Add by username..." style="background:#000;border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:8px 12px;color:#fff;font-size:0.8rem;flex:1;outline:none;"/>
-      <button type="button" class="friends-add-btn" id="btn-send-friend-req" style="background:#53fc18;color:#000;font-weight:900;border:none;border-radius:8px;padding:8px 14px;cursor:pointer;font-size:0.8rem;">Add</button>
-    </div>
-
-    <div class="friends-list-container" id="friends-list-container">
+    <div class="friends-list-container" id="friends-list-container" style="padding:16px;">
       <!-- Populated dynamically by js/ranked-hub.js -->
     </div>
   </aside>
 
-  <!-- ── Footer (Authentic Champion Tokens) ─────────────────────── -->
+  <!-- ── Footer ─────────────────────────────────────────────────── -->
   <footer class="ct-footer" style="border-top:1px solid rgba(255,255,255,0.08);padding:32px 20px 44px;background:#000000;text-align:center;">
     <div style="max-width:1000px;margin:0 auto;display:flex;flex-direction:column;gap:16px;">
       <div style="display:flex;justify-content:center;gap:18px;flex-wrap:wrap;font-size:0.82rem;font-weight:700;">
@@ -341,6 +435,6 @@
 
   <!-- Scripts -->
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
-  <script src="js/ranked-hub.js?v=2.0"></script>
+  <script src="js/ranked-hub.js?v=3.0"></script>
 </body>
 </html>

@@ -1,145 +1,191 @@
 // ============================================================
-//  CHAMPION TOKENS / RANKED ARENA — Interactive Ranked Hub Controller
+//  CHAMPION TOKENS — Ranked Arena Controller (v3.0)
 // ============================================================
 
 (function () {
   'use strict';
 
-  // ── State ──────────────────────────────────────────────────
   const state = {
-    selectedMode: 'ranked', // 'ranked' | 'friendly'
-    selectedPlaylist: 'realistic',
+    teamSize: '1v1', // '1v1' | '2v2' | '3v3'
+    gameMode: 'realistic', // 'realistic' | 'boxfight' | 'buildfight' | 'zonewars'
+    modeType: 'ranked', // 'ranked' | 'friendly'
     isQueueing: false,
     queueTimer: null,
     queueSeconds: 0,
-    userElo: 2450, // Default demo ELO (Elite Tier)
-    userPlacements: { played: 5, required: 5 }, // 5 Placement matches rule
-    party: [
-      { id: 'self', name: 'You (Leader)', isLeader: true, avatar: 'champion-tokens_new.png' }
-    ],
+    userRank: 'Elite Tier',
+    userElo: 2450,
+    userPlacements: { played: 5, required: 5 },
+    referrals: {
+      code: 'CHAMP-8821',
+      link: 'https://championtokens.fun/?ref=CHAMP-8821',
+      totalInvited: 0,
+      bonusEarned: '+0 XP'
+    },
     friends: [
       { id: 'f1', name: 'Viper_FN', elo: 2510, status: 'in-match', activity: 'In 1v1 Realistic (Round 4/9)', avatar: 'https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=120&auto=format&fit=crop&q=80' },
       { id: 'f2', name: 'GhostClutch', elo: 2380, status: 'in-queue', activity: 'Queueing Ranked 1v1 (0:45)', avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=120&auto=format&fit=crop&q=80' },
-      { id: 'f3', name: 'AeroSniper', elo: 2790, status: 'in-lobby', activity: 'In Lobby • Ready', avatar: 'https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=120&auto=format&fit=crop&q=80' },
-      { id: 'f4', name: 'FrostByte', elo: 1950, status: 'offline', activity: 'Offline (2h ago)', avatar: 'https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=120&auto=format&fit=crop&q=80' }
-    ],
-    friendRequests: [
-      { id: 'r1', name: 'Pulse_Edits', elo: 2200 }
-    ],
-    friendlyStreakAgainstCurrentOpponent: 0 // Anti-abuse: disables XP after 2 wins in a row
+      { id: 'f3', name: 'AeroSniper', elo: 2790, status: 'in-lobby', activity: 'In Lobby • Ready', avatar: 'https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=120&auto=format&fit=crop&q=80' }
+    ]
   };
 
-  // ── DOM Initialization ─────────────────────────────────────
   document.addEventListener('DOMContentLoaded', () => {
-    initModeSwitch();
-    initPlaylistSelect();
-    initQueueControls();
+    initHamburgerMenu();
+    initReferralsModal();
+    initQueueModal();
     initFriendsDrawer();
-    initPartySlots();
     initLiveTicker();
     if (window.lucide) window.lucide.createIcons();
   });
 
-  // ── Mode Switch: Ranked vs Friendlies ───────────────────────
-  function initModeSwitch() {
-    const tabRanked = document.getElementById('tab-mode-ranked');
-    const tabFriendly = document.getElementById('tab-mode-friendly');
-    const queueEloIndicator = document.getElementById('queue-elo-indicator');
-    const friendlyAlert = document.getElementById('friendly-antiabuse-alert');
+  // ── Hamburger Dropdown Menu ─────────────────────────────────
+  function initHamburgerMenu() {
+    const btn = document.getElementById('btn-hamburger');
+    const menu = document.getElementById('ct-dropdown-menu');
 
-    if (!tabRanked || !tabFriendly) return;
+    if (!btn || !menu) return;
 
-    tabRanked.addEventListener('click', () => {
-      state.selectedMode = 'ranked';
-      tabRanked.classList.add('active');
-      tabFriendly.classList.remove('active');
-      if (queueEloIndicator) queueEloIndicator.style.display = 'flex';
-      if (friendlyAlert) friendlyAlert.style.display = 'none';
-      updateQueueButtonLabel();
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      menu.classList.toggle('open');
     });
 
-    tabFriendly.addEventListener('click', () => {
-      state.selectedMode = 'friendly';
-      tabFriendly.classList.add('active');
-      tabRanked.classList.remove('active');
-      if (queueEloIndicator) queueEloIndicator.style.display = 'none';
-      if (friendlyAlert) friendlyAlert.style.display = 'flex';
-      updateQueueButtonLabel();
+    document.addEventListener('click', () => {
+      menu.classList.remove('open');
+    });
+
+    menu.addEventListener('click', (e) => {
+      e.stopPropagation();
     });
   }
 
-  // ── Playlist Selection ──────────────────────────────────────
-  function initPlaylistSelect() {
-    const cards = document.querySelectorAll('.playlist-card');
-    cards.forEach(card => {
-      card.addEventListener('click', () => {
-        cards.forEach(c => c.classList.remove('selected'));
-        card.classList.add('selected');
-        state.selectedPlaylist = card.getAttribute('data-playlist') || 'realistic';
-        updateQueueButtonLabel();
+  // ── Referrals Modal ──────────────────────────────────────────
+  function initReferralsModal() {
+    const modal = document.getElementById('referrals-modal');
+    const triggers = document.querySelectorAll('.trigger-referrals');
+    const closeBtn = document.getElementById('btn-close-referrals');
+    const copyBtn = document.getElementById('btn-copy-ref-link');
+    const input = document.getElementById('referral-link-input');
+
+    function openModal() {
+      if (modal) modal.classList.add('open');
+      const menu = document.getElementById('ct-dropdown-menu');
+      if (menu) menu.classList.remove('open');
+    }
+
+    function closeModal() {
+      if (modal) modal.classList.remove('open');
+    }
+
+    triggers.forEach(t => t.addEventListener('click', openModal));
+    if (closeBtn) closeBtn.addEventListener('click', closeModal);
+    if (modal) {
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+      });
+    }
+
+    if (copyBtn && input) {
+      copyBtn.addEventListener('click', () => {
+        input.select();
+        navigator.clipboard.writeText(input.value).then(() => {
+          copyBtn.textContent = 'Copied!';
+          setTimeout(() => { copyBtn.textContent = 'Copy'; }, 2000);
+          showToast('Referral link copied to clipboard!');
+        });
+      });
+    }
+  }
+
+  // ── Queue Selection Modal & Logic ────────────────────────────
+  function initQueueModal() {
+    const openBtn = document.getElementById('btn-open-queue-modal');
+    const modal = document.getElementById('queue-select-modal');
+    const closeBtn = document.getElementById('btn-close-queue-modal');
+    const startQueueBtn = document.getElementById('btn-start-queue-modal');
+    const banner = document.getElementById('queue-status-banner');
+    const cancelBtn = document.getElementById('btn-cancel-queue');
+    const timerText = document.getElementById('queue-timer-text');
+    const statusMsg = document.getElementById('queue-status-msg');
+
+    // Open Modal
+    if (openBtn) {
+      openBtn.addEventListener('click', () => {
+        if (state.isQueueing) {
+          cancelQueue();
+        } else if (modal) {
+          modal.classList.add('open');
+        }
+      });
+    }
+
+    // Close Modal
+    function closeModal() {
+      if (modal) modal.classList.remove('open');
+    }
+    if (closeBtn) closeBtn.addEventListener('click', closeModal);
+    if (modal) {
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+      });
+    }
+
+    // Step 1: Team Size selection (1v1, 2v2, 3v3)
+    const sizeBtns = document.querySelectorAll('.ct-size-btn');
+    sizeBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        sizeBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        state.teamSize = btn.getAttribute('data-size') || '1v1';
+        updateModalQueueBtn();
       });
     });
-  }
 
-  function updateQueueButtonLabel() {
-    const btn = document.getElementById('btn-enter-queue');
-    if (!btn || state.isQueueing) return;
-    if (state.selectedMode === 'ranked') {
-      btn.innerHTML = `<i data-lucide="play" style="width:16px;height:16px;fill:currentColor;"></i> Enter Queue`;
-    } else {
-      btn.innerHTML = `<i data-lucide="play" style="width:16px;height:16px;fill:currentColor;"></i> Play Friendly`;
-    }
-    if (window.lucide) window.lucide.createIcons();
-  }
-
-  function getPlaylistDisplayName(key) {
-    switch (key) {
-      case 'realistic': return '1v1 Realistic';
-      case 'boxfight': return '1v1 Box Fight';
-      case 'buildfight': return '1v1 Build Fight';
-      case 'zonewars': return '1v1 Zone Wars';
-      case 'duo-box': return '2v2 Box Fight';
-      default: return '1v1 Match';
-    }
-  }
-
-  // ── Queue & Matchmaking System ──────────────────────────────
-  function initQueueControls() {
-    const btnQueue = document.getElementById('btn-enter-queue');
-    const banner = document.getElementById('queue-status-banner');
-    const btnCancel = document.getElementById('btn-cancel-queue');
-    const timerText = document.getElementById('queue-timer-text');
-    const queueStatusMsg = document.getElementById('queue-status-msg');
-
-    if (!btnQueue) return;
-
-    btnQueue.addEventListener('click', () => {
-      if (!state.isQueueing) {
-        startQueue();
-      } else {
-        cancelQueue();
-      }
+    // Step 2: Gamemode selection (Realistic, Boxfight, Buildfight, Zonewars)
+    const modeCards = document.querySelectorAll('.ct-mode-card');
+    modeCards.forEach(card => {
+      card.addEventListener('click', () => {
+        modeCards.forEach(c => c.classList.remove('active'));
+        card.classList.add('active');
+        state.gameMode = card.getAttribute('data-gamemode') || 'realistic';
+        updateModalQueueBtn();
+      });
     });
 
-    if (btnCancel) {
-      btnCancel.addEventListener('click', cancelQueue);
+    function updateModalQueueBtn() {
+      if (!startQueueBtn) return;
+      const modeName = getGamemodeDisplayName(state.gameMode);
+      startQueueBtn.textContent = `Queue ${state.teamSize} ${modeName}`;
+    }
+
+    // Start Queue from modal
+    if (startQueueBtn) {
+      startQueueBtn.addEventListener('click', () => {
+        closeModal();
+        startQueue();
+      });
+    }
+
+    // Cancel Queue
+    if (cancelBtn) {
+      cancelBtn.addEventListener('click', cancelQueue);
     }
 
     function startQueue() {
       state.isQueueing = true;
       state.queueSeconds = 0;
       if (banner) banner.classList.add('active');
-      btnQueue.classList.add('queueing');
-      btnQueue.innerHTML = `<i data-lucide="x-circle" style="width:18px;height:18px;"></i> Cancel Queue`;
+      if (openBtn) {
+        openBtn.classList.add('queueing');
+        openBtn.innerHTML = `<i data-lucide="x-circle" style="width:18px;height:18px;"></i> Cancel Queue`;
+      }
       if (window.lucide) window.lucide.createIcons();
 
       const minElo = Math.max(0, state.userElo - 300);
       const maxElo = Math.min(3000, state.userElo + 300);
+      const modeName = getGamemodeDisplayName(state.gameMode);
 
-      if (queueStatusMsg) {
-        queueStatusMsg.textContent = state.selectedMode === 'ranked'
-          ? `Searching opponents within ±300 ELO (${minElo} - ${maxElo} ELO)...`
-          : `Searching casual players for unranked friendly (Battle Pass XP active)...`;
+      if (statusMsg) {
+        statusMsg.textContent = `Searching ${state.teamSize} ${modeName} opponents (±300 ELO: ${minElo} - ${maxElo})...`;
       }
 
       state.queueTimer = setInterval(() => {
@@ -149,13 +195,8 @@
         const fmt = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
         if (timerText) timerText.textContent = fmt;
 
-        // Auto-expand search range if queue reaches 8 seconds
-        if (state.queueSeconds === 8 && state.selectedMode === 'ranked' && queueStatusMsg) {
-          queueStatusMsg.textContent = `Expanding search radius: Matching best available players across all regions...`;
-        }
-
-        // Match found simulation after 14 seconds
-        if (state.queueSeconds === 14) {
+        // Simulate Match Found after 10 seconds
+        if (state.queueSeconds === 10) {
           matchFoundSimulation();
         }
       }, 1000);
@@ -165,82 +206,74 @@
       state.isQueueing = false;
       clearInterval(state.queueTimer);
       if (banner) banner.classList.remove('active');
-      btnQueue.classList.remove('queueing');
-      updateQueueButtonLabel();
-    }
-  }
-
-  function matchFoundSimulation() {
-    clearInterval(state.queueTimer);
-    const banner = document.getElementById('queue-status-banner');
-    if (banner) banner.classList.remove('active');
-
-    const btnQueue = document.getElementById('btn-enter-queue');
-    if (btnQueue) {
-      btnQueue.classList.remove('queueing');
-      btnQueue.innerHTML = `<i data-lucide="check-circle-2" style="width:18px;height:18px;"></i> Match Found!`;
+      if (openBtn) {
+        openBtn.classList.remove('queueing');
+        openBtn.innerHTML = `<i data-lucide="play" style="width:18px;height:18px;fill:currentColor;"></i> Queue Match`;
+      }
       if (window.lucide) window.lucide.createIcons();
     }
 
-    showMatchFoundModal({
-      opponentName: 'FaZe_Vortex',
-      opponentElo: 2490,
-      opponentRank: 'Elite Tier',
-      mapName: 'Competitive Realistic 1v1 (Speed & Aim)',
-      mapCode: '2355-0939-8965',
-      rounds: 'Best of 9 Rounds',
-      serverRegion: 'NA-East / EU Neutral'
-    });
+    function matchFoundSimulation() {
+      clearInterval(state.queueTimer);
+      if (banner) banner.classList.remove('active');
+      if (openBtn) {
+        openBtn.classList.remove('queueing');
+        openBtn.innerHTML = `<i data-lucide="check" style="width:18px;height:18px;"></i> Match Found!`;
+      }
+      if (window.lucide) window.lucide.createIcons();
+
+      showMatchModal();
+    }
   }
 
-  // ── Match Found Modal ───────────────────────────────────────
-  function showMatchFoundModal(data) {
-    let modal = document.getElementById('match-found-modal');
+  function getGamemodeDisplayName(key) {
+    switch (key) {
+      case 'realistic': return 'Realistic';
+      case 'boxfight': return 'Box Fights';
+      case 'buildfight': return 'Build Fights';
+      case 'zonewars': return 'Zone Wars';
+      default: return 'Match';
+    }
+  }
+
+  // ── Match Ready Modal ───────────────────────────────────────
+  function showMatchModal() {
+    let modal = document.getElementById('match-ready-modal');
     if (!modal) {
       modal = document.createElement('div');
-      modal.id = 'match-found-modal';
-      modal.className = 'modal-overlay';
-      modal.style.display = 'flex';
-      modal.style.zIndex = '300';
+      modal.id = 'match-ready-modal';
+      modal.className = 'ct-modal-overlay open';
       document.body.appendChild(modal);
     }
 
-    modal.innerHTML = `
-      <div class="auth-modal-card" style="max-width:480px;text-align:center;border-color:var(--kick-green);box-shadow:0 0 40px rgba(83,252,24,0.35);">
-        <div style="width:56px;height:56px;border-radius:16px;background:rgba(83,252,24,0.15);border:1px solid var(--kick-green);color:var(--kick-green);display:inline-flex;align-items:center;justify-content:center;margin-bottom:14px;">
-          <i data-lucide="swords" style="width:28px;height:28px;"></i>
-        </div>
-        <h2 style="font-family:'Outfit',sans-serif;font-size:1.6rem;font-weight:900;color:#fff;margin-bottom:6px;">Match Ready!</h2>
-        <p style="color:var(--text-muted);font-size:0.85rem;margin-bottom:20px;">
-          Opponent within ±300 ELO range accepted. Connect to Fortnite Creative lobby.
-        </p>
+    const modeName = getGamemodeDisplayName(state.gameMode);
 
-        <div style="background:var(--bg-surface);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:20px;text-align:left;">
-          <div style="display:flex;justify-content:space-between;margin-bottom:10px;">
-            <span style="font-size:0.75rem;color:var(--text-sub);text-transform:uppercase;font-weight:800;">Opponent</span>
-            <span style="font-size:0.88rem;font-weight:900;color:#fff;">${data.opponentName}</span>
+    modal.innerHTML = `
+      <div class="ct-queue-modal-card" style="text-align:center;border-color:#53fc18;">
+        <div style="width:48px;height:48px;border-radius:12px;background:rgba(83,252,24,0.15);color:#53fc18;display:inline-flex;align-items:center;justify-content:center;margin-bottom:12px;">
+          <i data-lucide="swords" style="width:24px;height:24px;"></i>
+        </div>
+        <h3 style="font-family:'Outfit',sans-serif;font-size:1.4rem;font-weight:900;color:#fff;margin-bottom:4px;">Match Found!</h3>
+        <p style="color:#94a3b8;font-size:0.8rem;margin-bottom:16px;">
+          Opponent matched within ±300 ELO range.
+        </p>
+        <div style="background:#000;border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:14px;margin-bottom:16px;text-align:left;font-size:0.82rem;">
+          <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+            <span style="color:#64748b;font-weight:800;">Playlist:</span>
+            <span style="color:#fff;font-weight:900;">${state.teamSize} ${modeName}</span>
           </div>
-          <div style="display:flex;justify-content:space-between;margin-bottom:10px;">
-            <span style="font-size:0.75rem;color:var(--text-sub);text-transform:uppercase;font-weight:800;">Opponent ELO</span>
-            <span style="font-size:0.88rem;font-weight:900;color:var(--kick-green);">${data.opponentElo} ELO (${data.opponentRank})</span>
-          </div>
-          <div style="display:flex;justify-content:space-between;margin-bottom:10px;">
-            <span style="font-size:0.75rem;color:var(--text-sub);text-transform:uppercase;font-weight:800;">Island Code</span>
-            <span style="font-size:0.85rem;font-weight:900;color:#fbbf24;background:rgba(245,158,11,0.12);padding:2px 8px;border-radius:6px;">${data.mapCode}</span>
+          <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+            <span style="color:#64748b;font-weight:800;">Opponent ELO:</span>
+            <span style="color:#53fc18;font-weight:900;">2,480 ELO (Elite)</span>
           </div>
           <div style="display:flex;justify-content:space-between;">
-            <span style="font-size:0.75rem;color:var(--text-sub);text-transform:uppercase;font-weight:800;">Format</span>
-            <span style="font-size:0.85rem;font-weight:800;color:#cbd5e1;">${data.rounds}</span>
+            <span style="color:#64748b;font-weight:800;">Island Code:</span>
+            <span style="color:#fbbf24;font-weight:900;">2355-0939-8965</span>
           </div>
         </div>
-
-        <div style="display:flex;gap:12px;">
-          <button type="button" class="btn btn-discord" style="flex:1;background:var(--kick-green);color:#000;font-weight:900;padding:12px;border-radius:10px;" onclick="acceptMatchDemo()">
-            Launch Match & Enter Arena
-          </button>
-          <button type="button" class="btn btn-outline" style="border-radius:10px;padding:12px 18px;" onclick="closeMatchModal()">
-            Decline
-          </button>
+        <div style="display:flex;gap:10px;">
+          <button type="button" class="btn-modal-start-queue" style="margin-top:0;" onclick="window.location.href='matches'">Accept & Play</button>
+          <button type="button" class="btn btn-outline" style="border-radius:10px;padding:10px 18px;" onclick="closeMatchModal()">Decline</button>
         </div>
       </div>
     `;
@@ -250,15 +283,11 @@
   }
 
   window.closeMatchModal = function () {
-    const modal = document.getElementById('match-found-modal');
+    const modal = document.getElementById('match-ready-modal');
     if (modal) modal.remove();
-    const btn = document.getElementById('btn-enter-queue');
-    if (btn) btn.innerHTML = `<i data-lucide="swords" style="width:18px;height:18px;"></i> Enter Queue`;
+    const openBtn = document.getElementById('btn-open-queue-modal');
+    if (openBtn) openBtn.innerHTML = `<i data-lucide="play" style="width:18px;height:18px;fill:currentColor;"></i> Queue Match`;
     if (window.lucide) window.lucide.createIcons();
-  };
-
-  window.acceptMatchDemo = function () {
-    window.location.href = 'matches';
   };
 
   // ── Social & Friends Drawer ─────────────────────────────────
@@ -266,10 +295,7 @@
     const overlay = document.getElementById('friends-drawer-overlay');
     const drawer = document.getElementById('friends-drawer');
     const trigger = document.getElementById('btn-open-friends');
-    const floatingTrigger = document.getElementById('floating-friends-trigger');
     const closeBtn = document.getElementById('btn-close-friends');
-    const addInput = document.getElementById('friends-add-input');
-    const addBtn = document.getElementById('btn-send-friend-req');
 
     function openFriends() {
       if (overlay) overlay.classList.add('open');
@@ -283,18 +309,8 @@
     }
 
     if (trigger) trigger.addEventListener('click', openFriends);
-    if (floatingTrigger) floatingTrigger.addEventListener('click', openFriends);
     if (closeBtn) closeBtn.addEventListener('click', closeFriends);
     if (overlay) overlay.addEventListener('click', closeFriends);
-
-    if (addBtn && addInput) {
-      addBtn.addEventListener('click', () => {
-        const val = addInput.value.trim();
-        if (!val) return;
-        showToast(`Friend request sent to ${val}!`);
-        addInput.value = '';
-      });
-    }
   }
 
   function renderFriendsList() {
@@ -302,64 +318,25 @@
     if (!container) return;
 
     container.innerHTML = state.friends.map(f => `
-      <div class="friend-item-card">
-        <div class="friend-item-left">
-          <div class="friend-avatar-wrap">
-            <img src="${f.avatar}" class="friend-avatar-img" alt="${f.name}"/>
-            <span class="friend-status-dot ${f.status}"></span>
-          </div>
-          <div class="friend-item-info">
-            <div class="friend-item-name">${f.name} <span style="font-size:0.7rem;color:var(--kick-green);font-weight:900;">${f.elo} ELO</span></div>
-            <div class="friend-item-activity">${f.activity}</div>
+      <div style="background:#000;border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:10px;display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <img src="${f.avatar}" style="width:34px;height:34px;border-radius:8px;object-fit:cover;" alt="${f.name}"/>
+          <div>
+            <div style="font-size:0.84rem;font-weight:800;color:#fff;">${f.name} <span style="color:#53fc18;font-size:0.7rem;">${f.elo} ELO</span></div>
+            <div style="font-size:0.7rem;color:#64748b;">${f.activity}</div>
           </div>
         </div>
-        <div class="friend-actions-group">
-          <button class="btn-friend-action" title="Invite to Party" onclick="inviteFriendToParty('${f.id}')">
-            <i data-lucide="user-plus" style="width:14px;height:14px;"></i>
-          </button>
-          <button class="btn-friend-action" title="Friendly 1v1" onclick="challengeFriendly('${f.name}')">
-            <i data-lucide="swords" style="width:14px;height:14px;"></i>
-          </button>
-        </div>
+        <button type="button" style="background:#14171a;border:1px solid rgba(255,255,255,0.1);color:#53fc18;padding:5px 10px;border-radius:6px;font-size:0.72rem;font-weight:800;cursor:pointer;" onclick="showToast('Invited ${f.name} to Party!')">
+          Invite
+        </button>
       </div>
     `).join('');
-
-    if (window.lucide) window.lucide.createIcons();
   }
 
-  window.inviteFriendToParty = function (friendId) {
-    const friend = state.friends.find(f => f.id === friendId);
-    if (!friend) return;
-    const slot2 = document.getElementById('party-slot-2');
-    if (slot2) {
-      slot2.innerHTML = `
-        <img src="${friend.avatar}" class="party-slot-avatar" alt="${friend.name}"/>
-      `;
-      slot2.classList.add('leader');
-      showToast(`${friend.name} joined your party!`);
-    }
-  };
-
-  window.challengeFriendly = function (friendName) {
-    showToast(`Challenged ${friendName} to a Friendly 1v1! (Anti-abuse XP cap active)`);
-  };
-
-  // ── Party Slots ─────────────────────────────────────────────
-  function initPartySlots() {
-    const slot2 = document.getElementById('party-slot-2');
-    if (slot2) {
-      slot2.addEventListener('click', () => {
-        const floatingTrigger = document.getElementById('floating-friends-trigger');
-        if (floatingTrigger) floatingTrigger.click();
-      });
-    }
-  }
-
-  // ── Live Online Ticker Fluctuator ───────────────────────────
+  // ── Online Ticker Fluctuator ─────────────────────────────────
   function initLiveTicker() {
     const onlineEl = document.getElementById('ticker-online-count');
     const matchesEl = document.getElementById('ticker-matches-count');
-
     let online = 1482;
     let matches = 219;
 
@@ -375,8 +352,8 @@
     }, 4000);
   }
 
-  // ── Toast Notification Helper ───────────────────────────────
-  function showToast(msg) {
+  // ── Toast Helper ─────────────────────────────────────────────
+  window.showToast = function (msg) {
     let toast = document.getElementById('ct-ranked-toast');
     if (!toast) {
       toast = document.createElement('div');
@@ -386,14 +363,13 @@
         bottom: 24px;
         left: 50%;
         transform: translateX(-50%);
-        background: #181c20;
-        border: 1px solid var(--kick-green);
+        background: #08090c;
+        border: 1px solid #53fc18;
         color: #ffffff;
-        padding: 10px 22px;
+        padding: 9px 20px;
         border-radius: 99px;
-        font-size: 0.84rem;
+        font-size: 0.8rem;
         font-weight: 800;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.8);
         z-index: 9999;
         pointer-events: none;
         transition: opacity 0.2s ease;
@@ -404,7 +380,7 @@
     toast.style.opacity = '1';
     setTimeout(() => {
       toast.style.opacity = '0';
-    }, 2800);
-  }
+    }, 2500);
+  };
 
 })();
