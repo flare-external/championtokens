@@ -1537,44 +1537,169 @@ body {
   background: rgba(251, 191, 36, 0.08);
 }
 
-/* Tooltip on hover */
+/* Tooltip on hover (Extends towards the RIGHT, high z-index, no morphing) */
 .pf-badge-icon-item::after {
   content: attr(data-tooltip);
   position: absolute;
-  bottom: calc(100% + 8px);
-  left: 50%;
-  transform: translateX(-50%) translateY(4px);
-  background: rgba(10, 12, 16, 0.95);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  color: #f1f5f9;
-  font-size: 0.72rem;
-  font-weight: 500;
-  padding: 6px 12px;
-  border-radius: 8px;
-  white-space: nowrap;
-  pointer-events: none;
+  bottom: calc(100% + 6px);
+  left: 0 !important;
+  transform: none !important;
+  background: rgba(10, 12, 16, 0.98) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border: 1px solid rgba(83, 252, 24, 0.45) !important;
+  color: #53fc18 !important;
+  font-size: 0.72rem !important;
+  font-weight: 600 !important;
+  padding: 5px 11px !important;
+  border-radius: 6px !important;
+  white-space: nowrap !important;
+  pointer-events: none !important;
   opacity: 0;
   visibility: hidden;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.8);
-  transition: opacity 0.18s ease, transform 0.18s ease;
-  z-index: 1000;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.9) !important;
+  transition: opacity 0.15s ease !important;
+  z-index: 999999 !important;
 }
 
 .pf-badge-icon-item:hover::after {
-  opacity: 1;
-  visibility: visible;
-  transform: translateX(-50%) translateY(0);
+  opacity: 1 !important;
+  visibility: visible !important;
 }
 
-/* ── Bio Text ───────────────────────────────────────────────── */
-.pf-bio-text {
-  font-size: 0.85rem;
-  color: #94a3b8;
-  line-height: 1.5;
+/* ── Bio & Direct Inline Editor ──────────────────────────────── */
+.pf-bio-wrap {
   margin-top: 8px;
-  max-width: 600px;
+  max-width: 620px;
+  position: relative;
+  z-index: 10;
+}
+
+.pf-bio-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #64748b;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.pf-bio-display {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  padding: 5px 8px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  transition: all 0.15s ease;
+  margin-left: -8px;
+}
+
+.pf-bio-display:hover {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.pf-bio-display:hover .pf-bio-edit-trigger {
+  opacity: 1;
+  color: #53fc18;
+}
+
+.pf-bio-text {
+  font-size: 0.84rem;
+  line-height: 1.5;
+  color: #94a3b8;
+}
+
+.pf-bio-edit-trigger {
+  background: transparent;
+  border: none;
+  color: #64748b;
+  cursor: pointer;
+  padding: 2px;
+  opacity: 0.6;
+  transition: opacity 0.15s ease, color 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+}
+
+.pf-bio-edit-form {
+  background: #000000;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  padding: 10px 12px;
+  margin-top: 4px;
+}
+
+.pf-bio-edit-form textarea {
+  width: 100%;
+  box-sizing: border-box;
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  font-size: 0.85rem;
+  line-height: 1.45;
+  outline: none;
+  resize: none;
+  font-family: inherit;
+  padding: 0;
+  margin-bottom: 8px;
+}
+
+.pf-bio-edit-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.pf-bio-counter {
+  font-size: 0.7rem;
+  color: #64748b;
+  font-family: monospace;
+}
+
+.btn-bio-cancel {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #94a3b8;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-bio-cancel:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+}
+
+.btn-bio-save {
+  background: #53fc18;
+  border: none;
+  color: #000000;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 4px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-bio-save:hover {
+  background: #47e212;
+  box-shadow: 0 0 10px rgba(83, 252, 24, 0.35);
+}
+
+.pf-inline-mod-alert {
+  font-size: 0.72rem;
+  color: #f87171;
+  font-weight: 500;
+  display: none;
 }
 
 /* ── Statistics Card & Grid ─────────────────────────────────── */
