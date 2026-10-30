@@ -84,11 +84,10 @@
   function updateQueueButtonLabel() {
     const btn = document.getElementById('btn-enter-queue');
     if (!btn || state.isQueueing) return;
-    const playlistName = getPlaylistDisplayName(state.selectedPlaylist);
     if (state.selectedMode === 'ranked') {
-      btn.innerHTML = `<i data-lucide="swords" style="width:18px;height:18px;"></i> Find Ranked ${playlistName}`;
+      btn.innerHTML = `<i data-lucide="play" style="width:16px;height:16px;fill:currentColor;"></i> Enter Queue`;
     } else {
-      btn.innerHTML = `<i data-lucide="smile" style="width:18px;height:18px;"></i> Play Friendly ${playlistName}`;
+      btn.innerHTML = `<i data-lucide="play" style="width:16px;height:16px;fill:currentColor;"></i> Play Friendly`;
     }
     if (window.lucide) window.lucide.createIcons();
   }
