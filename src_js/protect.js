@@ -5,7 +5,7 @@
   'use strict';
 
   // 0. Website Closed Enforcer
-  const WEBSITE_CLOSED = true;
+  const WEBSITE_CLOSED = false;
   if (WEBSITE_CLOSED) {
     const isBypass = localStorage.getItem('ct_bypass') === '1' ||
                      document.cookie.includes('ct_bypass=1') ||
