@@ -1500,13 +1500,19 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 6px;
+  background: rgba(18, 24, 38, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  padding: 3px 6px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 4px 14px rgba(0, 0, 0, 0.4);
+  vertical-align: middle;
 }
 
 .pf-badge-icon-item {
   position: relative;
   width: 28px;
   height: 28px;
-  border-radius: 8px;
+  border-radius: 7px;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
   display: inline-flex;
@@ -1514,27 +1520,80 @@ body {
   justify-content: center;
   cursor: pointer;
   transition: all 0.15s ease;
+  user-select: none;
 }
 
 .pf-badge-icon-item:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.12);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+.pf-badge-icon-item.owner {
+  border-color: rgba(251, 191, 36, 0.55);
+  background: rgba(251, 191, 36, 0.12);
+}
+
+.pf-badge-icon-item.admin {
+  border-color: rgba(6, 182, 212, 0.55);
+  background: rgba(6, 182, 212, 0.12);
+}
+
+.pf-badge-icon-item.leaderboard {
+  border-color: rgba(245, 158, 11, 0.5);
+  background: rgba(245, 158, 11, 0.12);
+  width: auto;
+  min-width: 32px;
+  padding: 0 5px;
 }
 
 .pf-badge-icon-item.beta {
-  border-color: rgba(83, 252, 24, 0.4);
-  background: rgba(83, 252, 24, 0.08);
+  border-color: rgba(83, 252, 24, 0.45);
+  background: rgba(83, 252, 24, 0.1);
 }
 
-.pf-badge-icon-item.verified {
-  border-color: rgba(56, 189, 248, 0.4);
-  background: rgba(56, 189, 248, 0.08);
+.pf-badge-icon-item.premium {
+  border-color: rgba(192, 132, 252, 0.5);
+  background: rgba(192, 132, 252, 0.12);
 }
 
-.pf-badge-icon-item.founder {
-  border-color: rgba(251, 191, 36, 0.4);
-  background: rgba(251, 191, 36, 0.08);
+.pf-lb-badge-content {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  font-family: 'Outfit', sans-serif;
+  color: #fbbf24;
+}
+
+.pf-lb-flag {
+  font-size: 0.8rem;
+  line-height: 1;
+}
+
+.pf-badge-more-btn {
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.08);
+  color: #cbd5e1;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.74rem;
+  font-weight: 800;
+  height: 28px;
+  padding: 0 7px;
+  border-radius: 7px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+
+.pf-badge-more-btn:hover {
+  background: rgba(83, 252, 24, 0.22);
+  border-color: #53fc18;
+  color: #53fc18;
+  transform: translateY(-2px);
 }
 
 /* Tooltip on hover (Extends towards the RIGHT, high z-index, no morphing) */
@@ -1560,6 +1619,26 @@ body {
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.9) !important;
   transition: opacity 0.15s ease !important;
   z-index: 999999 !important;
+}
+
+.pf-badge-icon-item.owner::after {
+  border-color: rgba(251, 191, 36, 0.6) !important;
+  color: #fbbf24 !important;
+}
+
+.pf-badge-icon-item.admin::after {
+  border-color: rgba(6, 182, 212, 0.6) !important;
+  color: #06b6d4 !important;
+}
+
+.pf-badge-icon-item.leaderboard::after {
+  border-color: rgba(245, 158, 11, 0.6) !important;
+  color: #fbbf24 !important;
+}
+
+.pf-badge-icon-item.premium::after {
+  border-color: rgba(192, 132, 252, 0.6) !important;
+  color: #c084fc !important;
 }
 
 .pf-badge-icon-item:hover::after {
@@ -1792,16 +1871,25 @@ body {
   margin-top: 2px;
 }
 
-/* ── Compact Rank / Place / ELO HUD Box ─────────────────────── */
+/* ── Compact Rank / Place / ELO HUD Box (Right Corner, No Outline, 5% Bigger) ── */
 .pf-hud-card {
-  background: #000000;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  position: absolute;
+  top: 14px;
+  right: 20px;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: none !important;
+  outline: none !important;
   border-radius: 12px;
   padding: 8px 16px;
   display: inline-flex;
   align-items: center;
   gap: 14px;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.55);
+  transform: scale(1.05);
+  transform-origin: top right;
+  z-index: 20;
   transition: all 0.25s ease;
 }
 
@@ -1859,7 +1947,7 @@ body {
   text-transform: uppercase;
 }
 
-/* Top 50 Animated Gold Glow & Shimmer */
+/* Top 50 Animated Gold Glow & Shimmer (No Outline) */
 @keyframes goldShine {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
@@ -1868,18 +1956,27 @@ body {
 
 @keyframes goldPulse {
   0%, 100% {
-    box-shadow: 0 0 16px rgba(245, 158, 11, 0.25), inset 0 0 14px rgba(245, 158, 11, 0.08);
-    border-color: rgba(251, 191, 36, 0.45);
+    box-shadow: 0 0 16px rgba(245, 158, 11, 0.28);
   }
   50% {
-    box-shadow: 0 0 26px rgba(245, 158, 11, 0.45), inset 0 0 20px rgba(245, 158, 11, 0.16);
-    border-color: rgba(251, 191, 36, 0.85);
+    box-shadow: 0 0 28px rgba(245, 158, 11, 0.48);
   }
 }
 
 .pf-hud-card.top-50 {
   animation: goldPulse 3.5s ease-in-out infinite;
-  border: 1px solid rgba(251, 191, 36, 0.55);
+  border: none !important;
+  outline: none !important;
+}
+
+@media (max-width: 768px) {
+  .pf-hud-card {
+    position: static;
+    transform: scale(1);
+    transform-origin: center;
+    margin: 12px auto 0;
+    width: auto;
+  }
 }
 
 .pf-hud-card.top-50 .pf-hud-val {
@@ -1954,4 +2051,380 @@ body {
   animation: goldShine 3s linear infinite !important;
   display: inline-block !important;
   filter: drop-shadow(0 0 12px rgba(251, 191, 36, 0.45)) !important;
+}
+
+/* ── Connected Profile Links (With Manual Moderation Verification) ── */
+.pf-links-wrap {
+  margin-top: 14px;
+  max-width: 620px;
+  position: relative;
+  z-index: 10;
+}
+
+.pf-links-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.pf-links-label-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pf-links-title {
+  font-size: 0.68rem;
+  font-weight: 800;
+  color: #64748b;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.pf-mod-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(245, 158, 11, 0.12);
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  color: #fbbf24;
+  font-size: 0.62rem;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 4px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.btn-add-link {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: #94a3b8;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-add-link:hover {
+  background: rgba(83, 252, 24, 0.15);
+  border-color: #53fc18;
+  color: #53fc18;
+}
+
+.pf-links-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.pf-link-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #090c12;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  color: #e2e8f0;
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+
+.pf-link-chip:hover {
+  border-color: rgba(255, 255, 255, 0.25);
+  background: #10141d;
+}
+
+.pf-link-chip.approved {
+  border-color: rgba(83, 252, 24, 0.25);
+}
+
+.pf-link-chip.approved:hover {
+  border-color: #53fc18;
+  color: #ffffff;
+}
+
+.pf-link-chip.pending {
+  border-color: rgba(245, 158, 11, 0.35);
+  background: rgba(245, 158, 11, 0.04);
+}
+
+.pf-link-platform-icon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+.pf-link-status-tag {
+  font-size: 0.62rem;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.pf-link-status-tag.verified {
+  background: rgba(83, 252, 24, 0.15);
+  color: #53fc18;
+  border: 1px solid rgba(83, 252, 24, 0.3);
+}
+
+.pf-link-status-tag.pending {
+  background: rgba(245, 158, 11, 0.18);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.35);
+}
+
+.pf-link-delete-btn {
+  background: transparent;
+  border: none;
+  color: #64748b;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  padding: 2px;
+  margin-left: 2px;
+  transition: color 0.15s;
+}
+
+.pf-link-delete-btn:hover {
+  color: #f87171;
+}
+
+/* ── Generic Profile Modals (Badges & Add Link) ──────────────── */
+.pf-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  z-index: 10000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.pf-modal-backdrop.open {
+  display: flex;
+}
+
+.pf-modal-card {
+  background: #090c12;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 18px;
+  max-width: 540px;
+  width: 100%;
+  padding: 24px;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8);
+  position: relative;
+  max-height: 85vh;
+  overflow-y: auto;
+}
+
+.pf-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 12px;
+}
+
+.pf-modal-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pf-modal-close-btn {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+}
+
+.pf-modal-close-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+}
+
+/* Badges Modal Grid */
+.pf-modal-badges-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.pf-badge-card {
+  background: #0e1219;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  transition: all 0.18s ease;
+}
+
+.pf-badge-card:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  background: #141923;
+  transform: translateY(-2px);
+}
+
+.pf-badge-card-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.pf-badge-card-info {
+  flex: 1;
+}
+
+.pf-badge-card-name-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 2px;
+}
+
+.pf-badge-card-name {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.pf-badge-card-tag {
+  font-size: 0.62rem;
+  font-weight: 800;
+  padding: 1px 6px;
+  border-radius: 4px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.pf-badge-card-desc {
+  font-size: 0.76rem;
+  color: #94a3b8;
+  line-height: 1.35;
+}
+
+.pf-badge-card-status {
+  font-size: 0.68rem;
+  font-weight: 800;
+  color: #53fc18;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Add Link Modal Form */
+.pf-form-group {
+  margin-bottom: 14px;
+}
+
+.pf-form-label {
+  display: block;
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: #cbd5e1;
+  margin-bottom: 6px;
+}
+
+.pf-form-select,
+.pf-form-input {
+  width: 100%;
+  background: #05070a;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  color: #ffffff;
+  padding: 10px 12px;
+  font-size: 0.84rem;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.15s;
+}
+
+.pf-form-select:focus,
+.pf-form-input:focus {
+  border-color: #53fc18;
+}
+
+.pf-mod-warning-box {
+  background: rgba(245, 158, 11, 0.1);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  border-radius: 10px;
+  padding: 10px 12px;
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+  font-size: 0.74rem;
+  color: #fef08a;
+  line-height: 1.45;
+}
+
+.pf-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.btn-modal-cancel {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #94a3b8;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.btn-modal-cancel:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: #ffffff;
+}
+
+.btn-modal-submit {
+  background: #53fc18;
+  border: none;
+  color: #000000;
+  font-size: 0.8rem;
+  font-weight: 800;
+  padding: 8px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.btn-modal-submit:hover {
+  opacity: 0.9;
 }

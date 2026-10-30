@@ -7,7 +7,7 @@
   <title>Contender Profile — Champion Tokens</title>
   <link rel="icon" type="image/png" href="/champion-tokens_new.png"/>
   <link rel="stylesheet" href="/css/style.css?v=5.5"/>
-  <link rel="stylesheet" href="/css/ranked.css?v=4.7"/>
+  <link rel="stylesheet" href="/css/ranked.css?v=4.8"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
   <script src="/js/protect.js"></script>
@@ -153,51 +153,53 @@
     <section class="pf-banner-card">
       
       <!-- Sleek Default Dark Cyber Banner -->
-      <div class="pf-banner-cover" id="pf-banner-cover"></div>
+      <div class="pf-banner-cover" id="pf-banner-cover">
+        
+        <!-- Compact Gaming HUD Box (Rank | Place | ELO in Right Corner, No Outline, 5% Bigger) -->
+        <div class="pf-hud-card" id="pf-hud-card">
+          <!-- Rank Column -->
+          <div class="pf-hud-col">
+            <div class="pf-hud-val">
+              <img src="/medal-ranks/svg/10-star.svg" id="pf-hud-icon" class="pf-hud-icon" alt="Rank"/>
+              <span id="pf-hud-rank">Unreal</span>
+            </div>
+            <div class="pf-hud-label-line">
+              <span>RANK</span>
+            </div>
+          </div>
+
+          <!-- Vertical Divider -->
+          <div class="pf-hud-divider"></div>
+
+          <!-- Place Column -->
+          <div class="pf-hud-col">
+            <div class="pf-hud-val" id="pf-hud-place">#1</div>
+            <div class="pf-hud-label-line">
+              <span>PLACE</span>
+            </div>
+          </div>
+
+          <!-- Vertical Divider -->
+          <div class="pf-hud-divider"></div>
+
+          <!-- ELO Column -->
+          <div class="pf-hud-col">
+            <div class="pf-hud-val" id="pf-hud-elo">9,999</div>
+            <div class="pf-hud-label-line">
+              <span>ELO</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
 
       <!-- Banner Body -->
       <div class="pf-banner-body">
         
-        <!-- Top Row: Avatar overlapping line + Compact Gaming HUD -->
+        <!-- Top Row: Avatar overlapping line -->
         <div class="pf-header-row">
           <div class="pf-avatar-wrap">
             <img src="https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=120&auto=format&fit=crop&q=80" id="pf-avatar" class="pf-avatar-img" alt="Contender Avatar"/>
-          </div>
-
-          <!-- Compact Gaming HUD Box (Rank | Place | ELO with Line Cuts & Top 50 Animated Gold) -->
-          <div class="pf-hud-card" id="pf-hud-card">
-            <!-- Rank Column -->
-            <div class="pf-hud-col">
-              <div class="pf-hud-val">
-                <img src="/medal-ranks/svg/10-star.svg" id="pf-hud-icon" class="pf-hud-icon" alt="Rank"/>
-                <span id="pf-hud-rank">Unreal</span>
-              </div>
-              <div class="pf-hud-label-line">
-                <span>RANK</span>
-              </div>
-            </div>
-
-            <!-- Vertical Divider -->
-            <div class="pf-hud-divider"></div>
-
-            <!-- Place Column -->
-            <div class="pf-hud-col">
-              <div class="pf-hud-val" id="pf-hud-place">#1</div>
-              <div class="pf-hud-label-line">
-                <span>PLACE</span>
-              </div>
-            </div>
-
-            <!-- Vertical Divider -->
-            <div class="pf-hud-divider"></div>
-
-            <!-- ELO Column -->
-            <div class="pf-hud-col">
-              <div class="pf-hud-val" id="pf-hud-elo">9,999</div>
-              <div class="pf-hud-label-line">
-                <span>ELO</span>
-              </div>
-            </div>
           </div>
         </div>
 
@@ -208,12 +210,8 @@
           <div class="pf-username-row">
             <span class="pf-username" id="pf-display-name">adrian</span>
             
-            <!-- Badges Box (Beta Tester Only + Tooltip Extends to Right) -->
-            <div class="pf-badges-box" id="pf-badges-box">
-              <div class="pf-badge-icon-item beta" data-tooltip="Beta Tester">
-                <i data-lucide="sparkles" style="width:14px;height:14px;color:#53fc18;"></i>
-              </div>
-            </div>
+            <!-- Badges Box (Behind Badges Box, Max 4 Displayed + Counter Pill, Click Opens Modal) -->
+            <div class="pf-badges-box" id="pf-badges-box" title="Click to view all contender badges"></div>
           </div>
 
           <!-- 12-Digit Contender ID Row -->
@@ -250,6 +248,25 @@
                 </div>
               </div>
             </div>
+          </div>
+
+          <!-- Connected Profile Links (With Manual Moderation Verification) -->
+          <div class="pf-links-wrap" id="pf-links-wrap">
+            <div class="pf-links-header">
+              <div class="pf-links-label-row">
+                <span class="pf-links-title">Connected Profiles</span>
+                <span class="pf-mod-badge" title="All external links must be manually checked and verified by moderation staff before public activation">
+                  <i data-lucide="shield-check" style="width:11px;height:11px;"></i> Manual Moderation
+                </span>
+              </div>
+              <button type="button" class="btn-add-link" id="btn-open-add-link" title="Add a connected profile link">
+                <i data-lucide="plus" style="width:12px;height:12px;"></i>
+                <span>Add Link</span>
+              </button>
+            </div>
+
+            <!-- Connected Links List -->
+            <div class="pf-links-list" id="pf-links-list"></div>
           </div>
 
         </div>
@@ -300,6 +317,69 @@
     </section>
 
   </main>
+
+  <!-- Modal: All Badges -->
+  <div class="pf-modal-backdrop" id="modal-all-badges">
+    <div class="pf-modal-card">
+      <div class="pf-modal-header">
+        <div class="pf-modal-title">
+          <i data-lucide="award" style="width:20px;height:20px;color:#53fc18;"></i>
+          <span>Contender Badges</span>
+        </div>
+        <button type="button" class="pf-modal-close-btn" id="btn-close-badges-modal">
+          <i data-lucide="x" style="width:18px;height:18px;"></i>
+        </button>
+      </div>
+      <div class="pf-modal-badges-grid" id="modal-badges-list"></div>
+    </div>
+  </div>
+
+  <!-- Modal: Add Connected Profile Link -->
+  <div class="pf-modal-backdrop" id="modal-add-link">
+    <div class="pf-modal-card">
+      <div class="pf-modal-header">
+        <div class="pf-modal-title">
+          <i data-lucide="link-2" style="width:20px;height:20px;color:#53fc18;"></i>
+          <span>Connect Profile Link</span>
+        </div>
+        <button type="button" class="pf-modal-close-btn" id="btn-close-add-link-modal">
+          <i data-lucide="x" style="width:18px;height:18px;"></i>
+        </button>
+      </div>
+
+      <div class="pf-mod-warning-box">
+        <i data-lucide="shield-alert" style="width:18px;height:18px;color:#f59e0b;flex-shrink:0;margin-top:2px;"></i>
+        <div>
+          <strong>Manual Moderation Required:</strong> All connected links are manually reviewed and verified by moderation staff before being activated publicly to protect against scam and malicious links.
+        </div>
+      </div>
+
+      <form id="form-add-link">
+        <div class="pf-form-group">
+          <label class="pf-form-label">Platform</label>
+          <select class="pf-form-select" id="select-link-platform">
+            <option value="discord">Discord Profile</option>
+            <option value="epic">Epic Games / Tracker</option>
+            <option value="twitch">Twitch Channel</option>
+            <option value="youtube">YouTube Channel</option>
+            <option value="twitter">X / Twitter</option>
+            <option value="kick">Kick Livestream</option>
+            <option value="custom">Custom Web Link</option>
+          </select>
+        </div>
+
+        <div class="pf-form-group">
+          <label class="pf-form-label">Profile Handle or URL</label>
+          <input type="text" class="pf-form-input" id="input-link-val" placeholder="e.g. adrian or https://..." required />
+        </div>
+
+        <div class="pf-modal-actions">
+          <button type="button" class="btn-modal-cancel" id="btn-cancel-add-link">Cancel</button>
+          <button type="submit" class="btn-modal-submit">Submit for Review</button>
+        </div>
+      </form>
+    </div>
+  </div>
 
   <!-- Universal Pinned Bottom Bar -->
   <footer class="ct-footer">
@@ -634,7 +714,352 @@
         showToast('Bio updated!');
       });
 
+      // 9. Badges System (Owner, Admin, Leaderboard #1, Beta Tester, Premium)
+      const allUserBadges = getUserBadges(user, meta);
+      renderBadgesBox(allUserBadges);
+
+      // 10. Connected Profile Links (With Manual Moderation)
+      renderConnectedLinks();
+      setupConnectedLinksHandlers();
+
       if (window.lucide) window.lucide.createIcons();
+    }
+
+    // ── Badges System Engine ─────────────────────────────────────
+    function getUserBadges(user, meta) {
+      const badges = [];
+      const name = (user.name || user.displayName || user.customName || '').toLowerCase().trim();
+      const id = String(user.id || user.uid || '');
+      const storedCid = String(localStorage.getItem('ct_contender_id') || '');
+      const isOwner = name === 'adrian' || 
+                      id.includes('112118831941') || 
+                      storedCid.startsWith('112118831941') ||
+                      localStorage.getItem('ct_is_owner') === 'true';
+
+      // 1. Owner Badge
+      if (isOwner) {
+        badges.push({
+          id: 'owner',
+          name: 'Owner',
+          tag: 'FOUNDER',
+          iconName: 'crown',
+          color: '#fbbf24',
+          className: 'owner',
+          lore: 'Champion Tokens Founder & Creator',
+          unlocked: true
+        });
+      }
+
+      // 2. Admin Badge
+      if (isOwner || localStorage.getItem('ct_is_admin') === 'true') {
+        badges.push({
+          id: 'admin',
+          name: 'Admin',
+          tag: 'STAFF',
+          iconName: 'shield-check',
+          color: '#06b6d4',
+          className: 'admin',
+          lore: 'Official Platform Administrator & Lead Safety Operator',
+          unlocked: true
+        });
+      }
+
+      // 3. Leaderboard #... (Top 100 Players Only, Displays Number + Country Flag)
+      const placeNum = meta ? meta.numPlace : 1;
+      if (placeNum <= 100) {
+        const flag = localStorage.getItem('ct_user_flag') || '🇺🇸';
+        badges.push({
+          id: 'leaderboard',
+          name: `Leaderboard #${placeNum}`,
+          tag: 'TOP 100',
+          isLeaderboard: true,
+          placeText: `#${placeNum}`,
+          flag: flag,
+          color: '#fbbf24',
+          className: 'leaderboard',
+          lore: `Top 100 Global Ranked Contender (${flag} #${placeNum})`,
+          unlocked: true
+        });
+      }
+
+      // 4. Beta Tester Badge (Scientific Flask Icon)
+      badges.push({
+        id: 'beta',
+        name: 'Beta Tester',
+        tag: 'EARLY ACCESS',
+        iconName: 'flask-conical',
+        color: '#53fc18',
+        className: 'beta',
+        lore: 'Official Season 1 Early Beta Testing Participant',
+        unlocked: true
+      });
+
+      // 5. Premium Badge (Gem Icon)
+      badges.push({
+        id: 'premium',
+        name: 'Premium',
+        tag: 'VIP MEMBER',
+        iconName: 'gem',
+        color: '#c084fc',
+        className: 'premium',
+        lore: 'Champion Tokens VIP & Season Pass Premium Contender',
+        unlocked: true
+      });
+
+      return badges;
+    }
+
+    function renderBadgesBox(badges) {
+      const box = document.getElementById('pf-badges-box');
+      if (!box) return;
+      box.innerHTML = '';
+
+      const maxDisplay = 4;
+      const displayBadges = badges.slice(0, maxDisplay);
+      const remainingCount = badges.length - maxDisplay;
+
+      displayBadges.forEach(b => {
+        const item = document.createElement('div');
+        item.className = `pf-badge-icon-item ${b.className}`;
+        item.setAttribute('data-tooltip', b.name);
+        item.addEventListener('click', (e) => {
+          e.stopPropagation();
+          openBadgesModal(badges);
+        });
+
+        if (b.isLeaderboard) {
+          item.innerHTML = `<span class="pf-lb-badge-content"><span class="pf-lb-num">${b.placeText}</span><span class="pf-lb-flag">${b.flag}</span></span>`;
+        } else {
+          item.innerHTML = `<i data-lucide="${b.iconName}" style="width:14px;height:14px;color:${b.color};"></i>`;
+        }
+        box.appendChild(item);
+      });
+
+      if (remainingCount > 0) {
+        const moreBtn = document.createElement('button');
+        moreBtn.type = 'button';
+        moreBtn.className = 'pf-badge-more-btn';
+        moreBtn.id = 'btn-show-all-badges';
+        moreBtn.title = `View all ${badges.length} badges`;
+        moreBtn.textContent = `+${remainingCount}`;
+        moreBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          openBadgesModal(badges);
+        });
+        box.appendChild(moreBtn);
+      }
+
+      box.addEventListener('click', () => openBadgesModal(badges));
+    }
+
+    function openBadgesModal(badges) {
+      const modal = document.getElementById('modal-all-badges');
+      const list = document.getElementById('modal-badges-list');
+      if (!modal || !list) return;
+
+      list.innerHTML = '';
+      badges.forEach(b => {
+        const card = document.createElement('div');
+        card.className = 'pf-badge-card';
+
+        let iconHTML = '';
+        if (b.isLeaderboard) {
+          iconHTML = `<div class="pf-badge-card-icon" style="border-color:${b.color}40;background:${b.color}15;"><span style="font-family:'Outfit',sans-serif;font-weight:800;font-size:0.95rem;color:${b.color};">${b.placeText} ${b.flag}</span></div>`;
+        } else {
+          iconHTML = `<div class="pf-badge-card-icon" style="border-color:${b.color}40;background:${b.color}15;"><i data-lucide="${b.iconName}" style="width:20px;height:20px;color:${b.color};"></i></div>`;
+        }
+
+        card.innerHTML = `
+          ${iconHTML}
+          <div class="pf-badge-card-info">
+            <div class="pf-badge-card-name-row">
+              <span class="pf-badge-card-name">${b.name}</span>
+              <span class="pf-badge-card-tag" style="background:${b.color}20;color:${b.color};border:1px solid ${b.color}40;">${b.tag}</span>
+            </div>
+            <div class="pf-badge-card-desc">${b.lore}</div>
+          </div>
+          <div class="pf-badge-card-status">
+            <i data-lucide="check-circle-2" style="width:14px;height:14px;"></i>
+            <span>UNLOCKED</span>
+          </div>
+        `;
+        list.appendChild(card);
+      });
+
+      modal.classList.add('open');
+      if (window.lucide) window.lucide.createIcons();
+    }
+
+    document.getElementById('btn-close-badges-modal')?.addEventListener('click', () => {
+      document.getElementById('modal-all-badges')?.classList.remove('open');
+    });
+
+    document.getElementById('modal-all-badges')?.addEventListener('click', (e) => {
+      if (e.target.id === 'modal-all-badges') {
+        e.target.classList.remove('open');
+      }
+    });
+
+    // ── Connected Profile Links System (Manual Moderation) ────────
+    const DEFAULT_CONNECTED_LINKS = [
+      {
+        id: 'link_discord',
+        platform: 'discord',
+        title: 'Discord Profile',
+        handle: 'adrian',
+        url: 'https://discord.com',
+        status: 'approved',
+        verifiedDate: 'Season 1'
+      },
+      {
+        id: 'link_epic',
+        platform: 'epic',
+        title: 'Epic Games',
+        handle: 'adrian',
+        url: 'https://fortnitetracker.com',
+        status: 'approved',
+        verifiedDate: 'Season 1'
+      }
+    ];
+
+    function getConnectedLinks() {
+      const stored = localStorage.getItem('ct_user_links');
+      if (stored) {
+        try {
+          return JSON.parse(stored);
+        } catch (e) {}
+      }
+      return DEFAULT_CONNECTED_LINKS;
+    }
+
+    function saveConnectedLinks(links) {
+      localStorage.setItem('ct_user_links', JSON.stringify(links));
+      renderConnectedLinks();
+    }
+
+    function getPlatformIcon(platform) {
+      switch (platform) {
+        case 'discord': return '<i data-lucide="message-square" style="width:13px;height:13px;color:#5865F2;"></i>';
+        case 'epic': return '<i data-lucide="gamepad-2" style="width:13px;height:13px;color:#cbd5e1;"></i>';
+        case 'twitch': return '<i data-lucide="tv" style="width:13px;height:13px;color:#a855f7;"></i>';
+        case 'youtube': return '<i data-lucide="play" style="width:13px;height:13px;color:#ef4444;"></i>';
+        case 'twitter': return '<i data-lucide="twitter" style="width:13px;height:13px;color:#38bdf8;"></i>';
+        case 'kick': return '<i data-lucide="radio" style="width:13px;height:13px;color:#53fc18;"></i>';
+        default: return '<i data-lucide="globe" style="width:13px;height:13px;color:#94a3b8;"></i>';
+      }
+    }
+
+    function renderConnectedLinks() {
+      const listEl = document.getElementById('pf-links-list');
+      if (!listEl) return;
+      listEl.innerHTML = '';
+
+      const links = getConnectedLinks();
+      if (!links || links.length === 0) {
+        listEl.innerHTML = '<span style="font-size:0.75rem;color:#64748b;font-style:italic;">No connected profiles added yet.</span>';
+        return;
+      }
+
+      links.forEach((link, idx) => {
+        const isApproved = link.status === 'approved';
+        const chip = document.createElement(isApproved ? 'a' : 'div');
+        chip.className = `pf-link-chip ${link.status}`;
+        if (isApproved && link.url) {
+          chip.href = link.url.startsWith('http') ? link.url : `https://${link.url}`;
+          chip.target = '_blank';
+          chip.rel = 'noopener noreferrer';
+        }
+
+        const iconHTML = getPlatformIcon(link.platform);
+        const statusBadge = isApproved 
+          ? `<span class="pf-link-status-tag verified" title="Verified by Champion Tokens moderation staff">✓ Verified</span>`
+          : `<span class="pf-link-status-tag pending" title="Under manual review by Champion Tokens staff before public activation">⏳ Pending Review</span>`;
+
+        chip.innerHTML = `
+          ${iconHTML}
+          <span style="font-weight:600;">${link.handle || link.title}</span>
+          ${statusBadge}
+          <button type="button" class="pf-link-delete-btn" data-del-idx="${idx}" title="Remove link">
+            <i data-lucide="trash-2" style="width:12px;height:12px;"></i>
+          </button>
+        `;
+
+        chip.querySelector('.pf-link-delete-btn')?.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          deleteConnectedLink(idx);
+        });
+
+        listEl.appendChild(chip);
+      });
+
+      if (window.lucide) window.lucide.createIcons();
+    }
+
+    function deleteConnectedLink(index) {
+      const links = getConnectedLinks();
+      links.splice(index, 1);
+      saveConnectedLinks(links);
+      showToast('Connected profile link removed.');
+    }
+
+    function setupConnectedLinksHandlers() {
+      const addModal = document.getElementById('modal-add-link');
+      const openBtn = document.getElementById('btn-open-add-link');
+      const closeBtn = document.getElementById('btn-close-add-link-modal');
+      const cancelBtn = document.getElementById('btn-cancel-add-link');
+      const form = document.getElementById('form-add-link');
+      const platformSelect = document.getElementById('select-link-platform');
+      const valInput = document.getElementById('input-link-val');
+
+      function openModal() {
+        if (!addModal) return;
+        addModal.classList.add('open');
+        if (valInput) {
+          valInput.value = '';
+          valInput.focus();
+        }
+      }
+
+      function closeModal() {
+        if (!addModal) return;
+        addModal.classList.remove('open');
+      }
+
+      openBtn?.addEventListener('click', openModal);
+      closeBtn?.addEventListener('click', closeModal);
+      cancelBtn?.addEventListener('click', closeModal);
+
+      addModal?.addEventListener('click', (e) => {
+        if (e.target.id === 'modal-add-link') closeModal();
+      });
+
+      form?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const rawVal = valInput.value.trim();
+        if (!rawVal) return;
+
+        const platform = platformSelect.value;
+        const platformName = platformSelect.options[platformSelect.selectedIndex].text;
+
+        const newLink = {
+          id: 'link_' + Date.now(),
+          platform: platform,
+          title: platformName,
+          handle: rawVal.replace(/^https?:\/\//i, ''),
+          url: rawVal.startsWith('http') ? rawVal : `https://${rawVal}`,
+          status: 'pending',
+          submittedAt: new Date().toISOString()
+        };
+
+        const currentLinks = getConnectedLinks();
+        currentLinks.push(newLink);
+        saveConnectedLinks(currentLinks);
+
+        closeModal();
+        showToast('Link submitted! Sent to moderation staff for manual verification.');
+      });
+    }
     }
 
     document.addEventListener('DOMContentLoaded', initProfile);
