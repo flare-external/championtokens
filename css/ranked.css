@@ -52,7 +52,7 @@ body {
 .ct-nav-left {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
 }
 
 .ct-header-rank-pill {
@@ -78,6 +78,12 @@ body {
   width: 26px;
   height: 26px;
   object-fit: contain;
+  transition: filter 0.2s ease, opacity 0.2s ease;
+}
+
+.ct-header-rank-icon.unranked {
+  filter: grayscale(1);
+  opacity: 0.45;
 }
 
 .ct-header-rank-info {
@@ -89,14 +95,20 @@ body {
 
 .ct-header-rank-name {
   font-size: 0.78rem;
-  font-weight: 900;
+  font-weight: 800;
   color: #ffffff;
 }
 
 .ct-header-rank-elo {
-  font-size: 0.7rem;
-  font-weight: 800;
+  font-size: 0.72rem;
+  font-weight: 400; /* Clean, non-bold typography */
   color: #53fc18;
+  letter-spacing: 0.01em;
+}
+
+.ct-header-rank-elo.unranked {
+  color: #94a3b8;
+  font-weight: 400;
 }
 
 .ct-info-icon-btn {
@@ -112,6 +124,213 @@ body {
 
 .ct-info-icon-btn:hover {
   color: #ffffff;
+}
+
+/* Temporary Set ELO Button */
+.ct-set-elo-btn {
+  background: rgba(83, 252, 24, 0.08);
+  border: 1px dashed rgba(83, 252, 24, 0.45);
+  color: #53fc18;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.16s ease;
+  white-space: nowrap;
+  font-family: inherit;
+}
+
+.ct-set-elo-btn:hover {
+  background: rgba(83, 252, 24, 0.18);
+  border-color: #53fc18;
+  box-shadow: 0 0 12px rgba(83, 252, 24, 0.25);
+  transform: translateY(-1px);
+}
+
+/* ── Top-Right Auth & Profile Island ───────────────────────── */
+.ct-nav-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+}
+
+.ct-top-auth-btn {
+  background: #5865F2;
+  color: #ffffff;
+  border: none;
+  font-size: 0.8rem;
+  font-weight: 800;
+  padding: 7px 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.16s ease;
+  font-family: inherit;
+}
+
+.ct-top-auth-btn:hover {
+  background: #4752c4;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(88, 101, 242, 0.35);
+}
+
+.ct-user-island {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #08090c;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 4px 12px 4px 5px;
+  border-radius: 99px;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.16s ease;
+}
+
+.ct-user-island:hover {
+  border-color: #53fc18;
+  background: #0f1115;
+  box-shadow: 0 0 14px rgba(83, 252, 24, 0.2);
+}
+
+.ct-island-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1.5px solid #53fc18;
+}
+
+.ct-island-name {
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+/* Profile Hamburger Dropdown Menu */
+.ct-island-dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  width: 240px;
+  background: #08090c;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 14px;
+  padding: 8px;
+  display: none;
+  flex-direction: column;
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.95);
+  z-index: 500;
+}
+
+.ct-island-dropdown.open {
+  display: flex;
+}
+
+.ct-island-profile-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border-radius: 10px;
+  text-decoration: none;
+  background: rgba(255, 255, 255, 0.03);
+  transition: background 0.15s ease;
+}
+
+.ct-island-profile-header:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.ct-island-dropdown-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1.5px solid #53fc18;
+}
+
+.ct-island-dropdown-meta {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+  text-align: left;
+}
+
+.ct-island-dropdown-name {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.ct-island-dropdown-view {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #53fc18;
+}
+
+.ct-island-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.06);
+  margin: 6px 0;
+}
+
+.ct-island-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  color: #94a3b8;
+  font-size: 0.82rem;
+  font-weight: 700;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  transition: all 0.15s ease;
+  font-family: inherit;
+}
+
+.ct-island-menu-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
+}
+
+/* ── Animated Floating Background Layer ───────────────────── */
+.floating-icons-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.floating-icon-item {
+  position: absolute;
+  color: #53fc18;
+  opacity: 0.11;
+  filter: drop-shadow(0 0 10px rgba(83, 252, 24, 0.35));
+  animation: floatDrift ease-in-out infinite alternate;
+}
+
+@keyframes floatDrift {
+  0% {
+    transform: translateY(0) rotate(0deg) scale(1);
+    opacity: 0.07;
+  }
+  50% {
+    opacity: 0.16;
+  }
+  100% {
+    transform: translateY(-24px) rotate(8deg) scale(1.06);
+    opacity: 0.11;
+  }
 }
 
 /* ── Container ──────────────────────────────────────────────── */
@@ -595,11 +814,11 @@ body {
   transform: translateY(-1px);
 }
 
-/* ── Bottom 3 Promo Ads Strip ───────────────────────────────── */
+/* ── Bottom 3 Promo Cards (Sleek Modern) ──────────────────── */
 .ct-bottom-ads-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 14px;
+  gap: 16px;
   margin-bottom: 36px;
 }
 
@@ -607,24 +826,26 @@ body {
   background: #08090c;
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 16px;
-  padding: 20px;
+  padding: 24px;
   position: relative;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  min-height: 160px;
   cursor: pointer;
-  transition: all 0.18s ease;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .ct-bottom-ad-card:hover {
-  border-color: rgba(255, 255, 255, 0.2);
-  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.22);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.85);
 }
 
 .ct-bottom-ad-card.card-referral {
   background-image: 
-    linear-gradient(180deg, rgba(8, 9, 12, 0.92) 0%, rgba(8, 9, 12, 0.96) 100%),
+    linear-gradient(180deg, rgba(8, 9, 12, 0.88) 0%, rgba(8, 9, 12, 0.96) 100%),
     url('boxfights.jpeg');
   background-size: cover;
   background-position: center;
@@ -632,7 +853,7 @@ body {
 
 .ct-bottom-ad-card.card-premium {
   background-image: 
-    linear-gradient(180deg, rgba(8, 9, 12, 0.92) 0%, rgba(8, 9, 12, 0.96) 100%),
+    linear-gradient(180deg, rgba(8, 9, 12, 0.88) 0%, rgba(8, 9, 12, 0.96) 100%),
     url('realistic.jpeg');
   background-size: cover;
   background-position: center;
@@ -640,34 +861,52 @@ body {
 
 .ct-bottom-ad-card.card-pass {
   background-image: 
-    linear-gradient(180deg, rgba(8, 9, 12, 0.92) 0%, rgba(8, 9, 12, 0.96) 100%),
+    linear-gradient(180deg, rgba(8, 9, 12, 0.88) 0%, rgba(8, 9, 12, 0.96) 100%),
     url('zonewars.jpeg');
   background-size: cover;
   background-position: center;
 }
 
+.ct-bottom-ad-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.ct-bottom-ad-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
 .ct-bottom-ad-title {
   font-family: 'Outfit', sans-serif;
-  font-size: 1.05rem;
+  font-size: 1.15rem;
   font-weight: 900;
   color: #ffffff;
-  margin-bottom: 4px;
+  letter-spacing: -0.01em;
 }
 
 .ct-bottom-ad-desc {
-  font-size: 0.78rem;
+  font-size: 0.8rem;
   color: #94a3b8;
   line-height: 1.45;
-  margin-bottom: 14px;
+  margin-bottom: 16px;
 }
 
 .ct-bottom-ad-btn {
-  font-size: 0.76rem;
+  font-size: 0.78rem;
   font-weight: 800;
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: 5px;
   color: #53fc18;
+  transition: gap 0.15s ease;
+}
+
+.ct-bottom-ad-card:hover .ct-bottom-ad-btn {
+  gap: 8px;
 }
 
 /* ── All Ranks Modal (Opened from Upper Left) ────────────────── */
@@ -676,7 +915,7 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 20px;
   width: 100%;
-  max-width: 600px;
+  max-width: 580px;
   max-height: 85vh;
   overflow-y: auto;
   padding: 28px;
@@ -699,6 +938,26 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  transition: all 0.15s ease;
+}
+
+.ct-rank-row-item.current-rank {
+  border: 1.5px solid #53fc18 !important;
+  background: rgba(83, 252, 24, 0.08) !important;
+  box-shadow: 0 0 18px rgba(83, 252, 24, 0.22) !important;
+}
+
+.ct-current-rank-badge {
+  background: #53fc18;
+  color: #000000;
+  font-size: 0.65rem;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  padding: 2px 7px;
+  border-radius: 6px;
+  margin-left: 8px;
+  text-transform: uppercase;
+  display: inline-block;
 }
 
 .ct-rank-row-left {
@@ -723,6 +982,8 @@ body {
   font-weight: 800;
   font-size: 0.85rem;
   color: #53fc18;
+  display: flex;
+  align-items: center;
 }
 
 /* ── Responsive ─────────────────────────────────────────────── */

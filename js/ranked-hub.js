@@ -5,6 +5,10 @@
 (function () {
   'use strict';
 
+  // Read saved ELO or default to 2,450 (Elite)
+  const savedElo = localStorage.getItem('ct_user_elo');
+  const savedUnranked = localStorage.getItem('ct_is_unranked');
+
   const state = {
     teamSize: '1v1',
     gameMode: 'realistic',
@@ -12,12 +16,13 @@
     queueTimer: null,
     queueSeconds: 0,
     userRank: 'Elite',
-    userElo: 2450,
-    isUnranked: false, // Set to true to test 0/5 placements view
+    userElo: savedElo !== null ? parseInt(savedElo, 10) : 2450,
+    isUnranked: savedUnranked === 'true',
     placementsPlayed: 0,
     placementsRequired: 5,
     carouselIndex: 0,
     carouselTimer: null,
+    currentUser: null,
     friends: [
       { id: 'f1', name: 'Viper_FN', elo: 2985, status: 'in-match', activity: 'In 1v1 Realistic (Round 4/9)', avatar: 'https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=120&auto=format&fit=crop&q=80' },
       { id: 'f2', name: 'GhostClutch', elo: 2940, status: 'in-queue', activity: 'Queueing Ranked 1v1 (0:45)', avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=120&auto=format&fit=crop&q=80' },
@@ -26,15 +31,275 @@
   };
 
   document.addEventListener('DOMContentLoaded', () => {
+    injectFloatingIcons();
     init10sCarousel();
     initUpperLeftRank();
+    initSetEloBtn();
+    initTopAuth();
     initQueueModal();
-    initHamburgerMenu();
     initReferralsModal();
     initFriendsDrawer();
     initLiveTicker();
+    updateRankUI();
     if (window.lucide) window.lucide.createIcons();
   });
+
+  // ── Animated Floating Background Layer ───────────────────────
+  function injectFloatingIcons() {
+    if (document.getElementById('floating-icons-container')) return;
+
+    const icons = [
+      { name: 'crosshair', top: '12%', left: '8%',  size: 32, dur: '18s', delay: '0s' },
+      { name: 'swords',    top: '25%', left: '88%', size: 36, dur: '22s', delay: '2s' },
+      { name: 'shield',    top: '65%', left: '6%',  size: 30, dur: '20s', delay: '4s' },
+      { name: 'trophy',    top: '78%', left: '92%', size: 34, dur: '25s', delay: '1s' },
+      { name: 'zap',       top: '45%', left: '95%', size: 28, dur: '17s', delay: '5s' },
+      { name: 'flame',     top: '85%', left: '18%', size: 30, dur: '24s', delay: '3s' },
+      { name: 'target',    top: '38%', left: '3%',  size: 26, dur: '19s', delay: '6s' },
+      { name: 'crown',     top: '15%', left: '75%', size: 32, dur: '21s', delay: '2.5s' }
+    ];
+
+    const container = document.createElement('div');
+    container.id = 'floating-icons-container';
+    container.className = 'floating-icons-layer';
+
+    container.innerHTML = icons.map(ic => `
+      <div class="floating-icon-item" style="top:${ic.top};left:${ic.left};animation-duration:${ic.dur};animation-delay:${ic.delay};">
+        <i data-lucide="${ic.name}" style="width:${ic.size}px;height:${ic.size}px;"></i>
+      </div>
+    `).join('');
+
+    document.body.prepend(container);
+  }
+
+  // ── Rank Tier Calculation ────────────────────────────────────
+  function getRankMeta(elo, isUnranked) {
+    if (isUnranked || elo <= 0) {
+      return {
+        name: 'Unranked',
+        icon: 'medal-ranks/svg/01-bronze.svg',
+        eloDisplay: '0/5 Placements',
+        isUnranked: true,
+        tierIndex: -1
+      };
+    }
+    if (elo < 500) {
+      return { name: 'Bronze', icon: 'medal-ranks/svg/01-bronze.svg', eloDisplay: `${elo.toLocaleString()} ELO`, isUnranked: false, tierIndex: 0 };
+    } else if (elo < 1000) {
+      return { name: 'Silver', icon: 'medal-ranks/svg/02-silver.svg', eloDisplay: `${elo.toLocaleString()} ELO`, isUnranked: false, tierIndex: 1 };
+    } else if (elo < 1500) {
+      return { name: 'Gold', icon: 'medal-ranks/svg/03-gold.svg', eloDisplay: `${elo.toLocaleString()} ELO`, isUnranked: false, tierIndex: 2 };
+    } else if (elo < 2000) {
+      return { name: 'Platinum', icon: 'medal-ranks/svg/04-platinum.svg', eloDisplay: `${elo.toLocaleString()} ELO`, isUnranked: false, tierIndex: 3 };
+    } else if (elo < 2400) {
+      return { name: 'Diamond', icon: 'medal-ranks/svg/05-diamond.svg', eloDisplay: `${elo.toLocaleString()} ELO`, isUnranked: false, tierIndex: 4 };
+    } else if (elo < 2700) {
+      return { name: 'Elite', icon: 'medal-ranks/svg/06-elite.svg', eloDisplay: `${elo.toLocaleString()} ELO`, isUnranked: false, tierIndex: 5 };
+    } else if (elo < 3000) {
+      return { name: 'Champion', icon: 'medal-ranks/svg/07-champion.svg', eloDisplay: `${elo.toLocaleString()} ELO`, isUnranked: false, tierIndex: 6 };
+    } else {
+      return { name: 'Unreal', icon: 'medal-ranks/svg/10-star.svg', eloDisplay: `${elo.toLocaleString()} ELO`, isUnranked: false, tierIndex: 7 };
+    }
+  }
+
+  function updateRankUI() {
+    const meta = getRankMeta(state.userElo, state.isUnranked);
+    state.userRank = meta.name;
+
+    const rankIcon = document.getElementById('header-rank-icon');
+    const rankName = document.getElementById('header-rank-name');
+    const rankElo = document.getElementById('header-rank-elo');
+
+    if (rankIcon) {
+      rankIcon.src = meta.icon;
+      rankIcon.alt = meta.name;
+      rankIcon.classList.toggle('unranked', meta.isUnranked);
+    }
+
+    if (rankName) {
+      rankName.textContent = meta.name;
+    }
+
+    if (rankElo) {
+      rankElo.textContent = meta.eloDisplay;
+      rankElo.classList.toggle('unranked', meta.isUnranked);
+    }
+
+    // Update modal outlines
+    const rows = document.querySelectorAll('#ranks-modal .ct-rank-row-item');
+    rows.forEach((row, idx) => {
+      // Remove any prior badge
+      const existingBadge = row.querySelector('.ct-current-rank-badge');
+      if (existingBadge) existingBadge.remove();
+
+      if (!meta.isUnranked && meta.tierIndex === idx) {
+        row.classList.add('current-rank');
+        const eloBox = row.querySelector('.ct-rank-row-elo');
+        if (eloBox) {
+          const badge = document.createElement('span');
+          badge.className = 'ct-current-rank-badge';
+          badge.textContent = 'YOU';
+          eloBox.appendChild(badge);
+        }
+      } else {
+        row.classList.remove('current-rank');
+      }
+    });
+
+    if (window.lucide) window.lucide.createIcons();
+  }
+
+  // ── Upper Left Clickable Rank & Modal ────────────────────────
+  function initUpperLeftRank() {
+    const rankPill = document.getElementById('ct-header-rank-pill');
+    const modal = document.getElementById('ranks-modal');
+    const closeBtn = document.getElementById('btn-close-ranks-modal');
+    const infoBtn = document.getElementById('btn-placements-info');
+
+    // Click rank pill -> open Ranked Info modal
+    if (rankPill) {
+      rankPill.addEventListener('click', () => {
+        updateRankUI();
+        if (modal) modal.classList.add('open');
+      });
+    }
+
+    function closeModal() {
+      if (modal) modal.classList.remove('open');
+    }
+    if (closeBtn) closeBtn.addEventListener('click', closeModal);
+    if (modal) {
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+      });
+    }
+
+    // Info button for placement matches
+    if (infoBtn) {
+      infoBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        showToast('Play 5 placement games to calibrate your rank (boosted +100 to +250 ELO during placements).');
+      });
+    }
+  }
+
+  // ── Temporary Set ELO Test Tool ──────────────────────────────
+  function initSetEloBtn() {
+    const btn = document.getElementById('btn-set-elo');
+    if (!btn) return;
+
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const currentVal = state.isUnranked ? '0' : state.userElo.toString();
+      const input = prompt(
+        'Set your ELO rating for live testing:\n• Enter "0" for Unranked (0/5 Placements)\n• Or enter a rating number (e.g. 450, 1200, 2450, 3100):',
+        currentVal
+      );
+
+      if (input === null) return; // User cancelled
+
+      const trimmed = input.trim();
+      const parsed = parseInt(trimmed, 10);
+
+      if (trimmed === '0' || isNaN(parsed) || parsed <= 0) {
+        state.isUnranked = true;
+        state.userElo = 0;
+        localStorage.setItem('ct_is_unranked', 'true');
+        localStorage.setItem('ct_user_elo', '0');
+        showToast('Rank set to: Unranked (0/5 Placements)');
+      } else {
+        state.isUnranked = false;
+        state.userElo = parsed;
+        localStorage.setItem('ct_is_unranked', 'false');
+        localStorage.setItem('ct_user_elo', parsed.toString());
+        const meta = getRankMeta(parsed, false);
+        showToast(`Rank set to: ${meta.name} (${parsed.toLocaleString()} ELO)`);
+      }
+
+      updateRankUI();
+    });
+  }
+
+  // ── Top Bar Auth & Profile Island ────────────────────────────
+  function initTopAuth() {
+    const signInBtn = document.getElementById('header-signin-btn');
+    const userIsland = document.getElementById('ct-user-island');
+    const islandDropdown = document.getElementById('ct-island-dropdown');
+    const islandAvatar = document.getElementById('island-user-avatar');
+    const islandName = document.getElementById('island-user-name');
+    const dropdownAvatar = document.getElementById('dropdown-user-avatar');
+    const dropdownName = document.getElementById('dropdown-user-name');
+    const signOutBtn = document.getElementById('btn-user-signout');
+
+    // Check stored user
+    const storedUserJson = localStorage.getItem('ct_user');
+    if (storedUserJson) {
+      try {
+        state.currentUser = JSON.parse(storedUserJson);
+      } catch (err) {
+        state.currentUser = null;
+      }
+    }
+
+    function renderAuthState() {
+      if (state.currentUser) {
+        if (signInBtn) signInBtn.style.display = 'none';
+        if (userIsland) userIsland.style.display = 'inline-flex';
+        if (islandAvatar) islandAvatar.src = state.currentUser.avatar;
+        if (islandName) islandName.textContent = state.currentUser.name;
+        if (dropdownAvatar) dropdownAvatar.src = state.currentUser.avatar;
+        if (dropdownName) dropdownName.textContent = `${state.currentUser.name}${state.currentUser.tag || ''}`;
+      } else {
+        if (signInBtn) signInBtn.style.display = 'inline-flex';
+        if (userIsland) userIsland.style.display = 'none';
+        if (islandDropdown) islandDropdown.classList.remove('open');
+      }
+      if (window.lucide) window.lucide.createIcons();
+    }
+
+    // Sign in click -> log in with Discord profile
+    if (signInBtn) {
+      signInBtn.addEventListener('click', () => {
+        // Mock Discord profile for testing
+        const mockUser = {
+          name: 'Zenox',
+          tag: '#1337',
+          avatar: 'https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=120&auto=format&fit=crop&q=80'
+        };
+        state.currentUser = mockUser;
+        localStorage.setItem('ct_user', JSON.stringify(mockUser));
+        renderAuthState();
+        showToast('Signed in as ' + mockUser.name);
+      });
+    }
+
+    // Toggle Island dropdown
+    if (userIsland) {
+      userIsland.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (islandDropdown) islandDropdown.classList.toggle('open');
+      });
+    }
+
+    // Close dropdown on click outside
+    document.addEventListener('click', (e) => {
+      if (islandDropdown && !islandDropdown.contains(e.target) && !userIsland?.contains(e.target)) {
+        islandDropdown.classList.remove('open');
+      }
+    });
+
+    // Sign out click
+    if (signOutBtn) {
+      signOutBtn.addEventListener('click', () => {
+        state.currentUser = null;
+        localStorage.removeItem('ct_user');
+        renderAuthState();
+        showToast('Signed out successfully');
+      });
+    }
+
+    renderAuthState();
+  }
 
   // ── Auto-Switching 10s Carousel ──────────────────────────────
   function init10sCarousel() {
@@ -76,40 +341,6 @@
     }
 
     startTimer();
-  }
-
-  // ── Upper Left Clickable Rank & Modal ────────────────────────
-  function initUpperLeftRank() {
-    const rankPill = document.getElementById('ct-header-rank-pill');
-    const modal = document.getElementById('ranks-modal');
-    const closeBtn = document.getElementById('btn-close-ranks-modal');
-    const infoBtn = document.getElementById('btn-placements-info');
-
-    // Click rank pill -> open ranks modal
-    if (rankPill) {
-      rankPill.addEventListener('click', () => {
-        if (modal) modal.classList.add('open');
-      });
-    }
-
-    // Close modal
-    function closeModal() {
-      if (modal) modal.classList.remove('open');
-    }
-    if (closeBtn) closeBtn.addEventListener('click', closeModal);
-    if (modal) {
-      modal.addEventListener('click', (e) => {
-        if (e.target === modal) closeModal();
-      });
-    }
-
-    // Info button for placement matches
-    if (infoBtn) {
-      infoBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        showToast('Play 5 placement games to calibrate your rank (boosted +100 to +250 ELO during placements).');
-      });
-    }
   }
 
   // ── Queue Selection Modal ────────────────────────────────────
@@ -295,22 +526,6 @@
     if (window.lucide) window.lucide.createIcons();
   };
 
-  // ── Hamburger Menu ──────────────────────────────────────────
-  function initHamburgerMenu() {
-    const btn = document.getElementById('btn-hamburger');
-    const menu = document.getElementById('ct-dropdown-menu');
-    if (!btn || !menu) return;
-
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      menu.classList.toggle('open');
-    });
-
-    document.addEventListener('click', () => {
-      menu.classList.remove('open');
-    });
-  }
-
   // ── Referrals Modal ──────────────────────────────────────────
   function initReferralsModal() {
     const modal = document.getElementById('referrals-modal');
@@ -318,11 +533,11 @@
     const closeBtn = document.getElementById('btn-close-referrals');
     const copyBtn = document.getElementById('btn-copy-ref-link');
     const input = document.getElementById('referral-link-input');
+    const islandDropdown = document.getElementById('ct-island-dropdown');
 
     function openModal() {
       if (modal) modal.classList.add('open');
-      const menu = document.getElementById('ct-dropdown-menu');
-      if (menu) menu.classList.remove('open');
+      if (islandDropdown) islandDropdown.classList.remove('open');
     }
 
     function closeModal() {

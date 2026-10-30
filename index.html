@@ -36,67 +36,61 @@
       </a>
 
       <!-- Upper Left Clickable Rank Display -->
-      <div class="ct-header-rank-pill" id="ct-header-rank-pill" title="View All Ranks & ELO Thresholds">
-        <img src="medal-ranks/svg/06-elite.svg" class="ct-header-rank-icon" alt="Elite"/>
+      <div class="ct-header-rank-pill" id="ct-header-rank-pill" title="View Ranked Info">
+        <img src="medal-ranks/svg/06-elite.svg" class="ct-header-rank-icon" id="header-rank-icon" alt="Rank"/>
         <div class="ct-header-rank-info">
-          <span class="ct-header-rank-name">Elite</span>
-          <span class="ct-header-rank-elo">2,450 ELO</span>
+          <span class="ct-header-rank-name" id="header-rank-name">Elite</span>
+          <span class="ct-header-rank-elo" id="header-rank-elo">2,450 ELO</span>
         </div>
         <button type="button" class="ct-info-icon-btn" id="btn-placements-info" title="Placement Info">
           <i data-lucide="info" style="width:13px;height:13px;"></i>
         </button>
       </div>
+
+      <!-- Temporary Set ELO Test Button (will be removed in next prompt) -->
+      <button type="button" class="ct-set-elo-btn" id="btn-set-elo" title="Temporary test tool to set your ELO">
+        Set ELO
+      </button>
     </div>
 
-    <!-- Upper Right Nav & Actions -->
-    <nav style="display:flex;align-items:center;gap:18px;">
-      <a href="matches" class="nav-link-landing" style="font-size:0.84rem;font-weight:700;color:#94a3b8;text-decoration:none;">Matches</a>
-      <a href="leaderboard" class="nav-link-landing" style="font-size:0.84rem;font-weight:700;color:#94a3b8;text-decoration:none;">Leaderboard</a>
-      <a href="shop" class="nav-link-landing" style="font-size:0.84rem;font-weight:700;color:#94a3b8;text-decoration:none;">Shop</a>
-      
-      <button type="button" class="btn btn-outline" id="btn-open-friends" style="padding:6px 14px;border-radius:8px;font-size:0.8rem;font-weight:800;background:#08090c;border-color:rgba(255,255,255,0.12);color:#fff;display:inline-flex;align-items:center;gap:6px;">
-        <i data-lucide="users" style="width:14px;height:14px;color:#53fc18;"></i>
-        <span>Friends</span>
-        <span style="background:#53fc18;color:#000;font-size:0.65rem;font-weight:900;padding:1px 5px;border-radius:99px;">3</span>
+    <!-- Upper Right Nav & Auth Island (No Tab Links) -->
+    <div class="ct-nav-right">
+      <!-- Signed-out: Little Sign In / Sign Up Button -->
+      <button type="button" class="ct-top-auth-btn" id="header-signin-btn">
+        <svg class="discord-logo" viewBox="0 0 127.14 96.36" fill="currentColor" style="width:15px;height:15px;">
+          <path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22h0C129.24,52.84,122.09,29.11,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,45.91,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,45.91,96.12,53,91.08,65.69,84.69,65.69Z"/>
+        </svg>
+        <span>Sign In</span>
       </button>
 
-      <!-- Nav Actions (Login + Hamburger Menu) -->
-      <div class="ct-nav-actions">
-        <!-- Discord Login / Sign Up Button -->
-        <button class="btn btn-discord btn-sm" id="header-signin" style="padding:8px 18px;border-radius:10px;">
-          <svg class="discord-logo" viewBox="0 0 127.14 96.36" fill="currentColor" style="width:16px;height:16px;">
-            <path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22h0C129.24,52.84,122.09,29.11,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,45.91,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,45.91,96.12,53,91.08,65.69,84.69,65.69Z"/>
-          </svg>
-          <span>Log In / Sign Up</span>
-        </button>
-
-        <!-- Hamburger / Profile Menu Button -->
-        <button type="button" class="btn-hamburger" id="btn-hamburger" title="Menu">
-          <i data-lucide="menu" style="width:18px;height:18px;"></i>
-        </button>
-
-        <!-- Dropdown Menu -->
-        <div class="ct-dropdown-menu" id="ct-dropdown-menu">
-          <button type="button" class="ct-menu-item trigger-referrals">
-            <i data-lucide="gift" style="width:16px;height:16px;color:#fbbf24;"></i>
-            <span>Referrals & Bonuses</span>
-            <span class="ct-menu-badge">Free XP</span>
-          </button>
-          <a href="profile" class="ct-menu-item">
-            <i data-lucide="user" style="width:16px;height:16px;"></i>
-            <span>My Profile</span>
-          </a>
-          <a href="dashboard" class="ct-menu-item">
-            <i data-lucide="layout-dashboard" style="width:16px;height:16px;"></i>
-            <span>Dashboard</span>
-          </a>
-          <a href="rules" class="ct-menu-item">
-            <i data-lucide="shield" style="width:16px;height:16px;"></i>
-            <span>Competitive Rules</span>
-          </a>
-        </div>
+      <!-- Signed-in: User Island with Discord Avatar & Name -->
+      <div class="ct-user-island" id="ct-user-island" style="display:none;" title="User Menu">
+        <img src="https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=120&auto=format&fit=crop&q=80" class="ct-island-avatar" id="island-user-avatar" alt="Avatar"/>
+        <span class="ct-island-name" id="island-user-name">Zenox</span>
+        <i data-lucide="chevron-down" style="width:14px;height:14px;color:#94a3b8;"></i>
       </div>
-    </nav>
+
+      <!-- Hamburger / Profile Dropdown Menu under Island -->
+      <div class="ct-island-dropdown" id="ct-island-dropdown">
+        <a href="profile" class="ct-island-profile-header">
+          <img src="https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=120&auto=format&fit=crop&q=80" class="ct-island-dropdown-avatar" id="dropdown-user-avatar" alt="Avatar"/>
+          <div class="ct-island-dropdown-meta">
+            <span class="ct-island-dropdown-name" id="dropdown-user-name">Zenox</span>
+            <span class="ct-island-dropdown-view">View your profile →</span>
+          </div>
+        </a>
+        <div class="ct-island-divider"></div>
+        <button type="button" class="ct-island-menu-item trigger-referrals" id="dropdown-referrals-btn">
+          <i data-lucide="gift" style="width:16px;height:16px;color:#fbbf24;"></i>
+          <span>Referees</span>
+        </button>
+        <div class="ct-island-divider"></div>
+        <button type="button" class="ct-island-menu-item" id="btn-user-signout" style="color:#ef4444;">
+          <i data-lucide="log-out" style="width:16px;height:16px;color:#ef4444;"></i>
+          <span>Sign Out</span>
+        </button>
+      </div>
+    </div>
   </header>
 
   <!-- ── Main Stage ─────────────────────────────────────────────── -->
@@ -191,39 +185,13 @@
         </thead>
         <tbody>
           <tr>
-            <td style="color:#fbbf24;font-weight:900;">#1</td>
-            <td style="font-weight:800;">Viper_FN</td>
-            <td style="color:#53fc18;font-weight:900;">2,985</td>
-            <td>84% (142 W - 26 L)</td>
-            <td style="color:#53fc18;font-weight:900;">$1,000</td>
-          </tr>
-          <tr>
-            <td style="color:#c0c0c0;font-weight:900;">#2</td>
-            <td style="font-weight:800;">GhostClutch</td>
-            <td style="color:#53fc18;font-weight:900;">2,940</td>
-            <td>81% (128 W - 30 L)</td>
-            <td style="color:#53fc18;font-weight:900;">$500</td>
-          </tr>
-          <tr>
-            <td style="color:#cd7f32;font-weight:900;">#3</td>
-            <td style="font-weight:800;">AeroSniper</td>
-            <td style="color:#53fc18;font-weight:900;">2,910</td>
-            <td>79% (116 W - 30 L)</td>
-            <td style="color:#53fc18;font-weight:900;">$350</td>
-          </tr>
-          <tr>
-            <td style="color:#94a3b8;font-weight:900;">#4</td>
-            <td style="font-weight:800;">KovaaksGod</td>
-            <td style="font-weight:900;">2,870</td>
-            <td>76% (99 W - 31 L)</td>
-            <td style="color:#fff;font-weight:800;">$250</td>
-          </tr>
-          <tr>
-            <td style="color:#94a3b8;font-weight:900;">#5</td>
-            <td style="font-weight:800;">MatrixEdits</td>
-            <td style="font-weight:900;">2,840</td>
-            <td>74% (92 W - 31 L)</td>
-            <td style="color:#fff;font-weight:800;">$150</td>
+            <td colspan="5" style="text-align:center;padding:42px 16px;color:#64748b;">
+              <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+                <i data-lucide="trophy" style="width:28px;height:28px;color:#334155;"></i>
+                <span style="font-weight:800;font-size:0.92rem;color:#ffffff;">Season 1 Leaderboard Calibrating</span>
+                <span style="font-size:0.78rem;color:#64748b;">Play your 5 placement matches to claim rank #1 on the leaderboard.</span>
+              </div>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -250,14 +218,16 @@
       </a>
     </section>
 
-    <!-- ── Bottom 3 Promo Ads Strip ───────────────────────────── -->
+    <!-- ── Bottom 3 Promo Cards (Sleek Modern) ──────────────────── -->
     <section class="ct-bottom-ads-grid">
       <!-- Promo 1: Referrals -->
       <div class="ct-bottom-ad-card card-referral trigger-referrals">
         <div>
-          <span class="ct-slide-tag tag-referral">REFERRALS</span>
-          <div class="ct-bottom-ad-title">Refer Today, Earn Rewards</div>
-          <div class="ct-bottom-ad-desc">Invite contenders with your code. Unlock free bonus XP and cosmetics when they complete their placements.</div>
+          <div class="ct-bottom-ad-header">
+            <i data-lucide="gift" class="ct-bottom-ad-icon" style="color:#fbbf24;"></i>
+            <div class="ct-bottom-ad-title">Invite & Earn</div>
+          </div>
+          <div class="ct-bottom-ad-desc">Share your referral link with friends. Unlock free bonus XP and cosmetics when they join.</div>
         </div>
         <div class="ct-bottom-ad-btn">
           <span>Invite Friends</span>
@@ -268,9 +238,11 @@
       <!-- Promo 2: Premium Subscription -->
       <div class="ct-bottom-ad-card card-premium" onclick="window.location.href='shop'">
         <div>
-          <span class="ct-slide-tag tag-beta">VIP UPGRADE</span>
-          <div class="ct-bottom-ad-title">Champion VIP Subscription</div>
-          <div class="ct-bottom-ad-desc">Get golden nickname badges, 2x battle pass XP earnings, priority matchmaking, and zero dispute fees.</div>
+          <div class="ct-bottom-ad-header">
+            <i data-lucide="crown" class="ct-bottom-ad-icon" style="color:#38bdf8;"></i>
+            <div class="ct-bottom-ad-title">Champion VIP</div>
+          </div>
+          <div class="ct-bottom-ad-desc">Golden contender badge, 2x battle pass XP multiplier, priority queue, and exclusive cosmetics.</div>
         </div>
         <div class="ct-bottom-ad-btn" style="color:#38bdf8;">
           <span>Get VIP Perks</span>
@@ -281,12 +253,14 @@
       <!-- Promo 3: Battle Pass Upgrade -->
       <div class="ct-bottom-ad-card card-pass" onclick="window.location.href='shop'">
         <div>
-          <span class="ct-slide-tag tag-pass">SEASON 1</span>
-          <div class="ct-bottom-ad-title">Buy Premium Battle Pass</div>
-          <div class="ct-bottom-ad-desc">Instantly unlock 25 tiers plus exclusive Mythic animated banner borders and custom victory audio clips.</div>
+          <div class="ct-bottom-ad-header">
+            <i data-lucide="flame" class="ct-bottom-ad-icon" style="color:#53fc18;"></i>
+            <div class="ct-bottom-ad-title">Season 1 Pass</div>
+          </div>
+          <div class="ct-bottom-ad-desc">100 tiers of competitive loot, animated Mythic banner borders, and custom victory audio.</div>
         </div>
         <div class="ct-bottom-ad-btn">
-          <span>Upgrade Pass</span>
+          <span>View Season Pass</span>
           <i data-lucide="arrow-right" style="width:14px;height:14px;"></i>
         </div>
       </div>
@@ -294,29 +268,21 @@
 
   </main>
 
-  <!-- ── All Ranks & ELO Modal (Opened from Upper Left) ────────── -->
+  <!-- ── Ranked Info Modal (Opened from Upper Left) ───────────── -->
   <div class="ct-modal-overlay" id="ranks-modal">
     <div class="ct-ranks-modal-card">
       <button type="button" class="ct-modal-close-btn" id="btn-close-ranks-modal">
         <i data-lucide="x" style="width:20px;height:20px;"></i>
       </button>
 
-      <div class="ct-modal-title" style="display:flex;align-items:center;gap:10px;">
+      <div class="ct-modal-title" style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
         <i data-lucide="shield" style="width:22px;height:22px;color:#53fc18;"></i>
-        <span>Competitive Ranks & ELO</span>
-      </div>
-      <div style="font-size:0.8rem;color:#94a3b8;margin-bottom:12px;">
-        Skill-based ELO: Win matches to gain +25 to +50 ELO (based on opponent skill gap). No ELO cap.
-      </div>
-
-      <!-- Placements & Calibration notice -->
-      <div style="background:#000;border:1px solid rgba(83,252,24,0.3);border-radius:10px;padding:12px;font-size:0.78rem;color:#94a3b8;margin-bottom:16px;">
-        <strong style="color:#53fc18;">5 Placement Games:</strong> Unranked players start at 1,000 hidden base ELO. Placements award boosted ELO (+100 to +250 per match) to place you quickly. Ranks decay after 28 days of inactivity.
+        <span>Ranked Info</span>
       </div>
 
       <!-- List of Ranks -->
       <div class="ct-ranks-list-scroll">
-        <div class="ct-rank-row-item">
+        <div class="ct-rank-row-item" data-tier-index="0">
           <div class="ct-rank-row-left">
             <img src="medal-ranks/svg/01-bronze.svg" class="ct-rank-row-img" alt="Bronze"/>
             <div class="ct-rank-row-name">Bronze</div>
@@ -324,7 +290,7 @@
           <div class="ct-rank-row-elo" style="color:#cd7f32;">0 - 499 ELO</div>
         </div>
 
-        <div class="ct-rank-row-item">
+        <div class="ct-rank-row-item" data-tier-index="1">
           <div class="ct-rank-row-left">
             <img src="medal-ranks/svg/02-silver.svg" class="ct-rank-row-img" alt="Silver"/>
             <div class="ct-rank-row-name">Silver</div>
@@ -332,7 +298,7 @@
           <div class="ct-rank-row-elo" style="color:#c0c0c0;">500 - 999 ELO</div>
         </div>
 
-        <div class="ct-rank-row-item">
+        <div class="ct-rank-row-item" data-tier-index="2">
           <div class="ct-rank-row-left">
             <img src="medal-ranks/svg/03-gold.svg" class="ct-rank-row-img" alt="Gold"/>
             <div class="ct-rank-row-name">Gold</div>
@@ -340,7 +306,7 @@
           <div class="ct-rank-row-elo" style="color:#f59e0b;">1,000 - 1,499 ELO</div>
         </div>
 
-        <div class="ct-rank-row-item">
+        <div class="ct-rank-row-item" data-tier-index="3">
           <div class="ct-rank-row-left">
             <img src="medal-ranks/svg/04-platinum.svg" class="ct-rank-row-img" alt="Platinum"/>
             <div class="ct-rank-row-name">Platinum</div>
@@ -348,7 +314,7 @@
           <div class="ct-rank-row-elo" style="color:#38bdf8;">1,500 - 1,999 ELO</div>
         </div>
 
-        <div class="ct-rank-row-item">
+        <div class="ct-rank-row-item" data-tier-index="4">
           <div class="ct-rank-row-left">
             <img src="medal-ranks/svg/05-diamond.svg" class="ct-rank-row-img" alt="Diamond"/>
             <div class="ct-rank-row-name">Diamond</div>
@@ -356,7 +322,7 @@
           <div class="ct-rank-row-elo" style="color:#a855f7;">2,000 - 2,399 ELO</div>
         </div>
 
-        <div class="ct-rank-row-item">
+        <div class="ct-rank-row-item" data-tier-index="5">
           <div class="ct-rank-row-left">
             <img src="medal-ranks/svg/06-elite.svg" class="ct-rank-row-img" alt="Elite"/>
             <div class="ct-rank-row-name">Elite</div>
@@ -364,7 +330,7 @@
           <div class="ct-rank-row-elo" style="color:#ef4444;">2,400 - 2,699 ELO</div>
         </div>
 
-        <div class="ct-rank-row-item">
+        <div class="ct-rank-row-item" data-tier-index="6">
           <div class="ct-rank-row-left">
             <img src="medal-ranks/svg/07-champion.svg" class="ct-rank-row-img" alt="Champion"/>
             <div class="ct-rank-row-name">Champion</div>
@@ -372,12 +338,12 @@
           <div class="ct-rank-row-elo" style="color:#f97316;">2,700 - 2,999 ELO</div>
         </div>
 
-        <div class="ct-rank-row-item" style="border-color:rgba(83,252,24,0.35);background:rgba(83,252,24,0.04);">
+        <div class="ct-rank-row-item" data-tier-index="7">
           <div class="ct-rank-row-left">
             <img src="medal-ranks/svg/10-star.svg" class="ct-rank-row-img" alt="Unreal"/>
-            <div class="ct-rank-row-name" style="color:#53fc18;">Unreal (No Cap)</div>
+            <div class="ct-rank-row-name">Unreal</div>
           </div>
-          <div class="ct-rank-row-elo" style="color:#53fc18;">3,000+ ELO (Infinite)</div>
+          <div class="ct-rank-row-elo" style="color:#53fc18;">3,000+ ELO</div>
         </div>
       </div>
     </div>
