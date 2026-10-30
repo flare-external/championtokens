@@ -3,691 +3,400 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Champion Tokens</title>
-  <meta name="title" content="Champion Tokens"/>
-  <meta name="description" content="Unlock exclusive custom Fortnite player titles, daily rotating avatar cosmetics, and profile card banners with Champion Tokens. Refreshed daily at 00:00 UTC."/>
-  <meta name="theme-color" content="#F59E0B"/>
-
-  <meta property="og:type" content="website"/>
-  <meta property="og:url" content="https://championtokens.fun/shop"/>
-  <meta property="og:site_name" content="Champion Tokens"/>
-  <meta property="og:title" content="Champion Tokens"/>
-  <meta property="og:description" content="Unlock exclusive titles, banners, mystery chests, and cosmetic upgrades using your Champion Tokens!"/>
-  <meta property="og:image" content="https://championtokens.fun/champion-tokens_new.png"/>
-
-  <meta name="twitter:card" content="summary"/>
-  <meta name="twitter:url" content="https://championtokens.fun/shop"/>
-  <meta name="twitter:title" content="Champion Tokens"/>
-  <meta name="twitter:description" content="Unlock exclusive titles, banners, mystery chests, and cosmetic upgrades using your Champion Tokens!"/>
-  <meta name="twitter:image" content="https://championtokens.fun/champion-tokens_new.png"/>
-
+  <title>Season Pass — Champion Tokens</title>
   <link rel="icon" type="image/png" href="champion-tokens_new.png"/>
-  <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
-  <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
-  <link rel="manifest" href="manifest.json"/>
   <link rel="stylesheet" href="css/style.css?v=5.5"/>
   <link rel="stylesheet" href="css/ranked.css?v=4.2"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <script src="js/protect.js"></script>
   <style>
-    .shop-header-flex {
+    .sp-hero {
+      background: linear-gradient(180deg, rgba(83, 252, 24, 0.08) 0%, rgba(8, 9, 12, 0.6) 100%), #08090c;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 18px;
+      padding: 32px 28px;
+      margin-bottom: 28px;
+      position: relative;
+      overflow: hidden;
+    }
+    .sp-hero-glow {
+      position: absolute;
+      top: -50px;
+      right: -50px;
+      width: 250px;
+      height: 250px;
+      background: radial-gradient(circle, rgba(83, 252, 24, 0.25) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .sp-level-card {
+      background: #000000;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 14px;
+      padding: 20px 24px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
       gap: 16px;
-      margin-bottom: 24px;
+      margin-top: 20px;
     }
-    .daily-timer-box {
+    .sp-progress-bar-wrap {
+      flex: 1;
+      min-width: 260px;
+    }
+    .sp-progress-bar {
+      height: 10px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 99px;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+    .sp-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #53fc18 0%, #a3e635 100%);
+      border-radius: 99px;
+      box-shadow: 0 0 12px rgba(83, 252, 24, 0.6);
+      transition: width 0.4s ease;
+    }
+    .sp-tier-card {
+      background: #08090c;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+    .sp-tier-card:hover {
+      border-color: rgba(83, 252, 24, 0.3);
+      transform: translateY(-2px);
+    }
+    .sp-tier-card.unlocked {
+      border-color: rgba(83, 252, 24, 0.4);
+    }
+    .sp-track-item {
+      background: #000000;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 10px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .sp-track-item.premium {
+      border-color: rgba(251, 191, 36, 0.3);
+      background: linear-gradient(180deg, rgba(251, 191, 36, 0.04) 0%, #000000 100%);
+    }
+    .sp-claim-btn {
+      background: #53fc18;
+      color: #000000;
+      border: none;
+      border-radius: 8px;
+      padding: 8px 14px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      background: rgba(83, 252, 24, 0.08);
-      border: 1px solid rgba(83, 252, 24, 0.35);
-      border-radius: var(--radius-full);
-      padding: 6px 16px;
-      font-size: 0.85rem;
-      font-weight: 700;
-      color: var(--kick-green);
-    }
-    .shop-grid-items {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-      gap: 18px;
-      margin-bottom: 36px;
-    }
-    .item-card {
-      background: var(--bg-surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-xl);
-      padding: 22px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      gap: 14px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.6);
-      transition: all 0.22s ease;
-    }
-    .item-card:hover {
-      border-color: rgba(83, 252, 24, 0.45);
-      transform: translateY(-3px);
-      box-shadow: 0 12px 32px rgba(0,0,0,0.8), 0 0 20px rgba(83, 252, 24, 0.15);
-    }
-    .cosmetics-option-card {
-      transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.18s ease, box-shadow 0.18s ease;
-    }
-    .cosmetics-option-card:hover {
-      transform: translateY(-5px) scale(1.02);
-      border-color: rgba(83, 252, 24, 0.45) !important;
-      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.8) !important;
-    }
-    .pfp-equip-btn {
-      transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.18s ease, box-shadow 0.18s ease;
-    }
-    .pfp-equip-btn:hover {
-      transform: translateY(-2px) scale(1.06);
-      box-shadow: 0 4px 14px rgba(83, 252, 24, 0.35);
-    }
-    .item-preview-box {
-      height: 64px;
-      width: 100%;
-      border-radius: var(--radius-md);
-      display: flex;
-      align-items: center;
       justify-content: center;
-      background: rgba(0,0,0,0.6);
-      border: 1px solid rgba(255,255,255,0.06);
+      gap: 6px;
+      transition: all 0.15s ease;
     }
-  
-    /* ── Purchase Celebration Modals ── */
-    .celebration-modal-card {
-      max-width: 460px;
-      width: 100%;
-      text-align: center;
-      padding: 32px 28px;
-      background: var(--bg-surface);
-      border: 1px solid rgba(83, 252, 24, 0.4);
-      border-radius: 24px;
-      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.95), 0 0 35px rgba(83, 252, 24, 0.15);
-      animation: celebrationPopIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-      position: relative;
-      overflow: hidden;
+    .sp-claim-btn:hover {
+      background: #46e012;
+      box-shadow: 0 0 12px rgba(83, 252, 24, 0.4);
     }
-    @keyframes celebrationPopIn {
-      0% { opacity: 0; transform: scale(0.92) translateY(16px); }
-      100% { opacity: 1; transform: scale(1) translateY(0); }
+    .sp-claim-btn.claimed {
+      background: rgba(255, 255, 255, 0.08);
+      color: #94a3b8;
+      cursor: default;
     }
-    .celebration-glow-bg {
-      position: absolute;
-      top: -40px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 220px;
-      height: 220px;
-      background: radial-gradient(circle, rgba(83, 252, 24, 0.3) 0%, transparent 70%);
-      pointer-events: none;
-      border-radius: 50%;
+    .sp-claim-btn.locked {
+      background: rgba(255, 255, 255, 0.04);
+      color: #64748b;
+      cursor: not-allowed;
     }
-    .perks-list-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      text-align: left;
-      margin: 18px 0 24px;
-      background: var(--bg-base);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 14px 16px;
-    }
-    .perk-item-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 0.85rem;
-      color: #cbd5e1;
-      font-weight: 700;
-    }
-    .perk-icon-wrap {
-      width: 26px;
-      height: 26px;
-      border-radius: 7px;
-      background: rgba(83, 252, 24, 0.15);
-      color: var(--kick-green);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-
-  
-    .shop-one-row-grid {
-      display: grid;
-      grid-template-columns: repeat(6, 1fr);
-      gap: 14px;
-    }
-    @media (max-width: 1100px) {
-      .shop-one-row-grid {
-        grid-template-columns: repeat(3, 1fr);
-      }
-    }
-    @media (max-width: 600px) {
-      .shop-one-row-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-    .purchase-verifying-modal {
-      background: var(--bg-surface);
-      border: 1px solid rgba(83, 252, 24, 0.4);
-      border-radius: 20px;
-      padding: 30px 24px;
-      text-align: center;
-      max-width: 380px;
-      width: 100%;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.9);
-      position: relative;
-    }
-    .spinner-gold {
-      width: 42px;
-      height: 42px;
-      border: 3px solid rgba(83, 252, 24, 0.2);
-      border-top-color: var(--kick-green);
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-      margin: 0 auto 16px;
-    }
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-  
-    .shop-two-row-grid {
-      display: grid;
-      grid-template-columns: repeat(6, 1fr);
-      gap: 14px;
-    }
-    @media (max-width: 1280px) {
-      .shop-two-row-grid {
-        grid-template-columns: repeat(4, 1fr);
-      }
-    }
-    @media (max-width: 768px) {
-      .shop-two-row-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
   </style>
-  <script src="js/protect.js"></script>
-  <meta name="keywords" content="fortnite cosmetics shop, fortnite custom titles, fortnite avatars, champion tokens shop, daily fortnite cosmetics, buy fortnite titles"/>
 </head>
-<body data-ct-page="shop">
-  <div class="page-bg"></div>
-  <!-- Loading screen -->
-  <div class="page-loading" id="page-loading">
-    <div class="spinner"></div>
-    <span>Loading shop…</span>
-  </div>
+<body data-ct-page="shop" style="background:#000000;color:#ffffff;margin:0;font-family:'Inter',sans-serif;">
 
-  
-    <span>Loading shop…</span>
-  </div>
+  <!-- Main Container -->
+  <main class="ct-ranked-wrap" style="max-width:1120px;padding-top:36px;position:relative;z-index:10;">
 
-  <main class="page-wrap" id="main-content" role="main">
-    <div id="shop-content">
-      <div class="shop-header-flex">
-        <div class="page-header" style="margin-bottom:0;">
-          <h1><i data-lucide="shopping-cart" style="color:var(--kick-green);"></i> Shop</h1>
-          <p>Unlock Champion Premium, exclusive perks, and avatar cosmetics.</p>
-        </div>
-      </div>
-
-      <!-- 1. Champion Premium Card -->
-      <div id="shop-premium-card-container" style="background:var(--bg-card);border:1px solid rgba(83,252,24,0.3);border-radius:20px;padding:26px 30px;margin-bottom:36px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:24px;box-shadow:0 14px 40px rgba(0,0,0,0.85);position:relative;overflow:hidden;">
-        <div style="position:absolute;top:0;right:0;width:300px;height:100%;background:radial-gradient(circle at right center, rgba(83,252,24,0.08) 0%, transparent 70%);pointer-events:none;"></div>
-        
-        <div style="max-width:580px;position:relative;z-index:2;">
-          <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
-            <div style="width:38px;height:38px;border-radius:10px;background:rgba(83,252,24,0.14);border:1px solid rgba(83,252,24,0.35);display:flex;align-items:center;justify-content:center;color:var(--kick-green);">
-              <i data-lucide="crown" style="width:20px;height:20px;"></i>
-            </div>
-            <span class="username-premium" style="font-size:1.45rem;font-weight:900;letter-spacing:-0.02em;">Champion Premium</span>
+    <!-- Hero Banner -->
+    <section class="sp-hero">
+      <div class="sp-hero-glow"></div>
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:16px;">
+        <div>
+          <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(83,252,24,0.12);border:1px solid rgba(83,252,24,0.25);padding:3px 12px;border-radius:99px;font-size:0.75rem;font-weight:600;color:#53fc18;margin-bottom:10px;">
+            <i data-lucide="sparkles" style="width:14px;height:14px;"></i>
+            <span>Season 1 Pass · Neon Ascension</span>
           </div>
-          <p style="font-size:0.875rem;color:var(--text-muted);margin:0 0 14px;line-height:1.5;">
-            Elevate your competitive profile with Neon Kick VIP username styling, VIP crown badge, priority matchmaking, and player tipping.
+          <h1 style="font-family:'Outfit',sans-serif;font-size:2.2rem;font-weight:700;margin:0 0 6px;color:#fff;">
+            Battle Pass & Cosmetics
+          </h1>
+          <p style="font-size:0.88rem;color:#94a3b8;margin:0;line-height:1.5;">
+            Climb competitive ranks, complete daily quests, and level up to unlock exclusive titles, banners, pickaxes, and Discord perks.
           </p>
-          <div style="display:flex;gap:14px;flex-wrap:wrap;font-size:0.8rem;color:#cbd5e1;">
-            <span style="display:inline-flex;align-items:center;gap:5px;"><i data-lucide="sparkles" style="width:13px;height:13px;color:var(--kick-green);"></i> Neon Kick VIP Name</span>
-            <span style="display:inline-flex;align-items:center;gap:5px;"><i data-lucide="crown" style="width:13px;height:13px;color:var(--kick-green);"></i> VIP Crown</span>
-            <span style="display:inline-flex;align-items:center;gap:5px;"><i data-lucide="gift" style="width:13px;height:13px;color:var(--kick-green);"></i> Player Tipping</span>
-            <span style="display:inline-flex;align-items:center;gap:5px;"><i data-lucide="zap" style="width:13px;height:13px;color:var(--kick-green);"></i> Exclusive Status</span>
-          </div>
         </div>
 
-        <div id="shop-premium-action-box" style="position:relative;z-index:2;display:flex;align-items:center;gap:20px;flex-shrink:0;">
-          <!-- Rendered dynamically -->
+        <div style="text-align:right;">
+          <div style="font-size:0.75rem;font-weight:600;color:#64748b;text-transform:uppercase;margin-bottom:4px;">Season 1 Countdown</div>
+          <div style="font-family:'Outfit',sans-serif;font-size:1.4rem;font-weight:700;color:#fff;">38 Days Remaining</div>
+          <div style="font-size:0.75rem;color:#53fc18;">Ranks reset on Season 2</div>
         </div>
       </div>
 
-      <!-- 2. Daily Avatar Shop -->
-      <div style="margin-bottom:36px;">
-        <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:18px;flex-wrap:wrap;gap:12px;">
-          <div>
-            <h2 style="font-size:1.45rem;font-weight:900;margin:0;color:#fff;">Daily Avatar Shop</h2>
-            <p style="font-size:0.85rem;color:var(--text-muted);margin:4px 0 0;">
-              Featured avatar cosmetics refreshed daily at 00:00 UTC. Equip unlocked avatars in your Profile.
-            </p>
+      <!-- Level & XP Progress Card -->
+      <div class="sp-level-card">
+        <div style="display:flex;align-items:center;gap:14px;">
+          <div style="width:52px;height:52px;border-radius:12px;background:rgba(83,252,24,0.15);border:1.5px solid #53fc18;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+            <span style="font-size:0.6rem;font-weight:600;color:#53fc18;text-transform:uppercase;line-height:1;">TIER</span>
+            <span style="font-family:'Outfit',sans-serif;font-size:1.35rem;font-weight:800;color:#fff;line-height:1.1;" id="sp-current-tier">14</span>
           </div>
-          <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);padding:6px 14px;border-radius:20px;font-size:0.8rem;color:#cbd5e1;display:flex;align-items:center;gap:6px;">
-            <i data-lucide="clock" style="width:14px;height:14px;color:var(--kick-green);"></i>
-            <span>Resets in: <strong id="daily-shop-timer" style="color:var(--kick-green);font-family:monospace;font-weight:800;">--:--:--</strong></span>
+          <div>
+            <div style="font-size:0.95rem;font-weight:700;color:#fff;" id="sp-level-title">Contender Level 14</div>
+            <div style="font-size:0.75rem;color:#94a3b8;" id="sp-rewards-claimed-text">14 of 30 Rewards Unlocked</div>
           </div>
         </div>
 
-        <!-- 12 Daily Avatars (2 Rows) -->
-        <div id="daily-pfps-grid" class="shop-two-row-grid"><!-- Rendered dynamically --></div>
+        <div class="sp-progress-bar-wrap">
+          <div style="display:flex;justify-content:space-between;font-size:0.75rem;font-weight:600;">
+            <span style="color:#94a3b8;">Tier 14 Progress</span>
+            <span style="color:#53fc18;" id="sp-xp-display">3,750 / 5,000 XP</span>
+          </div>
+          <div class="sp-progress-bar">
+            <div class="sp-progress-fill" id="sp-progress-fill" style="width: 75%;"></div>
+          </div>
+        </div>
+
+        <button type="button" id="btn-upgrade-premium" style="background:linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);color:#000;border:none;padding:12px 22px;border-radius:10px;font-family:'Outfit',sans-serif;font-weight:700;font-size:0.9rem;cursor:pointer;display:inline-flex;align-items:center;gap:8px;box-shadow:0 4px 20px rgba(245,158,11,0.3);transition:all 0.15s ease;">
+          <i data-lucide="crown" style="width:16px;height:16px;"></i>
+          <span id="btn-upgrade-text">Unlock Premium Pass</span>
+        </button>
       </div>
+    </section>
 
-      <!-- 3. Titles Section -->
-      <div style="margin-bottom:36px;">
-        <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:18px;flex-wrap:wrap;gap:12px;">
-          <div>
-            <h2 style="font-size:1.45rem;font-weight:900;margin:0;color:#fff;">Titles</h2>
-            <p style="font-size:0.85rem;color:var(--text-muted);margin:4px 0 0;">
-              Unlock and display custom player titles next to your username.
-            </p>
-          </div>
+    <!-- Track Selector & Legend -->
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;flex-wrap:wrap;gap:12px;">
+      <div style="display:flex;align-items:center;gap:16px;">
+        <span style="font-family:'Outfit',sans-serif;font-size:1.2rem;font-weight:700;color:#fff;">Season 1 Rewards</span>
+        <div style="display:inline-flex;align-items:center;gap:6px;font-size:0.75rem;color:#94a3b8;">
+          <span style="width:8px;height:8px;border-radius:50%;background:#53fc18;"></span> Free Track
         </div>
-
-        <!-- Titles Grid -->
-        <div id="daily-titles-grid" class="shop-two-row-grid"><!-- Rendered dynamically --></div>
+        <div style="display:inline-flex;align-items:center;gap:6px;font-size:0.75rem;color:#fbbf24;">
+          <span style="width:8px;height:8px;border-radius:50%;background:#fbbf24;"></span> Premium Pass
+        </div>
+      </div>
+      <div style="font-size:0.75rem;color:#64748b;">
+        Play matches & win scrims to earn XP. 500 XP per win.
       </div>
     </div>
+
+    <!-- Tiers Grid (1 to 10 showcase, expandable) -->
+    <div style="display:grid;grid-template-columns:repeat(auto-fill, minmax(200px, 1fr));gap:14px;margin-bottom:36px;" id="sp-tiers-grid">
+      <!-- Populated dynamically by JS -->
+    </div>
+
+    <!-- Daily & Weekly Ranked Quests Section -->
+    <section style="background:#08090c;border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:24px;margin-bottom:44px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <i data-lucide="target" style="width:18px;height:18px;color:#53fc18;"></i>
+          <span style="font-family:'Outfit',sans-serif;font-size:1.15rem;font-weight:700;color:#fff;">Ranked Season Quests</span>
+        </div>
+        <span style="font-size:0.75rem;color:#64748b;">Resets Daily at 00:00 UTC</span>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fill, minmax(240px, 1fr));gap:12px;">
+        <div style="background:#000;border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:16px;">
+          <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+            <span style="font-size:0.74rem;font-weight:600;color:#53fc18;">+1,500 XP</span>
+            <span style="font-size:0.72rem;color:#64748b;">2/3 Wins</span>
+          </div>
+          <div style="font-size:0.85rem;font-weight:600;color:#fff;margin-bottom:8px;">Win 3 1v1 Realistic Matches</div>
+          <div style="height:4px;background:rgba(255,255,255,0.06);border-radius:99px;overflow:hidden;">
+            <div style="width:66%;height:100%;background:#53fc18;"></div>
+          </div>
+        </div>
+
+        <div style="background:#000;border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:16px;">
+          <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+            <span style="font-size:0.74rem;font-weight:600;color:#53fc18;">+1,200 XP</span>
+            <span style="font-size:0.72rem;color:#64748b;">8/10 Eliminations</span>
+          </div>
+          <div style="font-size:0.85rem;font-weight:600;color:#fff;margin-bottom:8px;">10 Eliminations in Box Fights</div>
+          <div style="height:4px;background:rgba(255,255,255,0.06);border-radius:99px;overflow:hidden;">
+            <div style="width:80%;height:100%;background:#53fc18;"></div>
+          </div>
+        </div>
+
+        <div style="background:#000;border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:16px;">
+          <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+            <span style="font-size:0.74rem;font-weight:600;color:#53fc18;">+3,000 XP</span>
+            <span style="font-size:0.72rem;color:#53fc18;">Completed ✓</span>
+          </div>
+          <div style="font-size:0.85rem;font-weight:600;color:#fff;margin-bottom:8px;">Play 5 Placement Scrims</div>
+          <div style="height:4px;background:rgba(255,255,255,0.06);border-radius:99px;overflow:hidden;">
+            <div style="width:100%;height:100%;background:#53fc18;"></div>
+          </div>
+        </div>
+
+        <div style="background:#000;border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:16px;">
+          <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+            <span style="font-size:0.74rem;font-weight:600;color:#53fc18;">+2,000 XP</span>
+            <span style="font-size:0.72rem;color:#64748b;">1/3 Streak</span>
+          </div>
+          <div style="font-size:0.85rem;font-weight:600;color:#fff;margin-bottom:8px;">Win Streak of 3 Matches</div>
+          <div style="height:4px;background:rgba(255,255,255,0.06);border-radius:99px;overflow:hidden;">
+            <div style="width:33%;height:100%;background:#53fc18;"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
   </main>
 
-  <!-- Core Scripts -->
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <!-- Footer -->
+  <footer class="ct-footer" style="border-top:1px solid rgba(255,255,255,0.08);padding:32px 20px 44px;background:#000000;text-align:center;">
+    <div style="max-width:1000px;margin:0 auto;display:flex;flex-direction:column;gap:16px;">
+      <div style="font-size:0.75rem;color:#475569;">
+        © 2026 Champion Tokens • Protected by Cloudflare
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
-  <script src="js/firebase-config.js?v=3.8"></script>
-  <script src="js/auth.js?v=4.0.1788871233902"></script>
-  <script src="js/db.js?v=4.0.1788871233902"></script>
-  <script src="js/nav.js?v=5.5"></script>
-  <script src="js/ranked-nav.js?v=4.2"></script>
-
+  <script src="js/ranked-nav.js"></script>
   <script>
-    let currentUser = null;
-    let currentUserData = null;
+    const TIERS_DATA = [
+      { tier: 1, free: { name: 'Arena Neon Pin', type: 'Emblem', rarity: 'Rare', icon: 'shield' }, premium: { name: '"Arena Pioneer"', type: 'Title', rarity: 'Epic', icon: 'award' } },
+      { tier: 2, free: { name: '+500 Bonus XP', type: 'Booster', rarity: 'Common', icon: 'zap' }, premium: { name: '"Boxfight Warlord"', type: 'Title', rarity: 'Legendary', icon: 'swords' } },
+      { tier: 3, free: { name: 'Carbon Profile Banner', type: 'Banner', rarity: 'Rare', icon: 'image' }, premium: { name: 'Neon Scythe Pickaxe', type: 'Cosmetic', rarity: 'Legendary', icon: 'sparkles' } },
+      { tier: 4, free: { name: '+750 Bonus XP', type: 'Booster', rarity: 'Common', icon: 'zap' }, premium: { name: 'Victory Royale Aura', type: 'Effect', rarity: 'Epic', icon: 'flame' } },
+      { tier: 5, free: { name: '"Realistics Demon"', type: 'Title', rarity: 'Epic', icon: 'award' }, premium: { name: 'Season 1 VIP Role', type: 'Discord', rarity: 'Mythic', icon: 'crown' } },
+      { tier: 6, free: { name: '+500 Bonus XP', type: 'Booster', rarity: 'Common', icon: 'zap' }, premium: { name: 'Emerald Surge Frame', type: 'Profile Frame', rarity: 'Legendary', icon: 'target' } },
+      { tier: 7, free: { name: 'Zone Wars Spray', type: 'Spray', rarity: 'Rare', icon: 'compass' }, premium: { name: '"Endgame Clutch"', type: 'Title', rarity: 'Epic', icon: 'award' } },
+      { tier: 8, free: { name: '+1,000 Bonus XP', type: 'Booster', rarity: 'Rare', icon: 'zap' }, premium: { name: 'Cyber Shinobi Avatar', type: 'Avatar', rarity: 'Legendary', icon: 'user' } },
+      { tier: 9, free: { name: 'Dark Grid Banner', type: 'Banner', rarity: 'Rare', icon: 'image' }, premium: { name: '"Unreal Prodigy"', type: 'Title', rarity: 'Legendary', icon: 'star' } },
+      { tier: 10, free: { name: 'Stealth Agent Avatar', type: 'Avatar', rarity: 'Epic', icon: 'user' }, premium: { name: '"Apex God"', type: 'Mythic Title', rarity: 'Mythic', icon: 'crown' } }
+    ];
 
-    document.addEventListener('DOMContentLoaded', () => {
-      startShopTimer();
-      (async () => {
-        const user = (typeof auth !== 'undefined' && auth.currentUser) ? auth.currentUser : null;
-        currentUser = user;
-        try {
-          if (user) await autoRefundDuplicatePremium(user.uid);
-        } catch (e) {
-          console.warn('Refund check notice:', e);
-        }
-        currentUserData = user ? await getUser(user.uid) : null;
-        if (window.renderSharedRankedNav) renderSharedRankedNav('shop');
-        const loadingEl = document.getElementById('page-loading'); if (loadingEl) loadingEl.classList.add('hidden');
+    let isPremium = localStorage.getItem('ct_is_premium') === 'true';
+    let currentTier = 14; // Default high level
+    let claimedRewards = JSON.parse(localStorage.getItem('ct_claimed_rewards') || '[]');
 
-        checkPremiumStatus();
-        renderDailyPfps();
-        renderShopTitles();
-        if (window.lucide) lucide.createIcons();
-      })().catch(err => {
-        console.error('Shop auth error:', err);
-        const loadingEl = document.getElementById('page-loading');
-        if (loadingEl) loadingEl.classList.add('hidden');
-        if (window.renderSharedRankedNav) renderSharedRankedNav('shop');
-        renderDailyPfps();
-        renderShopTitles();
-        if (window.lucide) lucide.createIcons();
-      });
-    });
-
-                function checkPremiumStatus() {
-      const actionBox = document.getElementById('shop-premium-action-box');
-      if (!actionBox) return;
-
-      const isPremium = isUserPremiumActive(currentUserData);
-      const daysRemaining = getPremiumDaysRemaining(currentUserData);
-
-      if (isPremium) {
-        let expText = 'Active Membership';
-        if (currentUserData?.premiumExpiresAt) {
-          try {
-            const expDate = typeof currentUserData.premiumExpiresAt.toDate === 'function' ? currentUserData.premiumExpiresAt.toDate() : new Date(currentUserData.premiumExpiresAt);
-            expText = 'Expires ' + expDate.toLocaleDateString();
-          } catch(e) {}
-        }
-
-        actionBox.innerHTML = `
-          <div style="text-align:right;">
-            <div style="font-size:0.75rem;font-weight:800;color:var(--text-muted);text-transform:uppercase;">Membership</div>
-            <div style="font-size:1.55rem;font-weight:900;color:var(--kick-green);letter-spacing:-0.02em;">${daysRemaining} ${daysRemaining === 1 ? 'Day' : 'Days'} Left</div>
-            <div style="font-size:0.72rem;color:var(--text-faint);margin-top:2px;">${escapeHtml(expText)}</div>
-          </div>
-          <button class="btn btn-outline btn-sm" onclick="handleBuyPremium()" style="padding:10px 18px;border-radius:12px;font-size:0.84rem;background:#060608;gap:6px;">
-            <i data-lucide="plus"></i> Extend (+30 Days)
-          </button>
-        `;
-      } else {
-        actionBox.innerHTML = `
-          <div style="text-align:right;">
-            <div style="font-size:0.72rem;font-weight:800;color:var(--text-muted);text-transform:uppercase;">30 Days Duration</div>
-            <div style="font-size:1.5rem;font-weight:900;color:var(--kick-green);display:flex;align-items:center;gap:6px;justify-content:flex-end;">
-              5.00 <img src="new_token.png" style="width:26px;height:26px;object-fit:contain;" alt="CT"/>
-            </div>
-          </div>
-          <button class="btn btn-primary" onclick="handleBuyPremium()" style="padding:10px 22px;border-radius:12px;font-size:0.88rem;gap:6px;">
-            <i data-lucide="crown"></i> Unlock Premium
-          </button>
-        `;
-      }
-
-      if (window.lucide) lucide.createIcons();
-    }
-
-    
-    
-    function renderShopTitles() {
-      const grid = document.getElementById('daily-titles-grid') || document.getElementById('shop-titles-grid');
-      if (!grid || typeof SHOP_TITLES === 'undefined') return;
-
-      const dailyTitles = (typeof getDailyShopTitles === 'function') ? getDailyShopTitles() : Object.values(SHOP_TITLES).slice(0, 12);
-      const unlocked = currentUserData?.unlockedTitles || [];
-      const equippedTitle = currentUserData?.equippedTitle || '';
-
-      grid.innerHTML = dailyTitles.map(item => {
-        const isOwned = unlocked.includes(item.id);
-        const isEquipped = equippedTitle === item.id;
-
-        let borderStyle = isEquipped ? '2px solid var(--kick-green)' : '1.5px solid rgba(255,255,255,0.09)';
-        let bgStyle = isEquipped ? 'rgba(83,252,24,0.10)' : '#0b0d14';
-        const onClickAction = isOwned ? `handleEquipTitleFromShop('${item.id}')` : `handleBuyTitle('${item.id}')`;
-
-        return `
-          <div class="cosmetics-option-card ${isEquipped ? 'equipped' : ''}" 
-               onclick="${onClickAction}"
-               style="border:${borderStyle};background:${bgStyle};padding:7px 7px 12px 7px;display:flex;flex-direction:column;align-items:center;text-align:center;border-radius:18px;cursor:pointer;position:relative;transition:all 0.18s ease;box-shadow:0 8px 24px rgba(0,0,0,0.6);">
-            
-            <div style="position:relative;width:100%;aspect-ratio:1/1;border-radius:13px;overflow:hidden;background:radial-gradient(circle at center, ${item.bgColor || 'rgba(239, 68, 68, 0.25)'} 0%, #10131e 100%);border:1px solid ${item.borderColor || 'rgba(239,68,68,0.35)'};margin-bottom:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;">
-              <span style="position:absolute;top:6px;left:6px;background:rgba(0,0,0,0.75);backdrop-filter:blur(4px);color:#fff;font-size:0.75rem;font-weight:900;padding:2px 8px;border-radius:6px;border:1px solid rgba(255,255,255,0.15);">
-                ${escapeHtml(item.name)}
-              </span>
-              <span style="position:absolute;top:6px;right:6px;background:rgba(0,0,0,0.75);color:${item.color || '#ef4444'};font-size:0.65rem;font-weight:800;padding:2px 7px;border-radius:6px;border:1px solid ${item.color || '#ef4444'};">
-                ${item.rarity.toUpperCase()}
-              </span>
-
-              <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;margin-top:8px;">
-                <i data-lucide="${item.icon || 'globe-off'}" style="width:40px;height:40px;color:${item.color || '#ef4444'};filter:drop-shadow(0 0 14px ${item.color || '#ef4444'});"></i>
-                <span class="user-title-badge" style="display:inline-flex;align-items:center;gap:4px;background:${item.bgColor || 'rgba(239,68,68,0.15)'};color:${item.color || '#ef4444'};border:1px solid ${item.borderColor || 'rgba(239,68,68,0.45)'};padding:3px 10px;border-radius:10px;font-size:0.78rem;font-weight:900;letter-spacing:0.02em;">
-                  <span>${escapeHtml(item.name)}</span>
-                </span>
-              </div>
-            </div>
-
-            <div style="width:100%;display:flex;align-items:center;justify-content:center;min-height:28px;">
-              ${isEquipped ? `
-                <span style="font-size:0.78rem;font-weight:800;letter-spacing:0.08em;color:var(--kick-green);text-transform:uppercase;">Equipped</span>
-              ` : isOwned ? `
-                <div style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;">
-                  <span style="font-size:0.75rem;font-weight:700;color:#94a3b8;">Owned</span>
-                  <button class="btn btn-primary btn-sm pfp-equip-btn" onclick="handleEquipTitleFromShop('${item.id}');event.stopPropagation();" style="padding:5px 16px;font-size:0.82rem;font-weight:800;border-radius:14px;">
-                    Equip
-                  </button>
-                </div>
-              ` : `
-                <div style="display:flex;align-items:center;gap:5px;font-size:0.98rem;font-weight:900;color:#fff;">
-                  <img src="new_token.png" style="width:18px;height:18px;object-fit:contain;" alt="CT" />
-                  <span>${formatTokens(item.cost)}</span>
-                </div>
-              `}
-            </div>
-          </div>
-        `;
-      }).join('');
-
-      if (window.lucide) lucide.createIcons();
-    }
-
-
-    async function handleEquipPfp(pfpId) {
-      if (!currentUser) return;
-      try {
-        await equipShopPfp(currentUser.uid, pfpId);
-        currentUserData = await getUser(currentUser.uid);
-        renderDailyPfps();
-        const item = (typeof SHOP_PFPS !== 'undefined') ? SHOP_PFPS[pfpId] : null;
-        showToast(`Equipped avatar "${item?.name || 'Avatar'}"! Applied to profile.`, 'success');
-      } catch (err) {
-        showToast(err.message || 'Failed to equip avatar', 'error');
-      }
-    }
-
-    async function handleEquipTitleFromShop(titleId) {
-      if (!currentUser) return;
-      try {
-        await equipUserTitle(currentUser.uid, titleId);
-        currentUserData = await getUser(currentUser.uid);
-        renderShopTitles();
-        const item = (typeof SHOP_TITLES !== 'undefined') ? SHOP_TITLES[titleId] : null;
-        showToast(`Equipped title "${item?.name || 'Title'}"! Displayed on profile & match rooms.`, 'success');
-      } catch (err) {
-        showToast(err.message || 'Failed to equip title', 'error');
-      }
-    }
-
-    function renderDailyPfps() {
-      const grid = document.getElementById('daily-pfps-grid');
+    function renderTiers() {
+      const grid = document.getElementById('sp-tiers-grid');
       if (!grid) return;
 
-      const dailyItems = getDailyShopPfps();
-      const unlocked = currentUserData?.unlockedPfps || [];
-      const equippedPfp = currentUserData?.equippedPfp || '';
-      const currentPhotoURL = currentUserData?.photoURL || '';
-
-      grid.innerHTML = dailyItems.map(item => {
-        const isOwned = item.isDefault || unlocked.includes(item.id);
-        const isEquipped = (equippedPfp === item.id) || (currentPhotoURL === item.file);
-
-        let borderStyle = isEquipped ? '2px solid var(--kick-green)' : '1.5px solid rgba(255,255,255,0.09)';
-        let bgStyle = isEquipped ? 'rgba(83,252,24,0.10)' : '#0b0d14';
-        const onClickAction = isOwned ? `handleEquipPfp('${item.id}')` : `handleBuyPfp('${item.id}')`;
+      grid.innerHTML = TIERS_DATA.map(item => {
+        const isReached = currentTier >= item.tier;
+        const freeClaimed = claimedRewards.includes(`free_${item.tier}`);
+        const premiumClaimed = claimedRewards.includes(`prem_${item.tier}`);
 
         return `
-          <div class="cosmetics-option-card ${isEquipped ? 'equipped' : ''}" 
-               onclick="${onClickAction}"
-               style="border:${borderStyle};background:${bgStyle};padding:7px 7px 12px 7px;display:flex;flex-direction:column;align-items:center;text-align:center;border-radius:18px;cursor:pointer;position:relative;transition:all 0.18s ease;box-shadow:0 8px 24px rgba(0,0,0,0.6);">
-            
-            <!-- Large Rounded Image -->
-            <div style="position:relative;width:100%;aspect-ratio:1/1;border-radius:13px;overflow:hidden;background:#141721;margin-bottom:8px;">
-              <img src="${encodeURI(item.file)}" alt="${escapeHtml(item.name)}" style="width:100%;height:100%;object-fit:cover;display:block;" />
-              <span style="position:absolute;top:6px;left:6px;background:rgba(0,0,0,0.75);backdrop-filter:blur(4px);color:#fff;font-size:0.75rem;font-weight:900;padding:2px 8px;border-radius:6px;border:1px solid rgba(255,255,255,0.15);">
-                ${escapeHtml(item.name)}
+          <div class="sp-tier-card ${isReached ? 'unlocked' : ''}">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <span style="font-family:'Outfit',sans-serif;font-size:0.95rem;font-weight:800;color:${isReached ? '#53fc18' : '#64748b'};">
+                TIER ${item.tier}
               </span>
-              <span style="position:absolute;top:6px;right:6px;background:rgba(0,0,0,0.75);color:${item.color || '#fff'};font-size:0.65rem;font-weight:800;padding:2px 7px;border-radius:6px;border:1px solid ${item.color || '#fff'};">
-                ${item.rarity.toUpperCase()}
-              </span>
+              ${isReached ? '<span style="font-size:0.68rem;color:#53fc18;font-weight:600;">UNLOCKED</span>' : '<span style="font-size:0.68rem;color:#64748b;">LOCKED</span>'}
             </div>
 
-            <!-- Bottom: Token icon and price / Status -->
-            <div style="width:100%;display:flex;align-items:center;justify-content:center;min-height:28px;">
-              ${isEquipped ? `
-                <span style="font-size:0.78rem;font-weight:800;letter-spacing:0.08em;color:var(--kick-green);text-transform:uppercase;">Equipped</span>
-              ` : isOwned ? `
-                <div style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;">
-                  <span style="font-size:0.75rem;font-weight:700;color:#94a3b8;">Owned</span>
-                  <button class="btn btn-primary btn-sm pfp-equip-btn" onclick="handleEquipPfp('${item.id}');event.stopPropagation();" style="padding:5px 16px;font-size:0.82rem;font-weight:800;border-radius:14px;">
-                    Equip
-                  </button>
-                </div>
-              ` : `
-                <div style="display:flex;align-items:center;gap:5px;font-size:0.98rem;font-weight:900;color:#fff;">
-                  <img src="new_token.png" style="width:18px;height:18px;object-fit:contain;" alt="CT" />
-                  <span>${formatTokens(item.cost)}</span>
-                </div>
-              `}
+            <!-- Free Track Item -->
+            <div class="sp-track-item">
+              <div style="display:flex;justify-content:space-between;align-items:center;">
+                <span style="font-size:0.65rem;color:#53fc18;font-weight:700;text-transform:uppercase;">FREE</span>
+                <span style="font-size:0.65rem;color:#94a3b8;">${item.free.rarity}</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <i data-lucide="${item.free.icon}" style="width:16px;height:16px;color:#53fc18;"></i>
+                <span style="font-size:0.8rem;font-weight:600;color:#fff;">${item.free.name}</span>
+              </div>
+              <button type="button" class="sp-claim-btn ${!isReached ? 'locked' : (freeClaimed ? 'claimed' : '')}" onclick="claimReward('free_${item.tier}', '${item.free.name}', ${isReached})">
+                ${!isReached ? '<i data-lucide="lock" style="width:12px;height:12px;"></i> Locked' : (freeClaimed ? 'Claimed ✓' : 'Claim')}
+              </button>
+            </div>
+
+            <!-- Premium Track Item -->
+            <div class="sp-track-item premium">
+              <div style="display:flex;justify-content:space-between;align-items:center;">
+                <span style="font-size:0.65rem;color:#fbbf24;font-weight:700;text-transform:uppercase;">PREMIUM</span>
+                <span style="font-size:0.65rem;color:#fbbf24;">${item.premium.rarity}</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <i data-lucide="${item.premium.icon}" style="width:16px;height:16px;color:#fbbf24;"></i>
+                <span style="font-size:0.8rem;font-weight:600;color:#fff;">${item.premium.name}</span>
+              </div>
+              <button type="button" class="sp-claim-btn ${!isReached || !isPremium ? 'locked' : (premiumClaimed ? 'claimed' : '')}" onclick="claimReward('prem_${item.tier}', '${item.premium.name}', ${isReached && isPremium})">
+                ${!isPremium ? '<i data-lucide="crown" style="width:12px;height:12px;"></i> Get Pass' : (!isReached ? '<i data-lucide="lock" style="width:12px;height:12px;"></i> Locked' : (premiumClaimed ? 'Claimed ✓' : 'Claim'))}
+              </button>
             </div>
           </div>
         `;
       }).join('');
 
-      if (window.lucide) lucide.createIcons();
+      if (window.lucide) window.lucide.createIcons();
     }
 
-    function startShopTimer() {
-      function updateTimer() {
-        const now = new Date();
-        const nextMidnight = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1, 0, 0, 0));
-        const diffMs = nextMidnight - now;
-        if (diffMs <= 0) {
-          renderDailyPfps();
-          return;
+    window.claimReward = function(key, name, canClaim) {
+      if (!canClaim) {
+        if (key.startsWith('prem_') && !isPremium) {
+          upgradeToPremium();
         }
-        const hours = Math.floor(diffMs / (1000 * 60 * 60));
-        const mins = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
-        const secs = Math.floor((diffMs % (1000 * 60)) / 1000);
-        const timerEl = document.getElementById('daily-shop-timer');
-        if (timerEl) {
-          timerEl.textContent = `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        return;
+      }
+      if (claimedRewards.includes(key)) return;
+      claimedRewards.push(key);
+      localStorage.setItem('ct_claimed_rewards', JSON.stringify(claimedRewards));
+      showToast(`Unlocked & equipped: ${name}!`);
+      renderTiers();
+    };
+
+    function upgradeToPremium() {
+      isPremium = true;
+      localStorage.setItem('ct_is_premium', 'true');
+      const btn = document.getElementById('btn-upgrade-premium');
+      const txt = document.getElementById('btn-upgrade-text');
+      if (btn) btn.style.background = '#14171e';
+      if (txt) {
+        txt.textContent = '★ Premium Pass Active';
+        txt.style.color = '#53fc18';
+      }
+      showToast('Season 1 Premium Pass Activated! All tiers unlocked.');
+      renderTiers();
+    }
+
+    document.getElementById('btn-upgrade-premium')?.addEventListener('click', upgradeToPremium);
+
+    document.addEventListener('DOMContentLoaded', () => {
+      if (isPremium) {
+        const txt = document.getElementById('btn-upgrade-text');
+        if (txt) {
+          txt.textContent = '★ Premium Pass Active';
+          txt.style.color = '#53fc18';
         }
       }
-      updateTimer();
-      setInterval(updateTimer, 1000);
-    }
+      renderTiers();
+    });
 
-    
-    /* ── Clean & Responsive Shop Purchases ─────────────────────────── */
-    async function handleBuyPfp(pfpId) {
-      if (!currentUser) return;
-      const item = SHOP_PFPS[pfpId];
-      if (!item) return;
-
-      const ok = await showConfirm({
-        title: `Unlock Avatar ${item.name}`,
-        message: `
-          <div style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px;margin:8px 0 10px;">
-            <div style="width:100px;height:100px;border-radius:18px;overflow:hidden;border:2px solid ${item.color || 'var(--kick-green)'};background:#0e1017;box-shadow:0 8px 24px rgba(0,0,0,0.6);">
-              <img src="${encodeURI(item.file)}" alt="${escapeHtml(item.name)}" style="width:100%;height:100%;object-fit:cover;display:block;" />
-            </div>
-            <div>
-              <div style="font-weight:900;font-size:1.15rem;color:#fff;">${escapeHtml(item.name)}</div>
-              <span class="badge" style="font-size:0.68rem;padding:2px 8px;color:${item.color || '#fff'};border:1px solid ${item.color || '#fff'};background:rgba(255,255,255,0.04);margin-top:4px;">
-                ${item.rarity.toUpperCase()}
-              </span>
-            </div>
-            <div style="font-size:0.92rem;color:#cbd5e1;line-height:1.5;">
-              Unlock this avatar for <strong style="color:var(--kick-green);">${formatTokens(item.cost)} Tokens</strong>?
-            </div>
-          </div>
-        `,
-        confirmText: `Unlock for ${formatTokens(item.cost)} Tokens`,
-        cancelText: 'Cancel',
-        type: 'warning',
-        icon: 'shopping-cart'
-      });
-      if (!ok) return;
-
-      try {
-        const freshUser = await getUser(currentUser.uid);
-        if (!freshUser) throw new Error('Failed to verify user account');
-        if (Number(freshUser.tokens || 0) < item.cost) {
-          throw new Error(`Insufficient tokens! You have ${formatTokens(freshUser.tokens || 0)} Tokens, but ${formatTokens(item.cost)} Tokens are required.`);
-        }
-        if ((freshUser.unlockedPfps || []).includes(pfpId) || item.isDefault) {
-          throw new Error('Avatar is already unlocked in your wardrobe.');
-        }
-
-        await new Promise(r => setTimeout(r, 350));
-        await buyShopPfp(currentUser.uid, pfpId);
-        currentUserData = await getUser(currentUser.uid);
-        renderDailyPfps();
-        showToast(`Unlocked Avatar ${item.name}! You can equip it in your Profile.`, 'success');
-      } catch (err) {
-        showToast(err.message || 'Failed to complete purchase', 'error');
+    function showToast(msg) {
+      let toast = document.getElementById('sp-toast');
+      if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'sp-toast';
+        toast.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#08090c;border:1px solid #53fc18;color:#fff;padding:10px 22px;border-radius:99px;font-size:0.85rem;font-weight:600;z-index:9999;box-shadow:0 10px 30px rgba(0,0,0,0.8);';
+        document.body.appendChild(toast);
       }
+      toast.textContent = msg;
+      toast.style.display = 'block';
+      setTimeout(() => { toast.style.display = 'none'; }, 2600);
     }
-
-    async function handleBuyTitle(titleId) {
-      if (!currentUser) return;
-      const item = SHOP_TITLES[titleId];
-      if (!item) return;
-
-      const ok = await showConfirm({
-        title: `Unlock Title "${item.name}"`,
-        message: `
-          <div style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:14px;margin:8px 0 10px;">
-            <span class="user-title-badge" style="display:inline-flex;align-items:center;gap:8px;background:${item.bgColor || 'rgba(239,68,68,0.15)'};color:${item.color || '#ef4444'};border:1.5px solid ${item.borderColor || 'rgba(239,68,68,0.45)'};padding:8px 20px;border-radius:14px;font-size:1.15rem;font-weight:900;letter-spacing:0.02em;">
-              <i data-lucide="${item.icon || 'globe-off'}" style="width:20px;height:20px;"></i>
-              <span>${escapeHtml(item.name)}</span>
-            </span>
-            <div style="font-size:0.92rem;color:#cbd5e1;line-height:1.5;">
-              Unlock the <strong>${item.rarity}</strong> title <strong>"${item.name}"</strong> for <strong style="color:var(--kick-green);">${formatTokens(item.cost)} Tokens</strong>?
-            </div>
-          </div>
-        `,
-        confirmText: `Unlock for ${formatTokens(item.cost)} Tokens`,
-        cancelText: 'Cancel',
-        type: 'warning',
-        icon: 'award'
-      });
-      if (!ok) return;
-
-      try {
-        const freshUser = await getUser(currentUser.uid);
-        if (!freshUser) throw new Error('Failed to verify user account');
-        if (Number(freshUser.tokens || 0) < item.cost) {
-          throw new Error(`Insufficient tokens! You have ${formatTokens(freshUser.tokens || 0)} Tokens, but ${formatTokens(item.cost)} Tokens are required.`);
-        }
-        if ((freshUser.unlockedTitles || []).includes(titleId)) {
-          throw new Error('Title is already unlocked.');
-        }
-
-        await new Promise(r => setTimeout(r, 350));
-        await buyShopTitle(currentUser.uid, titleId);
-        currentUserData = await getUser(currentUser.uid);
-        renderShopTitles();
-        showToast(`Unlocked "${item.name}" title! Equipped to profile.`, 'success');
-      } catch (err) {
-        showToast(err.message || 'Failed to complete purchase', 'error');
-      }
-    }
-
-    async function handleBuyPremium() {
-      if (!currentUser) return;
-      const isCurrentlyActive = isUserPremiumActive(currentUserData);
-      const ok = await showConfirm({
-        title: isCurrentlyActive ? 'Extend Champion Premium' : 'Unlock Champion Premium',
-        message: `Unlock Champion Premium for <strong>5.00 Tokens ($5.00)</strong> for 30 days?<br/><span style="color:var(--kick-green);font-size:0.82rem;display:inline-block;margin-top:8px;">Includes Neon Kick VIP username, VIP profile crown & perks!</span>`,
-        confirmText: 'Unlock Premium (5.00 Tokens)',
-        cancelText: 'Cancel',
-        type: 'warning',
-        icon: 'sparkles'
-      });
-      if (!ok) return;
-
-      try {
-        const freshUser = await getUser(currentUser.uid);
-        if (!freshUser) throw new Error('Failed to verify user account');
-        if (Number(freshUser.tokens || 0) < 5.00) {
-          throw new Error(`Insufficient tokens! You have ${formatTokens(freshUser.tokens || 0)} Tokens, but 5.00 Tokens are required.`);
-        }
-
-        await new Promise(r => setTimeout(r, 350));
-        await buyPremiumPass(currentUser.uid);
-        currentUserData = await getUser(currentUser.uid);
-        checkPremiumStatus();
-        showToast('Champion Premium activated! Enjoy your perks.', 'success');
-      } catch (err) {
-        showToast(err.message || 'Failed to complete purchase', 'error');
-      }
-    }
-
   </script>
 </body>
 </html>

@@ -3,3239 +3,423 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Champion Tokens</title>
+  <title>Contender Profile — Champion Tokens</title>
   <link rel="icon" type="image/png" href="champion-tokens_new.png"/>
-  <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
-  <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
-  <link rel="manifest" href="manifest.json"/>
   <link rel="stylesheet" href="css/style.css?v=5.5"/>
   <link rel="stylesheet" href="css/ranked.css?v=4.2"/>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <script src="js/protect.js"></script>
   <style>
-    /* ── Ranked Arena Profile Theme Overrides ── */
-    body {
-      background: #000000 !important;
-      color: #ffffff !important;
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
-    }
-    .profile-hero-card {
-      background: #08090c !important;
-      border: 1px solid rgba(255, 255, 255, 0.08) !important;
-      border-radius: 18px !important;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8) !important;
-      padding: 24px 28px !important;
-      margin-bottom: 24px;
-      position: relative;
-      overflow: hidden;
-    }
-    .profile-pfp {
-      border: 2px solid #53fc18 !important;
-      box-shadow: 0 0 16px rgba(83, 252, 24, 0.25) !important;
-    }
-    .profile-top-subtabs-wrap {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 22px;
-    }
-    .profile-subtabs-bar {
-      background: #08090c !important;
-      border: 1px solid rgba(255, 255, 255, 0.08) !important;
-      border-radius: 99px !important;
-      padding: 4px !important;
-      display: inline-flex !important;
-      gap: 4px !important;
-    }
-    .profile-subtab-btn {
-      background: transparent !important;
-      border: none !important;
-      color: #94a3b8 !important;
-      font-size: 0.82rem !important;
-      font-weight: 500 !important;
-      padding: 8px 18px !important;
-      border-radius: 99px !important;
-      cursor: pointer !important;
-      display: inline-flex !important;
-      align-items: center !important;
-      gap: 6px !important;
-      transition: all 0.15s ease !important;
-    }
-    .profile-subtab-btn:hover {
-      color: #ffffff !important;
-      background: rgba(255, 255, 255, 0.06) !important;
-    }
-    .profile-subtab-btn.active {
-      background: #53fc18 !important;
-      color: #000000 !important;
-      font-weight: 600 !important;
-      box-shadow: 0 0 14px rgba(83, 252, 24, 0.3) !important;
-    }
-    .morphed-stat-card {
-      background: #000000 !important;
-      border: 1px solid rgba(255, 255, 255, 0.08) !important;
-      border-radius: 12px !important;
-      padding: 16px !important;
-    }
-    .morphed-stat-value {
-      font-family: 'Outfit', sans-serif !important;
-      font-weight: 600 !important;
-      color: #53fc18 !important;
-    }
-    .conn-card {
-      background: #08090c !important;
-      border: 1px solid rgba(255, 255, 255, 0.08) !important;
-      border-radius: 14px !important;
-    }
-    .team-section-card {
-      background: #08090c !important;
-      border: 1px solid rgba(255, 255, 255, 0.08) !important;
-    }
-    /* Clean, Modern Profile Hero Card */
-    .profile-hero-card {
-      background: #000000;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 20px;
-      padding: 28px 30px;
-      margin-bottom: 24px;
-      position: relative;
-      overflow: hidden;
-      box-shadow: 0 14px 40px rgba(0,0,0,0.85);
-      transition: all 0.25s ease;
-    }
-    .profile-hero-card:hover {
-      box-shadow: 0 16px 48px rgba(0,0,0,0.7), 0 0 30px rgba(245, 158, 11, 0.12);
-    }
-
-    /* Floating Palette / Theme Customizer Button */
-    .hero-theme-palette-btn {
-      position: absolute;
-      top: 16px;
-      right: 18px;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      border-radius: 999px;
-      padding: 6px 14px;
-      font-size: 0.78rem;
-      font-weight: 700;
-      color: #e2e8f0;
-      cursor: pointer;
-      backdrop-filter: blur(8px);
-      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-      z-index: 2;
-    }
-    .hero-theme-palette-btn:hover {
-      background: rgba(245, 158, 11, 0.22);
-      border-color: var(--gold-bright);
-      color: var(--gold-bright);
-      transform: translateY(-2px);
-      box-shadow: 0 4px 16px rgba(245, 158, 11, 0.3);
-    }
-    .hero-theme-palette-btn i { width: 14px; height: 14px; }
-
-    .profile-user-group {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-    }
-    .profile-pfp {
-      width: 82px;
-      height: 82px;
-      border-radius: 50%;
-      background: #080808;
-      border: none !important;
-      outline: none !important;
-      box-shadow: none !important;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.8rem;
-      font-weight: 900;
-      color: #fff;
-      flex-shrink: 0;
-      transition: transform 0.2s ease;
-      position: relative;
-    }
-    .profile-pfp:hover {
-      transform: scale(1.03);
-    }
-    .profile-pfp img { width: 100%; height: 100%; object-fit: cover; }
-
-    /* Interactive Title & Pen Container */
-    .title-interactive-container {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      position: relative;
-    }
-    .title-chip-clickable {
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-      position: relative;
-    }
-    .title-chip-clickable:hover {
-      transform: translateY(-2px) scale(1.04);
-      filter: brightness(1.15) drop-shadow(0 0 14px rgba(245, 158, 11, 0.55));
-    }
-    .title-empty-placeholder {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      background: rgba(245, 158, 11, 0.08);
-      border: 1px dashed rgba(245, 158, 11, 0.45);
-      border-radius: 999px;
-      padding: 3px 10px;
-      font-size: 0.75rem;
-      font-weight: 700;
-      color: var(--gold-bright);
-      cursor: pointer;
-      transition: all 0.25s ease;
-      animation: pulseGlow 3s infinite ease-in-out;
-    }
-    .title-empty-placeholder:hover {
-      background: rgba(245, 158, 11, 0.22);
-      border-style: solid;
-      transform: scale(1.05);
-      box-shadow: none;
-    }
-
-    /* Smart Animated Edit Pen Button */
-    .title-edit-pen-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 26px;
-      height: 26px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      color: #94a3b8;
-      cursor: pointer;
-      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-      position: relative;
-    }
-    .title-edit-pen-btn:hover,
-    .title-interactive-container:hover .title-edit-pen-btn {
-      background: rgba(245, 158, 11, 0.22);
-      border-color: var(--gold-bright);
-      color: var(--gold-bright);
-      transform: rotate(15deg) scale(1.18);
-      box-shadow: none;
-    }
-    .title-edit-pen-btn svg { display: block; flex-shrink: 0; padding: 0; }
-
-    /* Discord Copy Pill with Smart Feedback */
-    .discord-id-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(88, 101, 242, 0.12);
-      border: 1px solid rgba(88, 101, 242, 0.3);
-      color: #818cf8;
-      border-radius: var(--radius-sm);
-      padding: 4px 10px;
-      font-size: 0.78rem;
-      font-family: monospace;
-      margin-top: 4px;
-      cursor: pointer;
-      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    .discord-id-pill:hover {
-      background: rgba(88, 101, 242, 0.25);
-      border-color: #818cf8;
-      color: #fff;
-      transform: translateY(-1px);
-      box-shadow: 0 0 12px rgba(88, 101, 242, 0.4);
-    }
-    .discord-id-pill.copied {
-      background: rgba(16, 185, 129, 0.2);
-      border-color: #34d399;
-      color: #34d399;
-      animation: bounceCopy 0.35s ease;
-    }
-
-    @keyframes bounceCopy {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.1); }
-    }
-
-    /* Epic Games Account Box */
-    .epic-account-card {
-      background: #000000;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: var(--radius-lg);
-      padding: 22px 24px;
-      margin-bottom: 24px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.6);
-    }
-    .epic-badge-connected {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(56, 189, 248, 0.12);
-      border: 1px solid rgba(56, 189, 248, 0.35);
-      color: #38bdf8;
-      border-radius: var(--radius-sm);
-      padding: 6px 14px;
-      font-weight: 800;
-      font-size: 1.05rem;
-    }
-
-    /* Official Epic Games Vector Logo */
-    .epic-official-svg {
-      width: 22px;
-      height: 25px;
-      fill: currentColor;
-      flex-shrink: 0;
-    }
-
-    /* Teams Section & Cards (Match UI Style) */
-    .team-section-card {
-      background: #000000;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: var(--radius-xl);
-      padding: 24px;
-      margin-bottom: 24px;
-      box-shadow: 0 12px 36px rgba(0,0,0,0.7);
-    }
-    .team-item-card {
-      background: #0b0d14;
-      border: 1px solid rgba(255, 255, 255, 0.08);
+    .pf-hero {
+      background: linear-gradient(180deg, rgba(83, 252, 24, 0.08) 0%, rgba(8, 9, 12, 0.6) 100%), #08090c;
+      border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 18px;
-      padding: 20px 22px;
-      margin-bottom: 16px;
-      transition: all 0.2s ease;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.5);
-    }
-    .team-item-card:hover {
-      border-color: rgba(255, 255, 255, 0.16);
-      transform: translateY(-2px);
-    }
-    .team-item-card.is-active-team {
-      border-color: rgba(245, 158, 11, 0.4);
-      background: #0f121d;
-      box-shadow: none;
-    }
-    .team-roster-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
-      gap: 10px;
-      margin-top: 12px;
-    }
-    .team-member-chip {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      background: #121520;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 12px;
-      padding: 9px 13px;
-      transition: border-color 0.16s ease;
-    }
-    .team-member-chip:hover {
-      border-color: rgba(255, 255, 255, 0.16);
-    }
-    .team-badge-icon-btn {
-      width: 36px;
-      height: 36px;
-      border-radius: 10px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      color: #94a3b8;
-      transition: all 0.15s ease;
-    }
-    .team-badge-icon-btn:hover {
-      background: rgba(255, 255, 255, 0.12);
-      color: #fff;
-      transform: scale(1.08);
-    }
-    .team-badge-icon-btn.selected {
-      background: rgba(245, 158, 11, 0.2);
-      border-color: var(--gold-bright);
-      color: var(--gold-bright);
-      box-shadow: none;
-    }
-    .team-color-swatch {
-      width: 26px;
-      height: 26px;
-      border-radius: 50%;
-      cursor: pointer;
-      border: 2px solid transparent;
-      transition: all 0.15s ease;
-    }
-    .team-color-swatch:hover {
-      transform: scale(1.15);
-    }
-    .team-color-swatch.selected {
-      border-color: #fff;
-      box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-      transform: scale(1.15);
-    }
-    .team-bg-swatch {
-      width: 34px;
-      height: 26px;
-      border-radius: 8px;
-      cursor: pointer;
-      border: 2px solid transparent;
-      transition: all 0.15s ease;
-    }
-    .team-bg-swatch:hover {
-      transform: scale(1.1);
-    }
-    .team-bg-swatch.selected {
-      border-color: #fff;
-      box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
-    }
-
-    .matches-history { display: flex; flex-direction: column; gap: 10px; overflow-x: hidden; }
-    .mh-card {
-      background: #000000;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 12px;
-      padding: 14px 16px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      transition: all 0.18s ease;
-    }
-    .mh-card:hover {
-      background: #080808;
-      border-color: rgba(255, 255, 255, 0.16);
-      transform: translateY(-1px);
-    }
-
-    /* Cosmetics Studio Modal Tabs & Grids */
-    .cosmetics-modal-tabs {
-      display: flex;
-      gap: 8px;
-      background: rgba(0, 0, 0, 0.35);
-      padding: 4px;
-      border-radius: var(--radius-lg);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      margin-bottom: 20px;
-    }
-    .cosmetics-tab-btn {
-      flex: 1;
-      padding: 10px 16px;
-      border-radius: var(--radius-md);
-      font-size: 0.875rem;
-      font-weight: 700;
-      color: #94a3b8;
-      border: none;
-      background: transparent;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      transition: all 0.2s ease;
-    }
-    .cosmetics-tab-btn.active {
-      background: rgba(245, 158, 11, 0.2);
-      color: var(--gold-bright);
-      border: 1px solid rgba(245, 158, 11, 0.4);
-      box-shadow: none;
-    }
-    .cosmetics-tab-btn i { width: 16px; height: 16px; }
-
-    .cosmetics-preview-box {
-      background: rgba(0, 0, 0, 0.4);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: var(--radius-lg);
-      padding: 16px 20px;
-      margin-bottom: 20px;
-    }
-    .preview-hero-strip {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
-      padding: 12px 16px;
-      border-radius: var(--radius-md);
-      background: rgba(14, 18, 34, 0.95);
-      border: 1px solid rgba(245, 158, 11, 0.3);
-      transition: all 0.3s ease;
-    }
-
-    .cosmetics-item-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
-      gap: 12px;
-      max-height: 360px;
-      overflow-y: auto;
-      padding-right: 4px;
-    }
-    .cosmetics-option-card {
-      background: rgba(18, 24, 46, 0.85);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: var(--radius-lg);
-      padding: 16px 14px;
-      cursor: pointer;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      gap: 10px;
-      transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+      padding: 32px 28px;
+      margin-bottom: 28px;
       position: relative;
     }
-    .cosmetics-option-card:hover {
-      border-color: rgba(245, 158, 11, 0.45);
-      transform: translateY(-4px) scale(1.02);
-      box-shadow: 0 10px 26px rgba(0,0,0,0.7);
-    }
-    .pfp-equip-btn {
-      transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.18s ease, box-shadow 0.18s ease;
-    }
-    .pfp-equip-btn:hover {
-      transform: translateY(-2px) scale(1.06);
-      box-shadow: 0 4px 14px rgba(245, 158, 11, 0.35);
-    }
-    .cosmetics-option-card.equipped {
-      border-color: var(--gold-bright);
-      background: linear-gradient(135deg, rgba(245, 158, 11, 0.18) 0%, rgba(18, 24, 46, 0.95) 100%);
-      box-shadow: none;
-    }
-
-    /* Modal Display Support */
-    .modal-overlay.open,
-    .modal-overlay.active {
-      opacity: 1 !important;
-      pointer-events: all !important;
-      visibility: visible !important;
-      display: flex !important;
-    }
-    .modal-overlay.open .modal,
-    .modal-overlay.active .modal {
-      transform: translateY(0) !important;
-    }
-    .equipped-badge-indicator {
-      position: absolute;
-      top: 8px;
-      right: 8px;
-      background: var(--gold-bright);
-      color: #000;
-      font-size: 0.65rem;
-      font-weight: 800;
-      padding: 2px 7px;
-      border-radius: 999px;
-      white-space: nowrap;
-    }
-
-    /* ── Settings & Customization Hub ── */
-    .profile-settings-card {
-      background: rgba(14, 18, 34, 0.95);
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      border-radius: var(--radius-xl);
-      padding: 24px 28px;
-      margin-bottom: 24px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    }
-    .settings-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-    .setting-item-row {
-      background: rgba(18, 24, 46, 0.7);
-      border: 1px solid rgba(255, 255, 255, 0.09);
-      border-radius: var(--radius-lg);
-      padding: 16px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      cursor: pointer;
-      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-      position: relative;
-    }
-    .setting-item-row:hover {
-      background: rgba(26, 34, 64, 0.95);
-      border-color: rgba(245, 158, 11, 0.45);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(0,0,0,0.4), 0 0 20px rgba(245, 158, 11, 0.12);
-    }
-    .setting-left {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
-    .setting-icon-box {
-      width: 42px;
-      height: 42px;
-      border-radius: var(--radius-md);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.2rem;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      color: #cbd5e1;
-      flex-shrink: 0;
-      transition: all 0.25s ease;
-    }
-    .setting-item-row:hover .setting-icon-box {
-      background: rgba(245, 158, 11, 0.18);
-      border-color: var(--gold-bright);
-      color: var(--gold-bright);
-      box-shadow: none;
-    }
-    .setting-title {
-      font-weight: 800;
-      font-size: 0.95rem;
-      color: #fff;
-      margin-bottom: 2px;
-    }
-    .setting-desc {
-      font-size: 0.78rem;
-      color: var(--text-muted);
-    }
-    .setting-right {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      flex-shrink: 0;
-    }
-    .setting-pen-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 32px;
-      height: 32px;
+    .pf-avatar-lg {
+      width: 90px;
+      height: 90px;
       border-radius: 50%;
-      background: rgba(255, 255, 255, 0.07);
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      color: #94a3b8;
-      cursor: pointer;
-      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-      flex-shrink: 0;
-      padding: 0;
+      object-fit: cover;
+      border: 3px solid #53fc18;
+      box-shadow: 0 0 20px rgba(83, 252, 24, 0.4);
     }
-    .setting-item-row:hover .setting-pen-btn,
-    .setting-pen-btn:hover {
-      background: rgba(245, 158, 11, 0.25);
-      border-color: var(--gold-bright);
-      color: var(--gold-bright);
-      transform: rotate(12deg) scale(1.15);
-      box-shadow: none;
-    }
-    .setting-pen-btn svg { display: block; flex-shrink: 0; }
-
-    /* Profile Top Subtabs Navigation */
-    .profile-top-subtabs-wrap {
-      margin-bottom: 22px;
-      display: flex;
-      align-items: center;
-    }
-    .profile-subtabs-bar {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      background: var(--bg-surface);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 4px 6px;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
-      overflow-x: auto;
-    }
-    .profile-subtab-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 18px;
-      background: transparent;
-      border: 1px solid transparent;
-      border-radius: 8px;
-      color: var(--text-muted);
-      font-size: 0.85rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.16s ease;
-      white-space: nowrap;
-    }
-    .profile-subtab-btn i {
-      width: 15px;
-      height: 15px;
-      color: var(--text-faint);
-      transition: color 0.16s ease;
-    }
-    .profile-subtab-btn:hover {
-      color: #ffffff;
-      background: rgba(255, 255, 255, 0.05);
-    }
-    .profile-subtab-btn:hover i {
-      color: #ffffff;
-    }
-    .profile-subtab-btn.active {
-      background: rgba(83, 252, 24, 0.12);
-      border-color: var(--kick-green);
-      color: #ffffff;
-      font-weight: 800;
-      box-shadow: 0 0 12px rgba(83, 252, 24, 0.22);
-    }
-    .profile-subtab-btn.active i {
-      color: var(--kick-green);
-    }
-    
-    /* Morphed Stats Cards */
-    .morphed-stat-card {
-      background: #060608;
-      border: 1px solid rgba(255, 255, 255, 0.06);
+    .pf-stat-card {
+      background: #08090c;
+      border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 14px;
-      padding: 16px 18px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      transition: border-color 0.18s ease, transform 0.18s ease;
+      padding: 20px;
+      text-align: left;
+      transition: all 0.15s ease;
     }
-    .morphed-stat-card:hover {
-      border-color: rgba(255, 255, 255, 0.14);
-      transform: translateY(-1px);
+    .pf-stat-card:hover {
+      border-color: rgba(83, 252, 24, 0.3);
+      transform: translateY(-2px);
     }
-    .morphed-stat-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      font-size: 0.75rem;
-      font-weight: 800;
-      color: #71717a;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-    }
-    .morphed-stat-value {
-      font-size: 1.3rem;
-      font-weight: 900;
-      color: #ffffff;
-    }
-    .profile-subtab-content {
-      /* Instant seamless tab display */
-    }
-
-    /* ── Sleek Connections Hub (Per Reference Design) ── */
-    .conn-card {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: #000000;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 16px;
-      padding: 18px 22px;
-      min-height: 74px;
-      margin-bottom: 14px;
-      transition: border-color 0.2s ease, background 0.2s ease;
-    }
-    .conn-card:hover {
-      border-color: rgba(255, 255, 255, 0.14);
-    }
-    .conn-card__left {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-    }
-    .conn-card__logo {
-      width: 44px;
-      height: 44px;
-      border-radius: 12px;
-      background: #080808;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      padding: 6px;
-    }
-    .conn-card__logo img {
-      max-width: 28px;
-      max-height: 28px;
-      object-fit: contain;
-    }
-    .conn-card__info {
-      display: flex;
-      flex-direction: column;
-      gap: 3px;
-    }
-    .conn-card__name {
-      font-size: 0.94rem;
-      font-weight: 800;
-      color: #ffffff;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      line-height: 1.2;
-    }
-    .conn-card__username {
-      font-size: 0.86rem;
-      font-weight: 600;
-      color: #86efac; /* Soft green */
-      line-height: 1.2;
-    }
-    .conn-card__username--unlinked {
-      color: #64748b;
-      font-weight: 500;
-    }
-    .conn-card__actions {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .conn-icon-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 36px;
-      height: 36px;
-      border-radius: 10px;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      color: #ffffff;
-      cursor: pointer;
-      padding: 0;
-      transition: all 0.16s ease;
-    }
-    .conn-icon-btn i {
-      width: 17px;
-      height: 17px;
-      stroke-width: 2.2;
-      color: #e2e8f0;
-      transition: transform 0.16s ease, color 0.16s ease;
-    }
-    .conn-icon-btn:hover {
-      background: rgba(255, 255, 255, 0.1);
-      border-color: rgba(255, 255, 255, 0.2);
-      color: #ffffff;
-      transform: translateY(-1px);
-    }
-    .conn-icon-btn:hover i {
-      color: #ffffff;
-    }
-    .conn-icon-btn--danger:hover {
-      background: rgba(239, 68, 68, 0.15);
-      border-color: rgba(239, 68, 68, 0.4);
-    }
-    .conn-icon-btn--danger:hover i {
-      color: #f87171;
-    }
-
-    /* ── Activity / Transaction Feed ── */
-    .tx-list {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      overflow-x: hidden !important;
-    }
-    .tx-item {
-      background: #000000;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 12px;
-      padding: 12px 14px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      transition: all 0.18s ease;
-    }
-    .tx-item:hover {
-      background: #080808;
-      border-color: rgba(255, 255, 255, 0.16);
-    }
-
-    /* ── Pagination Buttons ── */
-    .ct-pagination {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      margin-top: 16px;
-      padding: 8px 0;
-    }
-    .ct-page-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      padding: 7px 16px;
-      font-size: 0.82rem;
-      font-weight: 700;
-      color: #e2e8f0;
-      background: #080808;
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 8px;
-      cursor: pointer;
-      transition: all 0.18s ease;
-      user-select: none;
-    }
-    .ct-page-btn i {
-      width: 14px;
-      height: 14px;
-      color: var(--gold-bright);
-      stroke-width: 2.5;
-    }
-    .ct-page-btn:hover:not(:disabled) {
-      background: #141414;
-      border-color: rgba(245, 158, 11, 0.45);
-      color: #ffffff;
-      transform: translateY(-1px);
-    }
-    .ct-page-btn:disabled {
-      opacity: 0.35;
-      cursor: not-allowed;
-      border-color: rgba(255, 255, 255, 0.05);
+    .pf-subtab-btn {
       background: transparent;
-      color: #64748b;
-    }
-    .ct-page-btn:disabled i {
-      color: #64748b;
-    }
-    .ct-page-info {
-      font-size: 0.82rem;
-      font-weight: 600;
+      border: none;
       color: #94a3b8;
-      padding: 0 4px;
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .pf-subtab-btn.active {
+      background: #14171e;
+      color: #53fc18;
+      border: 1px solid rgba(83, 252, 24, 0.3);
+    }
+    .pf-match-row {
+      background: #000000;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 12px;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      transition: all 0.15s ease;
+    }
+    .pf-match-row:hover {
+      border-color: rgba(255, 255, 255, 0.15);
+    }
+    .pf-match-row.victory {
+      border-left: 3px solid #53fc18;
+    }
+    .pf-match-row.defeat {
+      border-left: 3px solid #ef4444;
     }
   </style>
-  <script src="js/protect.js"></script>
 </head>
-<body data-ct-page="profile">
-  <div class="page-bg"></div>
-  <!-- Loading screen -->
-  <div class="page-loading" id="page-loading">
-    <div class="spinner"></div>
-    <span>Loading profile…</span>
-  </div>
+<body data-ct-page="profile" style="background:#000000;color:#ffffff;margin:0;font-family:'Inter',sans-serif;">
 
-  
-    <span>Loading profile…</span>
-  </div>
+  <!-- Main Container -->
+  <main class="ct-ranked-wrap" style="max-width:1080px;padding-top:36px;position:relative;z-index:10;">
 
-  <main class="page-wrap" id="main-content" role="main" style="max-width: 1280px; width: 100%;">
-    <!-- Top Subtabs Segmented Bar -->
-    <div class="profile-top-subtabs-wrap">
-      <div class="profile-subtabs-bar">
-        <button class="profile-subtab-btn active" id="btn-subtab-overview" data-tab="overview" onclick="switchProfileSubtab('overview')">
-          <i data-lucide="user"></i> <span>Overview</span>
-        </button>
-        <button class="profile-subtab-btn" id="btn-subtab-history" data-tab="history" onclick="switchProfileSubtab('history')">
-          <i data-lucide="history"></i> <span>History</span>
-        </button>
-        <button class="profile-subtab-btn" id="btn-subtab-connections" data-tab="connections" onclick="switchProfileSubtab('connections')">
-          <i data-lucide="link-2"></i> <span>Connections</span>
-        </button>
-      </div>
-    </div>
-
-    <!-- 1. TAB: Overview (My Profile) -->
-    <div id="profile-tab-overview" class="profile-subtab-content">
-      <!-- Morphed Unified Profile Hero & Stats Card -->
-      <div class="profile-hero-card" id="profile-hero">
-
-        <!-- Top Profile User Group & Actions -->
-        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;">
-          <div class="profile-user-group">
-            <div class="profile-pfp">
-              <img id="profile-avatar-img" src="" alt="" style="display:none"/>
-              <i data-lucide="user" id="profile-avatar-icon"></i>
-            </div>
-            <div>
-              <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-                <span style="font-size:1.6rem;font-weight:900;color:#fff;" id="profile-name">--</span>
-                <div id="profile-title-slot" style="display:none;"></div>
-                <div id="profile-badges-row" style="display:none;"></div>
-              </div>
-              <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:4px;">
-                <span style="font-weight:700;color:var(--text-muted);font-size:0.85rem;" id="profile-discord-tag">@discord</span>
-                <button type="button" class="account-id-pill" id="profile-account-id-btn" onclick="copyAccountId()" title="Click to copy Account ID" style="display:inline-flex;align-items:center;gap:6px;background:#050505;border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:3px 9px;font-size:0.75rem;font-family:monospace;color:#94a3b8;cursor:pointer;transition:all 0.18s ease;">
-                  <i data-lucide="fingerprint" style="width:13px;height:13px;color:var(--gold-bright);"></i>
-                  <span id="profile-account-id-text">ID: --</span>
-                  <i data-lucide="copy" id="profile-account-id-icon" style="width:12px;height:12px;opacity:0.7;"></i>
-                </button>
-              </div>
-              <div id="hero-admin-token-pill" style="display:none;"></div>
-              <div id="profile-rank-box" style="display:none;"></div>
-              <div id="premium-action-wrap" style="display:none;"></div>
-              <div style="font-size:0.75rem;color:var(--text-faint);margin-top:4px;" id="profile-since"></div>
-            </div>
-          </div>
-          <div style="text-align:right;flex-shrink:0;">
-            <div id="profile-customize-action">
-              <button class="btn btn-primary btn-sm" onclick="openCosmeticsModal('avatars')" style="padding:7px 16px;font-size:0.82rem;gap:7px;">
-                <i data-lucide="palette" style="width:14px;height:14px;"></i>
-                <span>Customize</span>
+    <!-- Contender Identity Hero -->
+    <section class="pf-hero">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;">
+        <div style="display:flex;align-items:center;gap:20px;">
+          <img src="https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=120&auto=format&fit=crop&q=80" id="pf-avatar" class="pf-avatar-lg" alt="Avatar"/>
+          <div>
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+              <h1 style="font-family:'Outfit',sans-serif;font-size:1.8rem;font-weight:700;margin:0;color:#fff;" id="pf-display-name">
+                Zenox#1337
+              </h1>
+              <span style="background:rgba(83,252,24,0.15);border:1px solid rgba(83,252,24,0.3);color:#53fc18;padding:2px 8px;border-radius:6px;font-size:0.75rem;font-weight:700;" id="pf-title-badge">
+                [Unreal God]
+              </span>
+              <button type="button" id="btn-edit-handle" style="background:transparent;border:1px solid rgba(255,255,255,0.15);color:#94a3b8;padding:4px 8px;border-radius:6px;cursor:pointer;font-size:0.72rem;display:inline-flex;align-items:center;gap:4px;">
+                <i data-lucide="edit-3" style="width:12px;height:12px;"></i>
+                <span>Edit</span>
               </button>
             </div>
-          </div>
-        </div>
 
-        <!-- Morphed Separator -->
-        <div style="border-top:1px solid rgba(255,255,255,0.07);margin:22px 0 20px;"></div>
-
-        <!-- Morphed Balance & Lifetime Earnings Grid (Visible to Self & Admins) -->
-        <div id="profile-balance-section" style="margin-bottom:12px;">
-          <div class="grid-2" style="gap:12px;">
-            <div class="morphed-stat-card" style="border-color:rgba(255,255,255,0.06);">
-              <div class="morphed-stat-header">
-                <span>Token Balance <span id="profile-tokens-admin-badge" style="display:none;color:var(--red);font-size:0.7rem;margin-left:6px;font-weight:800;">(Admin View)</span></span>
-                <i data-lucide="coins" style="width:16px;height:16px;color:var(--gold-bright);"></i>
-              </div>
-              <div class="morphed-stat-value" style="color:var(--gold-bright);" id="profile-tokens-stat">0.00 Tokens</div>
-              <div id="profile-admin-adjust-wrap" style="display:none;margin-top:6px;">
-                <button type="button" class="btn btn-gold btn-sm" onclick="openProfileTokenAdjustModal()" style="font-size:0.75rem;padding:4px 12px;gap:5px;">
-                  <i data-lucide="zap"></i> Admin Adjust Balance
+            <div style="display:flex;align-items:center;gap:14px;font-size:0.8rem;color:#94a3b8;">
+              <span id="pf-id-wrap" style="display:inline-flex;align-items:center;gap:6px;">
+                Contender ID: <strong style="color:#fff;" id="pf-contender-id">882194017402</strong>
+                <button type="button" id="btn-copy-id" style="background:none;border:none;color:#53fc18;cursor:pointer;padding:0;" title="Copy ID">
+                  <i data-lucide="copy" style="width:13px;height:13px;"></i>
                 </button>
+              </span>
+              <span>•</span>
+              <span style="color:#fbbf24;font-weight:600;">★ Season 1 Pass Active</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Rank Emblem Callout -->
+        <div style="background:#000;border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:16px 24px;display:flex;align-items:center;gap:16px;">
+          <img src="medal-ranks/svg/06-elite.svg" id="pf-rank-icon" style="width:48px;height:48px;" alt="Rank"/>
+          <div>
+            <div style="font-size:0.74rem;font-weight:600;color:#64748b;text-transform:uppercase;">Current Division</div>
+            <div style="font-family:'Outfit',sans-serif;font-size:1.4rem;font-weight:700;color:#fff;" id="pf-rank-title">Elite Tier</div>
+            <div style="font-size:0.82rem;font-weight:700;color:#53fc18;" id="pf-rank-elo">2,450 ELO</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Career Statistics Grid -->
+    <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(160px, 1fr));gap:14px;margin-bottom:28px;">
+      <div class="pf-stat-card">
+        <div style="font-size:0.72rem;font-weight:600;color:#64748b;text-transform:uppercase;margin-bottom:4px;">Matches Played</div>
+        <div style="font-family:'Outfit',sans-serif;font-size:1.6rem;font-weight:700;color:#fff;" id="stat-matches">128</div>
+      </div>
+      <div class="pf-stat-card">
+        <div style="font-size:0.72rem;font-weight:600;color:#64748b;text-transform:uppercase;margin-bottom:4px;">Victories</div>
+        <div style="font-family:'Outfit',sans-serif;font-size:1.6rem;font-weight:700;color:#53fc18;" id="stat-wins">87</div>
+      </div>
+      <div class="pf-stat-card">
+        <div style="font-size:0.72rem;font-weight:600;color:#64748b;text-transform:uppercase;margin-bottom:4px;">Win Rate</div>
+        <div style="font-family:'Outfit',sans-serif;font-size:1.6rem;font-weight:700;color:#fff;" id="stat-wr">68.0%</div>
+      </div>
+      <div class="pf-stat-card">
+        <div style="font-size:0.72rem;font-weight:600;color:#64748b;text-transform:uppercase;margin-bottom:4px;">Win Streak</div>
+        <div style="font-family:'Outfit',sans-serif;font-size:1.6rem;font-weight:700;color:#fbbf24;" id="stat-streak">5 Wins</div>
+      </div>
+      <div class="pf-stat-card">
+        <div style="font-size:0.72rem;font-weight:600;color:#64748b;text-transform:uppercase;margin-bottom:4px;">Peak ELO</div>
+        <div style="font-family:'Outfit',sans-serif;font-size:1.6rem;font-weight:700;color:#fff;" id="stat-peak">2,610 ELO</div>
+      </div>
+      <div class="pf-stat-card">
+        <div style="font-size:0.72rem;font-weight:600;color:#64748b;text-transform:uppercase;margin-bottom:4px;">Battle Pass</div>
+        <div style="font-family:'Outfit',sans-serif;font-size:1.6rem;font-weight:700;color:#53fc18;">Tier 14</div>
+      </div>
+    </div>
+
+    <!-- Subtabs Navigation -->
+    <div style="display:flex;gap:8px;margin-bottom:20px;border-bottom:1px solid rgba(255,255,255,0.08);padding-bottom:12px;">
+      <button type="button" class="pf-subtab-btn active" data-tab="history">
+        <i data-lucide="swords" style="width:14px;height:14px;"></i>
+        <span>Match History</span>
+      </button>
+      <button type="button" class="pf-subtab-btn" data-tab="locker">
+        <i data-lucide="shield" style="width:14px;height:14px;"></i>
+        <span>Locker & Cosmetics</span>
+      </button>
+      <button type="button" class="pf-subtab-btn" data-tab="connections">
+        <i data-lucide="link" style="width:14px;height:14px;"></i>
+        <span>Linked Connections</span>
+      </button>
+    </div>
+
+    <!-- Tab 1: Match History -->
+    <section id="tab-history" style="display:block;">
+      <div id="pf-match-history-list">
+        <!-- Rendered dynamically -->
+      </div>
+    </section>
+
+    <!-- Tab 2: Locker / Cosmetics -->
+    <section id="tab-locker" style="display:none;">
+      <div style="background:#08090c;border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:24px;">
+        <h3 style="font-family:'Outfit',sans-serif;font-size:1.15rem;font-weight:700;color:#fff;margin:0 0 16px;">Unlocked Cosmetics</h3>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill, minmax(220px, 1fr));gap:14px;" id="locker-items-grid">
+          <!-- Populated dynamically -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Tab 3: Linked Connections -->
+    <section id="tab-connections" style="display:none;">
+      <div style="background:#08090c;border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:24px;">
+        <h3 style="font-family:'Outfit',sans-serif;font-size:1.15rem;font-weight:700;color:#fff;margin:0 0 8px;">Game & Social Accounts</h3>
+        <p style="font-size:0.82rem;color:#94a3b8;margin:0 0 20px;">Link your verified Epic Games IGN so scrim opponents can invite you in Fortnite.</p>
+
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <!-- Epic Games -->
+          <div style="background:#000;border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:16px;display:flex;align-items:center;justify-content:space-between;">
+            <div style="display:flex;align-items:center;gap:12px;">
+              <div style="width:36px;height:36px;border-radius:8px;background:#14171e;display:flex;align-items:center;justify-content:center;">
+                <i data-lucide="gamepad-2" style="width:18px;height:18px;color:#53fc18;"></i>
+              </div>
+              <div>
+                <div style="font-size:0.88rem;font-weight:600;color:#fff;">Epic Games IGN</div>
+                <div style="font-size:0.75rem;color:#53fc18;" id="conn-epic-name">ZenoxFN (Verified ✓)</div>
               </div>
             </div>
-            <div class="morphed-stat-card" style="border-color:rgba(255,255,255,0.06);">
-              <div class="morphed-stat-header">
-                <span>Match Win Earnings</span>
-                <i data-lucide="trending-up" style="width:16px;height:16px;color:var(--green);"></i>
+            <button type="button" style="background:#14171e;border:1px solid rgba(255,255,255,0.1);color:#fff;padding:8px 14px;border-radius:8px;font-size:0.76rem;font-weight:600;cursor:pointer;" onclick="showToast('Epic Games IGN already verified.')">
+              Synced
+            </button>
+          </div>
+
+          <!-- Discord -->
+          <div style="background:#000;border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:16px;display:flex;align-items:center;justify-content:space-between;">
+            <div style="display:flex;align-items:center;gap:12px;">
+              <div style="width:36px;height:36px;border-radius:8px;background:#5865f2;display:flex;align-items:center;justify-content:center;color:#fff;">
+                <i data-lucide="message-square" style="width:18px;height:18px;"></i>
               </div>
-              <div class="morphed-stat-value" style="color:var(--green);" id="profile-earnings-stat">0.00 Tokens</div>
+              <div>
+                <div style="font-size:0.88rem;font-weight:600;color:#fff;">Discord Account</div>
+                <div style="font-size:0.75rem;color:#94a3b8;" id="conn-discord-name">Zenox#1337</div>
+              </div>
             </div>
-          </div>
-        </div>
-
-        <!-- Morphed Match Counters Grid (Wins, Losses, Win Rate, Rank) -->
-        <div class="grid-4" style="gap:12px;">
-          <div class="morphed-stat-card">
-            <div class="morphed-stat-header">
-              <span>Matches Won</span>
-              <i data-lucide="trophy" style="width:16px;height:16px;color:var(--green);"></i>
-            </div>
-            <div class="morphed-stat-value" style="color:var(--green);" id="profile-won">0</div>
-          </div>
-          <div class="morphed-stat-card">
-            <div class="morphed-stat-header">
-              <span>Matches Lost</span>
-              <i data-lucide="x-circle" style="width:16px;height:16px;color:var(--red);"></i>
-            </div>
-            <div class="morphed-stat-value" style="color:var(--red);" id="profile-lost">0</div>
-          </div>
-          <div class="morphed-stat-card">
-            <div class="morphed-stat-header">
-              <span>Win Rate</span>
-              <i data-lucide="activity" style="width:16px;height:16px;color:var(--gold-bright);"></i>
-            </div>
-            <div class="morphed-stat-value" style="color:var(--gold-bright);" id="profile-winrate">0%</div>
-          </div>
-          <div class="morphed-stat-card">
-            <div class="morphed-stat-header">
-              <span>Leaderboard Rank</span>
-              <i data-lucide="award" style="width:16px;height:16px;color:#c084fc;"></i>
-            </div>
-            <div class="morphed-stat-value" style="color:#c084fc;font-size:1.35rem;" id="profile-rank-text">#--</div>
+            <span style="font-size:0.76rem;color:#53fc18;font-weight:600;">Connected</span>
           </div>
         </div>
       </div>
+    </section>
 
-      <!-- Teams Section Card -->
-      <div class="card team-section-card" id="team-section-card">
-        <div class="section-title" style="margin-bottom:18px;color:#fff;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
-          <div style="display:flex;align-items:center;gap:10px;">
-            <i data-lucide="users" style="color:var(--gold-bright);"></i>
-            <span>Teams</span>
-          </div>
-          <div id="team-top-actions" style="display:flex;gap:8px;">
-            <button class="btn btn-primary btn-sm" onclick="openCreateTeamModal()" style="font-size:0.82rem;gap:6px;">
-              <i data-lucide="plus"></i> Create Team
-            </button>
-            <button class="btn btn-outline btn-sm" onclick="openJoinTeamModal()" style="font-size:0.82rem;gap:6px;">
-              <i data-lucide="log-in"></i> Join Team
-            </button>
-          </div>
-        </div>
-        <div id="team-content">
-          <div class="spinner" style="margin:12px auto;"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 2. TAB: History -->
-    <div id="profile-tab-history" class="profile-subtab-content" style="display:none;">
-      <div class="grid-2" style="align-items:stretch;gap:20px;">
-        <div class="card" id="tx-card" style="display:flex;flex-direction:column;background:#000000;border:1px solid rgba(255,255,255,0.08);box-shadow:0 10px 30px rgba(0,0,0,0.7);">
-          <div class="section-title" style="margin-bottom:14px;">
-            <i data-lucide="activity"></i> Transaction History
-          </div>
-          <div class="tx-list" id="tx-list" style="flex:1;overflow-y:auto;overflow-x:hidden;max-height:460px;min-height:220px;">
-            <div class="empty-state"><div class="spinner" style="margin:0 auto;"></div></div>
-          </div>
-    </div>
-    <div class="ct-skeleton-badge" style="width:60px;height:20px;"></div>
-  </div>
-
-  <div class="ct-skeleton-card" style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;margin-bottom:6px;border-radius:12px !important;">
-    <div style="display:flex;align-items:center;gap:10px;">
-      <div class="ct-skeleton-avatar" style="width:30px;height:30px;border-radius:8px;"></div>
-      <div style="display:flex;flex-direction:column;gap:4px;">
-        <div class="ct-skeleton-title" style="width:100px;height:14px;"></div>
-        <div class="ct-skeleton-text" style="width:65px;height:10px;"></div>
-      </div>
-    </div>
-    <div class="ct-skeleton-badge" style="width:60px;height:20px;"></div>
-  </div>
-
-  <div class="ct-skeleton-card" style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;margin-bottom:6px;border-radius:12px !important;">
-    <div style="display:flex;align-items:center;gap:10px;">
-      <div class="ct-skeleton-avatar" style="width:30px;height:30px;border-radius:8px;"></div>
-      <div style="display:flex;flex-direction:column;gap:4px;">
-        <div class="ct-skeleton-title" style="width:100px;height:14px;"></div>
-        <div class="ct-skeleton-text" style="width:65px;height:10px;"></div>
-      </div>
-    </div>
-    <div class="ct-skeleton-badge" style="width:60px;height:20px;"></div>
-  </div>
-
-  <div class="ct-skeleton-card" style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;margin-bottom:6px;border-radius:12px !important;">
-    <div style="display:flex;align-items:center;gap:10px;">
-      <div class="ct-skeleton-avatar" style="width:30px;height:30px;border-radius:8px;"></div>
-      <div style="display:flex;flex-direction:column;gap:4px;">
-        <div class="ct-skeleton-title" style="width:100px;height:14px;"></div>
-        <div class="ct-skeleton-text" style="width:65px;height:10px;"></div>
-      </div>
-    </div>
-    <div class="ct-skeleton-badge" style="width:60px;height:20px;"></div>
-  </div>
-
-          </div>
-          <div class="ct-pagination" id="profile-tx-pagination"></div>
-        </div>
-
-        <div class="card" style="display:flex;flex-direction:column;background:#000000;border:1px solid rgba(255,255,255,0.08);box-shadow:0 10px 30px rgba(0,0,0,0.7);">
-          <div class="section-title" style="margin-bottom:14px;">
-            <i data-lucide="swords"></i> Match History
-          </div>
-          <div class="matches-history" id="match-history" style="flex:1;overflow-y:auto;overflow-x:hidden;max-height:460px;min-height:220px;">
-            <div class="empty-state"><div class="spinner" style="margin:0 auto;"></div></div>
-          </div>
-    </div>
-    <div class="ct-skeleton-badge" style="width:60px;height:20px;"></div>
-  </div>
-
-  <div class="ct-skeleton-card" style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;margin-bottom:6px;border-radius:12px !important;">
-    <div style="display:flex;align-items:center;gap:10px;">
-      <div class="ct-skeleton-avatar" style="width:30px;height:30px;border-radius:8px;"></div>
-      <div style="display:flex;flex-direction:column;gap:4px;">
-        <div class="ct-skeleton-title" style="width:100px;height:14px;"></div>
-        <div class="ct-skeleton-text" style="width:65px;height:10px;"></div>
-      </div>
-    </div>
-    <div class="ct-skeleton-badge" style="width:60px;height:20px;"></div>
-  </div>
-
-  <div class="ct-skeleton-card" style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;margin-bottom:6px;border-radius:12px !important;">
-    <div style="display:flex;align-items:center;gap:10px;">
-      <div class="ct-skeleton-avatar" style="width:30px;height:30px;border-radius:8px;"></div>
-      <div style="display:flex;flex-direction:column;gap:4px;">
-        <div class="ct-skeleton-title" style="width:100px;height:14px;"></div>
-        <div class="ct-skeleton-text" style="width:65px;height:10px;"></div>
-      </div>
-    </div>
-    <div class="ct-skeleton-badge" style="width:60px;height:20px;"></div>
-  </div>
-
-  <div class="ct-skeleton-card" style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;margin-bottom:6px;border-radius:12px !important;">
-    <div style="display:flex;align-items:center;gap:10px;">
-      <div class="ct-skeleton-avatar" style="width:30px;height:30px;border-radius:8px;"></div>
-      <div style="display:flex;flex-direction:column;gap:4px;">
-        <div class="ct-skeleton-title" style="width:100px;height:14px;"></div>
-        <div class="ct-skeleton-text" style="width:65px;height:10px;"></div>
-      </div>
-    </div>
-    <div class="ct-skeleton-badge" style="width:60px;height:20px;"></div>
-  </div>
-
-          </div>
-          <div class="ct-pagination" id="profile-mh-pagination"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 3. TAB: Connections -->
-    <div id="profile-tab-connections" class="profile-subtab-content" style="display:none;">
-      <!-- Epic Games Connection Card Container -->
-      <div id="epic-connection-card-wrap">
-        <!-- Rendered dynamically by renderEpicTopSection -->
-      </div>
-
-      <!-- Discord Account Connection Card -->
-      <div class="conn-card">
-        <div class="conn-card__left">
-          <div class="conn-card__logo">
-            <img src="discord-icon.svg" alt="Discord"/>
-          </div>
-          <div class="conn-card__info">
-            <div class="conn-card__name">DISCORD</div>
-            <div class="conn-card__username" id="conn-discord-tag">@discord</div>
-          </div>
-        </div>
-        <div class="conn-card__actions">
-          <div class="conn-icon-btn" style="cursor:default;pointer-events:none;background:rgba(16,185,129,0.08);border-color:rgba(16,185,129,0.25);" title="Connected via Discord OAuth">
-            <i data-lucide="check" style="width:15px;height:15px;color:#86efac;stroke-width:2.8;"></i>
-          </div>
-        </div>
-      </div>
-
-      <!-- Twitch Account Connection Card Container -->
-      <div id="twitch-connection-card-wrap">
-        <!-- Rendered dynamically by renderSocialConnections -->
-      </div>
-
-      <!-- X (Twitter) Account Connection Card Container -->
-      <div id="x-connection-card-wrap">
-        <!-- Rendered dynamically by renderSocialConnections -->
-      </div>
-    </div>
   </main>
 
-  <!-- Create Team Modal -->
-  <div class="modal-overlay" role="dialog" aria-modal="true" id="create-team-modal" onclick="if(event.target===this)closeCreateTeamModal()">
-    <div class="modal" style="max-width:480px;">
-      <div class="modal-header">
-        <div class="modal-title"><i data-lucide="shield" style="color:var(--kick-green);"></i> Create Team</div>
-        <button class="modal-close" aria-label="Close modal" onclick="closeCreateTeamModal()"><i data-lucide="x"></i></button>
-      </div>
-      <form class="modal-form" onsubmit="submitCreateTeam(event)">
-        
-        <!-- Live Team Badge Preview -->
-        <div style="display:flex;align-items:center;gap:16px;background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:14px 18px;margin-bottom:16px;">
-          <div id="team-badge-preview" style="width:58px;height:58px;border-radius:14px;border:1.5px solid rgba(83,252,24,0.35);background:rgba(83,252,24,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.2s ease;">
-            <i id="team-badge-icon" data-lucide="shield" style="width:28px;height:28px;color:var(--kick-green);"></i>
-          </div>
-          <div>
-            <div id="team-preview-name" style="font-weight:900;font-size:1.1rem;color:#fff;line-height:1.2;">Apex Champions</div>
-            <div id="team-preview-tag" style="font-size:0.75rem;font-weight:800;color:var(--kick-green);margin-top:2px;">[APEX]</div>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">Team Name</label>
-          <input class="form-input" id="team-name-input" placeholder="e.g. Apex Champions" maxlength="24" required oninput="updateTeamBadgePreview()" />
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">Team Clan Tag (3-4 Letters)</label>
-          <input class="form-input" id="team-tag-input" placeholder="e.g. APEX" maxlength="5" required oninput="updateTeamBadgePreview()" />
-        </div>
-
-        <!-- Choose Emblem Icon -->
-        <div class="form-group" style="margin-bottom:14px;">
-          <label class="form-label" style="display:flex;justify-content:space-between;align-items:center;">
-            <span>Team Emblem</span>
-            <span id="selected-icon-name" style="color:var(--gold-bright);font-size:0.75rem;font-weight:700;">Shield</span>
-          </label>
-          <div id="team-icon-picker" style="display:grid;grid-template-columns:repeat(8, 1fr);gap:6px;margin-top:4px;">
-            <!-- Rendered dynamically -->
-          </div>
-        </div>
-
-        <!-- Choose Emblem Color -->
-        <div class="form-group" style="margin-bottom:14px;">
-          <label class="form-label">Emblem Color</label>
-          <div id="team-color-picker" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:4px;">
-            <!-- Color swatches -->
-          </div>
-        </div>
-
-        <!-- Choose Badge Background -->
-        <div class="form-group" style="margin-bottom:20px;">
-          <label class="form-label">Badge Background Color</label>
-          <div id="team-bg-picker" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:4px;">
-            <!-- Bg swatches -->
-          </div>
-        </div>
-
-        <div class="modal-actions">
-          <button type="button" class="btn btn-outline" onclick="closeCreateTeamModal()">Cancel</button>
-          <button type="submit" class="btn btn-primary" id="submit-team-btn">Create Team</button>
-        </div>
-      </form>
+  <!-- Edit Handle Modal -->
+  <div class="ct-modal-overlay" id="edit-handle-modal">
+    <div class="ct-queue-modal-card" style="max-width:440px;">
+      <button type="button" class="ct-modal-close-btn" id="btn-close-handle-modal">
+        <i data-lucide="x" style="width:20px;height:20px;"></i>
+      </button>
+      <div class="ct-modal-title">Customize Handle</div>
+      <p style="font-size:0.8rem;color:#94a3b8;margin-bottom:16px;">
+        Contender handles must be family-friendly. Profanity and offensive phrases are strictly prohibited.
+      </p>
+      <input type="text" id="handle-input" placeholder="Enter new handle (e.g. Zenox)" style="width:100%;box-sizing:border-box;background:#000;border:1px solid rgba(255,255,255,0.12);color:#fff;padding:10px 14px;border-radius:10px;font-size:0.9rem;margin-bottom:12px;outline:none;"/>
+      <div id="handle-error-msg" style="color:#ef4444;font-size:0.76rem;margin-bottom:10px;display:none;"></div>
+      <button type="button" id="btn-save-handle" class="btn-modal-start-queue" style="margin-top:0;">Save Changes</button>
     </div>
   </div>
 
-  <!-- Join Team Modal -->
-  <div class="modal-overlay" role="dialog" aria-modal="true" id="join-team-modal" onclick="if(event.target===this)closeJoinTeamModal()">
-    <div class="modal">
-      <div class="modal-header">
-        <div class="modal-title"><i data-lucide="log-in"></i> Join Team</div>
-        <button class="modal-close" aria-label="Close modal" onclick="closeJoinTeamModal()"><i data-lucide="x"></i></button>
-      </div>
-      <form class="modal-form" onsubmit="submitJoinTeam(event)">
-        <div class="form-group">
-          <label class="form-label">Team Invite Code or Link</label>
-          <input class="form-input" id="join-team-input" placeholder="e.g. TM-AB123" required oninput="this.value=this.value.toUpperCase()" />
-        </div>
-        <div class="modal-actions">
-          <button type="button" class="btn btn-outline" onclick="closeJoinTeamModal()">Cancel</button>
-          <button type="submit" class="btn btn-primary" id="submit-join-team-btn">Join Team</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- Invite Player to Team Modal -->
-  <div class="modal-overlay" role="dialog" aria-modal="true" id="invite-player-modal" onclick="if(event.target===this)closeInvitePlayerModal()">
-    <div class="modal" style="max-width:460px;">
-      <div class="modal-header">
-        <div class="modal-title"><i data-lucide="user-plus"></i> Invite Player to Team</div>
-        <button class="modal-close" aria-label="Close modal" onclick="closeInvitePlayerModal()"><i data-lucide="x"></i></button>
-      </div>
-      <div style="margin-bottom:14px;">
-        <input class="form-input" id="invite-player-search-input" placeholder="Type letters to search players live (e.g. A, F, Epic)…" autocomplete="off" oninput="handleInviteSearchLive(this.value)" style="width:100%;" />
-      </div>
-      <div id="invite-player-results" style="max-height:340px;overflow-y:auto;min-height:120px;">
-        <div class="spinner" style="margin:20px auto;"></div>
+  <!-- Footer -->
+  <footer class="ct-footer" style="border-top:1px solid rgba(255,255,255,0.08);padding:32px 20px 44px;background:#000000;text-align:center;">
+    <div style="max-width:1000px;margin:0 auto;display:flex;flex-direction:column;gap:16px;">
+      <div style="font-size:0.75rem;color:#475569;">
+        © 2026 Champion Tokens • Protected by Cloudflare
       </div>
     </div>
-  </div>
+  </footer>
 
-  <!-- Link Epic Games Modal -->
-  <div class="modal-overlay" role="dialog" aria-modal="true" id="link-epic-modal" onclick="if(event.target===this)closeLinkEpicModal()">
-    <div class="modal" style="max-width:420px;text-align:center;">
-      <div class="modal-header" style="justify-content:center;position:relative;">
-        <div class="modal-title" style="display:flex;align-items:center;gap:10px;">
-          <img src="epicgamesblack.webp" alt="Epic" style="width:24px;height:24px;object-fit:contain;border-radius:4px;"/>
-          <span>Epic Games Account</span>
-        </div>
-        <button class="modal-close" aria-label="Close modal" style="position:absolute;right:0;" onclick="closeLinkEpicModal()"><i data-lucide="x"></i></button>
-      </div>
-
-      <div id="modal-epic-content" style="padding:10px 0 6px;"></div>
-    </div>
-  </div>
-
-  <!-- Cosmetics Customizer Studio Modal -->
-  <div class="modal-overlay" role="dialog" aria-modal="true" id="cosmetics-customizer-modal" onclick="if(event.target===this)closeCosmeticsModal()">
-    <div class="modal" style="max-width:620px;max-height:85vh;overflow-y:auto;">
-      <div class="modal-header">
-        <div class="modal-title" style="display:flex;align-items:center;gap:10px;">
-          <i data-lucide="palette" style="color:var(--gold-bright);"></i>
-          <span id="cosmetics-modal-title">Profile Customization</span>
-        </div>
-        <button class="modal-close" aria-label="Close modal" onclick="closeCosmeticsModal()"><i data-lucide="x"></i></button>
-      </div>
-
-      <!-- Tab Switcher -->
-      <div class="cosmetics-modal-tabs">
-        <button class="cosmetics-tab-btn active" id="tab-btn-avatars" onclick="switchCosmeticsTab('avatars')">
-          <i data-lucide="user"></i> Avatars
-        </button>
-        <button class="cosmetics-tab-btn" id="tab-btn-banners" onclick="switchCosmeticsTab('banners')">
-          <i data-lucide="palette"></i> Banners
-        </button>
-        <button class="cosmetics-tab-btn" id="tab-btn-titles" onclick="switchCosmeticsTab('titles')">
-          <i data-lucide="award"></i> Titles
-        </button>
-      </div>
-
-      <!-- Live Mini Preview -->
-      <div class="cosmetics-preview-box" style="display:flex;align-items:center;gap:18px;padding:16px 20px;">
-        <div style="width:84px;height:84px;border-radius:18px;padding:3px;border:2px solid var(--gold-bright);background:rgba(255,255,255,0.05);flex-shrink:0;overflow:hidden;">
-          <img id="preview-avatar-img" src="cosmetics/uncomon/uncomon.png" alt="Avatar" style="width:100%;height:100%;object-fit:cover;border-radius:14px;display:block;"/>
-        </div>
-        <div>
-          <div style="font-size:0.7rem;color:var(--text-muted);text-transform:uppercase;font-weight:800;letter-spacing:0.05em;">Currently Equipped</div>
-          <div style="font-weight:900;font-size:1.2rem;color:#fff;margin-top:2px;" id="preview-name-display">Champion</div>
-          <div style="font-size:0.8rem;color:#fde68a;margin-top:2px;" id="preview-avatar-name">#1 (Uncommon)</div>
-        </div>
-      </div>
-
-      <!-- Avatars View -->
-      <div id="cosmetics-avatars-view">
-        <!-- Rarity Filters -->
-        <div style="display:flex;gap:6px;margin-bottom:14px;overflow-x:auto;padding-bottom:4px;" id="avatar-rarity-filters">
-          <button class="badge active" onclick="filterAvatarCatalog('all')" id="avatar-filter-all" style="cursor:pointer;border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.12);color:#fff;font-size:0.72rem;padding:4px 10px;">ALL</button>
-          <button class="badge" onclick="filterAvatarCatalog('Exclusive')" id="avatar-filter-Exclusive" style="cursor:pointer;border:1px solid #f59e0b;background:rgba(245,158,11,0.15);color:#f59e0b;font-size:0.72rem;padding:4px 10px;">EXCLUSIVE</button>
-          <button class="badge" onclick="filterAvatarCatalog('Epic')" id="avatar-filter-Epic" style="cursor:pointer;border:1px solid #a855f7;background:rgba(168,85,247,0.15);color:#a855f7;font-size:0.72rem;padding:4px 10px;">EPIC</button>
-          <button class="badge" onclick="filterAvatarCatalog('Rare')" id="avatar-filter-Rare" style="cursor:pointer;border:1px solid #3b82f6;background:rgba(59,130,246,0.15);color:#3b82f6;font-size:0.72rem;padding:4px 10px;">RARE</button>
-          <button class="badge" onclick="filterAvatarCatalog('Uncommon')" id="avatar-filter-Uncommon" style="cursor:pointer;border:1px solid #10b981;background:rgba(16,185,129,0.15);color:#10b981;font-size:0.72rem;padding:4px 10px;">UNCOMMON</button>
-        </div>
-
-        <div class="cosmetics-item-grid" id="avatars-grid-list" style="grid-template-columns:repeat(auto-fill, minmax(138px, 1fr));gap:14px;">
-          <div class="spinner" style="margin:20px auto;"></div>
-        </div>
-      </div>
-
-      <!-- Banners View -->
-      <div id="cosmetics-banners-view" style="display:none;">
-        <div style="text-align:center;padding:40px 18px;background:rgba(14,18,34,0.9);border-radius:var(--radius-lg);border:1px dashed rgba(245,158,11,0.4);display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:160px;">
-          <div style="font-weight:900;font-size:1.3rem;color:var(--gold-bright);">Coming Soon.</div>
-        </div>
-      </div>
-
-      <!-- Titles View -->
-      <div id="cosmetics-titles-view" style="display:none;">
-        <div style="display:grid;grid-template-columns:repeat(auto-fill, minmax(180px, 1fr));gap:16px;" id="titles-grid-list">
-          <div class="spinner" style="margin:20px auto;"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Username Color Modal -->
-  <div class="modal-overlay" role="dialog" aria-modal="true" id="style-customizer-modal" onclick="if(event.target===this)closeStyleModal()">
-    <div class="modal" style="max-width:440px;">
-      <div class="modal-header">
-        <div class="modal-title" style="display:flex;align-items:center;gap:10px;">
-          <i data-lucide="sparkles" style="color:var(--gold-bright);"></i>
-          <span>Subscriber Name Color</span>
-        </div>
-        <button class="modal-close" aria-label="Close modal" onclick="closeStyleModal()"><i data-lucide="x"></i></button>
-      </div>
-
-      <!-- Live Real-Time Username Preview -->
-      <div class="cosmetics-preview-box" style="margin-bottom:16px;">
-        <div style="font-size:0.72rem;color:var(--text-muted);text-transform:uppercase;font-weight:800;margin-bottom:8px;">
-          Live Username Preview
-        </div>
-        <div style="text-align:center;padding:16px;background:rgba(14,18,34,0.95);border-radius:var(--radius-md);border:1px solid rgba(245,158,11,0.25);">
-          <span style="font-size:1.6rem;font-weight:900;" id="style-preview-name">Champion</span>
-        </div>
-      </div>
-
-      <div class="form-group" style="margin-bottom:20px;">
-        <label class="form-label">Username Color</label>
-        <select class="form-select" id="pref-color-select" onchange="previewStyleModal()">
-          <option value="">Default (Clean White)</option>
-          <option value="gold">Subscriber Gold (Requires Premium)</option>
-        </select>
-        <div style="font-size:0.75rem;color:var(--text-muted);margin-top:6px;">
-          Subscriber Gold color is exclusive to active Champion Premium pass holders.
-        </div>
-      </div>
-
-      <div class="modal-actions">
-        <button type="button" class="btn btn-outline" onclick="closeStyleModal()">Cancel</button>
-        <button type="button" class="btn btn-primary" onclick="saveStyleFromModal()">Save & Apply</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Core Scripts (Placed after DOM elements) -->
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <!-- Scripts -->
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
-  <script src="js/firebase-config.js?v=3.2"></script>
-  <script src="js/auth.js?v=4.0.1788871233902"></script>
-  <script src="js/db.js?v=4.0.1788871233902"></script>
-  <script src="js/nav.js?v=5.5"></script>
   <script src="js/ranked-nav.js"></script>
-
   <script>
-    let currentUser = null;
-    let targetUid = null;
-    let currentUserData = null;
-    let isViewingSelf = true;
+    const MATCH_HISTORY_DATA = [
+      { mode: '1v1 Realistic (BO9)', opponent: 'AeroSniper', oppElo: 3410, result: 'victory', score: '9 - 4', eloChange: '+35 ELO', time: '12m ago' },
+      { mode: '2v2 Box Fights (BO7)', opponent: 'Viper_FN & GhostClutch', oppElo: 3735, result: 'victory', score: '7 - 5', eloChange: '+42 ELO', time: '1h ago' },
+      { mode: '1v1 Build Fights (BO5)', opponent: 'AquaAim', oppElo: 2890, result: 'defeat', score: '2 - 5', eloChange: '-18 ELO', time: '3h ago' },
+      { mode: '1v1 Realistic (BO9)', opponent: 'KovaaK_God', oppElo: 3290, result: 'victory', score: '9 - 7', eloChange: '+38 ELO', time: '5h ago' },
+      { mode: 'Zone Wars Scrim (BO9)', opponent: 'FrostByte', oppElo: 2750, result: 'victory', score: '9 - 3', eloChange: '+28 ELO', time: 'Yesterday' }
+    ];
 
-    function switchProfileSubtab(tabName) {
-      const validTabs = ['overview', 'history', 'connections'];
-      if (!validTabs.includes(tabName)) tabName = 'overview';
+    const LOCKER_ITEMS = [
+      { id: 't_unreal', name: '"Unreal God"', type: 'Title', rarity: 'Mythic', equipped: true },
+      { id: 't_boxfight', name: '"Boxfight Warlord"', type: 'Title', rarity: 'Legendary', equipped: false },
+      { id: 't_pioneer', name: '"Arena Pioneer"', type: 'Title', rarity: 'Epic', equipped: false },
+      { id: 'b_carbon', name: 'Carbon Neon Banner', type: 'Banner', rarity: 'Rare', equipped: true },
+      { id: 'a_shinobi', name: 'Cyber Shinobi', type: 'Avatar', rarity: 'Legendary', equipped: false }
+    ];
 
-      // Update button active states
-      document.querySelectorAll('.profile-subtab-btn').forEach(btn => {
-        btn.classList.toggle('active', btn.dataset.tab === tabName);
-      });
+    function renderHistory() {
+      const container = document.getElementById('pf-match-history-list');
+      if (!container) return;
 
-      // Update tab views
-      validTabs.forEach(t => {
-        const el = document.getElementById(`profile-tab-${t}`);
-        if (el) {
-          el.style.display = t === tabName ? 'block' : 'none';
-        }
-      });
-
-      // Update URL search param without scrolling
-      if (window.history && window.history.replaceState) {
-        const url = new URL(window.location.href);
-        url.searchParams.set('tab', tabName);
-        window.history.replaceState(null, '', url.toString());
-      }
-
-      if (window.lucide) lucide.createIcons();
-    }
-
-    function initProfile() {
-      const loadingEl = document.getElementById('page-loading');
-      requireAuth().then(async (user) => {
-        currentUser = user;
-        if (window.renderSharedRankedNav) renderSharedRankedNav('profile');
-
-        const urlParams = new URLSearchParams(window.location.search);
-        targetUid = urlParams.get('uid') || user.uid;
-        isViewingSelf = targetUid === user.uid;
-
-        // Initialize active subtab
-        const initialTab = urlParams.get('tab') || window.location.hash.replace('#', '') || 'overview';
-        switchProfileSubtab(initialTab);
-
-        window.addEventListener('hashchange', () => {
-          const tab = window.location.hash.replace('#', '');
-          if (['overview', 'history', 'connections'].includes(tab)) {
-            switchProfileSubtab(tab);
-          }
-        });
-
-        const pendingEpic = localStorage.getItem('ct_epic_username');
-        if (pendingEpic && isViewingSelf) {
-          try {
-            await linkEpicAccount(user.uid, pendingEpic, localStorage.getItem('ct_epic_account_id') || '');
-          } catch (e) {
-            console.warn('Epic link notice:', e);
-          } finally {
-            localStorage.removeItem('ct_epic_username');
-            localStorage.removeItem('ct_epic_account_id');
-            localStorage.removeItem('ct_epic_linked_pending');
-            localStorage.removeItem('ct_epic_linking_uid');
-          }
-        }
-
-        if (urlParams.get('synced') === '1') {
-          showToast('Epic Games account username refreshed & synced!', 'success');
-          try {
-            const cleanUrl = window.location.pathname + (urlParams.get('uid') ? `?uid=${urlParams.get('uid')}&tab=connections` : '?tab=connections');
-            window.history.replaceState({}, document.title, cleanUrl);
-          } catch (e) {}
-        } else if (urlParams.get('linked') === '1') {
-          showToast('Epic Games account successfully linked!', 'success');
-          try {
-            const cleanUrl = window.location.pathname + (urlParams.get('uid') ? `?uid=${urlParams.get('uid')}&tab=connections` : '?tab=connections');
-            window.history.replaceState({}, document.title, cleanUrl);
-          } catch (e) {}
-        }
-
-        // Check and auto-refund any duplicate premium pass clicks
-        if (isViewingSelf) {
-          try {
-            await autoRefundDuplicatePremium(user.uid);
-          } catch (e) {
-            console.warn('Refund check notice:', e);
-          }
-        }
-
-        // Real-time target user data
-        db.collection('users').doc(targetUid).onSnapshot(async (snap) => {
-          if (loadingEl) loadingEl.classList.add('hidden');
-
-          if (snap.exists) {
-            currentUserData = snap.data();
-            if (isViewingSelf && !currentUserData.epicUsername && pendingEpic) {
-              currentUserData.epicUsername = pendingEpic;
-            }
-            try {
-              renderProfile(currentUserData);
-            } catch (err) {
-              console.error('renderProfile error:', err);
-            }
-            try {
-              renderEpicTopSection(currentUserData);
-            } catch (err) {
-              console.error('renderEpicTopSection error:', err);
-            }
-            try {
-              await loadUserTeam(targetUid);
-            } catch (e) {
-              console.warn('loadUserTeam notice:', e);
-              renderTeamSection(null);
-            }
-          } else {
-            showToast('User profile not found', 'error');
-            renderEpicTopSection({});
-            renderTeamSection(null);
-          }
-        }, (err) => {
-          console.warn('User profile snapshot error:', err);
-          if (loadingEl) loadingEl.classList.add('hidden');
-          renderEpicTopSection({});
-          renderTeamSection(null);
-        });
-
-        // Transactions
-        if (isViewingSelf) {
-          try {
-            const txs = await getUserTransactions(user.uid, 20);
-            renderTransactions(txs);
-          } catch (e) {
-            renderTransactions([]);
-          }
-        } else {
-          const txCard = document.getElementById('tx-card');
-          if (txCard) txCard.style.display = 'none';
-        }
-
-        // Match history
-        subscribeUserMatches(targetUid, (matches) => {
-          renderMatchHistory(matches.slice(0, 10));
-        });
-
-        // Auto-open Join Team modal if opened via invite link
-        const joinTeamCode = urlParams.get('joinTeam') || urlParams.get('team');
-        if (joinTeamCode) {
-          openJoinTeamModal();
-          const joinInput = document.getElementById('join-team-input');
-          if (joinInput) joinInput.value = joinTeamCode.toUpperCase();
-        }
-      }).catch(err => {
-        console.warn('Profile auth fallback:', err);
-        if (loadingEl) loadingEl.classList.add('hidden');
-        if (window.renderSharedRankedNav) renderSharedRankedNav('profile');
-        const rawU = localStorage.getItem('ct_user');
-        if (rawU) {
-          try {
-            const u = JSON.parse(rawU);
-            currentUser = u;
-            const displayName = u.customName || u.name || u.id;
-            const nameEl = document.getElementById('profile-name');
-            const discordEl = document.getElementById('profile-discord-tag');
-            const accIdEl = document.getElementById('profile-account-id-text');
-            const pfpImg = document.getElementById('profile-avatar-img');
-            const pfpIcon = document.getElementById('profile-avatar-icon');
-            if (nameEl) nameEl.textContent = displayName;
-            if (discordEl) discordEl.textContent = `@${u.name || 'contender'}${u.tag || ''}`;
-            if (accIdEl) accIdEl.textContent = `ID: ${u.id}`;
-            if (pfpImg) {
-              pfpImg.src = u.avatar || 'https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=120&auto=format&fit=crop&q=80';
-              pfpImg.style.display = 'block';
-            }
-            if (pfpIcon) pfpIcon.style.display = 'none';
-
-            const savedElo = localStorage.getItem('ct_user_elo') || '2450';
-            const wonEl = document.getElementById('profile-won');
-            const lostEl = document.getElementById('profile-lost');
-            const wrEl = document.getElementById('profile-winrate');
-            const rankEl = document.getElementById('profile-rank-text');
-            if (wonEl) wonEl.textContent = '38';
-            if (lostEl) lostEl.textContent = '12';
-            if (wrEl) wrEl.textContent = '76%';
-            if (rankEl) rankEl.textContent = `${parseInt(savedElo, 10).toLocaleString()} ELO`;
-          } catch(e) {}
-        }
-        switchProfileSubtab('overview');
-        if (loadingEl) loadingEl.classList.add('hidden');
-      });
-    }
-
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initProfile);
-    } else {
-      initProfile();
-    }
-
-    async function renderProfile(data) {
-      if (!data) return;
-      const img  = document.getElementById('profile-avatar-img');
-      const icon = document.getElementById('profile-avatar-icon');
-      const pfp = data.photoURL || 'cosmetics/uncomon/uncomon.png';
-      if (img && icon) {
-        img.src = encodeURI(pfp);
-        img.style.display = 'block';
-        icon.style.display = 'none';
-      }
-
-      const isStaff = data.isAdmin === true || ADMIN_DISCORD_IDS.includes((data.discordId || targetUid || '').replace('discord:', ''));
-      const isPremium = !!data.isPremium;
-
-      // Apply Custom Profile Style
-      const style = data.profileStyle || {};
-      const colorClass = style.color ? `usercolor-${style.color}` : (isPremium ? 'usercolor-gold' : '');
-      const animClass  = (style.animation && style.animation !== 'none') ? `anim-${style.animation}` : (isPremium ? 'anim-shimmer' : '');
-
-      let resolvedName = data.displayName;
-      if (!resolvedName || resolvedName === 'Champion' || resolvedName === 'Player') {
-        resolvedName = data.discordUsername || (currentUser && currentUser.displayName) || 'Player';
-        if (isViewingSelf && currentUser) {
-          db.collection('users').doc(currentUser.uid).update({ displayName: resolvedName }).catch(console.warn);
-        }
-      }
-
-      const nameEl = document.getElementById('profile-name');
-      if (nameEl) {
-        nameEl.textContent = resolvedName;
-        nameEl.className = isPremium ? 'username-premium' : '';
-      }
-
-      // Title Tag
-      const titleSlot = document.getElementById('profile-title-slot');
-      if (titleSlot) {
-        const curTitle = data.equippedTitle && typeof SHOP_TITLES !== 'undefined' ? SHOP_TITLES[data.equippedTitle] : null;
-        if (curTitle) {
-          titleSlot.style.display = 'inline-flex';
-          titleSlot.innerHTML = `
-            <span class="user-title-badge" style="display:inline-flex;align-items:center;gap:6px;background:${curTitle.bgColor || 'rgba(239,68,68,0.15)'};color:${curTitle.color || '#ef4444'};border:1px solid ${curTitle.borderColor || 'rgba(239,68,68,0.45)'};padding:2px 10px;border-radius:10px;font-size:0.75rem;font-weight:900;letter-spacing:0.02em;">
-              <i data-lucide="${curTitle.icon || 'globe-off'}" style="width:13px;height:13px;"></i>
-              <span>${escapeHtml(curTitle.name)}</span>
-            </span>`;
-        } else {
-          titleSlot.style.display = 'none';
-          titleSlot.innerHTML = '';
-        }
-      }
-
-      // Customize Button (Account owner only)
-      const custAction = document.getElementById('profile-customize-action');
-      if (custAction) {
-        custAction.style.display = isViewingSelf ? 'block' : 'none';
-      }
-
-      // Banner Theme on Hero
-      const heroCard = document.getElementById('profile-hero');
-      if (heroCard) {
-        heroCard.className = 'profile-hero-card';
-        if (data.equippedBanner && SHOP_BANNERS[data.equippedBanner]) {
-          heroCard.classList.add(SHOP_BANNERS[data.equippedBanner].className);
-        }
-      }
-
-      // Badges
-      const badgesRow = document.getElementById('profile-badges-row');
-      if (badgesRow) {
-        let bHtml = '';
-        const staffTier = typeof getStaffTier === 'function' ? getStaffTier(null, data) : (data.isAdmin ? 'administrator' : 'none');
-        if (staffTier === 'administrator') {
-          bHtml += `<span class="badge-staff" style="background:rgba(83,252,24,0.14);color:var(--kick-green);border:1px solid rgba(83,252,24,0.35);"><i data-lucide="shield-check" style="width:12px;height:12px;"></i> ADMIN</span>`;
-        } else if (staffTier === 'moderator') {
-          bHtml += `<span class="badge-staff" style="background:rgba(59,130,246,0.2);color:#60a5fa;border:1px solid rgba(59,130,246,0.5);"><i data-lucide="shield" style="width:12px;height:12px;"></i> MODERATOR</span>`;
-        } else if (isStaff) {
-          bHtml += `<span class="badge-staff"><i data-lucide="shield-check" style="width:12px;height:12px;"></i> STAFF</span>`;
-        }
-        if (isPremium) bHtml += `<span class="badge-premium"><i data-lucide="sparkles" style="width:12px;height:12px;"></i> PREMIUM</span>`;
-        badgesRow.innerHTML = bHtml;
-      }
-
-      // Rank Box
-      const rankBox = document.getElementById('profile-rank-box');
-      if (rankBox) {
-        rankBox.style.display = 'block';
-      }
-
-      // Premium Action Button
-      const premWrap = document.getElementById('premium-action-wrap');
-      if (premWrap) {
-        if (isViewingSelf) {
-          if (isPremium) {
-            const daysLeft = (typeof getPremiumDaysRemaining === 'function') ? getPremiumDaysRemaining(data) : 30;
-            premWrap.innerHTML = `
-              <a href="shop" class="badge" style="background:rgba(83,252,24,0.14);color:var(--kick-green);border:1px solid rgba(83,252,24,0.35);font-size:0.75rem;padding:4px 10px;text-decoration:none;display:inline-flex;align-items:center;gap:5px;" title="Click to view or extend in Shop">
-                <i data-lucide="crown" style="width:12px;height:12px;"></i> ${daysLeft} ${daysLeft === 1 ? 'Day' : 'Days'} Premium
-              </a>`;
-          } else {
-            premWrap.innerHTML = `
-              <a href="shop" class="btn btn-primary btn-sm" style="font-size:0.75rem;padding:4px 12px;">
-                <i data-lucide="crown"></i> Get Premium ($5.00)
-              </a>`;
-          }
-        } else {
-          premWrap.innerHTML = `
-            <button class="btn btn-gold btn-sm" onclick="handleDirectTipModal('${targetUid}')">
-              <i data-lucide="gift"></i> Tip Player Tokens
-            </button>`;
-        }
-      }
-
-      const tagEl = document.getElementById('profile-discord-tag');
-      const connTagEl = document.getElementById('conn-discord-tag');
-      const idEl  = document.getElementById('discord-id-text');
-      const accountIdEl = document.getElementById('profile-account-id-text');
-      const discordId = data.discordId || (targetUid || '').replace('discord:', '');
-      const discordHandle = data.discordUsername ? `@${data.discordUsername}` : (data.displayName || 'user');
-      const fullAccountId = targetUid || data.id || currentUser?.uid || '';
-
-      if (tagEl) tagEl.textContent = discordHandle;
-      if (connTagEl) connTagEl.textContent = discordHandle;
-      if (idEl) idEl.textContent = `Discord ID: ${discordId}`;
-      if (accountIdEl) accountIdEl.textContent = `UID: ${fullAccountId}`;
-
-      const tokVal = Number(data.tokens ?? 1.00);
-      const earnedVal = Number(data.totalEarned ?? 0.00);
-
-      const tokEl = document.getElementById('profile-tokens');
-      if (tokEl) tokEl.textContent = formatTokens(tokVal);
-
-      const tokStatEl = document.getElementById('profile-tokens-stat');
-      const earnedStatEl = document.getElementById('profile-earnings-stat');
-      const adminTokBadge = document.getElementById('profile-tokens-admin-badge');
-      const adminAdjustWrap = document.getElementById('profile-admin-adjust-wrap');
-      const heroAdminPill = document.getElementById('hero-admin-token-pill');
-      const heroAdminVal = document.getElementById('hero-admin-token-val');
-      const balanceSection = document.getElementById('profile-balance-section');
-
-      const isCallerAdmin = currentUser && currentUserData && isAdminUser(currentUser, currentUserData);
-
-      if (earnedStatEl) earnedStatEl.textContent = `${formatTokens(earnedVal)} Tokens`;
-
-      if (isViewingSelf) {
-        if (tokStatEl) tokStatEl.textContent = `${formatTokens(tokVal)} Tokens`;
-        if (adminTokBadge) adminTokBadge.style.display = 'none';
-        if (adminAdjustWrap) adminAdjustWrap.style.display = 'none';
-        if (heroAdminPill) heroAdminPill.style.display = 'none';
-        if (balanceSection) balanceSection.style.display = 'grid';
-      } else if (isCallerAdmin) {
-        // Admin viewing someone else's account
-        if (tokStatEl) tokStatEl.textContent = `${formatTokens(tokVal)} Tokens`;
-        if (adminTokBadge) adminTokBadge.style.display = 'inline';
-        if (adminAdjustWrap) adminAdjustWrap.style.display = 'block';
-        if (heroAdminPill) {
-          heroAdminPill.style.display = 'block';
-          if (heroAdminVal) heroAdminVal.textContent = `${formatTokens(tokVal)} Tokens`;
-        }
-        if (balanceSection) balanceSection.style.display = 'grid';
-      } else {
-        // Non-admin viewing someone else's account
-        if (heroAdminPill) heroAdminPill.style.display = 'none';
-        if (adminTokBadge) adminTokBadge.style.display = 'none';
-        if (adminAdjustWrap) adminAdjustWrap.style.display = 'none';
-        if (tokStatEl) tokStatEl.innerHTML = '<span style="color:var(--text-faint);font-size:0.95rem;font-weight:700;">Private</span>';
-      }
-
-      // Matches Stats: Wins, Losses, Win Rate %
-      const played = Number(data.matchesPlayed || 0);
-      const won    = Number(data.matchesWon || 0);
-      const lost   = Math.max(0, played - won);
-      const wr     = played > 0 ? `${Math.round((won / played) * 100)}%` : '0%';
-
-      const wonEl = document.getElementById('profile-won');
-      const lostEl = document.getElementById('profile-lost');
-      const wrEl = document.getElementById('profile-winrate');
-      if (wonEl)  wonEl.textContent = `${won}`;
-      if (lostEl) lostEl.textContent = `${lost}`;
-      if (wrEl)   wrEl.textContent = wr;
-
-      // Render Dedicated Top Epic Card immediately
-      renderEpicTopSection(data);
-      renderSocialConnections(data);
-
-      // Leaderboard Rank Calculation (Safe async)
-      try {
-        const rankInfo = await getUserLeaderboardRank(targetUid);
-        const rankTextEl = document.getElementById('profile-rank-text');
-        const rankBadgeEl = document.getElementById('profile-rank-badge');
-        if (rankTextEl && rankInfo) rankTextEl.textContent = rankInfo.display;
-        if (rankBadgeEl && rankInfo) {
-          rankBadgeEl.innerHTML = `<span class="rank-badge ${rankInfo.badgeClass}">${rankInfo.display}</span>`;
-        }
-      } catch (rankErr) {
-        console.warn('Rank calculation notice:', rankErr);
-      }
-
-      
-      // Render Claimed Keys & Gifts Vault (Account Owner)
-      const giftsWrap = document.getElementById('profile-claimed-gifts-wrap');
-      if (giftsWrap) {
-        const claimedList = data.claimedGifts || [];
-        if (isViewingSelf && claimedList.length > 0) {
-          giftsWrap.style.display = 'block';
-          giftsWrap.innerHTML = `
-            <div style="padding:22px 24px;background:linear-gradient(180deg, #050c18 0%, #000206 100%);border:1.5px solid rgba(0, 240, 255, 0.35);border-radius:20px;margin-bottom:24px;box-shadow:0 16px 40px rgba(0,0,0,0.85), 0 0 30px rgba(0, 240, 255, 0.12);position:relative;overflow:hidden;">
-              <div style="position:absolute;top:-50px;right:-50px;width:160px;height:160px;background:radial-gradient(circle, rgba(0, 240, 255, 0.2) 0%, transparent 70%);border-radius:50%;pointer-events:none;"></div>
-              
-              <div style="font-size:1.1rem;font-weight:900;color:#fff;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;position:relative;z-index:2;">
-                <div style="display:flex;align-items:center;gap:8px;">
-                  <i data-lucide="shield-check" style="color:#00f0ff;width:20px;height:20px;"></i>
-                  <span>Claimed VIP Licenses & Game Keys</span>
-                </div>
-                <span style="background:rgba(0, 240, 255, 0.12);color:#00f0ff;border:1px solid rgba(0, 240, 255, 0.35);font-size:0.75rem;font-weight:800;padding:3px 10px;border-radius:8px;">
-                  ${claimedList.length} ${claimedList.length === 1 ? 'Key Vaulted' : 'Keys Vaulted'}
-                </span>
-              </div>
-
-              <div style="display:flex;flex-direction:column;gap:12px;position:relative;z-index:2;">
-                ${claimedList.map(g => `
-                  <div style="background:#000000;border:1px solid rgba(0, 240, 255, 0.25);border-radius:16px;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;box-shadow:0 6px 18px rgba(0,0,0,0.6);">
-                    <div style="display:flex;align-items:center;gap:14px;">
-                      <div style="width:44px;height:44px;border-radius:12px;overflow:hidden;background:#000;border:1.5px solid rgba(0, 240, 255, 0.5);display:flex;align-items:center;justify-content:center;box-shadow:0 0 15px rgba(0, 240, 255, 0.25);">
-                        <img src="${encodeURI(g.image || 'gearup.png')}" style="width:84%;height:84%;object-fit:contain;" />
-                      </div>
-                      <div>
-                        <div style="font-weight:900;font-size:0.96rem;color:#fff;">${escapeHtml(g.title || 'GearUP Booster (PC)')}</div>
-                      </div>
-                    </div>
-
-                    <div style="display:flex;align-items:center;gap:10px;">
-                      <div style="font-family:monospace;font-size:1.05rem;font-weight:900;color:#00f0ff;background:#060a12;padding:8px 14px;border-radius:10px;border:1px dashed rgba(0, 240, 255, 0.4);letter-spacing:0.04em;">
-                        ${escapeHtml(g.key || 'N/A')}
-                      </div>
-                      <button type="button" onclick="copyGearupKey('${escapeHtml(g.key || '')}')" style="background:rgba(0, 240, 255, 0.15);border:1px solid rgba(0, 240, 255, 0.4);color:#00f0ff;padding:8px 14px;font-size:0.82rem;font-weight:800;border-radius:10px;cursor:pointer;display:inline-flex;align-items:center;gap:5px;">
-                        <i data-lucide="copy" style="width:13px;height:13px;"></i> Copy
-                      </button>
-                    </div>
-                  </div>
-                `).join('')}
-              </div>
+      container.innerHTML = MATCH_HISTORY_DATA.map(m => `
+        <div class="pf-match-row ${m.result}">
+          <div>
+            <div style="font-size:0.88rem;font-weight:600;color:#fff;">${m.mode}</div>
+            <div style="font-size:0.75rem;color:#64748b;">vs ${m.opponent} (${m.oppElo.toLocaleString()} ELO) • ${m.time}</div>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-size:0.95rem;font-weight:700;color:${m.result === 'victory' ? '#53fc18' : '#ef4444'};">
+              ${m.result === 'victory' ? 'VICTORY' : 'DEFEAT'} ${m.score}
             </div>
-          `;
-        } else {
-          giftsWrap.style.display = 'none';
-          giftsWrap.innerHTML = '';
-        }
-      }
+            <div style="font-size:0.75rem;font-weight:600;color:${m.result === 'victory' ? '#53fc18' : '#ef4444'};">
+              ${m.eloChange}
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
 
-      // Update Settings Hub values
-      const hubCard = document.getElementById('profile-settings-hub');
-      if (hubCard) {
-        hubCard.style.display = isViewingSelf ? 'block' : 'none';
-      }
+    function renderLocker() {
+      const grid = document.getElementById('locker-items-grid');
+      if (!grid) return;
 
-      const hubTitle = document.getElementById('hub-current-title');
-      if (hubTitle) {
-        hubTitle.innerHTML = `<span class="chip" style="font-size:0.78rem;font-weight:700;color:var(--text-muted);">Coming Soon</span>`;
-      }
+      grid.innerHTML = LOCKER_ITEMS.map(item => `
+        <div style="background:#000;border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:16px;">
+          <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+            <span style="font-size:0.7rem;font-weight:700;color:#53fc18;text-transform:uppercase;">${item.type}</span>
+            <span style="font-size:0.7rem;color:#fbbf24;">${item.rarity}</span>
+          </div>
+          <div style="font-size:0.92rem;font-weight:600;color:#fff;margin-bottom:12px;">${item.name}</div>
+          <button type="button" style="width:100%;background:${item.equipped ? 'rgba(255,255,255,0.08)' : '#53fc18'};color:${item.equipped ? '#94a3b8' : '#000'};border:none;padding:8px;border-radius:8px;font-size:0.78rem;font-weight:700;cursor:pointer;" onclick="equipItem('${item.id}', '${item.name}')">
+            ${item.equipped ? 'Equipped ✓' : 'Equip'}
+          </button>
+        </div>
+      `).join('');
+    }
 
-      const hubBanner = document.getElementById('hub-current-banner');
-      if (hubBanner) {
-        hubBanner.innerHTML = `<span class="chip" style="font-size:0.78rem;font-weight:700;color:var(--gold-bright);">Coming Soon</span>`;
-      }
+    window.equipItem = function(id, name) {
+      LOCKER_ITEMS.forEach(it => {
+        if (it.type === 'Title') it.equipped = (it.id === id);
+      });
+      const badge = document.getElementById('pf-title-badge');
+      if (badge) badge.textContent = `[${name.replace(/"/g, '')}]`;
+      showToast(`Equipped title: ${name}`);
+      renderLocker();
+    };
 
-      const hubStyle = document.getElementById('hub-current-style');
-      if (hubStyle) {
-        const styleObj = data.profileStyle || {};
-        if (styleObj.color === 'gold' || data.isPremium) {
-          hubStyle.innerHTML = `<span class="chip chip-gold" style="font-size:0.78rem;font-weight:800;">Subscriber Gold</span>`;
-        } else {
-          hubStyle.innerHTML = `<span class="chip" style="font-size:0.78rem;font-weight:700;">Default (White)</span>`;
-        }
-      }
+    // Subtabs Switcher
+    document.addEventListener('DOMContentLoaded', () => {
+      const tabBtns = document.querySelectorAll('.pf-subtab-btn');
+      tabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          tabBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          const target = btn.getAttribute('data-tab');
+          ['history', 'locker', 'connections'].forEach(t => {
+            const el = document.getElementById(`tab-${t}`);
+            if (el) el.style.display = (t === target) ? 'block' : 'none';
+          });
+        });
+      });
 
-      const sinceEl = document.getElementById('profile-since');
-      if (sinceEl && data.createdAt) {
+      // Contender ID & Name setup
+      const cached = localStorage.getItem('ct_user');
+      if (cached) {
         try {
-          const d = typeof data.createdAt.toDate === 'function' ? data.createdAt.toDate() : new Date(data.createdAt);
-          if (!isNaN(d.getTime())) {
-            sinceEl.textContent = 'Member since ' + d.toLocaleDateString('en-US', { year:'numeric', month:'short', day:'numeric' });
-          }
+          const u = JSON.parse(cached);
+          if (u.name) document.getElementById('pf-display-name').textContent = u.customName || `${u.name}${u.tag || ''}`;
+          if (u.id) document.getElementById('pf-contender-id').textContent = u.id;
+          if (u.avatar) document.getElementById('pf-avatar').src = u.avatar;
         } catch (e) {}
       }
-      if (window.lucide) lucide.createIcons();
-    }
 
-    /** Admin quick token adjustment directly from user's profile */
-    async function openProfileTokenAdjustModal() {
-      const currentTokens = Number(currentViewingUserData?.tokens ?? 1.00);
-      const choice = prompt(`Admin Balance Control for ${currentViewingUserData?.displayName || 'User'} (Current: ${formatTokens(currentTokens)} Tokens):\n\n• To SET EXACT balance, type "=" before amount (e.g. "=50")\n• To ADD or DEDUCT, type "+10" or "-5"`, `+10`);
-      if (!choice) return;
-      const clean = choice.trim();
-      try {
-        if (clean.startsWith('=')) {
-          const exact = parseFloat(clean.slice(1).trim());
-          if (isNaN(exact) || exact < 0) throw new Error('Please enter a valid token amount');
-          await adminSetTokens(targetUid, exact, currentUserData?.displayName || 'Admin', 'Admin set balance from profile');
-          showToast(`Balance set to ${exact.toFixed(2)} Tokens!`, 'success');
-          if (currentViewingUserData) currentViewingUserData.tokens = exact;
-        } else {
-          const delta = parseFloat(clean.replace('+', ''));
-          if (isNaN(delta) || delta === 0) throw new Error('Please enter a valid adjustment amount');
-          const res = await adminAdjustTokens(targetUid, delta, 'Admin adjustment from profile');
-          showToast(`${delta > 0 ? '+' : ''}${delta.toFixed(2)} tokens applied! New balance: ${formatTokens(res.newTokens)}`, 'success');
-          if (currentViewingUserData) currentViewingUserData.tokens = res.newTokens;
-        }
-        renderUserProfile(currentViewingUserData);
-      } catch (err) {
-        showToast(err.message, 'error');
-      }
-    }
-
-    /** Copy Account UID with 1-click feedback */
-    function copyAccountId() {
-      const uidToCopy = targetUid || (currentUser && currentUser.uid) || '';
-      if (!uidToCopy) return;
-      navigator.clipboard.writeText(uidToCopy).then(() => {
-        showToast('Account ID copied: ' + uidToCopy, 'success');
-        const icon = document.getElementById('profile-account-id-icon');
-        if (icon) {
-          icon.setAttribute('data-lucide', 'check');
-          if (window.lucide) lucide.createIcons();
-          setTimeout(() => {
-            icon.setAttribute('data-lucide', 'copy');
-            if (window.lucide) lucide.createIcons();
-          }, 2000);
-        }
-      }).catch(() => {
-        showToast('Account ID: ' + uidToCopy, 'info');
-      });
-    }
-
-    /** Copy Discord ID with interactive smart visual feedback */
-    function copyDiscordId() {
-      if (!currentUserData && !targetUid) return;
-      const discordId = (currentUserData && currentUserData.discordId) || (targetUid || '').replace('discord:', '');
-      if (!discordId) return;
-
-      navigator.clipboard.writeText(discordId).then(() => {
-        const pill = document.getElementById('profile-discord-id');
-        const textEl = document.getElementById('discord-id-text');
-        if (pill && textEl) {
-          pill.classList.add('copied');
-          const original = textEl.textContent;
-          textEl.textContent = 'Copied!';
-          setTimeout(() => {
-            pill.classList.remove('copied');
-            textEl.textContent = original;
-          }, 1800);
-        }
-        showToast('Discord ID copied to clipboard!', 'success');
-      }).catch(e => {
-        showToast('Could not copy Discord ID', 'error');
-      });
-    }
-
-    // ── Cosmetics Customizer Studio Modal ───────────────────────
-    let currentCosmeticsTab = 'avatars';
-    let currentAvatarRarityFilter = 'all';
-
-    function openCosmeticsModal(initialTab = 'avatars') {
-      currentCosmeticsTab = initialTab || 'avatars';
-      switchCosmeticsTab(currentCosmeticsTab);
-      const modal = document.getElementById('cosmetics-customizer-modal');
-      if (modal) modal.classList.add('open');
-      renderCosmeticsModal();
-    }
-
-    function closeCosmeticsModal() {
-      const modal = document.getElementById('cosmetics-customizer-modal');
-      if (modal) modal.classList.remove('open');
-    }
-
-    function switchCosmeticsTab(tab) {
-      const validTabs = ['avatars', 'banners', 'titles'];
-      if (!validTabs.includes(tab)) tab = 'avatars';
-      currentCosmeticsTab = tab;
-
-      validTabs.forEach(t => {
-        const btn = document.getElementById(`tab-btn-${t}`);
-        const view = document.getElementById(`cosmetics-${t}-view`);
-        if (btn) btn.classList.toggle('active', t === tab);
-        if (view) view.style.display = t === tab ? 'block' : 'none';
-      });
-
-      updateCosmeticsPreview();
-      if (window.lucide) lucide.createIcons();
-    }
-
-    function filterAvatarCatalog(rarity) {
-      currentAvatarRarityFilter = rarity;
-      const filters = ['all', 'Exclusive', 'Epic', 'Rare', 'Uncommon'];
-      filters.forEach(f => {
-        const btn = document.getElementById(`avatar-filter-${f}`);
-        if (btn) {
-          if (f === rarity) {
-            btn.style.opacity = '1';
-            btn.style.fontWeight = '900';
-            btn.style.boxShadow = '0 0 10px rgba(255,255,255,0.2)';
-          } else {
-            btn.style.opacity = '0.65';
-            btn.style.fontWeight = '700';
-            btn.style.boxShadow = 'none';
-          }
-        }
-      });
-      renderCosmeticsModal();
-    }
-
-    function updateCosmeticsPreview() {
-      const nameEl = document.getElementById('preview-name-display');
-      const avatarImg = document.getElementById('preview-avatar-img');
-      const avatarName = document.getElementById('preview-avatar-name');
-
-      if (!currentUserData) return;
-
-      if (nameEl) {
-        nameEl.textContent = currentUserData.displayName || 'Champion';
-        if (currentUserData.isPremium) nameEl.className = 'username-premium';
-      }
-
-      const curPhoto = currentUserData.photoURL || 'cosmetics/uncomon/uncomon.png';
-      if (avatarImg) {
-        avatarImg.src = encodeURI(curPhoto);
-      }
-
-      if (avatarName) {
-        const curPfpId = currentUserData.equippedPfp;
-        const curItem = (curPfpId && typeof SHOP_PFPS !== 'undefined') ? SHOP_PFPS[curPfpId] : null;
-        if (curItem) {
-          avatarName.textContent = `${curItem.name} (${curItem.rarity})`;
-          avatarName.style.color = curItem.color || '#fde68a';
-        } else {
-          avatarName.textContent = 'Custom Avatar';
-          avatarName.style.color = '#fde68a';
-        }
-      }
-    }
-
-    function renderCosmeticsModal() {
-      if (!currentUserData) return;
-
-      updateCosmeticsPreview();
-
-      const avatarsGrid = document.getElementById('avatars-grid-list');
-      if (avatarsGrid && typeof SHOP_PFPS !== 'undefined') {
-        const unlockedPfps = currentUserData.unlockedPfps || [];
-        const equippedPfp = currentUserData.equippedPfp || '';
-        const currentPhoto = currentUserData.photoURL || '';
-
-        // ONLY show owned avatars (default avatar or in unlockedPfps)
-        let items = Object.values(SHOP_PFPS).filter(item => item.isDefault || unlockedPfps.includes(item.id));
-        if (currentAvatarRarityFilter !== 'all') {
-          items = items.filter(i => i.rarity === currentAvatarRarityFilter);
-        }
-
-        if (items.length === 0) {
-          avatarsGrid.innerHTML = `
-            <div style="grid-column:1/-1;text-align:center;padding:36px 20px;background:rgba(255,255,255,0.02);border:1px dashed rgba(255,255,255,0.1);border-radius:16px;">
-              <i data-lucide="sparkles" style="width:28px;height:28px;color:var(--gold-bright);margin:0 auto 8px;display:block;"></i>
-              <div style="font-weight:900;color:#fff;margin-bottom:4px;font-size:1.05rem;">No ${currentAvatarRarityFilter !== 'all' ? currentAvatarRarityFilter + ' ' : ''}Avatars in Wardrobe</div>
-              <p style="font-size:0.82rem;color:var(--text-muted);margin:0 0 16px;">Unlock more exclusive and epic avatars in the Daily Shop rotation!</p>
-              <a href="shop" class="btn btn-gold btn-sm" style="display:inline-flex;align-items:center;gap:6px;padding:8px 18px;border-radius:10px;text-decoration:none;">
-                <i data-lucide="shopping-bag" style="width:14px;height:14px;"></i> Visit Daily Shop
-              </a>
-            </div>
-          `;
-        } else {
-          avatarsGrid.innerHTML = items.map(item => {
-            const isEquipped = (equippedPfp === item.id) || (currentPhoto === item.file);
-            let borderStyle = isEquipped ? '2px solid var(--gold-bright)' : '1px solid rgba(255,255,255,0.09)';
-            let bgStyle = isEquipped ? 'rgba(245,158,11,0.12)' : '#0b0d14';
-
-            return `
-              <div class="cosmetics-option-card ${isEquipped ? 'equipped' : ''}" 
-                   onclick="equipPfpFromModal('${item.id}')"
-                   style="border:${borderStyle};background:${bgStyle};padding:7px 7px 12px 7px;display:flex;flex-direction:column;align-items:center;text-align:center;border-radius:18px;cursor:pointer;position:relative;transition:all 0.18s ease;box-shadow:0 6px 18px rgba(0,0,0,0.5);">
-                
-                <!-- Large Rounded Image -->
-                <div style="position:relative;width:100%;aspect-ratio:1/1;border-radius:13px;overflow:hidden;background:#141721;margin-bottom:8px;">
-                  <img src="${encodeURI(item.file)}" alt="${escapeHtml(item.name)}" style="width:100%;height:100%;object-fit:cover;display:block;" />
-                  <span style="position:absolute;top:6px;left:6px;background:rgba(0,0,0,0.75);backdrop-filter:blur(4px);color:#fff;font-size:0.72rem;font-weight:900;padding:2px 7px;border-radius:6px;border:1px solid rgba(255,255,255,0.15);">
-                    ${escapeHtml(item.name)}
-                  </span>
-                  <span style="position:absolute;top:6px;right:6px;background:rgba(0,0,0,0.75);color:${item.color || '#fff'};font-size:0.6rem;font-weight:800;padding:2px 6px;border-radius:6px;border:1px solid ${item.color || '#fff'};">
-                    ${item.rarity.toUpperCase()}
-                  </span>
-                </div>
-
-                <!-- Bottom: Status / Equip -->
-                <div style="width:100%;display:flex;align-items:center;justify-content:center;min-height:28px;">
-                  ${isEquipped ? `
-                    <span style="font-size:0.78rem;font-weight:800;letter-spacing:0.08em;color:var(--gold-bright);text-transform:uppercase;">Equipped</span>
-                  ` : `
-                    <button class="btn btn-primary btn-sm pfp-equip-btn" onclick="equipPfpFromModal('${item.id}');event.stopPropagation();" style="padding:5px 16px;font-size:0.82rem;font-weight:800;border-radius:14px;">
-                      Equip
-                    </button>
-                  `}
-                </div>
-              </div>
-            `;
-          }).join('');
-        }
-      }
-
-      const titlesGrid = document.getElementById('titles-grid-list');
-      if (titlesGrid && typeof SHOP_TITLES !== 'undefined') {
-        const unlockedTitles = currentUserData?.unlockedTitles || [];
-        const equippedTitle = currentUserData?.equippedTitle || '';
-        
-        // ONLY show owned / unlocked titles!
-        let titles = Object.values(SHOP_TITLES).filter(t => unlockedTitles.includes(t.id));
-
-        if (titles.length === 0) {
-          titlesGrid.innerHTML = `
-            <div style="grid-column:1/-1;text-align:center;padding:36px 20px;background:rgba(255,255,255,0.02);border:1px dashed rgba(255,255,255,0.1);border-radius:16px;">
-              <i data-lucide="award" style="width:28px;height:28px;color:#ef4444;margin:0 auto 8px;display:block;"></i>
-              <div style="font-weight:900;color:#fff;margin-bottom:4px;font-size:1.05rem;">No Custom Titles Unlocked</div>
-              <p style="font-size:0.82rem;color:var(--text-muted);margin:0 0 16px;">Unlock player titles in the Shop to display them on your profile!</p>
-              <a href="shop" class="btn btn-gold btn-sm" style="display:inline-flex;align-items:center;gap:6px;padding:8px 18px;border-radius:10px;text-decoration:none;">
-                <i data-lucide="shopping-bag" style="width:14px;height:14px;"></i> Unlock Titles in Shop
-              </a>
-            </div>
-          `;
-        } else {
-          titlesGrid.innerHTML = titles.map(t => {
-            const isEquipped = equippedTitle === t.id;
-            let borderStyle = isEquipped ? '2px solid var(--gold-bright)' : '1px solid rgba(255,255,255,0.09)';
-            let bgStyle = isEquipped ? 'rgba(245,158,11,0.12)' : '#0b0d14';
-
-            return `
-              <div class="cosmetics-option-card ${isEquipped ? 'equipped' : ''}" 
-                   onclick="handleToggleTitle('${t.id}')"
-                   style="border:${borderStyle};background:${bgStyle};padding:7px 7px 12px 7px;display:flex;flex-direction:column;align-items:center;text-align:center;border-radius:18px;cursor:pointer;position:relative;transition:all 0.18s ease;box-shadow:0 6px 18px rgba(0,0,0,0.5);">
-                
-                <div style="position:relative;width:100%;aspect-ratio:1/1;border-radius:13px;overflow:hidden;background:radial-gradient(circle at center, ${t.bgColor || 'rgba(239, 68, 68, 0.25)'} 0%, #10131e 100%);border:1px solid ${t.borderColor || 'rgba(239,68,68,0.35)'};margin-bottom:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;">
-                  <span style="position:absolute;top:6px;left:6px;background:rgba(0,0,0,0.75);backdrop-filter:blur(4px);color:#fff;font-size:0.72rem;font-weight:900;padding:2px 7px;border-radius:6px;border:1px solid rgba(255,255,255,0.15);">
-                    ${escapeHtml(t.name)}
-                  </span>
-                  <span style="position:absolute;top:6px;right:6px;background:rgba(0,0,0,0.75);color:${t.color || '#ef4444'};font-size:0.6rem;font-weight:800;padding:2px 6px;border-radius:6px;border:1px solid ${t.color || '#ef4444'};">
-                    ${t.rarity.toUpperCase()}
-                  </span>
-
-                  <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;margin-top:8px;">
-                    <i data-lucide="${t.icon || 'globe-off'}" style="width:42px;height:42px;color:${t.color || '#ef4444'};filter:drop-shadow(0 0 14px ${t.color || '#ef4444'});"></i>
-                    <span class="user-title-badge" style="display:inline-flex;align-items:center;gap:4px;background:${t.bgColor || 'rgba(239,68,68,0.15)'};color:${t.color || '#ef4444'};border:1px solid ${t.borderColor || 'rgba(239,68,68,0.45)'};padding:3px 10px;border-radius:10px;font-size:0.78rem;font-weight:900;letter-spacing:0.02em;">
-                      <span>${escapeHtml(t.name)}</span>
-                    </span>
-                  </div>
-                </div>
-
-                <div style="width:100%;display:flex;align-items:center;justify-content:center;min-height:28px;">
-                  ${isEquipped ? `
-                    <span style="font-size:0.78rem;font-weight:800;letter-spacing:0.08em;color:var(--gold-bright);text-transform:uppercase;">Equipped</span>
-                  ` : `
-                    <button class="btn btn-primary btn-sm pfp-equip-btn" onclick="handleToggleTitle('${t.id}');event.stopPropagation();" style="padding:5px 16px;font-size:0.82rem;font-weight:800;border-radius:14px;">
-                      Equip
-                    </button>
-                  `}
-                </div>
-              </div>
-            `;
-          }).join('');
-        }
-      }
-
-      if (window.lucide) lucide.createIcons();
-    }
-
-    async function handleToggleTitle(titleId) {
-      if (!currentUser) return;
-      try {
-        const isEquipped = currentUserData?.equippedTitle === titleId;
-        const newTitleId = isEquipped ? null : titleId;
-        await equipUserTitle(currentUser.uid, newTitleId);
-        currentUserData = await getUser(currentUser.uid);
-        renderCosmeticsModal();
-        renderProfile(currentUserData);
-        if (newTitleId) {
-          showToast(`Equipped "${SHOP_TITLES[titleId]?.name || 'Title'}" title!`, 'success');
-        } else {
-          showToast('Unequipped title', 'info');
-        }
-      } catch (err) {
-        showToast(err.message, 'error');
-      }
-    }
-
-    async function equipPfpFromModal(pfpId) {
-      if (!currentUser) return;
-      const item = (typeof SHOP_PFPS !== 'undefined') ? SHOP_PFPS[pfpId] : null;
-      if (!item) return;
-
-      try {
-        await equipShopPfp(currentUser.uid, pfpId);
-        currentUserData = await getUser(currentUser.uid);
-        renderCosmeticsModal();
-        renderProfile(currentUserData);
-        showToast(`Equipped "${item.name}" avatar!`, 'success');
-      } catch (err) {
-        showToast(err.message, 'error');
-      }
-    }
-
-    async function buyPfpFromModal(pfpId) {
-      if (!currentUser) return;
-      const item = (typeof SHOP_PFPS !== 'undefined') ? SHOP_PFPS[pfpId] : null;
-      if (!item) return;
-
-      const ok = await showConfirm({
-        title: `Unlock ${item.name}`,
-        message: `Unlock the <strong>${item.rarity}</strong> avatar <strong>"${item.name}"</strong> for <strong>${formatTokens(item.cost)} Tokens</strong>?`,
-        confirmText: `Unlock (${formatTokens(item.cost)} Tokens)`,
-        cancelText: 'Cancel',
-        type: 'warning',
-        icon: 'shopping-cart'
-      });
-      if (!ok) return;
-
-      try {
-        await buyShopPfp(currentUser.uid, pfpId);
-        currentUserData = await getUser(currentUser.uid);
-        renderCosmeticsModal();
-        renderProfile(currentUserData);
-        showToast(`Unlocked and equipped "${item.name}"!`, 'success');
-      } catch (err) {
-        showToast(err.message, 'error');
-      }
-    }
-
-    // ── Username Style & Glow Modal ─────────────────────────────
-    function openStyleModal() {
-      if (!isViewingSelf || !currentUserData) return;
-      const modal = document.getElementById('style-customizer-modal');
-      if (modal) {
-        modal.classList.add('open');
-        modal.classList.add('active');
-      }
-      const colorSel = document.getElementById('pref-color-select');
-      const animSel = document.getElementById('pref-anim-select');
-      const curStyle = currentUserData.profileStyle || {};
-      if (colorSel) colorSel.value = curStyle.color || '';
-      if (animSel) animSel.value = curStyle.animation || 'none';
-      previewStyleModal();
-      if (window.lucide) lucide.createIcons();
-    }
-
-    function closeStyleModal() {
-      const modal = document.getElementById('style-customizer-modal');
-      if (modal) {
-        modal.classList.remove('open');
-        modal.classList.remove('active');
-      }
-    }
-
-    function previewStyleModal() {
-      const color = document.getElementById('pref-color-select')?.value || '';
-      const preview = document.getElementById('style-preview-name');
-      if (preview && currentUserData) {
-        preview.textContent = currentUserData.displayName || 'Champion';
-        preview.className = '';
-        if (color === 'gold') {
-          preview.classList.add('name-gold');
-        }
-      }
-    }
-
-    async function saveStyleFromModal() {
-      if (!currentUser) return;
-      const color = document.getElementById('pref-color-select')?.value || '';
-      try {
-        await updateProfileStyle(currentUser.uid, { color, animation: 'none' });
-        if (currentUserData) {
-          currentUserData.profileStyle = { color };
-          renderProfile(currentUserData);
-        }
-        closeStyleModal();
-        showToast('Username color updated!', 'success');
-      } catch (err) {
-        showToast(err.message, 'error');
-      }
-    }
-
-    let currentTeamData = null;
-
-    function handleTeamRowClick() {
-      if (!currentUserData) return;
-      if (currentTeamData) {
-        const teamSec = document.getElementById('team-section-card');
-        if (teamSec) {
-          teamSec.style.display = 'block';
-          teamSec.scrollIntoView({ behavior: 'smooth' });
-        }
-      } else {
-        openCreateTeamModal();
-      }
-    }
-
-    async function handleDirectTipModal(receiverUid) {
-      const raw = prompt('Enter token amount to tip to this player:', '1.00');
-      if (!raw) return;
-      const amount = parseFloat(raw);
-      if (isNaN(amount) || amount <= 0) {
-        showToast('Invalid tip amount', 'error');
-        return;
-      }
-      try {
-        await tipPlayer(currentUser.uid, receiverUid, amount);
-        showToast(`Tipped ${formatTokens(amount)} Tokens to player!`, 'success');
-      } catch (err) {
-        showToast(err.message, 'error');
-      }
-    }
-
-    // ── Epic Games Top Showcase Section (Dedicated Top Card) ──────
-    function handleSyncEpic() {
-      if (!currentUserData?.epicUsername) return;
-      const btn = document.getElementById('sync-epic-btn');
-      if (btn) {
-        btn.disabled = true;
-        btn.innerHTML = `<i data-lucide="rotate-cw" style="animation:spin 0.8s linear infinite;"></i>`;
-        if (window.lucide) lucide.createIcons();
-      }
-      showToast('Redirecting to Epic Games to verify account & sync IGN…', 'info');
-      setTimeout(() => {
-        startEpicOAuth(currentUser.uid, false, 'sync');
-      }, 400);
-    }
-
-    function renderEpicTopSection(data) {
-      const wrap = document.getElementById('epic-connection-card-wrap');
-      if (!wrap) return;
-
-      const isLinked = !!(data && data.epicUsername);
-
-      if (isLinked) {
-        wrap.innerHTML = `
-          <div class="conn-card">
-            <div class="conn-card__left">
-              <div class="conn-card__logo">
-                <img src="epic_games_logo.webp" alt="Epic Games"/>
-              </div>
-              <div class="conn-card__info">
-                <div class="conn-card__name">EPIC GAMES</div>
-                <div class="conn-card__username">${escapeHtml(data.epicUsername)}</div>
-              </div>
-            </div>
-            <div class="conn-card__actions">
-              ${isViewingSelf ? `
-                <button class="conn-icon-btn" id="sync-epic-btn" onclick="handleSyncEpic()" title="Sync Account">
-                  <i data-lucide="rotate-cw"></i>
-                </button>
-                <button class="conn-icon-btn conn-icon-btn--danger" onclick="handleUnlinkEpic()" title="Unlink Epic Games Account (-2.00 T)">
-                  <i data-lucide="x"></i>
-                </button>
-              ` : `
-                <button class="conn-icon-btn" onclick="copyEpicTag('${escapeHtml(data.epicUsername)}')" title="Copy Fortnite IGN">
-                  <i data-lucide="copy"></i>
-                </button>
-              `}
-            </div>
-          </div>
-        `;
-      } else {
-        wrap.innerHTML = `
-          <div class="conn-card">
-            <div class="conn-card__left">
-              <div class="conn-card__logo">
-                <img src="epic_games_logo.webp" alt="Epic Games"/>
-              </div>
-              <div class="conn-card__info">
-                <div class="conn-card__name">EPIC GAMES</div>
-                <div class="conn-card__username conn-card__username--unlinked">Not connected</div>
-              </div>
-            </div>
-            <div class="conn-card__actions">
-              ${isViewingSelf ? `
-                <button class="btn btn-primary btn-sm" onclick="startEpicOAuth()" style="padding:7px 16px;font-size:0.82rem;gap:6px;">
-                  <i data-lucide="plus"></i> Connect
-                </button>
-              ` : `
-                <span class="conn-card__username--unlinked" style="font-size:0.8rem;">Unlinked</span>
-              `}
-            </div>
-          </div>
-        `;
-      }
-
-      if (window.lucide) lucide.createIcons();
-    }
-
-    let currentSocialModalPlatform = 'twitch';
-
-    function renderSocialConnections(data) {
-      const twitchWrap = document.getElementById('twitch-connection-card-wrap');
-      const xWrap = document.getElementById('x-connection-card-wrap');
-
-      const twitchUser = data?.twitchUsername || '';
-      const xUser = data?.xUsername || '';
-
-      // 1. Twitch Card
-      if (twitchWrap) {
-        if (twitchUser) {
-          twitchWrap.innerHTML = `
-            <div class="conn-card">
-              <div class="conn-card__left">
-                <div class="conn-card__logo" style="background:rgba(145,70,255,0.12);border-color:rgba(145,70,255,0.3);">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="#a855f7"><path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714z"/></svg>
-                </div>
-                <div class="conn-card__info">
-                  <div class="conn-card__name">TWITCH</div>
-                  <div class="conn-card__username" style="color:#c084fc;">@${escapeHtml(twitchUser)}</div>
-                </div>
-              </div>
-              <div class="conn-card__actions">
-                <a class="conn-icon-btn" href="https://twitch.tv/${encodeURIComponent(twitchUser)}" target="_blank" rel="noopener noreferrer" title="Open Twitch Stream">
-                  <i data-lucide="external-link"></i>
-                </a>
-                ${isViewingSelf ? `
-                  <button class="conn-icon-btn conn-icon-btn--danger" onclick="handleUnlinkSocial('twitch')" title="Disconnect Twitch">
-                    <i data-lucide="x"></i>
-                  </button>
-                ` : ''}
-              </div>
-            </div>`;
-        } else {
-          twitchWrap.innerHTML = `
-            <div class="conn-card">
-              <div class="conn-card__left">
-                <div class="conn-card__logo">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="#94a3b8"><path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714z"/></svg>
-                </div>
-                <div class="conn-card__info">
-                  <div class="conn-card__name">TWITCH</div>
-                  <div class="conn-card__username conn-card__username--unlinked">Not connected</div>
-                </div>
-              </div>
-              <div class="conn-card__actions">
-                ${isViewingSelf ? `
-                  <button class="btn btn-primary btn-sm" onclick="startTwitchOAuth()" style="padding:7px 16px;font-size:0.82rem;gap:6px;">
-                    <i data-lucide="plus"></i> Connect
-                  </button>
-                ` : `
-                  <span class="conn-card__username--unlinked" style="font-size:0.8rem;">Unlinked</span>
-                `}
-              </div>
-            </div>`;
-        }
-      }
-
-      // 2. X Card
-      if (xWrap) {
-        if (xUser) {
-          xWrap.innerHTML = `
-            <div class="conn-card">
-              <div class="conn-card__left">
-                <div class="conn-card__logo" style="background:rgba(255,255,255,0.08);border-color:rgba(255,255,255,0.2);">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="#ffffff"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-                </div>
-                <div class="conn-card__info">
-                  <div class="conn-card__name">X</div>
-                  <div class="conn-card__username" style="color:#ffffff;">@${escapeHtml(xUser)}</div>
-                </div>
-              </div>
-              <div class="conn-card__actions">
-                <a class="conn-icon-btn" href="https://x.com/${encodeURIComponent(xUser)}" target="_blank" rel="noopener noreferrer" title="Open X Profile">
-                  <i data-lucide="external-link"></i>
-                </a>
-                ${isViewingSelf ? `
-                  <button class="conn-icon-btn conn-icon-btn--danger" onclick="handleUnlinkSocial('x')" title="Disconnect X">
-                    <i data-lucide="x"></i>
-                  </button>
-                ` : ''}
-              </div>
-            </div>`;
-        } else {
-          xWrap.innerHTML = `
-            <div class="conn-card">
-              <div class="conn-card__left">
-                <div class="conn-card__logo">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="#94a3b8"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-                </div>
-                <div class="conn-card__info">
-                  <div class="conn-card__name">X</div>
-                  <div class="conn-card__username conn-card__username--unlinked">Not connected</div>
-                </div>
-              </div>
-              <div class="conn-card__actions">
-                ${isViewingSelf ? `
-                  <button class="btn btn-primary btn-sm" onclick="startXOAuth()" style="padding:7px 16px;font-size:0.82rem;gap:6px;">
-                    <i data-lucide="plus"></i> Connect
-                  </button>
-                ` : `
-                  <span class="conn-card__username--unlinked" style="font-size:0.8rem;">Unlinked</span>
-                `}
-              </div>
-            </div>`;
-        }
-      }
-
-      if (window.lucide) lucide.createIcons();
-    }
-
-    async function handleUnlinkSocial(platform) {
-      if (!currentUser) return;
-      const name = platform === 'twitch' ? 'Twitch' : 'X';
-      const ok = await showConfirm({
-        title: `Disconnect ${name}`,
-        message: `Are you sure you want to disconnect your ${name} account?`,
-        confirmText: 'Disconnect',
-        cancelText: 'Cancel',
-        type: 'danger',
-        icon: 'x-circle'
-      });
-      if (!ok) return;
-
-      try {
-        await unlinkSocialAccount(currentUser.uid, platform);
-        showToast(`${name} disconnected`, 'info');
-        currentUserData = await getUser(currentUser.uid);
-        renderSocialConnections(currentUserData);
-      } catch (err) {
-        showToast(err.message, 'error');
-      }
-    }
-
-    function renderEpicSection(data) {
-      return renderEpicTopSection(data);
-    }
-
-    function copyEpicTag(tag) {
-      if (!tag) return;
-      if (navigator.clipboard) {
-        navigator.clipboard.writeText(tag).then(() => {
-          showToast(`Fortnite IGN "${tag}" copied to clipboard!`, 'info');
-        }).catch(() => {
-          showToast(`Fortnite IGN: ${tag}`, 'info');
+      // Copy ID button
+      document.getElementById('btn-copy-id')?.addEventListener('click', () => {
+        const id = document.getElementById('pf-contender-id')?.textContent || '';
+        navigator.clipboard.writeText(id).then(() => {
+          showToast('Contender ID copied to clipboard!');
         });
-      }
-    }
-
-    function openLinkEpicModal() {
-      const modal = document.getElementById('link-epic-modal');
-      const content = document.getElementById('modal-epic-content');
-      if (!modal || !content) return;
-
-      const isLinked = !!currentUserData?.epicUsername;
-
-      if (isLinked) {
-        content.innerHTML = `
-          <div style="margin-bottom:20px;">
-            <div style="display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:999px;background:rgba(16,185,129,0.2);border:1px solid rgba(16,185,129,0.4);color:#34d399;font-weight:800;font-size:0.8rem;margin-bottom:10px;">
-              <i data-lucide="check-circle-2" style="width:14px;height:14px;"></i> Account Linked
-            </div>
-            <div style="font-size:1.5rem;font-weight:900;color:#ffffff;margin:4px 0;">
-              ${currentUserData.epicUsername}
-            </div>
-            <div style="font-size:0.8rem;color:var(--text-muted);margin-top:4px;">
-              Your verified Fortnite IGN used for match queueing and party invites.
-            </div>
-          </div>
-          <div style="display:flex;flex-direction:column;gap:10px;">
-            <button type="button" class="btn btn-outline" onclick="handleSyncEpic();closeLinkEpicModal();" style="width:100%;justify-content:center;">
-              <i data-lucide="refresh-cw"></i> Sync Account Name to Epic IGN
-            </button>
-            <button type="button" class="btn btn-outline" onclick="closeLinkEpicModal();startEpicOAuth(null, true);" style="width:100%;justify-content:center;color:var(--text-muted);">
-              <i data-lucide="rotate-cw"></i> Re-authenticate / Refresh Epic Tag
-            </button>
-            <div>
-              <button type="button" class="btn btn-danger" onclick="handleUnlinkEpic()" style="width:100%;justify-content:center;">
-                <i data-lucide="unlink"></i> Unlink Epic Account
-              </button>
-              <div style="font-size:0.75rem;color:var(--text-muted);margin-top:6px;">Unlinking fee: 2.00 Tokens</div>
-            </div>
-          </div>
-        `;
-      } else {
-        content.innerHTML = `
-          <div style="margin-bottom:18px;">
-            <div style="font-size:0.88rem;color:var(--text-muted);line-height:1.5;">
-              Connect your official Epic Games account to participate in Fortnite token matches.
-            </div>
-          </div>
-          <button type="button" class="btn btn-primary" onclick="startEpicOAuth()" style="width:100%;justify-content:center;gap:10px;padding:12px 20px;">
-            <img src="epicgamesblack.webp" alt="Epic" style="width:20px;height:20px;object-fit:contain;border-radius:3px;"/>
-            <span>Link with Epic Games</span>
-          </button>
-        `;
-      }
-
-      modal.classList.add('open');
-      modal.classList.add('active');
-      if (window.lucide) lucide.createIcons();
-    }
-
-    function closeLinkEpicModal() {
-      const modal = document.getElementById('link-epic-modal');
-      if (modal) {
-        modal.classList.remove('open');
-        modal.classList.remove('active');
-      }
-    }
-
-    async function handleUnlinkEpic() {
-      const ok = await showConfirm({
-        title: 'Unlink Epic Games Account?',
-        message: 'Are you sure you want to unlink your Epic Games account?<br/><span style="display:inline-block;margin-top:10px;padding:5px 12px;background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.35);border-radius:8px;color:#fca5a5;font-weight:800;font-size:0.82rem;">Unlinking fee: 2.00 Tokens ($2.00)</span>',
-        confirmText: 'Unlink (-2.00 Tokens)',
-        cancelText: 'Keep Connected',
-        type: 'danger',
-        icon: 'unlink'
       });
-      if (!ok) return;
 
-      try {
-        await unlinkEpicAccount(currentUser.uid);
-        showToast('Epic Games account unlinked (-2.00 tokens fee deducted)', 'success');
-        closeLinkEpicModal();
-        db.collection('users').doc(currentUser.uid).get().then(snap => {
-          if (snap.exists) {
-            currentUserData = snap.data();
-            renderProfile(currentUserData);
-          }
-        });
-      } catch (err) {
-        showToast(err.message, 'error');
-      }
-    }
+      // Handle Editor Modal
+      const modal = document.getElementById('edit-handle-modal');
+      const editBtn = document.getElementById('btn-edit-handle');
+      const closeBtn = document.getElementById('btn-close-handle-modal');
+      const saveBtn = document.getElementById('btn-save-handle');
+      const input = document.getElementById('handle-input');
+      const err = document.getElementById('handle-error-msg');
 
-    // ── Teams Section ────────────────────────────────────────
-    let _userTeamsList = [];
-    let _inviteTeamId = '', _inviteTeamName = '', _inviteTeamTag = '';
-    let _inviteDebounceTimer = null;
+      if (editBtn) editBtn.addEventListener('click', () => {
+        if (modal) modal.classList.add('open');
+      });
+      if (closeBtn) closeBtn.addEventListener('click', () => {
+        if (modal) modal.classList.remove('open');
+      });
 
-    async function loadUserTeam(uid) {
-      try {
-        const teams = await getUserTeams(uid);
-        _userTeamsList = teams || [];
-        const activeTeamId = (currentUserData && currentUserData.teamId) || (_userTeamsList[0]?.id || null);
-        renderTeamsList(_userTeamsList, activeTeamId);
-      } catch (e) {
-        console.warn('loadUserTeam error:', e);
-        _userTeamsList = [];
-        renderTeamsList([], null);
-      }
-    }
+      const BANNED_WORDS = ['nigger', 'nigga', 'faggot', 'retard', 'bitch', 'cunt', 'whore', 'slut'];
 
-    function renderTeamsList(teams) {
-      const hubTeam = document.getElementById('hub-current-team');
-      const teamCard = document.getElementById('team-section-card');
-
-      if (hubTeam) {
-        if (teams && teams.length > 0) {
-          const t = teams[0];
-          const tIcon = t.icon || 'shield';
-          const tColor = t.iconColor || 'var(--kick-green)';
-          const tBg = t.bgColor || 'rgba(83,252,24,0.15)';
-          const tBorder = t.borderColor || 'rgba(83,252,24,0.35)';
-          hubTeam.innerHTML = `
-            <div style="display:inline-flex;align-items:center;gap:6px;background:${tBg};border:1px solid ${tBorder};padding:4px 10px;border-radius:10px;">
-              <i data-lucide="${tIcon}" style="width:13px;height:13px;color:${tColor};"></i>
-              <span style="font-size:0.78rem;font-weight:900;color:#fff;">Team ${escapeHtml(t.name)}</span>
-              <span style="font-size:0.72rem;font-weight:800;color:${tColor};">${escapeHtml(t.tag)}</span>
-            </div>
-          `;
-        } else {
-          hubTeam.innerHTML = `<span style="color:var(--text-muted);font-size:0.82rem;">No Team</span>`;
+      if (saveBtn) saveBtn.addEventListener('click', () => {
+        const val = (input.value || '').trim();
+        if (!val || val.length < 3) {
+          err.textContent = 'Handle must be at least 3 characters long.';
+          err.style.display = 'block';
+          return;
         }
-      }
-      if (teamCard) {
-        teamCard.style.display = 'block';
-      }
-
-      const el = document.getElementById('team-content');
-      if (!el) return;
-
-      if (!teams || !teams.length) {
-        el.innerHTML = isViewingSelf ? `
-          <div style="padding:16px 6px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;">
-            <div style="width:48px;height:48px;border-radius:14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;margin-bottom:12px;color:var(--kick-green);">
-              <i data-lucide="shield" style="width:24px;height:24px;"></i>
-            </div>
-            <div style="font-weight:900;font-size:1.05rem;color:#fff;margin-bottom:4px;">No Teams Created Yet</div>
-            <div style="font-size:0.85rem;color:var(--text-muted);max-width:440px;line-height:1.5;">
-              Create or join teams to compete in <strong>2v2 Duos</strong> and <strong>3v3 Squads</strong> with custom token coverage & prize split rules.
-            </div>
-          </div>` : `<span style="color:var(--text-muted);font-size:0.875rem;">Not currently on any team.</span>`;
-      } else {
-        el.innerHTML = teams.map(team => {
-          const isOwner = team.ownerUid === currentUser?.uid;
-
-          const membersHTML = (team.members || []).map(m => `
-            <div class="team-member-chip">
-              <div style="display:flex;align-items:center;gap:8px;min-width:0;">
-                <div style="width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0;">
-                  ${m.photoURL ? `<img src="${escapeHtml(m.photoURL)}" style="width:100%;height:100%;object-fit:cover;" alt=""/>` : `<i data-lucide="user" style="width:12px;height:12px;color:var(--text-faint);"></i>`}
-                </div>
-                <span style="font-weight:700;font-size:0.85rem;color:#fff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${escapeHtml(m.displayName || 'Player')}</span>
-              </div>
-              <div style="display:flex;align-items:center;gap:5px;flex-shrink:0;">
-                ${m.isLeader || m.uid === team.ownerUid ? '<span class="badge" style="background:rgba(83,252,24,0.15);color:var(--kick-green);border:1px solid rgba(83,252,24,0.35);font-size:0.65rem;padding:1px 6px;">LEADER</span>' : ''}
-              </div>
-            </div>
-          `).join('');
-
-          return `
-            <div class="team-item-card" style="background:#060608;border:1px solid rgba(255,255,255,0.07);box-shadow:0 8px 24px rgba(0,0,0,0.6);border-radius:16px;padding:20px 22px;margin-bottom:16px;">
-              <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-bottom:16px;">
-                <div style="display:flex;align-items:center;gap:14px;">
-                  <!-- Square Emblem Badge -->
-                  <div style="width:48px;height:48px;border-radius:12px;border:1px solid rgba(255,255,255,0.1);background:#000000;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                    <i data-lucide="${team.icon || 'shield'}" style="width:24px;height:24px;color:${team.iconColor || '#fff'};"></i>
-                  </div>
-                  <div>
-                    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-                      <span style="font-size:1.2rem;font-weight:900;color:#fff;">${escapeHtml(team.name)}</span>
-                    </div>
-                    <div style="font-size:0.75rem;color:var(--text-muted);margin-top:2px;">
-                      ${team.members?.length || 1}/6 Players · Created by ${escapeHtml(team.ownerName || 'Leader')}
-                    </div>
-                  </div>
-                </div>
-
-                ${isViewingSelf ? `
-                  <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
-                    <button class="btn btn-outline btn-sm" onclick="copyTeamInviteLink('${team.code}','${escapeHtml(team.name)}')" style="font-size:0.78rem;padding:6px 14px;gap:5px;border-radius:10px;background:#0d0d10;border-color:rgba(255,255,255,0.1);" title="Copy 1-Click Join Link">
-                      <i data-lucide="link" style="width:13px;height:13px;"></i> Copy Link
-                    </button>
-                    <span class="match-code-badge" title="Click to copy team code" onclick="copyTeamCode('${team.code}')" style="cursor:pointer;padding:5px 12px;font-size:0.8rem;border-radius:10px;background:#0d0d10;border-color:rgba(255,255,255,0.1);">
-                      <i data-lucide="hash"></i>${team.code}
-                    </span>
-                    <button class="btn btn-primary btn-sm" onclick="openInvitePlayerModal('${team.id}','${escapeHtml(team.name)}','${escapeHtml(team.tag || '')}')" style="font-size:0.78rem;padding:6px 14px;gap:5px;border-radius:10px;">
-                      <i data-lucide="user-plus" style="width:13px;height:13px;"></i> Invite
-                    </button>
-                    <button class="btn btn-danger btn-sm" onclick="handleLeaveTeam('${team.id}')" style="font-size:0.78rem;padding:6px 12px;gap:5px;border-radius:10px;display:inline-flex;align-items:center;">
-                      <i data-lucide="${isOwner ? 'trash-2' : 'log-out'}" style="width:13px;height:13px;"></i> <span>${isOwner ? 'Disband' : 'Leave'}</span>
-                    </button>
-                  </div>
-                ` : ''}
-              </div>
-
-              <div style="font-size:0.75rem;color:var(--text-muted);margin-bottom:8px;font-weight:700;">
-                Roster:
-              </div>
-              <div class="team-roster-grid">${membersHTML}</div>
-            </div>
-          `;
-        }).join('');
-      }
-
-      if (window.lucide) lucide.createIcons();
-    }
-
-    function copyTeamInviteLink(code, teamName) {
-      const link = window.location.origin + '/profile?joinTeam=' + encodeURIComponent(code);
-      if (navigator.clipboard) {
-        navigator.clipboard.writeText(link).then(() => {
-          showToast(`Invite link for "${teamName}" copied to clipboard! Share it anywhere.`, 'success');
-        });
-      } else {
-        copyTeamCode(code);
-      }
-    }
-
-    function copyTeamCode(code) {
-      if (navigator.clipboard) {
-        navigator.clipboard.writeText(code).then(() => showToast(`Team Code "${code}" copied to clipboard!`, 'info'));
-      }
-    }
-
-    function openInvitePlayerModal(teamId, teamName, teamTag) {
-      _inviteTeamId = teamId;
-      _inviteTeamName = teamName;
-      _inviteTeamTag = teamTag;
-      const inp = document.getElementById('invite-player-search-input');
-      if (inp) inp.value = '';
-      const m = document.getElementById('invite-player-modal');
-      if (m) { m.classList.add('open'); m.classList.add('active'); }
-      handleInviteSearchLive('');
-      if (window.lucide) lucide.createIcons();
-    }
-
-    function closeInvitePlayerModal() {
-      const m = document.getElementById('invite-player-modal');
-      if (m) { m.classList.remove('open'); m.classList.remove('active'); }
-    }
-
-    function handleInviteSearchLive(query) {
-      clearTimeout(_inviteDebounceTimer);
-      const resEl = document.getElementById('invite-player-results');
-      if (resEl) {
-        resEl.innerHTML = '<div style="text-align:center;padding:16px;color:var(--text-muted);font-size:0.85rem;"><div class="spinner" style="margin:0 auto 8px;"></div>Searching players…</div>';
-      }
-
-      _inviteDebounceTimer = setTimeout(async () => {
-        try {
-          const q = (query || '').trim();
-          const results = await searchUsers(q);
-          const currentTeam = _userTeamsList.find(t => t.id === _inviteTeamId);
-          const memberUids = new Set((currentTeam?.members || []).map(m => m.uid));
-          memberUids.add(currentUser?.uid);
-
-          const filtered = results.filter(u => !memberUids.has(u.id));
-
-          if (!filtered.length) {
-            resEl.innerHTML = '<div style="text-align:center;padding:20px;color:var(--text-muted);font-size:0.85rem;">No players found matching your search.</div>';
+        const lower = val.toLowerCase();
+        for (const w of BANNED_WORDS) {
+          if (lower.includes(w)) {
+            err.textContent = 'Handle violates family-friendly community guidelines.';
+            err.style.display = 'block';
             return;
           }
-
-          resEl.innerHTML = filtered.map(u => `
-            <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 12px;border-bottom:1px solid rgba(255,255,255,0.06);background:#000;border-radius:10px;margin-bottom:6px;">
-              <div style="display:flex;align-items:center;gap:10px;min-width:0;">
-                <div style="width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;">
-                  ${u.photoURL ? `<img src="${escapeHtml(u.photoURL)}" style="width:100%;height:100%;object-fit:cover;" alt=""/>` : `<i data-lucide="user" style="width:16px;height:16px;color:var(--text-faint);"></i>`}
-                </div>
-                <div style="min-width:0;">
-                  <div style="font-weight:800;font-size:0.88rem;color:#fff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${escapeHtml(u.displayName || 'Player')}</div>
-                  <div style="font-size:0.75rem;color:var(--text-muted);">${u.discordUsername ? '@' + escapeHtml(u.discordUsername) : (u.epicUsername ? 'Epic: ' + escapeHtml(u.epicUsername) : '')}</div>
-                </div>
-              </div>
-              <button class="btn btn-primary btn-sm" style="font-size:0.78rem;padding:6px 14px;gap:5px;flex-shrink:0;" onclick="handleSendTeamInvite('${u.id}','${escapeHtml(u.displayName || 'Player')}')">
-                <i data-lucide="user-plus"></i> Invite
-              </button>
-            </div>`).join('');
-          if (window.lucide) lucide.createIcons();
-        } catch (err) {
-          if (resEl) resEl.innerHTML = '<div style="color:var(--red);font-size:0.85rem;padding:12px 0;">' + escapeHtml(err.message) + '</div>';
-        }
-      }, 150);
-    }
-
-    async function handleSendTeamInvite(targetUid, targetName) {
-      try {
-        await sendTeamInvite(
-          _inviteTeamId, _inviteTeamName, _inviteTeamTag,
-          currentUser.uid, currentUserData?.displayName || 'Someone',
-          targetUid
-        );
-        showToast(`Invite sent to ${targetName}!`, 'success');
-        closeInvitePlayerModal();
-      } catch (err) {
-        showToast(err.message, 'error');
-      }
-    }
-
-    async function handleLeaveTeam(teamId) {
-      if (!confirm('Are you sure you want to leave or disband this team?')) return;
-      try {
-        await leaveTeam(teamId, currentUser.uid);
-        showToast('Updated team membership', 'success');
-        await loadUserTeam(currentUser.uid);
-      } catch (err) {
-        showToast(err.message, 'error');
-      }
-    }
-
-    // ── Team Emblem & Color Picker ──────────────────────────────
-    const TEAM_ICON_OPTIONS = [
-      { id: 'shield', name: 'Shield' },
-      { id: 'swords', name: 'Swords' },
-      { id: 'zap', name: 'Lightning' },
-      { id: 'flame', name: 'Flame' },
-      { id: 'crown', name: 'Crown' },
-      { id: 'crosshair', name: 'Crosshair' },
-      { id: 'skull', name: 'Skull' },
-      { id: 'trophy', name: 'Trophy' },
-      { id: 'ghost', name: 'Ghost' },
-      { id: 'target', name: 'Target' },
-      { id: 'star', name: 'Star' },
-      { id: 'gem', name: 'Diamond' },
-      { id: 'axe', name: 'Battleaxe' },
-      { id: 'sparkles', name: 'Magic' },
-      { id: 'gamepad-2', name: 'Arcade' },
-      { id: 'rocket', name: 'Rocket' }
-    ];
-
-    const TEAM_COLOR_OPTIONS = [
-      { hex: '#f59e0b', name: 'Gold' },
-      { hex: '#ef4444', name: 'Crimson' },
-      { hex: '#3b82f6', name: 'Royal Blue' },
-      { hex: '#a855f7', name: 'Violet' },
-      { hex: '#10b981', name: 'Emerald' },
-      { hex: '#06b6d4', name: 'Cyan' },
-      { hex: '#ec4899', name: 'Pink' },
-      { hex: '#f8fafc', name: 'White' }
-    ];
-
-    const TEAM_BG_OPTIONS = [
-      { name: 'Kick Neon', bg: 'rgba(83, 252, 24, 0.15)', border: 'rgba(83, 252, 24, 0.35)', color: '#53fc18' },
-      { name: 'Red Dark', bg: 'rgba(239, 68, 68, 0.18)', border: 'rgba(239, 68, 68, 0.45)', color: '#ef4444' },
-      { name: 'Blue Dark', bg: 'rgba(59, 130, 246, 0.18)', border: 'rgba(59, 130, 246, 0.45)', color: '#3b82f6' },
-      { name: 'Purple Dark', bg: 'rgba(168, 85, 247, 0.18)', border: 'rgba(168, 85, 247, 0.45)', color: '#a855f7' },
-      { name: 'Emerald Dark', bg: 'rgba(16, 185, 129, 0.18)', border: 'rgba(16, 185, 129, 0.45)', color: '#10b981' },
-      { name: 'Slate Dark', bg: 'rgba(255, 255, 255, 0.08)', border: 'rgba(255, 255, 255, 0.2)', color: '#94a3b8' }
-    ];
-
-    let _selectedTeamIcon = 'shield';
-    let _selectedTeamColor = '#53fc18';
-    let _selectedTeamBg = 'rgba(83, 252, 24, 0.15)';
-    let _selectedTeamBorder = 'rgba(83, 252, 24, 0.35)';
-
-    function initTeamBadgePicker() {
-      const iconContainer = document.getElementById('team-icon-picker');
-      const colorContainer = document.getElementById('team-color-picker');
-      const bgContainer = document.getElementById('team-bg-picker');
-
-      if (iconContainer) {
-        iconContainer.innerHTML = TEAM_ICON_OPTIONS.map(opt => `
-          <button type="button" class="team-badge-icon-btn ${opt.id === _selectedTeamIcon ? 'selected' : ''}" 
-                  onclick="selectTeamIcon('${opt.id}')" title="${opt.name}">
-            <i data-lucide="${opt.id}" style="width:18px;height:18px;"></i>
-          </button>
-        `).join('');
-      }
-
-      if (colorContainer) {
-        colorContainer.innerHTML = TEAM_COLOR_OPTIONS.map(opt => `
-          <button type="button" class="team-color-swatch ${opt.hex === _selectedTeamColor ? 'selected' : ''}" 
-                  style="background:${opt.hex};" onclick="selectTeamColor('${opt.hex}')" title="${opt.name}"></button>
-        `).join('');
-      }
-
-      if (bgContainer) {
-        bgContainer.innerHTML = TEAM_BG_OPTIONS.map((opt, idx) => `
-          <button type="button" class="team-bg-swatch ${opt.bg === _selectedTeamBg ? 'selected' : ''}" 
-                  style="background:${opt.bg};border:1.5px solid ${opt.border};" onclick="selectTeamBg(${idx})" title="${opt.name}"></button>
-        `).join('');
-      }
-
-      updateTeamBadgePreview();
-      if (window.lucide) lucide.createIcons();
-    }
-
-    function selectTeamIcon(iconId) {
-      _selectedTeamIcon = iconId;
-      const opt = TEAM_ICON_OPTIONS.find(o => o.id === iconId);
-      const nameEl = document.getElementById('selected-icon-name');
-      if (nameEl) nameEl.textContent = opt ? opt.name : iconId;
-      initTeamBadgePicker();
-    }
-
-    function selectTeamColor(hex) {
-      _selectedTeamColor = hex;
-      initTeamBadgePicker();
-    }
-
-    function selectTeamBg(idx) {
-      const opt = TEAM_BG_OPTIONS[idx];
-      if (opt) {
-        _selectedTeamBg = opt.bg;
-        _selectedTeamBorder = opt.border;
-      }
-      initTeamBadgePicker();
-    }
-
-    function updateTeamBadgePreview() {
-      const nameInput = document.getElementById('team-name-input');
-      const tagInput = document.getElementById('team-tag-input');
-      const previewBox = document.getElementById('team-badge-preview');
-      const previewIcon = document.getElementById('team-badge-icon');
-      const previewName = document.getElementById('team-preview-name');
-      const previewTag = document.getElementById('team-preview-tag');
-
-      const nameVal = nameInput?.value.trim() || 'Apex Champions';
-      const tagVal = tagInput?.value.trim().toUpperCase() || 'APEX';
-
-      if (previewName) previewName.textContent = nameVal;
-      if (previewTag) previewTag.textContent = `[${tagVal}]`;
-
-      if (previewBox) {
-        previewBox.style.background = _selectedTeamBg;
-        previewBox.style.borderColor = _selectedTeamBorder;
-      }
-      if (previewIcon) {
-        previewIcon.setAttribute('data-lucide', _selectedTeamIcon);
-        previewIcon.style.color = _selectedTeamColor;
-      }
-      if (window.lucide) lucide.createIcons();
-    }
-
-    function openCreateTeamModal() { 
-      const m = document.getElementById('create-team-modal');
-      if (m) { 
-        m.classList.add('open'); 
-        m.classList.add('active'); 
-        initTeamBadgePicker();
-      }
-    }
-    function closeCreateTeamModal() { 
-      const m = document.getElementById('create-team-modal');
-      if (m) { m.classList.remove('open'); m.classList.remove('active'); }
-    }
-    function openJoinTeamModal() { 
-      const m = document.getElementById('join-team-modal');
-      if (m) { m.classList.add('open'); m.classList.add('active'); }
-    }
-    function closeJoinTeamModal() { 
-      const m = document.getElementById('join-team-modal');
-      if (m) { m.classList.remove('open'); m.classList.remove('active'); }
-    }
-
-    async function submitCreateTeam(e) {
-      e.preventDefault();
-      const name = document.getElementById('team-name-input').value.trim();
-      const tag  = document.getElementById('team-tag-input').value.trim().toUpperCase();
-      const btn = document.getElementById('submit-team-btn');
-      btn.disabled = true;
-      try {
-        await createTeam(currentUserData || currentUser, { 
-          name, 
-          tag,
-          icon: _selectedTeamIcon,
-          iconColor: _selectedTeamColor,
-          bgColor: _selectedTeamBg,
-          borderColor: _selectedTeamBorder
-        });
-        showToast(`Team "${name}" created!`, 'success');
-        closeCreateTeamModal();
-        await loadUserTeam(currentUser.uid);
-      } catch (err) {
-        showToast(err.message, 'error');
-      } finally {
-        btn.disabled = false;
-      }
-    }
-
-    async function submitJoinTeam(e) {
-      e.preventDefault();
-      const rawInput = document.getElementById('join-team-input').value.trim();
-      // Handle either direct code or full invite URL
-      let code = rawInput;
-      if (code.includes('joinTeam=')) {
-        code = code.split('joinTeam=')[1].split('&')[0];
-      } else if (code.includes('team=')) {
-        code = code.split('team=')[1].split('&')[0];
-      }
-      code = code.toUpperCase();
-
-      const btn = document.getElementById('submit-join-team-btn');
-      btn.disabled = true;
-      try {
-        await joinTeamByCode(code, currentUserData || currentUser);
-        showToast('Joined team successfully!', 'success');
-        closeJoinTeamModal();
-        await loadUserTeam(currentUser.uid);
-      } catch (err) {
-        showToast(err.message, 'error');
-      } finally {
-        btn.disabled = false;
-      }
-    }
-
-    let allProfileTxs = [];
-    let profileTxPage = 1;
-    const PROFILE_TX_PER_PAGE = 5;
-
-    let allProfileMatches = [];
-    let profileMhPage = 1;
-    const PROFILE_MH_PER_PAGE = 5;
-
-    function renderTransactions(txs) {
-      allProfileTxs = txs || [];
-      renderTransactionsPage(1);
-    }
-
-    function renderTransactionsPage(page) {
-      profileTxPage = page;
-      const el = document.getElementById('tx-list');
-      const pagEl = document.getElementById('profile-tx-pagination');
-      if (!el) return;
-
-      if (!allProfileTxs.length) {
-        el.innerHTML = `<div class="empty-state"><i data-lucide="inbox"></i><p>No transactions recorded yet</p></div>`;
-        if (pagEl) pagEl.innerHTML = '';
-        if (window.lucide) lucide.createIcons();
-        return;
-      }
-
-      const totalPages = Math.max(1, Math.ceil(allProfileTxs.length / PROFILE_TX_PER_PAGE));
-      const startIdx = (profileTxPage - 1) * PROFILE_TX_PER_PAGE;
-      const pageTxs = allProfileTxs.slice(startIdx, startIdx + PROFILE_TX_PER_PAGE);
-
-      el.innerHTML = pageTxs.map(tx => {
-        const isCredit = Number(tx.amount || 0) > 0;
-        let iconName = isCredit ? 'arrow-up-right' : 'arrow-down-left';
-        let iconType = isCredit ? 'tx-icon--credit' : 'tx-icon--debit';
-        
-        let label = tx.description || txTypeLabel(tx.type);
-        if (tx.type === 'match_win' || (label && label.toLowerCase().includes('won match'))) {
-          iconName = 'trophy';
-          iconType = 'tx-icon--gold';
-          label = label.replace(/Won match\s*"?([^"]*)"?.*$/i, 'Victory · $1').replace(/🏆\s*/g, '');
-        } else if (tx.type === 'match_wager' || (label && label.toLowerCase().includes('wager'))) {
-          iconName = 'swords';
-          iconType = 'tx-icon--debit';
-          label = label.replace(/Match wager for\s*"?([^"]*)"?.*$/i, 'Match Entry · $1').replace(/🎮\s*/g, '');
-        } else if (label && label.toLowerCase().includes('refund')) {
-          iconName = 'rotate-ccw';
-          iconType = 'tx-icon--blue';
-          label = label.replace(/.*refund.*?"?([^"]*)"?.*$/i, 'Refund · $1').replace(/↩️|⏱️\s*/g, '');
-        } else if (tx.type === 'bonus' || (label && label.toLowerCase().includes('bonus'))) {
-          iconName = 'sparkles';
-          iconType = 'tx-icon--gold';
-          label = 'Welcome Starter Bonus';
-        } else if (tx.type === 'purchase') {
-          iconName = 'plus-circle';
-          iconType = 'tx-icon--credit';
-          label = 'Token Purchase';
-        } else if (tx.type === 'admin') {
-          iconName = 'zap';
-          iconType = 'tx-icon--gold';
-          label = 'Admin Adjustment';
         }
 
-        return `
-          <div class="tx-item">
-            <div class="tx-icon ${iconType}">
-              <i data-lucide="${iconName}"></i>
-            </div>
-            <div class="tx-info">
-              <div class="tx-desc">${escapeHtml(label)}</div>
-              <div class="tx-time">${formatTime(tx.timestamp)}</div>
-            </div>
-            <div class="tx-amount ${isCredit ? 'tx-amount--credit' : 'tx-amount--debit'}">
-              ${isCredit ? '+' : ''}${formatTokens(tx.amount)} <img src="new_token.png" class="inline-coin" alt="CT" width="14" height="14"/>
-            </div>
-          </div>`;
-      }).join('');
+        err.style.display = 'none';
+        document.getElementById('pf-display-name').textContent = val;
+        let u = JSON.parse(localStorage.getItem('ct_user') || '{}');
+        u.customName = val;
+        localStorage.setItem('ct_user', JSON.stringify(u));
+        if (modal) modal.classList.remove('open');
+        showToast(`Handle updated to "${val}"!`);
+        if (window.renderSharedRankedNav) renderSharedRankedNav('profile');
+      });
 
-      if (pagEl) {
-        pagEl.innerHTML = `
-          <button class="ct-page-btn" onclick="renderTransactionsPage(${profileTxPage - 1})" ${profileTxPage <= 1 ? 'disabled' : ''}>
-            <i data-lucide="chevron-left"></i> Prev
-          </button>
-          <span class="ct-page-info">Page ${profileTxPage} of ${totalPages}</span>
-          <button class="ct-page-btn" onclick="renderTransactionsPage(${profileTxPage + 1})" ${profileTxPage >= totalPages ? 'disabled' : ''}>
-            Next <i data-lucide="chevron-right"></i>
-          </button>
-        `;
+      renderHistory();
+      renderLocker();
+      if (window.lucide) window.lucide.createIcons();
+    });
+
+    function showToast(msg) {
+      let toast = document.getElementById('pf-toast');
+      if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'pf-toast';
+        toast.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#08090c;border:1px solid #53fc18;color:#fff;padding:10px 22px;border-radius:99px;font-size:0.85rem;font-weight:600;z-index:9999;box-shadow:0 10px 30px rgba(0,0,0,0.8);';
+        document.body.appendChild(toast);
       }
-
-      if (window.lucide) lucide.createIcons();
-    }
-
-    function renderMatchHistory(matches) {
-      allProfileMatches = matches || [];
-      renderMatchHistoryPage(1);
-    }
-
-    function renderMatchHistoryPage(page) {
-      profileMhPage = page;
-      const el = document.getElementById('match-history');
-      const pagEl = document.getElementById('profile-mh-pagination');
-      if (!el) return;
-
-      if (!allProfileMatches.length) {
-        el.innerHTML = `<div class="empty-state"><i data-lucide="swords"></i><p>No matches played yet</p></div>`;
-        if (pagEl) pagEl.innerHTML = '';
-        if (window.lucide) lucide.createIcons();
-        return;
-      }
-
-      const totalPages = Math.max(1, Math.ceil(allProfileMatches.length / PROFILE_MH_PER_PAGE));
-      const startIdx = (profileMhPage - 1) * PROFILE_MH_PER_PAGE;
-      const pageMatches = allProfileMatches.slice(startIdx, startIdx + PROFILE_MH_PER_PAGE);
-
-      el.innerHTML = pageMatches.map(m => {
-        const isWinner = m.winner?.uid === targetUid;
-        const isHost   = m.createdBy === targetUid;
-        const size     = m.size || '1v1';
-        const mode     = m.mode || 'Realistic';
-        const winPrize = Math.round(Number(m.wager || 1.00) * 1.80 * 100) / 100;
-
-        return `
-          <div class="mh-card">
-            <div style="flex:1;min-width:0;">
-              <div style="font-weight:700;font-size:0.95rem;">${m.title || `${size} ${mode}`}</div>
-              <div style="font-size:0.78rem;color:var(--text-muted);margin-top:2px;">
-                <span class="badge ${sizeColor(size)}" style="padding:1px 8px;font-size:0.7rem;">${size}</span>
-                <span class="badge ${modeColor(mode)}" style="padding:1px 8px;font-size:0.7rem;">${mode}</span>
-                · ${formatTokens(m.wager)} <img src="new_token.png" class="inline-coin" alt="CT" width="14" height="14"/> · ${formatTime(m.createdAt)}
-                ${isHost ? ' · <span style="color:var(--gold-bright);font-weight:700;">Host</span>' : ''}
-              </div>
-            </div>
-            <div style="text-align:right;flex-shrink:0;">
-              ${m.status === 'completed'
-                ? isWinner
-                  ? `<div style="color:var(--green);font-weight:800;">+${formatTokens(winPrize)} <img src="new_token.png" class="inline-coin" alt="CT" width="14" height="14"/></div><div style="font-size:0.75rem;color:var(--green);">Victory!</div>`
-                  : `<div style="color:var(--red);font-weight:700;">-${formatTokens(m.wager)} <img src="new_token.png" class="inline-coin" alt="CT" width="14" height="14"/></div><div style="font-size:0.75rem;color:var(--text-muted);">Defeat</div>`
-                : `<span class="badge badge-${m.status}">${m.status.replace('_',' ')}</span>`
-              }
-            </div>
-          </div>`;
-      }).join('');
-
-      if (pagEl) {
-        pagEl.innerHTML = `
-          <button class="ct-page-btn" onclick="renderMatchHistoryPage(${profileMhPage - 1})" ${profileMhPage <= 1 ? 'disabled' : ''}>
-            <i data-lucide="chevron-left"></i> Prev
-          </button>
-          <span class="ct-page-info">Page ${profileMhPage} of ${totalPages}</span>
-          <button class="ct-page-btn" onclick="renderMatchHistoryPage(${profileMhPage + 1})" ${profileMhPage >= totalPages ? 'disabled' : ''}>
-            Next <i data-lucide="chevron-right"></i>
-          </button>
-        `;
-      }
-
-      if (window.lucide) lucide.createIcons();
+      toast.textContent = msg;
+      toast.style.display = 'block';
+      setTimeout(() => { toast.style.display = 'none'; }, 2600);
     }
   </script>
 </body>

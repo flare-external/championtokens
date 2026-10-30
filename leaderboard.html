@@ -4,726 +4,315 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Leaderboard — Champion Tokens</title>
-  <meta name="title" content="Leaderboard — Champion Tokens"/>
-  <meta name="description" content="View the official Champion Tokens global leaderboard. Track top competitive Fortnite players, highest win rates, and tournament champions."/>
-  <meta name="theme-color" content="#53fc18"/>
-
   <link rel="icon" type="image/png" href="champion-tokens_new.png"/>
-  <link rel="shortcut icon" type="image/png" href="champion-tokens_new.png"/>
-  <link rel="apple-touch-icon" href="champion-tokens_new.png"/>
-  <link rel="manifest" href="manifest.json"/>
   <link rel="stylesheet" href="css/style.css?v=5.5"/>
   <link rel="stylesheet" href="css/ranked.css?v=4.2"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <script src="js/protect.js"></script>
   <style>
-    /* ── Dark Glass Leaderboard Aesthetics ── */
-    @keyframes spinRefresh {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
+    .lb-hero {
+      background: linear-gradient(180deg, rgba(83, 252, 24, 0.08) 0%, rgba(8, 9, 12, 0.6) 100%), #08090c;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 18px;
+      padding: 32px 28px;
+      margin-bottom: 28px;
+      position: relative;
+      overflow: hidden;
     }
-    .spinning-icon {
-      animation: spinRefresh 0.75s cubic-bezier(0.4, 0, 0.2, 1) infinite !important;
-    }
-
-    /* 1. Morphed Header & Stats Card */
-    .lb-morphed-header-card {
-      background: #000000;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 20px;
-      padding: 24px 28px;
-      margin-bottom: 24px;
-      box-shadow: 0 14px 40px rgba(0,0,0,0.85);
-    }
-
-    .lb-stats-grid {
+    .lb-podium {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 12px;
-      margin: 0;
-    }
-
-    .lb-stat-card {
-      background: #060608;
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      border-radius: 14px;
-      padding: 14px 16px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      transition: border-color 0.18s ease, transform 0.18s ease;
-    }
-    .lb-stat-card:hover {
-      border-color: rgba(255, 255, 255, 0.14);
-      transform: translateY(-1px);
-    }
-    .lb-stat-icon-wrap {
-      width: 40px;
-      height: 40px;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-
-    /* 2. Podium Showcase */
-    .podium-section {
-      display: grid;
-      grid-template-columns: 1fr 1.08fr 1fr;
+      grid-template-columns: repeat(3, 1fr);
       gap: 16px;
-      margin-bottom: 24px;
-      align-items: end;
+      margin-bottom: 28px;
     }
-
-    .podium-card {
-      background: #000000;
+    .lb-podium-card {
+      background: #08090c;
       border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 20px;
+      border-radius: 16px;
       padding: 24px 20px;
       text-align: center;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-      box-shadow: 0 12px 36px rgba(0,0,0,0.85);
-      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
-      text-decoration: none;
-      color: inherit;
       position: relative;
-      overflow: hidden;
+      transition: all 0.2s ease;
     }
-    .podium-card:hover {
+    .lb-podium-card:hover {
       transform: translateY(-3px);
-      border-color: rgba(255, 255, 255, 0.14);
     }
-
-    .podium-card--1 {
-      border: 1px solid rgba(83, 252, 24, 0.35);
-      background: linear-gradient(180deg, rgba(83, 252, 24, 0.08) 0%, var(--bg-card) 100%);
-      box-shadow: 0 0 25px rgba(83, 252, 24, 0.12);
-      padding-top: 30px;
-      padding-bottom: 26px;
+    .lb-podium-card.rank-1 {
+      border-color: rgba(251, 191, 36, 0.4);
+      background: linear-gradient(180deg, rgba(251, 191, 36, 0.08) 0%, #08090c 100%);
+      box-shadow: 0 10px 30px rgba(251, 191, 36, 0.15);
     }
-    .podium-card--2 {
-      border-color: var(--border);
-      background: var(--bg-card);
+    .lb-podium-card.rank-2 {
+      border-color: rgba(148, 163, 184, 0.3);
     }
-    .podium-card--3 {
-      border-color: var(--border);
-      background: var(--bg-card);
+    .lb-podium-card.rank-3 {
+      border-color: rgba(180, 83, 9, 0.3);
     }
-
-    .podium-avatar-wrap {
-      width: 68px;
-      height: 68px;
-      border-radius: 50%;
-      background: #080808;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.5rem;
-      font-weight: 900;
-      color: #fff;
-      overflow: hidden;
-      position: relative;
-    }
-    .podium-avatar-wrap img { width: 100%; height: 100%; object-fit: cover; }
-    .podium-avatar-wrap--1 { width: 80px; height: 80px; border: 2px solid var(--kick-green); box-shadow: 0 0 16px var(--kick-green-glow); }
-    .podium-avatar-wrap--2 { border: 2px solid rgba(255, 255, 255, 0.2); }
-    .podium-avatar-wrap--3 { border: 2px solid rgba(255, 255, 255, 0.12); }
-
-    /* Rank Pills */
-    .rank-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      padding: 3px 10px;
-      border-radius: 8px;
-      font-size: 0.78rem;
-      font-weight: 900;
-      letter-spacing: 0.02em;
-    }
-    .rank-pill.rank-1 {
-      background: rgba(83, 252, 24, 0.16);
-      color: var(--kick-green);
-      border: 1px solid rgba(83, 252, 24, 0.35);
-    }
-    .rank-pill.rank-2 {
-      background: rgba(255, 255, 255, 0.08);
-      color: #ffffff;
-      border: 1px solid rgba(255, 255, 255, 0.15);
-    }
-    .rank-pill.rank-3 {
-      background: rgba(255, 255, 255, 0.05);
-      color: var(--text-muted);
-      border: 1px solid rgba(255, 255, 255, 0.10);
-    }
-    .rank-pill.rank-other {
-      background: rgba(255, 255, 255, 0.04);
-      color: #94a3b8;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      font-family: monospace;
-      font-size: 0.8rem;
-    }
-
-    /* 3. Table Container & Height-Elevated Search Bar */
-    .lb-table-card {
-      background: #000000;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 20px;
-      padding: 24px 26px;
-      box-shadow: 0 14px 40px rgba(0,0,0,0.85);
-      margin-bottom: 32px;
-    }
-
-    .lb-controls-bar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 14px;
-      margin-bottom: 22px;
-    }
-
-    .lb-search-input-wrap {
-      position: relative;
-      flex: 1;
-      min-width: 240px;
-    }
-
-    .lb-search-icon {
-      position: absolute;
-      left: 16px;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 16px;
-      height: 16px;
-      color: #64748b;
-      pointer-events: none;
-    }
-
-    .lb-search-input {
+    .lb-table {
       width: 100%;
-      height: 44px;
-      padding: 0 16px 0 44px;
-      background: #060608;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 12px;
-      font-size: 0.88rem;
-      color: #ffffff;
-      transition: border-color 0.18s ease;
-    }
-    .lb-search-input:focus {
-      border-color: rgba(255, 255, 255, 0.22);
-      outline: none;
-    }
-
-    .lb-sort-tabs-wrap {
-      display: inline-flex;
-      gap: 6px;
-      flex-wrap: wrap;
-      background: var(--bg-surface);
-      border: 1px solid var(--border);
-      padding: 4px 6px;
-      border-radius: 12px;
-    }
-
-    .lb-sort-tab {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      height: 38px;
-      padding: 0 16px;
-      border-radius: 8px;
-      background: transparent;
-      border: 1px solid transparent;
-      color: var(--text-muted);
-      font-size: 0.82rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.16s ease;
-    }
-    .lb-sort-tab:hover {
-      background: rgba(255, 255, 255, 0.05);
-      color: #fff;
-    }
-    .lb-sort-tab.active {
-      background: rgba(83, 252, 24, 0.12);
-      border-color: var(--kick-green);
-      color: #ffffff;
-      font-weight: 800;
-      box-shadow: 0 0 12px rgba(83, 252, 24, 0.22);
-    }
-    .lb-sort-tab.active i {
-      color: var(--kick-green);
-    }
-
-    .lb-custom-table {
-      width: 100%;
-      border-collapse: separate;
-      border-spacing: 0 8px;
-      min-width: 600px;
-    }
-    .lb-custom-table th {
-      color: #64748b;
-      font-size: 0.75rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      padding: 8px 16px;
-      border: none;
+      border-collapse: collapse;
       text-align: left;
     }
-    .lb-custom-table tbody tr {
-      background: #060608;
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      transition: all 0.18s ease;
+    .lb-table th {
+      font-size: 0.74rem;
+      font-weight: 600;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 12px 18px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .lb-table td {
+      padding: 14px 18px;
+      font-size: 0.86rem;
+      color: #ffffff;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      vertical-align: middle;
+    }
+    .lb-table tbody tr {
+      transition: background 0.15s ease;
       cursor: pointer;
     }
-    .lb-custom-table tbody tr:hover {
-      background: #0e0e12;
-      transform: translateY(-1px);
+    .lb-table tbody tr:hover {
+      background: rgba(255, 255, 255, 0.03);
     }
-    .lb-custom-table tbody tr.current-user {
-      background: rgba(83, 252, 24, 0.08);
-      border-color: rgba(83, 252, 24, 0.3);
+    .lb-filter-btn {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: #94a3b8;
+      padding: 6px 14px;
+      border-radius: 99px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
     }
-    .lb-custom-table td {
-      padding: 14px 16px;
-      border-top: 1px solid rgba(255, 255, 255, 0.05);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    }
-    .lb-custom-table td:first-child {
-      border-left: 1px solid rgba(255, 255, 255, 0.05);
-      border-top-left-radius: 12px;
-      border-bottom-left-radius: 12px;
-    }
-    .lb-custom-table td:last-child {
-      border-right: 1px solid rgba(255, 255, 255, 0.05);
-      border-top-right-radius: 12px;
-      border-bottom-right-radius: 12px;
-    }
-
-    @media (max-width: 768px) {
-      .podium-section { grid-template-columns: 1fr; }
-      .podium-card--1 { order: -1; }
+    .lb-filter-btn.active {
+      background: #53fc18;
+      border-color: #53fc18;
+      color: #000000;
+      font-weight: 700;
     }
   </style>
-  <script src="js/protect.js"></script>
-  <meta name="keywords" content="fortnite leaderboard, fortnite rankings, top fortnite players, fortnite token earnings, fortnite competitive ladder, champion tokens leaderboard"/>
 </head>
-<body data-ct-page="leaderboard">
-  <div class="page-bg"></div>
-  <!-- Loading screen -->
-  <div class="page-loading" id="page-loading">
-    <div class="spinner"></div>
-    <span>Loading leaderboard…</span>
-  </div>
+<body data-ct-page="leaderboard" style="background:#000000;color:#ffffff;margin:0;font-family:'Inter',sans-serif;">
 
-  
-    <span>Loading leaderboard…</span>
-  </div>
+  <!-- Main Container -->
+  <main class="ct-ranked-wrap" style="max-width:1120px;padding-top:36px;position:relative;z-index:10;">
 
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+    <!-- Hero Banner -->
+    <section class="lb-hero">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:16px;">
+        <div>
+          <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(251,191,36,0.12);border:1px solid rgba(251,191,36,0.25);padding:3px 12px;border-radius:99px;font-size:0.75rem;font-weight:600;color:#fbbf24;margin-bottom:10px;">
+            <i data-lucide="trophy" style="width:14px;height:14px;"></i>
+            <span>Season 1 Global Leaderboard · $2,500 Prize Pool</span>
+          </div>
+          <h1 style="font-family:'Outfit',sans-serif;font-size:2.2rem;font-weight:700;margin:0 0 6px;color:#fff;">
+            Competitive Standings
+          </h1>
+          <p style="font-size:0.88rem;color:#94a3b8;margin:0;line-height:1.5;">
+            Climb the ELO ladder across Realistic, Box Fights, and Build Fights. Top 10 Unreal players win monthly cash prizes.
+          </p>
+        </div>
+
+        <!-- Your Rank Summary Card -->
+        <div style="background:#000;border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:14px 20px;display:flex;align-items:center;gap:14px;">
+          <img src="medal-ranks/svg/06-elite.svg" id="my-lb-icon" style="width:38px;height:38px;" alt="Rank"/>
+          <div>
+            <div style="font-size:0.75rem;color:#64748b;font-weight:600;text-transform:uppercase;">Your Ranking</div>
+            <div style="font-family:'Outfit',sans-serif;font-size:1.15rem;font-weight:700;color:#fff;" id="my-lb-standing">#42 · Elite Tier</div>
+            <div style="font-size:0.75rem;color:#53fc18;font-weight:600;" id="my-lb-elo">2,450 ELO (68% WR)</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Top 3 Podium Cards -->
+    <div class="lb-podium">
+      <!-- #2 Silver -->
+      <div class="lb-podium-card rank-2" onclick="window.location.href='profile/928174019283'">
+        <div style="position:absolute;top:12px;left:14px;font-family:'Outfit',sans-serif;font-size:1.1rem;font-weight:800;color:#94a3b8;">#2</div>
+        <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=120&auto=format&fit=crop&q=80" style="width:58px;height:58px;border-radius:50%;border:2px solid #94a3b8;margin-bottom:10px;object-fit:cover;" alt="GhostClutch"/>
+        <div style="font-family:'Outfit',sans-serif;font-size:1.1rem;font-weight:700;color:#fff;">GhostClutch</div>
+        <div style="font-size:0.75rem;color:#64748b;margin-bottom:8px;">ID: 928174019283</div>
+        <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);padding:4px 12px;border-radius:99px;margin-bottom:8px;">
+          <img src="medal-ranks/svg/10-star.svg" style="width:14px;height:14px;" alt="Unreal"/>
+          <span style="font-size:0.8rem;font-weight:700;color:#53fc18;">3,620 ELO</span>
+        </div>
+        <div style="font-size:0.76rem;color:#fbbf24;font-weight:600;">$600 Monthly Prize</div>
+      </div>
+
+      <!-- #1 Gold Champion -->
+      <div class="lb-podium-card rank-1" onclick="window.location.href='profile/194820194812'">
+        <div style="position:absolute;top:12px;left:14px;font-family:'Outfit',sans-serif;font-size:1.25rem;font-weight:800;color:#fbbf24;">👑 #1</div>
+        <img src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=120&auto=format&fit=crop&q=80" style="width:68px;height:68px;border-radius:50%;border:2.5px solid #fbbf24;margin-bottom:10px;object-fit:cover;box-shadow:0 0 15px rgba(251,191,36,0.4);" alt="Viper_FN"/>
+        <div style="font-family:'Outfit',sans-serif;font-size:1.25rem;font-weight:700;color:#fff;">Viper_FN</div>
+        <div style="font-size:0.75rem;color:#64748b;margin-bottom:8px;">ID: 194820194812</div>
+        <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(251,191,36,0.12);border:1px solid rgba(251,191,36,0.3);padding:5px 14px;border-radius:99px;margin-bottom:8px;">
+          <img src="medal-ranks/svg/10-star.svg" style="width:16px;height:16px;" alt="Unreal"/>
+          <span style="font-size:0.85rem;font-weight:800;color:#53fc18;">3,850 ELO</span>
+        </div>
+        <div style="font-size:0.82rem;color:#fbbf24;font-weight:700;">$1,000 Champion Prize</div>
+      </div>
+
+      <!-- #3 Bronze -->
+      <div class="lb-podium-card rank-3" onclick="window.location.href='profile/381920481920'">
+        <div style="position:absolute;top:12px;left:14px;font-family:'Outfit',sans-serif;font-size:1.1rem;font-weight:800;color:#b45309;">#3</div>
+        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&auto=format&fit=crop&q=80" style="width:58px;height:58px;border-radius:50%;border:2px solid #b45309;margin-bottom:10px;object-fit:cover;" alt="AeroSniper"/>
+        <div style="font-family:'Outfit',sans-serif;font-size:1.1rem;font-weight:700;color:#fff;">AeroSniper</div>
+        <div style="font-size:0.75rem;color:#64748b;margin-bottom:8px;">ID: 381920481920</div>
+        <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);padding:4px 12px;border-radius:99px;margin-bottom:8px;">
+          <img src="medal-ranks/svg/07-champion.svg" style="width:14px;height:14px;" alt="Champion"/>
+          <span style="font-size:0.8rem;font-weight:700;color:#53fc18;">3,410 ELO</span>
+        </div>
+        <div style="font-size:0.76rem;color:#fbbf24;font-weight:600;">$400 Monthly Prize</div>
+      </div>
+    </div>
+
+    <!-- Filter & Search Controls -->
+    <div style="background:#08090c;border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:16px 20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;margin-bottom:20px;">
+      <!-- Division Filters -->
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <button type="button" class="lb-filter-btn active" data-filter="all">All Divisions</button>
+        <button type="button" class="lb-filter-btn" data-filter="Unreal">Unreal</button>
+        <button type="button" class="lb-filter-btn" data-filter="Champion">Champion</button>
+        <button type="button" class="lb-filter-btn" data-filter="Elite">Elite</button>
+        <button type="button" class="lb-filter-btn" data-filter="Diamond">Diamond</button>
+      </div>
+
+      <!-- Search Input -->
+      <div style="position:relative;width:100%;max-width:280px;">
+        <i data-lucide="search" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);width:14px;height:14px;color:#64748b;"></i>
+        <input type="text" id="lb-search" placeholder="Search contender or ID..." style="width:100%;box-sizing:border-box;background:#000;border:1px solid rgba(255,255,255,0.1);color:#fff;padding:8px 12px 8px 34px;border-radius:8px;font-size:0.82rem;outline:none;"/>
+      </div>
+    </div>
+
+    <!-- Leaderboard Table Card -->
+    <div style="background:#08090c;border:1px solid rgba(255,255,255,0.08);border-radius:16px;overflow:hidden;margin-bottom:44px;">
+      <table class="lb-table">
+        <thead>
+          <tr>
+            <th style="width:60px;"># Rank</th>
+            <th>Contender</th>
+            <th>Division</th>
+            <th>ELO Rating</th>
+            <th>Matches Won</th>
+            <th>Win Rate</th>
+            <th>Monthly Prize</th>
+          </tr>
+        </thead>
+        <tbody id="lb-table-body">
+          <!-- Populated dynamically by JS -->
+        </tbody>
+      </table>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="ct-footer" style="border-top:1px solid rgba(255,255,255,0.08);padding:32px 20px 44px;background:#000000;text-align:center;">
+    <div style="max-width:1000px;margin:0 auto;display:flex;flex-direction:column;gap:16px;">
+      <div style="font-size:0.75rem;color:#475569;">
+        © 2026 Champion Tokens • Protected by Cloudflare
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
-  <script src="js/firebase-config.js?v=3.8"></script>
-  <script src="js/auth.js?v=4.0.1788871233902"></script>
-  <script src="js/db.js?v=4.0.1788871233902"></script>
-  <script src="js/nav.js?v=5.5"></script>
   <script src="js/ranked-nav.js"></script>
-
   <script>
-    let currentUser = null;
-    let allLeaderboardUsers = [];
-    let filteredUsers = [];
-    let lbSearchQuery = '';
-    let currentSortMode = 'wins'; // 'wins' | 'earnings' | 'winrate'
-    let lbCurrentPage = 1;
-    const LB_PER_PAGE = 10;
+    const LEADERBOARD_DATA = [
+      { rank: 1, id: '194820194812', name: 'Viper_FN', tier: 'Unreal', icon: 'medal-ranks/svg/10-star.svg', elo: 3850, wins: 142, wr: '94.2%', prize: '$1,000' },
+      { rank: 2, id: '928174019283', name: 'GhostClutch', tier: 'Unreal', icon: 'medal-ranks/svg/10-star.svg', elo: 3620, wins: 118, wr: '89.5%', prize: '$600' },
+      { rank: 3, id: '381920481920', name: 'AeroSniper', tier: 'Champion', icon: 'medal-ranks/svg/07-champion.svg', elo: 3410, wins: 105, wr: '84.1%', prize: '$400' },
+      { rank: 4, id: '827194018291', name: 'KovaaK_God', tier: 'Champion', icon: 'medal-ranks/svg/07-champion.svg', elo: 3290, wins: 98, wr: '81.4%', prize: '$200' },
+      { rank: 5, id: '472019284019', name: 'BoxKing99', tier: 'Champion', icon: 'medal-ranks/svg/07-champion.svg', elo: 3140, wins: 91, wr: '79.0%', prize: '$150' },
+      { rank: 6, id: '582019481029', name: 'AquaAim', tier: 'Elite', icon: 'medal-ranks/svg/06-elite.svg', elo: 2890, wins: 84, wr: '76.3%', prize: '$100' },
+      { rank: 7, id: '692019482910', name: 'FrostByte', tier: 'Elite', icon: 'medal-ranks/svg/06-elite.svg', elo: 2750, wins: 78, wr: '74.2%', prize: '$50' },
+      { rank: 8, id: '882194017402', name: 'Zenox', isYou: true, tier: 'Elite', icon: 'medal-ranks/svg/06-elite.svg', elo: 2450, wins: 64, wr: '68.0%', prize: 'Top 100' },
+      { rank: 9, id: '702910481928', name: 'ShadowEdits', tier: 'Diamond', icon: 'medal-ranks/svg/05-diamond.svg', elo: 2320, wins: 59, wr: '65.5%', prize: 'Top 100' },
+      { rank: 10, id: '918201928471', name: 'StormRotate', tier: 'Diamond', icon: 'medal-ranks/svg/05-diamond.svg', elo: 2190, wins: 51, wr: '63.2%', prize: 'Top 100' }
+    ];
 
-    document.addEventListener('DOMContentLoaded', async () => {
-      if (window.renderSharedRankedNav) renderSharedRankedNav('leaderboard');
-      try {
-        if (typeof auth !== 'undefined') {
-          auth.onAuthStateChanged(async (user) => {
-            currentUser = user;
-            if (window.renderSharedRankedNav) renderSharedRankedNav('leaderboard');
-          });
-        }
-      } catch (e) {}
-      await loadLeaderboard();
-      const loadingEl = document.getElementById('page-loading');
-      if (loadingEl) loadingEl.classList.add('hidden');
-    });
+    let currentFilter = 'all';
+    let searchQuery = '';
 
-    async function loadLeaderboard() {
-      try {
-        allLeaderboardUsers = await getLeaderboard();
-        updateOverviewStats(allLeaderboardUsers);
-        applySortAndFilter();
-      } catch (err) {
-        console.error('Leaderboard error:', err);
-        showToast('Failed to load leaderboard', 'error');
-      }
-    }
-
-    function updateOverviewStats(users) {
-      const totalCompetitors = users.length;
-      let totalWins = 0;
-      let totalEarned = 0;
-      let highestWr = 0;
-
-      users.forEach(u => {
-        const w = Number(u.matchesWon || 0);
-        const p = Number(u.matchesPlayed || 0);
-        const e = Number(u.totalEarned || 0);
-        totalWins += w;
-        totalEarned += e;
-        if (p >= 3) {
-          const wr = Math.round((w / p) * 100);
-          if (wr > highestWr) highestWr = wr;
-        }
-      });
-
-      document.getElementById('stat-total-players').textContent = totalCompetitors;
-      document.getElementById('stat-total-wins').textContent = totalWins;
-      const totalMatchesLogged = users.reduce((acc, u) => acc + Number(u.matchesPlayed || 0), 0);
-      const statMatchesEl = document.getElementById('stat-total-matches');
-      if (statMatchesEl) statMatchesEl.textContent = totalMatchesLogged;
-      document.getElementById('stat-top-winrate').textContent = (highestWr > 0 ? highestWr + '%' : '100%');
-    }
-
-    function setSortMode(mode) {
-      currentSortMode = mode;
-      document.querySelectorAll('.lb-sort-tab').forEach(t => {
-        t.classList.toggle('active', t.dataset.sort === mode);
-      });
-      applySortAndFilter();
-    }
-
-    function handleSearchLeaderboard(val) {
-      lbSearchQuery = (val || '').toLowerCase().trim();
-      applySortAndFilter();
-    }
-
-    function applySortAndFilter() {
-      let list = [...allLeaderboardUsers];
-
-      // Apply Search
-      if (lbSearchQuery) {
-        list = list.filter(u => {
-          const name = (u.displayName || '').toLowerCase();
-          const epic = (u.epicUsername || '').toLowerCase();
-          const disc = (u.discordUsername || '').toLowerCase();
-          return name.includes(lbSearchQuery) || epic.includes(lbSearchQuery) || disc.includes(lbSearchQuery);
-        });
-      }
-
-      // Apply Sort
-      if (currentSortMode === 'matches') {
-        list.sort((a, b) => (Number(b.matchesPlayed) || 0) - (Number(a.matchesPlayed) || 0) || (Number(b.matchesWon) || 0) - (Number(a.matchesWon) || 0));
-      } else if (currentSortMode === 'winrate') {
-        list.sort((a, b) => {
-          const wrA = (Number(a.matchesPlayed) || 0) > 0 ? ((Number(a.matchesWon) || 0) / Number(a.matchesPlayed)) : 0;
-          const wrB = (Number(b.matchesPlayed) || 0) > 0 ? ((Number(b.matchesWon) || 0) / Number(b.matchesPlayed)) : 0;
-          return wrB - wrA || (Number(b.matchesWon) || 0) - (Number(a.matchesWon) || 0);
-        });
-      } else {
-        // Default: Wins
-        list.sort((a, b) => (Number(b.matchesWon) || 0) - (Number(a.matchesWon) || 0) || (Number(b.matchesPlayed) || 0) - (Number(a.matchesPlayed) || 0));
-      }
-
-      filteredUsers = list;
-      renderPodium(filteredUsers.slice(0, 3));
-      lbCurrentPage = 1;
-      renderTablePage(1);
-    }
-
-    function getRankPill(rank) {
-      if (rank === 1) return '<span class="rank-pill rank-1"><i data-lucide="trophy" style="width:13px;height:13px;"></i> #1</span>';
-      if (rank === 2) return '<span class="rank-pill rank-2"><i data-lucide="medal" style="width:13px;height:13px;"></i> #2</span>';
-      if (rank === 3) return '<span class="rank-pill rank-3"><i data-lucide="medal" style="width:13px;height:13px;"></i> #3</span>';
-      return '<span class="rank-pill rank-other">#' + rank + '</span>';
-    }
-
-    function avatarEl(u, cls) {
-      const letter = (u.displayName || 'P').charAt(0).toUpperCase();
-      return u.photoURL
-        ? '<div class="' + cls + '"><img src="' + escapeHtml(u.photoURL) + '" onerror="this.style.display=\'none\'"/></div>'
-        : '<div class="' + cls + '">' + letter + '</div>';
-    }
-
-    function renderPodium(top3) {
-      const podiumEl = document.getElementById('podium-wrap');
-      if (!podiumEl) return;
-
-      if (!top3 || !top3.length) {
-        podiumEl.innerHTML = '<div class="empty-state" style="grid-column:1/-1;"><p>No ranked champions yet</p></div>';
-        return;
-      }
-
-      // Arrange order for podium: 2nd place on left, 1st in center, 3rd on right
-      const order = [top3[1], top3[0], top3[2]].filter(Boolean);
-      const posMap = { 0: 2, 1: 1, 2: 3 };
-
-      podiumEl.innerHTML = order.map((u, i) => {
-        const rank = u === top3[0] ? 1 : (u === top3[1] ? 2 : 3);
-        const pos = rank;
-        const isCurrent = u.id === currentUser?.uid;
-        const wins = Number(u.matchesWon || 0);
-        const played = Number(u.matchesPlayed || 0);
-        const wr = played > 0 ? (Math.round((wins / played) * 100) + '%') : '0%';
-        const earned = Number(u.totalEarned || 0);
-
-        return '<a href="profile?uid=' + encodeURIComponent(u.id) + '" class="podium-card podium-card--' + pos + (isCurrent ? ' current-user' : '') + '" title="View ' + escapeHtml(u.displayName || 'Player') + '\'s Profile">' +
-          getRankPill(rank) +
-          avatarEl(u, 'podium-avatar-wrap podium-avatar-wrap--' + pos) +
-          '<div style="min-width:0;width:100%;">' +
-            '<div style="font-weight:900;font-size:1.05rem;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' +
-              escapeHtml(u.displayName || 'Unknown') +
-              (isCurrent ? ' <span style="color:var(--kick-green);font-size:0.75rem;font-weight:800;">(You)</span>' : '') +
-            '</div>' +
-            (u.epicUsername ? '<div style="margin-top:4px;"><span class="badge" style="background:rgba(0,120,242,0.15);color:#38bdf8;border:1px solid rgba(0,120,242,0.3);font-size:0.72rem;padding:2px 7px;"><i data-lucide="gamepad-2" style="width:11px;height:11px;"></i> ' + escapeHtml(u.epicUsername) + '</span></div>' : '') +
-          '</div>' +
-          '<div style="display:flex;flex-direction:column;gap:3px;align-items:center;margin-top:2px;">' +
-            '<div style="font-size:1.3rem;font-weight:900;color:var(--kick-green);display:inline-flex;align-items:center;gap:6px;">' +
-              '<i data-lucide="trophy" style="width:17px;height:17px;color:var(--kick-green);"></i> ' + wins + ' Wins' +
-            '</div>' +
-            '<div style="font-size:0.75rem;color:var(--text-muted);">' +
-              played + ' matches · ' + wr + ' win rate' +
-            '</div>' +
-            '<div style="font-size:0.8rem;font-weight:800;color:var(--kick-green);margin-top:4px;display:inline-flex;align-items:center;gap:5px;">' +
-              '<i data-lucide="award" style="width:14px;height:14px;color:var(--kick-green);"></i> Competitive Rank' +
-            '</div>' +
-          '</div>' +
-        '</a>';
-      }).join('');
-
-      if (window.lucide) lucide.createIcons();
-    }
-
-    function renderTablePage(page) {
-      lbCurrentPage = page;
-      const tbody = document.getElementById('lb-tbody');
+    function renderLeaderboard() {
+      const tbody = document.getElementById('lb-table-body');
       if (!tbody) return;
 
-      const totalItems = filteredUsers.length;
-      const totalPages = Math.max(1, Math.ceil(totalItems / LB_PER_PAGE));
-      const startIdx = (lbCurrentPage - 1) * LB_PER_PAGE;
-      const pageUsers = filteredUsers.slice(startIdx, startIdx + LB_PER_PAGE);
+      const filtered = LEADERBOARD_DATA.filter(item => {
+        const matchFilter = currentFilter === 'all' || item.tier.toLowerCase() === currentFilter.toLowerCase();
+        const matchSearch = !searchQuery || item.name.toLowerCase().includes(searchQuery) || item.id.includes(searchQuery);
+        return matchFilter && matchSearch;
+      });
 
-      if (!pageUsers.length) {
-        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:32px;color:var(--text-muted);">No competitors found' + (lbSearchQuery ? ' matching "' + escapeHtml(lbSearchQuery) + '"' : '') + '</td></tr>';
-        renderPaginationControls(totalPages);
+      if (filtered.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="7" style="text-align:center;padding:36px;color:#64748b;">
+              No contenders found matching filter criteria.
+            </td>
+          </tr>
+        `;
         return;
       }
 
-      tbody.innerHTML = pageUsers.map((u, idx) => {
-        const rank = startIdx + idx + 1;
-        const isCurrent = u.id === currentUser?.uid;
-        const letter = (u.displayName || 'P').charAt(0).toUpperCase();
-        const played = Number(u.matchesPlayed || 0);
-        const won = Number(u.matchesWon || 0);
-        const wr = played > 0 ? (Math.round((won / played) * 100) + '%') : '0%';
-        const earned = Number(u.totalEarned || 0);
-
-        return '<tr class="' + (isCurrent ? 'current-user' : '') + '" onclick="window.location.href=\'profile?uid=' + encodeURIComponent(u.id) + '\'" title="View Profile">' +
-          '<td>' + getRankPill(rank) + '</td>' +
-          '<td>' +
-            '<div style="display:flex;align-items:center;gap:12px;">' +
-              '<div style="width:38px;height:38px;border-radius:10px;background:rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;overflow:hidden;flex-shrink:0;">' +
-                (u.photoURL ? '<img src="' + escapeHtml(u.photoURL) + '" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display=\'none\'"/>' : letter) +
-              '</div>' +
-              '<div>' +
-                '<div style="font-weight:800;font-size:0.95rem;color:#fff;">' +
-                  escapeHtml(u.displayName || 'Unknown') +
-                  (isCurrent ? ' <span style="font-size:0.75rem;color:var(--kick-green);font-weight:800;">(You)</span>' : '') +
-                  
-                '</div>' +
-                '<div style="font-size:0.74rem;color:var(--text-muted);display:flex;align-items:center;gap:8px;margin-top:2px;">' +
-                  (u.epicUsername ? '<span style="color:#38bdf8;font-weight:700;"><i data-lucide="gamepad-2" style="width:11px;height:11px;display:inline;"></i> ' + escapeHtml(u.epicUsername) + '</span>' : '<span>Unlinked IGN</span>') +
-                  (u.discordUsername ? '<span>@' + escapeHtml(u.discordUsername) + '</span>' : '') +
-                '</div>' +
-              '</div>' +
-            '</div>' +
-          '</td>' +
-          '<td style="color:#ffffff;font-weight:900;font-size:1.02rem;">' +
-            '<span style="display:inline-flex;align-items:center;gap:5px;"><i data-lucide="trophy" style="width:14px;height:14px;color:var(--kick-green);"></i> ' + won + '</span>' +
-          '</td>' +
-          '<td style="color:#cbd5e1;font-weight:700;font-size:0.9rem;">' + played + '</td>' +
-          '<td>' +
-            '<span class="badge" style="background:rgba(255,255,255,0.05);color:#fff;font-weight:800;font-size:0.78rem;padding:3px 9px;">' +
-              wr +
-            '</span>' +
-          '</td>' +
-          '<td style="color:var(--kick-green);font-weight:900;font-size:0.95rem;">' +
-            '<span style="display:inline-flex;align-items:center;gap:6px;">' +
-              '<i data-lucide="zap" style="width:14px;height:14px;color:var(--kick-green);"></i> ' + ((won * 100) + (played * 10)) + ' PTS' +
-            '</span>' +
-          '</td>' +
-        '</tr>';
-      }).join('');
-
-      renderPaginationControls(totalPages);
-      if (window.lucide) lucide.createIcons();
+      tbody.innerHTML = filtered.map(item => `
+        <tr onclick="window.location.href='profile/${item.id}'">
+          <td style="font-weight:700;color:${item.rank === 1 ? '#fbbf24' : (item.rank === 2 ? '#94a3b8' : (item.rank === 3 ? '#b45309' : '#fff'))};">
+            #${item.rank}
+          </td>
+          <td>
+            <div style="display:flex;align-items:center;gap:10px;">
+              <div style="font-weight:600;color:#fff;">
+                ${item.name} ${item.isYou ? '<span style="font-size:0.68rem;background:rgba(83,252,24,0.15);color:#53fc18;padding:2px 6px;border-radius:4px;margin-left:4px;">YOU</span>' : ''}
+                <div style="font-size:0.72rem;color:#64748b;">ID: ${item.id}</div>
+              </div>
+            </div>
+          </td>
+          <td>
+            <div style="display:inline-flex;align-items:center;gap:6px;">
+              <img src="${item.icon}" style="width:16px;height:16px;" alt="${item.tier}"/>
+              <span style="font-size:0.8rem;font-weight:600;color:#cbd5e1;">${item.tier}</span>
+            </div>
+          </td>
+          <td style="font-weight:700;color:#53fc18;">
+            ${item.elo.toLocaleString()} ELO
+          </td>
+          <td>${item.wins} Wins</td>
+          <td style="color:#a3e635;font-weight:600;">${item.wr}</td>
+          <td style="color:#fbbf24;font-weight:600;">${item.prize}</td>
+        </tr>
+      `).join('');
     }
 
-    function renderPaginationControls(totalPages) {
-      const container = document.getElementById('lb-pagination');
-      if (!container) return;
+    document.addEventListener('DOMContentLoaded', () => {
+      // Filter buttons
+      const filterBtns = document.querySelectorAll('.lb-filter-btn');
+      filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          filterBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          currentFilter = btn.getAttribute('data-filter') || 'all';
+          renderLeaderboard();
+        });
+      });
 
-      container.innerHTML = 
-        '<button class="ct-page-btn" onclick="renderTablePage(' + (lbCurrentPage - 1) + ')" ' + (lbCurrentPage <= 1 ? 'disabled' : '') + '>' +
-          '<i data-lucide="chevron-left"></i> Previous' +
-        '</button>' +
-        '<span class="ct-page-info">Page ' + lbCurrentPage + ' of ' + totalPages + '</span>' +
-        '<button class="ct-page-btn" onclick="renderTablePage(' + (lbCurrentPage + 1) + ')" ' + (lbCurrentPage >= totalPages ? 'disabled' : '') + '>' +
-          'Next <i data-lucide="chevron-right"></i>' +
-        '</button>';
-      if (window.lucide) lucide.createIcons();
-    }
-
-    async function handleRefresh() {
-      const btn = document.getElementById('refresh-btn');
-      const icon = document.getElementById('refresh-icon');
-      if (btn) btn.disabled = true;
-      if (icon) icon.classList.add('spinning-icon');
-
-      try {
-        await loadLeaderboard();
-        showToast('Leaderboard refreshed!', 'info');
-      } catch (err) {
-        showToast('Failed to refresh leaderboard', 'error');
-      } finally {
-        setTimeout(() => {
-          if (icon) icon.classList.remove('spinning-icon');
-          if (btn) btn.disabled = false;
-        }, 500);
+      // Search input
+      const searchInput = document.getElementById('lb-search');
+      if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+          searchQuery = e.target.value.trim().toLowerCase();
+          renderLeaderboard();
+        });
       }
-    }
+
+      renderLeaderboard();
+    });
   </script>
-
-  <main class="page-wrap" id="main-content" role="main" style="max-width: 1280px; width: 100%;">
-    <!-- 1. Morphed Master Header & Stats Card -->
-    <div class="lb-morphed-header-card">
-      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;">
-        <div style="display:flex;align-items:center;gap:12px;">
-          <h1 style="font-size:1.65rem;font-weight:900;margin:0;display:flex;align-items:center;gap:10px;color:#fff;">
-            <i data-lucide="trophy" style="color:var(--kick-green);width:26px;height:26px;"></i> Leaderboard
-          </h1>
-        </div>
-        <div>
-          <button class="btn btn-outline btn-sm" id="refresh-btn" onclick="handleRefresh()" style="display:inline-flex;align-items:center;gap:7px;background:#060608;border:1px solid rgba(255,255,255,0.1);padding:7px 16px;border-radius:10px;font-size:0.82rem;">
-            <i data-lucide="refresh-cw" id="refresh-icon" style="width:14px;height:14px;"></i> <span>Refresh</span>
-          </button>
-        </div>
-      </div>
-
-      <!-- Morphed Divider -->
-      <div style="border-top:1px solid rgba(255,255,255,0.07);margin:20px 0 16px;"></div>
-
-      <!-- Morphed Quick Stats Grid -->
-      <div class="lb-stats-grid">
-        <div class="lb-stat-card">
-          <div class="lb-stat-icon-wrap" style="background:rgba(83,252,24,0.12);color:var(--kick-green);">
-            <i data-lucide="users" style="width:20px;height:20px;"></i>
-          </div>
-          <div>
-            <div style="font-size:0.72rem;font-weight:800;color:var(--text-muted);text-transform:uppercase;">Competitors</div>
-            <div style="font-size:1.28rem;font-weight:900;color:#fff;" id="stat-total-players">0</div>
-          </div>
-        </div>
-
-        <div class="lb-stat-card">
-          <div class="lb-stat-icon-wrap" style="background:rgba(59,130,246,0.14);color:#60a5fa;">
-            <i data-lucide="trophy" style="width:20px;height:20px;"></i>
-          </div>
-          <div>
-            <div style="font-size:0.72rem;font-weight:800;color:var(--text-muted);text-transform:uppercase;">Victories Won</div>
-            <div style="font-size:1.28rem;font-weight:900;color:#fff;" id="stat-total-wins">0</div>
-          </div>
-        </div>
-
-        <div class="lb-stat-card">
-          <div class="lb-stat-icon-wrap" style="background:rgba(83,252,24,0.14);color:var(--kick-green);">
-            <i data-lucide="swords" style="width:20px;height:20px;"></i>
-          </div>
-          <div>
-            <div style="font-size:0.72rem;font-weight:800;color:var(--text-muted);text-transform:uppercase;">Matches Logged</div>
-            <div style="font-size:1.28rem;font-weight:900;color:#fff;" id="stat-total-matches">0</div>
-          </div>
-        </div>
-
-        <div class="lb-stat-card">
-          <div class="lb-stat-icon-wrap" style="background:rgba(168,85,247,0.14);color:#c084fc;">
-            <i data-lucide="target" style="width:20px;height:20px;"></i>
-          </div>
-          <div>
-            <div style="font-size:0.72rem;font-weight:800;color:var(--text-muted);text-transform:uppercase;">Top Win Rate</div>
-            <div style="font-size:1.28rem;font-weight:900;color:#fff;" id="stat-top-winrate">0%</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 2. Top 3 Podium Showcase -->
-    <div class="podium-section" id="podium-wrap">
-      <div class="empty-state" style="grid-column:1/-1;"><div class="spinner" style="margin:0 auto;"></div></div>
-    </div>
-
-    <!-- 3. Standings Table Card -->
-    <div class="lb-table-card">
-      <!-- Search & Sort Controls Bar with ample height and clean layout -->
-      <div class="lb-controls-bar">
-        <div class="lb-search-input-wrap">
-          <i data-lucide="search" class="lb-search-icon"></i>
-          <input
-            id="player-search-input"
-            class="form-input lb-search-input"
-            placeholder="Search players..."
-            oninput="handleSearchLeaderboard(this.value)"
-          />
-        </div>
-
-        <!-- Sort Tabs -->
-        <div class="lb-sort-tabs-wrap">
-          <button class="lb-sort-tab active" data-sort="wins" onclick="setSortMode('wins')">
-            <i data-lucide="trophy" style="width:14px;height:14px;"></i> <span>Most Wins</span>
-          </button>
-          <button class="lb-sort-tab" data-sort="matches" onclick="setSortMode('matches')">
-            <i data-lucide="swords" style="width:14px;height:14px;"></i> <span>Most Matches</span>
-          </button>
-          <button class="lb-sort-tab" data-sort="winrate" onclick="setSortMode('winrate')">
-            <i data-lucide="percent" style="width:14px;height:14px;"></i> <span>Win Rate</span>
-          </button>
-        </div>
-      </div>
-
-      <!-- Table Wrap -->
-      <div class="lb-table-wrap">
-        <table class="lb-custom-table">
-          <thead>
-            <tr>
-              <th style="width:80px;">Rank</th>
-              <th>Player</th>
-              <th>Wins</th>
-              <th>Matches</th>
-              <th>Win Rate</th>
-              <th>Points</th>
-            </tr>
-          </thead>
-          <tbody id="lb-tbody">
-            <tr><td colspan="6" style="text-align:center;padding:28px;"><div class="spinner" style="margin:0 auto;"></div></td></tr>
-          </tbody>
-        </table>
-      </div>
-
-      <!-- Pagination bar -->
-      <div class="ct-pagination" id="lb-pagination" style="margin-top:18px;"></div>
-    </div>
-  </main>
 </body>
 </html>

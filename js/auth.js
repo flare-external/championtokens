@@ -7,30 +7,10 @@
  * Discord will redirect back to /callback.html?code=...
  */
 function signInWithDiscord() {
-  const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-  if (isLocal) {
-    let cid = localStorage.getItem('ct_contender_id');
-    if (!cid || cid.length !== 12) {
-      cid = Math.floor(100000000000 + Math.random() * 900000000000).toString();
-      localStorage.setItem('ct_contender_id', cid);
-    }
-    const localUser = {
-      id: cid,
-      name: 'Zenox',
-      customName: 'Zenox',
-      tag: '#1337',
-      isLoggedIn: true,
-      avatar: 'https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=120&auto=format&fit=crop&q=80',
-      isVip: true
-    };
-    localStorage.setItem('ct_user', JSON.stringify(localUser));
-    const modal = document.getElementById('auth-modal');
-    if (modal) modal.classList.remove('open');
-    if (typeof showToast === 'function') showToast('Signed in with Discord as Zenox#1337!');
-    window.location.reload();
-    return;
-  }
+  signInWithDiscordOAuth();
+}
 
+function signInWithDiscordOAuth() {
   const redirectUri = getRedirectUri();
   const params = new URLSearchParams({
     client_id:     DISCORD_CLIENT_ID,
@@ -40,6 +20,8 @@ function signInWithDiscord() {
   });
   window.location.href = `https://discord.com/api/oauth2/authorize?${params}`;
 }
+
+window.signInWithDiscordOAuth = signInWithDiscordOAuth;
 
 /**
  * Open the official Epic Games account linking OAuth flow.
