@@ -187,6 +187,19 @@ async function exchangeDiscordCode(code) {
             if (data.user) {
               localStorage.setItem('ct_cached_discord_user', JSON.stringify(data.user));
             }
+            const clean12 = (uInfo.discordId || cred.user.uid || '').replace(/\D/g, '').slice(0, 12);
+            if (clean12) {
+              localStorage.setItem('ct_contender_id', clean12);
+            }
+            const localUser = {
+              id: clean12 || '112118831941',
+              name: realName,
+              customName: '',
+              tag: '',
+              avatar: uInfo.photoURL || cred.user.photoURL || 'https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=120&auto=format&fit=crop&q=80',
+              isLoggedIn: true
+            };
+            localStorage.setItem('ct_user', JSON.stringify(localUser));
           } catch (e) {}
 
           // Update client auth user profile

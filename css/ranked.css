@@ -1940,3 +1940,18 @@ body {
   border-color: #53fc18;
   color: #53fc18;
 }
+
+/* ── VIP Owner Animated Golden Bio (!text Easter Egg) ───────── */
+.pf-bio-golden-vip {
+  font-family: 'Outfit', sans-serif !important;
+  font-size: 1.24rem !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.02em !important;
+  background: linear-gradient(90deg, #f59e0b 0%, #fef08a 35%, #fbbf24 60%, #fef08a 80%, #f59e0b 100%) !important;
+  background-size: 250% auto !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  animation: goldShine 3s linear infinite !important;
+  display: inline-block !important;
+  filter: drop-shadow(0 0 12px rgba(251, 191, 36, 0.45)) !important;
+}

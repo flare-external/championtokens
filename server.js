@@ -138,6 +138,13 @@ const server = http.createServer((req, res) => {
     pathname = '/shop.html';
   }
 
+  // Redirect legacy /profile/discord:123 to pure 12-digit /profile/123
+  if (pathname.startsWith('/profile/discord:')) {
+    const digits = pathname.replace(/\D/g, '').slice(0, 12) || '112118831941';
+    res.writeHead(301, { Location: `/profile/${digits}` });
+    return res.end();
+  }
+
   // Handle /profile and /profile/* dynamically (excluding static assets with file extensions)
   if (pathname === '/profile' || pathname.startsWith('/profile/')) {
     if (path.extname(pathname)) {

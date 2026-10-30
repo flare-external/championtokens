@@ -20,16 +20,16 @@
   }
 
   function get12DigitContenderId(rawId) {
-    let cid = localStorage.getItem('ct_contender_id');
-    if (cid && /^\d{12}$/.test(cid)) return cid;
     if (rawId && typeof rawId === 'string') {
       const digits = rawId.replace(/\D/g, '');
       if (digits.length >= 12) {
-        cid = digits.slice(0, 12);
+        const cid = digits.slice(0, 12);
         localStorage.setItem('ct_contender_id', cid);
         return cid;
       }
     }
+    let cid = localStorage.getItem('ct_contender_id');
+    if (cid && /^\d{12}$/.test(cid)) return cid;
     cid = Math.floor(100000000000 + Math.random() * 900000000000).toString();
     localStorage.setItem('ct_contender_id', cid);
     return cid;

@@ -49,38 +49,19 @@
       pointer-events: none;
     }
 
-    /* Banner Controls (Direct Edit & Change Banner) */
-    .pf-banner-actions {
-      position: absolute;
-      top: 14px;
-      right: 16px;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      z-index: 20;
-    }
-
-    .pf-edit-profile-btn {
-      background: rgba(0, 0, 0, 0.7);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      color: #ffffff;
-      font-size: 0.74rem;
-      font-weight: 600;
-      padding: 6px 14px;
-      border-radius: 8px;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      cursor: pointer;
-      transition: all 0.15s ease;
-    }
-
-    .pf-edit-profile-btn:hover {
-      background: rgba(83, 252, 24, 0.15);
-      border-color: #53fc18;
-      color: #53fc18;
+    /* VIP Owner Animated Golden Bio (!text Easter Egg) */
+    .pf-bio-golden-vip {
+      font-family: 'Outfit', sans-serif !important;
+      font-size: 1.24rem !important;
+      font-weight: 800 !important;
+      letter-spacing: 0.02em !important;
+      background: linear-gradient(90deg, #f59e0b 0%, #fef08a 35%, #fbbf24 60%, #fef08a 80%, #f59e0b 100%) !important;
+      background-size: 250% auto !important;
+      -webkit-background-clip: text !important;
+      -webkit-text-fill-color: transparent !important;
+      animation: goldShine 3s linear infinite !important;
+      display: inline-block !important;
+      filter: drop-shadow(0 0 12px rgba(251, 191, 36, 0.45)) !important;
     }
 
     /* Banner Body */
@@ -171,21 +152,8 @@
     <!-- Profile Banner & Identity Card -->
     <section class="pf-banner-card">
       
-      <!-- Compact Banner Cover with Direct Actions -->
-      <div class="pf-banner-cover" id="pf-banner-cover">
-        <input type="file" id="input-direct-banner" accept="image/png,image/jpeg,image/webp,image/gif" style="display:none;" />
-        
-        <div class="pf-banner-actions">
-          <button type="button" class="pf-edit-profile-btn" id="btn-change-banner-direct" title="Upload a new banner image">
-            <i data-lucide="camera" style="width:13px;height:13px;"></i>
-            <span>Change Banner</span>
-          </button>
-          <button type="button" class="pf-edit-profile-btn" id="btn-open-edit-profile" title="Edit your contender bio directly">
-            <i data-lucide="edit-3" style="width:13px;height:13px;"></i>
-            <span>Edit Bio</span>
-          </button>
-        </div>
-      </div>
+      <!-- Sleek Default Dark Cyber Banner -->
+      <div class="pf-banner-cover" id="pf-banner-cover"></div>
 
       <!-- Banner Body -->
       <div class="pf-banner-body">
@@ -458,8 +426,51 @@
       });
     }
 
+    function isBioVipOwner(u) {
+      if (!u) return false;
+      const name = (u.name || u.displayName || u.customName || '').toLowerCase().trim();
+      const id = String(u.id || u.uid || '');
+      const storedCid = String(localStorage.getItem('ct_contender_id') || '');
+      return name === 'adrian' || 
+             id.includes('112118831941') || 
+             storedCid.startsWith('112118831941') ||
+             localStorage.getItem('ct_is_owner') === 'true';
+    }
+
+    function renderBio(savedBio, u) {
+      const bioEl = document.getElementById('pf-user-bio');
+      if (!bioEl) return;
+      bioEl.className = 'pf-bio-text';
+
+      if (!savedBio || !savedBio.trim()) {
+        bioEl.textContent = 'bio here.. or not? please. add. one.';
+        bioEl.style.fontStyle = 'italic';
+        bioEl.style.color = '#64748b';
+        return;
+      }
+
+      const trimmed = savedBio.trim();
+      const isVip = isBioVipOwner(u);
+      if (trimmed.startsWith('!') && isVip) {
+        const displayText = trimmed.slice(1).trim() || trimmed;
+        bioEl.textContent = displayText;
+        bioEl.classList.add('pf-bio-golden-vip');
+        bioEl.style.fontStyle = 'normal';
+        bioEl.style.color = '';
+      } else {
+        bioEl.textContent = trimmed;
+        bioEl.style.fontStyle = 'normal';
+        bioEl.style.color = '#cbd5e1';
+      }
+    }
+
     function initProfile() {
       // 1. Resolve 12-digit Contender ID (Never discord:...)
+      if (window.location.pathname.includes('discord:')) {
+        const digits = sanitizeTo12Digits(window.location.pathname) || '112118831941';
+        window.history.replaceState(null, '', `/profile/${digits}`);
+      }
+
       let contenderId = sanitizeTo12Digits(window.location.pathname);
       if (!contenderId) {
         contenderId = sanitizeTo12Digits(localStorage.getItem('ct_contender_id'));
@@ -488,27 +499,16 @@
       }
       localStorage.setItem('ct_contender_id', user.id);
 
-      // 2. Custom Banner Loading
-      const savedBanner = localStorage.getItem('ct_user_banner');
+      // 2. Default Sleek Cyber Banner (Remove custom uploaded banners)
+      localStorage.removeItem('ct_user_banner');
       const bannerCoverEl = document.getElementById('pf-banner-cover');
-      if (savedBanner && bannerCoverEl) {
-        bannerCoverEl.style.backgroundImage = `url('${savedBanner}')`;
+      if (bannerCoverEl) {
+        bannerCoverEl.style.backgroundImage = 'none';
       }
 
       // 3. Bio Setup
       const savedBio = localStorage.getItem('ct_user_bio');
-      const bioEl = document.getElementById('pf-user-bio');
-      if (bioEl) {
-        if (savedBio && savedBio.trim()) {
-          bioEl.textContent = savedBio;
-          bioEl.style.fontStyle = 'normal';
-          bioEl.style.color = '#cbd5e1';
-        } else {
-          bioEl.textContent = 'bio here.. or not? please. add. one.';
-          bioEl.style.fontStyle = 'italic';
-          bioEl.style.color = '#64748b';
-        }
-      }
+      renderBio(savedBio, user);
 
       // 4. Real Combat Statistics
       const played = parseInt(user.matchesPlayed || localStorage.getItem('ct_stat_matches_played') || '0', 10);
@@ -584,7 +584,6 @@
       const bioAlert = document.getElementById('bio-inline-mod-alert');
       const saveBioBtn = document.getElementById('btn-save-inline-bio');
       const cancelBioBtn = document.getElementById('btn-cancel-inline-bio');
-      const openBioBtn = document.getElementById('btn-open-edit-profile');
       const triggerBioBtn = document.getElementById('btn-trigger-bio-edit');
 
       function enterBioEdit() {
@@ -606,7 +605,6 @@
 
       bioDisplay?.addEventListener('click', enterBioEdit);
       triggerBioBtn?.addEventListener('click', (e) => { e.stopPropagation(); enterBioEdit(); });
-      openBioBtn?.addEventListener('click', enterBioEdit);
       cancelBioBtn?.addEventListener('click', exitBioEdit);
 
       bioInput?.addEventListener('input', () => {
@@ -618,58 +616,22 @@
         const val = bioInput.value.trim();
 
         if (val) {
-          const check = inspectBioSafety(val);
+          const textForCheck = val.startsWith('!') ? val.slice(1).trim() : val;
+          const check = inspectBioSafety(textForCheck);
           if (!check.safe) {
             bioAlert.textContent = check.reason;
             bioAlert.style.display = 'block';
             return;
           }
           localStorage.setItem('ct_user_bio', val);
-          bioEl.textContent = val;
-          bioEl.style.fontStyle = 'normal';
-          bioEl.style.color = '#cbd5e1';
+          renderBio(val, user);
         } else {
           localStorage.removeItem('ct_user_bio');
-          bioEl.textContent = 'bio here.. or not? please. add. one.';
-          bioEl.style.fontStyle = 'italic';
-          bioEl.style.color = '#64748b';
+          renderBio('', user);
         }
 
         exitBioEdit();
         showToast('Bio updated!');
-      });
-
-      // 9. Direct Banner Change (No Popups!)
-      const directBannerBtn = document.getElementById('btn-change-banner-direct');
-      const directBannerInput = document.getElementById('input-direct-banner');
-
-      directBannerBtn?.addEventListener('click', () => {
-        directBannerInput.click();
-      });
-
-      directBannerInput?.addEventListener('change', (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
-
-        showToast('Scanning banner with automated safety moderation...');
-
-        const reader = new FileReader();
-        reader.onload = async (re) => {
-          const imgData = re.target.result;
-          const result = await inspectImageSafety(imgData, file.name);
-
-          if (!result.safe) {
-            alert(result.reason);
-            return;
-          }
-
-          localStorage.setItem('ct_user_banner', imgData);
-          if (bannerCoverEl) {
-            bannerCoverEl.style.backgroundImage = `url('${imgData}')`;
-          }
-          showToast('Banner updated successfully!');
-        };
-        reader.readAsDataURL(file);
       });
 
       if (window.lucide) window.lucide.createIcons();

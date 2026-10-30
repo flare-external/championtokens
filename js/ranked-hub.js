@@ -278,7 +278,8 @@
         if (islandName) islandName.textContent = displayName;
         if (dropdownAvatar) dropdownAvatar.src = u.avatar;
         if (dropdownName) dropdownName.textContent = `${displayName}${u.tag || ''}`;
-        if (dropdownProfileLink) dropdownProfileLink.href = `/profile/${u.id}`;
+        const cleanProfileId = String(u.id || '').replace(/\D/g, '').slice(0, 12) || u.id;
+        if (dropdownProfileLink) dropdownProfileLink.href = `/profile/${cleanProfileId}`;
       } else {
         if (signInBtn) signInBtn.style.display = 'inline-flex';
         if (userIsland) userIsland.style.display = 'none';
