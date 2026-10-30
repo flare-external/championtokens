@@ -6,7 +6,7 @@
   <title>Champion Tokens</title>
   <link rel="icon" type="image/png" href="champion-tokens_new.png"/>
   <link rel="stylesheet" href="css/style.css?v=5.5"/>
-  <link rel="stylesheet" href="css/ranked.css?v=3.0"/>
+  <link rel="stylesheet" href="css/ranked.css?v=4.0"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <script src="js/protect.js"></script>
@@ -19,6 +19,8 @@
       <span><span class="ct-live-dot"></span> <strong id="ticker-online-count" style="color:#fff;">1,482</strong> Online</span>
       <span style="color:#334155;">•</span>
       <span><strong id="ticker-matches-count" style="color:#fff;">219</strong> Matches Live</span>
+      <span style="color:#334155;">•</span>
+      <span>Competitive Skill ELO (+25 to +50 per match)</span>
     </div>
     <div class="ct-season-pill">
       Season 1 Live • 38 Days Left
@@ -27,10 +29,26 @@
 
   <!-- ── Top Navigation Header ──────────────────────────────────── -->
   <header class="landing-nav" role="banner" style="background:#000000;border-bottom:1px solid rgba(255,255,255,0.08);padding:14px 28px;">
-    <a href="/" class="brand-logo" style="text-decoration:none;">
-      <span class="brand-logo-champion">CHAMPION</span> <span class="brand-logo-tokens">TOKENS</span>
-    </a>
+    <!-- Upper Left: Brand + Clickable Rank Widget -->
+    <div class="ct-nav-left">
+      <a href="/" class="brand-logo" style="text-decoration:none;">
+        <span class="brand-logo-champion">CHAMPION</span> <span class="brand-logo-tokens">TOKENS</span>
+      </a>
 
+      <!-- Upper Left Clickable Rank Display -->
+      <div class="ct-header-rank-pill" id="ct-header-rank-pill" title="View All Ranks & ELO Thresholds">
+        <img src="medal-ranks/svg/06-elite.svg" class="ct-header-rank-icon" alt="Elite"/>
+        <div class="ct-header-rank-info">
+          <span class="ct-header-rank-name">Elite</span>
+          <span class="ct-header-rank-elo">2,450 ELO</span>
+        </div>
+        <button type="button" class="ct-info-icon-btn" id="btn-placements-info" title="Placement Info">
+          <i data-lucide="info" style="width:13px;height:13px;"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Upper Right Nav & Actions -->
     <nav style="display:flex;align-items:center;gap:18px;">
       <a href="matches" class="nav-link-landing" style="font-size:0.84rem;font-weight:700;color:#94a3b8;text-decoration:none;">Matches</a>
       <a href="leaderboard" class="nav-link-landing" style="font-size:0.84rem;font-weight:700;color:#94a3b8;text-decoration:none;">Leaderboard</a>
@@ -84,76 +102,50 @@
   <!-- ── Main Stage ─────────────────────────────────────────────── -->
   <main class="ct-ranked-wrap">
 
-    <!-- ── 3 Ads / Highlights in the Middle ────────────────────── -->
-    <section class="ct-ads-grid">
-      <!-- Ad 1: Beta Testing -->
-      <div class="ct-ad-card">
-        <div>
-          <span class="ct-ad-tag tag-beta">BETA TESTING</span>
-          <div class="ct-ad-title">Website in Beta Testing</div>
-          <div class="ct-ad-desc">We are actively testing matchmaking, ELO tracking, and server connections. Report bugs on Discord for exclusive Beta Founder rewards.</div>
+    <!-- ── Switching 10s Carousel (Middle/Top) ─────────────────── -->
+    <section class="ct-carousel-container" id="ct-carousel">
+      <div class="ct-carousel-track">
+        <!-- Slide 1: Beta Testing -->
+        <div class="ct-carousel-slide active" style="background-image:linear-gradient(90deg, #08090c 45%, rgba(8,9,12,0.85) 100%), url('realistic.jpeg');" onclick="window.open('https://discord.gg/35xqcMTEbH', '_blank')">
+          <span class="ct-slide-tag tag-beta">BETA TESTING</span>
+          <div class="ct-slide-title">Website is in Public Beta Testing</div>
+          <div class="ct-slide-desc">We are actively testing skill matchmaking and server routing. Report bugs on Discord to claim your exclusive Beta Founder badge.</div>
         </div>
-        <a href="https://discord.gg/35xqcMTEbH" target="_blank" rel="noopener noreferrer" class="ct-ad-link">
-          <span>Join Beta Discord</span>
-          <i data-lucide="arrow-right" style="width:13px;height:13px;"></i>
-        </a>
-      </div>
 
-      <!-- Ad 2: Season Pass (Season 1) -->
-      <div class="ct-ad-card" onclick="window.location.href='shop'">
-        <div>
-          <span class="ct-ad-tag tag-pass">SEASON PASS</span>
-          <div class="ct-ad-title">Season 1: Zero Hour Pass</div>
-          <div class="ct-ad-desc">Level up 100 tiers of cosmetic loot, player titles, and XP boosters. Earn XP in all Ranked matches and unranked Friendlies.</div>
+        <!-- Slide 2: Season Pass (Season 1) -->
+        <div class="ct-carousel-slide" style="background-image:linear-gradient(90deg, #08090c 45%, rgba(8,9,12,0.85) 100%), url('zonewars.jpeg');" onclick="window.location.href='shop'">
+          <span class="ct-slide-tag tag-pass">SEASON PASS</span>
+          <div class="ct-slide-title">Season 1: Zero Hour Pass Live</div>
+          <div class="ct-slide-desc">100 tiers of cosmetic loot, animated frames, and victory sound effects. Earn battle pass XP in all Ranked games and Friendlies.</div>
         </div>
-        <div class="ct-ad-link">
-          <span>View Rewards Track</span>
-          <i data-lucide="arrow-right" style="width:13px;height:13px;"></i>
+
+        <!-- Slide 3: Invite Friends (Free Bonuses) -->
+        <div class="ct-carousel-slide trigger-referrals" style="background-image:linear-gradient(90deg, #08090c 45%, rgba(8,9,12,0.85) 100%), url('boxfights.jpeg');">
+          <span class="ct-slide-tag tag-referral">FREE BONUSES</span>
+          <div class="ct-slide-title">Invite Friends, Earn Free Rewards</div>
+          <div class="ct-slide-desc">Share your referral link or code. You and your friend both earn instant bonus XP and starter cosmetics upon their first match.</div>
         </div>
       </div>
 
-      <!-- Ad 3: Invite Friends for Free Bonuses (Referrals) -->
-      <div class="ct-ad-card trigger-referrals">
-        <div>
-          <span class="ct-ad-tag tag-referral">FREE BONUSES</span>
-          <div class="ct-ad-title">Invite Friends, Earn Rewards</div>
-          <div class="ct-ad-desc">Share your personal referral link or code. Unlock free bonus XP and cosmetics when your friends sign up and queue their first match.</div>
-        </div>
-        <div class="ct-ad-link" style="color:#fbbf24;">
-          <span>Get Your Invite Code</span>
-          <i data-lucide="arrow-right" style="width:13px;height:13px;"></i>
+      <!-- Carousel Counter & Dots (Bottom Right) -->
+      <div class="ct-carousel-controls">
+        <span class="ct-carousel-counter" id="carousel-counter-text">1 / 3</span>
+        <div class="ct-carousel-dots">
+          <span class="ct-carousel-dot active"></span>
+          <span class="ct-carousel-dot"></span>
+          <span class="ct-carousel-dot"></span>
         </div>
       </div>
     </section>
 
-    <!-- ── Matchmaking Queue Center (Below in the Middle) ──────── -->
+    <!-- ── Center Matchmaking Section with Fortnite Backdrop ──── -->
     <section class="ct-matchmake-hub">
-      <!-- Your Rank & ELO Display -->
-      <div class="ct-user-rank-strip">
-        <div class="ct-rank-badge-preview">
-          <div class="ct-rank-icon-tiny" style="background:transparent;">
-            <img src="medal-ranks/svg/06-elite.svg" style="width:34px;height:34px;object-fit:contain;" alt="Elite"/>
-          </div>
-          <div>
-            <div class="ct-rank-name-bold">Elite Tier</div>
-            <div class="ct-elo-display">2,450 ELO</div>
-          </div>
-        </div>
-
-        <div class="ct-divider-vertical"></div>
-
-        <div class="ct-placements-stat">
-          <div>Placements: <strong>5 / 5 Completed</strong></div>
-          <div style="font-size:0.7rem;color:#64748b;">Peak Cap: 3,000 ELO</div>
-        </div>
-
-        <div class="ct-divider-vertical"></div>
-
-        <div class="ct-placements-stat">
-          <div>Decay: <strong style="color:#53fc18;">Active</strong></div>
-          <div style="font-size:0.7rem;color:#64748b;">28 Inactive Days</div>
-        </div>
-      </div>
+      <h2 class="ct-matchmake-title">
+        Fortnite <span>Ranked Arena</span>
+      </h2>
+      <p class="ct-matchmake-sub">
+        Competitive 1v1, 2v2, & 3v3 skill matchmaking. Queue now across Realistic, Box Fights, Build Fights, and Zone Wars.
+      </p>
 
       <!-- Big Queue Button -->
       <div>
@@ -178,71 +170,7 @@
       </div>
     </section>
 
-    <!-- ── Rank Tiers Row ─────────────────────────────────────── -->
-    <section class="ct-ranks-bar">
-      <div class="ct-ranks-head">
-        <h3>Rank Tiers (3,000 ELO Cap)</h3>
-        <span class="ct-ranks-meta">5 Placement Matches • 28-Day Decay</span>
-      </div>
-
-      <div class="ct-ranks-grid">
-        <div class="ct-rank-box">
-          <div class="ct-rank-icon-slot" data-rank="unranked"><i data-lucide="help-circle" style="color:#64748b;width:24px;height:24px;"></i></div>
-          <div class="ct-rank-name">Placements</div>
-          <div class="ct-rank-elo">0 / 5</div>
-        </div>
-
-        <div class="ct-rank-box">
-          <div class="ct-rank-icon-slot" data-rank="bronze"><img src="medal-ranks/svg/01-bronze.svg" style="width:36px;height:36px;object-fit:contain;" alt="Bronze"/></div>
-          <div class="ct-rank-name">Bronze</div>
-          <div class="ct-rank-elo">0 - 499</div>
-        </div>
-
-        <div class="ct-rank-box">
-          <div class="ct-rank-icon-slot" data-rank="silver"><img src="medal-ranks/svg/02-silver.svg" style="width:36px;height:36px;object-fit:contain;" alt="Silver"/></div>
-          <div class="ct-rank-name">Silver</div>
-          <div class="ct-rank-elo">500 - 999</div>
-        </div>
-
-        <div class="ct-rank-box">
-          <div class="ct-rank-icon-slot" data-rank="gold"><img src="medal-ranks/svg/03-gold.svg" style="width:36px;height:36px;object-fit:contain;" alt="Gold"/></div>
-          <div class="ct-rank-name">Gold</div>
-          <div class="ct-rank-elo">1000 - 1499</div>
-        </div>
-
-        <div class="ct-rank-box">
-          <div class="ct-rank-icon-slot" data-rank="platinum"><img src="medal-ranks/svg/04-platinum.svg" style="width:36px;height:36px;object-fit:contain;" alt="Platinum"/></div>
-          <div class="ct-rank-name">Platinum</div>
-          <div class="ct-rank-elo">1500 - 1999</div>
-        </div>
-
-        <div class="ct-rank-box">
-          <div class="ct-rank-icon-slot" data-rank="diamond"><img src="medal-ranks/svg/05-diamond.svg" style="width:36px;height:36px;object-fit:contain;" alt="Diamond"/></div>
-          <div class="ct-rank-name">Diamond</div>
-          <div class="ct-rank-elo">2000 - 2399</div>
-        </div>
-
-        <div class="ct-rank-box">
-          <div class="ct-rank-icon-slot" data-rank="elite"><img src="medal-ranks/svg/06-elite.svg" style="width:36px;height:36px;object-fit:contain;" alt="Elite"/></div>
-          <div class="ct-rank-name">Elite</div>
-          <div class="ct-rank-elo">2400 - 2699</div>
-        </div>
-
-        <div class="ct-rank-box">
-          <div class="ct-rank-icon-slot" data-rank="champion"><img src="medal-ranks/svg/07-champion.svg" style="width:36px;height:36px;object-fit:contain;" alt="Champion"/></div>
-          <div class="ct-rank-name">Champion</div>
-          <div class="ct-rank-elo">2700 - 2999</div>
-        </div>
-
-        <div class="ct-rank-box" style="border-color:rgba(83,252,24,0.3);">
-          <div class="ct-rank-icon-slot" data-rank="unreal"><img src="medal-ranks/svg/10-star.svg" style="width:36px;height:36px;object-fit:contain;" alt="Unreal"/></div>
-          <div class="ct-rank-name" style="color:#53fc18;">Unreal</div>
-          <div class="ct-rank-elo" style="color:#53fc18;font-weight:800;">3,000 Cap</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ── Monthly Leaderboard Cash Rewards ───────────────────── -->
+    <!-- ── Monthly Leaderboard ($2,500 Prize Pool) ─────────────── -->
     <section class="ct-monthly-strip">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
         <h3 style="font-family:'Outfit',sans-serif;font-size:1.15rem;font-weight:900;color:#ffffff;margin:0;">
@@ -255,8 +183,8 @@
         <thead>
           <tr>
             <th>Rank</th>
-            <th>Player</th>
-            <th>ELO</th>
+            <th>Contender</th>
+            <th>ELO Rating</th>
             <th>Win Rate</th>
             <th>Monthly Prize</th>
           </tr>
@@ -266,42 +194,194 @@
             <td style="color:#fbbf24;font-weight:900;">#1</td>
             <td style="font-weight:800;">Viper_FN</td>
             <td style="color:#53fc18;font-weight:900;">2,985</td>
-            <td>84%</td>
+            <td>84% (142 W - 26 L)</td>
             <td style="color:#53fc18;font-weight:900;">$1,000</td>
           </tr>
           <tr>
             <td style="color:#c0c0c0;font-weight:900;">#2</td>
             <td style="font-weight:800;">GhostClutch</td>
             <td style="color:#53fc18;font-weight:900;">2,940</td>
-            <td>81%</td>
+            <td>81% (128 W - 30 L)</td>
             <td style="color:#53fc18;font-weight:900;">$500</td>
           </tr>
           <tr>
             <td style="color:#cd7f32;font-weight:900;">#3</td>
             <td style="font-weight:800;">AeroSniper</td>
             <td style="color:#53fc18;font-weight:900;">2,910</td>
-            <td>79%</td>
+            <td>79% (116 W - 30 L)</td>
             <td style="color:#53fc18;font-weight:900;">$350</td>
           </tr>
           <tr>
             <td style="color:#94a3b8;font-weight:900;">#4</td>
             <td style="font-weight:800;">KovaaksGod</td>
             <td style="font-weight:900;">2,870</td>
-            <td>76%</td>
+            <td>76% (99 W - 31 L)</td>
             <td style="color:#fff;font-weight:800;">$250</td>
           </tr>
           <tr>
             <td style="color:#94a3b8;font-weight:900;">#5</td>
             <td style="font-weight:800;">MatrixEdits</td>
             <td style="font-weight:900;">2,840</td>
-            <td>74%</td>
+            <td>74% (92 W - 31 L)</td>
             <td style="color:#fff;font-weight:800;">$150</td>
           </tr>
         </tbody>
       </table>
     </section>
 
+    <!-- ── Discord Community Section with Background ──────────── -->
+    <section class="ct-discord-community-box">
+      <div class="ct-discord-left">
+        <div class="ct-discord-avatar-box">
+          <svg width="28" height="28" viewBox="0 0 127.14 96.36" fill="currentColor">
+            <path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22h0C129.24,52.84,122.09,29.11,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,45.91,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,45.91,96.12,53,91.08,65.69,84.69,65.69Z"/>
+          </svg>
+        </div>
+        <div>
+          <div class="ct-discord-title">Join Our Discord Community</div>
+          <div class="ct-discord-sub">12,400+ competitive players. Find 1v1 scrims, enter daily tournaments, and get 24/7 moderation support.</div>
+        </div>
+      </div>
+      <a href="https://discord.gg/35xqcMTEbH" target="_blank" rel="noopener noreferrer" class="btn-join-discord">
+        <svg width="18" height="18" viewBox="0 0 127.14 96.36" fill="currentColor">
+          <path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22h0C129.24,52.84,122.09,29.11,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,45.91,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,45.91,96.12,53,91.08,65.69,84.69,65.69Z"/>
+        </svg>
+        <span>Join Discord</span>
+      </a>
+    </section>
+
+    <!-- ── Bottom 3 Promo Ads Strip ───────────────────────────── -->
+    <section class="ct-bottom-ads-grid">
+      <!-- Promo 1: Referrals -->
+      <div class="ct-bottom-ad-card card-referral trigger-referrals">
+        <div>
+          <span class="ct-slide-tag tag-referral">REFERRALS</span>
+          <div class="ct-bottom-ad-title">Refer Today, Earn Rewards</div>
+          <div class="ct-bottom-ad-desc">Invite contenders with your code. Unlock free bonus XP and cosmetics when they complete their placements.</div>
+        </div>
+        <div class="ct-bottom-ad-btn">
+          <span>Invite Friends</span>
+          <i data-lucide="arrow-right" style="width:14px;height:14px;"></i>
+        </div>
+      </div>
+
+      <!-- Promo 2: Premium Subscription -->
+      <div class="ct-bottom-ad-card card-premium" onclick="window.location.href='shop'">
+        <div>
+          <span class="ct-slide-tag tag-beta">VIP UPGRADE</span>
+          <div class="ct-bottom-ad-title">Champion VIP Subscription</div>
+          <div class="ct-bottom-ad-desc">Get golden nickname badges, 2x battle pass XP earnings, priority matchmaking, and zero dispute fees.</div>
+        </div>
+        <div class="ct-bottom-ad-btn" style="color:#38bdf8;">
+          <span>Get VIP Perks</span>
+          <i data-lucide="arrow-right" style="width:14px;height:14px;"></i>
+        </div>
+      </div>
+
+      <!-- Promo 3: Battle Pass Upgrade -->
+      <div class="ct-bottom-ad-card card-pass" onclick="window.location.href='shop'">
+        <div>
+          <span class="ct-slide-tag tag-pass">SEASON 1</span>
+          <div class="ct-bottom-ad-title">Buy Premium Battle Pass</div>
+          <div class="ct-bottom-ad-desc">Instantly unlock 25 tiers plus exclusive Mythic animated banner borders and custom victory audio clips.</div>
+        </div>
+        <div class="ct-bottom-ad-btn">
+          <span>Upgrade Pass</span>
+          <i data-lucide="arrow-right" style="width:14px;height:14px;"></i>
+        </div>
+      </div>
+    </section>
+
   </main>
+
+  <!-- ── All Ranks & ELO Modal (Opened from Upper Left) ────────── -->
+  <div class="ct-modal-overlay" id="ranks-modal">
+    <div class="ct-ranks-modal-card">
+      <button type="button" class="ct-modal-close-btn" id="btn-close-ranks-modal">
+        <i data-lucide="x" style="width:20px;height:20px;"></i>
+      </button>
+
+      <div class="ct-modal-title" style="display:flex;align-items:center;gap:10px;">
+        <i data-lucide="shield" style="width:22px;height:22px;color:#53fc18;"></i>
+        <span>Competitive Ranks & ELO</span>
+      </div>
+      <div style="font-size:0.8rem;color:#94a3b8;margin-bottom:12px;">
+        Skill-based ELO: Win matches to gain +25 to +50 ELO (based on opponent skill gap). No ELO cap.
+      </div>
+
+      <!-- Placements & Calibration notice -->
+      <div style="background:#000;border:1px solid rgba(83,252,24,0.3);border-radius:10px;padding:12px;font-size:0.78rem;color:#94a3b8;margin-bottom:16px;">
+        <strong style="color:#53fc18;">5 Placement Games:</strong> Unranked players start at 1,000 hidden base ELO. Placements award boosted ELO (+100 to +250 per match) to place you quickly. Ranks decay after 28 days of inactivity.
+      </div>
+
+      <!-- List of Ranks -->
+      <div class="ct-ranks-list-scroll">
+        <div class="ct-rank-row-item">
+          <div class="ct-rank-row-left">
+            <img src="medal-ranks/svg/01-bronze.svg" class="ct-rank-row-img" alt="Bronze"/>
+            <div class="ct-rank-row-name">Bronze</div>
+          </div>
+          <div class="ct-rank-row-elo" style="color:#cd7f32;">0 - 499 ELO</div>
+        </div>
+
+        <div class="ct-rank-row-item">
+          <div class="ct-rank-row-left">
+            <img src="medal-ranks/svg/02-silver.svg" class="ct-rank-row-img" alt="Silver"/>
+            <div class="ct-rank-row-name">Silver</div>
+          </div>
+          <div class="ct-rank-row-elo" style="color:#c0c0c0;">500 - 999 ELO</div>
+        </div>
+
+        <div class="ct-rank-row-item">
+          <div class="ct-rank-row-left">
+            <img src="medal-ranks/svg/03-gold.svg" class="ct-rank-row-img" alt="Gold"/>
+            <div class="ct-rank-row-name">Gold</div>
+          </div>
+          <div class="ct-rank-row-elo" style="color:#f59e0b;">1,000 - 1,499 ELO</div>
+        </div>
+
+        <div class="ct-rank-row-item">
+          <div class="ct-rank-row-left">
+            <img src="medal-ranks/svg/04-platinum.svg" class="ct-rank-row-img" alt="Platinum"/>
+            <div class="ct-rank-row-name">Platinum</div>
+          </div>
+          <div class="ct-rank-row-elo" style="color:#38bdf8;">1,500 - 1,999 ELO</div>
+        </div>
+
+        <div class="ct-rank-row-item">
+          <div class="ct-rank-row-left">
+            <img src="medal-ranks/svg/05-diamond.svg" class="ct-rank-row-img" alt="Diamond"/>
+            <div class="ct-rank-row-name">Diamond</div>
+          </div>
+          <div class="ct-rank-row-elo" style="color:#a855f7;">2,000 - 2,399 ELO</div>
+        </div>
+
+        <div class="ct-rank-row-item">
+          <div class="ct-rank-row-left">
+            <img src="medal-ranks/svg/06-elite.svg" class="ct-rank-row-img" alt="Elite"/>
+            <div class="ct-rank-row-name">Elite</div>
+          </div>
+          <div class="ct-rank-row-elo" style="color:#ef4444;">2,400 - 2,699 ELO</div>
+        </div>
+
+        <div class="ct-rank-row-item">
+          <div class="ct-rank-row-left">
+            <img src="medal-ranks/svg/07-champion.svg" class="ct-rank-row-img" alt="Champion"/>
+            <div class="ct-rank-row-name">Champion</div>
+          </div>
+          <div class="ct-rank-row-elo" style="color:#f97316;">2,700 - 2,999 ELO</div>
+        </div>
+
+        <div class="ct-rank-row-item" style="border-color:rgba(83,252,24,0.35);background:rgba(83,252,24,0.04);">
+          <div class="ct-rank-row-left">
+            <img src="medal-ranks/svg/10-star.svg" class="ct-rank-row-img" alt="Unreal"/>
+            <div class="ct-rank-row-name" style="color:#53fc18;">Unreal (No Cap)</div>
+          </div>
+          <div class="ct-rank-row-elo" style="color:#53fc18;">3,000+ ELO (Infinite)</div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- ── Interactive Queue Selection Modal (Step 1 & Step 2) ───── -->
   <div class="ct-modal-overlay" id="queue-select-modal">
@@ -428,13 +508,13 @@
         <a href="https://discord.gg/35xqcMTEbH" target="_blank" rel="noopener noreferrer" style="color:#818cf8;text-decoration:none;">Discord</a>
       </div>
       <div style="font-size:0.75rem;color:#475569;">
-        © 2026 Champion Tokens • 3,000 ELO Competitive Ranked System • Protected by Cloudflare
+        © 2026 Champion Tokens • Competitive Fortnite Ranked Arena • Protected by Cloudflare
       </div>
     </div>
   </footer>
 
   <!-- Scripts -->
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
-  <script src="js/ranked-hub.js?v=3.0"></script>
+  <script src="js/ranked-hub.js?v=4.0"></script>
 </body>
 </html>

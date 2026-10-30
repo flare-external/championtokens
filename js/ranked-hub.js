@@ -1,82 +1,101 @@
 // ============================================================
-//  CHAMPION TOKENS — Ranked Arena Controller (v3.0)
+//  CHAMPION TOKENS — Ranked Arena Controller (v4.0)
 // ============================================================
 
 (function () {
   'use strict';
 
   const state = {
-    teamSize: '1v1', // '1v1' | '2v2' | '3v3'
-    gameMode: 'realistic', // 'realistic' | 'boxfight' | 'buildfight' | 'zonewars'
-    modeType: 'ranked', // 'ranked' | 'friendly'
+    teamSize: '1v1',
+    gameMode: 'realistic',
     isQueueing: false,
     queueTimer: null,
     queueSeconds: 0,
-    userRank: 'Elite Tier',
+    userRank: 'Elite',
     userElo: 2450,
-    userPlacements: { played: 5, required: 5 },
-    referrals: {
-      code: 'CHAMP-8821',
-      link: 'https://championtokens.fun/?ref=CHAMP-8821',
-      totalInvited: 0,
-      bonusEarned: '+0 XP'
-    },
+    isUnranked: false, // Set to true to test 0/5 placements view
+    placementsPlayed: 0,
+    placementsRequired: 5,
+    carouselIndex: 0,
+    carouselTimer: null,
     friends: [
-      { id: 'f1', name: 'Viper_FN', elo: 2510, status: 'in-match', activity: 'In 1v1 Realistic (Round 4/9)', avatar: 'https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=120&auto=format&fit=crop&q=80' },
-      { id: 'f2', name: 'GhostClutch', elo: 2380, status: 'in-queue', activity: 'Queueing Ranked 1v1 (0:45)', avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=120&auto=format&fit=crop&q=80' },
-      { id: 'f3', name: 'AeroSniper', elo: 2790, status: 'in-lobby', activity: 'In Lobby • Ready', avatar: 'https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=120&auto=format&fit=crop&q=80' }
+      { id: 'f1', name: 'Viper_FN', elo: 2985, status: 'in-match', activity: 'In 1v1 Realistic (Round 4/9)', avatar: 'https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=120&auto=format&fit=crop&q=80' },
+      { id: 'f2', name: 'GhostClutch', elo: 2940, status: 'in-queue', activity: 'Queueing Ranked 1v1 (0:45)', avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=120&auto=format&fit=crop&q=80' },
+      { id: 'f3', name: 'AeroSniper', elo: 2910, status: 'in-lobby', activity: 'In Lobby • Ready', avatar: 'https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=120&auto=format&fit=crop&q=80' }
     ]
   };
 
   document.addEventListener('DOMContentLoaded', () => {
+    init10sCarousel();
+    initUpperLeftRank();
+    initQueueModal();
     initHamburgerMenu();
     initReferralsModal();
-    initQueueModal();
     initFriendsDrawer();
     initLiveTicker();
     if (window.lucide) window.lucide.createIcons();
   });
 
-  // ── Hamburger Dropdown Menu ─────────────────────────────────
-  function initHamburgerMenu() {
-    const btn = document.getElementById('btn-hamburger');
-    const menu = document.getElementById('ct-dropdown-menu');
+  // ── Auto-Switching 10s Carousel ──────────────────────────────
+  function init10sCarousel() {
+    const slides = document.querySelectorAll('.ct-carousel-slide');
+    const dots = document.querySelectorAll('.ct-carousel-dot');
+    const counter = document.getElementById('carousel-counter-text');
+    if (!slides.length) return;
 
-    if (!btn || !menu) return;
-
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      menu.classList.toggle('open');
-    });
-
-    document.addEventListener('click', () => {
-      menu.classList.remove('open');
-    });
-
-    menu.addEventListener('click', (e) => {
-      e.stopPropagation();
-    });
-  }
-
-  // ── Referrals Modal ──────────────────────────────────────────
-  function initReferralsModal() {
-    const modal = document.getElementById('referrals-modal');
-    const triggers = document.querySelectorAll('.trigger-referrals');
-    const closeBtn = document.getElementById('btn-close-referrals');
-    const copyBtn = document.getElementById('btn-copy-ref-link');
-    const input = document.getElementById('referral-link-input');
-
-    function openModal() {
-      if (modal) modal.classList.add('open');
-      const menu = document.getElementById('ct-dropdown-menu');
-      if (menu) menu.classList.remove('open');
+    function goToSlide(idx) {
+      state.carouselIndex = (idx + slides.length) % slides.length;
+      slides.forEach((s, i) => {
+        s.classList.toggle('active', i === state.carouselIndex);
+      });
+      dots.forEach((d, i) => {
+        d.classList.toggle('active', i === state.carouselIndex);
+      });
+      if (counter) {
+        counter.textContent = `${state.carouselIndex + 1} / ${slides.length}`;
+      }
     }
 
+    dots.forEach((dot, idx) => {
+      dot.addEventListener('click', (e) => {
+        e.stopPropagation();
+        resetTimer();
+        goToSlide(idx);
+      });
+    });
+
+    function startTimer() {
+      state.carouselTimer = setInterval(() => {
+        goToSlide(state.carouselIndex + 1);
+      }, 10000); // Exactly 10 seconds
+    }
+
+    function resetTimer() {
+      clearInterval(state.carouselTimer);
+      startTimer();
+    }
+
+    startTimer();
+  }
+
+  // ── Upper Left Clickable Rank & Modal ────────────────────────
+  function initUpperLeftRank() {
+    const rankPill = document.getElementById('ct-header-rank-pill');
+    const modal = document.getElementById('ranks-modal');
+    const closeBtn = document.getElementById('btn-close-ranks-modal');
+    const infoBtn = document.getElementById('btn-placements-info');
+
+    // Click rank pill -> open ranks modal
+    if (rankPill) {
+      rankPill.addEventListener('click', () => {
+        if (modal) modal.classList.add('open');
+      });
+    }
+
+    // Close modal
     function closeModal() {
       if (modal) modal.classList.remove('open');
     }
-
-    triggers.forEach(t => t.addEventListener('click', openModal));
     if (closeBtn) closeBtn.addEventListener('click', closeModal);
     if (modal) {
       modal.addEventListener('click', (e) => {
@@ -84,19 +103,16 @@
       });
     }
 
-    if (copyBtn && input) {
-      copyBtn.addEventListener('click', () => {
-        input.select();
-        navigator.clipboard.writeText(input.value).then(() => {
-          copyBtn.textContent = 'Copied!';
-          setTimeout(() => { copyBtn.textContent = 'Copy'; }, 2000);
-          showToast('Referral link copied to clipboard!');
-        });
+    // Info button for placement matches
+    if (infoBtn) {
+      infoBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        showToast('Play 5 placement games to calibrate your rank (boosted +100 to +250 ELO during placements).');
       });
     }
   }
 
-  // ── Queue Selection Modal & Logic ────────────────────────────
+  // ── Queue Selection Modal ────────────────────────────────────
   function initQueueModal() {
     const openBtn = document.getElementById('btn-open-queue-modal');
     const modal = document.getElementById('queue-select-modal');
@@ -107,7 +123,6 @@
     const timerText = document.getElementById('queue-timer-text');
     const statusMsg = document.getElementById('queue-status-msg');
 
-    // Open Modal
     if (openBtn) {
       openBtn.addEventListener('click', () => {
         if (state.isQueueing) {
@@ -118,7 +133,6 @@
       });
     }
 
-    // Close Modal
     function closeModal() {
       if (modal) modal.classList.remove('open');
     }
@@ -129,7 +143,7 @@
       });
     }
 
-    // Step 1: Team Size selection (1v1, 2v2, 3v3)
+    // Step 1: 1v1, 2v2, 3v3
     const sizeBtns = document.querySelectorAll('.ct-size-btn');
     sizeBtns.forEach(btn => {
       btn.addEventListener('click', () => {
@@ -140,7 +154,7 @@
       });
     });
 
-    // Step 2: Gamemode selection (Realistic, Boxfight, Buildfight, Zonewars)
+    // Step 2: Realistic, Box Fights, Build Fights, Zone Wars
     const modeCards = document.querySelectorAll('.ct-mode-card');
     modeCards.forEach(card => {
       card.addEventListener('click', () => {
@@ -157,7 +171,6 @@
       startQueueBtn.textContent = `Queue ${state.teamSize} ${modeName}`;
     }
 
-    // Start Queue from modal
     if (startQueueBtn) {
       startQueueBtn.addEventListener('click', () => {
         closeModal();
@@ -165,10 +178,7 @@
       });
     }
 
-    // Cancel Queue
-    if (cancelBtn) {
-      cancelBtn.addEventListener('click', cancelQueue);
-    }
+    if (cancelBtn) cancelBtn.addEventListener('click', cancelQueue);
 
     function startQueue() {
       state.isQueueing = true;
@@ -176,16 +186,13 @@
       if (banner) banner.classList.add('active');
       if (openBtn) {
         openBtn.classList.add('queueing');
-        openBtn.innerHTML = `<i data-lucide="x-circle" style="width:18px;height:18px;"></i> Cancel Queue`;
+        openBtn.innerHTML = `<i data-lucide="x-circle" style="width:20px;height:20px;"></i> Cancel Queue`;
       }
       if (window.lucide) window.lucide.createIcons();
 
-      const minElo = Math.max(0, state.userElo - 300);
-      const maxElo = Math.min(3000, state.userElo + 300);
       const modeName = getGamemodeDisplayName(state.gameMode);
-
       if (statusMsg) {
-        statusMsg.textContent = `Searching ${state.teamSize} ${modeName} opponents (±300 ELO: ${minElo} - ${maxElo})...`;
+        statusMsg.textContent = `Searching ${state.teamSize} ${modeName} opponents (±300 ELO range)...`;
       }
 
       state.queueTimer = setInterval(() => {
@@ -195,7 +202,7 @@
         const fmt = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
         if (timerText) timerText.textContent = fmt;
 
-        // Simulate Match Found after 10 seconds
+        // Match found simulation after 10 seconds
         if (state.queueSeconds === 10) {
           matchFoundSimulation();
         }
@@ -208,7 +215,7 @@
       if (banner) banner.classList.remove('active');
       if (openBtn) {
         openBtn.classList.remove('queueing');
-        openBtn.innerHTML = `<i data-lucide="play" style="width:18px;height:18px;fill:currentColor;"></i> Queue Match`;
+        openBtn.innerHTML = `<i data-lucide="play" style="width:20px;height:20px;fill:currentColor;"></i> Queue Match`;
       }
       if (window.lucide) window.lucide.createIcons();
     }
@@ -218,10 +225,9 @@
       if (banner) banner.classList.remove('active');
       if (openBtn) {
         openBtn.classList.remove('queueing');
-        openBtn.innerHTML = `<i data-lucide="check" style="width:18px;height:18px;"></i> Match Found!`;
+        openBtn.innerHTML = `<i data-lucide="check" style="width:20px;height:20px;"></i> Match Found!`;
       }
       if (window.lucide) window.lucide.createIcons();
-
       showMatchModal();
     }
   }
@@ -236,7 +242,6 @@
     }
   }
 
-  // ── Match Ready Modal ───────────────────────────────────────
   function showMatchModal() {
     let modal = document.getElementById('match-ready-modal');
     if (!modal) {
@@ -286,9 +291,63 @@
     const modal = document.getElementById('match-ready-modal');
     if (modal) modal.remove();
     const openBtn = document.getElementById('btn-open-queue-modal');
-    if (openBtn) openBtn.innerHTML = `<i data-lucide="play" style="width:18px;height:18px;fill:currentColor;"></i> Queue Match`;
+    if (openBtn) openBtn.innerHTML = `<i data-lucide="play" style="width:20px;height:20px;fill:currentColor;"></i> Queue Match`;
     if (window.lucide) window.lucide.createIcons();
   };
+
+  // ── Hamburger Menu ──────────────────────────────────────────
+  function initHamburgerMenu() {
+    const btn = document.getElementById('btn-hamburger');
+    const menu = document.getElementById('ct-dropdown-menu');
+    if (!btn || !menu) return;
+
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      menu.classList.toggle('open');
+    });
+
+    document.addEventListener('click', () => {
+      menu.classList.remove('open');
+    });
+  }
+
+  // ── Referrals Modal ──────────────────────────────────────────
+  function initReferralsModal() {
+    const modal = document.getElementById('referrals-modal');
+    const triggers = document.querySelectorAll('.trigger-referrals');
+    const closeBtn = document.getElementById('btn-close-referrals');
+    const copyBtn = document.getElementById('btn-copy-ref-link');
+    const input = document.getElementById('referral-link-input');
+
+    function openModal() {
+      if (modal) modal.classList.add('open');
+      const menu = document.getElementById('ct-dropdown-menu');
+      if (menu) menu.classList.remove('open');
+    }
+
+    function closeModal() {
+      if (modal) modal.classList.remove('open');
+    }
+
+    triggers.forEach(t => t.addEventListener('click', openModal));
+    if (closeBtn) closeBtn.addEventListener('click', closeModal);
+    if (modal) {
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+      });
+    }
+
+    if (copyBtn && input) {
+      copyBtn.addEventListener('click', () => {
+        input.select();
+        navigator.clipboard.writeText(input.value).then(() => {
+          copyBtn.textContent = 'Copied!';
+          setTimeout(() => { copyBtn.textContent = 'Copy'; }, 2000);
+          showToast('Referral link copied to clipboard!');
+        });
+      });
+    }
+  }
 
   // ── Social & Friends Drawer ─────────────────────────────────
   function initFriendsDrawer() {
@@ -380,7 +439,7 @@
     toast.style.opacity = '1';
     setTimeout(() => {
       toast.style.opacity = '0';
-    }, 2500);
+    }, 2800);
   };
 
 })();
