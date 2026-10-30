@@ -1594,6 +1594,26 @@ body {
   margin-bottom: 18px;
 }
 
+.pf-season-filter-btn {
+  background: #000000;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #94a3b8;
+  font-size: 0.74rem;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.pf-season-filter-btn:hover {
+  border-color: rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+}
+
 .pf-stats-title {
   font-family: 'Outfit', sans-serif;
   font-size: 1.15rem;

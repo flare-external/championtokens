@@ -254,16 +254,10 @@
           <div class="pf-username-row">
             <span class="pf-username" id="pf-display-name">adrian</span>
             
-            <!-- Badges Box (Icon Only + Rich Hover Tooltip) -->
+            <!-- Badges Box (Beta Tester Only + Short Name Tooltip) -->
             <div class="pf-badges-box" id="pf-badges-box">
-              <div class="pf-badge-icon-item beta" data-tooltip="Beta Tester • Early platform pioneer (Season 1 Beta)">
+              <div class="pf-badge-icon-item beta" data-tooltip="Beta Tester">
                 <i data-lucide="sparkles" style="width:14px;height:14px;color:#53fc18;"></i>
-              </div>
-              <div class="pf-badge-icon-item verified" data-tooltip="Verified Contender • Authenticated tournament competitor">
-                <i data-lucide="shield-check" style="width:14px;height:14px;color:#38bdf8;"></i>
-              </div>
-              <div class="pf-badge-icon-item founder" data-tooltip="Unreal Pioneer • Top competitive standing">
-                <i data-lucide="crown" style="width:14px;height:14px;color:#fbbf24;"></i>
               </div>
             </div>
           </div>
@@ -277,59 +271,52 @@
           </div>
 
           <!-- Description / Bio with Automod -->
-          <div class="pf-bio-text" id="pf-user-bio">
-            Competitive Fortnite contender. Grinding to #1 Unreal in Season 1 Ranked Arena.
+          <div class="pf-bio-text" id="pf-user-bio" style="font-style:italic;color:#64748b;">
+            description here.. or not? please. add. one.
           </div>
         </div>
 
       </div>
     </section>
 
-    <!-- Ranked Combat Statistics Section -->
+    <!-- Statistics Section -->
     <section class="pf-stats-card">
       <div class="pf-stats-header">
         <div class="pf-stats-title">
           <i data-lucide="bar-chart-2" style="width:18px;height:18px;color:#53fc18;"></i>
-          <span>Ranked Combat Statistics</span>
+          <span>Statistics</span>
         </div>
-        <div style="font-size:0.75rem;color:#64748b;">Season 1 Live</div>
+        <button type="button" class="pf-season-filter-btn" id="btn-season-filter" title="Filter stats by season">
+          <span>Season 1</span>
+          <i data-lucide="chevron-down" style="width:13px;height:13px;"></i>
+        </button>
       </div>
 
       <div class="pf-stats-grid">
         <div class="pf-stat-box">
-          <div class="pf-stat-label">Matches Won</div>
-          <div class="pf-stat-num" id="stat-won" style="color:#53fc18;">148</div>
-          <div class="pf-stat-sub">Across all arenas</div>
+          <div class="pf-stat-label">Matches</div>
+          <div class="pf-stat-num" id="stat-matches" style="color:#53fc18;">
+            <span id="stat-won">0</span> <span style="font-size:0.95rem;color:#64748b;font-weight:500;">/</span> <span id="stat-played" style="font-size:1.15rem;color:#cbd5e1;">0</span>
+          </div>
+          <div class="pf-stat-sub">Won / Played</div>
         </div>
 
         <div class="pf-stat-box">
           <div class="pf-stat-label">Win Rate</div>
-          <div class="pf-stat-num" id="stat-wr">68.5%</div>
-          <div class="pf-stat-sub">Top 1% bracket</div>
+          <div class="pf-stat-num" id="stat-wr">0.0%</div>
+          <div class="pf-stat-sub">Season 1 WR</div>
         </div>
 
         <div class="pf-stat-box">
-          <div class="pf-stat-label">Matches Played</div>
-          <div class="pf-stat-num" id="stat-played">216</div>
-          <div class="pf-stat-sub">Season 1 Total</div>
-        </div>
-
-        <div class="pf-stat-box">
-          <div class="pf-stat-label">Current Streak</div>
-          <div class="pf-stat-num" id="stat-streak" style="color:#fbbf24;">7 Wins 🔥</div>
-          <div class="pf-stat-sub">Best: 12 Wins</div>
-        </div>
-
-        <div class="pf-stat-box">
-          <div class="pf-stat-label">Avg. ELO Delta</div>
-          <div class="pf-stat-num" id="stat-delta" style="color:#38bdf8;">+36 ELO</div>
-          <div class="pf-stat-sub">Per match victory</div>
+          <div class="pf-stat-label">KD Ratio</div>
+          <div class="pf-stat-num" id="stat-kd" style="color:#38bdf8;">0.00</div>
+          <div class="pf-stat-sub">Elims / Deaths</div>
         </div>
 
         <div class="pf-stat-box">
           <div class="pf-stat-label">Favorite Mode</div>
-          <div class="pf-stat-num" id="stat-mode" style="font-size:1.05rem;">Realistic 1v1</div>
-          <div class="pf-stat-sub">72% of matches</div>
+          <div class="pf-stat-num" id="stat-mode" style="font-size:1.1rem;color:#fff;">Realistic 1v1</div>
+          <div class="pf-stat-sub">Most played arena</div>
         </div>
       </div>
     </section>
@@ -354,7 +341,7 @@
       <label style="display:block;font-size:0.75rem;font-weight:600;color:#64748b;margin-bottom:6px;text-transform:uppercase;">
         Contender Bio / Description
       </label>
-      <textarea id="input-edit-bio" rows="3" maxlength="160" placeholder="Write a short description (no links or offensive terms)..." style="width:100%;box-sizing:border-box;background:#000;border:1px solid rgba(255,255,255,0.12);color:#fff;padding:10px 14px;border-radius:10px;font-size:0.85rem;outline:none;resize:none;font-family:inherit;margin-bottom:14px;"></textarea>
+      <textarea id="input-edit-bio" rows="3" maxlength="160" placeholder="description here.. or not? please. add. one." style="width:100%;box-sizing:border-box;background:#000;border:1px solid rgba(255,255,255,0.12);color:#fff;padding:10px 14px;border-radius:10px;font-size:0.85rem;outline:none;resize:none;font-family:inherit;margin-bottom:14px;"></textarea>
 
       <!-- Banner Image Upload / URL -->
       <label style="display:block;font-size:0.75rem;font-weight:600;color:#64748b;margin-bottom:6px;text-transform:uppercase;">
@@ -546,11 +533,43 @@
       // 3. Custom Bio Loading
       const savedBio = localStorage.getItem('ct_user_bio');
       const bioEl = document.getElementById('pf-user-bio');
-      if (savedBio && bioEl) {
-        bioEl.textContent = savedBio;
+      if (bioEl) {
+        if (savedBio && savedBio.trim()) {
+          bioEl.textContent = savedBio;
+          bioEl.style.fontStyle = 'normal';
+          bioEl.style.color = '#cbd5e1';
+        } else {
+          bioEl.textContent = 'description here.. or not? please. add. one.';
+          bioEl.style.fontStyle = 'italic';
+          bioEl.style.color = '#64748b';
+        }
       }
 
-      // 4. ELO & Rank Data
+      // 4. Real Combat Statistics Population
+      const played = parseInt(user.matchesPlayed || localStorage.getItem('ct_stat_matches_played') || '0', 10);
+      const won = parseInt(user.matchesWon || localStorage.getItem('ct_stat_matches_won') || '0', 10);
+      const wr = played > 0 ? ((won / played) * 100).toFixed(1) + '%' : '0.0%';
+      const kd = user.kdRatio || localStorage.getItem('ct_stat_kd_ratio') || (played > 0 ? (won * 1.5 / Math.max(1, played - won)).toFixed(2) : '0.00');
+      const mode = user.favoriteMode || localStorage.getItem('ct_stat_fav_mode') || 'Realistic 1v1';
+
+      const statWonEl = document.getElementById('stat-won');
+      const statPlayedEl = document.getElementById('stat-played');
+      const statWrEl = document.getElementById('stat-wr');
+      const statKdEl = document.getElementById('stat-kd');
+      const statModeEl = document.getElementById('stat-mode');
+
+      if (statWonEl) statWonEl.textContent = won.toLocaleString();
+      if (statPlayedEl) statPlayedEl.textContent = played.toLocaleString();
+      if (statWrEl) statWrEl.textContent = wr;
+      if (statKdEl) statKdEl.textContent = kd;
+      if (statModeEl) statModeEl.textContent = mode;
+
+      // Season filter coming soon notification
+      document.getElementById('btn-season-filter')?.addEventListener('click', () => {
+        showToast('Season filtering is coming soon in Season 2!');
+      });
+
+      // 5. ELO & Rank Data
       const savedElo = localStorage.getItem('ct_user_elo');
       const isUnranked = localStorage.getItem('ct_is_unranked') === 'true';
       const elo = savedElo !== null ? parseInt(savedElo, 10) : 9999;
@@ -687,7 +706,18 @@
           // Apply Bio
           if (newBio) {
             localStorage.setItem('ct_user_bio', newBio);
-            if (bioEl) bioEl.textContent = newBio;
+            if (bioEl) {
+              bioEl.textContent = newBio;
+              bioEl.style.fontStyle = 'normal';
+              bioEl.style.color = '#cbd5e1';
+            }
+          } else {
+            localStorage.removeItem('ct_user_bio');
+            if (bioEl) {
+              bioEl.textContent = 'description here.. or not? please. add. one.';
+              bioEl.style.fontStyle = 'italic';
+              bioEl.style.color = '#64748b';
+            }
           }
 
           modAlert.className = 'ct-mod-alert success';
