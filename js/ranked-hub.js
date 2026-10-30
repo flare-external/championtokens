@@ -327,20 +327,6 @@
       });
     }
 
-    const localAuthBtn = document.getElementById('btn-auth-local-instant');
-    if (localAuthBtn) {
-      localAuthBtn.addEventListener('click', () => {
-        state.currentUser.isLoggedIn = true;
-        state.currentUser.name = 'Zenox';
-        state.currentUser.customName = 'Zenox';
-        state.currentUser.tag = '#1337';
-        state.currentUser.avatar = 'https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=120&auto=format&fit=crop&q=80';
-        localStorage.setItem('ct_user', JSON.stringify(state.currentUser));
-        closeAuthModal();
-        renderAuthState();
-        showToast('Signed in as Zenox#1337 (Local Dev)');
-      });
-    }
 
     // Listen to real Firebase / Discord Auth State
     if (typeof auth !== 'undefined') {
