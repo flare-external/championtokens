@@ -42,7 +42,7 @@ body {
   padding: 2px 10px;
   border-radius: 99px;
   font-size: 0.72rem;
-  font-weight: 800;
+  font-weight: 600;
   display: inline-flex;
   align-items: center;
   gap: 5px;
@@ -95,7 +95,7 @@ body {
 
 .ct-header-rank-name {
   font-size: 0.78rem;
-  font-weight: 800;
+  font-weight: 600;
   color: #ffffff;
 }
 
@@ -111,28 +111,13 @@ body {
   font-weight: 400;
 }
 
-.ct-info-icon-btn {
-  background: transparent;
-  border: none;
-  color: #64748b;
-  cursor: pointer;
-  padding: 2px;
-  display: flex;
-  align-items: center;
-  transition: color 0.15s ease;
-}
-
-.ct-info-icon-btn:hover {
-  color: #ffffff;
-}
-
 /* Temporary Set ELO Button */
 .ct-set-elo-btn {
   background: rgba(83, 252, 24, 0.08);
   border: 1px dashed rgba(83, 252, 24, 0.45);
   color: #53fc18;
   font-size: 0.72rem;
-  font-weight: 700;
+  font-weight: 600;
   padding: 6px 12px;
   border-radius: 8px;
   cursor: pointer;
@@ -161,7 +146,7 @@ body {
   color: #ffffff;
   border: none;
   font-size: 0.8rem;
-  font-weight: 800;
+  font-weight: 600;
   padding: 7px 16px;
   border-radius: 10px;
   cursor: pointer;
@@ -207,24 +192,28 @@ body {
 
 .ct-island-name {
   font-size: 0.82rem;
-  font-weight: 800;
+  font-weight: 600;
   color: #ffffff;
 }
 
-/* Profile Hamburger Dropdown Menu */
+/* Profile Hamburger Dropdown Menu (100% Solid Opaque, No See-Thru) */
 .ct-island-dropdown {
   position: absolute;
   top: calc(100% + 10px);
   right: 0;
   width: 240px;
-  background: #08090c;
+  background: #08090c !important;
+  background-color: #08090c !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 14px;
   padding: 8px;
   display: none;
   flex-direction: column;
-  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.95);
-  z-index: 500;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.98);
+  z-index: 1000 !important;
+  opacity: 1 !important;
 }
 
 .ct-island-dropdown.open {
@@ -263,13 +252,13 @@ body {
 
 .ct-island-dropdown-name {
   font-size: 0.85rem;
-  font-weight: 800;
+  font-weight: 600;
   color: #ffffff;
 }
 
 .ct-island-dropdown-view {
   font-size: 0.72rem;
-  font-weight: 700;
+  font-weight: 500;
   color: #53fc18;
 }
 
@@ -287,7 +276,7 @@ body {
   border-radius: 8px;
   color: #94a3b8;
   font-size: 0.82rem;
-  font-weight: 700;
+  font-weight: 500;
   background: transparent;
   border: none;
   cursor: pointer;
@@ -295,6 +284,7 @@ body {
   text-align: left;
   transition: all 0.15s ease;
   font-family: inherit;
+  text-decoration: none;
 }
 
 .ct-island-menu-item:hover {
@@ -302,39 +292,48 @@ body {
   color: #ffffff;
 }
 
-/* ── Animated Floating Background Layer ───────────────────── */
+/* ── Animated Floating Background Layer (z-index 0 strictly behind content) ── */
 .floating-icons-layer {
   position: fixed;
   inset: 0;
   pointer-events: none;
-  z-index: 1;
+  z-index: 0 !important;
   overflow: hidden;
 }
 
 .floating-icon-item {
   position: absolute;
   color: #53fc18;
-  opacity: 0.11;
-  filter: drop-shadow(0 0 10px rgba(83, 252, 24, 0.35));
+  opacity: 0.10;
+  filter: drop-shadow(0 0 10px rgba(83, 252, 24, 0.3));
   animation: floatDrift ease-in-out infinite alternate;
 }
 
 @keyframes floatDrift {
   0% {
     transform: translateY(0) rotate(0deg) scale(1);
-    opacity: 0.07;
+    opacity: 0.06;
   }
   50% {
-    opacity: 0.16;
+    opacity: 0.14;
   }
   100% {
     transform: translateY(-24px) rotate(8deg) scale(1.06);
-    opacity: 0.11;
+    opacity: 0.10;
   }
+}
+
+/* ── Landing Nav Header (Higher Stacking Context) ───────────── */
+.landing-nav {
+  position: relative !important;
+  z-index: 100 !important;
+  background: #000000 !important;
 }
 
 /* ── Container ──────────────────────────────────────────────── */
 .ct-ranked-wrap {
+  position: relative !important;
+  z-index: 10 !important;
   max-width: 1140px;
   margin: 0 auto;
   padding: 22px 20px 80px;
@@ -380,7 +379,7 @@ body {
 
 .ct-slide-tag {
   font-size: 0.68rem;
-  font-weight: 900;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   padding: 3px 8px;
@@ -410,7 +409,7 @@ body {
 .ct-slide-title {
   font-family: 'Outfit', sans-serif;
   font-size: 1.25rem;
-  font-weight: 900;
+  font-weight: 600;
   color: #ffffff;
   margin-bottom: 4px;
 }
@@ -439,7 +438,7 @@ body {
 
 .ct-carousel-counter {
   font-size: 0.72rem;
-  font-weight: 800;
+  font-weight: 600;
   color: #ffffff;
   font-family: 'Outfit', sans-serif;
 }
@@ -468,27 +467,42 @@ body {
 /* ── Centered Matchmaking Area with Fortnite Backgrounds ────── */
 .ct-matchmake-hub {
   border-radius: 20px;
-  padding: 38px 24px;
+  padding: 34px 24px;
   margin-bottom: 36px;
   text-align: center;
   position: relative;
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.08);
   background-image: 
-    linear-gradient(180deg, rgba(8, 9, 12, 0.92) 0%, rgba(4, 5, 7, 0.97) 100%),
+    linear-gradient(180deg, rgba(8, 9, 12, 0.94) 0%, rgba(4, 5, 7, 0.98) 100%),
     url('realistic.jpeg');
   background-size: cover;
   background-position: center;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.85);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.95);
+}
+
+.ct-matchmake-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(83, 252, 24, 0.08);
+  border: 1px solid rgba(83, 252, 24, 0.25);
+  color: #53fc18;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  padding: 2px 10px;
+  border-radius: 99px;
+  margin-bottom: 10px;
 }
 
 .ct-matchmake-title {
   font-family: 'Outfit', sans-serif;
-  font-size: clamp(2rem, 4.5vw, 3rem);
-  font-weight: 900;
-  letter-spacing: -0.03em;
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
   color: #ffffff;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .ct-matchmake-title span {
@@ -496,11 +510,241 @@ body {
 }
 
 .ct-matchmake-sub {
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   color: #94a3b8;
   max-width: 580px;
-  margin: 0 auto 26px;
+  margin: 0 auto 24px;
   line-height: 1.5;
+}
+
+/* ── Party Lobby Hub & Slots ─────────────────────────────────── */
+.ct-party-card {
+  background: #08090c;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  padding: 20px 24px;
+  margin: 0 auto;
+  max-width: 720px;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.7);
+}
+
+.ct-party-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.ct-party-header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ct-party-tag {
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  background: rgba(83, 252, 24, 0.12);
+  border: 1px solid rgba(83, 252, 24, 0.3);
+  color: #53fc18;
+  padding: 2px 8px;
+  border-radius: 6px;
+  letter-spacing: 0.05em;
+}
+
+.ct-party-count {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #94a3b8;
+}
+
+.ct-party-mode-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #000000;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 5px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.ct-party-mode-pill:hover {
+  border-color: #53fc18;
+  background: #0c0e12;
+}
+
+.ct-mode-pill-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.ct-mode-pill-change {
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: #53fc18;
+  text-transform: uppercase;
+}
+
+/* Party Slots Grid (1 Row, 3 Slots) */
+.ct-party-slots-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.ct-party-slot {
+  background: #000000;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  padding: 16px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  min-height: 140px;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.ct-party-slot.slot-leader {
+  border-color: rgba(83, 252, 24, 0.3);
+  background: linear-gradient(180deg, rgba(83, 252, 24, 0.04) 0%, rgba(0, 0, 0, 0.95) 100%);
+}
+
+.ct-slot-crown {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
+
+.ct-slot-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #53fc18;
+  margin-bottom: 8px;
+}
+
+.ct-slot-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-bottom: 8px;
+}
+
+.ct-slot-name {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.ct-slot-rank {
+  font-size: 0.72rem;
+  color: #94a3b8;
+}
+
+.ct-slot-status.ready {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #53fc18;
+}
+
+.ct-ready-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #53fc18;
+  box-shadow: 0 0 6px #53fc18;
+}
+
+/* Empty Slot with Plus Button */
+.ct-party-slot.slot-empty {
+  border: 1px dashed rgba(255, 255, 255, 0.16);
+  cursor: pointer;
+}
+
+.ct-party-slot.slot-empty:hover {
+  border-color: #53fc18;
+  background: rgba(83, 252, 24, 0.04);
+}
+
+.ct-party-invite-btn {
+  background: transparent;
+  border: none;
+  color: #64748b;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.ct-party-plus-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #94a3b8;
+  transition: all 0.2s ease;
+}
+
+.ct-party-slot.slot-empty:hover .ct-party-plus-icon {
+  background: rgba(83, 252, 24, 0.15);
+  border-color: #53fc18;
+  color: #53fc18;
+  transform: scale(1.1);
+}
+
+.ct-party-slot-text {
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: #94a3b8;
+}
+
+/* Party Action Controls */
+.ct-party-bottom-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-party-search-invite {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  padding: 14px 22px;
+  border-radius: 12px;
+  font-size: 0.86rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.15s ease;
+}
+
+.btn-party-search-invite:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.25);
+  transform: translateY(-1px);
 }
 
 /* Big Queue Action Button */
@@ -508,36 +752,36 @@ body {
   background: #53fc18;
   color: #000000;
   font-family: 'Outfit', sans-serif;
-  font-size: 1.25rem;
-  font-weight: 900;
+  font-size: 1.15rem;
+  font-weight: 700;
   letter-spacing: -0.01em;
-  padding: 18px 56px;
-  border-radius: 14px;
+  padding: 14px 44px;
+  border-radius: 12px;
   border: none;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
-  gap: 12px;
-  box-shadow: 0 4px 24px rgba(83, 252, 24, 0.35);
+  gap: 10px;
+  box-shadow: 0 4px 20px rgba(83, 252, 24, 0.3);
   transition: all 0.16s ease;
 }
 
 .ct-big-queue-btn:hover {
   background: #46e012;
   transform: translateY(-2px);
-  box-shadow: 0 8px 32px rgba(83, 252, 24, 0.5);
+  box-shadow: 0 8px 28px rgba(83, 252, 24, 0.45);
 }
 
 .ct-big-queue-btn.queueing {
   background: #ef4444;
   color: #ffffff;
-  box-shadow: 0 4px 24px rgba(239, 68, 68, 0.35);
+  box-shadow: 0 4px 20px rgba(239, 68, 68, 0.35);
 }
 
 /* Live Searching Drawer */
 .ct-queue-banner {
   display: none;
-  margin: 20px auto 0;
+  margin: 18px auto 0;
   max-width: 500px;
   padding: 14px 18px;
   background: #000000;
@@ -555,9 +799,9 @@ body {
 .ct-modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.78);
-  backdrop-filter: blur(6px);
-  z-index: 300;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  z-index: 2000 !important;
   display: none;
   align-items: center;
   justify-content: center;
@@ -569,14 +813,14 @@ body {
 }
 
 .ct-queue-modal-card {
-  background: #08090c;
+  background: #08090c !important;
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 20px;
   width: 100%;
   max-width: 520px;
-  padding: 28px;
+  padding: 26px;
   position: relative;
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.95);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.98);
   text-align: left;
 }
 
@@ -597,19 +841,19 @@ body {
 
 .ct-modal-title {
   font-family: 'Outfit', sans-serif;
-  font-size: 1.4rem;
-  font-weight: 900;
+  font-size: 1.35rem;
+  font-weight: 700;
   color: #ffffff;
   margin-bottom: 4px;
 }
 
 .ct-step-label {
   font-size: 0.74rem;
-  font-weight: 800;
+  font-weight: 600;
   text-transform: uppercase;
   color: #64748b;
   letter-spacing: 0.05em;
-  margin: 18px 0 10px;
+  margin: 16px 0 10px;
   display: flex;
   align-items: center;
   gap: 6px;
@@ -626,13 +870,13 @@ body {
   background: #000000;
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 12px;
-  padding: 14px;
+  padding: 12px;
   text-align: center;
   cursor: pointer;
   color: #ffffff;
   font-family: 'Outfit', sans-serif;
-  font-size: 1.1rem;
-  font-weight: 900;
+  font-size: 1.05rem;
+  font-weight: 600;
   transition: all 0.15s ease;
 }
 
@@ -646,7 +890,7 @@ body {
   color: #53fc18;
 }
 
-/* Step 2: Gamemode Cards (Realistic, Box Fight, Build Fight, Zone Wars) */
+/* Step 2: Gamemode Cards */
 .ct-mode-selector {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -657,7 +901,7 @@ body {
   background: #000000;
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 12px;
-  padding: 14px;
+  padding: 12px;
   cursor: pointer;
   transition: all 0.15s ease;
 }
@@ -672,8 +916,8 @@ body {
 }
 
 .ct-mode-card-title {
-  font-size: 0.9rem;
-  font-weight: 800;
+  font-size: 0.88rem;
+  font-weight: 600;
   color: #ffffff;
   margin-bottom: 2px;
 }
@@ -685,21 +929,21 @@ body {
 .ct-mode-card-sub {
   font-size: 0.7rem;
   color: #64748b;
-  font-weight: 700;
+  font-weight: 500;
 }
 
 .btn-modal-start-queue {
   background: #53fc18;
   color: #000000;
   font-family: 'Outfit', sans-serif;
-  font-size: 1.05rem;
-  font-weight: 900;
+  font-size: 1rem;
+  font-weight: 700;
   width: 100%;
-  padding: 14px;
+  padding: 13px;
   border-radius: 12px;
   border: none;
   cursor: pointer;
-  margin-top: 22px;
+  margin-top: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -709,6 +953,79 @@ body {
 
 .btn-modal-start-queue:hover {
   background: #46e012;
+}
+
+/* ── Party Search & Auth Modal Styles ────────────────────────── */
+.ct-search-box-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #000000;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  padding: 10px 14px;
+}
+
+.ct-party-search-input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #ffffff;
+  font-size: 0.88rem;
+  width: 100%;
+  font-family: inherit;
+}
+
+.ct-party-friends-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 280px;
+  overflow-y: auto;
+}
+
+.ct-auth-discord-btn {
+  background: #5865F2;
+  color: #ffffff;
+  border: none;
+  font-size: 0.88rem;
+  font-weight: 600;
+  padding: 12px;
+  border-radius: 10px;
+  width: 100%;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: all 0.15s ease;
+  font-family: inherit;
+}
+
+.ct-auth-discord-btn:hover {
+  background: #4752c4;
+  box-shadow: 0 4px 16px rgba(88, 101, 242, 0.35);
+}
+
+.ct-auth-divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 18px 0;
+}
+
+.ct-auth-divider::before,
+.ct-auth-divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.ct-auth-divider span {
+  padding: 0 10px;
+  color: #64748b;
+  font-size: 0.72rem;
+  font-weight: 600;
 }
 
 /* ── Leaderboard Section ────────────────────────────────────── */
@@ -728,17 +1045,18 @@ body {
 
 .ct-table-simple th {
   padding: 10px 14px;
-  font-size: 0.7rem;
+  font-size: 0.72rem;
   color: #64748b;
   text-transform: uppercase;
-  font-weight: 800;
+  font-weight: 600;
   text-align: left;
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .ct-table-simple td {
-  padding: 12px 14px;
+  padding: 14px 14px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  font-weight: 500;
 }
 
 /* ── Discord Community Section with Background ──────────────── */
@@ -784,7 +1102,7 @@ body {
 .ct-discord-title {
   font-family: 'Outfit', sans-serif;
   font-size: 1.25rem;
-  font-weight: 900;
+  font-weight: 600;
   color: #ffffff;
   margin-bottom: 3px;
 }
@@ -797,8 +1115,8 @@ body {
 .btn-join-discord {
   background: #5865F2;
   color: #ffffff;
-  font-weight: 800;
-  font-size: 0.9rem;
+  font-weight: 600;
+  font-size: 0.88rem;
   padding: 12px 24px;
   border-radius: 10px;
   text-decoration: none;
@@ -883,7 +1201,7 @@ body {
 .ct-bottom-ad-title {
   font-family: 'Outfit', sans-serif;
   font-size: 1.15rem;
-  font-weight: 900;
+  font-weight: 600;
   color: #ffffff;
   letter-spacing: -0.01em;
 }
@@ -897,7 +1215,7 @@ body {
 
 .ct-bottom-ad-btn {
   font-size: 0.78rem;
-  font-weight: 800;
+  font-weight: 600;
   display: inline-flex;
   align-items: center;
   gap: 5px;
@@ -951,7 +1269,7 @@ body {
   background: #53fc18;
   color: #000000;
   font-size: 0.65rem;
-  font-weight: 900;
+  font-weight: 700;
   letter-spacing: 0.05em;
   padding: 2px 7px;
   border-radius: 6px;
@@ -973,13 +1291,13 @@ body {
 }
 
 .ct-rank-row-name {
-  font-weight: 900;
+  font-weight: 600;
   font-size: 0.95rem;
   color: #ffffff;
 }
 
 .ct-rank-row-elo {
-  font-weight: 800;
+  font-weight: 500;
   font-size: 0.85rem;
   color: #53fc18;
   display: flex;

@@ -130,7 +130,7 @@ export default {
     }
 
     // ── WEBSITE CLOSED / MAINTENANCE MODE ──────────────────────
-    const WEBSITE_CLOSED = false;
+    const WEBSITE_CLOSED = true;
 
     const cookieHeader = request.headers.get('Cookie') || '';
     const hasBypassParam = url.searchParams.get('bypass') === 'admin' || url.searchParams.get('unlock') === '1';

@@ -1,13 +1,18 @@
-// ============================================================
-//  CHAMPION TOKENS — Ranked Arena Controller (v4.0)
-// ============================================================
-
 (function () {
   'use strict';
 
   // Read saved ELO or default to 2,450 (Elite)
   const savedElo = localStorage.getItem('ct_user_elo');
   const savedUnranked = localStorage.getItem('ct_is_unranked');
+
+  const ONLINE_CONTENDERS = [
+    { id: '491823710492', name: 'Viper_FN', elo: 2985, rank: 'Champion', avatar: 'https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=120&auto=format&fit=crop&q=80', status: 'In Lobby • Ready' },
+    { id: '738192049182', name: 'GhostClutch', elo: 2940, rank: 'Champion', avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=120&auto=format&fit=crop&q=80', status: 'In Lobby • Ready' },
+    { id: '194820194812', name: 'AeroSniper', elo: 2910, rank: 'Champion', avatar: 'https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=120&auto=format&fit=crop&q=80', status: 'In Lobby • Ready' },
+    { id: '928174019283', name: 'KovaaK_God', elo: 2680, rank: 'Elite', avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120&auto=format&fit=crop&q=80', status: 'In Lobby • Ready' },
+    { id: '381920481920', name: 'BoxKing99', elo: 2410, rank: 'Elite', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&auto=format&fit=crop&q=80', status: 'In Lobby • Ready' },
+    { id: '827194018291', name: 'AquaAim', elo: 1850, rank: 'Platinum', avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=120&auto=format&fit=crop&q=80', status: 'In Lobby • Ready' }
+  ];
 
   const state = {
     teamSize: '1v1',
@@ -23,19 +28,21 @@
     carouselIndex: 0,
     carouselTimer: null,
     currentUser: null,
-    friends: [
-      { id: 'f1', name: 'Viper_FN', elo: 2985, status: 'in-match', activity: 'In 1v1 Realistic (Round 4/9)', avatar: 'https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=120&auto=format&fit=crop&q=80' },
-      { id: 'f2', name: 'GhostClutch', elo: 2940, status: 'in-queue', activity: 'Queueing Ranked 1v1 (0:45)', avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=120&auto=format&fit=crop&q=80' },
-      { id: 'f3', name: 'AeroSniper', elo: 2910, status: 'in-lobby', activity: 'In Lobby • Ready', avatar: 'https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=120&auto=format&fit=crop&q=80' }
+    partySlots: [
+      { id: 'slot-1', isLeader: true, player: null },
+      { id: 'slot-2', isLeader: false, player: null },
+      { id: 'slot-3', isLeader: false, player: null }
     ]
   };
 
   document.addEventListener('DOMContentLoaded', () => {
+    initContenderUser();
     injectFloatingIcons();
     init10sCarousel();
     initUpperLeftRank();
     initSetEloBtn();
     initTopAuth();
+    initPartyHub();
     initQueueModal();
     initReferralsModal();
     initFriendsDrawer();
@@ -44,7 +51,40 @@
     if (window.lucide) window.lucide.createIcons();
   });
 
-  // ── Animated Floating Background Layer ───────────────────────
+  // Persistent 12-Digit Contender ID & Profile State
+  function initContenderUser() {
+    let cid = localStorage.getItem('ct_contender_id');
+    if (!cid || cid.length !== 12) {
+      cid = Math.floor(100000000000 + Math.random() * 900000000000).toString();
+      localStorage.setItem('ct_contender_id', cid);
+    }
+
+    const storedUser = localStorage.getItem('ct_user');
+    if (storedUser) {
+      try {
+        state.currentUser = JSON.parse(storedUser);
+      } catch (e) {
+        state.currentUser = null;
+      }
+    }
+
+    if (!state.currentUser) {
+      state.currentUser = {
+        id: cid,
+        name: cid,
+        customName: '',
+        tag: '',
+        isLoggedIn: false,
+        avatar: 'https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=120&auto=format&fit=crop&q=80',
+        isVip: false
+      };
+    } else if (!state.currentUser.id || state.currentUser.id.length !== 12) {
+      state.currentUser.id = cid;
+      localStorage.setItem('ct_user', JSON.stringify(state.currentUser));
+    }
+  }
+
+  // Floating Background Layer
   function injectFloatingIcons() {
     if (document.getElementById('floating-icons-container')) return;
 
@@ -72,7 +112,7 @@
     document.body.prepend(container);
   }
 
-  // ── Rank Tier Calculation ────────────────────────────────────
+  // Rank Tier Calculation
   function getRankMeta(elo, isUnranked) {
     if (isUnranked || elo <= 0) {
       return {
@@ -125,10 +165,9 @@
       rankElo.classList.toggle('unranked', meta.isUnranked);
     }
 
-    // Update modal outlines
+    // Update modal tier highlight
     const rows = document.querySelectorAll('#ranks-modal .ct-rank-row-item');
     rows.forEach((row, idx) => {
-      // Remove any prior badge
       const existingBadge = row.querySelector('.ct-current-rank-badge');
       if (existingBadge) existingBadge.remove();
 
@@ -146,17 +185,16 @@
       }
     });
 
+    updatePartyLeaderSlot();
     if (window.lucide) window.lucide.createIcons();
   }
 
-  // ── Upper Left Clickable Rank & Modal ────────────────────────
+  // Upper Left Clickable Rank Display
   function initUpperLeftRank() {
     const rankPill = document.getElementById('ct-header-rank-pill');
     const modal = document.getElementById('ranks-modal');
     const closeBtn = document.getElementById('btn-close-ranks-modal');
-    const infoBtn = document.getElementById('btn-placements-info');
 
-    // Click rank pill -> open Ranked Info modal
     if (rankPill) {
       rankPill.addEventListener('click', () => {
         updateRankUI();
@@ -173,17 +211,9 @@
         if (e.target === modal) closeModal();
       });
     }
-
-    // Info button for placement matches
-    if (infoBtn) {
-      infoBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        showToast('Play 5 placement games to calibrate your rank (boosted +100 to +250 ELO during placements).');
-      });
-    }
   }
 
-  // ── Temporary Set ELO Test Tool ──────────────────────────────
+  // Temporary Set ELO Test Tool
   function initSetEloBtn() {
     const btn = document.getElementById('btn-set-elo');
     if (!btn) return;
@@ -196,7 +226,7 @@
         currentVal
       );
 
-      if (input === null) return; // User cancelled
+      if (input === null) return;
 
       const trimmed = input.trim();
       const parsed = parseInt(trimmed, 10);
@@ -220,7 +250,7 @@
     });
   }
 
-  // ── Top Bar Auth & Profile Island ────────────────────────────
+  // Top Bar Auth & Profile Island Dropdown
   function initTopAuth() {
     const signInBtn = document.getElementById('header-signin-btn');
     const userIsland = document.getElementById('ct-user-island');
@@ -229,47 +259,82 @@
     const islandName = document.getElementById('island-user-name');
     const dropdownAvatar = document.getElementById('dropdown-user-avatar');
     const dropdownName = document.getElementById('dropdown-user-name');
+    const dropdownProfileLink = document.getElementById('dropdown-profile-link');
     const signOutBtn = document.getElementById('btn-user-signout');
 
-    // Check stored user
-    const storedUserJson = localStorage.getItem('ct_user');
-    if (storedUserJson) {
-      try {
-        state.currentUser = JSON.parse(storedUserJson);
-      } catch (err) {
-        state.currentUser = null;
-      }
-    }
+    // Auth Modal
+    const authModal = document.getElementById('auth-modal');
+    const closeAuthBtn = document.getElementById('btn-close-auth-modal');
+    const discordAuthBtn = document.getElementById('btn-auth-discord-instant');
+    const contenderForm = document.getElementById('form-contender-signup');
+    const contenderIdInput = document.getElementById('auth-contender-id-input');
 
     function renderAuthState() {
-      if (state.currentUser) {
+      const u = state.currentUser;
+      const displayName = u.customName || u.name || u.id;
+
+      if (contenderIdInput) {
+        contenderIdInput.value = u.id;
+      }
+
+      if (u.isLoggedIn) {
         if (signInBtn) signInBtn.style.display = 'none';
         if (userIsland) userIsland.style.display = 'inline-flex';
-        if (islandAvatar) islandAvatar.src = state.currentUser.avatar;
-        if (islandName) islandName.textContent = state.currentUser.name;
-        if (dropdownAvatar) dropdownAvatar.src = state.currentUser.avatar;
-        if (dropdownName) dropdownName.textContent = `${state.currentUser.name}${state.currentUser.tag || ''}`;
+        if (islandAvatar) islandAvatar.src = u.avatar;
+        if (islandName) islandName.textContent = displayName;
+        if (dropdownAvatar) dropdownAvatar.src = u.avatar;
+        if (dropdownName) dropdownName.textContent = `${displayName}${u.tag || ''}`;
+        if (dropdownProfileLink) dropdownProfileLink.href = `profile/${u.id}`;
       } else {
         if (signInBtn) signInBtn.style.display = 'inline-flex';
         if (userIsland) userIsland.style.display = 'none';
         if (islandDropdown) islandDropdown.classList.remove('open');
       }
+
+      updatePartyLeaderSlot();
       if (window.lucide) window.lucide.createIcons();
     }
 
-    // Sign in click -> log in with Discord profile
-    if (signInBtn) {
-      signInBtn.addEventListener('click', () => {
-        // Mock Discord profile for testing
-        const mockUser = {
-          name: 'Zenox',
-          tag: '#1337',
-          avatar: 'https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=120&auto=format&fit=crop&q=80'
-        };
-        state.currentUser = mockUser;
-        localStorage.setItem('ct_user', JSON.stringify(mockUser));
+    function openAuthModal() {
+      if (authModal) authModal.classList.add('open');
+      if (contenderIdInput) contenderIdInput.value = state.currentUser.id;
+    }
+
+    function closeAuthModal() {
+      if (authModal) authModal.classList.remove('open');
+    }
+
+    if (signInBtn) signInBtn.addEventListener('click', openAuthModal);
+    if (closeAuthBtn) closeAuthBtn.addEventListener('click', closeAuthModal);
+    if (authModal) {
+      authModal.addEventListener('click', (e) => {
+        if (e.target === authModal) closeAuthModal();
+      });
+    }
+
+    // 1-Click Discord Sign In
+    if (discordAuthBtn) {
+      discordAuthBtn.addEventListener('click', () => {
+        state.currentUser.isLoggedIn = true;
+        state.currentUser.name = 'Zenox';
+        state.currentUser.tag = '#1337';
+        state.currentUser.avatar = 'https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=120&auto=format&fit=crop&q=80';
+        localStorage.setItem('ct_user', JSON.stringify(state.currentUser));
+        closeAuthModal();
         renderAuthState();
-        showToast('Signed in as ' + mockUser.name);
+        showToast('Signed in with Discord as Zenox#1337');
+      });
+    }
+
+    // Contender ID Activation
+    if (contenderForm) {
+      contenderForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        state.currentUser.isLoggedIn = true;
+        localStorage.setItem('ct_user', JSON.stringify(state.currentUser));
+        closeAuthModal();
+        renderAuthState();
+        showToast(`Contender profile #${state.currentUser.id} activated!`);
       });
     }
 
@@ -291,8 +356,11 @@
     // Sign out click
     if (signOutBtn) {
       signOutBtn.addEventListener('click', () => {
-        state.currentUser = null;
-        localStorage.removeItem('ct_user');
+        state.currentUser.isLoggedIn = false;
+        state.currentUser.name = state.currentUser.id;
+        state.currentUser.tag = '';
+        state.currentUser.customName = '';
+        localStorage.setItem('ct_user', JSON.stringify(state.currentUser));
         renderAuthState();
         showToast('Signed out successfully');
       });
@@ -301,7 +369,252 @@
     renderAuthState();
   }
 
-  // ── Auto-Switching 10s Carousel ──────────────────────────────
+  // Party Leader Slot Sync
+  function updatePartyLeaderSlot() {
+    const leaderName = document.getElementById('party-slot-1-name');
+    const leaderAvatar = document.getElementById('party-slot-1-avatar');
+    const leaderRank = document.getElementById('party-slot-1-rank');
+
+    if (state.currentUser) {
+      const displayName = state.currentUser.customName || state.currentUser.name || state.currentUser.id;
+      if (leaderName) leaderName.textContent = displayName;
+      if (leaderAvatar) leaderAvatar.src = state.currentUser.avatar;
+    }
+
+    if (leaderRank) {
+      const meta = getRankMeta(state.userElo, state.isUnranked);
+      leaderRank.textContent = `${meta.name} • ${meta.eloDisplay}`;
+    }
+  }
+
+  // Party System Hub & Slots Controller
+  function initPartyHub() {
+    const inviteModal = document.getElementById('party-invite-modal');
+    const closeInviteBtn = document.getElementById('btn-close-party-invite');
+    const searchInput = document.getElementById('party-search-input');
+    const searchResults = document.getElementById('party-search-results');
+    const openSearchBtn = document.getElementById('btn-open-party-search');
+    const openModeBtn = document.getElementById('btn-open-mode-select');
+    const modeLabel = document.getElementById('party-mode-label');
+    const memberCount = document.getElementById('party-member-count');
+    const queueBtn = document.getElementById('btn-open-queue-modal');
+
+    // Slot 2 and Slot 3 triggers
+    const slot2 = document.getElementById('party-slot-2');
+    const slot3 = document.getElementById('party-slot-3');
+
+    function openPartyInviteModal() {
+      if (inviteModal) {
+        inviteModal.classList.add('open');
+        renderContenderList(ONLINE_CONTENDERS);
+        if (searchInput) searchInput.value = '';
+      }
+    }
+
+    function closePartyInviteModal() {
+      if (inviteModal) inviteModal.classList.remove('open');
+    }
+
+    if (openSearchBtn) openSearchBtn.addEventListener('click', openPartyInviteModal);
+    if (closeInviteBtn) closeInviteBtn.addEventListener('click', closePartyInviteModal);
+    if (inviteModal) {
+      inviteModal.addEventListener('click', (e) => {
+        if (e.target === inviteModal) closePartyInviteModal();
+      });
+    }
+
+    // Filter available contenders live
+    if (searchInput) {
+      searchInput.addEventListener('input', () => {
+        const query = searchInput.value.trim().toLowerCase();
+        if (!query) {
+          renderContenderList(ONLINE_CONTENDERS);
+          return;
+        }
+        const filtered = ONLINE_CONTENDERS.filter(c =>
+          c.name.toLowerCase().includes(query) || c.id.includes(query)
+        );
+        renderContenderList(filtered);
+      });
+    }
+
+    function renderContenderList(list) {
+      if (!searchResults) return;
+
+      if (list.length === 0) {
+        searchResults.innerHTML = `
+          <div style="background:#000;border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:20px;text-align:center;color:#64748b;font-size:0.8rem;">
+            No contenders found matching your search.
+          </div>
+        `;
+        return;
+      }
+
+      searchResults.innerHTML = list.map(c => `
+        <div style="background:#000;border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;gap:12px;">
+          <div style="display:flex;align-items:center;gap:12px;min-width:0;">
+            <img src="${c.avatar}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;border:1px solid rgba(83,252,24,0.4);" alt="${c.name}"/>
+            <div style="min-width:0;">
+              <div style="font-size:0.86rem;font-weight:600;color:#fff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+                ${c.name} <span style="font-size:0.7rem;color:#64748b;font-family:monospace;">#${c.id.slice(-4)}</span>
+              </div>
+              <div style="font-size:0.72rem;color:#53fc18;">${c.rank} • ${c.elo.toLocaleString()} ELO</div>
+            </div>
+          </div>
+          <button type="button" class="btn-invite-action" data-invite-id="${c.id}" style="background:#14171e;border:1px solid rgba(83,252,24,0.3);color:#53fc18;padding:6px 14px;border-radius:8px;font-size:0.75rem;font-weight:600;cursor:pointer;white-space:nowrap;transition:all 0.15s ease;">
+            Invite
+          </button>
+        </div>
+      `).join('');
+
+      // Wire invite click listeners
+      const inviteBtns = searchResults.querySelectorAll('.btn-invite-action');
+      inviteBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const cid = btn.getAttribute('data-invite-id');
+          const contender = ONLINE_CONTENDERS.find(x => x.id === cid);
+          if (!contender) return;
+
+          btn.textContent = '✓ Invited';
+          btn.style.background = 'rgba(83,252,24,0.15)';
+          btn.disabled = true;
+
+          showToast(`Party invitation sent to ${contender.name}`);
+
+          // Simulate acceptance after 1.5s
+          setTimeout(() => {
+            addPlayerToParty(contender);
+            closePartyInviteModal();
+          }, 1500);
+        });
+      });
+    }
+
+    function addPlayerToParty(player) {
+      // Find first empty slot
+      let targetSlot = null;
+      if (!state.partySlots[1].player) {
+        targetSlot = 1;
+      } else if (!state.partySlots[2].player) {
+        targetSlot = 2;
+      }
+
+      if (targetSlot === null) {
+        showToast('Party is full (3/3 Contenders)');
+        return;
+      }
+
+      state.partySlots[targetSlot].player = player;
+      renderPartySlots();
+      showToast(`${player.name} joined your party!`);
+    }
+
+    function removePlayerFromParty(slotIdx) {
+      if (state.partySlots[slotIdx]) {
+        const removed = state.partySlots[slotIdx].player;
+        state.partySlots[slotIdx].player = null;
+        renderPartySlots();
+        if (removed) showToast(`Removed ${removed.name} from party`);
+      }
+    }
+
+    function renderPartySlots() {
+      // Slot 2
+      if (slot2) {
+        const p2 = state.partySlots[1].player;
+        if (p2) {
+          slot2.className = 'ct-party-slot slot-active';
+          slot2.innerHTML = `
+            <button type="button" class="ct-slot-kick-btn" data-kick="1" title="Remove Contender" style="position:absolute;top:8px;right:8px;background:rgba(239,68,68,0.15);border:none;color:#ef4444;width:22px;height:22px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:12px;">✕</button>
+            <img src="${p2.avatar}" class="ct-slot-avatar" alt="${p2.name}"/>
+            <div class="ct-slot-meta">
+              <span class="ct-slot-name">${p2.name}</span>
+              <span class="ct-slot-rank">${p2.rank} • ${p2.elo.toLocaleString()} ELO</span>
+            </div>
+            <div class="ct-slot-status ready">
+              <span class="ct-ready-dot"></span> Ready
+            </div>
+          `;
+        } else {
+          slot2.className = 'ct-party-slot slot-empty';
+          slot2.innerHTML = `
+            <button type="button" class="ct-party-invite-btn" id="btn-invite-slot-2" title="Invite Friend to Party">
+              <div class="ct-party-plus-icon">
+                <i data-lucide="plus" style="width:20px;height:20px;"></i>
+              </div>
+              <span class="ct-party-slot-text">Invite Friend</span>
+            </button>
+          `;
+          const b2 = slot2.querySelector('#btn-invite-slot-2');
+          if (b2) b2.addEventListener('click', openPartyInviteModal);
+        }
+      }
+
+      // Slot 3
+      if (slot3) {
+        const p3 = state.partySlots[2].player;
+        if (p3) {
+          slot3.className = 'ct-party-slot slot-active';
+          slot3.innerHTML = `
+            <button type="button" class="ct-slot-kick-btn" data-kick="2" title="Remove Contender" style="position:absolute;top:8px;right:8px;background:rgba(239,68,68,0.15);border:none;color:#ef4444;width:22px;height:22px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:12px;">✕</button>
+            <img src="${p3.avatar}" class="ct-slot-avatar" alt="${p3.name}"/>
+            <div class="ct-slot-meta">
+              <span class="ct-slot-name">${p3.name}</span>
+              <span class="ct-slot-rank">${p3.rank} • ${p3.elo.toLocaleString()} ELO</span>
+            </div>
+            <div class="ct-slot-status ready">
+              <span class="ct-ready-dot"></span> Ready
+            </div>
+          `;
+        } else {
+          slot3.className = 'ct-party-slot slot-empty';
+          slot3.innerHTML = `
+            <button type="button" class="ct-party-invite-btn" id="btn-invite-slot-3" title="Invite Friend to Party">
+              <div class="ct-party-plus-icon">
+                <i data-lucide="plus" style="width:20px;height:20px;"></i>
+              </div>
+              <span class="ct-party-slot-text">Invite Friend</span>
+            </button>
+          `;
+          const b3 = slot3.querySelector('#btn-invite-slot-3');
+          if (b3) b3.addEventListener('click', openPartyInviteModal);
+        }
+      }
+
+      // Update Member Count
+      const activeCount = 1 + (state.partySlots[1].player ? 1 : 0) + (state.partySlots[2].player ? 1 : 0);
+      if (memberCount) memberCount.textContent = `${activeCount} / 3 Contenders`;
+
+      // Wire kick buttons
+      document.querySelectorAll('.ct-slot-kick-btn').forEach(kBtn => {
+        kBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const sIdx = parseInt(kBtn.getAttribute('data-kick'), 10);
+          removePlayerFromParty(sIdx);
+        });
+      });
+
+      if (window.lucide) window.lucide.createIcons();
+    }
+
+    // Slot invite triggers initial bind
+    const b2 = document.getElementById('btn-invite-slot-2');
+    const b3 = document.getElementById('btn-invite-slot-3');
+    if (b2) b2.addEventListener('click', openPartyInviteModal);
+    if (b3) b3.addEventListener('click', openPartyInviteModal);
+
+    // Mode Selector Modal Trigger
+    if (openModeBtn) {
+      openModeBtn.addEventListener('click', () => {
+        const qModal = document.getElementById('queue-select-modal');
+        if (qModal) qModal.classList.add('open');
+      });
+    }
+
+    renderPartySlots();
+  }
+
+  // 10s Carousel Slider
   function init10sCarousel() {
     const slides = document.querySelectorAll('.ct-carousel-slide');
     const dots = document.querySelectorAll('.ct-carousel-dot');
@@ -332,7 +645,7 @@
     function startTimer() {
       state.carouselTimer = setInterval(() => {
         goToSlide(state.carouselIndex + 1);
-      }, 10000); // Exactly 10 seconds
+      }, 10000);
     }
 
     function resetTimer() {
@@ -343,7 +656,7 @@
     startTimer();
   }
 
-  // ── Queue Selection Modal ────────────────────────────────────
+  // Gamemode Queue Controller
   function initQueueModal() {
     const openBtn = document.getElementById('btn-open-queue-modal');
     const modal = document.getElementById('queue-select-modal');
@@ -353,13 +666,14 @@
     const cancelBtn = document.getElementById('btn-cancel-queue');
     const timerText = document.getElementById('queue-timer-text');
     const statusMsg = document.getElementById('queue-status-msg');
+    const modeLabel = document.getElementById('party-mode-label');
 
     if (openBtn) {
       openBtn.addEventListener('click', () => {
         if (state.isQueueing) {
           cancelQueue();
-        } else if (modal) {
-          modal.classList.add('open');
+        } else {
+          startQueue();
         }
       });
     }
@@ -374,7 +688,7 @@
       });
     }
 
-    // Step 1: 1v1, 2v2, 3v3
+    // Team Size Selectors
     const sizeBtns = document.querySelectorAll('.ct-size-btn');
     sizeBtns.forEach(btn => {
       btn.addEventListener('click', () => {
@@ -385,7 +699,7 @@
       });
     });
 
-    // Step 2: Realistic, Box Fights, Build Fights, Zone Wars
+    // Gamemode Selectors
     const modeCards = document.querySelectorAll('.ct-mode-card');
     modeCards.forEach(card => {
       card.addEventListener('click', () => {
@@ -397,9 +711,14 @@
     });
 
     function updateModalQueueBtn() {
-      if (!startQueueBtn) return;
       const modeName = getGamemodeDisplayName(state.gameMode);
-      startQueueBtn.textContent = `Queue ${state.teamSize} ${modeName}`;
+      const bo = getBestOfFormat(state.gameMode);
+      if (startQueueBtn) {
+        startQueueBtn.textContent = `Queue ${state.teamSize} ${modeName}`;
+      }
+      if (modeLabel) {
+        modeLabel.textContent = `${state.teamSize} ${modeName} (${bo})`;
+      }
     }
 
     if (startQueueBtn) {
@@ -417,7 +736,7 @@
       if (banner) banner.classList.add('active');
       if (openBtn) {
         openBtn.classList.add('queueing');
-        openBtn.innerHTML = `<i data-lucide="x-circle" style="width:20px;height:20px;"></i> Cancel Queue`;
+        openBtn.innerHTML = `<i data-lucide="x-circle" style="width:20px;height:20px;"></i> <span>Cancel Queue</span>`;
       }
       if (window.lucide) window.lucide.createIcons();
 
@@ -433,8 +752,8 @@
         const fmt = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
         if (timerText) timerText.textContent = fmt;
 
-        // Match found simulation after 10 seconds
-        if (state.queueSeconds === 10) {
+        // Match Found Simulation after 8 seconds
+        if (state.queueSeconds === 8) {
           matchFoundSimulation();
         }
       }, 1000);
@@ -446,7 +765,7 @@
       if (banner) banner.classList.remove('active');
       if (openBtn) {
         openBtn.classList.remove('queueing');
-        openBtn.innerHTML = `<i data-lucide="play" style="width:20px;height:20px;fill:currentColor;"></i> Queue Match`;
+        openBtn.innerHTML = `<i data-lucide="play" style="width:20px;height:20px;fill:currentColor;"></i> <span>Queue Match</span>`;
       }
       if (window.lucide) window.lucide.createIcons();
     }
@@ -456,7 +775,7 @@
       if (banner) banner.classList.remove('active');
       if (openBtn) {
         openBtn.classList.remove('queueing');
-        openBtn.innerHTML = `<i data-lucide="check" style="width:20px;height:20px;"></i> Match Found!`;
+        openBtn.innerHTML = `<i data-lucide="check" style="width:20px;height:20px;"></i> <span>Match Found!</span>`;
       }
       if (window.lucide) window.lucide.createIcons();
       showMatchModal();
@@ -469,7 +788,17 @@
       case 'boxfight': return 'Box Fights';
       case 'buildfight': return 'Build Fights';
       case 'zonewars': return 'Zone Wars';
-      default: return 'Match';
+      default: return 'Realistic';
+    }
+  }
+
+  function getBestOfFormat(key) {
+    switch (key) {
+      case 'realistic': return 'BO9';
+      case 'boxfight': return 'BO7';
+      case 'buildfight': return 'BO5';
+      case 'zonewars': return 'BO9';
+      default: return 'BO9';
     }
   }
 
@@ -489,22 +818,22 @@
         <div style="width:48px;height:48px;border-radius:12px;background:rgba(83,252,24,0.15);color:#53fc18;display:inline-flex;align-items:center;justify-content:center;margin-bottom:12px;">
           <i data-lucide="swords" style="width:24px;height:24px;"></i>
         </div>
-        <h3 style="font-family:'Outfit',sans-serif;font-size:1.4rem;font-weight:900;color:#fff;margin-bottom:4px;">Match Found!</h3>
+        <h3 style="font-family:'Outfit',sans-serif;font-size:1.4rem;font-weight:600;color:#fff;margin-bottom:4px;">Match Found!</h3>
         <p style="color:#94a3b8;font-size:0.8rem;margin-bottom:16px;">
           Opponent matched within ±300 ELO range.
         </p>
         <div style="background:#000;border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:14px;margin-bottom:16px;text-align:left;font-size:0.82rem;">
           <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
-            <span style="color:#64748b;font-weight:800;">Playlist:</span>
-            <span style="color:#fff;font-weight:900;">${state.teamSize} ${modeName}</span>
+            <span style="color:#64748b;font-weight:600;">Playlist:</span>
+            <span style="color:#fff;font-weight:600;">${state.teamSize} ${modeName}</span>
           </div>
           <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
-            <span style="color:#64748b;font-weight:800;">Opponent ELO:</span>
-            <span style="color:#53fc18;font-weight:900;">2,480 ELO (Elite)</span>
+            <span style="color:#64748b;font-weight:600;">Opponent ELO:</span>
+            <span style="color:#53fc18;font-weight:600;">2,480 ELO (Elite)</span>
           </div>
           <div style="display:flex;justify-content:space-between;">
-            <span style="color:#64748b;font-weight:800;">Island Code:</span>
-            <span style="color:#fbbf24;font-weight:900;">2355-0939-8965</span>
+            <span style="color:#64748b;font-weight:600;">Island Code:</span>
+            <span style="color:#fbbf24;font-weight:600;font-family:monospace;">2355-0939-8965</span>
           </div>
         </div>
         <div style="display:flex;gap:10px;">
@@ -522,11 +851,14 @@
     const modal = document.getElementById('match-ready-modal');
     if (modal) modal.remove();
     const openBtn = document.getElementById('btn-open-queue-modal');
-    if (openBtn) openBtn.innerHTML = `<i data-lucide="play" style="width:20px;height:20px;fill:currentColor;"></i> Queue Match`;
+    if (openBtn) {
+      openBtn.classList.remove('queueing');
+      openBtn.innerHTML = `<i data-lucide="play" style="width:20px;height:20px;fill:currentColor;"></i> <span>Queue Match</span>`;
+    }
     if (window.lucide) window.lucide.createIcons();
   };
 
-  // ── Referrals Modal ──────────────────────────────────────────
+  // Referrals Modal
   function initReferralsModal() {
     const modal = document.getElementById('referrals-modal');
     const triggers = document.querySelectorAll('.trigger-referrals');
@@ -534,6 +866,10 @@
     const copyBtn = document.getElementById('btn-copy-ref-link');
     const input = document.getElementById('referral-link-input');
     const islandDropdown = document.getElementById('ct-island-dropdown');
+
+    if (input && state.currentUser) {
+      input.value = `https://championtokens.fun/?ref=CHAMP-${state.currentUser.id.slice(-8)}`;
+    }
 
     function openModal() {
       if (modal) modal.classList.add('open');
@@ -564,7 +900,7 @@
     }
   }
 
-  // ── Social & Friends Drawer ─────────────────────────────────
+  // Social & Friends Drawer
   function initFriendsDrawer() {
     const overlay = document.getElementById('friends-drawer-overlay');
     const drawer = document.getElementById('friends-drawer');
@@ -591,23 +927,23 @@
     const container = document.getElementById('friends-list-container');
     if (!container) return;
 
-    container.innerHTML = state.friends.map(f => `
+    container.innerHTML = ONLINE_CONTENDERS.map(f => `
       <div style="background:#000;border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:10px;display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
         <div style="display:flex;align-items:center;gap:10px;">
           <img src="${f.avatar}" style="width:34px;height:34px;border-radius:8px;object-fit:cover;" alt="${f.name}"/>
           <div>
-            <div style="font-size:0.84rem;font-weight:800;color:#fff;">${f.name} <span style="color:#53fc18;font-size:0.7rem;">${f.elo} ELO</span></div>
-            <div style="font-size:0.7rem;color:#64748b;">${f.activity}</div>
+            <div style="font-size:0.84rem;font-weight:600;color:#fff;">${f.name} <span style="color:#53fc18;font-size:0.7rem;">${f.elo.toLocaleString()} ELO</span></div>
+            <div style="font-size:0.7rem;color:#64748b;">${f.status}</div>
           </div>
         </div>
-        <button type="button" style="background:#14171a;border:1px solid rgba(255,255,255,0.1);color:#53fc18;padding:5px 10px;border-radius:6px;font-size:0.72rem;font-weight:800;cursor:pointer;" onclick="showToast('Invited ${f.name} to Party!')">
+        <button type="button" style="background:#14171a;border:1px solid rgba(255,255,255,0.1);color:#53fc18;padding:5px 10px;border-radius:6px;font-size:0.72rem;font-weight:600;cursor:pointer;" onclick="showToast('Invited ${f.name} to Party!')">
           Invite
         </button>
       </div>
     `).join('');
   }
 
-  // ── Online Ticker Fluctuator ─────────────────────────────────
+  // Real-Time Online Ticker
   function initLiveTicker() {
     const onlineEl = document.getElementById('ticker-online-count');
     const matchesEl = document.getElementById('ticker-matches-count');
@@ -626,7 +962,7 @@
     }, 4000);
   }
 
-  // ── Toast Helper ─────────────────────────────────────────────
+  // Toast Notification
   window.showToast = function (msg) {
     let toast = document.getElementById('ct-ranked-toast');
     if (!toast) {
@@ -643,7 +979,7 @@
         padding: 9px 20px;
         border-radius: 99px;
         font-size: 0.8rem;
-        font-weight: 800;
+        font-weight: 600;
         z-index: 9999;
         pointer-events: none;
         transition: opacity 0.2s ease;

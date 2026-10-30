@@ -16,14 +16,9 @@
   <!-- ── Top Status Ticker ──────────────────────────────────────── -->
   <div class="ct-ticker-bar">
     <div class="ct-ticker-left">
-      <span><span class="ct-live-dot"></span> <strong id="ticker-online-count" style="color:#fff;">1,482</strong> Online</span>
+      <span><span class="ct-live-dot"></span> <span id="ticker-online-count" style="color:#fff;font-weight:600;">1,482</span> Players Online</span>
       <span style="color:#334155;">•</span>
-      <span><strong id="ticker-matches-count" style="color:#fff;">219</strong> Matches Live</span>
-      <span style="color:#334155;">•</span>
-      <span>Competitive Skill ELO (+25 to +50 per match)</span>
-    </div>
-    <div class="ct-season-pill">
-      Season 1 Live • 38 Days Left
+      <span><span id="ticker-matches-count" style="color:#fff;font-weight:600;">219</span> Matches In Progress</span>
     </div>
   </div>
 
@@ -42,9 +37,6 @@
           <span class="ct-header-rank-name" id="header-rank-name">Elite</span>
           <span class="ct-header-rank-elo" id="header-rank-elo">2,450 ELO</span>
         </div>
-        <button type="button" class="ct-info-icon-btn" id="btn-placements-info" title="Placement Info">
-          <i data-lucide="info" style="width:13px;height:13px;"></i>
-        </button>
       </div>
 
       <!-- Temporary Set ELO Test Button (will be removed in next prompt) -->
@@ -66,24 +58,28 @@
       <!-- Signed-in: User Island with Discord Avatar & Name -->
       <div class="ct-user-island" id="ct-user-island" style="display:none;" title="User Menu">
         <img src="https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=120&auto=format&fit=crop&q=80" class="ct-island-avatar" id="island-user-avatar" alt="Avatar"/>
-        <span class="ct-island-name" id="island-user-name">Zenox</span>
+        <span class="ct-island-name" id="island-user-name">882194017402</span>
         <i data-lucide="chevron-down" style="width:14px;height:14px;color:#94a3b8;"></i>
       </div>
 
-      <!-- Hamburger / Profile Dropdown Menu under Island -->
+      <!-- Hamburger / Profile Dropdown Menu under Island (100% Solid Opaque) -->
       <div class="ct-island-dropdown" id="ct-island-dropdown">
-        <a href="profile" class="ct-island-profile-header">
+        <a href="profile" class="ct-island-profile-header" id="dropdown-profile-link">
           <img src="https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=120&auto=format&fit=crop&q=80" class="ct-island-dropdown-avatar" id="dropdown-user-avatar" alt="Avatar"/>
           <div class="ct-island-dropdown-meta">
-            <span class="ct-island-dropdown-name" id="dropdown-user-name">Zenox</span>
+            <span class="ct-island-dropdown-name" id="dropdown-user-name">882194017402</span>
             <span class="ct-island-dropdown-view">View your profile →</span>
           </div>
         </a>
         <div class="ct-island-divider"></div>
-        <button type="button" class="ct-island-menu-item trigger-referrals" id="dropdown-referrals-btn">
+        <a href="bonuses" class="ct-island-menu-item">
           <i data-lucide="gift" style="width:16px;height:16px;color:#fbbf24;"></i>
-          <span>Referees</span>
-        </button>
+          <span>Referees & Bonuses</span>
+        </a>
+        <a href="settings" class="ct-island-menu-item">
+          <i data-lucide="settings" style="width:16px;height:16px;color:#94a3b8;"></i>
+          <span>Settings</span>
+        </a>
         <div class="ct-island-divider"></div>
         <button type="button" class="ct-island-menu-item" id="btn-user-signout" style="color:#ef4444;">
           <i data-lucide="log-out" style="width:16px;height:16px;color:#ef4444;"></i>
@@ -114,7 +110,7 @@
         </div>
 
         <!-- Slide 3: Invite Friends (Free Bonuses) -->
-        <div class="ct-carousel-slide trigger-referrals" style="background-image:linear-gradient(90deg, #08090c 45%, rgba(8,9,12,0.85) 100%), url('boxfights.jpeg');">
+        <div class="ct-carousel-slide" style="background-image:linear-gradient(90deg, #08090c 45%, rgba(8,9,12,0.85) 100%), url('boxfights.jpeg');" onclick="window.location.href='bonuses'">
           <span class="ct-slide-tag tag-referral">FREE BONUSES</span>
           <div class="ct-slide-title">Invite Friends, Earn Free Rewards</div>
           <div class="ct-slide-desc">Share your referral link or code. You and your friend both earn instant bonus XP and starter cosmetics upon their first match.</div>
@@ -132,21 +128,80 @@
       </div>
     </section>
 
-    <!-- ── Center Matchmaking Section with Fortnite Backdrop ──── -->
-    <section class="ct-matchmake-hub">
+    <!-- ── Center Party & Ranked Arena Section ────────────────── -->
+    <section class="ct-matchmake-hub" id="party-arena-hub">
+      <div class="ct-matchmake-badge">SEASON 1 RANKED</div>
       <h2 class="ct-matchmake-title">
         Fortnite <span>Ranked Arena</span>
       </h2>
       <p class="ct-matchmake-sub">
-        Competitive 1v1, 2v2, & 3v3 skill matchmaking. Queue now across Realistic, Box Fights, Build Fights, and Zone Wars.
+        Competitive 1v1, 2v2, & 3v3 skill matchmaking. Queue solo or assemble your squad.
       </p>
 
-      <!-- Big Queue Button -->
-      <div>
-        <button type="button" class="ct-big-queue-btn" id="btn-open-queue-modal">
-          <i data-lucide="play" style="width:22px;height:22px;fill:currentColor;"></i>
-          <span>Queue Match</span>
-        </button>
+      <!-- Party Card / Roster Hub -->
+      <div class="ct-party-card">
+        <div class="ct-party-card-header">
+          <div class="ct-party-header-left">
+            <span class="ct-party-tag">PARTY</span>
+            <span class="ct-party-count" id="party-member-count">1 / 3 Contenders</span>
+          </div>
+          <!-- Selected Playlist Mode -->
+          <div class="ct-party-mode-pill" id="btn-open-mode-select" title="Change Gamemode">
+            <span class="ct-mode-pill-label" id="party-mode-label">1v1 Realistic (BO9)</span>
+            <span class="ct-mode-pill-change">Change</span>
+          </div>
+        </div>
+
+        <!-- Party Contender Slots -->
+        <div class="ct-party-slots-grid">
+          <!-- Slot 1: You (Party Leader) -->
+          <div class="ct-party-slot slot-leader" id="party-slot-1">
+            <div class="ct-slot-crown" title="Party Leader">
+              <i data-lucide="crown" style="width:14px;height:14px;color:#fbbf24;"></i>
+            </div>
+            <img src="https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=120&auto=format&fit=crop&q=80" class="ct-slot-avatar" id="party-slot-1-avatar" alt="You"/>
+            <div class="ct-slot-meta">
+              <span class="ct-slot-name" id="party-slot-1-name">882194017402</span>
+              <span class="ct-slot-rank" id="party-slot-1-rank">Elite • 2,450 ELO</span>
+            </div>
+            <div class="ct-slot-status ready">
+              <span class="ct-ready-dot"></span> Ready
+            </div>
+          </div>
+
+          <!-- Slot 2: Invite Friend / Search Player -->
+          <div class="ct-party-slot slot-empty" id="party-slot-2">
+            <button type="button" class="ct-party-invite-btn" id="btn-invite-slot-2" title="Invite Friend to Party">
+              <div class="ct-party-plus-icon">
+                <i data-lucide="plus" style="width:20px;height:20px;"></i>
+              </div>
+              <span class="ct-party-slot-text">Invite Friend</span>
+            </button>
+          </div>
+
+          <!-- Slot 3: Invite Friend / Search Player -->
+          <div class="ct-party-slot slot-empty" id="party-slot-3">
+            <button type="button" class="ct-party-invite-btn" id="btn-invite-slot-3" title="Invite Friend to Party">
+              <div class="ct-party-plus-icon">
+                <i data-lucide="plus" style="width:20px;height:20px;"></i>
+              </div>
+              <span class="ct-party-slot-text">Invite Friend</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Party Action Controls -->
+        <div class="ct-party-bottom-actions">
+          <button type="button" class="btn-party-search-invite" id="btn-open-party-search">
+            <i data-lucide="user-plus" style="width:16px;height:16px;color:#53fc18;"></i>
+            <span>Search & Invite</span>
+          </button>
+
+          <button type="button" class="ct-big-queue-btn" id="btn-open-queue-modal">
+            <i data-lucide="play" style="width:20px;height:20px;fill:currentColor;"></i>
+            <span>Queue Match</span>
+          </button>
+        </div>
       </div>
 
       <!-- Active Queue Radar Banner (Visible while queueing) -->
@@ -154,23 +209,23 @@
         <div style="display:flex;align-items:center;gap:12px;">
           <div class="queue-radar" style="width:24px;height:24px;border:2px solid rgba(83,252,24,0.3);border-top-color:#53fc18;border-radius:50%;animation:spin-radar 1s linear infinite;"></div>
           <div style="text-align:left;">
-            <div style="font-weight:900;font-size:1rem;color:#fff;" id="queue-timer-text">0:00</div>
+            <div style="font-weight:600;font-size:1rem;color:#fff;" id="queue-timer-text">0:00</div>
             <div style="font-size:0.75rem;color:#94a3b8;" id="queue-status-msg">Searching opponents within ±300 ELO...</div>
           </div>
         </div>
-        <button type="button" class="btn-cancel-queue" id="btn-cancel-queue" style="background:rgba(239,68,68,0.15);border:1px solid #ef4444;color:#ef4444;padding:6px 14px;border-radius:8px;font-weight:800;cursor:pointer;">
+        <button type="button" class="btn-cancel-queue" id="btn-cancel-queue" style="background:rgba(239,68,68,0.15);border:1px solid #ef4444;color:#ef4444;padding:6px 14px;border-radius:8px;font-weight:600;cursor:pointer;">
           Cancel
         </button>
       </div>
     </section>
 
-    <!-- ── Monthly Leaderboard ($2,500 Prize Pool) ─────────────── -->
+    <!-- ── Monthly Leaderboard ───────────────────────────────────── -->
     <section class="ct-monthly-strip">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
-        <h3 style="font-family:'Outfit',sans-serif;font-size:1.15rem;font-weight:900;color:#ffffff;margin:0;">
-          Monthly Leaderboard ($2,500 Prize Pool)
+        <h3 style="font-family:'Outfit',sans-serif;font-size:1.15rem;font-weight:600;color:#ffffff;margin:0;">
+          Monthly Leaderboard
         </h3>
-        <a href="leaderboard" style="color:#53fc18;font-size:0.8rem;font-weight:800;text-decoration:none;">View Full →</a>
+        <a href="leaderboard" style="color:#53fc18;font-size:0.8rem;font-weight:600;text-decoration:none;">View Full →</a>
       </div>
 
       <table class="ct-table-simple">
@@ -188,7 +243,7 @@
             <td colspan="5" style="text-align:center;padding:42px 16px;color:#64748b;">
               <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
                 <i data-lucide="trophy" style="width:28px;height:28px;color:#334155;"></i>
-                <span style="font-weight:800;font-size:0.92rem;color:#ffffff;">Season 1 Leaderboard Calibrating</span>
+                <span style="font-weight:600;font-size:0.92rem;color:#ffffff;">Season 1 Leaderboard Calibrating</span>
                 <span style="font-size:0.78rem;color:#64748b;">Play your 5 placement matches to claim rank #1 on the leaderboard.</span>
               </div>
             </td>
@@ -435,10 +490,82 @@
       </div>
 
       <!-- Referred Players List -->
-      <div style="font-size:0.75rem;font-weight:800;color:#64748b;text-transform:uppercase;margin-bottom:8px;">Referred Contenders:</div>
+      <div style="font-size:0.75rem;font-weight:600;color:#64748b;text-transform:uppercase;margin-bottom:8px;">Referred Contenders:</div>
       <div style="background:#000;border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:16px;text-align:center;font-size:0.78rem;color:#64748b;">
         No contenders have signed up with your code yet. Share it in Discord or on TikTok to earn rewards!
       </div>
+    </div>
+  </div>
+
+  <!-- ── Party Search & Invite Modal ────────────────────────────── -->
+  <div class="ct-modal-overlay" id="party-invite-modal">
+    <div class="ct-queue-modal-card" style="max-width:480px;">
+      <button type="button" class="ct-modal-close-btn" id="btn-close-party-invite">
+        <i data-lucide="x" style="width:20px;height:20px;"></i>
+      </button>
+
+      <div class="ct-modal-title" style="display:flex;align-items:center;gap:8px;">
+        <i data-lucide="user-plus" style="width:20px;height:20px;color:#53fc18;"></i>
+        <span>Invite to Party</span>
+      </div>
+      <div style="font-size:0.8rem;color:#94a3b8;margin-bottom:14px;">
+        Invite online friends or search for contenders by username or 12-digit Contender ID.
+      </div>
+
+      <!-- Search Box -->
+      <div class="ct-search-box-wrap" style="margin-bottom:14px;position:relative;">
+        <i data-lucide="search" style="width:16px;height:16px;color:#64748b;position:absolute;left:14px;top:50%;transform:translateY(-50%);pointer-events:none;"></i>
+        <input type="text" id="party-search-input" class="ct-party-search-input" placeholder="Search contender handle or 12-digit ID..." style="width:100%;box-sizing:border-box;background:#000;border:1px solid rgba(255,255,255,0.12);color:#fff;padding:10px 14px 10px 38px;border-radius:10px;font-size:0.85rem;outline:none;"/>
+      </div>
+
+      <!-- Search Results / Online Contenders -->
+      <div style="font-size:0.75rem;font-weight:600;color:#64748b;text-transform:uppercase;margin-bottom:8px;letter-spacing:0.04em;">Available Online Contenders</div>
+      <div class="ct-party-friends-list" id="party-search-results">
+        <!-- Rendered dynamically by ranked-hub.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Interactive Sign Up / Sign In Modal ───────────────────── -->
+  <div class="ct-modal-overlay" id="auth-modal">
+    <div class="ct-queue-modal-card" style="max-width:440px;text-align:center;">
+      <button type="button" class="ct-modal-close-btn" id="btn-close-auth-modal">
+        <i data-lucide="x" style="width:20px;height:20px;"></i>
+      </button>
+
+      <div style="width:48px;height:48px;border-radius:12px;background:rgba(83,252,24,0.1);display:inline-flex;align-items:center;justify-content:center;margin-bottom:12px;color:#53fc18;">
+        <i data-lucide="shield" style="width:24px;height:24px;"></i>
+      </div>
+      <div class="ct-modal-title" style="margin-bottom:4px;">Join Ranked Arena</div>
+      <div style="font-size:0.8rem;color:#94a3b8;margin-bottom:20px;">
+        Sign in to climb the competitive leaderboard, earn ELO, and assemble your party.
+      </div>
+
+      <!-- Instant Discord Sign In Button -->
+      <button type="button" class="ct-auth-discord-btn" id="btn-auth-discord-instant">
+        <svg style="width:20px;height:20px;fill:currentColor;" viewBox="0 0 127.14 96.36">
+          <path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22h0C129.24,52.84,122.09,29.11,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,45.91,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,45.91,96.12,53,91.08,65.69,84.69,65.69Z"/>
+        </svg>
+        <span>Continue with Discord</span>
+      </button>
+
+      <div style="display:flex;align-items:center;margin:18px 0;gap:12px;">
+        <div style="flex:1;height:1px;background:rgba(255,255,255,0.08);"></div>
+        <span style="font-size:0.72rem;color:#64748b;font-weight:600;text-transform:uppercase;">or contender ID</span>
+        <div style="flex:1;height:1px;background:rgba(255,255,255,0.08);"></div>
+      </div>
+
+      <!-- Quick Contender ID Entry -->
+      <form id="form-contender-signup" onsubmit="return false;" style="display:flex;flex-direction:column;gap:10px;">
+        <div style="text-align:left;">
+          <label style="font-size:0.75rem;color:#94a3b8;font-weight:600;display:block;margin-bottom:6px;">Your 12-Digit Contender ID</label>
+          <input type="text" id="auth-contender-id-input" style="width:100%;box-sizing:border-box;background:#000;border:1px solid rgba(255,255,255,0.12);color:#53fc18;padding:10px 14px;border-radius:10px;font-size:0.95rem;outline:none;font-family:monospace;letter-spacing:1px;text-align:center;cursor:default;" readonly />
+          <div style="font-size:0.7rem;color:#64748b;margin-top:4px;">Unique ID automatically generated for this browser. (Changing handle is a VIP feature)</div>
+        </div>
+        <button type="submit" class="btn-modal-start-queue" id="btn-create-contender-acc" style="margin-top:6px;">
+          Enter Arena as Contender
+        </button>
+      </form>
     </div>
   </div>
 
@@ -446,7 +573,7 @@
   <div class="friends-drawer-overlay" id="friends-drawer-overlay"></div>
   <aside class="friends-drawer" id="friends-drawer" style="background:#08090c;border-left:1px solid rgba(255,255,255,0.08);">
     <div class="friends-drawer-header" style="border-bottom:1px solid rgba(255,255,255,0.06);padding:16px 20px;">
-      <div class="friends-drawer-title" style="font-size:1.1rem;font-weight:900;color:#fff;display:flex;align-items:center;gap:8px;">
+      <div class="friends-drawer-title" style="font-size:1.1rem;font-weight:600;color:#fff;display:flex;align-items:center;gap:8px;">
         <i data-lucide="users" style="width:18px;height:18px;color:#53fc18;"></i>
         <span>Friends</span>
       </div>

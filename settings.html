@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Settings — Champion Tokens</title>
+  <link rel="icon" type="image/png" href="champion-tokens_new.png"/>
+  <link rel="stylesheet" href="css/style.css?v=5.5"/>
+  <link rel="stylesheet" href="css/ranked.css?v=4.1"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    .ct-setting-card {
+      background: #08090c;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+    .ct-toggle-switch {
+      position: relative;
+      display: inline-block;
+      width: 46px;
+      height: 24px;
+      flex-shrink: 0;
+    }
+    .ct-toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .ct-toggle-slider {
+      position: absolute;
+      cursor: pointer;
+      inset: 0;
+      background-color: #1e2229;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      transition: .2s ease;
+      border-radius: 99px;
+    }
+    .ct-toggle-slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 2px;
+      bottom: 2px;
+      background-color: #94a3b8;
+      transition: .2s ease;
+      border-radius: 50%;
+    }
+    input:checked + .ct-toggle-slider {
+      background-color: #53fc18;
+      border-color: #53fc18;
+    }
+    input:checked + .ct-toggle-slider:before {
+      transform: translateX(22px);
+      background-color: #000000;
+    }
+  </style>
+</head>
+<body style="background:#000000;color:#ffffff;margin:0;font-family:'Inter',sans-serif;">
+
+  <!-- Top Navigation Header -->
+  <header class="landing-nav" role="banner" style="background:#000000;border-bottom:1px solid rgba(255,255,255,0.08);padding:14px 28px;position:relative;z-index:100;">
+    <div class="ct-nav-left">
+      <a href="/" class="brand-logo" style="text-decoration:none;">
+        <span class="brand-logo-champion" style="font-weight:700;">CHAMPION</span> <span class="brand-logo-tokens" style="font-weight:700;">TOKENS</span>
+      </a>
+    </div>
+    <div class="ct-nav-right">
+      <a href="/" class="ct-top-auth-btn" style="text-decoration:none;background:#14171e;color:#53fc18;border:1px solid rgba(83,252,24,0.3);">
+        <i data-lucide="arrow-left" style="width:14px;height:14px;"></i>
+        <span>Back to Arena</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="ct-ranked-wrap" style="max-width:820px;padding-top:36px;position:relative;z-index:10;">
+    
+    <div style="margin-bottom:28px;">
+      <h1 style="font-family:'Outfit',sans-serif;font-size:2rem;font-weight:700;margin:0 0 6px;color:#fff;">
+        Settings
+      </h1>
+      <p style="font-size:0.9rem;color:#94a3b8;margin:0;">
+        Manage your Contender profile ID, privacy preferences, and in-game matchmaking options.
+      </p>
+    </div>
+
+    <!-- Section 1: Contender Handle & 12-Digit ID -->
+    <div class="ct-setting-card">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;">
+        <div>
+          <div style="font-family:'Outfit',sans-serif;font-size:1.15rem;font-weight:600;color:#fff;margin-bottom:4px;">
+            Contender Identity
+          </div>
+          <div style="font-size:0.82rem;color:#94a3b8;">
+            By default your public profile name is your permanent 12-digit Contender ID.
+          </div>
+        </div>
+        <span style="font-size:0.72rem;font-weight:600;color:#53fc18;background:rgba(83,252,24,0.08);border:1px solid rgba(83,252,24,0.25);padding:3px 10px;border-radius:99px;">
+          VIP FEATURE
+        </span>
+      </div>
+
+      <div style="background:#000;border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:16px;margin-bottom:16px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+          <span style="font-size:0.8rem;color:#64748b;font-weight:600;">Permanent Contender ID:</span>
+          <span style="font-family:monospace;font-size:0.9rem;color:#53fc18;font-weight:600;" id="display-contender-id">882194017402</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <span style="font-size:0.8rem;color:#64748b;font-weight:600;">Active Display Name:</span>
+          <span style="font-size:0.9rem;color:#ffffff;font-weight:600;" id="display-active-handle">882194017402</span>
+        </div>
+      </div>
+
+      <!-- Change Custom Name Input -->
+      <div>
+        <label style="font-size:0.76rem;font-weight:600;color:#94a3b8;display:block;margin-bottom:8px;text-transform:uppercase;">
+          Change Custom Handle (Family-Friendly Only)
+        </label>
+        <div style="display:flex;gap:10px;">
+          <input type="text" id="input-custom-handle" placeholder="Enter new handle (e.g. ShadowViper)" maxlength="16" style="flex:1;background:#000;border:1px solid rgba(255,255,255,0.12);color:#fff;padding:11px 16px;border-radius:10px;font-size:0.88rem;outline:none;"/>
+          <button type="button" id="btn-save-handle" style="background:#53fc18;color:#000;border:none;padding:11px 20px;border-radius:10px;font-weight:600;font-size:0.84rem;cursor:pointer;">
+            Save Handle
+          </button>
+        </div>
+        <!-- Live validation feedback message -->
+        <div id="handle-feedback" style="font-size:0.75rem;margin-top:6px;display:none;"></div>
+      </div>
+    </div>
+
+    <!-- Section 2: Privacy & Friend Requests -->
+    <div class="ct-setting-card">
+      <div style="font-family:'Outfit',sans-serif;font-size:1.15rem;font-weight:600;color:#fff;margin-bottom:16px;">
+        Social & Privacy
+      </div>
+
+      <!-- Friend Requests Toggle -->
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.06);">
+        <div>
+          <div style="font-size:0.9rem;font-weight:600;color:#fff;">Incoming Friend Requests</div>
+          <div style="font-size:0.78rem;color:#94a3b8;">Allow other contenders to send you friend requests and party invites.</div>
+        </div>
+        <label class="ct-toggle-switch">
+          <input type="checkbox" id="toggle-friend-requests" checked/>
+          <span class="ct-toggle-slider"></span>
+        </label>
+      </div>
+
+      <!-- Streamer Mode Toggle -->
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 0;">
+        <div>
+          <div style="font-size:0.9rem;font-weight:600;color:#fff;">Streamer Mode</div>
+          <div style="font-size:0.78rem;color:#94a3b8;">Hides your Contender ID and exact rank rating during matchmaking and matches.</div>
+        </div>
+        <label class="ct-toggle-switch">
+          <input type="checkbox" id="toggle-streamer-mode"/>
+          <span class="ct-toggle-slider"></span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Section 3: In-Game Matchmaking Audio -->
+    <div class="ct-setting-card">
+      <div style="font-family:'Outfit',sans-serif;font-size:1.15rem;font-weight:600;color:#fff;margin-bottom:16px;">
+        Matchmaking Preferences
+      </div>
+
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;">
+        <div>
+          <div style="font-size:0.9rem;font-weight:600;color:#fff;">Match Found Audio Cue</div>
+          <div style="font-size:0.78rem;color:#94a3b8;">Play a distinct sound notification when an opponent within ±300 ELO is located.</div>
+        </div>
+        <label class="ct-toggle-switch">
+          <input type="checkbox" id="toggle-match-audio" checked/>
+          <span class="ct-toggle-slider"></span>
+        </label>
+      </div>
+    </div>
+
+  </main>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Slurs and inappropriate language filter list
+      const BLOCKED_WORDS = [
+        'nigger', 'nigga', 'n1gger', 'n1gga', 'nigg', 'neger',
+        'faggot', 'fag', 'f@g', 'retard', 'kike', 'chink', 'spic', 'wetback',
+        'cunt', 'whore', 'slut', 'bitch', 'cock', 'dick', 'pussy', 'penis', 'vagina',
+        'hitler', 'nazi', 'pedophile', 'pedo', 'rape', 'rapist'
+      ];
+
+      // Load User State
+      const userRaw = localStorage.getItem('ct_user');
+      let user = { id: '882194017402', name: '882194017402', customName: '' };
+      if (userRaw) {
+        try {
+          user = Object.assign(user, JSON.parse(userRaw));
+        } catch (e) {}
+      } else {
+        localStorage.setItem('ct_user', JSON.stringify(user));
+      }
+
+      const idEl = document.getElementById('display-contender-id');
+      const handleEl = document.getElementById('display-active-handle');
+      const inputEl = document.getElementById('input-custom-handle');
+      const feedbackEl = document.getElementById('handle-feedback');
+      const saveBtn = document.getElementById('btn-save-handle');
+
+      if (idEl) idEl.textContent = user.id;
+      if (handleEl) handleEl.textContent = user.customName || user.name || user.id;
+
+      // Real-time family-friendly check
+      function validateHandle(val) {
+        const clean = val.trim().toLowerCase();
+        if (clean.length < 3) {
+          return { valid: false, msg: 'Handle must be at least 3 characters long.' };
+        }
+        if (!/^[a-zA-Z0-9_]+$/.test(clean)) {
+          return { valid: false, msg: 'Only letters, numbers, and underscores are allowed.' };
+        }
+
+        // Leetspeak normalized check
+        const normalized = clean
+          .replace(/0/g, 'o')
+          .replace(/1/g, 'i')
+          .replace(/3/g, 'e')
+          .replace(/4/g, 'a')
+          .replace(/5/g, 's')
+          .replace(/@/g, 'a')
+          .replace(/!/g, 'i');
+
+        for (const blocked of BLOCKED_WORDS) {
+          if (clean.includes(blocked) || normalized.includes(blocked)) {
+            return {
+              valid: false,
+              msg: 'Handle contains restricted or inappropriate language. Please choose a family-friendly name.'
+            };
+          }
+        }
+
+        // Check taken names
+        const taken = ['admin', 'moderator', 'system', 'champion', 'viper_fn', 'ghostclutch'];
+        if (taken.includes(clean)) {
+          return { valid: false, msg: 'That handle is already taken. Please choose another.' };
+        }
+
+        return { valid: true, msg: '✓ Handle is available and family-friendly!' };
+      }
+
+      inputEl.addEventListener('input', () => {
+        const val = inputEl.value;
+        if (!val.trim()) {
+          feedbackEl.style.display = 'none';
+          return;
+        }
+        const res = validateHandle(val);
+        feedbackEl.style.display = 'block';
+        feedbackEl.textContent = res.msg;
+        feedbackEl.style.color = res.valid ? '#53fc18' : '#ef4444';
+      });
+
+      saveBtn.addEventListener('click', () => {
+        const val = inputEl.value;
+        const res = validateHandle(val);
+        if (!res.valid) {
+          feedbackEl.style.display = 'block';
+          feedbackEl.textContent = res.msg;
+          feedbackEl.style.color = '#ef4444';
+          return;
+        }
+
+        user.customName = val.trim();
+        user.name = val.trim();
+        localStorage.setItem('ct_user', JSON.stringify(user));
+        if (handleEl) handleEl.textContent = user.name;
+        feedbackEl.textContent = '✓ Saved successfully!';
+        feedbackEl.style.color = '#53fc18';
+        inputEl.value = '';
+      });
+
+      // Toggles Persistence
+      const friendToggle = document.getElementById('toggle-friend-requests');
+      const streamerToggle = document.getElementById('toggle-streamer-mode');
+      const audioToggle = document.getElementById('toggle-match-audio');
+
+      if (friendToggle) {
+        friendToggle.checked = localStorage.getItem('ct_friend_requests') !== 'false';
+        friendToggle.addEventListener('change', () => {
+          localStorage.setItem('ct_friend_requests', friendToggle.checked ? 'true' : 'false');
+        });
+      }
+
+      if (streamerToggle) {
+        streamerToggle.checked = localStorage.getItem('ct_streamer_mode') === 'true';
+        streamerToggle.addEventListener('change', () => {
+          localStorage.setItem('ct_streamer_mode', streamerToggle.checked ? 'true' : 'false');
+        });
+      }
+
+      if (audioToggle) {
+        audioToggle.checked = localStorage.getItem('ct_match_audio') !== 'false';
+        audioToggle.addEventListener('change', () => {
+          localStorage.setItem('ct_match_audio', audioToggle.checked ? 'true' : 'false');
+        });
+      }
+
+      if (window.lucide) window.lucide.createIcons();
+    });
+  </script>
+</body>
+</html>

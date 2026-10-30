@@ -46,6 +46,12 @@ const server = http.createServer((req, res) => {
     pathname = '/index.html';
   }
 
+  // Handle /profile/* dynamically
+  if (pathname.startsWith('/profile/')) {
+    const profilePath = path.join(ROOT, 'profile.html');
+    return serveFile(profilePath, res);
+  }
+
   let filePath = path.join(ROOT, pathname);
 
   // Prevent directory traversal

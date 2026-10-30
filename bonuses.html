@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Referees & Bonuses — Champion Tokens</title>
+  <link rel="icon" type="image/png" href="champion-tokens_new.png"/>
+  <link rel="stylesheet" href="css/style.css?v=5.5"/>
+  <link rel="stylesheet" href="css/ranked.css?v=4.1"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+</head>
+<body style="background:#000000;color:#ffffff;margin:0;font-family:'Inter',sans-serif;">
+
+  <!-- Top Navigation Header -->
+  <header class="landing-nav" role="banner" style="background:#000000;border-bottom:1px solid rgba(255,255,255,0.08);padding:14px 28px;position:relative;z-index:100;">
+    <div class="ct-nav-left">
+      <a href="/" class="brand-logo" style="text-decoration:none;">
+        <span class="brand-logo-champion" style="font-weight:700;">CHAMPION</span> <span class="brand-logo-tokens" style="font-weight:700;">TOKENS</span>
+      </a>
+    </div>
+    <div class="ct-nav-right">
+      <a href="/" class="ct-top-auth-btn" style="text-decoration:none;background:#14171e;color:#53fc18;border:1px solid rgba(83,252,24,0.3);">
+        <i data-lucide="arrow-left" style="width:14px;height:14px;"></i>
+        <span>Back to Arena</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="ct-ranked-wrap" style="max-width:920px;padding-top:36px;position:relative;z-index:10;">
+    
+    <!-- Hero Header -->
+    <div style="margin-bottom:32px;">
+      <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(251,191,36,0.12);border:1px solid rgba(251,191,36,0.25);padding:3px 10px;border-radius:99px;font-size:0.75rem;font-weight:600;color:#fbbf24;margin-bottom:12px;">
+        <i data-lucide="gift" style="width:14px;height:14px;"></i>
+        <span>Contender Referral Rewards</span>
+      </div>
+      <h1 style="font-family:'Outfit',sans-serif;font-size:2rem;font-weight:700;margin:0 0 8px;color:#fff;">
+        Referees & Bonuses
+      </h1>
+      <p style="font-size:0.9rem;color:#94a3b8;margin:0;line-height:1.5;">
+        Invite contenders to calibrate their rank on Champion Tokens. Earn instant Battle Pass bonus XP and cosmetic loot for every contender who completes their placements.
+      </p>
+    </div>
+
+    <!-- Referral Link Box -->
+    <div style="background:#08090c;border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:24px;margin-bottom:28px;">
+      <div style="font-size:0.76rem;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:8px;">
+        Your Unique Referral Link
+      </div>
+      <div style="display:flex;gap:10px;align-items:center;">
+        <input type="text" id="ref-link-input" readonly value="https://championtokens.fun/?ref=CHAMP-88219401" style="flex:1;background:#000;border:1px solid rgba(255,255,255,0.12);color:#53fc18;padding:12px 16px;border-radius:10px;font-size:0.88rem;outline:none;font-family:monospace;"/>
+        <button type="button" id="btn-copy-ref" style="background:#53fc18;color:#000;border:none;padding:12px 22px;border-radius:10px;font-weight:600;font-size:0.86rem;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:all 0.15s ease;">
+          <i data-lucide="copy" style="width:16px;height:16px;"></i>
+          <span>Copy</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Stats Grid -->
+    <div style="display:grid;grid-template-columns:repeat(3, 1fr);gap:14px;margin-bottom:32px;">
+      <div style="background:#08090c;border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:20px;text-align:left;">
+        <div style="font-size:0.74rem;font-weight:600;color:#64748b;text-transform:uppercase;margin-bottom:4px;">Friends Invited</div>
+        <div style="font-family:'Outfit',sans-serif;font-size:1.8rem;font-weight:700;color:#fff;" id="stats-invited-count">0</div>
+      </div>
+      <div style="background:#08090c;border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:20px;text-align:left;">
+        <div style="font-size:0.74rem;font-weight:600;color:#64748b;text-transform:uppercase;margin-bottom:4px;">Total Bonus Earned</div>
+        <div style="font-family:'Outfit',sans-serif;font-size:1.8rem;font-weight:700;color:#53fc18;" id="stats-xp-count">+0 XP</div>
+      </div>
+      <div style="background:#08090c;border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:20px;text-align:left;">
+        <div style="font-size:0.74rem;font-weight:600;color:#64748b;text-transform:uppercase;margin-bottom:4px;">Pending Placements</div>
+        <div style="font-family:'Outfit',sans-serif;font-size:1.8rem;font-weight:700;color:#fbbf24;" id="stats-pending-count">0</div>
+      </div>
+    </div>
+
+    <!-- Tier Rewards Progression -->
+    <div style="background:#08090c;border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:24px;margin-bottom:32px;">
+      <h3 style="font-family:'Outfit',sans-serif;font-size:1.15rem;font-weight:600;margin:0 0 16px;color:#fff;">
+        Referral Milestone Rewards
+      </h3>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div style="background:#000;border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div style="width:34px;height:34px;border-radius:8px;background:rgba(83,252,24,0.1);color:#53fc18;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.85rem;">1</div>
+            <div>
+              <div style="font-size:0.88rem;font-weight:600;color:#fff;">1 Friend Placed</div>
+              <div style="font-size:0.75rem;color:#94a3b8;">+250 Battle Pass XP & Exclusive Beta Founder Badge</div>
+            </div>
+          </div>
+          <span style="font-size:0.74rem;font-weight:600;color:#64748b;">Incomplete</span>
+        </div>
+
+        <div style="background:#000;border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div style="width:34px;height:34px;border-radius:8px;background:rgba(251,191,36,0.1);color:#fbbf24;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.85rem;">3</div>
+            <div>
+              <div style="font-size:0.88rem;font-weight:600;color:#fff;">3 Friends Placed</div>
+              <div style="font-size:0.75rem;color:#94a3b8;">+750 Battle Pass XP & Golden Contender Profile Border</div>
+            </div>
+          </div>
+          <span style="font-size:0.74rem;font-weight:600;color:#64748b;">Incomplete</span>
+        </div>
+
+        <div style="background:#000;border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div style="width:34px;height:34px;border-radius:8px;background:rgba(56,189,248,0.1);color:#38bdf8;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.85rem;">5</div>
+            <div>
+              <div style="font-size:0.88rem;font-weight:600;color:#fff;">5 Friends Placed</div>
+              <div style="font-size:0.75rem;color:#94a3b8;">Free Season 1 Battle Pass Upgrade (Instant 25 Tiers)</div>
+            </div>
+          </div>
+          <span style="font-size:0.74rem;font-weight:600;color:#64748b;">Incomplete</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Referred Contenders Table -->
+    <div style="background:#08090c;border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:24px;">
+      <h3 style="font-family:'Outfit',sans-serif;font-size:1.15rem;font-weight:600;margin:0 0 16px;color:#fff;">
+        Referred Contenders
+      </h3>
+      <div style="background:#000;border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:36px 16px;text-align:center;">
+        <i data-lucide="users" style="width:28px;height:28px;color:#334155;margin-bottom:8px;"></i>
+        <div style="font-size:0.88rem;font-weight:600;color:#94a3b8;margin-bottom:4px;">No Contenders Registered Yet</div>
+        <div style="font-size:0.76rem;color:#475569;">Share your code on Discord or TikTok to start claiming rewards.</div>
+      </div>
+    </div>
+
+  </main>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Load user Contender ID
+      const userRaw = localStorage.getItem('ct_user');
+      let contenderId = '882194017402';
+      if (userRaw) {
+        try {
+          const user = JSON.parse(userRaw);
+          if (user.id) contenderId = user.id;
+        } catch (e) {}
+      }
+      const refInput = document.getElementById('ref-link-input');
+      if (refInput) refInput.value = `https://championtokens.fun/?ref=CHAMP-${contenderId}`;
+
+      const copyBtn = document.getElementById('btn-copy-ref');
+      if (copyBtn && refInput) {
+        copyBtn.addEventListener('click', () => {
+          refInput.select();
+          navigator.clipboard.writeText(refInput.value).then(() => {
+            copyBtn.innerHTML = '<i data-lucide="check" style="width:16px;height:16px;"></i> Copied!';
+            if (window.lucide) window.lucide.createIcons();
+            setTimeout(() => {
+              copyBtn.innerHTML = '<i data-lucide="copy" style="width:16px;height:16px;"></i> Copy';
+              if (window.lucide) window.lucide.createIcons();
+            }, 2000);
+          });
+        });
+      }
+
+      if (window.lucide) window.lucide.createIcons();
+    });
+  </script>
+</body>
+</html>
