@@ -41,12 +41,12 @@
 
     let user = {
       id: cid,
-      name: 'Zenox',
+      name: 'adrian',
       customName: '',
       tag: '#1337',
       isLoggedIn: true,
-      avatar: 'https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=120&auto=format&fit=crop&q=80',
-      isVip: false
+      avatar: '/adrian-avatar.png',
+      isVip: true
     };
 
     if (raw) {
@@ -54,6 +54,10 @@
         const parsed = JSON.parse(raw);
         user = Object.assign(user, parsed);
         user.id = get12DigitContenderId(user.id || user.uid);
+        if (!user.avatar || user.avatar.includes('images.unsplash.com')) {
+          user.avatar = '/adrian-avatar.png';
+          localStorage.setItem('ct_user', JSON.stringify(user));
+        }
       } catch (e) {}
     } else {
       localStorage.setItem('ct_user', JSON.stringify(user));

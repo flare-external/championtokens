@@ -1871,10 +1871,10 @@ body {
   margin-top: 2px;
 }
 
-/* ── Compact Rank / Place / ELO HUD Box (Right Corner, No Outline, 5% Bigger) ── */
+/* ── Compact Rank / Place / ELO HUD Box (Bottom Right Corner, No Outline, 5% Bigger) ── */
 .pf-hud-card {
   position: absolute;
-  top: 14px;
+  bottom: 12px;
   right: 20px;
   background: rgba(0, 0, 0, 0.75);
   backdrop-filter: blur(10px);
@@ -1888,7 +1888,7 @@ body {
   gap: 14px;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.55);
   transform: scale(1.05);
-  transform-origin: top right;
+  transform-origin: bottom right;
   z-index: 20;
   transition: all 0.25s ease;
 }
@@ -2003,7 +2003,7 @@ body {
 
 /* ── Banner & Edit Profile Button ───────────────────────────── */
 .pf-banner-cover {
-  height: 105px;
+  height: 115px;
   background: linear-gradient(135deg, #090c10 0%, #151a23 50%, #0d1117 100%);
   background-size: cover;
   background-position: center;
@@ -2053,10 +2053,14 @@ body {
   filter: drop-shadow(0 0 12px rgba(251, 191, 36, 0.45)) !important;
 }
 
-/* ── Connected Profile Links (With Manual Moderation Verification) ── */
-.pf-links-wrap {
-  margin-top: 14px;
-  max-width: 620px;
+/* ── Connected Profile Links Card (Sleek Box Container) ─────── */
+.pf-links-card {
+  margin-top: 20px;
+  background: #08090c;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 16px 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
   position: relative;
   z-index: 10;
 }
@@ -2065,7 +2069,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 8px;
+  margin-bottom: 12px;
 }
 
 .pf-links-label-row {
@@ -2075,11 +2079,13 @@ body {
 }
 
 .pf-links-title {
-  font-size: 0.68rem;
-  font-weight: 800;
-  color: #64748b;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .pf-mod-badge {
@@ -2098,13 +2104,13 @@ body {
 }
 
 .btn-add-link {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.14);
-  color: #94a3b8;
-  font-size: 0.72rem;
+  color: #ffffff;
+  font-size: 0.74rem;
   font-weight: 600;
-  padding: 4px 10px;
-  border-radius: 6px;
+  padding: 5px 12px;
+  border-radius: 8px;
   display: inline-flex;
   align-items: center;
   gap: 5px;
@@ -2121,18 +2127,18 @@ body {
 .pf-links-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 10px;
 }
 
 .pf-link-chip {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: #090c12;
+  background: #0f131c;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 6px 12px;
-  border-radius: 8px;
-  font-size: 0.78rem;
+  padding: 8px 14px;
+  border-radius: 10px;
+  font-size: 0.8rem;
   color: #e2e8f0;
   text-decoration: none;
   transition: all 0.15s ease;
@@ -2140,11 +2146,11 @@ body {
 
 .pf-link-chip:hover {
   border-color: rgba(255, 255, 255, 0.25);
-  background: #10141d;
+  background: #151b26;
 }
 
 .pf-link-chip.approved {
-  border-color: rgba(83, 252, 24, 0.25);
+  border-color: rgba(83, 252, 24, 0.3);
 }
 
 .pf-link-chip.approved:hover {
@@ -2154,13 +2160,16 @@ body {
 
 .pf-link-chip.pending {
   border-color: rgba(245, 158, 11, 0.35);
-  background: rgba(245, 158, 11, 0.04);
+  background: rgba(245, 158, 11, 0.06);
 }
 
 .pf-link-platform-icon {
-  width: 14px;
-  height: 14px;
+  width: 15px;
+  height: 15px;
   flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .pf-link-status-tag {
@@ -2198,6 +2207,169 @@ body {
 
 .pf-link-delete-btn:hover {
   color: #f87171;
+}
+
+/* ── Profile Skeleton Loader (Smooth Shimmer Transition) ─────── */
+.pf-skeleton-wrap {
+  position: absolute;
+  top: 28px;
+  left: 20px;
+  right: 20px;
+  background: #000000;
+  z-index: 999;
+  border-radius: 20px;
+  opacity: 1;
+  transition: opacity 0.4s ease, visibility 0.4s ease;
+  pointer-events: none;
+}
+
+.pf-skeleton-wrap.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.sk-shimmer {
+  background: linear-gradient(90deg, #11141c 25%, #1d2330 50%, #11141c 75%);
+  background-size: 200% 100%;
+  animation: skSweep 1.4s infinite linear;
+}
+
+@keyframes skSweep {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.sk-banner {
+  height: 115px;
+  border-radius: 20px 20px 0 0;
+  width: 100%;
+}
+
+.sk-body {
+  background: #08090c;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: none;
+  border-radius: 0 0 20px 20px;
+  padding: 0 28px 24px;
+}
+
+.sk-avatar {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  margin-top: -45px;
+  border: 3.5px solid #1a2230;
+  display: block;
+}
+
+.sk-lines {
+  margin-top: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sk-line {
+  height: 16px;
+  border-radius: 6px;
+}
+
+.sk-line-title { width: 180px; height: 26px; }
+.sk-line-sub { width: 240px; height: 14px; }
+.sk-line-bio { width: 320px; height: 18px; margin-top: 6px; }
+
+.sk-box {
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* ── Modern Chromium-Styled Dark Cookie Consent Banner ───────── */
+.ct-cookie-banner {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(120%);
+  max-width: 580px;
+  width: calc(100% - 32px);
+  background: rgba(12, 15, 22, 0.96);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+  padding: 18px 22px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.85);
+  z-index: 9999999;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease;
+  opacity: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ct-cookie-banner.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+.ct-cookie-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ct-cookie-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.02rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.ct-cookie-text {
+  font-size: 0.8rem;
+  color: #94a3b8;
+  line-height: 1.45;
+  margin: 0;
+}
+
+.ct-cookie-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.btn-cookie-accept {
+  background: #53fc18;
+  border: none;
+  color: #000000;
+  font-weight: 800;
+  font-size: 0.8rem;
+  padding: 8px 18px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+
+.btn-cookie-accept:hover {
+  opacity: 0.9;
+}
+
+.btn-cookie-reject {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #cbd5e1;
+  font-weight: 600;
+  font-size: 0.8rem;
+  padding: 7px 16px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-cookie-reject:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
 }
 
 /* ── Generic Profile Modals (Badges & Add Link) ──────────────── */

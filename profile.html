@@ -7,7 +7,7 @@
   <title>Contender Profile — Champion Tokens</title>
   <link rel="icon" type="image/png" href="/champion-tokens_new.png"/>
   <link rel="stylesheet" href="/css/style.css?v=5.5"/>
-  <link rel="stylesheet" href="/css/ranked.css?v=4.8"/>
+  <link rel="stylesheet" href="/css/ranked.css?v=5.0"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
   <script src="/js/protect.js"></script>
@@ -30,9 +30,9 @@
       position: relative;
     }
 
-    /* Banner Backdrop Image */
+    /* Banner Backdrop Image (Sleek Dark Cyber Banner) */
     .pf-banner-cover {
-      height: 105px;
+      height: 115px;
       background: linear-gradient(135deg, #090c10 0%, #151a23 50%, #0d1117 100%);
       background-size: cover;
       background-position: center;
@@ -71,7 +71,7 @@
       z-index: 10;
     }
 
-    /* Header Row: Avatar overlapping line + HUD Card */
+    /* Header Row: Avatar overlapping line */
     .pf-header-row {
       display: flex;
       justify-content: space-between;
@@ -108,6 +108,13 @@
       gap: 4px;
       position: relative;
       z-index: 100;
+    }
+
+    .pf-username-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
     }
 
     .pf-username {
@@ -149,13 +156,28 @@
   <!-- Main Profile Container -->
   <main class="pf-container">
 
+    <!-- Skeleton Loading Screen (Greyed-out Shimmer Transition on Refresh) -->
+    <div class="pf-skeleton-wrap" id="pf-skeleton-wrap" aria-hidden="true">
+      <div class="sk-banner sk-shimmer"></div>
+      <div class="sk-body">
+        <div class="sk-avatar sk-shimmer"></div>
+        <div class="sk-lines">
+          <div class="sk-line sk-line-title sk-shimmer"></div>
+          <div class="sk-line sk-line-sub sk-shimmer"></div>
+          <div class="sk-line sk-line-bio sk-shimmer"></div>
+        </div>
+      </div>
+      <div class="sk-box sk-shimmer" style="margin-top:20px;height:95px;border-radius:16px;"></div>
+      <div class="sk-box sk-shimmer" style="margin-top:20px;height:140px;border-radius:16px;"></div>
+    </div>
+
     <!-- Profile Banner & Identity Card -->
     <section class="pf-banner-card">
       
       <!-- Sleek Default Dark Cyber Banner -->
       <div class="pf-banner-cover" id="pf-banner-cover">
         
-        <!-- Compact Gaming HUD Box (Rank | Place | ELO in Right Corner, No Outline, 5% Bigger) -->
+        <!-- Compact Gaming HUD Box (Rank | Place | ELO in Bottom Right Corner, No Outline, 5% Bigger) -->
         <div class="pf-hud-card" id="pf-hud-card">
           <!-- Rank Column -->
           <div class="pf-hud-col">
@@ -199,7 +221,7 @@
         <!-- Top Row: Avatar overlapping line -->
         <div class="pf-header-row">
           <div class="pf-avatar-wrap">
-            <img src="https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=120&auto=format&fit=crop&q=80" id="pf-avatar" class="pf-avatar-img" alt="Contender Avatar"/>
+            <img src="/adrian-avatar.png" id="pf-avatar" class="pf-avatar-img" alt="adrian"/>
           </div>
         </div>
 
@@ -218,7 +240,7 @@
           <div class="pf-id-row">
             <span>Contender ID: <strong style="color:#ffffff;" id="pf-contender-id">112118831941</strong></span>
             <button type="button" class="pf-copy-btn" id="btn-copy-id" title="Copy Contender ID">
-              <i data-lucide="copy" style="width:14px;height:14px;"></i>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             </button>
           </div>
 
@@ -232,7 +254,7 @@
                 bio here.. or not? please. add. one.
               </span>
               <button type="button" class="pf-bio-edit-trigger" id="btn-trigger-bio-edit" title="Edit bio">
-                <i data-lucide="edit-2" style="width:12px;height:12px;"></i>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>
               </button>
             </div>
 
@@ -250,17 +272,21 @@
             </div>
           </div>
 
-          <!-- Connected Profile Links (With Manual Moderation Verification) -->
-          <div class="pf-links-wrap" id="pf-links-wrap">
+          <!-- Connected Profile Links (Dedicated Card Box Container) -->
+          <div class="pf-links-card" id="pf-links-card">
             <div class="pf-links-header">
               <div class="pf-links-label-row">
-                <span class="pf-links-title">Connected Profiles</span>
+                <span class="pf-links-title">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#53fc18" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px;"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+                  Connected Profiles
+                </span>
                 <span class="pf-mod-badge" title="All external links must be manually checked and verified by moderation staff before public activation">
-                  <i data-lucide="shield-check" style="width:11px;height:11px;"></i> Manual Moderation
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:2px;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="m9 12 2 2 4-4"></path></svg>
+                  Manual Moderation
                 </span>
               </div>
               <button type="button" class="btn-add-link" id="btn-open-add-link" title="Add a connected profile link">
-                <i data-lucide="plus" style="width:12px;height:12px;"></i>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:3px;"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
                 <span>Add Link</span>
               </button>
             </div>
@@ -278,12 +304,12 @@
     <section class="pf-stats-card">
       <div class="pf-stats-header">
         <div class="pf-stats-title">
-          <i data-lucide="bar-chart-2" style="width:18px;height:18px;color:#53fc18;"></i>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#53fc18" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:6px;"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
           <span>Statistics</span>
         </div>
         <button type="button" class="pf-season-filter-btn" id="btn-season-filter" title="Filter stats by season">
           <span>Season 1</span>
-          <i data-lucide="chevron-down" style="width:13px;height:13px;"></i>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
         </button>
       </div>
 
@@ -323,14 +349,14 @@
     <div class="pf-modal-card">
       <div class="pf-modal-header">
         <div class="pf-modal-title">
-          <i data-lucide="award" style="width:20px;height:20px;color:#53fc18;"></i>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#53fc18" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:6px;"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
           <span>Contender Badges</span>
         </div>
         <button type="button" class="pf-modal-close-btn" id="btn-close-badges-modal">
-          <i data-lucide="x" style="width:18px;height:18px;"></i>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
         </button>
       </div>
-      <div class="pf-modal-badges-grid" id="modal-badges-list"></div>
+      <div class="pf-modal-badges-list" id="modal-badges-list"></div>
     </div>
   </div>
 
@@ -339,43 +365,45 @@
     <div class="pf-modal-card">
       <div class="pf-modal-header">
         <div class="pf-modal-title">
-          <i data-lucide="link-2" style="width:20px;height:20px;color:#53fc18;"></i>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#53fc18" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:6px;"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
           <span>Connect Profile Link</span>
         </div>
         <button type="button" class="pf-modal-close-btn" id="btn-close-add-link-modal">
-          <i data-lucide="x" style="width:18px;height:18px;"></i>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
         </button>
       </div>
 
-      <div class="pf-mod-warning-box">
-        <i data-lucide="shield-alert" style="width:18px;height:18px;color:#f59e0b;flex-shrink:0;margin-top:2px;"></i>
-        <div>
-          <strong>Manual Moderation Required:</strong> All connected links are manually reviewed and verified by moderation staff before being activated publicly to protect against scam and malicious links.
-        </div>
-      </div>
-
       <form id="form-add-link">
+        <div class="pf-modal-desc">
+          Submit your official profile or streaming account for manual moderation review. Approved accounts will receive a verified badge on your contender profile.
+        </div>
+
         <div class="pf-form-group">
-          <label class="pf-form-label">Platform</label>
-          <select class="pf-form-select" id="select-link-platform">
-            <option value="discord">Discord Profile</option>
-            <option value="epic">Epic Games / Tracker</option>
-            <option value="twitch">Twitch Channel</option>
-            <option value="youtube">YouTube Channel</option>
+          <label class="pf-form-label" for="select-link-platform">Platform</label>
+          <select id="select-link-platform" class="pf-form-select">
+            <option value="discord">Discord</option>
+            <option value="epic">Epic Games (Fortnite)</option>
+            <option value="kick">Kick Streaming</option>
+            <option value="twitch">Twitch</option>
+            <option value="youtube">YouTube</option>
             <option value="twitter">X / Twitter</option>
-            <option value="kick">Kick Livestream</option>
-            <option value="custom">Custom Web Link</option>
+            <option value="other">Other Website</option>
           </select>
         </div>
 
         <div class="pf-form-group">
-          <label class="pf-form-label">Profile Handle or URL</label>
-          <input type="text" class="pf-form-input" id="input-link-val" placeholder="e.g. adrian or https://..." required />
+          <label class="pf-form-label" for="input-link-val">Username, Handle, or URL</label>
+          <input type="text" id="input-link-val" class="pf-form-input" placeholder="e.g. adrian or https://..." required maxlength="120" />
+        </div>
+
+        <div class="pf-form-notice">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          <span>All submissions undergo manual staff moderation. Inappropriate, offensive, or phishing links will result in a permanent competitive suspension.</span>
         </div>
 
         <div class="pf-modal-actions">
           <button type="button" class="btn-modal-cancel" id="btn-cancel-add-link">Cancel</button>
-          <button type="submit" class="btn-modal-submit">Submit for Review</button>
+          <button type="submit" class="btn-modal-submit" id="btn-submit-add-link">Submit for Verification</button>
         </div>
       </form>
     </div>
@@ -388,8 +416,22 @@
     </div>
   </footer>
 
+  <!-- Modern Chromium-Styled Dark Cookie Consent Banner -->
+  <aside class="ct-cookie-banner" id="ct-cookie-banner" role="dialog" aria-labelledby="ct-cookie-title">
+    <div class="ct-cookie-header">
+      <span style="font-size:1.25rem;line-height:1;" aria-hidden="true">🍪</span>
+      <h3 class="ct-cookie-title" id="ct-cookie-title">Cookies on Champion Tokens</h3>
+    </div>
+    <p class="ct-cookie-text">
+      We use cookies and essential local storage to remember your profile settings, secure match leaderboards, and deliver an optimal competitive gaming experience.
+    </p>
+    <div class="ct-cookie-actions">
+      <button type="button" class="btn-cookie-reject" id="btn-cookie-reject">Reject Non-Essential</button>
+      <button type="button" class="btn-cookie-accept" id="btn-cookie-accept">Accept All</button>
+    </div>
+  </aside>
+
   <!-- Scripts -->
-  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="/js/ranked-nav.js"></script>
   <script>
     function getRankMeta(elo, isUnranked) {
@@ -439,71 +481,6 @@
       }
 
       return { safe: true };
-    }
-
-    // Automated Moderation Engine for Image (NSFW & Gore)
-    async function inspectImageSafety(imgSrc, rawName = '') {
-      const forbiddenKeywords = [
-        'gore', 'blood', 'wound', 'death', 'murder', 'kill', 'suicide', 'corpse',
-        'porn', 'nsfw', 'hentai', 'sex', 'xxx', 'nude', 'naked', 'penis', 'boobs',
-        'vagina', 'swastika', 'nazi', 'beheading', 'violence', 'erotic'
-      ];
-
-      const combinedText = (rawName + ' ' + imgSrc).toLowerCase();
-      for (const word of forbiddenKeywords) {
-        if (combinedText.includes(word)) {
-          return { safe: false, reason: `Safety Filter: Prohibited keyword "${word}" detected.` };
-        }
-      }
-
-      return new Promise((resolve) => {
-        const img = new Image();
-        img.crossOrigin = 'Anonymous';
-        img.onload = () => {
-          try {
-            const canvas = document.createElement('canvas');
-            const ctx = canvas.getContext('2d');
-            const size = 100;
-            canvas.width = size;
-            canvas.height = size;
-            ctx.drawImage(img, 0, 0, size, size);
-            const data = ctx.getImageData(0, 0, size, size).data;
-
-            let skinPixels = 0;
-            let bloodPixels = 0;
-            const totalPixels = size * size;
-
-            for (let i = 0; i < data.length; i += 4) {
-              const r = data[i];
-              const g = data[i + 1];
-              const b = data[i + 2];
-
-              if (r > 95 && g > 40 && b > 20 && (Math.max(r, g, b) - Math.min(r, g, b) > 15) && Math.abs(r - g) > 15 && r > g && r > b) {
-                skinPixels++;
-              }
-              if (r > 150 && g < 50 && b < 50) {
-                bloodPixels++;
-              }
-            }
-
-            if (skinPixels / totalPixels > 0.42) {
-              return resolve({ safe: false, reason: 'Automated Moderation: Image rejected for containing excessive skin exposure.' });
-            }
-            if (bloodPixels / totalPixels > 0.22) {
-              return resolve({ safe: false, reason: 'Automated Moderation: Image rejected for containing graphic red/violent content.' });
-            }
-            resolve({ safe: true });
-          } catch (e) {
-            resolve({ safe: true });
-          }
-        };
-
-        img.onerror = () => {
-          resolve({ safe: false, reason: 'Failed to load image. Please verify file format.' });
-        };
-
-        img.src = imgSrc;
-      });
     }
 
     function isBioVipOwner(u) {
@@ -561,7 +538,7 @@
         name: 'adrian',
         customName: '',
         tag: '',
-        avatar: 'https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=120&auto=format&fit=crop&q=80'
+        avatar: '/adrian-avatar.png'
       };
 
       const cached = localStorage.getItem('ct_user');
@@ -571,6 +548,9 @@
           user = Object.assign(user, parsed);
           const sanitizedId = sanitizeTo12Digits(user.id || user.uid);
           if (sanitizedId) user.id = sanitizedId;
+          if (!user.avatar || user.avatar.includes('images.unsplash.com')) {
+            user.avatar = '/adrian-avatar.png';
+          }
         } catch (e) {}
       }
 
@@ -627,9 +607,9 @@
 
       if (nameEl) nameEl.textContent = displayName;
       if (idEl) idEl.textContent = user.id;
-      if (avatarEl && user.avatar) avatarEl.src = user.avatar;
+      if (avatarEl) avatarEl.src = user.avatar || '/adrian-avatar.png';
 
-      // 6. Compact HUD Values
+      // 6. Compact HUD Values (Bottom Right Corner)
       const hudRankEl = document.getElementById('pf-hud-rank');
       const hudIconEl = document.getElementById('pf-hud-icon');
       const hudPlaceEl = document.getElementById('pf-hud-place');
@@ -722,10 +702,17 @@
       renderConnectedLinks();
       setupConnectedLinksHandlers();
 
-      if (window.lucide) window.lucide.createIcons();
+      // 11. Dismiss Skeleton Loading Screen smoothly after ~650ms
+      setTimeout(() => {
+        const sk = document.getElementById('pf-skeleton-wrap');
+        if (sk) sk.classList.add('hidden');
+      }, 650);
+
+      // 12. Chromium-Styled Dark Cookie Consent Banner
+      initCookieConsent();
     }
 
-    // ── Badges System Engine ─────────────────────────────────────
+    // ── Badges System Engine (Self-Contained Inline SVGs) ────────
     function getUserBadges(user, meta) {
       const badges = [];
       const name = (user.name || user.displayName || user.customName || '').toLowerCase().trim();
@@ -736,30 +723,30 @@
                       storedCid.startsWith('112118831941') ||
                       localStorage.getItem('ct_is_owner') === 'true';
 
-      // 1. Owner Badge
+      // 1. Owner Badge (Crown Icon)
       if (isOwner) {
         badges.push({
           id: 'owner',
           name: 'Owner',
           tag: 'FOUNDER',
-          iconName: 'crown',
           color: '#fbbf24',
           className: 'owner',
           lore: 'Champion Tokens Founder & Creator',
+          svg: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m2 4 3 12h14l3-12-6 7-4-7-4 7-6-7z"/><path d="M3 20h18"/></svg>',
           unlocked: true
         });
       }
 
-      // 2. Admin Badge
+      // 2. Admin Badge (Shield-Check Icon)
       if (isOwner || localStorage.getItem('ct_is_admin') === 'true') {
         badges.push({
           id: 'admin',
           name: 'Admin',
           tag: 'STAFF',
-          iconName: 'shield-check',
           color: '#06b6d4',
           className: 'admin',
           lore: 'Official Platform Administrator & Lead Safety Operator',
+          svg: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>',
           unlocked: true
         });
       }
@@ -767,7 +754,7 @@
       // 3. Leaderboard #... (Top 100 Players Only, Displays Number + Country Flag)
       const placeNum = meta ? meta.numPlace : 1;
       if (placeNum <= 100) {
-        const flag = localStorage.getItem('ct_user_flag') || '🇺🇸';
+        const flag = localStorage.getItem('ct_user_flag') || '\uD83C\uDDFA\uD83C\uDDF8';
         badges.push({
           id: 'leaderboard',
           name: `Leaderboard #${placeNum}`,
@@ -782,15 +769,15 @@
         });
       }
 
-      // 4. Beta Tester Badge (Scientific Flask Icon)
+      // 4. Beta Tester Badge (Science Flask Icon)
       badges.push({
         id: 'beta',
         name: 'Beta Tester',
         tag: 'EARLY ACCESS',
-        iconName: 'flask-conical',
         color: '#53fc18',
         className: 'beta',
         lore: 'Official Season 1 Early Beta Testing Participant',
+        svg: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#53fc18" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2v7.31L4.69 17.5A2 2 0 0 0 6.34 20.5h11.32a2 2 0 0 0 1.65-3L14 9.31V2"/><path d="M8.5 2h7"/><path d="M14 9.3a6.5 6.5 0 1 1-4 0"/></svg>',
         unlocked: true
       });
 
@@ -799,10 +786,10 @@
         id: 'premium',
         name: 'Premium',
         tag: 'VIP MEMBER',
-        iconName: 'gem',
         color: '#c084fc',
         className: 'premium',
         lore: 'Champion Tokens VIP & Season Pass Premium Contender',
+        svg: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#c084fc" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 3 18 3 22 9 12 22 2 9 6 3"/><line x1="12" y1="22" x2="6" y2="9"/><line x1="12" y1="22" x2="18" y2="9"/><line x1="2" y1="9" x2="22" y2="9"/></svg>',
         unlocked: true
       });
 
@@ -830,7 +817,7 @@
         if (b.isLeaderboard) {
           item.innerHTML = `<span class="pf-lb-badge-content"><span class="pf-lb-num">${b.placeText}</span><span class="pf-lb-flag">${b.flag}</span></span>`;
         } else {
-          item.innerHTML = `<i data-lucide="${b.iconName}" style="width:14px;height:14px;color:${b.color};"></i>`;
+          item.innerHTML = b.svg;
         }
         box.appendChild(item);
       });
@@ -866,7 +853,7 @@
         if (b.isLeaderboard) {
           iconHTML = `<div class="pf-badge-card-icon" style="border-color:${b.color}40;background:${b.color}15;"><span style="font-family:'Outfit',sans-serif;font-weight:800;font-size:0.95rem;color:${b.color};">${b.placeText} ${b.flag}</span></div>`;
         } else {
-          iconHTML = `<div class="pf-badge-card-icon" style="border-color:${b.color}40;background:${b.color}15;"><i data-lucide="${b.iconName}" style="width:20px;height:20px;color:${b.color};"></i></div>`;
+          iconHTML = `<div class="pf-badge-card-icon" style="border-color:${b.color}40;background:${b.color}15;">${b.svg.replace('width="15"', 'width="22"').replace('height="15"', 'height="22"')}</div>`;
         }
 
         card.innerHTML = `
@@ -879,7 +866,7 @@
             <div class="pf-badge-card-desc">${b.lore}</div>
           </div>
           <div class="pf-badge-card-status">
-            <i data-lucide="check-circle-2" style="width:14px;height:14px;"></i>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#53fc18" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:3px;"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
             <span>UNLOCKED</span>
           </div>
         `;
@@ -887,7 +874,6 @@
       });
 
       modal.classList.add('open');
-      if (window.lucide) window.lucide.createIcons();
     }
 
     document.getElementById('btn-close-badges-modal')?.addEventListener('click', () => {
@@ -900,7 +886,7 @@
       }
     });
 
-    // ── Connected Profile Links System (Manual Moderation) ────────
+    // ── Connected Profile Links System (Manual Moderation) ───────
     const DEFAULT_CONNECTED_LINKS = [
       {
         id: 'link_discord',
@@ -929,6 +915,7 @@
           return JSON.parse(stored);
         } catch (e) {}
       }
+      localStorage.setItem('ct_user_links', JSON.stringify(DEFAULT_CONNECTED_LINKS));
       return DEFAULT_CONNECTED_LINKS;
     }
 
@@ -939,13 +926,20 @@
 
     function getPlatformIcon(platform) {
       switch (platform) {
-        case 'discord': return '<i data-lucide="message-square" style="width:13px;height:13px;color:#5865F2;"></i>';
-        case 'epic': return '<i data-lucide="gamepad-2" style="width:13px;height:13px;color:#cbd5e1;"></i>';
-        case 'twitch': return '<i data-lucide="tv" style="width:13px;height:13px;color:#a855f7;"></i>';
-        case 'youtube': return '<i data-lucide="play" style="width:13px;height:13px;color:#ef4444;"></i>';
-        case 'twitter': return '<i data-lucide="twitter" style="width:13px;height:13px;color:#38bdf8;"></i>';
-        case 'kick': return '<i data-lucide="radio" style="width:13px;height:13px;color:#53fc18;"></i>';
-        default: return '<i data-lucide="globe" style="width:13px;height:13px;color:#94a3b8;"></i>';
+        case 'discord':
+          return '<svg width="14" height="14" viewBox="0 0 24 24" fill="#5865F2"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.893.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>';
+        case 'epic':
+          return '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 2 18 2 18 16 12 22 6 16 6 2"/></svg>';
+        case 'twitch':
+          return '<svg width="14" height="14" viewBox="0 0 24 24" fill="#a855f7"><path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714Z"/></svg>';
+        case 'youtube':
+          return '<svg width="14" height="14" viewBox="0 0 24 24" fill="#ef4444"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19.1c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.43z"/><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02" fill="#fff"/></svg>';
+        case 'twitter':
+          return '<svg width="14" height="14" viewBox="0 0 24 24" fill="#38bdf8"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>';
+        case 'kick':
+          return '<svg width="14" height="14" viewBox="0 0 24 24" fill="#53fc18"><path d="M4 3h5v5h2V6h2V4h2v2h2v2h-2v2h-2v4h2v2h2v2h-2v2h-2v-2h-2v-2h-2v5H4V3z"/></svg>';
+        default:
+          return '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>';
       }
     }
 
@@ -955,32 +949,28 @@
       listEl.innerHTML = '';
 
       const links = getConnectedLinks();
-      if (!links || links.length === 0) {
-        listEl.innerHTML = '<span style="font-size:0.75rem;color:#64748b;font-style:italic;">No connected profiles added yet.</span>';
+      if (links.length === 0) {
+        listEl.innerHTML = '<span style="font-size:0.75rem;color:#64748b;font-style:italic;">No connected profile links yet. Click Add Link to submit.</span>';
         return;
       }
 
-      links.forEach((link, idx) => {
-        const isApproved = link.status === 'approved';
-        const chip = document.createElement(isApproved ? 'a' : 'div');
-        chip.className = `pf-link-chip ${link.status}`;
-        if (isApproved && link.url) {
-          chip.href = link.url.startsWith('http') ? link.url : `https://${link.url}`;
-          chip.target = '_blank';
-          chip.rel = 'noopener noreferrer';
-        }
+      links.forEach((l, idx) => {
+        const chip = document.createElement('div');
+        chip.className = `pf-link-chip ${l.status === 'approved' ? 'approved' : 'pending'}`;
 
-        const iconHTML = getPlatformIcon(link.platform);
-        const statusBadge = isApproved 
-          ? `<span class="pf-link-status-tag verified" title="Verified by Champion Tokens moderation staff">✓ Verified</span>`
-          : `<span class="pf-link-status-tag pending" title="Under manual review by Champion Tokens staff before public activation">⏳ Pending Review</span>`;
+        const isApproved = l.status === 'approved';
+        const statusBadge = isApproved
+          ? `<span class="pf-link-status-tag approved" title="Verified by Champion Tokens moderation staff"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> Verified</span>`
+          : `<span class="pf-link-status-tag pending" title="Pending manual staff review"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Pending Review</span>`;
 
         chip.innerHTML = `
-          ${iconHTML}
-          <span style="font-weight:600;">${link.handle || link.title}</span>
+          <span class="pf-link-platform-icon">${getPlatformIcon(l.platform)}</span>
+          <a href="${l.url}" target="_blank" rel="noopener noreferrer" class="pf-link-handle" title="${l.title}">
+            ${l.handle}
+          </a>
           ${statusBadge}
           <button type="button" class="pf-link-delete-btn" data-del-idx="${idx}" title="Remove link">
-            <i data-lucide="trash-2" style="width:12px;height:12px;"></i>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
           </button>
         `;
 
@@ -992,8 +982,6 @@
 
         listEl.appendChild(chip);
       });
-
-      if (window.lucide) window.lucide.createIcons();
     }
 
     function deleteConnectedLink(index) {
@@ -1060,6 +1048,29 @@
         showToast('Link submitted! Sent to moderation staff for manual verification.');
       });
     }
+
+    // ── Modern Chromium Dark Cookie Consent Controller ─────────
+    function initCookieConsent() {
+      const banner = document.getElementById('ct-cookie-banner');
+      if (!banner) return;
+
+      const isAccepted = localStorage.getItem('ct_cookies_accepted');
+      if (!isAccepted) {
+        setTimeout(() => {
+          banner.classList.add('show');
+        }, 700);
+      }
+
+      const dismiss = () => {
+        localStorage.setItem('ct_cookies_accepted', 'true');
+        banner.classList.remove('show');
+        setTimeout(() => {
+          banner.style.display = 'none';
+        }, 400);
+      };
+
+      document.getElementById('btn-cookie-accept')?.addEventListener('click', dismiss);
+      document.getElementById('btn-cookie-reject')?.addEventListener('click', dismiss);
     }
 
     document.addEventListener('DOMContentLoaded', initProfile);
