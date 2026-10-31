@@ -94,7 +94,6 @@
       backBtn.href = '/main';
       backBtn.className = 'ct-page-back-floating';
       backBtn.id = 'ct-page-back-floating';
-      backBtn.title = 'Back to Arena';
       backBtn.innerHTML = `
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="m15 18-6-6 6-6"/></svg>
         <span>Back</span>
@@ -111,6 +110,32 @@
     }
   }
 
+  function ensureFloatingBackground() {
+    if (document.getElementById('floating-icons-container')) return;
+
+    const icons = [
+      { svg: '<circle cx="12" cy="12" r="10"/><line x1="22" x2="18" y1="12" y2="12"/><line x1="6" x2="2" y1="12" y2="12"/><line x1="12" x2="12" y1="6" y2="2"/><line x1="12" x2="12" y1="22" y2="18"/>', top: '12%', left: '8%', size: 32, dur: '18s', delay: '0s' },
+      { svg: '<polyline points="14.5 17.5 3 6 3 3 6 3 17.5 14.5"/><line x1="13" x2="19" y1="19" y2="13"/><line x1="16" x2="20" y1="16" y2="20"/><line x1="19" x2="21" y1="21" y2="19"/><polyline points="14.5 6.5 18 3 21 3 21 6 17.5 9.5"/><line x1="5" x2="9" y1="14" y2="18"/><line x1="7" x2="4" y1="17" y2="20"/><line x1="3" x2="5" y1="21" y2="19"/>', top: '42%', left: '84%', size: 36, dur: '22s', delay: '2s' },
+      { svg: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>', top: '65%', left: '6%', size: 30, dur: '20s', delay: '4s' },
+      { svg: '<path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.45 1-1 1H7c-.55 0-1 .45-1 1v1h12v-1c0-.55-.45-1-1-1h-2c-.55 0-1-.45-1-1v-2.34"/><path d="M6 4h12v5a6 6 0 0 1-12 0Z"/>', top: '78%', left: '92%', size: 34, dur: '25s', delay: '1s' },
+      { svg: '<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>', top: '45%', left: '95%', size: 28, dur: '17s', delay: '5s' },
+      { svg: '<path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>', top: '85%', left: '18%', size: 30, dur: '24s', delay: '3s' },
+      { svg: '<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>', top: '38%', left: '3%', size: 26, dur: '19s', delay: '6s' },
+      { svg: '<path d="m2 4 3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"/>', top: '15%', left: '75%', size: 32, dur: '21s', delay: '2.5s' }
+    ];
+
+    const container = document.createElement('div');
+    container.id = 'floating-icons-container';
+    container.className = 'floating-icons-layer';
+    container.innerHTML = icons.map(ic => `
+      <div class="floating-icon-item" style="top:${ic.top};left:${ic.left};animation-duration:${ic.dur};animation-delay:${ic.delay};">
+        <svg width="${ic.size}" height="${ic.size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${ic.svg}</svg>
+      </div>
+    `).join('');
+
+    document.body.prepend(container);
+  }
+
   function ensureUniversalFooter() {
     if (!document.querySelector('.ct-footer')) {
       const footer = document.createElement('footer');
@@ -125,6 +150,7 @@
   }
 
   function renderSharedNav(activeTab = '') {
+    ensureFloatingBackground();
     const existingHeader = document.querySelector('header.landing-nav');
     const user = getActiveUser();
 
@@ -145,7 +171,7 @@
         <a href="/main" class="brand-logo" style="text-decoration:none;">
           <span class="brand-logo-champion">CHAMPION</span> <span class="brand-logo-tokens">TOKENS</span>
         </a>
-        <button type="button" class="ct-set-elo-btn" id="btn-nav-set-elo" title="Test tool to set your ELO">
+        <button type="button" class="ct-set-elo-btn" id="btn-nav-set-elo">
           Set ELO
         </button>
       </div>
@@ -158,14 +184,17 @@
       </nav>
 
       <div class="ct-nav-right">
-        <!-- Rank & ELO Typography (Left of Profile, No Box, Simple, Clickable, Animated for Top 2) -->
-        <div class="ct-nav-rank-badge ${isTop2 ? 'rank-shine-top2' : ''} ${isUnreal ? 'rank-unreal' : ''}" id="ct-nav-rank-badge" title="Rank: ${meta.name} • ${meta.eloDisplay} (Click to set ELO)">
-          <div class="ct-nav-rank-name">${meta.name}</div>
-          <div class="ct-nav-rank-elo">${meta.eloDisplay}</div>
+        <!-- Rank & ELO Typography (Left of Profile, With Rank Icon, No Box, Simple, Clickable, Animated for Top 2) -->
+        <div class="ct-nav-rank-badge ${isTop2 ? 'rank-shine-top2' : ''} ${isUnreal ? 'rank-unreal' : ''}" id="ct-nav-rank-badge">
+          <img src="${meta.icon}" class="ct-nav-rank-icon" alt="${meta.name}"/>
+          <div class="ct-nav-rank-text-col">
+            <div class="ct-nav-rank-name">${meta.name}</div>
+            <div class="ct-nav-rank-elo">${meta.eloDisplay}</div>
+          </div>
         </div>
 
         <!-- User Island -->
-        <div class="ct-user-island" id="ct-user-island" title="User Menu">
+        <div class="ct-user-island" id="ct-user-island">
           <img src="${user.avatar}" class="ct-island-avatar" id="island-user-avatar" alt="Avatar"/>
           <span class="ct-island-name" id="island-user-name">${displayName}</span>
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><polyline points="6 9 12 15 18 9"/></svg>
@@ -266,6 +295,7 @@
 
   // Auto initialize if data-page attribute is on body
   document.addEventListener('DOMContentLoaded', () => {
+    ensureFloatingBackground();
     const pageAttr = document.body.getAttribute('data-ct-page');
     if (pageAttr && pageAttr !== 'hub') {
       renderSharedNav(pageAttr);

@@ -133,12 +133,11 @@ body {
   transform: translateY(-1px);
 }
 
-/* ── Clean Rank & ELO Typography (Left of Profile, No Box, Simple, Clickable) ── */
+/* ── Clean Rank & ELO Typography (Left of Profile, With Rank Icon, No Box, Simple, Clickable) ── */
 .ct-nav-rank-badge {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  justify-content: center;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   cursor: pointer;
   text-decoration: none;
   background: none;
@@ -153,21 +152,41 @@ body {
   opacity: 0.95;
 }
 
+.ct-nav-rank-icon {
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
+  flex-shrink: 0;
+  filter: drop-shadow(0 0 6px rgba(83, 252, 24, 0.3));
+}
+
+.ct-nav-rank-text-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  line-height: 1.15;
+}
+
 .ct-nav-rank-name {
   font-family: 'Outfit', sans-serif;
-  font-size: 0.92rem;
+  font-size: 0.90rem;
   font-weight: 800;
   color: #ffffff;
   line-height: 1.1;
   letter-spacing: 0.02em;
+  text-align: left;
 }
 
 .ct-nav-rank-elo {
   font-family: 'Inter', sans-serif;
-  font-size: 0.72rem;
+  font-size: 0.70rem;
   font-weight: 600;
   color: #94a3b8;
   line-height: 1.2;
+  letter-spacing: 0.01em;
+  text-align: left;
+  margin-top: 1px;
 }
 
 /* Sometimes rank and elo shine with an animation, ONLY for top 2 ranks (Champion & Unreal) */
@@ -1981,11 +2000,12 @@ body {
   margin-top: 2px;
 }
 
-/* ── Compact Rank / Place / ELO HUD Box (Bottom Right Corner, No Outline, 5% Bigger) ── */
+/* ── Compact Rank / Place / ELO HUD Box (Top Right of Profile Body, NOT Banner, No Outline, 5% Bigger) ── */
 .pf-hud-card {
-  position: absolute;
-  bottom: 12px;
-  right: 20px;
+  position: relative;
+  margin-left: auto;
+  margin-top: 10px;
+  align-self: flex-start;
   background: rgba(0, 0, 0, 0.75);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
@@ -1998,7 +2018,7 @@ body {
   gap: 14px;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.55);
   transform: scale(1.05);
-  transform-origin: bottom right;
+  transform-origin: top right;
   z-index: 20;
   transition: all 0.25s ease;
 }
