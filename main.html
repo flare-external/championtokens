@@ -317,7 +317,19 @@
 
       <div class="ct-modal-title" style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
         <i data-lucide="shield" style="width:22px;height:22px;color:#53fc18;"></i>
-        <span>Ranked Info</span>
+        <span>Rank & ELO System</span>
+      </div>
+
+      <!-- Interactive Set ELO Testing Panel -->
+      <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:12px 14px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
+        <div>
+          <div style="font-size:0.85rem;font-weight:700;color:#ffffff;">Live ELO Testing</div>
+          <div style="font-size:0.75rem;color:#94a3b8;" id="modal-current-rank-desc">Set your live rating number or click a tier below:</div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <input type="number" id="input-main-modal-elo" placeholder="Set ELO" style="width:90px;background:#000;border:1px solid rgba(255,255,255,0.15);color:#fff;padding:6px 10px;border-radius:8px;font-size:0.85rem;font-weight:600;outline:none;"/>
+          <button type="button" id="btn-main-modal-apply-elo" style="background:#53fc18;color:#000;font-weight:700;font-size:0.78rem;border:none;padding:7px 14px;border-radius:8px;cursor:pointer;">Set</button>
+        </div>
       </div>
 
       <!-- List of Ranks -->

@@ -136,6 +136,108 @@
     document.body.prepend(container);
   }
 
+  function ensureRanksModal(meta, currentElo) {
+    if (document.getElementById('ranks-modal')) return;
+
+    const ranks = [
+      { name: 'Bronze', icon: '/medal-ranks/svg/01-bronze.svg', elo: '0 - 499 ELO', defaultElo: 250, color: '#cd7f32', tierIndex: 0 },
+      { name: 'Silver', icon: '/medal-ranks/svg/02-silver.svg', elo: '500 - 999 ELO', defaultElo: 750, color: '#c0c0c0', tierIndex: 1 },
+      { name: 'Gold', icon: '/medal-ranks/svg/03-gold.svg', elo: '1,000 - 1,499 ELO', defaultElo: 1250, color: '#f59e0b', tierIndex: 2 },
+      { name: 'Platinum', icon: '/medal-ranks/svg/04-platinum.svg', elo: '1,500 - 1,999 ELO', defaultElo: 1750, color: '#38bdf8', tierIndex: 3 },
+      { name: 'Diamond', icon: '/medal-ranks/svg/05-diamond.svg', elo: '2,000 - 2,399 ELO', defaultElo: 2200, color: '#a855f7', tierIndex: 4 },
+      { name: 'Elite', icon: '/medal-ranks/svg/06-elite.svg', elo: '2,400 - 2,699 ELO', defaultElo: 2500, color: '#ef4444', tierIndex: 5 },
+      { name: 'Champion', icon: '/medal-ranks/svg/07-champion.svg', elo: '2,700 - 2,999 ELO', defaultElo: 2850, color: '#f97316', tierIndex: 6 },
+      { name: 'Unreal', icon: '/medal-ranks/svg/10-star.svg', elo: '3,000+ ELO', defaultElo: 3500, color: '#53fc18', tierIndex: 7 }
+    ];
+
+    const modal = document.createElement('div');
+    modal.className = 'ct-modal-overlay';
+    modal.id = 'ranks-modal';
+
+    const rowsHTML = ranks.map((r) => {
+      const isCurrent = !meta.isUnranked && meta.tierIndex === r.tierIndex;
+      return `
+        <div class="ct-rank-row-item ${isCurrent ? 'current-rank' : ''}" data-tier-index="${r.tierIndex}" data-default-elo="${r.defaultElo}" style="cursor:pointer;">
+          <div class="ct-rank-row-left">
+            <img src="${r.icon}" class="ct-rank-row-img" alt="${r.name}"/>
+            <div class="ct-rank-row-name">${r.name}</div>
+          </div>
+          <div class="ct-rank-row-elo" style="color:${r.color};">
+            ${r.elo}
+            ${isCurrent ? '<span class="ct-current-rank-badge">YOU</span>' : ''}
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    modal.innerHTML = `
+      <div class="ct-ranks-modal-card">
+        <button type="button" class="ct-modal-close-btn" id="btn-close-ranks-modal">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+
+        <div class="ct-modal-title" style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#53fc18" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <span style="font-family:'Outfit',sans-serif;font-weight:700;font-size:1.15rem;color:#ffffff;">Rank & ELO System</span>
+        </div>
+
+        <!-- Interactive Set ELO Testing Panel -->
+        <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:12px 14px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
+          <div>
+            <div style="font-size:0.85rem;font-weight:700;color:#ffffff;">Live ELO Testing</div>
+            <div style="font-size:0.75rem;color:#94a3b8;"><span style="color:#53fc18;font-weight:600;">${meta.name}</span> • ${meta.eloDisplay}</div>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center;">
+            <input type="number" id="input-modal-elo" value="${currentElo}" placeholder="Set ELO" style="width:90px;background:#000;border:1px solid rgba(255,255,255,0.15);color:#fff;padding:6px 10px;border-radius:8px;font-size:0.85rem;font-weight:600;outline:none;"/>
+            <button type="button" id="btn-modal-apply-elo" style="background:#53fc18;color:#000;font-weight:700;font-size:0.78rem;border:none;padding:7px 14px;border-radius:8px;cursor:pointer;">Set</button>
+          </div>
+        </div>
+
+        <!-- List of Ranks -->
+        <div class="ct-ranks-list-scroll">
+          ${rowsHTML}
+        </div>
+      </div>
+    `;
+
+    document.body.appendChild(modal);
+
+    const closeBtn = modal.querySelector('#btn-close-ranks-modal');
+    if (closeBtn) closeBtn.addEventListener('click', () => modal.classList.remove('open'));
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) modal.classList.remove('open');
+    });
+
+    const applyBtn = modal.querySelector('#btn-modal-apply-elo');
+    const inputElo = modal.querySelector('#input-modal-elo');
+    if (applyBtn && inputElo) {
+      applyBtn.addEventListener('click', () => {
+        const val = parseInt(inputElo.value, 10);
+        if (isNaN(val) || val <= 0) {
+          localStorage.setItem('ct_is_unranked', 'true');
+          localStorage.setItem('ct_user_elo', '0');
+        } else {
+          localStorage.setItem('ct_is_unranked', 'false');
+          localStorage.setItem('ct_user_elo', val.toString());
+        }
+        window.location.reload();
+      });
+      inputElo.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') applyBtn.click();
+      });
+    }
+
+    modal.querySelectorAll('.ct-rank-row-item').forEach((row) => {
+      row.addEventListener('click', () => {
+        const dElo = row.getAttribute('data-default-elo');
+        if (dElo && inputElo) {
+          inputElo.value = dElo;
+          applyBtn?.click();
+        }
+      });
+    });
+  }
+
   function ensureUniversalFooter() {
     if (!document.querySelector('.ct-footer')) {
       const footer = document.createElement('footer');
@@ -265,21 +367,26 @@
       });
     }
 
-    // Rank & ELO Badge Click -> Set ELO
+    // Ensure Rank & ELO Menu System Modal is initialized in the DOM
+    ensureRanksModal(meta, elo);
+
+    // Rank & ELO Badge Click -> Opens Rank & ELO Menu System Modal!
     const navRankBadge = document.getElementById('ct-nav-rank-badge');
     if (navRankBadge) {
       navRankBadge.addEventListener('click', (e) => {
         e.stopPropagation();
-        promptSetElo();
+        const modal = document.getElementById('ranks-modal');
+        if (modal) modal.classList.add('open');
       });
     }
 
-    // Set ELO Test Button
+    // Set ELO Test Button -> Opens Rank & ELO Menu System Modal!
     const navSetEloBtn = document.getElementById('btn-nav-set-elo');
     if (navSetEloBtn) {
       navSetEloBtn.addEventListener('click', (e) => {
         e.stopPropagation();
-        promptSetElo();
+        const modal = document.getElementById('ranks-modal');
+        if (modal) modal.classList.add('open');
       });
     }
 

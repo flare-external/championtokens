@@ -201,11 +201,24 @@
     const rankPill = document.getElementById('ct-header-rank-pill');
     const modal = document.getElementById('ranks-modal');
     const closeBtn = document.getElementById('btn-close-ranks-modal');
+    const inputElo = document.getElementById('input-main-modal-elo');
+    const applyBtn = document.getElementById('btn-main-modal-apply-elo');
+    const descEl = document.getElementById('modal-current-rank-desc');
+
+    function openModal() {
+      updateRankUI();
+      if (inputElo) inputElo.value = state.isUnranked ? 0 : state.userElo;
+      if (descEl) {
+        const meta = getRankMeta(state.userElo, state.isUnranked);
+        descEl.innerHTML = `<strong style="color:#53fc18;">${meta.name}</strong> • ${meta.eloDisplay}`;
+      }
+      if (modal) modal.classList.add('open');
+    }
 
     if (rankPill) {
-      rankPill.addEventListener('click', () => {
-        updateRankUI();
-        if (modal) modal.classList.add('open');
+      rankPill.addEventListener('click', (e) => {
+        e.stopPropagation();
+        openModal();
       });
     }
 
@@ -218,42 +231,60 @@
         if (e.target === modal) closeModal();
       });
     }
+
+    if (applyBtn && inputElo) {
+      applyBtn.addEventListener('click', () => {
+        const parsed = parseInt(inputElo.value.trim(), 10);
+        if (isNaN(parsed) || parsed <= 0) {
+          state.isUnranked = true;
+          state.userElo = 0;
+          localStorage.setItem('ct_is_unranked', 'true');
+          localStorage.setItem('ct_user_elo', '0');
+          showToast('Rank set to: Unranked (0/5 Placements)');
+        } else {
+          state.isUnranked = false;
+          state.userElo = parsed;
+          localStorage.setItem('ct_is_unranked', 'false');
+          localStorage.setItem('ct_user_elo', parsed.toString());
+          const meta = getRankMeta(parsed, false);
+          showToast(`Rank set to: ${meta.name} (${parsed.toLocaleString()} ELO)`);
+        }
+        updateRankUI();
+        closeModal();
+      });
+      inputElo.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') applyBtn.click();
+      });
+    }
+
+    // Clicking any tier row in the modal sets that tier
+    const defaultTierElos = [250, 750, 1250, 1750, 2200, 2500, 2850, 3500];
+    const rows = document.querySelectorAll('#ranks-modal .ct-rank-row-item');
+    rows.forEach((row, idx) => {
+      row.style.cursor = 'pointer';
+      row.addEventListener('click', () => {
+        if (inputElo && applyBtn && defaultTierElos[idx] !== undefined) {
+          inputElo.value = defaultTierElos[idx];
+          applyBtn.click();
+        }
+      });
+    });
   }
 
-  // Temporary Set ELO Test Tool
+  // Set ELO Test Tool Opens Rank & ELO Modal
   function initSetEloBtn() {
     const btn = document.getElementById('btn-set-elo');
     if (!btn) return;
 
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
-      const currentVal = state.isUnranked ? '0' : state.userElo.toString();
-      const input = prompt(
-        'Set your ELO rating for live testing:\n• Enter "0" for Unranked (0/5 Placements)\n• Or enter a rating number (e.g. 450, 1200, 2450, 3100):',
-        currentVal
-      );
-
-      if (input === null) return;
-
-      const trimmed = input.trim();
-      const parsed = parseInt(trimmed, 10);
-
-      if (trimmed === '0' || isNaN(parsed) || parsed <= 0) {
-        state.isUnranked = true;
-        state.userElo = 0;
-        localStorage.setItem('ct_is_unranked', 'true');
-        localStorage.setItem('ct_user_elo', '0');
-        showToast('Rank set to: Unranked (0/5 Placements)');
+      const rankPill = document.getElementById('ct-header-rank-pill');
+      if (rankPill) {
+        rankPill.click();
       } else {
-        state.isUnranked = false;
-        state.userElo = parsed;
-        localStorage.setItem('ct_is_unranked', 'false');
-        localStorage.setItem('ct_user_elo', parsed.toString());
-        const meta = getRankMeta(parsed, false);
-        showToast(`Rank set to: ${meta.name} (${parsed.toLocaleString()} ELO)`);
+        const modal = document.getElementById('ranks-modal');
+        if (modal) modal.classList.add('open');
       }
-
-      updateRankUI();
     });
   }
 

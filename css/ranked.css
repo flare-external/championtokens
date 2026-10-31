@@ -2000,12 +2000,11 @@ body {
   margin-top: 2px;
 }
 
-/* ── Compact Rank / Place / ELO HUD Box (Top Right of Profile Body, NOT Banner, No Outline, 5% Bigger) ── */
+/* ── Compact Rank / Place / ELO HUD Box (Right Bottom Just Above Connections, No Outline, 5% Bigger) ── */
 .pf-hud-card {
   position: relative;
   margin-left: auto;
-  margin-top: 10px;
-  align-self: flex-start;
+  align-self: flex-end;
   background: rgba(0, 0, 0, 0.75);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
@@ -2018,9 +2017,32 @@ body {
   gap: 14px;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.55);
   transform: scale(1.05);
-  transform-origin: top right;
+  transform-origin: bottom right;
   z-index: 20;
   transition: all 0.25s ease;
+}
+
+.pf-bio-hud-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+  margin-bottom: 4px;
+}
+
+.pf-bio-hud-row .pf-bio-wrap {
+  flex: 1;
+  min-width: 260px;
+  margin-top: 0;
+}
+
+.pf-bio-hud-row .pf-hud-card {
+  margin-left: auto;
+  margin-top: 0;
+  margin-bottom: 2px;
+  align-self: flex-end;
 }
 
 .pf-hud-col {

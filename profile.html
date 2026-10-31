@@ -180,46 +180,10 @@
       <!-- Banner Body -->
       <div class="pf-banner-body">
         
-        <!-- Top Row: Avatar overlapping line + Compact HUD Card in Top Right of Profile Body (NOT in Banner) -->
+        <!-- Top Row: Avatar overlapping line -->
         <div class="pf-header-row">
           <div class="pf-avatar-wrap">
             <img src="/adrian-avatar.png" id="pf-avatar" class="pf-avatar-img" alt="adrian"/>
-          </div>
-
-          <!-- Compact Gaming HUD Box (Rank | Place | ELO in Top Right of Profile Body, NOT Banner, No Outline) -->
-          <div class="pf-hud-card" id="pf-hud-card">
-            <!-- Rank Column -->
-            <div class="pf-hud-col">
-              <div class="pf-hud-val">
-                <img src="/medal-ranks/svg/10-star.svg" id="pf-hud-icon" class="pf-hud-icon" alt="Rank"/>
-                <span id="pf-hud-rank">Unreal</span>
-              </div>
-              <div class="pf-hud-label-line">
-                <span>RANK</span>
-              </div>
-            </div>
-
-            <!-- Vertical Divider -->
-            <div class="pf-hud-divider"></div>
-
-            <!-- Place Column -->
-            <div class="pf-hud-col">
-              <div class="pf-hud-val" id="pf-hud-place">#1</div>
-              <div class="pf-hud-label-line">
-                <span>PLACE</span>
-              </div>
-            </div>
-
-            <!-- Vertical Divider -->
-            <div class="pf-hud-divider"></div>
-
-            <!-- ELO Column -->
-            <div class="pf-hud-col">
-              <div class="pf-hud-val" id="pf-hud-elo">3,500</div>
-              <div class="pf-hud-label-line">
-                <span>ELO</span>
-              </div>
-            </div>
           </div>
         </div>
 
@@ -239,32 +203,73 @@
             </button>
           </div>
 
-          <!-- Direct Inline Bio (No Popups!) -->
-          <div class="pf-bio-wrap" id="pf-bio-wrap">
-            <span class="pf-bio-label">BIO</span>
-            
-            <!-- View Mode -->
-            <div class="pf-bio-display" id="pf-bio-display">
-              <span id="pf-user-bio" class="pf-bio-text" style="font-style:italic;color:#64748b;">
-                bio here.. or not? please. add. one.
-              </span>
-              <button type="button" class="pf-bio-edit-trigger" id="btn-trigger-bio-edit">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>
-              </button>
-            </div>
+          <!-- Row above Connections: Bio on the left, HUD Card on the right bottom -->
+          <div class="pf-bio-hud-row">
 
-            <!-- Inline Direct Edit Form -->
-            <div class="pf-bio-edit-form" id="pf-bio-edit-form" style="display:none;">
-              <textarea id="input-inline-bio" rows="2" maxlength="140" placeholder="bio here.. or not? please. add. one."></textarea>
-              <div class="pf-inline-mod-alert" id="bio-inline-mod-alert" style="margin-bottom:6px;"></div>
-              <div class="pf-bio-edit-actions">
-                <span class="pf-bio-counter" id="bio-char-count">0/140</span>
-                <div style="display:flex;gap:8px;">
-                  <button type="button" class="btn-bio-cancel" id="btn-cancel-inline-bio">Cancel</button>
-                  <button type="button" class="btn-bio-save" id="btn-save-inline-bio">Save</button>
+            <!-- Direct Inline Bio (No Popups!) -->
+            <div class="pf-bio-wrap" id="pf-bio-wrap">
+              <span class="pf-bio-label">BIO</span>
+              
+              <!-- View Mode -->
+              <div class="pf-bio-display" id="pf-bio-display">
+                <span id="pf-user-bio" class="pf-bio-text" style="font-style:italic;color:#64748b;">
+                  bio here.. or not? please. add. one.
+                </span>
+                <button type="button" class="pf-bio-edit-trigger" id="btn-trigger-bio-edit">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>
+                </button>
+              </div>
+
+              <!-- Inline Direct Edit Form -->
+              <div class="pf-bio-edit-form" id="pf-bio-edit-form" style="display:none;">
+                <textarea id="input-inline-bio" rows="2" maxlength="140" placeholder="bio here.. or not? please. add. one."></textarea>
+                <div class="pf-inline-mod-alert" id="bio-inline-mod-alert" style="margin-bottom:6px;"></div>
+                <div class="pf-bio-edit-actions">
+                  <span class="pf-bio-counter" id="bio-char-count">0/140</span>
+                  <div style="display:flex;gap:8px;">
+                    <button type="button" class="btn-bio-cancel" id="btn-cancel-inline-bio">Cancel</button>
+                    <button type="button" class="btn-bio-save" id="btn-save-inline-bio">Save</button>
+                  </div>
                 </div>
               </div>
             </div>
+
+            <!-- Compact Gaming HUD Box (Rank | Place | ELO in Right Bottom just above Connections, No Outline) -->
+            <div class="pf-hud-card" id="pf-hud-card">
+              <!-- Rank Column -->
+              <div class="pf-hud-col">
+                <div class="pf-hud-val">
+                  <img src="/medal-ranks/svg/10-star.svg" id="pf-hud-icon" class="pf-hud-icon" alt="Rank"/>
+                  <span id="pf-hud-rank">Unreal</span>
+                </div>
+                <div class="pf-hud-label-line">
+                  <span>RANK</span>
+                </div>
+              </div>
+
+              <!-- Vertical Divider -->
+              <div class="pf-hud-divider"></div>
+
+              <!-- Place Column -->
+              <div class="pf-hud-col">
+                <div class="pf-hud-val" id="pf-hud-place">#1</div>
+                <div class="pf-hud-label-line">
+                  <span>PLACE</span>
+                </div>
+              </div>
+
+              <!-- Vertical Divider -->
+              <div class="pf-hud-divider"></div>
+
+              <!-- ELO Column -->
+              <div class="pf-hud-col">
+                <div class="pf-hud-val" id="pf-hud-elo">3,500</div>
+                <div class="pf-hud-label-line">
+                  <span>ELO</span>
+                </div>
+              </div>
+            </div>
+
           </div>
 
           <!-- Connections (Simple Website Domains Ownership Authentication) -->
