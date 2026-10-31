@@ -5,14 +5,8 @@
   const savedElo = localStorage.getItem('ct_user_elo');
   const savedUnranked = localStorage.getItem('ct_is_unranked');
 
-  const ONLINE_CONTENDERS = [
-    { id: '491823710492', name: 'Viper_FN', elo: 2985, rank: 'Champion', avatar: 'https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=120&auto=format&fit=crop&q=80', status: 'In Lobby • Ready' },
-    { id: '738192049182', name: 'GhostClutch', elo: 2940, rank: 'Champion', avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=120&auto=format&fit=crop&q=80', status: 'In Lobby • Ready' },
-    { id: '194820194812', name: 'AeroSniper', elo: 2910, rank: 'Champion', avatar: 'https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=120&auto=format&fit=crop&q=80', status: 'In Lobby • Ready' },
-    { id: '928174019283', name: 'KovaaK_God', elo: 2680, rank: 'Elite', avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120&auto=format&fit=crop&q=80', status: 'In Lobby • Ready' },
-    { id: '381920481920', name: 'BoxKing99', elo: 2410, rank: 'Elite', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&auto=format&fit=crop&q=80', status: 'In Lobby • Ready' },
-    { id: '827194018291', name: 'AquaAim', elo: 1850, rank: 'Platinum', avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=120&auto=format&fit=crop&q=80', status: 'In Lobby • Ready' }
-  ];
+  // Honest Real Contenders (No fake bots)
+  const ONLINE_CONTENDERS = [];
 
   const state = {
     teamSize: '1v1',
@@ -496,17 +490,46 @@
       });
     }
 
-    // Filter available contenders live
+    // Filter available contenders live (Real contenders only, no fake bots)
     if (searchInput) {
       searchInput.addEventListener('input', () => {
         const query = searchInput.value.trim().toLowerCase();
         if (!query) {
-          renderContenderList(ONLINE_CONTENDERS);
+          renderContenderList([]);
           return;
         }
         const filtered = ONLINE_CONTENDERS.filter(c =>
           c.name.toLowerCase().includes(query) || c.id.includes(query)
         );
+        if (filtered.length === 0 && query.length >= 3) {
+          // Allow direct party invite by Contender ID or username
+          if (searchResults) {
+            searchResults.innerHTML = `
+              <div style="background:#000;border:none;border-radius:12px;padding:14px;display:flex;align-items:center;justify-content:space-between;gap:12px;">
+                <div style="display:flex;align-items:center;gap:12px;min-width:0;">
+                  <div style="width:36px;height:36px;border-radius:50%;background:rgba(83,252,24,0.12);color:#53fc18;display:flex;align-items:center;justify-content:center;font-weight:700;">#</div>
+                  <div style="min-width:0;">
+                    <div style="font-size:0.86rem;font-weight:600;color:#fff;">Contender: ${query}</div>
+                    <div style="font-size:0.72rem;color:#64748b;">Send party invite code</div>
+                  </div>
+                </div>
+                <button type="button" class="btn-direct-invite" style="background:#14171e;border:none;color:#53fc18;padding:8px 16px;border-radius:8px;font-size:0.75rem;font-weight:700;cursor:pointer;">
+                  Invite
+                </button>
+              </div>
+            `;
+            const dBtn = searchResults.querySelector('.btn-direct-invite');
+            if (dBtn) {
+              dBtn.addEventListener('click', () => {
+                dBtn.textContent = '✓ Invited';
+                dBtn.style.background = 'rgba(83,252,24,0.15)';
+                dBtn.disabled = true;
+                showToast(`Party invite sent to ${query}`);
+              });
+            }
+          }
+          return;
+        }
         renderContenderList(filtered);
       });
     }
@@ -516,17 +539,18 @@
 
       if (list.length === 0) {
         searchResults.innerHTML = `
-          <div style="background:#000;border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:20px;text-align:center;color:#64748b;font-size:0.8rem;">
-            No contenders found matching your search.
+          <div style="background:#08090c;border:none;border-radius:12px;padding:26px 16px;text-align:center;color:#64748b;font-size:0.82rem;">
+            <div style="font-weight:600;color:#ffffff;margin-bottom:6px;">No other contenders currently in lobby</div>
+            <div>Enter a 12-digit Contender ID above to send a direct party invite.</div>
           </div>
         `;
         return;
       }
 
       searchResults.innerHTML = list.map(c => `
-        <div style="background:#000;border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;gap:12px;">
+        <div style="background:#000;border:none;border-radius:12px;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;gap:12px;">
           <div style="display:flex;align-items:center;gap:12px;min-width:0;">
-            <img src="${c.avatar}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;border:1px solid rgba(83,252,24,0.4);" alt="${c.name}"/>
+            <img src="${c.avatar}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;" alt="${c.name}"/>
             <div style="min-width:0;">
               <div style="font-size:0.86rem;font-weight:600;color:#fff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
                 ${c.name} <span style="font-size:0.7rem;color:#64748b;font-family:monospace;">#${c.id.slice(-4)}</span>
@@ -534,7 +558,7 @@
               <div style="font-size:0.72rem;color:#53fc18;">${c.rank} • ${c.elo.toLocaleString()} ELO</div>
             </div>
           </div>
-          <button type="button" class="btn-invite-action" data-invite-id="${c.id}" style="background:#14171e;border:1px solid rgba(83,252,24,0.3);color:#53fc18;padding:6px 14px;border-radius:8px;font-size:0.75rem;font-weight:600;cursor:pointer;white-space:nowrap;transition:all 0.15s ease;">
+          <button type="button" class="btn-invite-action" data-invite-id="${c.id}" style="background:#14171e;border:none;color:#53fc18;padding:6px 14px;border-radius:8px;font-size:0.75rem;font-weight:600;cursor:pointer;white-space:nowrap;transition:all 0.15s ease;">
             Invite
           </button>
         </div>
@@ -554,7 +578,6 @@
 
           showToast(`Party invitation sent to ${contender.name}`);
 
-          // Simulate acceptance after 1.5s
           setTimeout(() => {
             addPlayerToParty(contender);
             closePartyInviteModal();
@@ -604,9 +627,6 @@
               <span class="ct-slot-name">${p2.name}</span>
               <span class="ct-slot-rank">${p2.rank} • ${p2.elo.toLocaleString()} ELO</span>
             </div>
-            <div class="ct-slot-status ready">
-              <span class="ct-ready-dot"></span> Ready
-            </div>
           `;
         } else {
           slot2.className = 'ct-party-slot slot-empty';
@@ -634,9 +654,6 @@
             <div class="ct-slot-meta">
               <span class="ct-slot-name">${p3.name}</span>
               <span class="ct-slot-rank">${p3.rank} • ${p3.elo.toLocaleString()} ELO</span>
-            </div>
-            <div class="ct-slot-status ready">
-              <span class="ct-ready-dot"></span> Ready
             </div>
           `;
         } else {
@@ -903,7 +920,7 @@
     const modeName = getGamemodeDisplayName(state.gameMode);
 
     modal.innerHTML = `
-      <div class="ct-queue-modal-card" style="text-align:center;border-color:#53fc18;">
+      <div class="ct-queue-modal-card" style="text-align:center;border:none;">
         <div style="width:48px;height:48px;border-radius:12px;background:rgba(83,252,24,0.15);color:#53fc18;display:inline-flex;align-items:center;justify-content:center;margin-bottom:12px;">
           <i data-lucide="swords" style="width:24px;height:24px;"></i>
         </div>
@@ -911,7 +928,7 @@
         <p style="color:#94a3b8;font-size:0.8rem;margin-bottom:16px;">
           Opponent matched within ±300 ELO range.
         </p>
-        <div style="background:#000;border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:14px;margin-bottom:16px;text-align:left;font-size:0.82rem;">
+        <div style="background:#000;border:none;border-radius:12px;padding:14px;margin-bottom:16px;text-align:left;font-size:0.82rem;">
           <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
             <span style="color:#64748b;font-weight:600;">Playlist:</span>
             <span style="color:#fff;font-weight:600;">${state.teamSize} ${modeName}</span>
@@ -927,7 +944,7 @@
         </div>
         <div style="display:flex;gap:10px;">
           <button type="button" class="btn-modal-start-queue" style="margin-top:0;" onclick="window.location.href='matches'">Accept & Play</button>
-          <button type="button" class="btn btn-outline" style="border-radius:10px;padding:10px 18px;" onclick="closeMatchModal()">Decline</button>
+          <button type="button" class="btn btn-outline" style="border-radius:10px;padding:10px 18px;border:none;" onclick="closeMatchModal()">Decline</button>
         </div>
       </div>
     `;
@@ -1040,7 +1057,7 @@
 
         <div class="ct-modal-title" style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
           <span style="font-family:'Outfit',sans-serif;font-weight:700;font-size:1.15rem;color:#ffffff;">Daily Login Rewards</span>
-          <span style="background:rgba(251,191,36,0.12);color:#fbbf24;font-size:0.7rem;font-weight:700;padding:2px 8px;border-radius:6px;border:1px solid rgba(251,191,36,0.3);text-transform:uppercase;margin-left:auto;">Streak: ${streak} Days</span>
+          <span style="background:rgba(251,191,36,0.12);color:#fbbf24;font-size:0.7rem;font-weight:700;padding:2px 8px;border-radius:6px;border:none;text-transform:uppercase;margin-left:auto;">Streak: ${streak} Days</span>
         </div>
         <div style="font-size:0.78rem;color:#94a3b8;margin-bottom:14px;">
           Log in daily to claim coins. Streaks reset if more than 48 hours pass between logins.
@@ -1307,7 +1324,7 @@
         left: 50%;
         transform: translateX(-50%);
         background: #08090c;
-        border: 1px solid #53fc18;
+        border: none;
         color: #ffffff;
         padding: 9px 20px;
         border-radius: 99px;

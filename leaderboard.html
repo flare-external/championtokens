@@ -14,7 +14,8 @@
   <style>
     .lb-hero {
       background: linear-gradient(180deg, rgba(83, 252, 24, 0.08) 0%, rgba(8, 9, 12, 0.6) 100%), #08090c;
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      border: none;
+      outline: none;
       border-radius: 18px;
       padding: 32px 28px;
       margin-bottom: 28px;
@@ -29,7 +30,8 @@
     }
     .lb-podium-card {
       background: #08090c;
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      border: none;
+      outline: none;
       border-radius: 16px;
       padding: 24px 20px;
       text-align: center;
@@ -40,15 +42,15 @@
       transform: translateY(-3px);
     }
     .lb-podium-card.rank-1 {
-      border-color: rgba(251, 191, 36, 0.4);
+      border: none;
       background: linear-gradient(180deg, rgba(251, 191, 36, 0.08) 0%, #08090c 100%);
       box-shadow: 0 10px 30px rgba(251, 191, 36, 0.15);
     }
     .lb-podium-card.rank-2 {
-      border-color: rgba(148, 163, 184, 0.3);
+      border: none;
     }
     .lb-podium-card.rank-3 {
-      border-color: rgba(180, 83, 9, 0.3);
+      border: none;
     }
     .lb-table {
       width: 100%;
@@ -62,13 +64,13 @@
       text-transform: uppercase;
       letter-spacing: 0.04em;
       padding: 12px 18px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
     }
     .lb-table td {
       padding: 14px 18px;
       font-size: 0.86rem;
       color: #ffffff;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.02);
       vertical-align: middle;
     }
     .lb-table tbody tr {
@@ -80,7 +82,8 @@
     }
     .lb-filter-btn {
       background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      border: none;
+      outline: none;
       color: #94a3b8;
       padding: 6px 14px;
       border-radius: 99px;
@@ -91,7 +94,6 @@
     }
     .lb-filter-btn.active {
       background: #53fc18;
-      border-color: #53fc18;
       color: #000000;
       font-weight: 700;
     }
@@ -106,7 +108,7 @@
     <section class="lb-hero">
       <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:16px;">
         <div>
-          <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(251,191,36,0.12);border:1px solid rgba(251,191,36,0.25);padding:3px 12px;border-radius:99px;font-size:0.75rem;font-weight:600;color:#fbbf24;margin-bottom:10px;">
+          <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(251,191,36,0.12);padding:3px 12px;border-radius:99px;font-size:0.75rem;font-weight:600;color:#fbbf24;margin-bottom:10px;">
             <i data-lucide="trophy" style="width:14px;height:14px;"></i>
             <span>Season 1 Global Leaderboard · $2,500 Prize Pool</span>
           </div>
@@ -119,7 +121,7 @@
         </div>
 
         <!-- Your Rank Summary Card -->
-        <div style="background:#000;border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:14px 20px;display:flex;align-items:center;gap:14px;">
+        <div style="background:#000;border:none;border-radius:14px;padding:14px 20px;display:flex;align-items:center;gap:14px;">
           <img src="medal-ranks/svg/06-elite.svg" id="my-lb-icon" style="width:38px;height:38px;" alt="Rank"/>
           <div>
             <div style="font-size:0.75rem;color:#64748b;font-weight:600;text-transform:uppercase;">Your Ranking</div>
@@ -135,13 +137,13 @@
       <!-- #1 Gold Champion -->
       <div class="lb-podium-card rank-1" style="max-width:440px;width:100%;cursor:pointer;" onclick="window.location.href='profile/112118831941'">
         <div style="position:absolute;top:12px;left:16px;font-family:'Outfit',sans-serif;font-size:1.25rem;font-weight:800;color:#fbbf24;">👑 #1 Rank</div>
-        <img src="/adrian-avatar.png" id="podium-avatar" style="width:72px;height:72px;border-radius:50%;border:2.5px solid #fbbf24;margin-bottom:10px;object-fit:cover;box-shadow:0 0 16px rgba(251,191,36,0.35);" alt="adrian"/>
+        <img src="/adrian-avatar.png" id="podium-avatar" style="width:72px;height:72px;border-radius:50%;border:none;margin-bottom:10px;object-fit:cover;box-shadow:0 0 16px rgba(251,191,36,0.35);" alt="adrian"/>
         <div style="font-family:'Outfit',sans-serif;font-size:1.3rem;font-weight:700;color:#fff;display:flex;align-items:center;justify-content:center;gap:6px;">
           <span id="podium-name">adrian</span>
           <span style="font-size:0.68rem;background:rgba(83,252,24,0.15);color:#53fc18;padding:2px 6px;border-radius:4px;font-weight:700;">YOU</span>
         </div>
         <div style="font-size:0.75rem;color:#64748b;margin-bottom:8px;">ID: <span id="podium-id">112118831941</span></div>
-        <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(251,191,36,0.12);border:1px solid rgba(251,191,36,0.3);padding:5px 14px;border-radius:99px;margin-bottom:8px;">
+        <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(251,191,36,0.12);padding:5px 14px;border-radius:99px;margin-bottom:8px;">
           <img src="medal-ranks/svg/06-elite.svg" id="podium-icon" style="width:16px;height:16px;" alt="Rank"/>
           <span style="font-size:0.85rem;font-weight:800;color:#53fc18;" id="podium-elo">2,450 ELO</span>
           <span style="font-size:0.75rem;color:#cbd5e1;font-weight:600;" id="podium-tier">(Elite)</span>
@@ -151,7 +153,7 @@
     </div>
 
     <!-- Filter & Search Controls -->
-    <div style="background:#08090c;border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:16px 20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;margin-bottom:20px;">
+    <div style="background:#08090c;border:none;border-radius:14px;padding:16px 20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;margin-bottom:20px;">
       <!-- Division Filters -->
       <div style="display:flex;gap:8px;flex-wrap:wrap;">
         <button type="button" class="lb-filter-btn active" data-filter="all">All Divisions</button>
@@ -164,12 +166,12 @@
       <!-- Search Input -->
       <div style="position:relative;width:100%;max-width:280px;">
         <i data-lucide="search" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);width:14px;height:14px;color:#64748b;"></i>
-        <input type="text" id="lb-search" placeholder="Search contender or ID..." style="width:100%;box-sizing:border-box;background:#000;border:1px solid rgba(255,255,255,0.1);color:#fff;padding:8px 12px 8px 34px;border-radius:8px;font-size:0.82rem;outline:none;"/>
+        <input type="text" id="lb-search" placeholder="Search contender or ID..." style="width:100%;box-sizing:border-box;background:#000;border:none;color:#fff;padding:8px 12px 8px 34px;border-radius:8px;font-size:0.82rem;outline:none;"/>
       </div>
     </div>
 
     <!-- Leaderboard Table Card -->
-    <div style="background:#08090c;border:1px solid rgba(255,255,255,0.08);border-radius:16px;overflow:hidden;margin-bottom:44px;">
+    <div style="background:#08090c;border:none;border-radius:16px;overflow:hidden;margin-bottom:44px;">
       <table class="lb-table">
         <thead>
           <tr>
@@ -191,7 +193,7 @@
   </main>
 
   <!-- Footer -->
-  <footer class="ct-footer" style="border-top:1px solid rgba(255,255,255,0.08);padding:32px 20px 44px;background:#000000;text-align:center;">
+  <footer class="ct-footer" style="border:none;padding:32px 20px 44px;background:#000000;text-align:center;">
     <div style="max-width:1000px;margin:0 auto;display:flex;flex-direction:column;gap:16px;">
       <div style="font-size:0.75rem;color:#475569;">
         © 2026 Champion Tokens • Protected by Cloudflare
@@ -318,7 +320,7 @@
           </td>
           <td>
             <div style="display:flex;align-items:center;gap:10px;">
-              <img src="${item.avatar}" style="width:34px;height:34px;border-radius:50%;border:1.5px solid #fbbf24;object-fit:cover;" alt="${item.name}"/>
+              <img src="${item.avatar}" style="width:34px;height:34px;border-radius:50%;border:none;object-fit:cover;" alt="${item.name}"/>
               <div style="font-weight:600;color:#fff;">
                 <div style="display:inline-flex;align-items:center;gap:6px;">
                   <span>${item.name}</span>
