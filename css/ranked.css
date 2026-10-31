@@ -10,9 +10,24 @@
   outline: none !important;
 }
 
+html {
+  min-height: 100%;
+}
+
 body {
+  min-height: 100vh;
+  display: flex !important;
+  flex-direction: column !important;
   background-color: #000000 !important;
   color: #ffffff !important;
+  margin: 0;
+  padding: 0;
+}
+
+main,
+.ct-ranked-wrap,
+.landing-wrap {
+  flex: 1 0 auto;
 }
 
 /* ── Top Status Ticker ──────────────────────────────────────── */
@@ -1611,25 +1626,23 @@ body {
   }
 }
 
-/* -- Universal Pinned Bottom Footer -------------------------- */
+/* -- Universal Sticky Bottom Footer (Sticks to bottom, does NOT follow you around) -- */
 .ct-footer {
-  position: fixed !important;
-  bottom: 0 !important;
-  left: 0 !important;
-  right: 0 !important;
+  position: relative !important;
+  margin-top: auto !important;
   width: 100% !important;
-  z-index: 99 !important;
+  z-index: 20 !important;
   background: #000000 !important;
   border-top: none !important;
   border: none !important;
   outline: none !important;
-  padding: 14px 20px !important;
+  padding: 24px 20px 32px !important;
   text-align: center !important;
   box-sizing: border-box !important;
 }
 
 body {
-  padding-bottom: 60px !important;
+  padding-bottom: 0 !important;
 }
 
 /* -- Universal Borderless Clean Toast Notifications ----------- */
@@ -1639,7 +1652,7 @@ body {
 .ct-toast,
 .toast {
   position: fixed !important;
-  bottom: 68px !important;
+  bottom: 24px !important;
   left: 50% !important;
   transform: translateX(-50%) !important;
   background: rgba(18, 20, 24, 0.95) !important;
