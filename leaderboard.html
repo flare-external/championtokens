@@ -123,52 +123,30 @@
           <img src="medal-ranks/svg/06-elite.svg" id="my-lb-icon" style="width:38px;height:38px;" alt="Rank"/>
           <div>
             <div style="font-size:0.75rem;color:#64748b;font-weight:600;text-transform:uppercase;">Your Ranking</div>
-            <div style="font-family:'Outfit',sans-serif;font-size:1.15rem;font-weight:700;color:#fff;" id="my-lb-standing">#42 · Elite Tier</div>
-            <div style="font-size:0.75rem;color:#53fc18;font-weight:600;" id="my-lb-elo">2,450 ELO (68% WR)</div>
+            <div style="font-family:'Outfit',sans-serif;font-size:1.15rem;font-weight:700;color:#fff;" id="my-lb-standing">#1 · Elite Tier</div>
+            <div style="font-size:0.75rem;color:#53fc18;font-weight:600;" id="my-lb-elo">2,450 ELO (100% WR)</div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Top 3 Podium Cards -->
-    <div class="lb-podium">
-      <!-- #2 Silver -->
-      <div class="lb-podium-card rank-2" onclick="window.location.href='profile/928174019283'">
-        <div style="position:absolute;top:12px;left:14px;font-family:'Outfit',sans-serif;font-size:1.1rem;font-weight:800;color:#94a3b8;">#2</div>
-        <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=120&auto=format&fit=crop&q=80" style="width:58px;height:58px;border-radius:50%;border:2px solid #94a3b8;margin-bottom:10px;object-fit:cover;" alt="GhostClutch"/>
-        <div style="font-family:'Outfit',sans-serif;font-size:1.1rem;font-weight:700;color:#fff;">GhostClutch</div>
-        <div style="font-size:0.75rem;color:#64748b;margin-bottom:8px;">ID: 928174019283</div>
-        <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);padding:4px 12px;border-radius:99px;margin-bottom:8px;">
-          <img src="medal-ranks/svg/10-star.svg" style="width:14px;height:14px;" alt="Unreal"/>
-          <span style="font-size:0.8rem;font-weight:700;color:#53fc18;">3,620 ELO</span>
-        </div>
-        <div style="font-size:0.76rem;color:#fbbf24;font-weight:600;">$600 Season Prize</div>
-      </div>
-
+    <!-- Top 1 Champion Podium Card (Adrian / You Only) -->
+    <div class="lb-podium" style="display:flex;justify-content:center;margin-bottom:28px;">
       <!-- #1 Gold Champion -->
-      <div class="lb-podium-card rank-1" onclick="window.location.href='profile/194820194812'">
-        <div style="position:absolute;top:12px;left:14px;font-family:'Outfit',sans-serif;font-size:1.25rem;font-weight:800;color:#fbbf24;">👑 #1</div>
-        <img src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=120&auto=format&fit=crop&q=80" style="width:68px;height:68px;border-radius:50%;border:2.5px solid #fbbf24;margin-bottom:10px;object-fit:cover;box-shadow:0 0 15px rgba(251,191,36,0.4);" alt="Viper_FN"/>
-        <div style="font-family:'Outfit',sans-serif;font-size:1.25rem;font-weight:700;color:#fff;">Viper_FN</div>
-        <div style="font-size:0.75rem;color:#64748b;margin-bottom:8px;">ID: 194820194812</div>
+      <div class="lb-podium-card rank-1" style="max-width:440px;width:100%;cursor:pointer;" onclick="window.location.href='profile/112118831941'">
+        <div style="position:absolute;top:12px;left:16px;font-family:'Outfit',sans-serif;font-size:1.25rem;font-weight:800;color:#fbbf24;">👑 #1 Rank</div>
+        <img src="/adrian-avatar.png" id="podium-avatar" style="width:72px;height:72px;border-radius:50%;border:2.5px solid #fbbf24;margin-bottom:10px;object-fit:cover;box-shadow:0 0 16px rgba(251,191,36,0.35);" alt="adrian"/>
+        <div style="font-family:'Outfit',sans-serif;font-size:1.3rem;font-weight:700;color:#fff;display:flex;align-items:center;justify-content:center;gap:6px;">
+          <span id="podium-name">adrian</span>
+          <span style="font-size:0.68rem;background:rgba(83,252,24,0.15);color:#53fc18;padding:2px 6px;border-radius:4px;font-weight:700;">YOU</span>
+        </div>
+        <div style="font-size:0.75rem;color:#64748b;margin-bottom:8px;">ID: <span id="podium-id">112118831941</span></div>
         <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(251,191,36,0.12);border:1px solid rgba(251,191,36,0.3);padding:5px 14px;border-radius:99px;margin-bottom:8px;">
-          <img src="medal-ranks/svg/10-star.svg" style="width:16px;height:16px;" alt="Unreal"/>
-          <span style="font-size:0.85rem;font-weight:800;color:#53fc18;">3,850 ELO</span>
+          <img src="medal-ranks/svg/06-elite.svg" id="podium-icon" style="width:16px;height:16px;" alt="Rank"/>
+          <span style="font-size:0.85rem;font-weight:800;color:#53fc18;" id="podium-elo">2,450 ELO</span>
+          <span style="font-size:0.75rem;color:#cbd5e1;font-weight:600;" id="podium-tier">(Elite)</span>
         </div>
         <div style="font-size:0.82rem;color:#fbbf24;font-weight:700;">$1,000 Champion Prize</div>
-      </div>
-
-      <!-- #3 Bronze -->
-      <div class="lb-podium-card rank-3" onclick="window.location.href='profile/381920481920'">
-        <div style="position:absolute;top:12px;left:14px;font-family:'Outfit',sans-serif;font-size:1.1rem;font-weight:800;color:#b45309;">#3</div>
-        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&auto=format&fit=crop&q=80" style="width:58px;height:58px;border-radius:50%;border:2px solid #b45309;margin-bottom:10px;object-fit:cover;" alt="AeroSniper"/>
-        <div style="font-family:'Outfit',sans-serif;font-size:1.1rem;font-weight:700;color:#fff;">AeroSniper</div>
-        <div style="font-size:0.75rem;color:#64748b;margin-bottom:8px;">ID: 381920481920</div>
-        <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);padding:4px 12px;border-radius:99px;margin-bottom:8px;">
-          <img src="medal-ranks/svg/07-champion.svg" style="width:14px;height:14px;" alt="Champion"/>
-          <span style="font-size:0.8rem;font-weight:700;color:#53fc18;">3,410 ELO</span>
-        </div>
-        <div style="font-size:0.76rem;color:#fbbf24;font-weight:600;">$400 Season Prize</div>
       </div>
     </div>
 
@@ -225,23 +203,94 @@
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script src="js/ranked-nav.js"></script>
   <script>
-    const LEADERBOARD_DATA = [
-      { rank: 1, id: '194820194812', name: 'Viper_FN', tier: 'Unreal', icon: 'medal-ranks/svg/10-star.svg', elo: 3850, wins: 142, wr: '94.2%', prize: '$1,000' },
-      { rank: 2, id: '928174019283', name: 'GhostClutch', tier: 'Unreal', icon: 'medal-ranks/svg/10-star.svg', elo: 3620, wins: 118, wr: '89.5%', prize: '$600' },
-      { rank: 3, id: '381920481920', name: 'AeroSniper', tier: 'Champion', icon: 'medal-ranks/svg/07-champion.svg', elo: 3410, wins: 105, wr: '84.1%', prize: '$400' },
-      { rank: 4, id: '827194018291', name: 'KovaaK_God', tier: 'Champion', icon: 'medal-ranks/svg/07-champion.svg', elo: 3290, wins: 98, wr: '81.4%', prize: '$200' },
-      { rank: 5, id: '472019284019', name: 'BoxKing99', tier: 'Champion', icon: 'medal-ranks/svg/07-champion.svg', elo: 3140, wins: 91, wr: '79.0%', prize: '$150' },
-      { rank: 6, id: '582019481029', name: 'AquaAim', tier: 'Elite', icon: 'medal-ranks/svg/06-elite.svg', elo: 2890, wins: 84, wr: '76.3%', prize: '$100' },
-      { rank: 7, id: '692019482910', name: 'FrostByte', tier: 'Elite', icon: 'medal-ranks/svg/06-elite.svg', elo: 2750, wins: 78, wr: '74.2%', prize: '$50' },
-      { rank: 8, id: '882194017402', name: 'Zenox', isYou: true, tier: 'Elite', icon: 'medal-ranks/svg/06-elite.svg', elo: 2450, wins: 64, wr: '68.0%', prize: 'Top 100' },
-      { rank: 9, id: '702910481928', name: 'ShadowEdits', tier: 'Diamond', icon: 'medal-ranks/svg/05-diamond.svg', elo: 2320, wins: 59, wr: '65.5%', prize: 'Top 100' },
-      { rank: 10, id: '918201928471', name: 'StormRotate', tier: 'Diamond', icon: 'medal-ranks/svg/05-diamond.svg', elo: 2190, wins: 51, wr: '63.2%', prize: 'Top 100' }
-    ];
+    function getRankMetaHelper(elo, isUnranked) {
+      if (typeof window.getRankMeta === 'function') {
+        return window.getRankMeta(elo, isUnranked);
+      }
+      if (isUnranked || elo <= 0) {
+        return { name: 'Unranked', icon: 'medal-ranks/svg/01-bronze.svg', eloDisplay: '0/5 Placements' };
+      }
+      if (elo < 500) return { name: 'Bronze', icon: 'medal-ranks/svg/01-bronze.svg', eloDisplay: `${elo.toLocaleString()} ELO` };
+      if (elo < 1000) return { name: 'Silver', icon: 'medal-ranks/svg/02-silver.svg', eloDisplay: `${elo.toLocaleString()} ELO` };
+      if (elo < 1500) return { name: 'Gold', icon: 'medal-ranks/svg/03-gold.svg', eloDisplay: `${elo.toLocaleString()} ELO` };
+      if (elo < 2000) return { name: 'Platinum', icon: 'medal-ranks/svg/04-platinum.svg', eloDisplay: `${elo.toLocaleString()} ELO` };
+      if (elo < 2400) return { name: 'Diamond', icon: 'medal-ranks/svg/05-diamond.svg', eloDisplay: `${elo.toLocaleString()} ELO` };
+      if (elo < 2700) return { name: 'Elite', icon: 'medal-ranks/svg/06-elite.svg', eloDisplay: `${elo.toLocaleString()} ELO` };
+      if (elo < 3000) return { name: 'Champion', icon: 'medal-ranks/svg/07-champion.svg', eloDisplay: `${elo.toLocaleString()} ELO` };
+      return { name: 'Unreal', icon: 'medal-ranks/svg/10-star.svg', eloDisplay: `${elo.toLocaleString()} ELO` };
+    }
+
+    function getActiveUserData() {
+      let raw = localStorage.getItem('ct_user');
+      let user = null;
+      if (raw) {
+        try { user = JSON.parse(raw); } catch (e) {}
+      }
+      const cid = localStorage.getItem('ct_contender_id') || '112118831941';
+      const eloRaw = localStorage.getItem('ct_user_elo');
+      const elo = eloRaw !== null ? parseInt(eloRaw, 10) : 2450;
+      const isUnranked = localStorage.getItem('ct_is_unranked') === 'true';
+
+      const name = (user && (user.customName || user.name)) && !/^\d{12}$/.test(user.name) ? (user.customName || user.name) : 'adrian';
+      const avatar = (user && user.avatar && !user.avatar.includes('unsplash')) ? user.avatar : '/adrian-avatar.png';
+
+      const meta = getRankMetaHelper(elo, isUnranked);
+
+      return {
+        id: (user && user.id) || cid,
+        name: name,
+        avatar: avatar,
+        elo: elo,
+        meta: meta,
+        isUnranked: isUnranked
+      };
+    }
 
     let currentFilter = 'all';
     let searchQuery = '';
 
     function renderLeaderboard() {
+      const u = getActiveUserData();
+
+      // Sync summary card in hero
+      const myIcon = document.getElementById('my-lb-icon');
+      const myStanding = document.getElementById('my-lb-standing');
+      const myElo = document.getElementById('my-lb-elo');
+      if (myIcon) myIcon.src = u.meta.icon;
+      if (myStanding) myStanding.textContent = `#1 · ${u.meta.name} Tier`;
+      if (myElo) myElo.textContent = `${u.elo.toLocaleString()} ELO (100% WR)`;
+
+      // Sync podium card
+      const podAvatar = document.getElementById('podium-avatar');
+      const podName = document.getElementById('podium-name');
+      const podId = document.getElementById('podium-id');
+      const podIcon = document.getElementById('podium-icon');
+      const podElo = document.getElementById('podium-elo');
+      const podTier = document.getElementById('podium-tier');
+      if (podAvatar) podAvatar.src = u.avatar;
+      if (podName) podName.textContent = u.name;
+      if (podId) podId.textContent = u.id;
+      if (podIcon) podIcon.src = u.meta.icon;
+      if (podElo) podElo.textContent = `${u.elo.toLocaleString()} ELO`;
+      if (podTier) podTier.textContent = `(${u.meta.name})`;
+
+      // Only Adrian in leaderboard standings
+      const LEADERBOARD_DATA = [
+        {
+          rank: 1,
+          id: u.id,
+          name: u.name,
+          avatar: u.avatar,
+          tier: u.meta.name,
+          icon: u.meta.icon,
+          elo: u.elo,
+          wins: 24,
+          wr: '100%',
+          prize: '$1,000 Champion Prize',
+          isYou: true
+        }
+      ];
+
       const tbody = document.getElementById('lb-table-body');
       if (!tbody) return;
 
@@ -255,7 +304,7 @@
         tbody.innerHTML = `
           <tr>
             <td colspan="7" style="text-align:center;padding:36px;color:#64748b;">
-              No contenders found matching filter criteria.
+              No other contenders qualified in this division yet.
             </td>
           </tr>
         `;
@@ -264,13 +313,17 @@
 
       tbody.innerHTML = filtered.map(item => `
         <tr onclick="window.location.href='profile/${item.id}'">
-          <td style="font-weight:700;color:${item.rank === 1 ? '#fbbf24' : (item.rank === 2 ? '#94a3b8' : (item.rank === 3 ? '#b45309' : '#fff'))};">
-            #${item.rank}
+          <td style="font-weight:700;color:#fbbf24;font-size:0.95rem;">
+            👑 #${item.rank}
           </td>
           <td>
             <div style="display:flex;align-items:center;gap:10px;">
+              <img src="${item.avatar}" style="width:34px;height:34px;border-radius:50%;border:1.5px solid #fbbf24;object-fit:cover;" alt="${item.name}"/>
               <div style="font-weight:600;color:#fff;">
-                ${item.name} ${item.isYou ? '<span style="font-size:0.68rem;background:rgba(83,252,24,0.15);color:#53fc18;padding:2px 6px;border-radius:4px;margin-left:4px;">YOU</span>' : ''}
+                <div style="display:inline-flex;align-items:center;gap:6px;">
+                  <span>${item.name}</span>
+                  <span style="font-size:0.68rem;background:rgba(83,252,24,0.15);color:#53fc18;padding:1px 6px;border-radius:4px;font-weight:700;">YOU</span>
+                </div>
                 <div style="font-size:0.72rem;color:#64748b;">ID: ${item.id}</div>
               </div>
             </div>
@@ -285,7 +338,7 @@
             ${item.elo.toLocaleString()} ELO
           </td>
           <td>${item.wins} Wins</td>
-          <td style="color:#a3e635;font-weight:600;">${item.wr}</td>
+          <td style="color:#a3e635;font-weight:600;">${item.wr} (24-0)</td>
           <td style="color:#fbbf24;font-weight:600;">${item.prize}</td>
         </tr>
       `).join('');
@@ -313,6 +366,13 @@
       }
 
       renderLeaderboard();
+
+      // Listen for ELO changes or storage sync
+      window.addEventListener('storage', (e) => {
+        if (e.key === 'ct_user_elo' || e.key === 'ct_user') {
+          renderLeaderboard();
+        }
+      });
     });
   </script>
 </body>

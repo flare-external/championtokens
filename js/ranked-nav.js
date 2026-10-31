@@ -343,8 +343,8 @@
           <div class="ct-tos-item">
             <span class="ct-tos-item-dot"></span>
             <div class="ct-tos-item-content">
-              <div class="ct-tos-item-title">Anti-Cheat & Integrity</div>
-              <p class="ct-tos-item-desc">Zero tolerance for cheats, macros, memory injectors, or hardware exploits. Permanent hardware and IP blacklist on violation.</p>
+              <div class="ct-tos-item-title">Match Evidence & Verification</div>
+              <p class="ct-tos-item-desc">Contenders must provide unedited match screenshots or clip recordings upon request to confirm match outcomes and settle score discrepancies.</p>
             </div>
           </div>
 
@@ -484,7 +484,7 @@
           <span style="color:rgba(255,255,255,0.15);">&bull;</span>
           <a href="javascript:void(0)" class="ct-footer-link" id="footer-btn-privacy">Privacy Policy</a>
           <span style="color:rgba(255,255,255,0.15);">&bull;</span>
-          <a href="javascript:void(0)" class="ct-footer-link" id="footer-btn-fairplay">Fair Play & Anti-Cheat</a>
+          <a href="javascript:void(0)" class="ct-footer-link" id="footer-btn-fairplay">Fair Play & Rules</a>
           <span style="color:rgba(255,255,255,0.15);">&bull;</span>
           <a href="https://discord.gg/35xqcMTEbH" target="_blank" rel="noopener noreferrer" class="ct-footer-link">Support Discord</a>
           <span style="color:rgba(255,255,255,0.15);">&bull;</span>
@@ -675,6 +675,8 @@
 
   window.renderSharedRankedNav = renderSharedNav;
   window.get12DigitContenderId = get12DigitContenderId;
+  window.getActiveUser = getActiveUser;
+  window.getRankMeta = getRankMeta;
   window.ensureTosModal = ensureTosModal;
   window.ensureDailyRewardModal = ensureDailyRewardModal;
   window.ensureCookieBanner = ensureCookieBanner;

@@ -204,7 +204,31 @@
     });
 
     updatePartyLeaderSlot();
+    updateMainLeaderboard();
     if (window.lucide) window.lucide.createIcons();
+  }
+
+  // Synchronized Season Leaderboard Snapshot on Main Tab (Only Adrian / You)
+  function updateMainLeaderboard() {
+    const meta = getRankMeta(state.userElo, state.isUnranked);
+    const u = state.currentUser || { name: 'adrian', customName: 'adrian', id: '112118831941', avatar: '/adrian-avatar.png' };
+    const displayName = u.customName || u.name || 'adrian';
+    const cid = u.id || '112118831941';
+    const avatar = u.avatar || '/adrian-avatar.png';
+
+    const avatarEl = document.getElementById('main-lb-avatar');
+    const nameEl = document.getElementById('main-lb-name');
+    const idEl = document.getElementById('main-lb-id');
+    const iconEl = document.getElementById('main-lb-icon');
+    const eloEl = document.getElementById('main-lb-elo');
+    const tierEl = document.getElementById('main-lb-tier');
+
+    if (avatarEl) avatarEl.src = avatar;
+    if (nameEl) nameEl.textContent = displayName;
+    if (idEl) idEl.textContent = cid;
+    if (iconEl) iconEl.src = meta.icon;
+    if (eloEl) eloEl.textContent = meta.eloDisplay;
+    if (tierEl) tierEl.textContent = `(${meta.name})`;
   }
 
   // Upper Left Clickable Rank Display
@@ -967,26 +991,12 @@
 
 
 
-  // Real-Time Online Ticker (1,480 Players Online • 219 Matches In Progress)
+  // Real-Time Online Ticker (Real stats: 1 Player Online • 0 Matches In Progress)
   function initLiveTicker() {
     const onlineEl = document.getElementById('ticker-online-count');
     const matchesEl = document.getElementById('ticker-matches-count');
-    let baseOnline = 1480;
-    let baseMatches = 219;
-
-    function renderTicker(online, matches) {
-      if (onlineEl) onlineEl.textContent = online.toLocaleString();
-      if (matchesEl) matchesEl.textContent = matches.toLocaleString();
-    }
-
-    renderTicker(baseOnline, baseMatches);
-
-    // Subtle realistic live fluctuation every 8s
-    setInterval(() => {
-      const jitterOnline = baseOnline + Math.floor(Math.random() * 11) - 5;
-      const jitterMatches = baseMatches + Math.floor(Math.random() * 7) - 3;
-      renderTicker(jitterOnline, jitterMatches);
-    }, 8000);
+    if (onlineEl) onlineEl.textContent = '1';
+    if (matchesEl) matchesEl.textContent = '0';
   }
 
   // ── Collectible Coin System & Daily Login Rewards ─────────────
@@ -1126,8 +1136,8 @@
           <div class="ct-tos-item">
             <span class="ct-tos-item-dot"></span>
             <div class="ct-tos-item-content">
-              <div class="ct-tos-item-title">Anti-Cheat & Integrity</div>
-              <p class="ct-tos-item-desc">Zero tolerance for cheats, macros, memory injectors, or hardware exploits. Permanent hardware and IP blacklist on violation.</p>
+              <div class="ct-tos-item-title">Match Evidence & Verification</div>
+              <p class="ct-tos-item-desc">Contenders must provide unedited match screenshots or clip recordings upon request to confirm match outcomes and settle score discrepancies.</p>
             </div>
           </div>
 
