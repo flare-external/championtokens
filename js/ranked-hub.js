@@ -1070,7 +1070,7 @@
     }
   }
 
-  // ── Enhanced Terms of Service & Competitive Rules Acceptance Modal ─────
+  // ── Clean & Simple Terms of Service Modal (No Outline) ────────
   function ensureTosModal() {
     if (document.getElementById('tos-modal')) return;
 
@@ -1087,113 +1087,95 @@
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
         </button>
 
-        <!-- Header -->
         <div class="ct-tos-header">
-          <div class="ct-tos-header-badge">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
-            <span>Competitive Integrity Agreement</span>
-          </div>
           <h2 class="ct-tos-title">Terms of Service & Rules</h2>
-          <p class="ct-tos-subtitle">Official contender agreement, matchmaking guidelines, and anti-cheat policies.</p>
-
-          <div class="ct-tos-highlights-strip">
-            <div class="ct-tos-highlight-item">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#53fc18" stroke-width="2.2"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-              <span>24/7 Telemetry Anti-Cheat</span>
-            </div>
-            <div class="ct-tos-highlight-item">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#53fc18" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
-              <span>Pure Elo Matchmaking</span>
-            </div>
-            <div class="ct-tos-highlight-item">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#53fc18" stroke-width="2.2"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg>
-              <span>Referee Dispute Governance</span>
-            </div>
-          </div>
+          <p class="ct-tos-subtitle">Please review and agree to the rules before entering matchmaking.</p>
         </div>
 
-        <!-- Scrollable Terms Body -->
         <div class="ct-tos-body">
-          <div class="ct-tos-clause">
-            <div class="ct-tos-clause-header">
-              <div class="ct-tos-clause-title">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#53fc18" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                <span>Competitive Integrity & Zero-Cheat Policy</span>
-              </div>
-              <span class="ct-tos-clause-tag">Section 1</span>
+          <div class="ct-tos-item">
+            <span class="ct-tos-item-dot"></span>
+            <div class="ct-tos-item-content">
+              <div class="ct-tos-item-title">Anti-Cheat & Integrity</div>
+              <p class="ct-tos-item-desc">Zero tolerance for cheats, macros, memory injectors, or hardware exploits. Permanent hardware and IP blacklist on violation.</p>
             </div>
-            <p class="ct-tos-clause-desc">Champion Tokens enforces strict anti-cheat and client telemetry validation. The use of memory injectors, external aim assistance, hardware macros, crosshair overlays, modified network packets, or DMA devices results in an immediate permanent hardware, IP, and contender blacklist without refund or recourse.</p>
           </div>
 
-          <div class="ct-tos-clause">
-            <div class="ct-tos-clause-header">
-              <div class="ct-tos-clause-title">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#53fc18" stroke-width="2.2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-                <span>Matchmaking, Win-Trading & ELO Rules</span>
-              </div>
-              <span class="ct-tos-clause-tag">Section 2</span>
+          <div class="ct-tos-item">
+            <span class="ct-tos-item-dot"></span>
+            <div class="ct-tos-item-content">
+              <div class="ct-tos-item-title">Fair Matchmaking & ELO</div>
+              <p class="ct-tos-item-desc">No win-trading, match dodging, griefing, or intentional throwing. Violators face rating reset and competitive suspension.</p>
             </div>
-            <p class="ct-tos-clause-desc">Queue sniping, win-trading, match dodging, griefing, or intentionally throwing matches carries immediate rating forfeiture, ELO reset, and multi-week competitive suspension. All arena matches are recorded and verified by server telemetry logs.</p>
           </div>
 
-          <div class="ct-tos-clause">
-            <div class="ct-tos-clause-header">
-              <div class="ct-tos-clause-title">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#53fc18" stroke-width="2.2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                <span>Contender Identification & Single-Account Rule</span>
-              </div>
-              <span class="ct-tos-clause-tag">Section 3</span>
+          <div class="ct-tos-item">
+            <span class="ct-tos-item-dot"></span>
+            <div class="ct-tos-item-content">
+              <div class="ct-tos-item-title">Single Account Rule</div>
+              <p class="ct-tos-item-desc">One 12-digit Contender ID per player. Secondary accounts, smurfing, and starter bonus abuse lead to permanent closure.</p>
             </div>
-            <p class="ct-tos-clause-desc">Every competitor is identified by a unique 12-digit Contender ID tied to their Discord authentication. Farming starter bonuses, smurfing on secondary profiles, credential trading, or using alternate accounts to bypass competitive bans results in permanent liquidation of all associated accounts.</p>
           </div>
 
-          <div class="ct-tos-clause">
-            <div class="ct-tos-clause-header">
-              <div class="ct-tos-clause-title">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#53fc18" stroke-width="2.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                <span>Match Disputes & Referee Decisions</span>
-              </div>
-              <span class="ct-tos-clause-tag">Section 4</span>
+          <div class="ct-tos-item">
+            <span class="ct-tos-item-dot"></span>
+            <div class="ct-tos-item-content">
+              <div class="ct-tos-item-title">Referee Disputes</div>
+              <p class="ct-tos-item-desc">Match issues must be reported to official platform Referees within 15 minutes with replay proof. Referee decisions are final.</p>
             </div>
-            <p class="ct-tos-clause-desc">Disputed match results must be submitted with replay telemetry or video documentation to official platform Referees within 15 minutes of match conclusion. Referee determinations are final, binding, and not subject to further appeal.</p>
           </div>
 
-          <div class="ct-tos-clause">
-            <div class="ct-tos-clause-header">
-              <div class="ct-tos-clause-title">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#53fc18" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><path d="m4.9 4.9 14.2 14.2"/></svg>
-                <span>Community Conduct & Platform Security</span>
-              </div>
-              <span class="ct-tos-clause-tag">Section 5</span>
+          <div class="ct-tos-item">
+            <span class="ct-tos-item-dot"></span>
+            <div class="ct-tos-item-content">
+              <div class="ct-tos-item-title">Community Conduct</div>
+              <p class="ct-tos-item-desc">Respect all players. Toxicity, harassment, or unauthorized access attempts result in immediate termination.</p>
             </div>
-            <p class="ct-tos-clause-desc">Zero tolerance for toxicity, harassment, extortion, defamatory conduct, or security probing. All network access is protected by Cloudflare edge intelligence. Participation constitutes ongoing acceptance of all platform terms and privacy guidelines.</p>
           </div>
         </div>
 
-        <!-- Footer / Agreement -->
         <div class="ct-tos-footer">
-          <label class="ct-tos-agree-box" id="tos-agree-label">
+          <label class="ct-tos-agree-row">
             <input type="checkbox" id="tos-agree-checkbox" class="ct-tos-checkbox" ${isAccepted ? 'checked disabled' : ''}/>
-            <span class="ct-tos-agree-text">I have read and agree to the <strong>Terms of Service</strong> and <strong>Competitive Rules</strong>.</span>
+            <span class="ct-tos-agree-text">I have read and agree to the <strong>Terms of Service & Rules</strong></span>
           </label>
 
-          <div class="ct-tos-actions">
-            <button type="button" id="btn-accept-tos" class="btn-tos-accept" ${!isAccepted ? 'disabled' : ''}>
-              <span>${isAccepted ? 'Close Agreement' : 'Accept & Enter Arena'}</span>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-            </button>
-          </div>
-
-          <div class="ct-tos-links-row">
-            <a href="javascript:void(0)" class="ct-tos-link-item" onclick="alert('Privacy Policy: Champion Tokens encrypts contender data and never shares personal identifiers with third parties.')">Privacy Policy</a>
-            <span>•</span>
-            <a href="https://discord.gg/35xqcMTEbH" target="_blank" rel="noopener noreferrer" class="ct-tos-link-item">Official Discord</a>
-            <span>•</span>
-            <a href="javascript:void(0)" class="ct-tos-link-item" onclick="alert('Security Telemetry: Match sessions are protected by Cloudflare Edge & real-time telemetry verification.')">Security Telemetry</a>
-          </div>
+          <button type="button" id="btn-accept-tos" class="btn-tos-accept" ${!isAccepted ? 'disabled' : ''}>
+            ${isAccepted ? 'Close Agreement' : 'Accept & Continue'}
+          </button>
         </div>
       </div>
     `;
+
+    document.body.appendChild(modal);
+
+    const closeBtn = modal.querySelector('#btn-close-tos-modal');
+    const checkbox = modal.querySelector('#tos-agree-checkbox');
+    const acceptBtn = modal.querySelector('#btn-accept-tos');
+
+    if (closeBtn) closeBtn.addEventListener('click', () => modal.classList.remove('open'));
+
+    if (checkbox && acceptBtn) {
+      checkbox.addEventListener('change', () => {
+        acceptBtn.disabled = !checkbox.checked;
+      });
+
+      acceptBtn.addEventListener('click', () => {
+        localStorage.setItem('ct_tos_accepted_v3', 'true');
+        modal.classList.remove('open');
+        if (closeBtn) closeBtn.style.display = 'block';
+        checkbox.checked = true;
+        checkbox.disabled = true;
+        acceptBtn.textContent = 'Close Agreement';
+        showToast('Terms & Rules accepted.');
+      });
+    }
+
+    modal.addEventListener('click', (e) => {
+      const acceptedNow = localStorage.getItem('ct_tos_accepted_v3') === 'true';
+      if (acceptedNow && e.target === modal) modal.classList.remove('open');
+    });
+  }
 
     document.body.appendChild(modal);
 
