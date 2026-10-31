@@ -47,6 +47,8 @@
     initQueueModal();
     initReferralsModal();
     initLiveTicker();
+    initCoinsAndDaily();
+    initTosOnMain();
     updateRankUI();
     if (window.lucide) window.lucide.createIcons();
   });
@@ -197,21 +199,14 @@
   }
 
   // Upper Left Clickable Rank Display
+  // Upper Left Clickable Rank Display
   function initUpperLeftRank() {
     const rankPill = document.getElementById('ct-header-rank-pill');
     const modal = document.getElementById('ranks-modal');
     const closeBtn = document.getElementById('btn-close-ranks-modal');
-    const inputElo = document.getElementById('input-main-modal-elo');
-    const applyBtn = document.getElementById('btn-main-modal-apply-elo');
-    const descEl = document.getElementById('modal-current-rank-desc');
 
     function openModal() {
       updateRankUI();
-      if (inputElo) inputElo.value = state.isUnranked ? 0 : state.userElo;
-      if (descEl) {
-        const meta = getRankMeta(state.userElo, state.isUnranked);
-        descEl.innerHTML = `<strong style="color:#53fc18;">${meta.name}</strong> • ${meta.eloDisplay}`;
-      }
       if (modal) modal.classList.add('open');
     }
 
@@ -231,60 +226,42 @@
         if (e.target === modal) closeModal();
       });
     }
-
-    if (applyBtn && inputElo) {
-      applyBtn.addEventListener('click', () => {
-        const parsed = parseInt(inputElo.value.trim(), 10);
-        if (isNaN(parsed) || parsed <= 0) {
-          state.isUnranked = true;
-          state.userElo = 0;
-          localStorage.setItem('ct_is_unranked', 'true');
-          localStorage.setItem('ct_user_elo', '0');
-          showToast('Rank set to: Unranked (0/5 Placements)');
-        } else {
-          state.isUnranked = false;
-          state.userElo = parsed;
-          localStorage.setItem('ct_is_unranked', 'false');
-          localStorage.setItem('ct_user_elo', parsed.toString());
-          const meta = getRankMeta(parsed, false);
-          showToast(`Rank set to: ${meta.name} (${parsed.toLocaleString()} ELO)`);
-        }
-        updateRankUI();
-        closeModal();
-      });
-      inputElo.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') applyBtn.click();
-      });
-    }
-
-    // Clicking any tier row in the modal sets that tier
-    const defaultTierElos = [250, 750, 1250, 1750, 2200, 2500, 2850, 3500];
-    const rows = document.querySelectorAll('#ranks-modal .ct-rank-row-item');
-    rows.forEach((row, idx) => {
-      row.style.cursor = 'pointer';
-      row.addEventListener('click', () => {
-        if (inputElo && applyBtn && defaultTierElos[idx] !== undefined) {
-          inputElo.value = defaultTierElos[idx];
-          applyBtn.click();
-        }
-      });
-    });
   }
 
-  // Set ELO Test Tool Opens Rank & ELO Modal
+  // Set ELO Test Tool in Upper Left -> Prompts ELO rating directly
   function initSetEloBtn() {
     const btn = document.getElementById('btn-set-elo');
     if (!btn) return;
 
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
-      const rankPill = document.getElementById('ct-header-rank-pill');
-      if (rankPill) {
-        rankPill.click();
+      const currentVal = state.isUnranked ? '0' : state.userElo.toString();
+      const input = prompt(
+        'Set your ELO rating for live testing:\n• Enter "0" for Unranked (0/5 Placements)\n• Or enter a rating number (e.g. 450, 1200, 2450, 3100):',
+        currentVal
+      );
+
+      if (input === null) return;
+
+      const trimmed = input.trim();
+      const parsed = parseInt(trimmed, 10);
+
+      if (trimmed === '0' || isNaN(parsed) || parsed <= 0) {
+        state.isUnranked = true;
+        state.userElo = 0;
+        localStorage.setItem('ct_is_unranked', 'true');
+        localStorage.setItem('ct_user_elo', '0');
+        showToast('Rank set to: Unranked (0/5 Placements)');
       } else {
-        const modal = document.getElementById('ranks-modal');
-        if (modal) modal.classList.add('open');
+        state.isUnranked = false;
+        state.userElo = parsed;
+        localStorage.setItem('ct_is_unranked', 'false');
+        localStorage.setItem('ct_user_elo', parsed.toString());
+        const meta = getRankMeta(parsed, false);
+        showToast(`Rank set to: ${meta.name} (${parsed.toLocaleString()} ELO)`);
       }
+
+      updateRankUI();
     });
   }
 
@@ -973,23 +950,249 @@
 
 
 
-  // Real-Time Online Ticker
+  // Real-Time Online Ticker (Honest real stats: 1 online, 0 matches)
   function initLiveTicker() {
     const onlineEl = document.getElementById('ticker-online-count');
     const matchesEl = document.getElementById('ticker-matches-count');
-    let online = 1482;
-    let matches = 219;
+    if (onlineEl) onlineEl.textContent = '1';
+    if (matchesEl) matchesEl.textContent = '0';
+  }
 
-    setInterval(() => {
-      const change = Math.floor(Math.random() * 5) - 2;
-      online = Math.max(1400, online + change);
-      if (onlineEl) onlineEl.textContent = online.toLocaleString();
+  // ── Collectible Coin System & Daily Login Rewards ─────────────
+  function getUserCoins() {
+    const val = localStorage.getItem('ct_user_coins');
+    return val !== null ? parseInt(val, 10) : 100;
+  }
 
-      if (Math.random() > 0.6) {
-        matches = Math.max(180, matches + (Math.floor(Math.random() * 3) - 1));
-        if (matchesEl) matchesEl.textContent = matches.toLocaleString();
-      }
-    }, 4000);
+  function setUserCoins(val) {
+    localStorage.setItem('ct_user_coins', val.toString());
+    const countEl = document.getElementById('header-coin-count');
+    if (countEl) countEl.textContent = val.toLocaleString();
+  }
+
+  function getDailyState() {
+    const lastClaim = parseInt(localStorage.getItem('ct_daily_last_claim') || '0', 10);
+    const streak = parseInt(localStorage.getItem('ct_daily_streak') || '0', 10);
+    const now = Date.now();
+    const oneDayMs = 24 * 60 * 60 * 1000;
+    const canClaim = !lastClaim || (now - lastClaim >= oneDayMs);
+    return { canClaim, streak: canClaim && (now - lastClaim > 2 * oneDayMs) ? 0 : streak };
+  }
+
+  function ensureDailyRewardModal() {
+    if (document.getElementById('daily-reward-modal')) return;
+
+    const dailyRewards = [50, 75, 100, 125, 150, 200, 300];
+    const { canClaim, streak } = getDailyState();
+    const activeDayIdx = Math.min(streak, 6);
+
+    const modal = document.createElement('div');
+    modal.className = 'ct-modal-overlay';
+    modal.id = 'daily-reward-modal';
+    modal.style.zIndex = '3500';
+
+    modal.innerHTML = `
+      <div class="ct-ranks-modal-card" style="max-width:560px;">
+        <button type="button" class="ct-modal-close-btn" id="btn-close-daily-modal">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+
+        <div class="ct-modal-title" style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+          <span style="font-family:'Outfit',sans-serif;font-weight:700;font-size:1.15rem;color:#ffffff;">Daily Login Rewards</span>
+          <span style="background:rgba(251,191,36,0.12);color:#fbbf24;font-size:0.7rem;font-weight:700;padding:2px 8px;border-radius:6px;border:1px solid rgba(251,191,36,0.3);text-transform:uppercase;margin-left:auto;">Streak: ${streak} Days</span>
+        </div>
+        <div style="font-size:0.78rem;color:#94a3b8;margin-bottom:14px;">
+          Log in daily to claim coins. Streaks reset if more than 48 hours pass between logins.
+        </div>
+
+        <div class="ct-daily-grid">
+          ${dailyRewards.map((reward, i) => {
+            const isClaimed = i < streak;
+            const isActive = i === activeDayIdx && canClaim;
+            return `
+              <div class="ct-daily-card ${isClaimed ? 'claimed' : (isActive ? 'active' : '')}">
+                <div class="ct-daily-card-day">Day ${i + 1}</div>
+                <div class="ct-daily-card-val">+${reward}</div>
+                <div class="ct-daily-card-tag">${isClaimed ? 'Claimed' : (isActive ? 'Claim' : 'Locked')}</div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+
+        <div style="margin-top:16px;">
+          <button type="button" id="btn-claim-daily" style="width:100%;font-weight:800;font-size:0.92rem;padding:12px;border:none;border-radius:10px;transition:all 0.15s ease;${canClaim ? 'background:#fbbf24;color:#000;cursor:pointer;' : 'background:rgba(255,255,255,0.06);color:#64748b;cursor:default;'}" ${!canClaim ? 'disabled' : ''}>
+            ${canClaim ? `Claim Day ${activeDayIdx + 1} (+${dailyRewards[activeDayIdx]} Coins)` : 'Claimed Today • Next Reward Tomorrow'}
+          </button>
+        </div>
+      </div>
+    `;
+
+    document.body.appendChild(modal);
+
+    modal.querySelector('#btn-close-daily-modal')?.addEventListener('click', () => modal.classList.remove('open'));
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) modal.classList.remove('open');
+    });
+
+    const claimBtn = modal.querySelector('#btn-claim-daily');
+    if (claimBtn && canClaim) {
+      claimBtn.addEventListener('click', () => {
+        const reward = dailyRewards[activeDayIdx];
+        const newTotal = getUserCoins() + reward;
+        setUserCoins(newTotal);
+        localStorage.setItem('ct_daily_last_claim', Date.now().toString());
+        localStorage.setItem('ct_daily_streak', (activeDayIdx + 1).toString());
+        claimBtn.disabled = true;
+        claimBtn.style.background = 'rgba(255,255,255,0.06)';
+        claimBtn.style.color = '#64748b';
+        claimBtn.style.cursor = 'default';
+        claimBtn.textContent = 'Claimed Today • Next Reward Tomorrow';
+        modal.classList.remove('open');
+        showToast(`Claimed +${reward} Coins! Total: ${newTotal.toLocaleString()} Coins`);
+      });
+    }
+  }
+
+  function initCoinsAndDaily() {
+    const coins = getUserCoins();
+    const countEl = document.getElementById('header-coin-count');
+    if (countEl) countEl.textContent = coins.toLocaleString();
+
+    const coinPill = document.getElementById('ct-header-coin-pill');
+    if (coinPill) {
+      coinPill.addEventListener('click', (e) => {
+        e.stopPropagation();
+        ensureDailyRewardModal();
+        const modal = document.getElementById('daily-reward-modal');
+        if (modal) modal.classList.add('open');
+      });
+    }
+  }
+
+  // ── Terms of Service & Competitive Rules Acceptance Modal ─────
+  function ensureTosModal() {
+    if (document.getElementById('tos-modal')) return;
+
+    const isAccepted = localStorage.getItem('ct_tos_accepted') === 'true';
+
+    const modal = document.createElement('div');
+    modal.className = 'ct-modal-overlay';
+    modal.id = 'tos-modal';
+    modal.style.zIndex = '3500';
+
+    modal.innerHTML = `
+      <div class="ct-ranks-modal-card" style="max-width:620px;">
+        <button type="button" class="ct-modal-close-btn" id="btn-close-tos-modal" style="${!isAccepted ? 'display:none;' : ''}">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+
+        <div class="ct-modal-title" style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#53fc18" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          <span style="font-family:'Outfit',sans-serif;font-weight:700;font-size:1.15rem;color:#ffffff;">Terms of Service & Rules</span>
+          <span style="background:rgba(83,252,24,0.12);color:#53fc18;font-size:0.68rem;font-weight:700;padding:2px 8px;border-radius:6px;border:1px solid rgba(83,252,24,0.3);text-transform:uppercase;margin-left:auto;">Season 1</span>
+        </div>
+        <div style="font-size:0.78rem;color:#94a3b8;margin-bottom:14px;">
+          Please review and accept the official competitive guidelines before participating in Ranked matches.
+        </div>
+
+        <div style="max-height:45vh;overflow-y:auto;background:#000000;border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:16px 18px;margin-bottom:16px;font-size:0.80rem;color:#cbd5e1;line-height:1.55;display:flex;flex-direction:column;gap:14px;">
+          <div>
+            <div style="font-weight:700;color:#53fc18;margin-bottom:4px;font-size:0.85rem;">1. Competitive Integrity & Zero-Cheat Policy</div>
+            <div>Champion Tokens enforces strict anti-cheat and telemetry validation. The use of memory injectors, aim assistance, hardware macros, crosshair overlays, or modified network packets results in an immediate permanent hardware, IP, and contender ban without recourse.</div>
+          </div>
+          <div>
+            <div style="font-weight:700;color:#53fc18;margin-bottom:4px;font-size:0.85rem;">2. Matchmaking, Win-Trading & ELO Rules</div>
+            <div>Queue sniping, win-trading, match dodging, or intentionally disconnecting will result in immediate rating forfeiture, ELO deduction, and competitive season suspension. All official matches are recorded and verified by server telemetry.</div>
+          </div>
+          <div>
+            <div style="font-weight:700;color:#53fc18;margin-bottom:4px;font-size:0.85rem;">3. Contender Identification & Multi-Accounting</div>
+            <div>Every contender is identified by a unique 12-digit Contender ID tied to their Discord authentication. Farming starter bonuses, smurfing, sharing credentials, or using secondary accounts to bypass penalties is strictly prohibited.</div>
+          </div>
+          <div>
+            <div style="font-weight:700;color:#53fc18;margin-bottom:4px;font-size:0.85rem;">4. Match Disputes & Referee Decisions</div>
+            <div>Contested results must be submitted with replay documentation to official Referees within 15 minutes of match completion. Platform Referee determinations are final and binding.</div>
+          </div>
+          <div>
+            <div style="font-weight:700;color:#53fc18;margin-bottom:4px;font-size:0.85rem;">5. Community Conduct & Platform Terms</div>
+            <div>Zero tolerance for toxicity, harassment, hate speech, or defamatory conduct in official voice, text, or stream chats. By participating, you agree to comply with Cloudflare edge security and Champion Tokens terms.</div>
+          </div>
+        </div>
+
+        <div id="tos-action-controls">
+          <label style="display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none;font-size:0.80rem;color:#ffffff;margin-bottom:14px;">
+            <input type="checkbox" id="tos-agree-checkbox" ${isAccepted ? 'checked disabled' : ''} style="width:17px;height:17px;accent-color:#53fc18;cursor:pointer;"/>
+            <span>I have read and agree to the <strong>Terms of Service</strong> and <strong>Competitive Rules</strong>.</span>
+          </label>
+          <div style="display:flex;gap:10px;">
+            <button type="button" id="btn-accept-tos" style="flex:1;background:#53fc18;color:#000000;font-weight:800;font-size:0.88rem;padding:12px;border:none;border-radius:10px;cursor:pointer;transition:all 0.15s ease;${!isAccepted ? 'opacity:0.4;pointer-events:none;' : ''}">
+              ${isAccepted ? 'Close Agreement' : 'Accept & Enter Arena'}
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+
+    document.body.appendChild(modal);
+
+    const closeBtn = modal.querySelector('#btn-close-tos-modal');
+    const checkbox = modal.querySelector('#tos-agree-checkbox');
+    const acceptBtn = modal.querySelector('#btn-accept-tos');
+
+    if (closeBtn) closeBtn.addEventListener('click', () => modal.classList.remove('open'));
+
+    if (checkbox && acceptBtn) {
+      checkbox.addEventListener('change', () => {
+        if (checkbox.checked) {
+          acceptBtn.style.opacity = '1';
+          acceptBtn.style.pointerEvents = 'auto';
+        } else {
+          acceptBtn.style.opacity = '0.4';
+          acceptBtn.style.pointerEvents = 'none';
+        }
+      });
+
+      acceptBtn.addEventListener('click', () => {
+        localStorage.setItem('ct_tos_accepted', 'true');
+        modal.classList.remove('open');
+        if (closeBtn) closeBtn.style.display = 'block';
+        checkbox.checked = true;
+        checkbox.disabled = true;
+        acceptBtn.textContent = 'Close Agreement';
+        showToast('Terms & Rules accepted.');
+      });
+    }
+
+    modal.addEventListener('click', (e) => {
+      const acceptedNow = localStorage.getItem('ct_tos_accepted') === 'true';
+      if (acceptedNow && e.target === modal) modal.classList.remove('open');
+    });
+  }
+
+  function initTosOnMain() {
+    ensureTosModal();
+
+    // If not accepted yet, prompt on main tab
+    const isAccepted = localStorage.getItem('ct_tos_accepted') === 'true';
+    if (!isAccepted) {
+      const modal = document.getElementById('tos-modal');
+      if (modal) modal.classList.add('open');
+    }
+
+    // Wire footer links
+    const rulesBtn = document.getElementById('footer-btn-rules');
+    const tosBtn = document.getElementById('footer-btn-tos');
+    if (rulesBtn) {
+      rulesBtn.addEventListener('click', () => {
+        ensureTosModal();
+        document.getElementById('tos-modal')?.classList.add('open');
+      });
+    }
+    if (tosBtn) {
+      tosBtn.addEventListener('click', () => {
+        ensureTosModal();
+        document.getElementById('tos-modal')?.classList.add('open');
+      });
+    }
   }
 
   // Toast Notification

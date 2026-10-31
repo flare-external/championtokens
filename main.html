@@ -16,9 +16,9 @@
   <!-- ── Top Status Ticker ──────────────────────────────────────── -->
   <div class="ct-ticker-bar">
     <div class="ct-ticker-left">
-      <span><span class="ct-live-dot"></span> <span id="ticker-online-count" style="color:#fff;font-weight:600;">1,482</span> Players Online</span>
+      <span><span class="ct-live-dot"></span> <span id="ticker-online-count" style="color:#fff;font-weight:600;">1</span> Player Online</span>
       <span style="color:#334155;">•</span>
-      <span><span id="ticker-matches-count" style="color:#fff;font-weight:600;">219</span> Matches In Progress</span>
+      <span><span id="ticker-matches-count" style="color:#fff;font-weight:600;">0</span> Matches In Progress</span>
     </div>
   </div>
 
@@ -45,6 +45,12 @@
 
     <!-- Upper Right Nav & Auth Island -->
     <div class="ct-nav-right">
+      <!-- Collectible Coin Balance (Left of Rank, No Icon) -->
+      <div class="ct-nav-coin-collectible" id="ct-header-coin-pill">
+        <span class="ct-nav-coin-num" id="header-coin-count">100</span>
+        <span class="ct-nav-coin-label">COINS</span>
+      </div>
+
       <!-- Clean Rank & ELO Typography (Left of Profile, With Rank Icon, No Box, Simple, Clickable, Animated for Top 2) -->
       <div class="ct-nav-rank-badge" id="ct-header-rank-pill">
         <img src="medal-ranks/svg/06-elite.svg" id="header-rank-icon" class="ct-nav-rank-icon" alt="Rank"/>
@@ -204,11 +210,11 @@
       </div>
     </section>
 
-    <!-- ── Monthly Leaderboard ───────────────────────────────────── -->
+    <!-- ── Season Leaderboard ────────────────────────────────────── -->
     <section class="ct-monthly-strip">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
         <h3 style="font-family:'Outfit',sans-serif;font-size:1.15rem;font-weight:600;color:#ffffff;margin:0;">
-          Monthly Leaderboard
+          Season Leaderboard
         </h3>
         <a href="leaderboard" style="color:#53fc18;font-size:0.8rem;font-weight:600;text-decoration:none;">View Full →</a>
       </div>
@@ -318,18 +324,6 @@
       <div class="ct-modal-title" style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
         <i data-lucide="shield" style="width:22px;height:22px;color:#53fc18;"></i>
         <span>Rank & ELO System</span>
-      </div>
-
-      <!-- Interactive Set ELO Testing Panel -->
-      <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:12px 14px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
-        <div>
-          <div style="font-size:0.85rem;font-weight:700;color:#ffffff;">Live ELO Testing</div>
-          <div style="font-size:0.75rem;color:#94a3b8;" id="modal-current-rank-desc">Set your live rating number or click a tier below:</div>
-        </div>
-        <div style="display:flex;gap:8px;align-items:center;">
-          <input type="number" id="input-main-modal-elo" placeholder="Set ELO" style="width:90px;background:#000;border:1px solid rgba(255,255,255,0.15);color:#fff;padding:6px 10px;border-radius:8px;font-size:0.85rem;font-weight:600;outline:none;"/>
-          <button type="button" id="btn-main-modal-apply-elo" style="background:#53fc18;color:#000;font-weight:700;font-size:0.78rem;border:none;padding:7px 14px;border-radius:8px;cursor:pointer;">Set</button>
-        </div>
       </div>
 
       <!-- List of Ranks -->
@@ -549,8 +543,15 @@
   </div>
 
   <!-- ── Footer ─────────────────────────────────────────────────── -->
-  <footer class="ct-footer" style="border-top:1px solid rgba(255,255,255,0.08);padding:32px 20px 44px;background:#000000;text-align:center;">
-    <div style="max-width:1000px;margin:0 auto;display:flex;flex-direction:column;gap:16px;">
+  <footer class="ct-footer" style="border-top:1px solid rgba(255,255,255,0.08);padding:28px 20px 36px;background:#000000;text-align:center;position:relative;z-index:20;">
+    <div style="max-width:900px;margin:0 auto;display:flex;flex-direction:column;align-items:center;gap:12px;">
+      <div class="ct-footer-links" style="display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;font-size:0.80rem;">
+        <a href="javascript:void(0)" class="ct-footer-link" id="footer-btn-rules">Competitive Rules</a>
+        <span style="color:rgba(255,255,255,0.15);">&bull;</span>
+        <a href="javascript:void(0)" class="ct-footer-link" id="footer-btn-tos">Terms of Service</a>
+        <span style="color:rgba(255,255,255,0.15);">&bull;</span>
+        <a href="https://discord.gg/35xqcMTEbH" target="_blank" rel="noopener noreferrer" class="ct-footer-link">Support Discord</a>
+      </div>
       <div style="font-size:0.75rem;color:#475569;">
         © 2026 Champion Tokens • Protected by Cloudflare
       </div>

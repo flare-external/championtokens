@@ -1,80 +1,119 @@
-// ============================================================
-//  CHAMPION TOKENS — Unified Ranked Navigation Component
-// ============================================================
+/**
+ * Ranked Navigation & Universal Utilities
+ * Handles navigation bar, rank medal display, coin collectible,
+ * daily login rewards, terms of service modal, and universal footer.
+ */
 
 (function () {
   'use strict';
 
-  function getRankMeta(elo, isUnranked) {
-    if (isUnranked || elo <= 0) {
-      return { name: 'Unranked', icon: '/medal-ranks/svg/01-bronze.svg', eloDisplay: '0/5 Placements', isUnranked: true };
-    }
-    if (elo < 500) return { name: 'Bronze', icon: '/medal-ranks/svg/01-bronze.svg', eloDisplay: `${elo.toLocaleString()} ELO` };
-    if (elo < 1000) return { name: 'Silver', icon: '/medal-ranks/svg/02-silver.svg', eloDisplay: `${elo.toLocaleString()} ELO` };
-    if (elo < 1500) return { name: 'Gold', icon: '/medal-ranks/svg/03-gold.svg', eloDisplay: `${elo.toLocaleString()} ELO` };
-    if (elo < 2000) return { name: 'Platinum', icon: '/medal-ranks/svg/04-platinum.svg', eloDisplay: `${elo.toLocaleString()} ELO` };
-    if (elo < 2400) return { name: 'Diamond', icon: '/medal-ranks/svg/05-diamond.svg', eloDisplay: `${elo.toLocaleString()} ELO` };
-    if (elo < 2700) return { name: 'Elite', icon: '/medal-ranks/svg/06-elite.svg', eloDisplay: `${elo.toLocaleString()} ELO` };
-    if (elo < 3000) return { name: 'Champion', icon: '/medal-ranks/svg/07-champion.svg', eloDisplay: `${elo.toLocaleString()} ELO` };
-    return { name: 'Unreal', icon: '/medal-ranks/svg/10-star.svg', eloDisplay: `${elo.toLocaleString()} ELO` };
-  }
-
-  function get12DigitContenderId(rawId) {
-    if (rawId && typeof rawId === 'string') {
-      const digits = rawId.replace(/\D/g, '');
-      if (digits.length >= 12) {
-        const cid = digits.slice(0, 12);
-        localStorage.setItem('ct_contender_id', cid);
-        return cid;
+  function get12DigitContenderId() {
+    let id = localStorage.getItem('ct_contender_id');
+    if (!id || id.length !== 12 || !/^\d{12}$/.test(id)) {
+      id = '';
+      for (let i = 0; i < 12; i++) {
+        id += Math.floor(Math.random() * 10).toString();
       }
+      localStorage.setItem('ct_contender_id', id);
     }
-    let cid = localStorage.getItem('ct_contender_id');
-    if (cid && /^\d{12}$/.test(cid)) return cid;
-    cid = Math.floor(100000000000 + Math.random() * 900000000000).toString();
-    localStorage.setItem('ct_contender_id', cid);
-    return cid;
+    return id;
   }
 
   function getActiveUser() {
     const raw = localStorage.getItem('ct_user');
-    let cid = get12DigitContenderId();
-
-    let user = {
-      id: cid,
-      name: 'adrian',
-      customName: '',
-      tag: '#1337',
-      isLoggedIn: true,
-      avatar: '/adrian-avatar.png',
-      isVip: true
-    };
-
+    let user = null;
     if (raw) {
       try {
-        const parsed = JSON.parse(raw);
-        user = Object.assign(user, parsed);
-        user.id = get12DigitContenderId(user.id || user.uid);
-        if (!user.avatar || user.avatar.includes('images.unsplash.com')) {
-          user.avatar = '/adrian-avatar.png';
-          localStorage.setItem('ct_user', JSON.stringify(user));
-        }
+        user = JSON.parse(raw);
       } catch (e) {}
-    } else {
+    }
+    const cid = get12DigitContenderId();
+
+    if (!user) {
+      user = {
+        id: cid,
+        name: 'adrian',
+        customName: 'adrian',
+        avatar: '/adrian-avatar.png',
+        tag: ''
+      };
       localStorage.setItem('ct_user', JSON.stringify(user));
+    } else {
+      if (!user.id || user.id.length !== 12 || !/^\d{12}$/.test(user.id)) {
+        user.id = cid;
+        localStorage.setItem('ct_user', JSON.stringify(user));
+      }
+      if (!user.avatar || user.avatar.includes('unsplash') || user.avatar.includes('discordapp')) {
+        user.avatar = '/adrian-avatar.png';
+        localStorage.setItem('ct_user', JSON.stringify(user));
+      }
     }
     return user;
   }
 
-  function promptSetElo() {
-    const currentVal = localStorage.getItem('ct_user_elo') || '9999';
-    const input = prompt('Enter test ELO (e.g. 2450 for Elite, 2800 for Champion, 3500 for Unreal, or 0 for Unranked):', currentVal);
-    if (input === null) return;
-    const val = parseInt(input.trim(), 10);
-    if (isNaN(val) || val < 0) {
-      alert('Please enter a valid non-negative number for ELO.');
-      return;
+  function getRankMeta(elo, isUnranked) {
+    if (isUnranked || elo <= 0) {
+      return { name: 'Unranked', icon: '/medal-ranks/svg/01-bronze.svg', eloDisplay: '0/5 Placements', isUnranked: true, tierIndex: -1, place: '#--' };
     }
-    if (val === 0) {
+    if (elo < 500) {
+      return { name: 'Bronze', icon: '/medal-ranks/svg/01-bronze.svg', eloDisplay: `${elo.toLocaleString()} ELO`, isUnranked: false, tierIndex: 0, place: '#8,421' };
+    } else if (elo < 1000) {
+      return { name: 'Silver', icon: '/medal-ranks/svg/02-silver.svg', eloDisplay: `${elo.toLocaleString()} ELO`, isUnranked: false, tierIndex: 1, place: '#5,120' };
+    } else if (elo < 1500) {
+      return { name: 'Gold', icon: '/medal-ranks/svg/03-gold.svg', eloDisplay: `${elo.toLocaleString()} ELO`, isUnranked: false, tierIndex: 2, place: '#3,204' };
+    } else if (elo < 2000) {
+      return { name: 'Platinum', icon: '/medal-ranks/svg/04-platinum.svg', eloDisplay: `${elo.toLocaleString()} ELO`, isUnranked: false, tierIndex: 3, place: '#1,450' };
+    } else if (elo < 2400) {
+      return { name: 'Diamond', icon: '/medal-ranks/svg/05-diamond.svg', eloDisplay: `${elo.toLocaleString()} ELO`, isUnranked: false, tierIndex: 4, place: '#620' };
+    } else if (elo < 2700) {
+      return { name: 'Elite', icon: '/medal-ranks/svg/06-elite.svg', eloDisplay: `${elo.toLocaleString()} ELO`, isUnranked: false, tierIndex: 5, place: '#120' };
+    } else if (elo < 3000) {
+      return { name: 'Champion', icon: '/medal-ranks/svg/07-champion.svg', eloDisplay: `${elo.toLocaleString()} ELO`, isUnranked: false, tierIndex: 6, place: '#42' };
+    } else {
+      return { name: 'Unreal', icon: '/medal-ranks/svg/10-star.svg', eloDisplay: `${elo.toLocaleString()} ELO`, isUnranked: false, tierIndex: 7, place: '#1' };
+    }
+  }
+
+  function getUserCoins() {
+    const val = localStorage.getItem('ct_user_coins');
+    return val !== null ? parseInt(val, 10) : 100;
+  }
+
+  function setUserCoins(val) {
+    localStorage.setItem('ct_user_coins', val.toString());
+    const countEls = document.querySelectorAll('#nav-coin-count, #header-coin-count');
+    countEls.forEach(el => el.textContent = val.toLocaleString());
+  }
+
+  function getDailyState() {
+    const lastClaim = localStorage.getItem('ct_daily_last_claim');
+    const streak = parseInt(localStorage.getItem('ct_daily_streak') || '0', 10);
+    const now = Date.now();
+    const oneDay = 24 * 60 * 60 * 1000;
+    let canClaim = true;
+    let currentStreak = streak;
+
+    if (lastClaim) {
+      const diff = now - parseInt(lastClaim, 10);
+      if (diff < oneDay) {
+        canClaim = false;
+      } else if (diff > oneDay * 2) {
+        currentStreak = 0;
+      }
+    }
+    return { canClaim, streak: currentStreak };
+  }
+
+  function promptSetElo() {
+    const current = localStorage.getItem('ct_user_elo') || '3500';
+    const input = prompt(
+      'Set your ELO rating for live testing:\n• Enter "0" for Unranked (0/5 Placements)\n• Or enter a rating number (e.g. 450, 1200, 2450, 3100):',
+      current
+    );
+    if (input === null) return;
+    const trimmed = input.trim();
+    const val = parseInt(trimmed, 10);
+    if (trimmed === '0' || isNaN(val) || val <= 0) {
       localStorage.setItem('ct_is_unranked', 'true');
       localStorage.setItem('ct_user_elo', '0');
     } else {
@@ -136,18 +175,18 @@
     document.body.prepend(container);
   }
 
-  function ensureRanksModal(meta, currentElo) {
+  function ensureRanksModal(meta) {
     if (document.getElementById('ranks-modal')) return;
 
     const ranks = [
-      { name: 'Bronze', icon: '/medal-ranks/svg/01-bronze.svg', elo: '0 - 499 ELO', defaultElo: 250, color: '#cd7f32', tierIndex: 0 },
-      { name: 'Silver', icon: '/medal-ranks/svg/02-silver.svg', elo: '500 - 999 ELO', defaultElo: 750, color: '#c0c0c0', tierIndex: 1 },
-      { name: 'Gold', icon: '/medal-ranks/svg/03-gold.svg', elo: '1,000 - 1,499 ELO', defaultElo: 1250, color: '#f59e0b', tierIndex: 2 },
-      { name: 'Platinum', icon: '/medal-ranks/svg/04-platinum.svg', elo: '1,500 - 1,999 ELO', defaultElo: 1750, color: '#38bdf8', tierIndex: 3 },
-      { name: 'Diamond', icon: '/medal-ranks/svg/05-diamond.svg', elo: '2,000 - 2,399 ELO', defaultElo: 2200, color: '#a855f7', tierIndex: 4 },
-      { name: 'Elite', icon: '/medal-ranks/svg/06-elite.svg', elo: '2,400 - 2,699 ELO', defaultElo: 2500, color: '#ef4444', tierIndex: 5 },
-      { name: 'Champion', icon: '/medal-ranks/svg/07-champion.svg', elo: '2,700 - 2,999 ELO', defaultElo: 2850, color: '#f97316', tierIndex: 6 },
-      { name: 'Unreal', icon: '/medal-ranks/svg/10-star.svg', elo: '3,000+ ELO', defaultElo: 3500, color: '#53fc18', tierIndex: 7 }
+      { name: 'Bronze', icon: '/medal-ranks/svg/01-bronze.svg', elo: '0 - 499 ELO', color: '#cd7f32', tierIndex: 0 },
+      { name: 'Silver', icon: '/medal-ranks/svg/02-silver.svg', elo: '500 - 999 ELO', color: '#c0c0c0', tierIndex: 1 },
+      { name: 'Gold', icon: '/medal-ranks/svg/03-gold.svg', elo: '1,000 - 1,499 ELO', color: '#f59e0b', tierIndex: 2 },
+      { name: 'Platinum', icon: '/medal-ranks/svg/04-platinum.svg', elo: '1,500 - 1,999 ELO', color: '#38bdf8', tierIndex: 3 },
+      { name: 'Diamond', icon: '/medal-ranks/svg/05-diamond.svg', elo: '2,000 - 2,399 ELO', color: '#a855f7', tierIndex: 4 },
+      { name: 'Elite', icon: '/medal-ranks/svg/06-elite.svg', elo: '2,400 - 2,699 ELO', color: '#ef4444', tierIndex: 5 },
+      { name: 'Champion', icon: '/medal-ranks/svg/07-champion.svg', elo: '2,700 - 2,999 ELO', color: '#f97316', tierIndex: 6 },
+      { name: 'Unreal', icon: '/medal-ranks/svg/10-star.svg', elo: '3,000+ ELO', color: '#53fc18', tierIndex: 7 }
     ];
 
     const modal = document.createElement('div');
@@ -157,7 +196,7 @@
     const rowsHTML = ranks.map((r) => {
       const isCurrent = !meta.isUnranked && meta.tierIndex === r.tierIndex;
       return `
-        <div class="ct-rank-row-item ${isCurrent ? 'current-rank' : ''}" data-tier-index="${r.tierIndex}" data-default-elo="${r.defaultElo}" style="cursor:pointer;">
+        <div class="ct-rank-row-item ${isCurrent ? 'current-rank' : ''}" data-tier-index="${r.tierIndex}">
           <div class="ct-rank-row-left">
             <img src="${r.icon}" class="ct-rank-row-img" alt="${r.name}"/>
             <div class="ct-rank-row-name">${r.name}</div>
@@ -181,18 +220,6 @@
           <span style="font-family:'Outfit',sans-serif;font-weight:700;font-size:1.15rem;color:#ffffff;">Rank & ELO System</span>
         </div>
 
-        <!-- Interactive Set ELO Testing Panel -->
-        <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:12px 14px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
-          <div>
-            <div style="font-size:0.85rem;font-weight:700;color:#ffffff;">Live ELO Testing</div>
-            <div style="font-size:0.75rem;color:#94a3b8;"><span style="color:#53fc18;font-weight:600;">${meta.name}</span> • ${meta.eloDisplay}</div>
-          </div>
-          <div style="display:flex;gap:8px;align-items:center;">
-            <input type="number" id="input-modal-elo" value="${currentElo}" placeholder="Set ELO" style="width:90px;background:#000;border:1px solid rgba(255,255,255,0.15);color:#fff;padding:6px 10px;border-radius:8px;font-size:0.85rem;font-weight:600;outline:none;"/>
-            <button type="button" id="btn-modal-apply-elo" style="background:#53fc18;color:#000;font-weight:700;font-size:0.78rem;border:none;padding:7px 14px;border-radius:8px;cursor:pointer;">Set</button>
-          </div>
-        </div>
-
         <!-- List of Ranks -->
         <div class="ct-ranks-list-scroll">
           ${rowsHTML}
@@ -207,48 +234,212 @@
     modal.addEventListener('click', (e) => {
       if (e.target === modal) modal.classList.remove('open');
     });
+  }
 
-    const applyBtn = modal.querySelector('#btn-modal-apply-elo');
-    const inputElo = modal.querySelector('#input-modal-elo');
-    if (applyBtn && inputElo) {
-      applyBtn.addEventListener('click', () => {
-        const val = parseInt(inputElo.value, 10);
-        if (isNaN(val) || val <= 0) {
-          localStorage.setItem('ct_is_unranked', 'true');
-          localStorage.setItem('ct_user_elo', '0');
-        } else {
-          localStorage.setItem('ct_is_unranked', 'false');
-          localStorage.setItem('ct_user_elo', val.toString());
-        }
-        window.location.reload();
+  function ensureDailyRewardModal() {
+    if (document.getElementById('daily-reward-modal')) return;
+
+    const dailyRewards = [50, 75, 100, 125, 150, 200, 300];
+    const { canClaim, streak } = getDailyState();
+    const activeDayIdx = Math.min(streak, 6);
+
+    const modal = document.createElement('div');
+    modal.className = 'ct-modal-overlay';
+    modal.id = 'daily-reward-modal';
+
+    const cardsHTML = dailyRewards.map((coins, idx) => {
+      const isClaimed = idx < activeDayIdx || (idx === activeDayIdx && !canClaim);
+      const isActive = idx === activeDayIdx && canClaim;
+      return `
+        <div class="ct-daily-card ${isClaimed ? 'claimed' : ''} ${isActive ? 'active' : ''}">
+          <div class="ct-daily-card-day">Day ${idx + 1}</div>
+          <div class="ct-daily-card-val">+${coins}</div>
+          <div class="ct-daily-card-tag">${isClaimed ? 'Claimed' : (isActive ? 'Ready' : 'Locked')}</div>
+        </div>
+      `;
+    }).join('');
+
+    modal.innerHTML = `
+      <div class="ct-ranks-modal-card" style="max-width:540px;">
+        <button type="button" class="ct-modal-close-btn" id="btn-close-daily-modal">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+
+        <div class="ct-modal-title" style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          <span style="font-family:'Outfit',sans-serif;font-weight:700;font-size:1.15rem;color:#ffffff;">Daily Login Reward</span>
+        </div>
+        <div style="font-size:0.78rem;color:#94a3b8;margin-bottom:12px;">
+          Log in daily to claim free Champion Coins and build your claim streak!
+        </div>
+
+        <div class="ct-daily-grid">
+          ${cardsHTML}
+        </div>
+
+        <div style="margin-top:16px;">
+          <button type="button" id="btn-claim-daily" style="width:100%;font-weight:800;font-size:0.92rem;padding:12px;border:none;border-radius:10px;transition:all 0.15s ease;${canClaim ? 'background:#fbbf24;color:#000;cursor:pointer;' : 'background:rgba(255,255,255,0.06);color:#64748b;cursor:default;'}" ${!canClaim ? 'disabled' : ''}>
+            ${canClaim ? `Claim Day ${activeDayIdx + 1} (+${dailyRewards[activeDayIdx]} Coins)` : 'Claimed Today • Next Reward Tomorrow'}
+          </button>
+        </div>
+      </div>
+    `;
+
+    document.body.appendChild(modal);
+
+    modal.querySelector('#btn-close-daily-modal')?.addEventListener('click', () => modal.classList.remove('open'));
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) modal.classList.remove('open');
+    });
+
+    const claimBtn = modal.querySelector('#btn-claim-daily');
+    if (claimBtn && canClaim) {
+      claimBtn.addEventListener('click', () => {
+        const reward = dailyRewards[activeDayIdx];
+        const newTotal = getUserCoins() + reward;
+        setUserCoins(newTotal);
+        localStorage.setItem('ct_daily_last_claim', Date.now().toString());
+        localStorage.setItem('ct_daily_streak', (activeDayIdx + 1).toString());
+        claimBtn.disabled = true;
+        claimBtn.style.background = 'rgba(255,255,255,0.06)';
+        claimBtn.style.color = '#64748b';
+        claimBtn.style.cursor = 'default';
+        claimBtn.textContent = 'Claimed Today • Next Reward Tomorrow';
+        modal.classList.remove('open');
+        alert(`Claimed +${reward} Coins! Total: ${newTotal.toLocaleString()} Coins`);
       });
-      inputElo.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') applyBtn.click();
+    }
+  }
+
+  function ensureTosModal() {
+    if (document.getElementById('tos-modal')) return;
+
+    const isAccepted = localStorage.getItem('ct_tos_accepted') === 'true';
+
+    const modal = document.createElement('div');
+    modal.className = 'ct-modal-overlay';
+    modal.id = 'tos-modal';
+    modal.style.zIndex = '3500';
+
+    modal.innerHTML = `
+      <div class="ct-ranks-modal-card" style="max-width:620px;">
+        <button type="button" class="ct-modal-close-btn" id="btn-close-tos-modal" style="${!isAccepted ? 'display:none;' : ''}">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+
+        <div class="ct-modal-title" style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#53fc18" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          <span style="font-family:'Outfit',sans-serif;font-weight:700;font-size:1.15rem;color:#ffffff;">Terms of Service & Rules</span>
+          <span style="background:rgba(83,252,24,0.12);color:#53fc18;font-size:0.68rem;font-weight:700;padding:2px 8px;border-radius:6px;border:1px solid rgba(83,252,24,0.3);text-transform:uppercase;margin-left:auto;">Season 1</span>
+        </div>
+        <div style="font-size:0.78rem;color:#94a3b8;margin-bottom:14px;">
+          Please review and accept the official competitive guidelines before participating in Ranked matches.
+        </div>
+
+        <div style="max-height:45vh;overflow-y:auto;background:#000000;border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:16px 18px;margin-bottom:16px;font-size:0.80rem;color:#cbd5e1;line-height:1.55;display:flex;flex-direction:column;gap:14px;">
+          <div>
+            <div style="font-weight:700;color:#53fc18;margin-bottom:4px;font-size:0.85rem;">1. Competitive Integrity & Zero-Cheat Policy</div>
+            <div>Champion Tokens enforces strict anti-cheat and telemetry validation. The use of memory injectors, aim assistance, hardware macros, crosshair overlays, or modified network packets results in an immediate permanent hardware, IP, and contender ban without recourse.</div>
+          </div>
+          <div>
+            <div style="font-weight:700;color:#53fc18;margin-bottom:4px;font-size:0.85rem;">2. Matchmaking, Win-Trading & ELO Rules</div>
+            <div>Queue sniping, win-trading, match dodging, or intentionally disconnecting will result in immediate rating forfeiture, ELO deduction, and competitive season suspension. All official matches are recorded and verified by server telemetry.</div>
+          </div>
+          <div>
+            <div style="font-weight:700;color:#53fc18;margin-bottom:4px;font-size:0.85rem;">3. Contender Identification & Multi-Accounting</div>
+            <div>Every contender is identified by a unique 12-digit Contender ID tied to their Discord authentication. Farming starter bonuses, smurfing, sharing credentials, or using secondary accounts to bypass penalties is strictly prohibited.</div>
+          </div>
+          <div>
+            <div style="font-weight:700;color:#53fc18;margin-bottom:4px;font-size:0.85rem;">4. Match Disputes & Referee Decisions</div>
+            <div>Contested results must be submitted with replay documentation to official Referees within 15 minutes of match completion. Platform Referee determinations are final and binding.</div>
+          </div>
+          <div>
+            <div style="font-weight:700;color:#53fc18;margin-bottom:4px;font-size:0.85rem;">5. Community Conduct & Platform Terms</div>
+            <div>Zero tolerance for toxicity, harassment, hate speech, or defamatory conduct in official voice, text, or stream chats. By participating, you agree to comply with Cloudflare edge security and Champion Tokens terms.</div>
+          </div>
+        </div>
+
+        <div id="tos-action-controls">
+          <label style="display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none;font-size:0.80rem;color:#ffffff;margin-bottom:14px;">
+            <input type="checkbox" id="tos-agree-checkbox" ${isAccepted ? 'checked disabled' : ''} style="width:17px;height:17px;accent-color:#53fc18;cursor:pointer;"/>
+            <span>I have read and agree to the <strong>Terms of Service</strong> and <strong>Competitive Rules</strong>.</span>
+          </label>
+          <div style="display:flex;gap:10px;">
+            <button type="button" id="btn-accept-tos" style="flex:1;background:#53fc18;color:#000000;font-weight:800;font-size:0.88rem;padding:12px;border:none;border-radius:10px;cursor:pointer;transition:all 0.15s ease;${!isAccepted ? 'opacity:0.4;pointer-events:none;' : ''}">
+              ${isAccepted ? 'Close Agreement' : 'Accept & Enter Arena'}
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+
+    document.body.appendChild(modal);
+
+    const closeBtn = modal.querySelector('#btn-close-tos-modal');
+    const checkbox = modal.querySelector('#tos-agree-checkbox');
+    const acceptBtn = modal.querySelector('#btn-accept-tos');
+
+    if (closeBtn) closeBtn.addEventListener('click', () => modal.classList.remove('open'));
+
+    if (checkbox && acceptBtn) {
+      checkbox.addEventListener('change', () => {
+        if (checkbox.checked) {
+          acceptBtn.style.opacity = '1';
+          acceptBtn.style.pointerEvents = 'auto';
+        } else {
+          acceptBtn.style.opacity = '0.4';
+          acceptBtn.style.pointerEvents = 'none';
+        }
+      });
+
+      acceptBtn.addEventListener('click', () => {
+        localStorage.setItem('ct_tos_accepted', 'true');
+        modal.classList.remove('open');
+        if (closeBtn) closeBtn.style.display = 'block';
+        checkbox.checked = true;
+        checkbox.disabled = true;
+        acceptBtn.textContent = 'Close Agreement';
       });
     }
 
-    modal.querySelectorAll('.ct-rank-row-item').forEach((row) => {
-      row.addEventListener('click', () => {
-        const dElo = row.getAttribute('data-default-elo');
-        if (dElo && inputElo) {
-          inputElo.value = dElo;
-          applyBtn?.click();
-        }
-      });
+    modal.addEventListener('click', (e) => {
+      const acceptedNow = localStorage.getItem('ct_tos_accepted') === 'true';
+      if (acceptedNow && e.target === modal) modal.classList.remove('open');
     });
   }
 
   function ensureUniversalFooter() {
-    if (!document.querySelector('.ct-footer')) {
-      const footer = document.createElement('footer');
+    let footer = document.querySelector('.ct-footer');
+    if (!footer) {
+      footer = document.createElement('footer');
       footer.className = 'ct-footer';
-      footer.innerHTML = `
+      document.body.appendChild(footer);
+    }
+
+    footer.style.cssText = 'border-top:1px solid rgba(255,255,255,0.08);padding:28px 20px 36px;background:#000000;text-align:center;position:relative;z-index:20;';
+    footer.innerHTML = `
+      <div style="max-width:900px;margin:0 auto;display:flex;flex-direction:column;align-items:center;gap:12px;">
+        <div class="ct-footer-links" style="display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;font-size:0.80rem;">
+          <a href="javascript:void(0)" class="ct-footer-link" id="footer-btn-rules">Competitive Rules</a>
+          <span style="color:rgba(255,255,255,0.15);">&bull;</span>
+          <a href="javascript:void(0)" class="ct-footer-link" id="footer-btn-tos">Terms of Service</a>
+          <span style="color:rgba(255,255,255,0.15);">&bull;</span>
+          <a href="https://discord.gg/35xqcMTEbH" target="_blank" rel="noopener noreferrer" class="ct-footer-link">Support Discord</a>
+        </div>
         <div style="font-size:0.75rem;color:#475569;">
           © 2026 Champion Tokens • Protected by Cloudflare
         </div>
-      `;
-      document.body.appendChild(footer);
-    }
+      </div>
+    `;
+
+    footer.querySelector('#footer-btn-rules')?.addEventListener('click', () => {
+      ensureTosModal();
+      document.getElementById('tos-modal')?.classList.add('open');
+    });
+    footer.querySelector('#footer-btn-tos')?.addEventListener('click', () => {
+      ensureTosModal();
+      document.getElementById('tos-modal')?.classList.add('open');
+    });
   }
 
   function renderSharedNav(activeTab = '') {
@@ -260,6 +451,7 @@
     const isUnranked = localStorage.getItem('ct_is_unranked') === 'true';
     const elo = savedElo !== null ? parseInt(savedElo, 10) : 3500;
     const meta = getRankMeta(elo, isUnranked);
+    const coins = getUserCoins();
 
     // Top 2 ranks: Champion and Unreal get periodic shine animation
     const isTop2 = meta.name === 'Champion' || meta.name === 'Unreal';
@@ -286,7 +478,13 @@
       </nav>
 
       <div class="ct-nav-right">
-        <!-- Rank & ELO Typography (Left of Profile, With Rank Icon, No Box, Simple, Clickable, Animated for Top 2) -->
+        <!-- Collectible Coin Balance (Left of Rank, No Icon) -->
+        <div class="ct-nav-coin-collectible" id="ct-nav-coin-pill">
+          <span class="ct-nav-coin-num" id="nav-coin-count">${coins.toLocaleString()}</span>
+          <span class="ct-nav-coin-label">COINS</span>
+        </div>
+
+        <!-- Rank & ELO Typography -->
         <div class="ct-nav-rank-badge ${isTop2 ? 'rank-shine-top2' : ''} ${isUnreal ? 'rank-unreal' : ''}" id="ct-nav-rank-badge">
           <img src="${meta.icon}" class="ct-nav-rank-icon" alt="${meta.name}"/>
           <div class="ct-nav-rank-text-col">
@@ -302,7 +500,7 @@
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><polyline points="6 9 12 15 18 9"/></svg>
         </div>
 
-        <!-- Solid Hamburger Menu (Pure Inline SVGs for 100% Reliable Visibility) -->
+        <!-- Solid Hamburger Menu -->
         <div class="ct-island-dropdown" id="ct-island-dropdown">
           <a href="${profileHref}" class="ct-island-profile-header">
             <img src="${user.avatar}" class="ct-island-dropdown-avatar" id="dropdown-user-avatar" alt="Avatar"/>
@@ -367,10 +565,22 @@
       });
     }
 
-    // Ensure Rank & ELO Menu System Modal is initialized in the DOM
-    ensureRanksModal(meta, elo);
+    // Initialize modals
+    ensureRanksModal(meta);
+    ensureDailyRewardModal();
+    ensureTosModal();
 
-    // Rank & ELO Badge Click -> Opens Rank & ELO Menu System Modal!
+    // Coin Collectible Click -> Opens Daily Login Reward Modal
+    const coinPill = document.getElementById('ct-nav-coin-pill');
+    if (coinPill) {
+      coinPill.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const modal = document.getElementById('daily-reward-modal');
+        if (modal) modal.classList.add('open');
+      });
+    }
+
+    // Rank & ELO Badge Click -> Opens Rank & ELO Menu System Modal (Without Live ELO Testing box)
     const navRankBadge = document.getElementById('ct-nav-rank-badge');
     if (navRankBadge) {
       navRankBadge.addEventListener('click', (e) => {
@@ -380,13 +590,12 @@
       });
     }
 
-    // Set ELO Test Button -> Opens Rank & ELO Menu System Modal!
+    // Set ELO Test Button in Top Left -> Prompts ELO rating directly
     const navSetEloBtn = document.getElementById('btn-nav-set-elo');
     if (navSetEloBtn) {
       navSetEloBtn.addEventListener('click', (e) => {
         e.stopPropagation();
-        const modal = document.getElementById('ranks-modal');
-        if (modal) modal.classList.add('open');
+        promptSetElo();
       });
     }
 
@@ -399,6 +608,8 @@
 
   window.renderSharedRankedNav = renderSharedNav;
   window.get12DigitContenderId = get12DigitContenderId;
+  window.ensureTosModal = ensureTosModal;
+  window.ensureDailyRewardModal = ensureDailyRewardModal;
 
   // Auto initialize if data-page attribute is on body
   document.addEventListener('DOMContentLoaded', () => {
