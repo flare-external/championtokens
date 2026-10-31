@@ -834,7 +834,7 @@
       const banner = document.getElementById('ct-cookie-banner');
       if (!banner) return;
 
-      const isAccepted = localStorage.getItem('ct_cookies_accepted');
+      const isAccepted = localStorage.getItem('ct_cookies_accepted_v3') === 'true';
       if (!isAccepted) {
         setTimeout(() => {
           banner.classList.add('show');
@@ -842,7 +842,7 @@
       }
 
       const dismiss = () => {
-        localStorage.setItem('ct_cookies_accepted', 'true');
+        localStorage.setItem('ct_cookies_accepted_v3', 'true');
         banner.classList.remove('show');
         setTimeout(() => {
           banner.style.display = 'none';

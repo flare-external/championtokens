@@ -49,6 +49,7 @@
     initLiveTicker();
     initCoinsAndDaily();
     initTosOnMain();
+    ensureCookieBanner();
     updateRankUI();
     if (window.lucide) window.lucide.createIcons();
   });
@@ -1069,11 +1070,11 @@
     }
   }
 
-  // ── Terms of Service & Competitive Rules Acceptance Modal ─────
+  // ── Enhanced Terms of Service & Competitive Rules Acceptance Modal ─────
   function ensureTosModal() {
     if (document.getElementById('tos-modal')) return;
 
-    const isAccepted = localStorage.getItem('ct_tos_accepted') === 'true';
+    const isAccepted = localStorage.getItem('ct_tos_accepted_v3') === 'true';
 
     const modal = document.createElement('div');
     modal.className = 'ct-modal-overlay';
@@ -1081,52 +1082,114 @@
     modal.style.zIndex = '3500';
 
     modal.innerHTML = `
-      <div class="ct-ranks-modal-card" style="max-width:620px;">
+      <div class="ct-tos-card">
         <button type="button" class="ct-modal-close-btn" id="btn-close-tos-modal" style="${!isAccepted ? 'display:none;' : ''}">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
         </button>
 
-        <div class="ct-modal-title" style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#53fc18" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-          <span style="font-family:'Outfit',sans-serif;font-weight:700;font-size:1.15rem;color:#ffffff;">Terms of Service & Rules</span>
-          <span style="background:rgba(83,252,24,0.12);color:#53fc18;font-size:0.68rem;font-weight:700;padding:2px 8px;border-radius:6px;border:1px solid rgba(83,252,24,0.3);text-transform:uppercase;margin-left:auto;">Season 1</span>
-        </div>
-        <div style="font-size:0.78rem;color:#94a3b8;margin-bottom:14px;">
-          Please review and accept the official competitive guidelines before participating in Ranked matches.
-        </div>
+        <!-- Header -->
+        <div class="ct-tos-header">
+          <div class="ct-tos-header-badge">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+            <span>Competitive Integrity Agreement</span>
+          </div>
+          <h2 class="ct-tos-title">Terms of Service & Rules</h2>
+          <p class="ct-tos-subtitle">Official contender agreement, matchmaking guidelines, and anti-cheat policies.</p>
 
-        <div style="max-height:45vh;overflow-y:auto;background:#000000;border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:16px 18px;margin-bottom:16px;font-size:0.80rem;color:#cbd5e1;line-height:1.55;display:flex;flex-direction:column;gap:14px;">
-          <div>
-            <div style="font-weight:700;color:#53fc18;margin-bottom:4px;font-size:0.85rem;">1. Competitive Integrity & Zero-Cheat Policy</div>
-            <div>Champion Tokens enforces strict anti-cheat and telemetry validation. The use of memory injectors, aim assistance, hardware macros, crosshair overlays, or modified network packets results in an immediate permanent hardware, IP, and contender ban without recourse.</div>
-          </div>
-          <div>
-            <div style="font-weight:700;color:#53fc18;margin-bottom:4px;font-size:0.85rem;">2. Matchmaking, Win-Trading & ELO Rules</div>
-            <div>Queue sniping, win-trading, match dodging, or intentionally disconnecting will result in immediate rating forfeiture, ELO deduction, and competitive season suspension. All official matches are recorded and verified by server telemetry.</div>
-          </div>
-          <div>
-            <div style="font-weight:700;color:#53fc18;margin-bottom:4px;font-size:0.85rem;">3. Contender Identification & Multi-Accounting</div>
-            <div>Every contender is identified by a unique 12-digit Contender ID tied to their Discord authentication. Farming starter bonuses, smurfing, sharing credentials, or using secondary accounts to bypass penalties is strictly prohibited.</div>
-          </div>
-          <div>
-            <div style="font-weight:700;color:#53fc18;margin-bottom:4px;font-size:0.85rem;">4. Match Disputes & Referee Decisions</div>
-            <div>Contested results must be submitted with replay documentation to official Referees within 15 minutes of match completion. Platform Referee determinations are final and binding.</div>
-          </div>
-          <div>
-            <div style="font-weight:700;color:#53fc18;margin-bottom:4px;font-size:0.85rem;">5. Community Conduct & Platform Terms</div>
-            <div>Zero tolerance for toxicity, harassment, hate speech, or defamatory conduct in official voice, text, or stream chats. By participating, you agree to comply with Cloudflare edge security and Champion Tokens terms.</div>
+          <div class="ct-tos-highlights-strip">
+            <div class="ct-tos-highlight-item">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#53fc18" stroke-width="2.2"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+              <span>24/7 Telemetry Anti-Cheat</span>
+            </div>
+            <div class="ct-tos-highlight-item">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#53fc18" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+              <span>Pure Elo Matchmaking</span>
+            </div>
+            <div class="ct-tos-highlight-item">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#53fc18" stroke-width="2.2"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg>
+              <span>Referee Dispute Governance</span>
+            </div>
           </div>
         </div>
 
-        <div id="tos-action-controls">
-          <label style="display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none;font-size:0.80rem;color:#ffffff;margin-bottom:14px;">
-            <input type="checkbox" id="tos-agree-checkbox" ${isAccepted ? 'checked disabled' : ''} style="width:17px;height:17px;accent-color:#53fc18;cursor:pointer;"/>
-            <span>I have read and agree to the <strong>Terms of Service</strong> and <strong>Competitive Rules</strong>.</span>
+        <!-- Scrollable Terms Body -->
+        <div class="ct-tos-body">
+          <div class="ct-tos-clause">
+            <div class="ct-tos-clause-header">
+              <div class="ct-tos-clause-title">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#53fc18" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                <span>Competitive Integrity & Zero-Cheat Policy</span>
+              </div>
+              <span class="ct-tos-clause-tag">Section 1</span>
+            </div>
+            <p class="ct-tos-clause-desc">Champion Tokens enforces strict anti-cheat and client telemetry validation. The use of memory injectors, external aim assistance, hardware macros, crosshair overlays, modified network packets, or DMA devices results in an immediate permanent hardware, IP, and contender blacklist without refund or recourse.</p>
+          </div>
+
+          <div class="ct-tos-clause">
+            <div class="ct-tos-clause-header">
+              <div class="ct-tos-clause-title">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#53fc18" stroke-width="2.2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                <span>Matchmaking, Win-Trading & ELO Rules</span>
+              </div>
+              <span class="ct-tos-clause-tag">Section 2</span>
+            </div>
+            <p class="ct-tos-clause-desc">Queue sniping, win-trading, match dodging, griefing, or intentionally throwing matches carries immediate rating forfeiture, ELO reset, and multi-week competitive suspension. All arena matches are recorded and verified by server telemetry logs.</p>
+          </div>
+
+          <div class="ct-tos-clause">
+            <div class="ct-tos-clause-header">
+              <div class="ct-tos-clause-title">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#53fc18" stroke-width="2.2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                <span>Contender Identification & Single-Account Rule</span>
+              </div>
+              <span class="ct-tos-clause-tag">Section 3</span>
+            </div>
+            <p class="ct-tos-clause-desc">Every competitor is identified by a unique 12-digit Contender ID tied to their Discord authentication. Farming starter bonuses, smurfing on secondary profiles, credential trading, or using alternate accounts to bypass competitive bans results in permanent liquidation of all associated accounts.</p>
+          </div>
+
+          <div class="ct-tos-clause">
+            <div class="ct-tos-clause-header">
+              <div class="ct-tos-clause-title">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#53fc18" stroke-width="2.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                <span>Match Disputes & Referee Decisions</span>
+              </div>
+              <span class="ct-tos-clause-tag">Section 4</span>
+            </div>
+            <p class="ct-tos-clause-desc">Disputed match results must be submitted with replay telemetry or video documentation to official platform Referees within 15 minutes of match conclusion. Referee determinations are final, binding, and not subject to further appeal.</p>
+          </div>
+
+          <div class="ct-tos-clause">
+            <div class="ct-tos-clause-header">
+              <div class="ct-tos-clause-title">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#53fc18" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><path d="m4.9 4.9 14.2 14.2"/></svg>
+                <span>Community Conduct & Platform Security</span>
+              </div>
+              <span class="ct-tos-clause-tag">Section 5</span>
+            </div>
+            <p class="ct-tos-clause-desc">Zero tolerance for toxicity, harassment, extortion, defamatory conduct, or security probing. All network access is protected by Cloudflare edge intelligence. Participation constitutes ongoing acceptance of all platform terms and privacy guidelines.</p>
+          </div>
+        </div>
+
+        <!-- Footer / Agreement -->
+        <div class="ct-tos-footer">
+          <label class="ct-tos-agree-box" id="tos-agree-label">
+            <input type="checkbox" id="tos-agree-checkbox" class="ct-tos-checkbox" ${isAccepted ? 'checked disabled' : ''}/>
+            <span class="ct-tos-agree-text">I have read and agree to the <strong>Terms of Service</strong> and <strong>Competitive Rules</strong>.</span>
           </label>
-          <div style="display:flex;gap:10px;">
-            <button type="button" id="btn-accept-tos" style="flex:1;background:#53fc18;color:#000000;font-weight:800;font-size:0.88rem;padding:12px;border:none;border-radius:10px;cursor:pointer;transition:all 0.15s ease;${!isAccepted ? 'opacity:0.4;pointer-events:none;' : ''}">
-              ${isAccepted ? 'Close Agreement' : 'Accept & Enter Arena'}
+
+          <div class="ct-tos-actions">
+            <button type="button" id="btn-accept-tos" class="btn-tos-accept" ${!isAccepted ? 'disabled' : ''}>
+              <span>${isAccepted ? 'Close Agreement' : 'Accept & Enter Arena'}</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
             </button>
+          </div>
+
+          <div class="ct-tos-links-row">
+            <a href="javascript:void(0)" class="ct-tos-link-item" onclick="alert('Privacy Policy: Champion Tokens encrypts contender data and never shares personal identifiers with third parties.')">Privacy Policy</a>
+            <span>•</span>
+            <a href="https://discord.gg/35xqcMTEbH" target="_blank" rel="noopener noreferrer" class="ct-tos-link-item">Official Discord</a>
+            <span>•</span>
+            <a href="javascript:void(0)" class="ct-tos-link-item" onclick="alert('Security Telemetry: Match sessions are protected by Cloudflare Edge & real-time telemetry verification.')">Security Telemetry</a>
           </div>
         </div>
       </div>
@@ -1142,55 +1205,110 @@
 
     if (checkbox && acceptBtn) {
       checkbox.addEventListener('change', () => {
-        if (checkbox.checked) {
-          acceptBtn.style.opacity = '1';
-          acceptBtn.style.pointerEvents = 'auto';
-        } else {
-          acceptBtn.style.opacity = '0.4';
-          acceptBtn.style.pointerEvents = 'none';
-        }
+        acceptBtn.disabled = !checkbox.checked;
       });
 
       acceptBtn.addEventListener('click', () => {
-        localStorage.setItem('ct_tos_accepted', 'true');
+        localStorage.setItem('ct_tos_accepted_v3', 'true');
         modal.classList.remove('open');
         if (closeBtn) closeBtn.style.display = 'block';
         checkbox.checked = true;
         checkbox.disabled = true;
-        acceptBtn.textContent = 'Close Agreement';
+        acceptBtn.innerHTML = '<span>Close Agreement</span>';
         showToast('Terms & Rules accepted.');
       });
     }
 
     modal.addEventListener('click', (e) => {
-      const acceptedNow = localStorage.getItem('ct_tos_accepted') === 'true';
+      const acceptedNow = localStorage.getItem('ct_tos_accepted_v3') === 'true';
       if (acceptedNow && e.target === modal) modal.classList.remove('open');
     });
+  }
+
+  // ── Modern Chromium Dark Cookie Consent Controller ─────────
+  function ensureCookieBanner() {
+    if (document.getElementById('ct-cookie-banner')) return;
+
+    const isAccepted = localStorage.getItem('ct_cookies_accepted_v3') === 'true';
+
+    const banner = document.createElement('aside');
+    banner.className = 'ct-cookie-banner';
+    banner.id = 'ct-cookie-banner';
+    banner.setAttribute('role', 'dialog');
+    banner.setAttribute('aria-labelledby', 'ct-cookie-title');
+
+    banner.innerHTML = `
+      <div class="ct-cookie-header">
+        <span style="font-size:1.25rem;line-height:1;" aria-hidden="true">🍪</span>
+        <h3 class="ct-cookie-title" id="ct-cookie-title">Cookies & Competitive Privacy</h3>
+      </div>
+      <p class="ct-cookie-text">
+        We use essential cookies and encrypted local storage to preserve your contender authentication, prevent smurfing, and synchronize live matchmaking ratings across the competitive network.
+      </p>
+      <div class="ct-cookie-actions">
+        <button type="button" class="btn-cookie-reject" id="btn-cookie-reject">Reject Non-Essential</button>
+        <button type="button" class="btn-cookie-accept" id="btn-cookie-accept">Accept All</button>
+      </div>
+    `;
+
+    document.body.appendChild(banner);
+
+    if (!isAccepted) {
+      setTimeout(() => {
+        banner.classList.add('show');
+      }, 600);
+    }
+
+    const dismiss = () => {
+      localStorage.setItem('ct_cookies_accepted_v3', 'true');
+      banner.classList.remove('show');
+      setTimeout(() => { banner.style.display = 'none'; }, 400);
+    };
+
+    banner.querySelector('#btn-cookie-accept')?.addEventListener('click', dismiss);
+    banner.querySelector('#btn-cookie-reject')?.addEventListener('click', dismiss);
   }
 
   function initTosOnMain() {
     ensureTosModal();
 
     // If not accepted yet, prompt on main tab
-    const isAccepted = localStorage.getItem('ct_tos_accepted') === 'true';
+    const isAccepted = localStorage.getItem('ct_tos_accepted_v3') === 'true';
     if (!isAccepted) {
       const modal = document.getElementById('tos-modal');
       if (modal) modal.classList.add('open');
     }
 
     // Wire footer links
-    const rulesBtn = document.getElementById('footer-btn-rules');
     const tosBtn = document.getElementById('footer-btn-tos');
-    if (rulesBtn) {
-      rulesBtn.addEventListener('click', () => {
-        ensureTosModal();
-        document.getElementById('tos-modal')?.classList.add('open');
-      });
-    }
+    const privacyBtn = document.getElementById('footer-btn-privacy');
+    const fairplayBtn = document.getElementById('footer-btn-fairplay');
+    const resetExpBtn = document.getElementById('footer-btn-reset-exp');
+
     if (tosBtn) {
       tosBtn.addEventListener('click', () => {
         ensureTosModal();
         document.getElementById('tos-modal')?.classList.add('open');
+      });
+    }
+    if (privacyBtn) {
+      privacyBtn.addEventListener('click', () => {
+        alert('Privacy Policy: Champion Tokens encrypts contender session tokens and never shares personal identifiers, IP logs, or Discord credentials with external parties.');
+      });
+    }
+    if (fairplayBtn) {
+      fairplayBtn.addEventListener('click', () => {
+        ensureTosModal();
+        document.getElementById('tos-modal')?.classList.add('open');
+      });
+    }
+    if (resetExpBtn) {
+      resetExpBtn.addEventListener('click', () => {
+        localStorage.removeItem('ct_tos_accepted_v3');
+        localStorage.removeItem('ct_cookies_accepted_v3');
+        localStorage.removeItem('ct_tos_accepted');
+        localStorage.removeItem('ct_cookies_accepted');
+        location.reload();
       });
     }
   }
