@@ -1725,29 +1725,10 @@ body {
   transform: translateY(-2px);
 }
 
-/* Tooltip on hover (Extends towards the RIGHT, high z-index, no morphing) */
+/* Tooltip on hover disabled */
 .pf-badge-icon-item::after {
-  content: attr(data-tooltip);
-  position: absolute;
-  bottom: calc(100% + 6px);
-  left: 0 !important;
-  transform: none !important;
-  background: rgba(10, 12, 16, 0.98) !important;
-  backdrop-filter: blur(12px) !important;
-  -webkit-backdrop-filter: blur(12px) !important;
-  border: 1px solid rgba(83, 252, 24, 0.45) !important;
-  color: #53fc18 !important;
-  font-size: 0.72rem !important;
-  font-weight: 600 !important;
-  padding: 5px 11px !important;
-  border-radius: 6px !important;
-  white-space: nowrap !important;
-  pointer-events: none !important;
-  opacity: 0;
-  visibility: hidden;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.9) !important;
-  transition: opacity 0.15s ease !important;
-  z-index: 999999 !important;
+  display: none !important;
+  content: none !important;
 }
 
 .pf-badge-icon-item.owner::after {

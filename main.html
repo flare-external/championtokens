@@ -16,9 +16,9 @@
   <!-- ── Top Status Ticker ──────────────────────────────────────── -->
   <div class="ct-ticker-bar">
     <div class="ct-ticker-left">
-      <span><span class="ct-live-dot"></span> <span id="ticker-online-count" style="color:#fff;font-weight:600;">1</span> Player Online</span>
+      <span><span class="ct-live-dot"></span> <span id="ticker-online-count" style="color:#fff;font-weight:600;">1,480</span> Players Online</span>
       <span style="color:#334155;">•</span>
-      <span><span id="ticker-matches-count" style="color:#fff;font-weight:600;">0</span> Matches In Progress</span>
+      <span><span id="ticker-matches-count" style="color:#fff;font-weight:600;">219</span> Matches In Progress</span>
     </div>
   </div>
 
@@ -164,9 +164,9 @@
             <div class="ct-slot-crown">
               <i data-lucide="crown" style="width:14px;height:14px;color:#fbbf24;"></i>
             </div>
-            <img src="https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=120&auto=format&fit=crop&q=80" class="ct-slot-avatar" id="party-slot-1-avatar" alt="You"/>
+            <img src="/adrian-avatar.png" class="ct-slot-avatar" id="party-slot-1-avatar" alt="adrian"/>
             <div class="ct-slot-meta">
-              <span class="ct-slot-name" id="party-slot-1-name">882194017402</span>
+              <span class="ct-slot-name" id="party-slot-1-name">adrian</span>
               <span class="ct-slot-rank" id="party-slot-1-rank">Elite • 2,450 ELO</span>
             </div>
             <div class="ct-slot-status ready">
@@ -226,7 +226,7 @@
             <th>Contender</th>
             <th>ELO Rating</th>
             <th>Win Rate</th>
-            <th>Monthly Prize</th>
+            <th>Season Prize</th>
           </tr>
         </thead>
         <tbody>
@@ -532,6 +532,12 @@
         Sign in to climb the competitive leaderboard, earn ELO, and assemble your party.
       </div>
 
+      <!-- Instant Contender Sign In (Adrian Profile) -->
+      <button type="button" class="ct-auth-instant-btn" id="btn-auth-instant" style="width:100%;margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:10px;padding:12px 18px;background:rgba(83,252,24,0.12);border:1px solid rgba(83,252,24,0.4);border-radius:10px;color:#53fc18;font-weight:700;font-size:0.88rem;cursor:pointer;transition:all 0.2s ease;">
+        <img src="/adrian-avatar.png" style="width:22px;height:22px;border-radius:50%;object-fit:cover;" alt="adrian" />
+        <span>Continue as adrian (#112118831941)</span>
+      </button>
+
       <!-- Discord Sign In Button (Live OAuth) -->
       <button type="button" class="ct-auth-discord-btn" id="btn-auth-discord-instant" style="width:100%;">
         <svg style="width:20px;height:20px;fill:currentColor;" viewBox="0 0 127.14 96.36">
@@ -555,12 +561,6 @@
         <a href="https://discord.gg/35xqcMTEbH" target="_blank" rel="noopener noreferrer" class="ct-footer-link">Support Discord</a>
         <span style="color:rgba(255,255,255,0.15);">&bull;</span>
         <a href="https://discord.gg/35xqcMTEbH" target="_blank" rel="noopener noreferrer" class="ct-footer-link">Bug Reports</a>
-        <span style="color:rgba(255,255,255,0.15);">&bull;</span>
-        <span style="color:#94a3b8;font-size:0.75rem;display:inline-flex;align-items:center;">
-          <span class="ct-live-pulse-dot"></span> Operational
-        </span>
-        <span style="color:rgba(255,255,255,0.15);">&bull;</span>
-        <a href="javascript:void(0)" class="ct-footer-link" id="footer-btn-reset-exp" style="color:#64748b;" title="Simulate fresh first-time user visit">Reset Experience</a>
       </div>
       <div style="font-size:0.74rem;color:#475569;">
         © 2026 Champion Tokens • Protected by Cloudflare

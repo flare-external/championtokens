@@ -29,13 +29,15 @@
     }
     const cid = get12DigitContenderId();
 
-    if (!user) {
+    if (!user || !user.name || /^\d{12}$/.test(user.name)) {
       user = {
-        id: cid,
+        id: cid || '112118831941',
         name: 'adrian',
         customName: 'adrian',
         avatar: '/adrian-avatar.png',
-        tag: ''
+        tag: '',
+        isLoggedIn: true,
+        isVip: true
       };
       localStorage.setItem('ct_user', JSON.stringify(user));
     } else {
@@ -45,6 +47,10 @@
       }
       if (!user.avatar || user.avatar.includes('unsplash') || user.avatar.includes('discordapp')) {
         user.avatar = '/adrian-avatar.png';
+        localStorage.setItem('ct_user', JSON.stringify(user));
+      }
+      if (user.isLoggedIn === undefined) {
+        user.isLoggedIn = true;
         localStorage.setItem('ct_user', JSON.stringify(user));
       }
     }
@@ -315,7 +321,7 @@
   function ensureTosModal() {
     if (document.getElementById('tos-modal')) return;
 
-    const isAccepted = localStorage.getItem('ct_tos_accepted_v3') === 'true';
+    const isAccepted = localStorage.getItem('ct_tos_accepted_v4') === 'true';
 
     const modal = document.createElement('div');
     modal.className = 'ct-modal-overlay';
@@ -402,7 +408,7 @@
       });
 
       acceptBtn.addEventListener('click', () => {
-        localStorage.setItem('ct_tos_accepted_v3', 'true');
+        localStorage.setItem('ct_tos_accepted_v4', 'true');
         modal.classList.remove('open');
         if (closeBtn) closeBtn.style.display = 'block';
         checkbox.checked = true;
@@ -413,7 +419,7 @@
     }
 
     modal.addEventListener('click', (e) => {
-      const acceptedNow = localStorage.getItem('ct_tos_accepted_v3') === 'true';
+      const acceptedNow = localStorage.getItem('ct_tos_accepted_v4') === 'true';
       if (acceptedNow && e.target === modal) modal.classList.remove('open');
     });
   }
@@ -483,12 +489,6 @@
           <a href="https://discord.gg/35xqcMTEbH" target="_blank" rel="noopener noreferrer" class="ct-footer-link">Support Discord</a>
           <span style="color:rgba(255,255,255,0.15);">&bull;</span>
           <a href="https://discord.gg/35xqcMTEbH" target="_blank" rel="noopener noreferrer" class="ct-footer-link">Bug Reports</a>
-          <span style="color:rgba(255,255,255,0.15);">&bull;</span>
-          <span style="color:#94a3b8;font-size:0.75rem;display:inline-flex;align-items:center;">
-            <span class="ct-live-pulse-dot"></span> Operational
-          </span>
-          <span style="color:rgba(255,255,255,0.15);">&bull;</span>
-          <a href="javascript:void(0)" class="ct-footer-link" id="footer-btn-reset-exp" style="color:#64748b;" title="Simulate fresh first-time user visit">Reset Experience</a>
         </div>
         <div style="font-size:0.74rem;color:#475569;">
           © 2026 Champion Tokens • Protected by Cloudflare
@@ -506,13 +506,6 @@
     footer.querySelector('#footer-btn-fairplay')?.addEventListener('click', () => {
       ensureTosModal();
       document.getElementById('tos-modal')?.classList.add('open');
-    });
-    footer.querySelector('#footer-btn-reset-exp')?.addEventListener('click', () => {
-      localStorage.removeItem('ct_tos_accepted_v3');
-      localStorage.removeItem('ct_cookies_accepted_v3');
-      localStorage.removeItem('ct_tos_accepted');
-      localStorage.removeItem('ct_cookies_accepted');
-      location.reload();
     });
   }
 
