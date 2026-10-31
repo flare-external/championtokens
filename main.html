@@ -24,20 +24,11 @@
 
   <!-- ── Top Navigation Header ──────────────────────────────────── -->
   <header class="landing-nav" role="banner" style="background:#000000;border-bottom:1px solid rgba(255,255,255,0.08);padding:14px 28px;position:relative;">
-    <!-- Upper Left: Brand + Clickable Rank Widget -->
+    <!-- Upper Left: Brand + Set ELO Test Button -->
     <div class="ct-nav-left">
       <a href="/" class="brand-logo" style="text-decoration:none;">
         <span class="brand-logo-champion">CHAMPION</span> <span class="brand-logo-tokens">TOKENS</span>
       </a>
-
-      <!-- Upper Left Clickable Rank Display -->
-      <div class="ct-header-rank-pill" id="ct-header-rank-pill" title="View Ranked Info">
-        <img src="medal-ranks/svg/06-elite.svg" class="ct-header-rank-icon" id="header-rank-icon" alt="Rank"/>
-        <div class="ct-header-rank-info">
-          <span class="ct-header-rank-name" id="header-rank-name">Elite</span>
-          <span class="ct-header-rank-elo" id="header-rank-elo">2,450 ELO</span>
-        </div>
-      </div>
 
       <!-- Set ELO Test Button -->
       <button type="button" class="ct-set-elo-btn" id="btn-set-elo" title="Test tool to set your ELO">
@@ -54,6 +45,12 @@
 
     <!-- Upper Right Nav & Auth Island -->
     <div class="ct-nav-right">
+      <!-- Clean Rank & ELO Typography (Left of Profile, No Box, Simple, Clickable, Animated for Top 2) -->
+      <div class="ct-nav-rank-badge" id="ct-header-rank-pill" title="Click to view rank tiers">
+        <div class="ct-nav-rank-name" id="header-rank-name">Elite</div>
+        <div class="ct-nav-rank-elo" id="header-rank-elo">2,450 ELO</div>
+      </div>
+
       <!-- Signed-out: Little Sign In / Sign Up Button -->
       <button type="button" class="ct-top-auth-btn" id="header-signin-btn">
         <svg class="discord-logo" viewBox="0 0 127.14 96.36" fill="currentColor" style="width:15px;height:15px;">
@@ -64,32 +61,32 @@
 
       <!-- Signed-in: User Island with Discord Avatar & Name -->
       <div class="ct-user-island" id="ct-user-island" style="display:none;" title="User Menu">
-        <img src="https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=120&auto=format&fit=crop&q=80" class="ct-island-avatar" id="island-user-avatar" alt="Avatar"/>
-        <span class="ct-island-name" id="island-user-name">882194017402</span>
-        <i data-lucide="chevron-down" style="width:14px;height:14px;color:#94a3b8;"></i>
+        <img src="/adrian-avatar.png" class="ct-island-avatar" id="island-user-avatar" alt="Avatar"/>
+        <span class="ct-island-name" id="island-user-name">adrian</span>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><polyline points="6 9 12 15 18 9"/></svg>
       </div>
 
-      <!-- Hamburger / Profile Dropdown Menu under Island (100% Solid Opaque) -->
+      <!-- Hamburger / Profile Dropdown Menu under Island (100% Solid Opaque, Pure Inline SVGs) -->
       <div class="ct-island-dropdown" id="ct-island-dropdown">
         <a href="profile" class="ct-island-profile-header" id="dropdown-profile-link">
-          <img src="https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=120&auto=format&fit=crop&q=80" class="ct-island-dropdown-avatar" id="dropdown-user-avatar" alt="Avatar"/>
+          <img src="/adrian-avatar.png" class="ct-island-dropdown-avatar" id="dropdown-user-avatar" alt="Avatar"/>
           <div class="ct-island-dropdown-meta">
-            <span class="ct-island-dropdown-name" id="dropdown-user-name">882194017402</span>
-            <span class="ct-island-dropdown-view">View your profile →</span>
+            <span class="ct-island-dropdown-name" id="dropdown-user-name">adrian</span>
+            <span class="ct-island-dropdown-view">View your profile <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#53fc18" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-left:2px;"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
           </div>
         </a>
         <div class="ct-island-divider"></div>
         <a href="bonuses" class="ct-island-menu-item">
-          <i data-lucide="gift" style="width:16px;height:16px;color:#fbbf24;"></i>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13"/><path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/><path d="M7.5 8a2.5 2.5 0 0 1 0-5A4.8 8 0 0 1 12 8a4.8 8 0 0 1 4.5-5 2.5 2.5 0 0 1 0 5"/></svg>
           <span>Referees & Bonuses</span>
         </a>
         <a href="settings" class="ct-island-menu-item">
-          <i data-lucide="settings" style="width:16px;height:16px;color:#94a3b8;"></i>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
           <span>Settings</span>
         </a>
         <div class="ct-island-divider"></div>
         <button type="button" class="ct-island-menu-item" id="btn-user-signout" style="color:#ef4444;">
-          <i data-lucide="log-out" style="width:16px;height:16px;color:#ef4444;"></i>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
           <span>Sign Out</span>
         </button>
       </div>

@@ -7,7 +7,7 @@
   <title>Contender Profile — Champion Tokens</title>
   <link rel="icon" type="image/png" href="/champion-tokens_new.png"/>
   <link rel="stylesheet" href="/css/style.css?v=5.5"/>
-  <link rel="stylesheet" href="/css/ranked.css?v=5.0"/>
+  <link rel="stylesheet" href="/css/ranked.css?v=5.2"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
   <script src="/js/protect.js"></script>
@@ -101,7 +101,7 @@
       display: block;
     }
 
-    /* User Info (High Stacking Context so Tooltips Never Render Behind Avatar) */
+    /* User Info (High Stacking Context) */
     .pf-user-info {
       display: flex;
       flex-direction: column;
@@ -228,12 +228,9 @@
         <!-- User Info: Cleanly below the banner on solid dark background -->
         <div class="pf-user-info">
           
-          <!-- Username + Badges Row -->
+          <!-- Clean Username Row (Badges removed) -->
           <div class="pf-username-row">
             <span class="pf-username" id="pf-display-name">adrian</span>
-            
-            <!-- Badges Box (Behind Badges Box, Max 4 Displayed + Counter Pill, Click Opens Modal) -->
-            <div class="pf-badges-box" id="pf-badges-box" title="Click to view all contender badges"></div>
           </div>
 
           <!-- 12-Digit Contender ID Row -->
@@ -272,26 +269,20 @@
             </div>
           </div>
 
-          <!-- Connected Profile Links (Dedicated Card Box Container) -->
+          <!-- Connections (Simple Website Domains Ownership Authentication) -->
           <div class="pf-links-card" id="pf-links-card">
             <div class="pf-links-header">
-              <div class="pf-links-label-row">
-                <span class="pf-links-title">
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#53fc18" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px;"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
-                  Connected Profiles
-                </span>
-                <span class="pf-mod-badge" title="All external links must be manually checked and verified by moderation staff before public activation">
-                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:2px;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="m9 12 2 2 4-4"></path></svg>
-                  Manual Moderation
-                </span>
-              </div>
-              <button type="button" class="btn-add-link" id="btn-open-add-link" title="Add a connected profile link">
+              <span class="pf-links-title">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#53fc18" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px;"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                Connections
+              </span>
+              <button type="button" class="btn-add-link" id="btn-open-add-link" title="Connect your website domain">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:3px;"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                <span>Add Link</span>
+                <span>Add Domain</span>
               </button>
             </div>
 
-            <!-- Connected Links List -->
+            <!-- Connections List -->
             <div class="pf-links-list" id="pf-links-list"></div>
           </div>
 
@@ -344,29 +335,13 @@
 
   </main>
 
-  <!-- Modal: All Badges -->
-  <div class="pf-modal-backdrop" id="modal-all-badges">
-    <div class="pf-modal-card">
-      <div class="pf-modal-header">
-        <div class="pf-modal-title">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#53fc18" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:6px;"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
-          <span>Contender Badges</span>
-        </div>
-        <button type="button" class="pf-modal-close-btn" id="btn-close-badges-modal">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-        </button>
-      </div>
-      <div class="pf-modal-badges-list" id="modal-badges-list"></div>
-    </div>
-  </div>
-
-  <!-- Modal: Add Connected Profile Link -->
+  <!-- Modal: Connect Website Domain (Ownership Authentication) -->
   <div class="pf-modal-backdrop" id="modal-add-link">
-    <div class="pf-modal-card">
+    <div class="pf-modal-card" style="max-width:460px;">
       <div class="pf-modal-header">
         <div class="pf-modal-title">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#53fc18" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:6px;"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
-          <span>Connect Profile Link</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#53fc18" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:6px;"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          <span>Connect Website Domain</span>
         </div>
         <button type="button" class="pf-modal-close-btn" id="btn-close-add-link-modal">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
@@ -374,36 +349,42 @@
       </div>
 
       <form id="form-add-link">
-        <div class="pf-modal-desc">
-          Submit your official profile or streaming account for manual moderation review. Approved accounts will receive a verified badge on your contender profile.
-        </div>
-
         <div class="pf-form-group">
-          <label class="pf-form-label" for="select-link-platform">Platform</label>
-          <select id="select-link-platform" class="pf-form-select">
-            <option value="discord">Discord</option>
-            <option value="epic">Epic Games (Fortnite)</option>
-            <option value="kick">Kick Streaming</option>
-            <option value="twitch">Twitch</option>
-            <option value="youtube">YouTube</option>
-            <option value="twitter">X / Twitter</option>
-            <option value="other">Other Website</option>
-          </select>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+            <label class="pf-form-label" for="input-domain" style="margin:0;">Domain Name</label>
+            <button type="button" class="pf-info-btn" id="btn-domain-info" title="How domain ownership verification works">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+              <span>Info</span>
+            </button>
+          </div>
+          <input type="text" id="input-domain" class="pf-form-input" placeholder="e.g. adrian.com or mywebsite.org" required maxlength="120" />
         </div>
 
-        <div class="pf-form-group">
-          <label class="pf-form-label" for="input-link-val">Username, Handle, or URL</label>
-          <input type="text" id="input-link-val" class="pf-form-input" placeholder="e.g. adrian or https://..." required maxlength="120" />
+        <!-- Verification Token Box -->
+        <div class="pf-verify-box" id="pf-verify-box">
+          <div class="pf-verify-label">Ownership Verification Token:</div>
+          <div class="pf-verify-token-row">
+            <code id="verify-token-code" class="pf-verify-code">championtokens-site-verification=ct_112118831941</code>
+            <button type="button" class="pf-token-copy-btn" id="btn-copy-token" title="Copy Token">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+            </button>
+          </div>
+          <div class="pf-verify-hint">
+            Add this token as a DNS TXT record or HTML <code>&lt;meta&gt;</code> tag to prove domain ownership.
+          </div>
         </div>
 
-        <div class="pf-form-notice">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-          <span>All submissions undergo manual staff moderation. Inappropriate, offensive, or phishing links will result in a permanent competitive suspension.</span>
+        <!-- Info Collapse Panel -->
+        <div class="pf-info-collapse" id="pf-info-collapse" style="display:none;">
+          <strong>Method 1: DNS TXT Record</strong><br/>
+          Type: <code>TXT</code> &bull; Host: <code>@</code> &bull; Value: <code id="txt-record-val">ct_112118831941</code><br/><br/>
+          <strong>Method 2: HTML Head Tag</strong><br/>
+          Place <code>&lt;meta name="championtokens" content="ct_112118831941" /&gt;</code> in your website's <code>&lt;head&gt;</code>.
         </div>
 
-        <div class="pf-modal-actions">
+        <div class="pf-modal-actions" style="margin-top:16px;">
           <button type="button" class="btn-modal-cancel" id="btn-cancel-add-link">Cancel</button>
-          <button type="submit" class="btn-modal-submit" id="btn-submit-add-link">Submit for Verification</button>
+          <button type="submit" class="btn-modal-submit" id="btn-submit-add-link">Verify & Connect</button>
         </div>
       </form>
     </div>
@@ -589,7 +570,7 @@
       if (statKdEl) statKdEl.textContent = kd;
       if (statModeEl) statModeEl.textContent = mode;
 
-      // Season filter coming soon notification
+      // Season filter notification
       document.getElementById('btn-season-filter')?.addEventListener('click', () => {
         showToast('Season filtering is coming soon in Season 2!');
       });
@@ -597,7 +578,7 @@
       // 5. ELO & Rank Data
       const savedElo = localStorage.getItem('ct_user_elo');
       const isUnranked = localStorage.getItem('ct_is_unranked') === 'true';
-      const elo = savedElo !== null ? parseInt(savedElo, 10) : 9999;
+      const elo = savedElo !== null ? parseInt(savedElo, 10) : 3500;
       const meta = getRankMeta(elo, isUnranked);
 
       const displayName = user.customName || user.displayName || user.name || 'adrian';
@@ -694,324 +675,123 @@
         showToast('Bio updated!');
       });
 
-      // 9. Badges System (Owner, Admin, Leaderboard #1, Beta Tester, Premium)
-      const allUserBadges = getUserBadges(user, meta);
-      renderBadgesBox(allUserBadges);
+      // 9. Connections (Website Domains Ownership Verification)
+      renderConnections(user);
+      setupConnectionsHandlers(user);
 
-      // 10. Connected Profile Links (With Manual Moderation)
-      renderConnectedLinks();
-      setupConnectedLinksHandlers();
-
-      // 11. Dismiss Skeleton Loading Screen smoothly after ~650ms
+      // 10. Dismiss Skeleton Loading Screen smoothly after ~650ms
       setTimeout(() => {
         const sk = document.getElementById('pf-skeleton-wrap');
         if (sk) sk.classList.add('hidden');
       }, 650);
 
-      // 12. Chromium-Styled Dark Cookie Consent Banner
+      // 11. Chromium-Styled Dark Cookie Consent Banner
       initCookieConsent();
     }
 
-    // ── Badges System Engine (Self-Contained Inline SVGs) ────────
-    function getUserBadges(user, meta) {
-      const badges = [];
-      const name = (user.name || user.displayName || user.customName || '').toLowerCase().trim();
-      const id = String(user.id || user.uid || '');
-      const storedCid = String(localStorage.getItem('ct_contender_id') || '');
-      const isOwner = name === 'adrian' || 
-                      id.includes('112118831941') || 
-                      storedCid.startsWith('112118831941') ||
-                      localStorage.getItem('ct_is_owner') === 'true';
-
-      // 1. Owner Badge (Crown Icon)
-      if (isOwner) {
-        badges.push({
-          id: 'owner',
-          name: 'Owner',
-          tag: 'FOUNDER',
-          color: '#fbbf24',
-          className: 'owner',
-          lore: 'Champion Tokens Founder & Creator',
-          svg: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m2 4 3 12h14l3-12-6 7-4-7-4 7-6-7z"/><path d="M3 20h18"/></svg>',
-          unlocked: true
-        });
-      }
-
-      // 2. Admin Badge (Shield-Check Icon)
-      if (isOwner || localStorage.getItem('ct_is_admin') === 'true') {
-        badges.push({
-          id: 'admin',
-          name: 'Admin',
-          tag: 'STAFF',
-          color: '#06b6d4',
-          className: 'admin',
-          lore: 'Official Platform Administrator & Lead Safety Operator',
-          svg: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>',
-          unlocked: true
-        });
-      }
-
-      // 3. Leaderboard #... (Top 100 Players Only, Displays Number + Country Flag)
-      const placeNum = meta ? meta.numPlace : 1;
-      if (placeNum <= 100) {
-        const flag = localStorage.getItem('ct_user_flag') || '\uD83C\uDDFA\uD83C\uDDF8';
-        badges.push({
-          id: 'leaderboard',
-          name: `Leaderboard #${placeNum}`,
-          tag: 'TOP 100',
-          isLeaderboard: true,
-          placeText: `#${placeNum}`,
-          flag: flag,
-          color: '#fbbf24',
-          className: 'leaderboard',
-          lore: `Top 100 Global Ranked Contender (${flag} #${placeNum})`,
-          unlocked: true
-        });
-      }
-
-      // 4. Beta Tester Badge (Science Flask Icon)
-      badges.push({
-        id: 'beta',
-        name: 'Beta Tester',
-        tag: 'EARLY ACCESS',
-        color: '#53fc18',
-        className: 'beta',
-        lore: 'Official Season 1 Early Beta Testing Participant',
-        svg: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#53fc18" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2v7.31L4.69 17.5A2 2 0 0 0 6.34 20.5h11.32a2 2 0 0 0 1.65-3L14 9.31V2"/><path d="M8.5 2h7"/><path d="M14 9.3a6.5 6.5 0 1 1-4 0"/></svg>',
-        unlocked: true
-      });
-
-      // 5. Premium Badge (Gem Icon)
-      badges.push({
-        id: 'premium',
-        name: 'Premium',
-        tag: 'VIP MEMBER',
-        color: '#c084fc',
-        className: 'premium',
-        lore: 'Champion Tokens VIP & Season Pass Premium Contender',
-        svg: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#c084fc" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 3 18 3 22 9 12 22 2 9 6 3"/><line x1="12" y1="22" x2="6" y2="9"/><line x1="12" y1="22" x2="18" y2="9"/><line x1="2" y1="9" x2="22" y2="9"/></svg>',
-        unlocked: true
-      });
-
-      return badges;
-    }
-
-    function renderBadgesBox(badges) {
-      const box = document.getElementById('pf-badges-box');
-      if (!box) return;
-      box.innerHTML = '';
-
-      const maxDisplay = 4;
-      const displayBadges = badges.slice(0, maxDisplay);
-      const remainingCount = badges.length - maxDisplay;
-
-      displayBadges.forEach(b => {
-        const item = document.createElement('div');
-        item.className = `pf-badge-icon-item ${b.className}`;
-        item.setAttribute('data-tooltip', b.name);
-        item.addEventListener('click', (e) => {
-          e.stopPropagation();
-          openBadgesModal(badges);
-        });
-
-        if (b.isLeaderboard) {
-          item.innerHTML = `<span class="pf-lb-badge-content"><span class="pf-lb-num">${b.placeText}</span><span class="pf-lb-flag">${b.flag}</span></span>`;
-        } else {
-          item.innerHTML = b.svg;
-        }
-        box.appendChild(item);
-      });
-
-      if (remainingCount > 0) {
-        const moreBtn = document.createElement('button');
-        moreBtn.type = 'button';
-        moreBtn.className = 'pf-badge-more-btn';
-        moreBtn.id = 'btn-show-all-badges';
-        moreBtn.title = `View all ${badges.length} badges`;
-        moreBtn.textContent = `+${remainingCount}`;
-        moreBtn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          openBadgesModal(badges);
-        });
-        box.appendChild(moreBtn);
-      }
-
-      box.addEventListener('click', () => openBadgesModal(badges));
-    }
-
-    function openBadgesModal(badges) {
-      const modal = document.getElementById('modal-all-badges');
-      const list = document.getElementById('modal-badges-list');
-      if (!modal || !list) return;
-
-      list.innerHTML = '';
-      badges.forEach(b => {
-        const card = document.createElement('div');
-        card.className = 'pf-badge-card';
-
-        let iconHTML = '';
-        if (b.isLeaderboard) {
-          iconHTML = `<div class="pf-badge-card-icon" style="border-color:${b.color}40;background:${b.color}15;"><span style="font-family:'Outfit',sans-serif;font-weight:800;font-size:0.95rem;color:${b.color};">${b.placeText} ${b.flag}</span></div>`;
-        } else {
-          iconHTML = `<div class="pf-badge-card-icon" style="border-color:${b.color}40;background:${b.color}15;">${b.svg.replace('width="15"', 'width="22"').replace('height="15"', 'height="22"')}</div>`;
-        }
-
-        card.innerHTML = `
-          ${iconHTML}
-          <div class="pf-badge-card-info">
-            <div class="pf-badge-card-name-row">
-              <span class="pf-badge-card-name">${b.name}</span>
-              <span class="pf-badge-card-tag" style="background:${b.color}20;color:${b.color};border:1px solid ${b.color}40;">${b.tag}</span>
-            </div>
-            <div class="pf-badge-card-desc">${b.lore}</div>
-          </div>
-          <div class="pf-badge-card-status">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#53fc18" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:3px;"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-            <span>UNLOCKED</span>
-          </div>
-        `;
-        list.appendChild(card);
-      });
-
-      modal.classList.add('open');
-    }
-
-    document.getElementById('btn-close-badges-modal')?.addEventListener('click', () => {
-      document.getElementById('modal-all-badges')?.classList.remove('open');
-    });
-
-    document.getElementById('modal-all-badges')?.addEventListener('click', (e) => {
-      if (e.target.id === 'modal-all-badges') {
-        e.target.classList.remove('open');
-      }
-    });
-
-    // ── Connected Profile Links System (Manual Moderation) ───────
-    const DEFAULT_CONNECTED_LINKS = [
-      {
-        id: 'link_discord',
-        platform: 'discord',
-        title: 'Discord Profile',
-        handle: 'adrian',
-        url: 'https://discord.com',
-        status: 'approved',
-        verifiedDate: 'Season 1'
-      },
-      {
-        id: 'link_epic',
-        platform: 'epic',
-        title: 'Epic Games',
-        handle: 'adrian',
-        url: 'https://fortnitetracker.com',
-        status: 'approved',
-        verifiedDate: 'Season 1'
-      }
-    ];
-
-    function getConnectedLinks() {
-      const stored = localStorage.getItem('ct_user_links');
+    // ── Connections System (Website Domain Ownership Verification) ──
+    function getConnections() {
+      const stored = localStorage.getItem('ct_user_domains');
       if (stored) {
         try {
           return JSON.parse(stored);
         } catch (e) {}
       }
-      localStorage.setItem('ct_user_links', JSON.stringify(DEFAULT_CONNECTED_LINKS));
-      return DEFAULT_CONNECTED_LINKS;
+      return [];
     }
 
-    function saveConnectedLinks(links) {
-      localStorage.setItem('ct_user_links', JSON.stringify(links));
-      renderConnectedLinks();
+    function saveConnections(domains) {
+      localStorage.setItem('ct_user_domains', JSON.stringify(domains));
     }
 
-    function getPlatformIcon(platform) {
-      switch (platform) {
-        case 'discord':
-          return '<svg width="14" height="14" viewBox="0 0 24 24" fill="#5865F2"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.893.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>';
-        case 'epic':
-          return '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 2 18 2 18 16 12 22 6 16 6 2"/></svg>';
-        case 'twitch':
-          return '<svg width="14" height="14" viewBox="0 0 24 24" fill="#a855f7"><path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714Z"/></svg>';
-        case 'youtube':
-          return '<svg width="14" height="14" viewBox="0 0 24 24" fill="#ef4444"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19.1c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.43z"/><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02" fill="#fff"/></svg>';
-        case 'twitter':
-          return '<svg width="14" height="14" viewBox="0 0 24 24" fill="#38bdf8"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>';
-        case 'kick':
-          return '<svg width="14" height="14" viewBox="0 0 24 24" fill="#53fc18"><path d="M4 3h5v5h2V6h2V4h2v2h2v2h-2v2h-2v4h2v2h2v2h-2v2h-2v-2h-2v-2h-2v5H4V3z"/></svg>';
-        default:
-          return '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>';
-      }
-    }
-
-    function renderConnectedLinks() {
+    function renderConnections(user) {
       const listEl = document.getElementById('pf-links-list');
       if (!listEl) return;
       listEl.innerHTML = '';
 
-      const links = getConnectedLinks();
-      if (links.length === 0) {
-        listEl.innerHTML = '<span style="font-size:0.75rem;color:#64748b;font-style:italic;">No connected profile links yet. Click Add Link to submit.</span>';
+      const domains = getConnections();
+      if (domains.length === 0) {
+        listEl.innerHTML = '<span class="pf-links-empty">No website domains connected yet. Click Add Domain to link your site.</span>';
         return;
       }
 
-      links.forEach((l, idx) => {
+      domains.forEach((d, idx) => {
         const chip = document.createElement('div');
-        chip.className = `pf-link-chip ${l.status === 'approved' ? 'approved' : 'pending'}`;
-
-        const isApproved = l.status === 'approved';
-        const statusBadge = isApproved
-          ? `<span class="pf-link-status-tag approved" title="Verified by Champion Tokens moderation staff"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> Verified</span>`
-          : `<span class="pf-link-status-tag pending" title="Pending manual staff review"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Pending Review</span>`;
+        chip.className = 'pf-link-chip';
 
         chip.innerHTML = `
-          <span class="pf-link-platform-icon">${getPlatformIcon(l.platform)}</span>
-          <a href="${l.url}" target="_blank" rel="noopener noreferrer" class="pf-link-handle" title="${l.title}">
-            ${l.handle}
+          <span class="pf-link-platform-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#53fc18" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          </span>
+          <a href="${d.url}" target="_blank" rel="noopener noreferrer" class="pf-link-handle" title="${d.domain}">
+            ${d.domain}
           </a>
-          ${statusBadge}
-          <button type="button" class="pf-link-delete-btn" data-del-idx="${idx}" title="Remove link">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
+          <button type="button" class="pf-link-delete-btn" data-del-idx="${idx}" title="Remove domain">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
           </button>
         `;
 
         chip.querySelector('.pf-link-delete-btn')?.addEventListener('click', (e) => {
           e.preventDefault();
           e.stopPropagation();
-          deleteConnectedLink(idx);
+          deleteConnection(idx, user);
         });
 
         listEl.appendChild(chip);
       });
     }
 
-    function deleteConnectedLink(index) {
-      const links = getConnectedLinks();
-      links.splice(index, 1);
-      saveConnectedLinks(links);
-      showToast('Connected profile link removed.');
+    function deleteConnection(index, user) {
+      const domains = getConnections();
+      domains.splice(index, 1);
+      saveConnections(domains);
+      renderConnections(user);
+      showToast('Domain removed.');
     }
 
-    function setupConnectedLinksHandlers() {
+    function setupConnectionsHandlers(user) {
       const addModal = document.getElementById('modal-add-link');
       const openBtn = document.getElementById('btn-open-add-link');
       const closeBtn = document.getElementById('btn-close-add-link-modal');
       const cancelBtn = document.getElementById('btn-cancel-add-link');
       const form = document.getElementById('form-add-link');
-      const platformSelect = document.getElementById('select-link-platform');
-      const valInput = document.getElementById('input-link-val');
+      const domainInput = document.getElementById('input-domain');
+      const tokenCode = document.getElementById('verify-token-code');
+      const copyTokenBtn = document.getElementById('btn-copy-token');
+      const infoBtn = document.getElementById('btn-domain-info');
+      const infoPanel = document.getElementById('pf-info-collapse');
+      const txtRecordVal = document.getElementById('txt-record-val');
+
+      const verificationToken = `ct_${user.id}`;
+      const fullRecord = `championtokens-site-verification=${verificationToken}`;
+
+      if (tokenCode) tokenCode.textContent = fullRecord;
+      if (txtRecordVal) txtRecordVal.textContent = verificationToken;
+
+      copyTokenBtn?.addEventListener('click', () => {
+        navigator.clipboard.writeText(fullRecord).then(() => {
+          showToast('Verification token copied to clipboard!');
+        });
+      });
+
+      infoBtn?.addEventListener('click', () => {
+        if (!infoPanel) return;
+        infoPanel.style.display = infoPanel.style.display === 'none' ? 'block' : 'none';
+      });
 
       function openModal() {
         if (!addModal) return;
         addModal.classList.add('open');
-        if (valInput) {
-          valInput.value = '';
-          valInput.focus();
+        if (domainInput) {
+          domainInput.value = '';
+          domainInput.focus();
         }
       }
 
       function closeModal() {
         if (!addModal) return;
         addModal.classList.remove('open');
+        if (infoPanel) infoPanel.style.display = 'none';
       }
 
       openBtn?.addEventListener('click', openModal);
@@ -1024,28 +804,35 @@
 
       form?.addEventListener('submit', (e) => {
         e.preventDefault();
-        const rawVal = valInput.value.trim();
-        if (!rawVal) return;
+        let raw = domainInput.value.trim().toLowerCase();
+        if (!raw) return;
 
-        const platform = platformSelect.value;
-        const platformName = platformSelect.options[platformSelect.selectedIndex].text;
+        // Clean domain format
+        raw = raw.replace(/^https?:\/\//i, '').replace(/\/.*$/, '');
+        if (!raw.includes('.') || raw.length < 4) {
+          showToast('Please enter a valid website domain (e.g. yourname.com)');
+          return;
+        }
 
-        const newLink = {
-          id: 'link_' + Date.now(),
-          platform: platform,
-          title: platformName,
-          handle: rawVal.replace(/^https?:\/\//i, ''),
-          url: rawVal.startsWith('http') ? rawVal : `https://${rawVal}`,
-          status: 'pending',
-          submittedAt: new Date().toISOString()
+        const newDomain = {
+          id: 'domain_' + Date.now(),
+          domain: raw,
+          url: `https://${raw}`,
+          verifiedAt: new Date().toISOString()
         };
 
-        const currentLinks = getConnectedLinks();
-        currentLinks.push(newLink);
-        saveConnectedLinks(currentLinks);
+        const domains = getConnections();
+        if (domains.some(d => d.domain === raw)) {
+          showToast('Domain is already connected!');
+          return;
+        }
+
+        domains.push(newDomain);
+        saveConnections(domains);
+        renderConnections(user);
 
         closeModal();
-        showToast('Link submitted! Sent to moderation staff for manual verification.');
+        showToast(`Domain ${raw} connected successfully!`);
       });
     }
 

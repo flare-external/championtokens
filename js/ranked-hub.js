@@ -149,6 +149,13 @@
     const rankIcon = document.getElementById('header-rank-icon');
     const rankName = document.getElementById('header-rank-name');
     const rankElo = document.getElementById('header-rank-elo');
+    const rankPill = document.getElementById('ct-header-rank-pill');
+
+    if (rankPill) {
+      const isTop2 = meta.name === 'Champion' || meta.name === 'Unreal';
+      rankPill.classList.toggle('rank-shine-top2', isTop2);
+      rankPill.classList.toggle('rank-unreal', meta.name === 'Unreal');
+    }
 
     if (rankIcon) {
       rankIcon.src = meta.icon;
@@ -269,6 +276,9 @@
 
     function renderAuthState() {
       const u = state.currentUser;
+      if (!u.avatar || u.avatar.includes('images.unsplash.com')) {
+        u.avatar = '/adrian-avatar.png';
+      }
       const displayName = u.customName || u.name || u.id;
 
       if (u.isLoggedIn) {
